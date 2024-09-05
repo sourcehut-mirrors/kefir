@@ -27,7 +27,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -65,7 +66,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],

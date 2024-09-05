@@ -425,6 +425,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                             REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_outputs,
                                                              (kefir_hashtree_key_t) block_id,
                                                              (kefir_hashtree_value_t) replacement_ref));
+                            REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(
+                                state->mem, &state->func->debug_info, replacement_ref, local_id));
                         } else {
                             replacement_ref = node->value;
                         }
@@ -546,9 +548,11 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
 
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));
-                        ;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
+
+                        REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(
+                            state->mem, &state->func->debug_info, replacement_ref, local_id));
                     } else {
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                     }

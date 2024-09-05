@@ -27,7 +27,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -89,7 +90,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 5,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -109,7 +111,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 6,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 3,
@@ -130,7 +133,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 7,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -153,7 +157,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 7,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 5,
@@ -173,7 +178,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 7,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 6,
@@ -196,7 +202,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 7,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -243,7 +250,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 10,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 11,
@@ -266,7 +274,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 10,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 12,
@@ -286,7 +295,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 10,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 13,
@@ -309,7 +319,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 10,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -373,7 +384,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 8,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 8,
@@ -393,7 +405,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 8,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 9,
@@ -409,7 +422,8 @@
                                         "end": 10
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -470,7 +484,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 14,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -543,7 +558,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 15,
@@ -564,7 +580,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 16,
@@ -585,7 +602,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 61
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 17,
@@ -608,7 +626,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 61
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 18,
@@ -628,7 +647,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 69
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 19,
@@ -648,7 +668,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 20,
@@ -664,7 +685,8 @@
                                         "end": 21
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -708,7 +730,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 14,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -752,7 +775,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 14,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -796,7 +820,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 14,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -840,7 +865,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/inline_asm1.kefir.asmgen.c",
                                     "line": 16,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],

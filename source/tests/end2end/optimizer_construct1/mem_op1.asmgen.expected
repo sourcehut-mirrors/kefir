@@ -27,7 +27,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 1,
@@ -43,7 +44,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -91,7 +93,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -108,7 +111,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -128,7 +132,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 5,
@@ -149,7 +154,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 6,
@@ -172,7 +178,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 7,
@@ -192,7 +199,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 8,
@@ -215,7 +223,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 9,
@@ -238,7 +247,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 10,
@@ -261,7 +271,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 11,
@@ -281,7 +292,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 27,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -331,7 +343,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 1,
@@ -347,7 +360,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -395,7 +409,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -412,7 +427,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -432,7 +448,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 5,
@@ -453,7 +470,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 6,
@@ -476,7 +494,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 7,
@@ -496,7 +515,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 8,
@@ -519,7 +539,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 9,
@@ -542,7 +563,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 10,
@@ -565,7 +587,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 12
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 11,
@@ -585,7 +608,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 31,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -635,7 +659,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 1,
@@ -651,7 +676,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -699,7 +725,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -716,7 +743,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -736,7 +764,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 5,
@@ -757,7 +786,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 6,
@@ -782,7 +812,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 7,
@@ -802,7 +833,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 21
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 8,
@@ -822,7 +854,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 9,
@@ -845,7 +878,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 10,
@@ -868,7 +902,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 11,
@@ -891,7 +926,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 12,
@@ -911,7 +947,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 13,
@@ -934,7 +971,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 14,
@@ -958,7 +996,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 10
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 15,
@@ -979,7 +1018,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 6
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 16,
@@ -1002,7 +1042,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 6
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 17,
@@ -1027,7 +1068,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/mem_op1.kefir.asmgen.c",
                                     "line": 35,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 18,
@@ -1043,7 +1085,8 @@
                                         "end": 19
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],

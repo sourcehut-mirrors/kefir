@@ -27,7 +27,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -65,7 +66,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -115,7 +117,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -154,7 +157,8 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -174,7 +178,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 11,
                                     "column": 21
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 3,
@@ -194,7 +199,8 @@
                                         "end": 4
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -210,7 +216,8 @@
                                         "end": 5
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -260,7 +267,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -302,7 +310,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 9
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 2,
@@ -322,7 +331,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 3,
@@ -345,7 +355,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 4,
@@ -365,7 +376,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 5,
@@ -385,7 +397,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             },
                             {
                                 "id": 6,
@@ -408,7 +421,8 @@
                                     "source_id": "source\/tests\/end2end\/optimizer_construct1\/long_double1.kefir.asmgen.c",
                                     "line": 15,
                                     "column": 5
-                                }
+                                },
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -449,7 +463,8 @@
                                         "end": 8
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -500,7 +515,8 @@
                                         "end": 1
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],
@@ -538,7 +554,8 @@
                                         "end": 2
                                     }
                                 },
-                                "source_location": null
+                                "source_location": null,
+                                "local_variables": []
                             }
                         ],
                         "public_labels": [],

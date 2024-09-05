@@ -1,0 +1,866 @@
+{
+    "functions": [
+        {
+            "id": 31,
+            "name": "test1",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 3,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 0,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 4
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": []
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "get_argument",
+                                "index": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 1,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 4
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": []
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "get_argument",
+                                "index": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 2,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 0,
+                                        "end": 4
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": []
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 3,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 3,
+                                        "end": 4
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": []
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 1,
+                            "linear_interval": {
+                                "begin": 0,
+                                "end": 4
+                            },
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 1,
+                        "control_flow": 77,
+                        "phi": [
+                            {
+                                "id": 0,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 2
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ]
+                            },
+                            {
+                                "id": 2,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ]
+                            }
+                        ],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 11,
+                                "opcode": "phi",
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 4,
+                                    "linear_liveness": {
+                                        "alias": 0,
+                                        "begin": 4,
+                                        "end": 15
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": [
+                                    0
+                                ]
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 5,
+                                    "linear_liveness": {
+                                        "alias": 1,
+                                        "begin": 5,
+                                        "end": 18
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": [
+                                    1
+                                ]
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "phi",
+                                "phi_ref": 0,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 6,
+                                    "linear_liveness": {
+                                        "alias": 2,
+                                        "begin": 6,
+                                        "end": 21
+                                    }
+                                },
+                                "source_location": null,
+                                "local_variables": [
+                                    2
+                                ]
+                            },
+                            {
+                                "id": 79,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 11,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 7,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 7,
+                                        "end": 10
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 13
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 80,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 8,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 8,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 8,
+                                        "end": 10
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 17
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "int32_add",
+                                "args": [
+                                    79,
+                                    80
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 9,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 9,
+                                        "end": 26
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 22,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    3
+                                ]
+                            },
+                            {
+                                "id": 81,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 18,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 10,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 10,
+                                        "end": 13
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 23,
+                                    "column": 13
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 82,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 5,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 11,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 11,
+                                        "end": 13
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 23,
+                                    "column": 17
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int32_sub",
+                                "args": [
+                                    81,
+                                    82
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 12,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 12,
+                                        "end": 29
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 23,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    4
+                                ]
+                            },
+                            {
+                                "id": 83,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 25,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 13,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 13,
+                                        "end": 16
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 24,
+                                    "column": 13
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 84,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 11,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 14,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 14,
+                                        "end": 16
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 24,
+                                    "column": 17
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 32,
+                                "opcode": "int32_mul",
+                                "args": [
+                                    83,
+                                    84
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 15,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 15,
+                                        "end": 32
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 24,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    5
+                                ]
+                            },
+                            {
+                                "id": 85,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 32,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 16,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 16,
+                                        "end": 19
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 25,
+                                    "column": 13
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 86,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 8,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 17,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 17,
+                                        "end": 19
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 25,
+                                    "column": 17
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "int32_xor",
+                                "args": [
+                                    85,
+                                    86
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 18,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 18,
+                                        "end": 20
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 25,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    6
+                                ]
+                            },
+                            {
+                                "id": 87,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 39,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 19,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 19,
+                                        "end": 22
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 26,
+                                    "column": 13
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 88,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 5,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 20,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 20,
+                                        "end": 22
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 26,
+                                    "column": 17
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 46,
+                                "opcode": "int32_or",
+                                "args": [
+                                    87,
+                                    88
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 21,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 21,
+                                        "end": 23
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 26,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    7
+                                ]
+                            },
+                            {
+                                "id": 89,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 46,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 22,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 22,
+                                        "end": 24
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 14
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 51,
+                                "opcode": "int32_not",
+                                "arg": 89,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 23,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 23,
+                                        "end": 25
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 27,
+                                    "column": 13
+                                },
+                                "local_variables": [
+                                    8
+                                ]
+                            },
+                            {
+                                "id": 90,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 51,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 24,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 24,
+                                        "end": 27
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 10
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 91,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 18,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 25,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 25,
+                                        "end": 27
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 57,
+                                "opcode": "int32_add",
+                                "args": [
+                                    91,
+                                    90
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 26,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 26,
+                                        "end": 28
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 29,
+                                    "column": 5
+                                },
+                                "local_variables": [
+                                    3
+                                ]
+                            },
+                            {
+                                "id": 92,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 57,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 27,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 27,
+                                        "end": 30
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 30,
+                                    "column": 10
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 93,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 25,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 28,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 28,
+                                        "end": 30
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 30,
+                                    "column": 5
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 63,
+                                "opcode": "int32_sub",
+                                "args": [
+                                    93,
+                                    92
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 29,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 29,
+                                        "end": 31
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 30,
+                                    "column": 5
+                                },
+                                "local_variables": [
+                                    4
+                                ]
+                            },
+                            {
+                                "id": 94,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 63,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 30,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 30,
+                                        "end": 33
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 10
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 95,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 32,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 31,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 31,
+                                        "end": 33
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 5
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 69,
+                                "opcode": "int32_mul",
+                                "args": [
+                                    95,
+                                    94
+                                ],
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 32,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 32,
+                                        "end": 34
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 31,
+                                    "column": 5
+                                },
+                                "local_variables": [
+                                    5
+                                ]
+                            },
+                            {
+                                "id": 96,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 69,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 33,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 33,
+                                        "end": 35
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 32,
+                                    "column": 9
+                                },
+                                "local_variables": [
+                                    8
+                                ]
+                            },
+                            {
+                                "id": 97,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 96,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 34,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 34,
+                                        "end": 36
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 33,
+                                    "column": 12
+                                },
+                                "local_variables": []
+                            },
+                            {
+                                "id": 77,
+                                "opcode": "return",
+                                "arg": 97,
+                                "control_next": null,
+                                "properties": {
+                                    "reachable": true,
+                                    "linear_index": 35,
+                                    "linear_liveness": {
+                                        "alias": null,
+                                        "begin": 35,
+                                        "end": 36
+                                    }
+                                },
+                                "source_location": {
+                                    "source_id": "source\/tests\/end2end\/debug_info_opt1\/lib.kefir.asmgen.c",
+                                    "line": 33,
+                                    "column": 5
+                                },
+                                "local_variables": []
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "reachable": true,
+                            "linear_position": 2,
+                            "linear_interval": {
+                                "begin": 4,
+                                "end": 36
+                            },
+                            "successors": [],
+                            "predecessors": [
+                                0
+                            ]
+                        }
+                    }
+                ],
+                "properties": {
+                    "linear_length": 36
+                }
+            }
+        }
+    ]
+}
