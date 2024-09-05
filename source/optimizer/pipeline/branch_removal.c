@@ -42,7 +42,7 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
             continue;
         }
 
-        REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor_of(&func->code, instr_id));
+        REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor_of(&func->debug_info, instr_id));
 
         const kefir_opt_block_id_t block_id = instr->block_id;
         kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
@@ -66,7 +66,7 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
             REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, instr_id));
         }
 
-        REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor(mem, &func->code, NULL));
+        REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor(mem, &func->debug_info, NULL));
     }
     return KEFIR_OK;
 }

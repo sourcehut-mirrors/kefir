@@ -33,6 +33,8 @@ kefir_result_t kefir_opt_function_init(const struct kefir_opt_module *module, co
     func->locals.type = ir_func->locals;
     func->locals.type_id = ir_func->locals_type_id;
     REQUIRE_OK(kefir_opt_code_container_init(&func->code));
+    REQUIRE_OK(kefir_opt_code_debug_info_init(&func->debug_info));
+    func->code.event_listener = &func->debug_info.listener;
     return KEFIR_OK;
 }
 
@@ -40,6 +42,7 @@ kefir_result_t kefir_opt_function_free(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer function"));
 
+    REQUIRE_OK(kefir_opt_code_debug_info_free(mem, &func->debug_info));
     REQUIRE_OK(kefir_opt_code_container_free(mem, &func->code));
     func->ir_func = NULL;
     return KEFIR_OK;

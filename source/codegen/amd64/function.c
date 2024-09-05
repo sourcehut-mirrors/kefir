@@ -42,11 +42,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
         KEFIR_CODEGEN_AMD64_INSTRUCTIONS(CASE_INSTR, ;);
 #undef CASE_INSTR
     }
-    if (instruction->source_location != NULL) {
+
+    const struct kefir_source_location *source_location = NULL;
+    REQUIRE_OK(kefir_opt_code_debug_info_source_location_of(&function->function->debug_info, instruction->id,
+                                                            &source_location));
+    if (source_location != NULL) {
         const kefir_asmcmp_instruction_index_t end_idx = kefir_asmcmp_context_instr_length(&function->code.context);
         REQUIRE_OK(kefir_asmcmp_source_map_add_location(mem, &function->code.context.debug_info.source_map,
                                                         &function->code.context.strings, begin_idx, end_idx,
-                                                        instruction->source_location));
+                                                        source_location));
     }
     return KEFIR_OK;
 }

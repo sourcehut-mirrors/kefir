@@ -25,7 +25,8 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
-#include "kefir/core/source_location.h"
+
+typedef struct kefir_opt_code_container kefir_opt_code_container_t;  // Forward declaration
 
 typedef enum kefir_opt_opcode {
 #define KEFIR_OPT_OPCODE(_id, _name, _class) KEFIR_OPT_OPCODE_##_id
@@ -138,8 +139,6 @@ typedef struct kefir_opt_instruction {
     struct kefir_opt_operation operation;
     struct kefir_opt_instruction_link siblings;
     struct kefir_opt_instruction_link control_flow;
-
-    const struct kefir_source_location *source_location;
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
@@ -219,6 +218,12 @@ typedef struct kefir_opt_inline_assembly_node {
     } siblings;
 } kefir_opt_inline_assembly_node_t;
 
+typedef struct kefir_opt_code_event_listener {
+    kefir_result_t (*on_new_instruction)(struct kefir_mem *, struct kefir_opt_code_container *,
+                                         kefir_opt_instruction_ref_t, void *);
+    void *payload;
+} kefir_opt_code_event_listener_t;
+
 typedef struct kefir_opt_code_container {
     struct kefir_opt_instruction *code;
     kefir_size_t length;
@@ -241,8 +246,7 @@ typedef struct kefir_opt_code_container {
 
     struct kefir_hashtree uses;
 
-    struct kefir_hashtree source_locations;
-    const struct kefir_source_location *source_location_cursor;
+    const struct kefir_opt_code_event_listener *event_listener;
 } kefir_opt_code_container_t;
 
 typedef struct kefir_opt_code_block_public_label_iterator {
@@ -267,12 +271,6 @@ kefir_result_t kefir_opt_code_container_block_public_labels_iter(const struct ke
                                                                  kefir_opt_block_id_t,
                                                                  struct kefir_opt_code_block_public_label_iterator *);
 kefir_result_t kefir_opt_code_container_block_public_labels_next(struct kefir_opt_code_block_public_label_iterator *);
-
-kefir_result_t kefir_opt_code_container_set_source_location_cursor(struct kefir_mem *,
-                                                                   struct kefir_opt_code_container *,
-                                                                   const struct kefir_source_location *);
-kefir_result_t kefir_opt_code_container_set_source_location_cursor_of(struct kefir_opt_code_container *,
-                                                                      kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_instr(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t,
                                               const struct kefir_opt_instruction **);

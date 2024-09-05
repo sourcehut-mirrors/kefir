@@ -525,7 +525,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
 
         for (kefir_opt_code_block_instr_head(&func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
 
-            REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor_of(&func->code, instr_id));
+            REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor_of(&func->debug_info, instr_id));
 
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
@@ -655,7 +655,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
             }
 
-            REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor(mem, &func->code, NULL));
+            REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor(mem, &func->debug_info, NULL));
         }
     }
     return KEFIR_OK;

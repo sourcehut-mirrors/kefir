@@ -22,6 +22,7 @@
 #define KEFIR_OPTIMIZER_FUNCTION_H_
 
 #include "kefir/optimizer/code.h"
+#include "kefir/optimizer/debug.h"
 #include "kefir/optimizer/type.h"
 #include "kefir/ir/function.h"
 
@@ -30,6 +31,7 @@ typedef struct kefir_opt_module kefir_opt_module_t;  // Forward declaration
 typedef struct kefir_opt_function {
     const struct kefir_ir_function *ir_func;
     struct kefir_opt_code_container code;
+    struct kefir_opt_code_debug_info debug_info;
     struct {
         const struct kefir_ir_type *type;
         kefir_id_t type_id;

@@ -975,11 +975,11 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
                                                                      state->ir_location, &source_location);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor(mem, &state->function->code,
-                                                                           &source_location->location));
+            REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor(mem, &state->function->debug_info,
+                                                                            &source_location->location));
         }
         REQUIRE_OK(translate_instruction(mem, module, &state->function->code, state, instr));
-        REQUIRE_OK(kefir_opt_code_container_set_source_location_cursor(mem, &state->function->code, NULL));
+        REQUIRE_OK(kefir_opt_code_debug_info_set_source_location_cursor(mem, &state->function->debug_info, NULL));
     }
 
     REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));
