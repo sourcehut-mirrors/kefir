@@ -26,8 +26,7 @@
 static kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifier_abbrev(
     struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
     struct kefir_codegen_amd64_dwarf_context *context, const struct kefir_ir_identifier *identifier) {
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                      identifier->debug_info.type, NULL));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, identifier->debug_info.type, NULL));
 
     REQUIRE(context->abbrev.entries.global_variable == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
     context->abbrev.entries.global_variable = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
@@ -51,8 +50,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifier_info(
     struct kefir_codegen_amd64_dwarf_context *context, const struct kefir_ir_identifier *identifier) {
     const kefir_codegen_amd64_dwarf_entry_id_t entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     kefir_codegen_amd64_dwarf_entry_id_t type_entry_id;
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                      identifier->debug_info.type, &type_entry_id));
+    REQUIRE_OK(
+        kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, identifier->debug_info.type, &type_entry_id));
 
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, entry_id, context->abbrev.entries.global_variable));
     REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, identifier->symbol));

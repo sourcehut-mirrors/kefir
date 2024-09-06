@@ -23,6 +23,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
+static kefir_result_t generate_type_immediate(struct kefir_mem *, struct kefir_codegen_amd64 *,
+                                              const struct kefir_ir_module *,
+                                              struct kefir_codegen_amd64_dwarf_context *, kefir_ir_debug_entry_id_t,
+                                              kefir_codegen_amd64_dwarf_entry_id_t *);
+
 static kefir_result_t define_scalar_type_abbrev(struct kefir_codegen_amd64 *codegen,
                                                 struct kefir_codegen_amd64_dwarf_context *context) {
     REQUIRE(context->abbrev.entries.scalar_type == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
@@ -343,10 +348,11 @@ static kefir_result_t define_typedef_abbrev(struct kefir_codegen_amd64 *codegen,
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
-    struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
-    struct kefir_codegen_amd64_dwarf_context *context, const struct kefir_ir_debug_entry *ir_debug_entry,
-    kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+static kefir_result_t generate_type_immediate_abbrev(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                                     const struct kefir_ir_module *ir_module,
+                                                     struct kefir_codegen_amd64_dwarf_context *context,
+                                                     const struct kefir_ir_debug_entry *ir_debug_entry,
+                                                     kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&context->abbrev.entries.ir_debug_entries,
                                            (kefir_hashtree_key_t) ir_debug_entry->identifier, &node);
@@ -389,8 +395,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_ENUMERATION: {
@@ -402,8 +407,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
 
             kefir_result_t res;
             struct kefir_ir_debug_entry_child_iterator iter;
@@ -411,8 +415,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -436,8 +439,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
 
             kefir_result_t res;
             struct kefir_ir_debug_entry_child_iterator iter;
@@ -445,8 +447,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -473,8 +474,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
         } break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_STRUCTURE:
@@ -535,8 +535,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -577,8 +576,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
         } break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FUNCTION:
@@ -590,8 +588,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
 
             kefir_result_t res;
             struct kefir_ir_debug_entry_child_iterator iter;
@@ -599,8 +596,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -616,8 +612,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG:
@@ -637,23 +632,23 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(
 
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, NULL));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, NULL));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
         case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
         case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "IR debug entries are not implemented yet");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "IR debug entries is not a type");
     }
 
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
-    struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
-    struct kefir_codegen_amd64_dwarf_context *context, const struct kefir_ir_debug_entry *ir_debug_entry,
-    kefir_codegen_amd64_dwarf_entry_id_t dwarf_entry_id) {
+static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                                   const struct kefir_ir_module *ir_module,
+                                                   struct kefir_codegen_amd64_dwarf_context *context,
+                                                   const struct kefir_ir_debug_entry *ir_debug_entry,
+                                                   kefir_codegen_amd64_dwarf_entry_id_t dwarf_entry_id) {
     const struct kefir_ir_debug_entry_attribute *ir_attr;
     switch (ir_debug_entry->tag) {
 #define DEFINE_SCALAR_TYPE_INFO(_encoding)                                                                         \
@@ -715,8 +710,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t pointer_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &pointer_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &pointer_type_entry_id));
 
             REQUIRE_OK(
                 KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id, context->abbrev.entries.pointer_type));
@@ -743,8 +738,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t underlying_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &underlying_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &underlying_type_entry_id));
 
             REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id,
                                                     context->abbrev.entries.enumeration_type));
@@ -778,8 +773,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -803,8 +797,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t element_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &element_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &element_type_entry_id));
 
             REQUIRE_OK(
                 KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id, context->abbrev.entries.array_type));
@@ -826,8 +820,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -840,8 +833,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t index_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, &index_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &index_type_entry_id));
 
             kefir_bool_t has_length;
             REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
@@ -933,8 +926,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -947,8 +939,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t member_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, &member_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &member_type_entry_id));
 
             kefir_bool_t has_name, has_bitwidth;
             REQUIRE_OK(kefir_ir_debug_entry_has_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
@@ -1067,8 +1059,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t return_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, &return_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &return_type_entry_id));
 
             REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id,
                                                     context->abbrev.entries.subroutine_type));
@@ -1094,8 +1086,7 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             for (res = kefir_ir_debug_entry_child_iter(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                        &iter, &child_entry_id);
                  res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&iter, &child_entry_id)) {
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry(mem, codegen, ir_module, context,
-                                                                             child_entry_id, NULL));
+                REQUIRE_OK(generate_type_immediate(mem, codegen, ir_module, context, child_entry_id, NULL));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);
@@ -1108,8 +1099,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t parameter_type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-                mem, codegen, ir_module, context, ir_attr->type_id, &parameter_type_entry_id));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id,
+                                                      &parameter_type_entry_id));
 
             REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id,
                                                     context->abbrev.entries.formal_parameter));
@@ -1135,8 +1126,8 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
             kefir_codegen_amd64_dwarf_entry_id_t type_entry_id;
             REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier,
                                                           KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &ir_attr));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(mem, codegen, ir_module, context,
-                                                                              ir_attr->type_id, &type_entry_id));
+            REQUIRE_OK(
+                kefir_codegen_amd64_dwarf_type(mem, codegen, ir_module, context, ir_attr->type_id, &type_entry_id));
 
             REQUIRE_OK(
                 KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id, context->abbrev.entries.type_def));
@@ -1159,18 +1150,17 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(
         case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
         case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
         case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "IR debug entries are not implemented yet");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "IR debug entries is not a type");
     }
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry(struct kefir_mem *mem,
-                                                                 struct kefir_codegen_amd64 *codegen,
-                                                                 const struct kefir_ir_module *ir_module,
-                                                                 struct kefir_codegen_amd64_dwarf_context *context,
-                                                                 kefir_ir_debug_entry_id_t ir_entry_id,
-                                                                 kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+static kefir_result_t generate_type_immediate(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                              const struct kefir_ir_module *ir_module,
+                                              struct kefir_codegen_amd64_dwarf_context *context,
+                                              kefir_ir_debug_entry_id_t ir_entry_id,
+                                              kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
@@ -1180,8 +1170,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry(struct kefir_me
     REQUIRE_OK(kefir_ir_debug_entry_get(&ir_module->debug_info.entries, ir_entry_id, &ir_debug_entry));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(mem, codegen, ir_module, context,
-                                                                            ir_debug_entry, dwarf_entry_id));
+        REQUIRE_OK(generate_type_immediate_abbrev(mem, codegen, ir_module, context, ir_debug_entry, dwarf_entry_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
@@ -1196,18 +1185,18 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_entry(struct kefir_me
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->info.entries.ir_debug_entries,
                                              (kefir_hashtree_key_t) ir_debug_entry->identifier,
                                              (kefir_hashtree_value_t) entry_id));
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(mem, codegen, ir_module, context,
-                                                                              ir_debug_entry, entry_id));
+            REQUIRE_OK(generate_type_immediate_info(mem, codegen, ir_module, context, ir_debug_entry, entry_id));
             ASSIGN_PTR(dwarf_entry_id, entry_id);
         }
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
-    struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
-    struct kefir_codegen_amd64_dwarf_context *context, kefir_ir_debug_entry_id_t ir_entry_id,
-    kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+kefir_result_t kefir_codegen_amd64_dwarf_type(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                              const struct kefir_ir_module *ir_module,
+                                              struct kefir_codegen_amd64_dwarf_context *context,
+                                              kefir_ir_debug_entry_id_t ir_entry_id,
+                                              kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
@@ -1217,8 +1206,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
     REQUIRE_OK(kefir_ir_debug_entry_get(&ir_module->debug_info.entries, ir_entry_id, &ir_debug_entry));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry_abbrev(mem, codegen, ir_module, context,
-                                                                            ir_debug_entry, dwarf_entry_id));
+        REQUIRE_OK(generate_type_immediate_abbrev(mem, codegen, ir_module, context, ir_debug_entry, dwarf_entry_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
@@ -1241,9 +1229,9 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_type_entry(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_type_entries(
-    struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
-    struct kefir_codegen_amd64_dwarf_context *context) {
+kefir_result_t kefir_codegen_amd64_dwarf_generate_types(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
+                                                        const struct kefir_ir_module *ir_module,
+                                                        struct kefir_codegen_amd64_dwarf_context *context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
@@ -1261,8 +1249,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_ir_debug_type_entries(
         const struct kefir_ir_debug_entry *ir_debug_entry;
         REQUIRE_OK(kefir_ir_debug_entry_get(&ir_module->debug_info.entries, ir_debug_entry_id, &ir_debug_entry));
 
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_entry_info(mem, codegen, ir_module, context,
-                                                                          ir_debug_entry, dwarf_entry_id));
+        REQUIRE_OK(generate_type_immediate_info(mem, codegen, ir_module, context, ir_debug_entry, dwarf_entry_id));
 
         REQUIRE_OK(kefir_list_pop(mem, &context->info.entries.pending_ir_debug_type_entries, iter));
         iter = kefir_list_head(&context->info.entries.pending_ir_debug_type_entries);

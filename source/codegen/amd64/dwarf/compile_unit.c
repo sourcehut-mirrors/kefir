@@ -78,8 +78,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
     REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_global_identifiers(mem, codegen_module->codegen,
                                                                      codegen_module->module->ir_module, context));
     REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_functions(mem, codegen_module, context));
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_ir_debug_type_entries(mem, codegen_module->codegen,
-                                                                        codegen_module->module->ir_module, context));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_types(mem, codegen_module->codegen, codegen_module->module->ir_module,
+                                                        context));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_module->codegen->xasmgen, 0));

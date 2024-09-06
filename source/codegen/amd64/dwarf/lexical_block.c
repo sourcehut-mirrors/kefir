@@ -42,7 +42,8 @@ static kefir_result_t generate_lexical_block_abbrev(struct kefir_codegen_amd64 *
 
 static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwarf_context *context,
                                                   const struct kefir_codegen_amd64_function *codegen_function,
-                                                  const struct kefir_ir_debug_entry *lexical_block_entry) {
+                                                  const struct kefir_ir_debug_entry *lexical_block_entry,
+                                                  kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
                                               codegen_function->function->ir_func->name, &ir_identifier));
@@ -65,6 +66,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwa
         struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers[2];
 
         const kefir_codegen_amd64_dwarf_entry_id_t entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
+        ASSIGN_PTR(dwarf_entry_id, entry_id);
         REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, entry_id,
                                                 context->abbrev.entries.lexical_block));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
@@ -85,6 +87,8 @@ static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwa
                     &codegen_function->codegen->xasmgen_helpers.operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                     kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[1], KEFIR_AMD64_LABEL,
                                                            ir_identifier->symbol, begin_label)))));
+    } else {
+        ASSIGN_PTR(dwarf_entry_id, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
     }
 
     REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(codegen_function, context,
@@ -98,7 +102,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwa
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(
     const struct kefir_codegen_amd64_function *codegen_function, struct kefir_codegen_amd64_dwarf_context *context,
-    const struct kefir_ir_debug_entry *lexical_block_entry) {
+    const struct kefir_ir_debug_entry *lexical_block_entry, kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
     REQUIRE(lexical_block_entry != NULL,
@@ -106,10 +110,11 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_lexical_block_abbrev(codegen_function->codegen, context));
+        ASSIGN_PTR(dwarf_entry_id, context->abbrev.entries.lexical_block);
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
-        REQUIRE_OK(generate_lexical_block_info(context, codegen_function, lexical_block_entry));
+        REQUIRE_OK(generate_lexical_block_info(context, codegen_function, lexical_block_entry, dwarf_entry_id));
     }
 
     return KEFIR_OK;
@@ -134,7 +139,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
 
         switch (child_entry->tag) {
             case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
-                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block(codegen_function, context, child_entry));
+                REQUIRE_OK(
+                    kefir_codegen_amd64_dwarf_generate_lexical_block(codegen_function, context, child_entry, NULL));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
