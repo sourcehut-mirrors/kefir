@@ -24,20 +24,23 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_asmcmp_value *value, struct kefir_hashtreeset *alive_labels) {
+static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_asmcmp_value *value,
+                                     struct kefir_hashtreeset *alive_labels) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL:
             REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels, (kefir_hashtreeset_entry_t) value->internal_label));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL:
-            REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels, (kefir_hashtreeset_entry_t) value->rip_indirection.internal));
+            REQUIRE_OK(
+                kefir_hashtreeset_add(mem, alive_labels, (kefir_hashtreeset_entry_t) value->rip_indirection.internal));
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels, (kefir_hashtreeset_entry_t) value->indirect.base.internal_label));
+                    REQUIRE_OK(kefir_hashtreeset_add(mem, alive_labels,
+                                                     (kefir_hashtreeset_entry_t) value->indirect.base.internal_label));
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
@@ -68,7 +71,8 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_a
     return KEFIR_OK;
 }
 
-static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_asmcmp_context *context, struct kefir_hashtreeset *alive_labels) {
+static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                           struct kefir_hashtreeset *alive_labels) {
     for (kefir_asmcmp_instruction_index_t instr_index = kefir_asmcmp_context_instr_head(context);
          instr_index != KEFIR_ASMCMP_INDEX_NONE; instr_index = kefir_asmcmp_context_instr_next(context, instr_index)) {
 
@@ -83,11 +87,13 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
     kefir_result_t res;
     kefir_asmcmp_label_index_t label_index;
     const struct kefir_asmcmp_label *label;
-    for (res = kefir_asmcmp_context_label_head(context, &label_index); res == KEFIR_OK && label_index != KEFIR_ASMCMP_INDEX_NONE;
-        res = kefir_asmcmp_context_label_next(context, label_index, &label_index)) {
-        
+    for (res = kefir_asmcmp_context_label_head(context, &label_index);
+         res == KEFIR_OK && label_index != KEFIR_ASMCMP_INDEX_NONE;
+         res = kefir_asmcmp_context_label_next(context, label_index, &label_index)) {
+
         REQUIRE_OK(kefir_asmcmp_context_get_label(context, label_index, &label));
-        if (label->attached && kefir_hashtreeset_empty(&label->public_labels) && !kefir_hashtreeset_has(alive_labels, (kefir_hashtreeset_entry_t) label_index)) {
+        if (label->attached && !label->external_dependencies && kefir_hashtreeset_empty(&label->public_labels) &&
+            !kefir_hashtreeset_has(alive_labels, (kefir_hashtreeset_entry_t) label_index)) {
             REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, label_index));
         }
     }
@@ -96,7 +102,7 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
 }
 
 static kefir_result_t eliminate_label_apply(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
-                                 const struct kefir_asmcmp_pipeline_pass *pass) {
+                                            const struct kefir_asmcmp_pipeline_pass *pass) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(pass);
@@ -113,4 +119,7 @@ static kefir_result_t eliminate_label_apply(struct kefir_mem *mem, struct kefir_
 }
 
 const struct kefir_asmcmp_pipeline_pass KefirAsmcmpAmd64EliminateLabelPass = {
-    .name = "amd64-eliminate-label", .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL, .apply = eliminate_label_apply, .payload = NULL};
+    .name = "amd64-eliminate-label",
+    .type = KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
+    .apply = eliminate_label_apply,
+    .payload = NULL};

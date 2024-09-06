@@ -31,6 +31,7 @@
 
 static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                             const struct kefir_opt_instruction *instruction) {
+    REQUIRE_OK(kefir_codegen_amd64_function_generate_debug_instruction_locations(mem, function, instruction->id));
     REQUIRE(kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) instruction->id),
             KEFIR_OK);
     const kefir_asmcmp_instruction_index_t begin_idx = kefir_asmcmp_context_instr_length(&function->code.context);
@@ -480,7 +481,8 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
                                                 .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
                                                 .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
                                                 .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE};
+                                                .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
+                                                .debug = {.next_instruction_location = 0}};
 
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, function->ir_func->name, &ir_identifier));
@@ -492,6 +494,7 @@ kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func.constants, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&func.translated_instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func.debug.instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func.stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
@@ -511,6 +514,7 @@ on_error1:
     kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
     kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
     kefir_codegen_amd64_stack_frame_free(mem, &func.stack_frame);
+    kefir_hashtree_free(mem, &func.debug.instruction_location_labels);
     kefir_hashtreeset_free(mem, &func.translated_instructions);
     kefir_hashtree_free(mem, &func.constants);
     kefir_hashtree_free(mem, &func.instructions);
@@ -551,5 +555,45 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
     REQUIRE_OK(res);
 
     *vreg = node->value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function, kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(function->codegen->config->debug_info, KEFIR_OK);
+
+    kefir_size_t instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instr_ref,
+                                                              &instruction_location));
+    REQUIRE(instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE, KEFIR_OK);
+    REQUIRE(function->debug.next_instruction_location <= instruction_location, KEFIR_OK);
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_lower_bound(&function->debug.instruction_location_labels,
+                                                    (kefir_hashtree_key_t) instruction_location, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, prev_asmlabel, node->value);
+
+        const struct kefir_asmcmp_label *label;
+        REQUIRE_OK(kefir_asmcmp_context_get_label(&function->code.context, prev_asmlabel, &label));
+        if (label->attached && label->position == KEFIR_ASMCMP_INDEX_NONE) {
+            REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
+                                             (kefir_hashtree_key_t) instruction_location,
+                                             (kefir_hashtree_value_t) prev_asmlabel));
+            return KEFIR_OK;
+        }
+    }
+
+    kefir_asmcmp_label_index_t asmlabel;
+    REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &asmlabel));
+    REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, asmlabel));
+    REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &function->code.context, asmlabel));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
+                                     (kefir_hashtree_key_t) instruction_location, (kefir_hashtree_value_t) asmlabel));
+    function->debug.next_instruction_location = instruction_location + 1;
+
     return KEFIR_OK;
 }

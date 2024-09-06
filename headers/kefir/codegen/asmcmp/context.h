@@ -293,6 +293,7 @@ typedef struct kefir_asmcmp_label {
     } siblings;
 
     struct kefir_hashtreeset public_labels;
+    kefir_bool_t external_dependencies;
 } kefir_asmcmp_label_t;
 
 typedef struct kefir_asmcmp_virtual_register {
@@ -395,6 +396,8 @@ kefir_result_t kefir_asmcmp_context_move_labels(struct kefir_mem *, struct kefir
                                                 kefir_asmcmp_instruction_index_t, kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                           kefir_asmcmp_label_index_t, const char *);
+kefir_result_t kefir_asmcmp_context_label_mark_external_dependencies(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                                     kefir_asmcmp_label_index_t);
 kefir_result_t kefir_asmcmp_context_label_head(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t *);
 kefir_result_t kefir_asmcmp_context_label_next(const struct kefir_asmcmp_context *, kefir_asmcmp_label_index_t,
                                                kefir_asmcmp_label_index_t *);

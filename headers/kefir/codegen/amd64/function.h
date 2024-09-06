@@ -48,6 +48,11 @@ typedef struct kefir_codegen_amd64_function {
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;
     kefir_asmcmp_virtual_register_index_t dynamic_scope_vreg;
+
+    struct {
+        kefir_size_t next_instruction_location;
+        struct kefir_hashtree instruction_location_labels;
+    } debug;
 } kefir_codegen_amd64_function_t;
 
 kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64 *,
@@ -63,6 +68,9 @@ kefir_result_t kefir_codegen_amd64_function_vreg_of(struct kefir_codegen_amd64_f
                                                     kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                             kefir_opt_block_id_t, kefir_opt_block_id_t);
+kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations(struct kefir_mem *,
+                                                                                 struct kefir_codegen_amd64_function *,
+                                                                                 kefir_opt_instruction_ref_t);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \

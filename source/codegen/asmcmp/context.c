@@ -507,6 +507,7 @@ kefir_result_t kefir_asmcmp_context_new_label(struct kefir_mem *mem, struct kefi
 
     label->label = index;
     label->attached = false;
+    label->external_dependencies = false;
     label->position = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.prev = KEFIR_ASMCMP_INDEX_NONE;
     label->siblings.next = KEFIR_ASMCMP_INDEX_NONE;
@@ -642,6 +643,19 @@ kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem,
 
     struct kefir_asmcmp_label *label = &context->labels[label_index];
     REQUIRE_OK(kefir_hashtreeset_add(mem, &label->public_labels, (kefir_hashtreeset_entry_t) public_label));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_context_label_mark_external_dependencies(struct kefir_mem *mem,
+                                                                     struct kefir_asmcmp_context *context,
+                                                                     kefir_asmcmp_label_index_t label_index) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_LABEL_IDX(context, label_index),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided asmgen label index is out of context bounds"));
+
+    struct kefir_asmcmp_label *label = &context->labels[label_index];
+    label->external_dependencies = true;
     return KEFIR_OK;
 }
 

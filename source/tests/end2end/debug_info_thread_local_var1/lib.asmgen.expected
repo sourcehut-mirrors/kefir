@@ -36,13 +36,16 @@ getb:
 .loc 0 25 1
 .extern __tls_get_addr
 .loc 0 26 12
+_kefir_func_getb_label2:
     data16     lea b@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     mov %rax, %rcx
 .loc 0 26 12
+_kefir_func_getb_label3:
     movl (%rcx), %eax
 .loc 0 26 5
+_kefir_func_getb_label4:
     movq %rax, %xmm0
     ret
 
