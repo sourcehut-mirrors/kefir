@@ -43,6 +43,7 @@
 .section .text
 __kefir_text_section_begin:
 test_atomic_compare_exchange8:
+__kefir_text_func_test_atomic_compare_exchange8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -63,8 +64,10 @@ test_atomic_compare_exchange8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_compare_exchange8_end:
 
 test2_atomic_compare_exchange16:
+__kefir_text_func_test2_atomic_compare_exchange16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -86,8 +89,10 @@ test2_atomic_compare_exchange16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_compare_exchange16_end:
 
 test2_atomic_compare_exchange32:
+__kefir_text_func_test2_atomic_compare_exchange32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -109,8 +114,10 @@ test2_atomic_compare_exchange32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_compare_exchange32_end:
 
 test2_atomic_compare_exchange64:
+__kefir_text_func_test2_atomic_compare_exchange64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -131,8 +138,10 @@ test2_atomic_compare_exchange64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_compare_exchange64_end:
 
 test2_atomic_compare_exchange8:
+__kefir_text_func_test2_atomic_compare_exchange8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -154,8 +163,10 @@ test2_atomic_compare_exchange8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_compare_exchange8_end:
 
 test_atomic_compare_exchange16:
+__kefir_text_func_test_atomic_compare_exchange16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -176,8 +187,10 @@ test_atomic_compare_exchange16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_compare_exchange16_end:
 
 test_atomic_compare_exchange32:
+__kefir_text_func_test_atomic_compare_exchange32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -198,8 +211,10 @@ test_atomic_compare_exchange32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_compare_exchange32_end:
 
 test_atomic_compare_exchange64:
+__kefir_text_func_test_atomic_compare_exchange64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -220,6 +235,7 @@ test_atomic_compare_exchange64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_compare_exchange64_end:
 
 __kefir_text_section_end:
 

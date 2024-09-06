@@ -29,6 +29,7 @@
 .section .text
 __kefir_text_section_begin:
 test1:
+__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -57,6 +58,7 @@ _kefir_func_test1_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test1_end:
 
 __kefir_text_section_end:
 

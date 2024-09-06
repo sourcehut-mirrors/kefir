@@ -55,10 +55,12 @@ typedef struct kefir_codegen_amd64_function {
     } debug;
 } kefir_codegen_amd64_function_t;
 
-kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64 *,
-                                                      const struct kefir_opt_module *,
-                                                      const struct kefir_opt_function *,
-                                                      const struct kefir_opt_code_analysis *);
+kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                 struct kefir_codegen_amd64 *, const struct kefir_opt_module *,
+                                                 const struct kefir_opt_function *,
+                                                 const struct kefir_opt_code_analysis *);
+kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *, struct kefir_codegen_amd64_function *);
+kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 
 #ifdef KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *, struct kefir_codegen_amd64_function *,
@@ -71,6 +73,10 @@ kefir_result_t kefir_codegen_amd64_function_map_phi_outputs(struct kefir_mem *, 
 kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations(struct kefir_mem *,
                                                                                  struct kefir_codegen_amd64_function *,
                                                                                  kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct kefir_codegen_amd64_function *,
+                                                                   kefir_size_t, kefir_size_t,
+                                                                   kefir_asmcmp_label_index_t *,
+                                                                   kefir_asmcmp_label_index_t *);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \

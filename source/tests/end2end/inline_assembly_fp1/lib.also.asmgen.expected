@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 custom_hypot:
+__kefir_text_func_custom_hypot_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -59,6 +60,7 @@ addsd %xmm0, %xmm2
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_custom_hypot_end:
 
 __kefir_text_section_end:
 

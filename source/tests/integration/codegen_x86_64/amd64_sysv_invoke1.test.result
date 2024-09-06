@@ -30,6 +30,7 @@
 .section .text
 __kefir_text_section_begin:
 func1:
+__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
     push %rbx
@@ -67,6 +68,7 @@ _kefir_func_func1_label1:
     pop %rbx
     pop %rbp
     ret
+__kefir_text_func_func1_end:
 .section .rodata
     .align 4
 _kefir_func_func1_label2:

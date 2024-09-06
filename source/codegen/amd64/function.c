@@ -457,71 +457,99 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_calculate(codegen->abi_variant, func->function->locals.type,
                                                          &func->locals_layout, &func->stack_frame));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_BEGIN, ir_identifier->symbol));
     REQUIRE_OK(kefir_asmcmp_amd64_generate_code(mem, &codegen->xasmgen, codegen->debug_info_tracker, &func->code,
                                                 &func->stack_frame));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&func->codegen->xasmgen, KEFIR_AMD64_FUNCTION_END, ir_identifier->symbol));
     REQUIRE_OK(generate_constants(mem, func));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
-                                                      const struct kefir_opt_module *module,
-                                                      const struct kefir_opt_function *function,
-                                                      const struct kefir_opt_code_analysis *function_analysis) {
+kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func,
+                                                 struct kefir_codegen_amd64 *codegen,
+                                                 const struct kefir_opt_module *module,
+                                                 const struct kefir_opt_function *function,
+                                                 const struct kefir_opt_code_analysis *function_analysis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 codegen function"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 code generator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
     REQUIRE(function_analysis != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function analysis"));
 
-    struct kefir_codegen_amd64_function func = {.codegen = codegen,
-                                                .module = module,
-                                                .function = function,
-                                                .function_analysis = function_analysis,
-                                                .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
-                                                .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
-                                                .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                .debug = {.next_instruction_location = 0}};
+    *func = (struct kefir_codegen_amd64_function){.codegen = codegen,
+                                                  .module = module,
+                                                  .function = function,
+                                                  .function_analysis = function_analysis,
+                                                  .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
+                                                  .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
+                                                  .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
+                                                  .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
+                                                  .debug = {.next_instruction_location = 0}};
 
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, function->ir_func->name, &ir_identifier));
 
     REQUIRE_OK(kefir_asmcmp_amd64_init(ir_identifier->symbol, codegen->abi_variant,
-                                       codegen->config->position_independent_code, &func.code));
-    REQUIRE_OK(kefir_hashtree_init(&func.instructions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func.labels, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func.virtual_registers, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func.constants, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&func.translated_instructions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func.debug.instruction_location_labels, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func.stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func.register_allocator));
+                                       codegen->config->position_independent_code, &func->code));
+    REQUIRE_OK(kefir_hashtree_init(&func->instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->labels, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->virtual_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->constants, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->debug.instruction_location_labels, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
-                                                   &func.abi_function_declaration));
-    kefir_result_t res = KEFIR_OK;
+                                                   &func->abi_function_declaration));
     if (function->locals.type != NULL) {
-        res = kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->locals.type, &func.locals_layout);
-        REQUIRE_ELSE(res == KEFIR_OK, { goto on_error1; });
+        kefir_result_t res =
+            kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->locals.type, &func->locals_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
+            kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
+            kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
+            kefir_hashtree_free(mem, &func->debug.instruction_location_labels);
+            kefir_hashtreeset_free(mem, &func->translated_instructions);
+            kefir_hashtree_free(mem, &func->constants);
+            kefir_hashtree_free(mem, &func->instructions);
+            kefir_hashtree_free(mem, &func->virtual_registers);
+            kefir_hashtree_free(mem, &func->labels);
+            kefir_asmcmp_amd64_free(mem, &func->code);
+        });
     }
 
-    res = kefir_codegen_amd64_function_translate_impl(mem, codegen, &func);
+    return KEFIR_OK;
+}
 
-    if (function->locals.type != NULL) {
-        kefir_abi_amd64_type_layout_free(mem, &func.locals_layout);
+kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+
+    if (func->function->locals.type != NULL) {
+        REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &func->locals_layout));
     }
-on_error1:
-    kefir_abi_amd64_function_decl_free(mem, &func.abi_function_declaration);
-    kefir_codegen_amd64_register_allocator_free(mem, &func.register_allocator);
-    kefir_codegen_amd64_stack_frame_free(mem, &func.stack_frame);
-    kefir_hashtree_free(mem, &func.debug.instruction_location_labels);
-    kefir_hashtreeset_free(mem, &func.translated_instructions);
-    kefir_hashtree_free(mem, &func.constants);
-    kefir_hashtree_free(mem, &func.instructions);
-    kefir_hashtree_free(mem, &func.virtual_registers);
-    kefir_hashtree_free(mem, &func.labels);
-    kefir_asmcmp_amd64_free(mem, &func.code);
-    return res;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
+    REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.instruction_location_labels));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->constants));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->instructions));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->virtual_registers));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->labels));
+    REQUIRE_OK(kefir_asmcmp_amd64_free(mem, &func->code));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *mem,
+                                                      struct kefir_codegen_amd64_function *func) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_translate_impl(mem, func->codegen, func));
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_codegen_amd64_function_assign_vreg(struct kefir_mem *mem,
@@ -583,6 +611,7 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
             REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
                                              (kefir_hashtree_key_t) instruction_location,
                                              (kefir_hashtree_value_t) prev_asmlabel));
+            function->debug.next_instruction_location = instruction_location + 1;
             return KEFIR_OK;
         }
     }
@@ -594,6 +623,54 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
     REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
                                      (kefir_hashtree_key_t) instruction_location, (kefir_hashtree_value_t) asmlabel));
     function->debug.next_instruction_location = instruction_location + 1;
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
+    const struct kefir_codegen_amd64_function *codegen_function, kefir_size_t block_begin_idx,
+    kefir_size_t block_end_idx, kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
+    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
+    REQUIRE(begin_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
+    REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
+
+    *begin_label = KEFIR_ASMCMP_INDEX_NONE;
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&codegen_function->debug.instruction_location_labels,
+                                           (kefir_hashtree_key_t) block_begin_idx, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *begin_label = (kefir_asmcmp_label_index_t) node->value;
+    } else {
+        res = kefir_hashtree_lower_bound(&codegen_function->debug.instruction_location_labels,
+                                         (kefir_hashtree_key_t) block_begin_idx, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            node = kefir_hashtree_next_node(&codegen_function->debug.instruction_location_labels, node);
+            if (node != NULL && (kefir_size_t) node->key >= block_begin_idx &&
+                (kefir_size_t) node->key < block_end_idx) {
+                *begin_label = (kefir_asmcmp_label_index_t) node->value;
+            }
+        }
+    }
+
+    *end_label = *begin_label;
+    res = kefir_hashtree_at(&codegen_function->debug.instruction_location_labels, (kefir_hashtree_key_t) block_end_idx,
+                            &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *end_label = (kefir_asmcmp_label_index_t) node->value;
+    } else {
+        res = kefir_hashtree_lower_bound(&codegen_function->debug.instruction_location_labels,
+                                         (kefir_hashtree_key_t) block_end_idx, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            if ((kefir_size_t) node->key >= block_begin_idx && (kefir_size_t) node->key < block_end_idx) {
+                *end_label = (kefir_asmcmp_label_index_t) node->value;
+            }
+        }
+    }
 
     return KEFIR_OK;
 }

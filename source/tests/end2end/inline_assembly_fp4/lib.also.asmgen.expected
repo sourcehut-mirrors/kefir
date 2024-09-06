@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 circle_area:
+__kefir_text_func_circle_area_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -52,6 +53,7 @@ addss %xmm0, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_circle_area_end:
 .section .rodata
     .align 4
 _kefir_func_circle_area_label2:

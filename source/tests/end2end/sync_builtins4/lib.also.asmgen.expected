@@ -35,6 +35,7 @@
 .section .text
 __kefir_text_section_begin:
 clear:
+__kefir_text_func_clear_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -51,8 +52,10 @@ clear:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_clear_end:
 
 test_and_set:
+__kefir_text_func_test_and_set_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -73,13 +76,16 @@ test_and_set:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_and_set_end:
 
 test_sync_synchronize:
+__kefir_text_func_test_sync_synchronize_begin:
     push %rbp
     mov %rsp, %rbp
     call __kefir_atomic_seq_cst_fence@PLT
     pop %rbp
     ret
+__kefir_text_func_test_sync_synchronize_end:
 
 __kefir_text_section_end:
 

@@ -282,6 +282,7 @@
 .section .text
 __kefir_text_section_begin:
 generate_buf_0:
+__kefir_text_func_generate_buf_0_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -323,8 +324,10 @@ _kefir_func_generate_buf_0_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_0_end:
 
 generate_buf_1:
+__kefir_text_func_generate_buf_1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -366,8 +369,10 @@ _kefir_func_generate_buf_1_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_1_end:
 
 generate_buf_2:
+__kefir_text_func_generate_buf_2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -409,8 +414,10 @@ _kefir_func_generate_buf_2_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_2_end:
 
 generate_buf_3:
+__kefir_text_func_generate_buf_3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -452,8 +459,10 @@ _kefir_func_generate_buf_3_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_3_end:
 
 generate_buf_4:
+__kefir_text_func_generate_buf_4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -495,8 +504,10 @@ _kefir_func_generate_buf_4_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_4_end:
 
 generate_buf_5:
+__kefir_text_func_generate_buf_5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -538,8 +549,10 @@ _kefir_func_generate_buf_5_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_5_end:
 
 generate_buf_6:
+__kefir_text_func_generate_buf_6_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -581,8 +594,10 @@ _kefir_func_generate_buf_6_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_6_end:
 
 generate_buf_7:
+__kefir_text_func_generate_buf_7_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -624,8 +639,10 @@ _kefir_func_generate_buf_7_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_7_end:
 
 generate_buf_8:
+__kefir_text_func_generate_buf_8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -669,8 +686,10 @@ _kefir_func_generate_buf_8_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_8_end:
 
 generate_buf_9:
+__kefir_text_func_generate_buf_9_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -714,8 +733,10 @@ _kefir_func_generate_buf_9_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_9_end:
 
 generate_buf_10:
+__kefir_text_func_generate_buf_10_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -759,8 +780,10 @@ _kefir_func_generate_buf_10_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_10_end:
 
 generate_buf_11:
+__kefir_text_func_generate_buf_11_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -804,8 +827,10 @@ _kefir_func_generate_buf_11_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_11_end:
 
 generate_buf_12:
+__kefir_text_func_generate_buf_12_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -849,8 +874,10 @@ _kefir_func_generate_buf_12_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_12_end:
 
 generate_buf_13:
+__kefir_text_func_generate_buf_13_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -894,8 +921,10 @@ _kefir_func_generate_buf_13_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_13_end:
 
 generate_buf_14:
+__kefir_text_func_generate_buf_14_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -939,8 +968,10 @@ _kefir_func_generate_buf_14_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_14_end:
 
 generate_buf_15:
+__kefir_text_func_generate_buf_15_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -984,8 +1015,10 @@ _kefir_func_generate_buf_15_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_15_end:
 
 generate_buf_16:
+__kefir_text_func_generate_buf_16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1034,8 +1067,10 @@ _kefir_func_generate_buf_16_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_16_end:
 
 generate_buf_17:
+__kefir_text_func_generate_buf_17_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1084,8 +1119,10 @@ _kefir_func_generate_buf_17_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_17_end:
 
 generate_buf_18:
+__kefir_text_func_generate_buf_18_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1136,8 +1173,10 @@ _kefir_func_generate_buf_18_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_18_end:
 
 generate_buf_19:
+__kefir_text_func_generate_buf_19_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1186,8 +1225,10 @@ _kefir_func_generate_buf_19_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_19_end:
 
 generate_buf_20:
+__kefir_text_func_generate_buf_20_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1238,8 +1279,10 @@ _kefir_func_generate_buf_20_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_20_end:
 
 generate_buf_21:
+__kefir_text_func_generate_buf_21_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1290,8 +1333,10 @@ _kefir_func_generate_buf_21_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_21_end:
 
 generate_buf_22:
+__kefir_text_func_generate_buf_22_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1344,8 +1389,10 @@ _kefir_func_generate_buf_22_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_22_end:
 
 generate_buf_23:
+__kefir_text_func_generate_buf_23_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -1394,8 +1441,10 @@ _kefir_func_generate_buf_23_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_23_end:
 
 generate_buf_24:
+__kefir_text_func_generate_buf_24_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1446,8 +1495,10 @@ _kefir_func_generate_buf_24_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_24_end:
 
 generate_buf_25:
+__kefir_text_func_generate_buf_25_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1498,8 +1549,10 @@ _kefir_func_generate_buf_25_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_25_end:
 
 generate_buf_26:
+__kefir_text_func_generate_buf_26_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1552,8 +1605,10 @@ _kefir_func_generate_buf_26_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_26_end:
 
 generate_buf_27:
+__kefir_text_func_generate_buf_27_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1604,8 +1659,10 @@ _kefir_func_generate_buf_27_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_27_end:
 
 generate_buf_28:
+__kefir_text_func_generate_buf_28_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1658,8 +1715,10 @@ _kefir_func_generate_buf_28_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_28_end:
 
 generate_buf_29:
+__kefir_text_func_generate_buf_29_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1712,8 +1771,10 @@ _kefir_func_generate_buf_29_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_29_end:
 
 generate_buf_30:
+__kefir_text_func_generate_buf_30_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1768,8 +1829,10 @@ _kefir_func_generate_buf_30_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_30_end:
 
 generate_buf_31:
+__kefir_text_func_generate_buf_31_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1816,8 +1879,10 @@ _kefir_func_generate_buf_31_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_31_end:
 
 generate_buf_32:
+__kefir_text_func_generate_buf_32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1870,8 +1935,10 @@ _kefir_func_generate_buf_32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_32_end:
 
 generate_buf_33:
+__kefir_text_func_generate_buf_33_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1924,8 +1991,10 @@ _kefir_func_generate_buf_33_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_33_end:
 
 generate_buf_34:
+__kefir_text_func_generate_buf_34_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -1980,8 +2049,10 @@ _kefir_func_generate_buf_34_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_34_end:
 
 generate_buf_35:
+__kefir_text_func_generate_buf_35_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -2034,8 +2105,10 @@ _kefir_func_generate_buf_35_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_35_end:
 
 generate_buf_36:
+__kefir_text_func_generate_buf_36_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -2090,8 +2163,10 @@ _kefir_func_generate_buf_36_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_36_end:
 
 generate_buf_37:
+__kefir_text_func_generate_buf_37_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -2146,8 +2221,10 @@ _kefir_func_generate_buf_37_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_37_end:
 
 generate_buf_38:
+__kefir_text_func_generate_buf_38_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -2204,8 +2281,10 @@ _kefir_func_generate_buf_38_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_38_end:
 
 generate_buf_39:
+__kefir_text_func_generate_buf_39_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -2258,8 +2337,10 @@ _kefir_func_generate_buf_39_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_39_end:
 
 generate_buf_40:
+__kefir_text_func_generate_buf_40_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2314,8 +2395,10 @@ _kefir_func_generate_buf_40_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_40_end:
 
 generate_buf_41:
+__kefir_text_func_generate_buf_41_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2370,8 +2453,10 @@ _kefir_func_generate_buf_41_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_41_end:
 
 generate_buf_42:
+__kefir_text_func_generate_buf_42_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2428,8 +2513,10 @@ _kefir_func_generate_buf_42_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_42_end:
 
 generate_buf_43:
+__kefir_text_func_generate_buf_43_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2484,8 +2571,10 @@ _kefir_func_generate_buf_43_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_43_end:
 
 generate_buf_44:
+__kefir_text_func_generate_buf_44_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2542,8 +2631,10 @@ _kefir_func_generate_buf_44_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_44_end:
 
 generate_buf_45:
+__kefir_text_func_generate_buf_45_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2600,8 +2691,10 @@ _kefir_func_generate_buf_45_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_45_end:
 
 generate_buf_46:
+__kefir_text_func_generate_buf_46_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2660,8 +2753,10 @@ _kefir_func_generate_buf_46_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_46_end:
 
 generate_buf_47:
+__kefir_text_func_generate_buf_47_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2710,8 +2805,10 @@ _kefir_func_generate_buf_47_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_47_end:
 
 generate_buf_48:
+__kefir_text_func_generate_buf_48_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2768,8 +2865,10 @@ _kefir_func_generate_buf_48_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_48_end:
 
 generate_buf_49:
+__kefir_text_func_generate_buf_49_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2826,8 +2925,10 @@ _kefir_func_generate_buf_49_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_49_end:
 
 generate_buf_50:
+__kefir_text_func_generate_buf_50_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2886,8 +2987,10 @@ _kefir_func_generate_buf_50_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_50_end:
 
 generate_buf_51:
+__kefir_text_func_generate_buf_51_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -2944,8 +3047,10 @@ _kefir_func_generate_buf_51_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_51_end:
 
 generate_buf_52:
+__kefir_text_func_generate_buf_52_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -3004,8 +3109,10 @@ _kefir_func_generate_buf_52_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_52_end:
 
 generate_buf_53:
+__kefir_text_func_generate_buf_53_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -3064,8 +3171,10 @@ _kefir_func_generate_buf_53_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_53_end:
 
 generate_buf_54:
+__kefir_text_func_generate_buf_54_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -3126,8 +3235,10 @@ _kefir_func_generate_buf_54_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_54_end:
 
 generate_buf_55:
+__kefir_text_func_generate_buf_55_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -3184,8 +3295,10 @@ _kefir_func_generate_buf_55_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_55_end:
 
 generate_buf_56:
+__kefir_text_func_generate_buf_56_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3244,8 +3357,10 @@ _kefir_func_generate_buf_56_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_56_end:
 
 generate_buf_57:
+__kefir_text_func_generate_buf_57_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3304,8 +3419,10 @@ _kefir_func_generate_buf_57_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_57_end:
 
 generate_buf_58:
+__kefir_text_func_generate_buf_58_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3366,8 +3483,10 @@ _kefir_func_generate_buf_58_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_58_end:
 
 generate_buf_59:
+__kefir_text_func_generate_buf_59_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3426,8 +3545,10 @@ _kefir_func_generate_buf_59_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_59_end:
 
 generate_buf_60:
+__kefir_text_func_generate_buf_60_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3488,8 +3609,10 @@ _kefir_func_generate_buf_60_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_60_end:
 
 generate_buf_61:
+__kefir_text_func_generate_buf_61_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3550,8 +3673,10 @@ _kefir_func_generate_buf_61_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_61_end:
 
 generate_buf_62:
+__kefir_text_func_generate_buf_62_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3614,8 +3739,10 @@ _kefir_func_generate_buf_62_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_62_end:
 
 generate_buf_63:
+__kefir_text_func_generate_buf_63_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3666,8 +3793,10 @@ _kefir_func_generate_buf_63_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_63_end:
 
 generate_buf_64:
+__kefir_text_func_generate_buf_64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3717,8 +3846,10 @@ _kefir_func_generate_buf_64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_64_end:
 
 generate_buf_65:
+__kefir_text_func_generate_buf_65_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3768,8 +3899,10 @@ _kefir_func_generate_buf_65_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_65_end:
 
 generate_buf_66:
+__kefir_text_func_generate_buf_66_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3819,8 +3952,10 @@ _kefir_func_generate_buf_66_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_66_end:
 
 generate_buf_67:
+__kefir_text_func_generate_buf_67_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3870,8 +4005,10 @@ _kefir_func_generate_buf_67_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_67_end:
 
 generate_buf_68:
+__kefir_text_func_generate_buf_68_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3921,8 +4058,10 @@ _kefir_func_generate_buf_68_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_68_end:
 
 generate_buf_69:
+__kefir_text_func_generate_buf_69_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -3972,8 +4111,10 @@ _kefir_func_generate_buf_69_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_69_end:
 
 generate_buf_70:
+__kefir_text_func_generate_buf_70_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -4023,8 +4164,10 @@ _kefir_func_generate_buf_70_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_70_end:
 
 generate_buf_71:
+__kefir_text_func_generate_buf_71_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -4072,8 +4215,10 @@ _kefir_func_generate_buf_71_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_71_end:
 
 generate_buf_72:
+__kefir_text_func_generate_buf_72_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4123,8 +4268,10 @@ _kefir_func_generate_buf_72_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_72_end:
 
 generate_buf_73:
+__kefir_text_func_generate_buf_73_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4174,8 +4321,10 @@ _kefir_func_generate_buf_73_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_73_end:
 
 generate_buf_74:
+__kefir_text_func_generate_buf_74_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4225,8 +4374,10 @@ _kefir_func_generate_buf_74_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_74_end:
 
 generate_buf_75:
+__kefir_text_func_generate_buf_75_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4276,8 +4427,10 @@ _kefir_func_generate_buf_75_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_75_end:
 
 generate_buf_76:
+__kefir_text_func_generate_buf_76_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4327,8 +4480,10 @@ _kefir_func_generate_buf_76_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_76_end:
 
 generate_buf_77:
+__kefir_text_func_generate_buf_77_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4378,8 +4533,10 @@ _kefir_func_generate_buf_77_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_77_end:
 
 generate_buf_78:
+__kefir_text_func_generate_buf_78_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4429,8 +4586,10 @@ _kefir_func_generate_buf_78_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_78_end:
 
 generate_buf_79:
+__kefir_text_func_generate_buf_79_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4478,8 +4637,10 @@ _kefir_func_generate_buf_79_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_79_end:
 
 generate_buf_80:
+__kefir_text_func_generate_buf_80_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4529,8 +4690,10 @@ _kefir_func_generate_buf_80_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_80_end:
 
 generate_buf_81:
+__kefir_text_func_generate_buf_81_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4580,8 +4743,10 @@ _kefir_func_generate_buf_81_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_81_end:
 
 generate_buf_82:
+__kefir_text_func_generate_buf_82_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4631,8 +4796,10 @@ _kefir_func_generate_buf_82_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_82_end:
 
 generate_buf_83:
+__kefir_text_func_generate_buf_83_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4682,8 +4849,10 @@ _kefir_func_generate_buf_83_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_83_end:
 
 generate_buf_84:
+__kefir_text_func_generate_buf_84_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4733,8 +4902,10 @@ _kefir_func_generate_buf_84_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_84_end:
 
 generate_buf_85:
+__kefir_text_func_generate_buf_85_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4784,8 +4955,10 @@ _kefir_func_generate_buf_85_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_85_end:
 
 generate_buf_86:
+__kefir_text_func_generate_buf_86_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4835,8 +5008,10 @@ _kefir_func_generate_buf_86_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_86_end:
 
 generate_buf_87:
+__kefir_text_func_generate_buf_87_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -4884,8 +5059,10 @@ _kefir_func_generate_buf_87_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_87_end:
 
 generate_buf_88:
+__kefir_text_func_generate_buf_88_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -4935,8 +5112,10 @@ _kefir_func_generate_buf_88_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_88_end:
 
 generate_buf_89:
+__kefir_text_func_generate_buf_89_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -4986,8 +5165,10 @@ _kefir_func_generate_buf_89_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_89_end:
 
 generate_buf_90:
+__kefir_text_func_generate_buf_90_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5037,8 +5218,10 @@ _kefir_func_generate_buf_90_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_90_end:
 
 generate_buf_91:
+__kefir_text_func_generate_buf_91_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5088,8 +5271,10 @@ _kefir_func_generate_buf_91_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_91_end:
 
 generate_buf_92:
+__kefir_text_func_generate_buf_92_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5139,8 +5324,10 @@ _kefir_func_generate_buf_92_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_92_end:
 
 generate_buf_93:
+__kefir_text_func_generate_buf_93_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5190,8 +5377,10 @@ _kefir_func_generate_buf_93_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_93_end:
 
 generate_buf_94:
+__kefir_text_func_generate_buf_94_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5241,8 +5430,10 @@ _kefir_func_generate_buf_94_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_94_end:
 
 generate_buf_95:
+__kefir_text_func_generate_buf_95_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5290,8 +5481,10 @@ _kefir_func_generate_buf_95_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_95_end:
 
 generate_buf_96:
+__kefir_text_func_generate_buf_96_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5341,8 +5534,10 @@ _kefir_func_generate_buf_96_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_96_end:
 
 generate_buf_97:
+__kefir_text_func_generate_buf_97_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5392,8 +5587,10 @@ _kefir_func_generate_buf_97_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_97_end:
 
 generate_buf_98:
+__kefir_text_func_generate_buf_98_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5443,8 +5640,10 @@ _kefir_func_generate_buf_98_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_98_end:
 
 generate_buf_99:
+__kefir_text_func_generate_buf_99_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5494,8 +5693,10 @@ _kefir_func_generate_buf_99_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_99_end:
 
 generate_buf_100:
+__kefir_text_func_generate_buf_100_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5545,8 +5746,10 @@ _kefir_func_generate_buf_100_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_100_end:
 
 generate_buf_101:
+__kefir_text_func_generate_buf_101_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5596,8 +5799,10 @@ _kefir_func_generate_buf_101_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_101_end:
 
 generate_buf_102:
+__kefir_text_func_generate_buf_102_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5647,8 +5852,10 @@ _kefir_func_generate_buf_102_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_102_end:
 
 generate_buf_103:
+__kefir_text_func_generate_buf_103_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -5696,8 +5903,10 @@ _kefir_func_generate_buf_103_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_103_end:
 
 generate_buf_104:
+__kefir_text_func_generate_buf_104_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -5747,8 +5956,10 @@ _kefir_func_generate_buf_104_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_104_end:
 
 generate_buf_105:
+__kefir_text_func_generate_buf_105_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -5798,8 +6009,10 @@ _kefir_func_generate_buf_105_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_105_end:
 
 generate_buf_106:
+__kefir_text_func_generate_buf_106_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -5849,8 +6062,10 @@ _kefir_func_generate_buf_106_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_106_end:
 
 generate_buf_107:
+__kefir_text_func_generate_buf_107_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -5900,8 +6115,10 @@ _kefir_func_generate_buf_107_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_107_end:
 
 generate_buf_108:
+__kefir_text_func_generate_buf_108_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -5951,8 +6168,10 @@ _kefir_func_generate_buf_108_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_108_end:
 
 generate_buf_109:
+__kefir_text_func_generate_buf_109_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6002,8 +6221,10 @@ _kefir_func_generate_buf_109_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_109_end:
 
 generate_buf_110:
+__kefir_text_func_generate_buf_110_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6053,8 +6274,10 @@ _kefir_func_generate_buf_110_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_110_end:
 
 generate_buf_111:
+__kefir_text_func_generate_buf_111_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6102,8 +6325,10 @@ _kefir_func_generate_buf_111_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_111_end:
 
 generate_buf_112:
+__kefir_text_func_generate_buf_112_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6153,8 +6378,10 @@ _kefir_func_generate_buf_112_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_112_end:
 
 generate_buf_113:
+__kefir_text_func_generate_buf_113_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6204,8 +6431,10 @@ _kefir_func_generate_buf_113_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_113_end:
 
 generate_buf_114:
+__kefir_text_func_generate_buf_114_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6255,8 +6484,10 @@ _kefir_func_generate_buf_114_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_114_end:
 
 generate_buf_115:
+__kefir_text_func_generate_buf_115_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6306,8 +6537,10 @@ _kefir_func_generate_buf_115_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_115_end:
 
 generate_buf_116:
+__kefir_text_func_generate_buf_116_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6357,8 +6590,10 @@ _kefir_func_generate_buf_116_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_116_end:
 
 generate_buf_117:
+__kefir_text_func_generate_buf_117_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6408,8 +6643,10 @@ _kefir_func_generate_buf_117_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_117_end:
 
 generate_buf_118:
+__kefir_text_func_generate_buf_118_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6459,8 +6696,10 @@ _kefir_func_generate_buf_118_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_118_end:
 
 generate_buf_119:
+__kefir_text_func_generate_buf_119_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -6508,8 +6747,10 @@ _kefir_func_generate_buf_119_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_119_end:
 
 generate_buf_120:
+__kefir_text_func_generate_buf_120_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6559,8 +6800,10 @@ _kefir_func_generate_buf_120_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_120_end:
 
 generate_buf_121:
+__kefir_text_func_generate_buf_121_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6610,8 +6853,10 @@ _kefir_func_generate_buf_121_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_121_end:
 
 generate_buf_122:
+__kefir_text_func_generate_buf_122_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6661,8 +6906,10 @@ _kefir_func_generate_buf_122_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_122_end:
 
 generate_buf_123:
+__kefir_text_func_generate_buf_123_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6712,8 +6959,10 @@ _kefir_func_generate_buf_123_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_123_end:
 
 generate_buf_124:
+__kefir_text_func_generate_buf_124_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6763,8 +7012,10 @@ _kefir_func_generate_buf_124_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_124_end:
 
 generate_buf_125:
+__kefir_text_func_generate_buf_125_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6814,8 +7065,10 @@ _kefir_func_generate_buf_125_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_125_end:
 
 generate_buf_126:
+__kefir_text_func_generate_buf_126_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6865,8 +7118,10 @@ _kefir_func_generate_buf_126_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_126_end:
 
 generate_buf_127:
+__kefir_text_func_generate_buf_127_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -6914,6 +7169,7 @@ _kefir_func_generate_buf_127_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_generate_buf_127_end:
 
 __kefir_text_section_end:
 

@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 sumall:
+__kefir_text_func_sumall_begin:
     push %rbp
     mov %rsp, %rbp
     push %rbx
@@ -132,6 +133,7 @@ addsd -48(%rbp), %xmm0
     pop %rbx
     pop %rbp
     ret
+__kefir_text_func_sumall_end:
 .section .rodata
     .align 8
 _kefir_func_sumall_label2:

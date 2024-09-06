@@ -37,6 +37,7 @@
 .section .text
 __kefir_text_section_begin:
 factorial:
+__kefir_text_func_factorial_begin:
 _kefir_func_factorial_label0:
 _kefir_func_factorial_label1:
     movsx %edi, %rax
@@ -78,8 +79,10 @@ _kefir_func_factorial_label7:
 _kefir_func_factorial_label8:
     movsx %ecx, %rax
     ret
+__kefir_text_func_factorial_end:
 
 factorial64:
+__kefir_text_func_factorial64_begin:
 _kefir_func_factorial64_label0:
 _kefir_func_factorial64_label1:
     mov $0, %rax
@@ -123,8 +126,10 @@ _kefir_func_factorial64_label7:
 _kefir_func_factorial64_label8:
     mov %rcx, %rax
     ret
+__kefir_text_func_factorial64_end:
 
 quad_equation:
+__kefir_text_func_quad_equation_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -181,8 +186,10 @@ _kefir_func_quad_equation_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_quad_equation_end:
 
 factorialf32:
+__kefir_text_func_factorialf32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -239,6 +246,7 @@ _kefir_func_factorialf32_label8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_factorialf32_end:
 .section .rodata
     .align 4
 _kefir_func_factorialf32_label9:
@@ -255,6 +263,7 @@ _kefir_func_factorialf32_label14:
 .section .text
 
 factorialf64:
+__kefir_text_func_factorialf64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -312,6 +321,7 @@ _kefir_func_factorialf64_label8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_factorialf64_end:
 .section .rodata
     .align 8
 _kefir_func_factorialf64_label9:

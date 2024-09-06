@@ -38,6 +38,7 @@
 .section .text
 __kefir_text_section_begin:
 test1:
+__kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -49,8 +50,10 @@ _kefir_func_test1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test1_end:
 
 test2:
+__kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -60,8 +63,10 @@ _kefir_func_test2_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_end:
 
 test3:
+__kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -72,8 +77,10 @@ _kefir_func_test3_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test3_end:
 
 test4:
+__kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -89,8 +96,10 @@ _kefir_func_test4_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test4_end:
 
 test5:
+__kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -107,6 +116,7 @@ _kefir_func_test5_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test5_end:
 
 __kefir_text_section_end:
 

@@ -40,41 +40,55 @@
 .section .text
 __kefir_text_section_begin:
 load_b:
+__kefir_text_func_load_b_begin:
     mov $5, %rsi
     call __atomic_load_1@PLT
     ret
+__kefir_text_func_load_b_end:
 
 load_u8:
+__kefir_text_func_load_u8_begin:
     mov $5, %rsi
     call __atomic_load_1@PLT
     ret
+__kefir_text_func_load_u8_end:
 
 load_f32:
+__kefir_text_func_load_f32_begin:
     mov $5, %rsi
     call __atomic_load_4@PLT
     movq %rax, %xmm0
     ret
+__kefir_text_func_load_f32_end:
 
 load_f64:
+__kefir_text_func_load_f64_begin:
     mov $5, %rsi
     call __atomic_load_8@PLT
     movq %rax, %xmm0
     ret
+__kefir_text_func_load_f64_end:
 
 load_u16:
+__kefir_text_func_load_u16_begin:
     mov $5, %rsi
     call __atomic_load_2@PLT
     ret
+__kefir_text_func_load_u16_end:
 
 load_u32:
+__kefir_text_func_load_u32_begin:
     mov $5, %rsi
     call __atomic_load_4@PLT
     ret
+__kefir_text_func_load_u32_end:
 
 load_u64:
+__kefir_text_func_load_u64_begin:
     mov $5, %rsi
     call __atomic_load_8@PLT
     ret
+__kefir_text_func_load_u64_end:
 
 __kefir_text_section_end:
 

@@ -47,18 +47,17 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_generate_dwarf_debug_info(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
-                                                             const struct kefir_ir_module *ir_module) {
+kefir_result_t kefir_codegen_amd64_generate_dwarf_debug_info(struct kefir_mem *mem,
+                                                             struct kefir_codegen_amd64_module *codegen_module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
-    REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(codegen_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
 
     struct kefir_codegen_amd64_dwarf_context context;
     REQUIRE_OK(kefir_codegen_amd64_dwarf_context_init(&context));
     KEFIR_DWARF_GENERATOR_DEBUG_INFO(&context.section) {
-        kefir_result_t res = KEFIR_AMD64_DWARF_SECTION_INIT(&codegen->xasmgen, context.section);
-        REQUIRE_CHAIN(&res, kefir_codegen_amd64_dwarf_context_generate_compile_unit(mem, codegen, ir_module, &context));
-        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_SECTION_FINALIZE(&codegen->xasmgen, context.section));
+        kefir_result_t res = KEFIR_AMD64_DWARF_SECTION_INIT(&codegen_module->codegen->xasmgen, context.section);
+        REQUIRE_CHAIN(&res, kefir_codegen_amd64_dwarf_context_generate_compile_unit(mem, codegen_module, &context));
+        REQUIRE_CHAIN(&res, KEFIR_AMD64_DWARF_SECTION_FINALIZE(&codegen_module->codegen->xasmgen, context.section));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_codegen_amd64_dwarf_context_free(mem, &context);
             return res;

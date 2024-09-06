@@ -48,6 +48,7 @@
 .section .text
 __kefir_text_section_begin:
 getw:
+__kefir_text_func_getw_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getw_label0:
@@ -56,8 +57,10 @@ _kefir_func_getw_label1:
     movsxl (%rax), %rax
     pop %rbp
     ret
+__kefir_text_func_getw_end:
 
 getx:
+__kefir_text_func_getx_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getx_label0:
@@ -66,8 +69,10 @@ _kefir_func_getx_label1:
     movsxl (%rax), %rax
     pop %rbp
     ret
+__kefir_text_func_getx_end:
 
 gety:
+__kefir_text_func_gety_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_gety_label0:
@@ -76,8 +81,10 @@ _kefir_func_gety_label1:
     movsxl (%rax), %rax
     pop %rbp
     ret
+__kefir_text_func_gety_end:
 
 getz:
+__kefir_text_func_getz_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getz_label0:
@@ -86,6 +93,7 @@ _kefir_func_getz_label1:
     movsxl (%rax), %rax
     pop %rbp
     ret
+__kefir_text_func_getz_end:
 
 __kefir_text_section_end:
 

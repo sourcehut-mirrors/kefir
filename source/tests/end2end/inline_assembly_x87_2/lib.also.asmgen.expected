@@ -44,6 +44,7 @@
 .section .text
 __kefir_text_section_begin:
 sub:
+__kefir_text_func_sub_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -69,8 +70,10 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sub_end:
 
 subf:
+__kefir_text_func_subf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -96,8 +99,10 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_subf_end:
 
 subl:
+__kefir_text_func_subl_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -128,8 +133,10 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_subl_end:
 
 mydiv:
+__kefir_text_func_mydiv_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -155,8 +162,10 @@ fdivp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydiv_end:
 
 mydivf:
+__kefir_text_func_mydivf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -182,8 +191,10 @@ fdivp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydivf_end:
 
 mydivl:
+__kefir_text_func_mydivl_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -214,8 +225,10 @@ fdivp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydivl_end:
 
 mydivr:
+__kefir_text_func_mydivr_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -241,8 +254,10 @@ fdivrp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydivr_end:
 
 mydivrf:
+__kefir_text_func_mydivrf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -268,8 +283,10 @@ fdivrp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydivrf_end:
 
 mydivrl:
+__kefir_text_func_mydivrl_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -300,6 +317,7 @@ fdivrp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mydivrl_end:
 
 __kefir_text_section_end:
 

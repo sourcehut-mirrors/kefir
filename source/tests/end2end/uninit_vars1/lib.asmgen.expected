@@ -36,6 +36,7 @@
 .section .text
 __kefir_text_section_begin:
 get_global_uninit_static:
+__kefir_text_func_get_global_uninit_static_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_global_uninit_static_label0:
@@ -43,8 +44,10 @@ _kefir_func_get_global_uninit_static_label1:
     lea STRUCT1(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_get_global_uninit_static_end:
 
 get_global_tlocal_uninit_static:
+__kefir_text_func_get_global_tlocal_uninit_static_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -57,8 +60,10 @@ _kefir_func_get_global_tlocal_uninit_static_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_get_global_tlocal_uninit_static_end:
 
 get_local_tlocal_uninit_static:
+__kefir_text_func_get_local_tlocal_uninit_static_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -71,8 +76,10 @@ _kefir_func_get_local_tlocal_uninit_static_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_get_local_tlocal_uninit_static_end:
 
 get_local_uninit_static:
+__kefir_text_func_get_local_uninit_static_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_local_uninit_static_label0:
@@ -80,6 +87,7 @@ _kefir_func_get_local_uninit_static_label1:
     lea __kefir_function_get_local_uninit_static_static_STRUCT2_4(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_get_local_uninit_static_end:
 
 __kefir_text_section_end:
 

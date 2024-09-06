@@ -134,6 +134,8 @@ kefir_result_t kefir_ast_translate_declaration(struct kefir_mem *mem, const stru
                         KEFIR_AST_TRANSLATOR_CONTEXT_EXTENSION_TAG_DECLARATION, NULL);
     REQUIRE_OK(res);
 
+    const kefir_size_t begin_ir_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+
     if (node->klass->type == KEFIR_AST_EXTENSION_NODE) {
         kefir_result_t res;
         struct kefir_ast_extension_node *ext_node = NULL;
@@ -163,5 +165,12 @@ kefir_result_t kefir_ast_translate_declaration(struct kefir_mem *mem, const stru
     KEFIR_RUN_EXTENSION(&res, mem, context, after_translate, node, builder,
                         KEFIR_AST_TRANSLATOR_CONTEXT_EXTENSION_TAG_DECLARATION);
     REQUIRE_OK(res);
+
+    if (context->function_debug_info != NULL && KEFIR_SOURCE_LOCATION_IS_VALID(&node->source_location)) {
+        const kefir_size_t end_ir_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+        REQUIRE_OK(kefir_ir_debug_function_source_map_insert(mem, &context->function_debug_info->source_map,
+                                                             &context->module->symbols, &node->source_location,
+                                                             begin_ir_index, end_ir_index));
+    }
     return KEFIR_OK;
 }

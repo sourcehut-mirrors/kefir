@@ -31,6 +31,7 @@
 .section .text
 __kefir_text_section_begin:
 load_buffer:
+__kefir_text_func_load_buffer_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -56,8 +57,10 @@ load_buffer:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_load_buffer_end:
 
 store_buffer:
+__kefir_text_func_store_buffer_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -70,6 +73,7 @@ store_buffer:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_store_buffer_end:
 
 __kefir_text_section_end:
 

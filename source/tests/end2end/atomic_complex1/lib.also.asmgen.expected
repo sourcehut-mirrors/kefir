@@ -59,6 +59,7 @@
 .section .text
 __kefir_text_section_begin:
 add_ld:
+__kefir_text_func_add_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
@@ -91,8 +92,10 @@ add_ld:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_ld_end:
 
 div_ld:
+__kefir_text_func_div_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
@@ -124,8 +127,10 @@ div_ld:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_div_ld_end:
 
 mul_ld:
+__kefir_text_func_mul_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
@@ -157,8 +162,10 @@ mul_ld:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mul_ld_end:
 
 neg_ld:
+__kefir_text_func_neg_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -181,8 +188,10 @@ neg_ld:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_neg_ld_end:
 
 sub_ld:
+__kefir_text_func_sub_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $160, %rsp
@@ -215,8 +224,10 @@ sub_ld:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sub_ld_end:
 
 add_f32:
+__kefir_text_func_add_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -246,8 +257,10 @@ add_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_f32_end:
 
 add_f64:
+__kefir_text_func_add_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -278,8 +291,10 @@ add_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_f64_end:
 
 div_f32:
+__kefir_text_func_div_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -307,8 +322,10 @@ div_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_div_f32_end:
 
 div_f64:
+__kefir_text_func_div_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -340,8 +357,10 @@ div_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_div_f64_end:
 
 mul_f32:
+__kefir_text_func_mul_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -369,8 +388,10 @@ mul_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mul_f32_end:
 
 mul_f64:
+__kefir_text_func_mul_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -402,8 +423,10 @@ mul_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_mul_f64_end:
 
 neg_f32:
+__kefir_text_func_neg_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -422,8 +445,10 @@ neg_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_neg_f32_end:
 
 neg_f64:
+__kefir_text_func_neg_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -446,8 +471,10 @@ neg_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_neg_f64_end:
 
 sub_f32:
+__kefir_text_func_sub_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -477,8 +504,10 @@ sub_f32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sub_f32_end:
 
 sub_f64:
+__kefir_text_func_sub_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -509,6 +538,7 @@ sub_f64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sub_f64_end:
 
 __kefir_text_section_end:
 

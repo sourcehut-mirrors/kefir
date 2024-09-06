@@ -619,7 +619,11 @@ factorial:
 #                "labels": [
 #                    19
 #                ],
-#                "source_location": null
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 27,
+#                    "column": 5
+#                }
 #            },
 #            {
 #                "opcode": "vreg_lifetime_range_end",
@@ -1196,6 +1200,7 @@ factorial:
 #        ]
 #    }
 #}
+__kefir_text_func_factorial_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -1242,6 +1247,7 @@ _kefir_func_factorial_label17:
 _kefir_func_factorial_label5:
 _kefir_func_factorial_label18:
     mov $1, %rax
+.loc 0 27 5
 _kefir_func_factorial_label19:
     movl %eax, -4(%rbp)
 .loc 0 28 12
@@ -1287,6 +1293,7 @@ _kefir_func_factorial_label31:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_factorial_end:
 
 __kefir_text_section_end:
 
@@ -1309,6 +1316,28 @@ __kefir_debug_abbrev_section_entry_1:
     .byte 23
     .byte 0
     .byte 0
+__kefir_debug_abbrev_section_entry_2:
+    .byte 2
+    .byte 46
+    .byte 1
+    .byte 3
+    .byte 8
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_3:
+    .byte 3
+    .byte 11
+    .byte 1
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 0
+    .byte 0
     .byte 0
 
 .section .debug_info
@@ -1326,6 +1355,32 @@ __kefir_debug_info_section_entry_1:
     .quad __kefir_text_section_begin
     .quad __kefir_text_section_end - __kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
+__kefir_debug_info_section_entry_2:
+    .byte 2
+    .ascii "factorial\000"
+    .quad __kefir_text_func_factorial_begin
+    .quad __kefir_text_func_factorial_end - __kefir_text_func_factorial_begin
+__kefir_debug_info_section_entry_3:
+    .byte 3
+    .quad _kefir_func_factorial_label10
+    .quad _kefir_func_factorial_label14 - _kefir_func_factorial_label10
+    .byte 0
+__kefir_debug_info_section_entry_4:
+    .byte 3
+    .quad _kefir_func_factorial_label14
+    .quad _kefir_func_factorial_label18 - _kefir_func_factorial_label14
+    .byte 0
+__kefir_debug_info_section_entry_5:
+    .byte 3
+    .quad _kefir_func_factorial_label20
+    .quad _kefir_func_factorial_label30 - _kefir_func_factorial_label20
+__kefir_debug_info_section_entry_6:
+    .byte 3
+    .quad _kefir_func_factorial_label22
+    .quad _kefir_func_factorial_label26 - _kefir_func_factorial_label22
+    .byte 0
+    .byte 0
+    .byte 0
     .byte 0
     .byte 0
 __kefir_debug_info_section_end:

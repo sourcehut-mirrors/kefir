@@ -33,6 +33,7 @@
 .section .text
 __kefir_text_section_begin:
 somefn:
+__kefir_text_func_somefn_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -64,6 +65,7 @@ _kefir_func_somefn_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_somefn_end:
 .section .rodata
     .align 8
 _kefir_func_somefn_label5:
@@ -74,6 +76,7 @@ _kefir_func_somefn_label6:
 .section .text
 
 assign_abs:
+__kefir_text_func_assign_abs_begin:
     cmp $0, %rdi
     jg _kefir_func_assign_abs_label3
 _kefir_func_assign_abs_label5:
@@ -86,8 +89,10 @@ _kefir_func_assign_abs_label4:
     movq somevar@GOTPCREL(%rip), %rcx
     movq %rax, (%rcx)
     ret
+__kefir_text_func_assign_abs_end:
 
 condition1:
+__kefir_text_func_condition1_begin:
     movsx %edi, %rax
     cmp $0, %eax
     jle _kefir_func_condition1_label3
@@ -98,6 +103,7 @@ _kefir_func_condition1_label4:
 _kefir_func_condition1_label3:
     mov $10, %rax
     ret
+__kefir_text_func_condition1_end:
 
 __kefir_text_section_end:
 

@@ -38,6 +38,7 @@
 .section .text
 __kefir_text_section_begin:
 get:
+__kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_label0:
@@ -45,8 +46,10 @@ _kefir_func_get_label1:
     lea somearray(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_get_end:
 
 get2:
+__kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get2_label0:
@@ -54,8 +57,10 @@ _kefir_func_get2_label1:
     lea someotherarray(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_get2_end:
 
 tget:
+__kefir_text_func_tget_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -68,8 +73,10 @@ _kefir_func_tget_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_tget_end:
 
 tget2:
+__kefir_text_func_tget2_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -82,6 +89,7 @@ _kefir_func_tget2_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_tget2_end:
 
 __kefir_text_section_end:
 

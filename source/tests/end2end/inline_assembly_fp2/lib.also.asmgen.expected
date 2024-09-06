@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 custom_discriminant:
+__kefir_text_func_custom_discriminant_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -58,6 +59,7 @@ subsd %xmm0, %xmm1
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_custom_discriminant_end:
 
 __kefir_text_section_end:
 

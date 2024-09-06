@@ -1006,6 +1006,13 @@
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 69,
+                    "column": 5,
+                    "begin": 9,
+                    "end": 31
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
+                    "line": 69,
                     "column": 13,
                     "begin": 20,
                     "end": 22
@@ -2303,6 +2310,10 @@
                 "identifier": 134,
                 "tag": "subprogram",
                 "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "d2"
+                    },
                     {
                         "tag": "code_begin",
                         "value": 9

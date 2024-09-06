@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 test:
+__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $112, %rsp
@@ -57,6 +58,7 @@ _kefir_func_test_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_end:
 .section .rodata
     .align 4
 _kefir_func_test_label2:

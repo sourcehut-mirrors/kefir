@@ -28,10 +28,12 @@
 .section .text
 __kefir_text_section_begin:
 get_element:
+__kefir_text_func_get_element_begin:
     imul $8, %rdx, %rax
     add %rax, %rdi
     movq (%rdi), %rax
     ret
+__kefir_text_func_get_element_end:
 
 __kefir_text_section_end:
 

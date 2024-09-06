@@ -34,6 +34,7 @@ __kefir_text_section_begin:
 getb:
 .file 0 "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c"
 .loc 0 25 1
+__kefir_text_func_getb_begin:
 .extern __tls_get_addr
 .loc 0 26 12
 _kefir_func_getb_label2:
@@ -48,6 +49,7 @@ _kefir_func_getb_label3:
 _kefir_func_getb_label4:
     movq %rax, %xmm0
     ret
+__kefir_text_func_getb_end:
 
 __kefir_text_section_end:
 
@@ -135,6 +137,18 @@ __kefir_debug_abbrev_section_entry_5:
     .byte 11
     .byte 0
     .byte 0
+__kefir_debug_abbrev_section_entry_6:
+    .byte 6
+    .byte 46
+    .byte 1
+    .byte 3
+    .byte 8
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 0
+    .byte 0
     .byte 0
 
 .section .debug_info
@@ -179,6 +193,12 @@ __kefir_debug_info_section_entry_6:
     .quad c@dtpoff
     .byte 155
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
+__kefir_debug_info_section_entry_8:
+    .byte 6
+    .ascii "getb\000"
+    .quad __kefir_text_func_getb_begin
+    .quad __kefir_text_func_getb_end - __kefir_text_func_getb_begin
+    .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
     .ascii "signed int\000"
@@ -195,8 +215,8 @@ __kefir_debug_info_section_entry_7:
     .byte 4
     .byte 8
     .byte 8
-    .long __kefir_debug_info_section_entry_8 - __kefir_debug_info_section
-__kefir_debug_info_section_entry_8:
+    .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
+__kefir_debug_info_section_entry_9:
     .byte 5
     .ascii "void\000"
     .byte 0

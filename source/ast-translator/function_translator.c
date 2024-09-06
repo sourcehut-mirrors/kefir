@@ -301,6 +301,9 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     kefir_ir_debug_entry_id_t subprogram_entry_id;
     REQUIRE_OK(kefir_ast_translator_context_push_debug_hierarchy_entry(
         mem, &function_context->local_translator_context, KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM, &subprogram_entry_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                  &function_context->module->symbols, subprogram_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(function_context->ir_func->name)));
     if (context->function_debug_info != NULL) {
         context->function_debug_info->subprogram_id = subprogram_entry_id;
         REQUIRE_OK(kefir_ir_function_debug_info_set_source_location(

@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 func1:
+__kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
 _kefir_func_func1_label0:
@@ -40,6 +41,7 @@ add rax, rax
 push rax
     pop %rbp
     ret
+__kefir_text_func_func1_end:
 
 __kefir_text_section_end:
 

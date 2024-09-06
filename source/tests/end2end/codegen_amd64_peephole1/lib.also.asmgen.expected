@@ -32,6 +32,7 @@
 .section .text
 __kefir_text_section_begin:
 test:
+__kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -40,14 +41,19 @@ test:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_end:
 
 get_zero:
+__kefir_text_func_get_zero_begin:
     xor %eax, %eax
     ret
+__kefir_text_func_get_zero_end:
 
 some_math:
+__kefir_text_func_some_math_begin:
     mov %rdi, %rax
     ret
+__kefir_text_func_some_math_end:
 
 __kefir_text_section_end:
 

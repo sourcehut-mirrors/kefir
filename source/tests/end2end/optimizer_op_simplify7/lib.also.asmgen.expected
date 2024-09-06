@@ -54,6 +54,7 @@
 .section .text
 __kefir_text_section_begin:
 int_or:
+__kefir_text_func_int_or_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_or_label0:
@@ -62,8 +63,10 @@ _kefir_func_int_or_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_or_end:
 
 int_add:
+__kefir_text_func_int_add_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_add_label0:
@@ -72,8 +75,10 @@ _kefir_func_int_add_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_add_end:
 
 int_and:
+__kefir_text_func_int_and_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_and_label0:
@@ -82,8 +87,10 @@ _kefir_func_int_and_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_and_end:
 
 int_mul:
+__kefir_text_func_int_mul_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_mul_label0:
@@ -91,8 +98,10 @@ _kefir_func_int_mul_label1:
     imul $100, %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_mul_end:
 
 int_sub:
+__kefir_text_func_int_sub_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_sub_label0:
@@ -101,8 +110,10 @@ _kefir_func_int_sub_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_sub_end:
 
 int_xor:
+__kefir_text_func_int_xor_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_xor_label0:
@@ -111,8 +122,10 @@ _kefir_func_int_xor_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_xor_end:
 
 uint_or:
+__kefir_text_func_uint_or_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_or_label0:
@@ -121,8 +134,10 @@ _kefir_func_uint_or_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_or_end:
 
 int_sub2:
+__kefir_text_func_int_sub2_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_sub2_label0:
@@ -131,8 +146,10 @@ _kefir_func_int_sub2_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_int_sub2_end:
 
 uint_add:
+__kefir_text_func_uint_add_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_add_label0:
@@ -141,8 +158,10 @@ _kefir_func_uint_add_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_add_end:
 
 uint_and:
+__kefir_text_func_uint_and_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_and_label0:
@@ -151,8 +170,10 @@ _kefir_func_uint_and_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_and_end:
 
 uint_mul:
+__kefir_text_func_uint_mul_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_mul_label0:
@@ -160,8 +181,10 @@ _kefir_func_uint_mul_label1:
     imul $100, %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_mul_end:
 
 uint_sub:
+__kefir_text_func_uint_sub_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_sub_label0:
@@ -170,8 +193,10 @@ _kefir_func_uint_sub_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_sub_end:
 
 uint_xor:
+__kefir_text_func_uint_xor_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_xor_label0:
@@ -180,8 +205,10 @@ _kefir_func_uint_xor_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_xor_end:
 
 uint_sub2:
+__kefir_text_func_uint_sub2_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_uint_sub2_label0:
@@ -190,6 +217,7 @@ _kefir_func_uint_sub2_label1:
     mov %rdi, %rax
     pop %rbp
     ret
+__kefir_text_func_uint_sub2_end:
 
 __kefir_text_section_end:
 

@@ -34,6 +34,7 @@
 .section .text
 __kefir_text_section_begin:
 dnot:
+__kefir_text_func_dnot_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -60,8 +61,10 @@ _kefir_func_dnot_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_dnot_end:
 
 dnotd:
+__kefir_text_func_dnotd_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -87,6 +90,7 @@ _kefir_func_dnotd_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_dnotd_end:
 .section .rodata
     .align 8
 _kefir_func_dnotd_label4:
@@ -94,6 +98,7 @@ _kefir_func_dnotd_label4:
 .section .text
 
 dnotf:
+__kefir_text_func_dnotf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -119,6 +124,7 @@ _kefir_func_dnotf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_dnotf_end:
 .section .rodata
     .align 4
 _kefir_func_dnotf_label4:
@@ -126,6 +132,7 @@ _kefir_func_dnotf_label4:
 .section .text
 
 dnotld:
+__kefir_text_func_dnotld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -163,6 +170,7 @@ _kefir_func_dnotld_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_dnotld_end:
 .section .rodata
     .align 8
 _kefir_func_dnotld_label4:

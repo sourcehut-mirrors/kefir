@@ -31,6 +31,9 @@
 #define KEFIR_AMD64_TEXT_SECTION_BEGIN "__kefir_text_section_begin"
 #define KEFIR_AMD64_TEXT_SECTION_END "__kefir_text_section_end"
 
+#define KEFIR_AMD64_FUNCTION_BEGIN "__kefir_text_func_%s_begin"
+#define KEFIR_AMD64_FUNCTION_END "__kefir_text_func_%s_end"
+
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT
 #define KEFIR_AMD64_CONSTANT_FLOAT32_NEG "__kefir_opt_float32_neg"

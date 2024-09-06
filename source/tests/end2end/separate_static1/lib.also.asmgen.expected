@@ -44,6 +44,7 @@
 .section .text
 __kefir_text_section_begin:
 getx:
+__kefir_text_func_getx_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getx_label0:
@@ -51,8 +52,10 @@ _kefir_func_getx_label1:
     lea x(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_getx_end:
 
 gety:
+__kefir_text_func_gety_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -65,8 +68,10 @@ _kefir_func_gety_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_gety_end:
 
 getx1:
+__kefir_text_func_getx1_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getx1_label0:
@@ -74,8 +79,10 @@ _kefir_func_getx1_label1:
     lea __kefir_function_getx1_static_x_4(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_getx1_end:
 
 getx2:
+__kefir_text_func_getx2_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getx2_label0:
@@ -83,8 +90,10 @@ _kefir_func_getx2_label1:
     lea __kefir_function_getx2_static_x_6(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_getx2_end:
 
 getx3:
+__kefir_text_func_getx3_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -97,8 +106,10 @@ _kefir_func_getx3_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_getx3_end:
 
 getx4:
+__kefir_text_func_getx4_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_getx4_label0:
@@ -106,8 +117,10 @@ _kefir_func_getx4_label1:
     lea __kefir_function_getx4_static_x_12(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_getx4_end:
 
 gety1:
+__kefir_text_func_gety1_begin:
 .extern __tls_get_addr
     push %rbp
     mov %rsp, %rbp
@@ -120,8 +133,10 @@ _kefir_func_gety1_label1:
     mov %rcx, %rax
     pop %rbp
     ret
+__kefir_text_func_gety1_end:
 
 function_name:
+__kefir_text_func_function_name_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_function_name_label0:
@@ -129,6 +144,7 @@ _kefir_func_function_name_label1:
     lea __kefir_function_function_name_static___func___16(%rip), %rax
     pop %rbp
     ret
+__kefir_text_func_function_name_end:
 
 __kefir_text_section_end:
 

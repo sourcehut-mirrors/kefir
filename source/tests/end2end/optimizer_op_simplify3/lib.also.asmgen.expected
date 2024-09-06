@@ -32,6 +32,7 @@
 .section .text
 __kefir_text_section_begin:
 ulong2uint:
+__kefir_text_func_ulong2uint_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -42,8 +43,10 @@ _kefir_func_ulong2uint_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_ulong2uint_end:
 
 ulong2uchar:
+__kefir_text_func_ulong2uchar_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -54,8 +57,10 @@ _kefir_func_ulong2uchar_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_ulong2uchar_end:
 
 ulong2ushort:
+__kefir_text_func_ulong2ushort_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -66,6 +71,7 @@ _kefir_func_ulong2ushort_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_ulong2ushort_end:
 
 __kefir_text_section_end:
 

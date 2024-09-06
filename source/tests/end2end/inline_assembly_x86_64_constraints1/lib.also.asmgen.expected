@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 test_syscall:
+__kefir_text_func_test_syscall_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -49,6 +50,7 @@ call syscall_emu
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_syscall_end:
 
 __kefir_text_section_end:
 

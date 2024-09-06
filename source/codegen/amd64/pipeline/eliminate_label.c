@@ -92,7 +92,7 @@ static kefir_result_t eliminate_label_impl(struct kefir_mem *mem, struct kefir_a
          res = kefir_asmcmp_context_label_next(context, label_index, &label_index)) {
 
         REQUIRE_OK(kefir_asmcmp_context_get_label(context, label_index, &label));
-        if (label->attached && !label->external_dependencies && kefir_hashtreeset_empty(&label->public_labels) &&
+        if (label->attached && !label->external_dependencies &&
             !kefir_hashtreeset_has(alive_labels, (kefir_hashtreeset_entry_t) label_index)) {
             REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, label_index));
         }

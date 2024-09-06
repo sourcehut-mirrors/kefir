@@ -59,69 +59,86 @@
 .section .text
 __kefir_text_section_begin:
 get_a:
+__kefir_text_func_get_a_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rax
     shl $57, %rax
     sar $57, %rax
     ret
+__kefir_text_func_get_a_end:
 
 get_b:
+__kefir_text_func_get_b_begin:
     movq s@GOTPCREL(%rip), %rax
     add $1, %rax
     movzxw (%rax), %rax
     shl $49, %rax
     sar $49, %rax
     ret
+__kefir_text_func_get_b_end:
 
 get_c:
+__kefir_text_func_get_c_begin:
     movq s@GOTPCREL(%rip), %rax
     add $3, %rax
     movl (%rax), %eax
     shl $41, %rax
     sar $41, %rax
     ret
+__kefir_text_func_get_c_end:
 
 get_d:
+__kefir_text_func_get_d_begin:
     movq s@GOTPCREL(%rip), %rax
     add $8, %rax
     movl (%rax), %eax
     shl $33, %rax
     sar $33, %rax
     ret
+__kefir_text_func_get_d_end:
 
 get_e:
+__kefir_text_func_get_e_begin:
     movq s@GOTPCREL(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
     shl $25, %rax
     sar $25, %rax
     ret
+__kefir_text_func_get_e_end:
 
 get_f:
+__kefir_text_func_get_f_begin:
     movq s@GOTPCREL(%rip), %rax
     add $24, %rax
     movq (%rax), %rax
     shl $17, %rax
     sar $17, %rax
     ret
+__kefir_text_func_get_f_end:
 
 get_g:
+__kefir_text_func_get_g_begin:
     movq s@GOTPCREL(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
     shl $9, %rax
     sar $9, %rax
     ret
+__kefir_text_func_get_g_end:
 
 get_h:
+__kefir_text_func_get_h_begin:
     movq s@GOTPCREL(%rip), %rax
     add $40, %rax
     movq (%rax), %rax
     shl $1, %rax
     sar $1, %rax
     ret
+__kefir_text_func_get_h_end:
 
 set_a:
+__kefir_text_func_set_a_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rax
     movabs $18446744073709551488, %rcx
@@ -132,8 +149,10 @@ set_a:
     movq s@GOTPCREL(%rip), %rax
     movb %dil, (%rax)
     ret
+__kefir_text_func_set_a_end:
 
 set_b:
+__kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
     add $1, %rax
     movzxw (%rax), %rax
@@ -146,8 +165,10 @@ set_b:
     add $1, %rax
     movw %di, (%rax)
     ret
+__kefir_text_func_set_b_end:
 
 set_c:
+__kefir_text_func_set_c_begin:
     movq s@GOTPCREL(%rip), %rax
     add $3, %rax
     movl (%rax), %eax
@@ -165,8 +186,10 @@ set_c:
     movb %dl, (%rcx)
     movw %di, (%rax)
     ret
+__kefir_text_func_set_c_end:
 
 set_d:
+__kefir_text_func_set_d_begin:
     movq s@GOTPCREL(%rip), %rax
     add $8, %rax
     movl (%rax), %eax
@@ -179,8 +202,10 @@ set_d:
     add $8, %rax
     movl %edi, (%rax)
     ret
+__kefir_text_func_set_d_end:
 
 set_e:
+__kefir_text_func_set_e_begin:
     movq s@GOTPCREL(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
@@ -198,8 +223,10 @@ set_e:
     movb %dl, (%rcx)
     movl %edi, (%rax)
     ret
+__kefir_text_func_set_e_end:
 
 set_f:
+__kefir_text_func_set_f_begin:
     movq s@GOTPCREL(%rip), %rax
     add $24, %rax
     movq (%rax), %rax
@@ -217,8 +244,10 @@ set_f:
     movw %dx, (%rcx)
     movl %edi, (%rax)
     ret
+__kefir_text_func_set_f_end:
 
 set_g:
+__kefir_text_func_set_g_begin:
     movq s@GOTPCREL(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
@@ -241,8 +270,10 @@ set_g:
     movw %dx, (%rcx)
     movl %edi, (%rax)
     ret
+__kefir_text_func_set_g_end:
 
 set_h:
+__kefir_text_func_set_h_begin:
     movq s@GOTPCREL(%rip), %rax
     add $40, %rax
     movq (%rax), %rax
@@ -255,6 +286,7 @@ set_h:
     add $40, %rax
     movq %rdi, (%rax)
     ret
+__kefir_text_func_set_h_end:
 
 __kefir_text_section_end:
 

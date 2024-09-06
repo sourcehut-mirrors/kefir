@@ -276,6 +276,27 @@
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 22,
+                    "column": 5,
+                    "begin": 3,
+                    "end": 8
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 23,
+                    "column": 5,
+                    "begin": 8,
+                    "end": 13
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 24,
+                    "column": 5,
+                    "begin": 13,
+                    "end": 18
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 9,
                     "begin": 18,
@@ -290,10 +311,24 @@
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 26,
+                    "column": 9,
+                    "begin": 22,
+                    "end": 27
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 12,
                     "begin": 22,
                     "end": 36
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 27,
+                    "column": 9,
+                    "begin": 27,
+                    "end": 29
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
@@ -318,8 +353,22 @@
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 29,
+                    "column": 13,
+                    "begin": 33,
+                    "end": 35
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 31,
                     "column": 12,
+                    "begin": 37,
+                    "end": 39
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 32,
+                    "column": 9,
                     "begin": 37,
                     "end": 39
                 },
@@ -465,6 +514,10 @@
                 "identifier": 73,
                 "tag": "subprogram",
                 "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "test1"
+                    },
                     {
                         "tag": "code_begin",
                         "value": 3

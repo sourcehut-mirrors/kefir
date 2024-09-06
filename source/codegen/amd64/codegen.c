@@ -24,6 +24,7 @@
 #include "kefir/codegen/amd64/static_data.h"
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/dwarf.h"
+#include "kefir/codegen/amd64/module.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -324,44 +325,63 @@ static kefir_result_t translate_global_inline_assembly(struct kefir_codegen_amd6
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module,
+static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
                                      struct kefir_opt_module_analysis *analysis) {
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen_module->codegen->xasmgen));
+    REQUIRE_OK(translate_module_identifiers(codegen_module->module->ir_module, codegen_module->codegen));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+
+    REQUIRE_OK(
+        KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_ir_function *ir_func =
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+        struct kefir_opt_function *func = NULL;
+        const struct kefir_opt_code_analysis *func_analysis = NULL;
+        REQUIRE_OK(kefir_opt_module_get_function(codegen_module->module, ir_func->declaration->id, &func));
+        REQUIRE_OK(kefir_opt_module_analysis_get_function(analysis, ir_func->declaration->id, &func_analysis));
+
+        struct kefir_codegen_amd64_function *codegen_func;
+        REQUIRE_OK(kefir_codegen_amd64_module_insert_function(mem, codegen_module, func, func_analysis, &codegen_func));
+        REQUIRE_OK(kefir_codegen_amd64_function_translate(mem, codegen_func));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+    }
+
+    REQUIRE_OK(translate_global_inline_assembly(codegen_module->codegen, codegen_module->module));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+    REQUIRE_OK(translate_data(mem, codegen_module->codegen, codegen_module->module));
+
+    if (codegen_module->codegen->config->debug_info) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+        REQUIRE_OK(kefir_codegen_amd64_generate_dwarf_debug_info(mem, codegen_module));
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module,
+                                   struct kefir_opt_module_analysis *analysis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64 *, codegen, cg->data);
 
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen->xasmgen));
-    REQUIRE_OK(translate_module_identifiers(module->ir_module, codegen));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
-
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
-
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
-         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-        struct kefir_opt_function *func = NULL;
-        const struct kefir_opt_code_analysis *func_analysis = NULL;
-        REQUIRE_OK(kefir_opt_module_get_function(module, ir_func->declaration->id, &func));
-        REQUIRE_OK(kefir_opt_module_analysis_get_function(analysis, ir_func->declaration->id, &func_analysis));
-        REQUIRE_OK(kefir_codegen_amd64_function_translate(mem, codegen, module, func, func_analysis));
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
-    }
-
-    REQUIRE_OK(translate_global_inline_assembly(codegen, module));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
-
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
-    REQUIRE_OK(translate_data(mem, codegen, module));
-
-    if (codegen->config->debug_info) {
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen->xasmgen, 1));
-        REQUIRE_OK(kefir_codegen_amd64_generate_dwarf_debug_info(mem, codegen, module->ir_module));
-    }
-
-    return KEFIR_OK;
+    struct kefir_codegen_amd64_module codegen_module;
+    REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module));
+    kefir_result_t res = translate_impl(mem, &codegen_module, analysis);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_codegen_amd64_module_free(mem, &codegen_module);
+        return res;
+    });
+    REQUIRE_OK(kefir_codegen_amd64_module_free(mem, &codegen_module));
+    return res;
 }
 
 static kefir_result_t close_impl(struct kefir_mem *mem, struct kefir_codegen *cg) {
@@ -419,7 +439,7 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
     REQUIRE_OK(kefir_codegen_match_syntax(config->syntax, &syntax));
     REQUIRE_OK(kefir_asm_amd64_xasmgen_init(mem, &codegen->xasmgen, output, syntax));
     REQUIRE_OK(kefir_asmcmp_pipeline_init(&codegen->pipeline));
-    codegen->codegen.translate_optimized = translate_impl;
+    codegen->codegen.translate_optimized = translate_fn;
     codegen->codegen.close = close_impl;
     codegen->codegen.data = codegen;
     codegen->codegen.self = codegen;

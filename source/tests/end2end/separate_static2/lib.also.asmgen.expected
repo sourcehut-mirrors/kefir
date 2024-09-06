@@ -30,6 +30,7 @@
 .section .text
 __kefir_text_section_begin:
 gety:
+__kefir_text_func_gety_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -50,8 +51,10 @@ add __kefir_function_gety_static_y_3(%rip), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_gety_end:
 
 setx:
+__kefir_text_func_setx_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -64,6 +67,7 @@ _kefir_func_setx_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_setx_end:
 
 __kefir_text_section_end:
 

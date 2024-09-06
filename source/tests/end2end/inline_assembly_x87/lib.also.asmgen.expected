@@ -32,6 +32,7 @@
 .section .text
 __kefir_text_section_begin:
 discriminant:
+__kefir_text_func_discriminant_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -74,8 +75,10 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_discriminant_end:
 
 discriminantf:
+__kefir_text_func_discriminantf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -118,8 +121,10 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_discriminantf_end:
 
 discriminantl:
+__kefir_text_func_discriminantl_begin:
     push %rbp
     mov %rsp, %rbp
     sub $176, %rsp
@@ -167,6 +172,7 @@ fsubp
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_discriminantl_end:
 
 __kefir_text_section_end:
 

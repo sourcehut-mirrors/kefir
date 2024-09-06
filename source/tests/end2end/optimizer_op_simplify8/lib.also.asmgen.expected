@@ -44,6 +44,7 @@
 .section .text
 __kefir_text_section_begin:
 int_equals_const:
+__kefir_text_func_int_equals_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_equals_const_label0:
@@ -54,8 +55,10 @@ _kefir_func_int_equals_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_equals_const_end:
 
 int_less_or_equal_const:
+__kefir_text_func_int_less_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_or_equal_const_label0:
@@ -66,8 +69,10 @@ _kefir_func_int_less_or_equal_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_less_or_equal_const_end:
 
 int_less_const:
+__kefir_text_func_int_less_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_const_label0:
@@ -78,8 +83,10 @@ _kefir_func_int_less_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_less_const_end:
 
 int_below_or_equal_const:
+__kefir_text_func_int_below_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_or_equal_const_label0:
@@ -90,8 +97,10 @@ _kefir_func_int_below_or_equal_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_below_or_equal_const_end:
 
 int_greater_or_equal_const:
+__kefir_text_func_int_greater_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equal_const_label0:
@@ -102,8 +111,10 @@ _kefir_func_int_greater_or_equal_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_greater_or_equal_const_end:
 
 int_greater_const:
+__kefir_text_func_int_greater_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_const_label0:
@@ -114,8 +125,10 @@ _kefir_func_int_greater_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_greater_const_end:
 
 int_above_const:
+__kefir_text_func_int_above_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_const_label0:
@@ -126,8 +139,10 @@ _kefir_func_int_above_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_above_const_end:
 
 int_below_const:
+__kefir_text_func_int_below_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_const_label0:
@@ -138,8 +153,10 @@ _kefir_func_int_below_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_below_const_end:
 
 int_above_or_equal_const:
+__kefir_text_func_int_above_or_equal_const_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_or_equal_const_label0:
@@ -150,6 +167,7 @@ _kefir_func_int_above_or_equal_const_label1:
     movsx %eax, %rax
     pop %rbp
     ret
+__kefir_text_func_int_above_or_equal_const_end:
 
 __kefir_text_section_end:
 

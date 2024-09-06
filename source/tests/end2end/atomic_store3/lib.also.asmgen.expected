@@ -44,6 +44,7 @@
 .section .text
 __kefir_text_section_begin:
 set_a1:
+__kefir_text_func_set_a1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -67,51 +68,65 @@ set_a1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_set_a1_end:
 
 set_i8:
+__kefir_text_func_set_i8_begin:
     movsx %sil, %rax
     mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
+__kefir_text_func_set_i8_end:
 
 set_f32:
+__kefir_text_func_set_f32_begin:
     add $16, %rdi
     movq %xmm0, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret
+__kefir_text_func_set_f32_end:
 
 set_f64:
+__kefir_text_func_set_f64_begin:
     add $24, %rdi
     movq %xmm0, %rsi
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret
+__kefir_text_func_set_f64_end:
 
 set_i16:
+__kefir_text_func_set_i16_begin:
     movsx %si, %rax
     add $2, %rdi
     mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_2@PLT
     ret
+__kefir_text_func_set_i16_end:
 
 set_i32:
+__kefir_text_func_set_i32_begin:
     movsx %esi, %rax
     add $4, %rdi
     mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret
+__kefir_text_func_set_i32_end:
 
 set_i64:
+__kefir_text_func_set_i64_begin:
     add $8, %rdi
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret
+__kefir_text_func_set_i64_end:
 
 set_arr1_el:
+__kefir_text_func_set_arr1_el_begin:
     add $96, %rdi
     movsx %esi, %rax
     movsx %eax, %rax
@@ -121,8 +136,10 @@ set_arr1_el:
     mov $5, %rdx
     call __atomic_store_8@PLT
     ret
+__kefir_text_func_set_arr1_el_end:
 
 set_arr2_el:
+__kefir_text_func_set_arr2_el_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -150,6 +167,7 @@ set_arr2_el:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_set_arr2_el_end:
 
 __kefir_text_section_end:
 

@@ -34,6 +34,7 @@
 .section .text
 __kefir_text_section_begin:
 make_s1:
+__kefir_text_func_make_s1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -52,8 +53,10 @@ _kefir_func_make_s1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_make_s1_end:
 
 cast_int:
+__kefir_text_func_cast_int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -72,8 +75,10 @@ _kefir_func_cast_int_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_cast_int_end:
 
 sum3_one:
+__kefir_text_func_sum3_one_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
@@ -103,8 +108,10 @@ add %rdx, %rcx
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sum3_one_end:
 
 unwrap_s1:
+__kefir_text_func_unwrap_s1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -126,6 +133,7 @@ _kefir_func_unwrap_s1_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_unwrap_s1_end:
 
 __kefir_text_section_end:
 

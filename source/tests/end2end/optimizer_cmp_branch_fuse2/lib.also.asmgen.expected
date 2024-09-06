@@ -38,6 +38,7 @@
 .section .text
 __kefir_text_section_begin:
 lessf:
+__kefir_text_func_lessf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -65,8 +66,10 @@ _kefir_func_lessf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_lessf_end:
 
 equalsf:
+__kefir_text_func_equalsf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -96,8 +99,10 @@ _kefir_func_equalsf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_equalsf_end:
 
 greaterf:
+__kefir_text_func_greaterf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -125,8 +130,10 @@ _kefir_func_greaterf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_greaterf_end:
 
 not_equalsf:
+__kefir_text_func_not_equalsf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -155,8 +162,10 @@ _kefir_func_not_equalsf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_not_equalsf_end:
 
 greater_or_equalsf:
+__kefir_text_func_greater_or_equalsf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -184,8 +193,10 @@ _kefir_func_greater_or_equalsf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_greater_or_equalsf_end:
 
 less_or_equalsf:
+__kefir_text_func_less_or_equalsf_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -213,6 +224,7 @@ _kefir_func_less_or_equalsf_label3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_less_or_equalsf_end:
 
 __kefir_text_section_end:
 

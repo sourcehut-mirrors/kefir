@@ -29,6 +29,7 @@
 .section .text
 __kefir_text_section_begin:
 sum_progression:
+__kefir_text_func_sum_progression_begin:
     push %rbp
     mov %rsp, %rbp
     sub $304, %rsp
@@ -230,6 +231,7 @@ _kefir_func_sum_progression_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_sum_progression_end:
 
 __kefir_text_section_end:
 

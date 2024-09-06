@@ -34,6 +34,7 @@
 .section .text
 __kefir_text_section_begin:
 compare1:
+__kefir_text_func_compare1_begin:
     xor %eax, %eax
     cmp $1, %rdi
     sete %al
@@ -61,8 +62,10 @@ compare1:
     setge %cl
     add %ecx, %eax
     ret
+__kefir_text_func_compare1_end:
 
 compare2:
+__kefir_text_func_compare2_begin:
     xor %eax, %eax
     cmp $1, %rdi
     sete %al
@@ -90,8 +93,10 @@ compare2:
     setae %cl
     add %ecx, %eax
     ret
+__kefir_text_func_compare2_end:
 
 compare3:
+__kefir_text_func_compare3_begin:
     xor %eax, %eax
     movabs $72057594037927935, %rcx
     cmp %rcx, %rdi
@@ -125,8 +130,10 @@ compare3:
     setge %cl
     add %ecx, %eax
     ret
+__kefir_text_func_compare3_end:
 
 compare4:
+__kefir_text_func_compare4_begin:
     xor %eax, %eax
     movabs $72057594037927935, %rcx
     cmp %rcx, %rdi
@@ -160,6 +167,7 @@ compare4:
     setae %cl
     add %ecx, %eax
     ret
+__kefir_text_func_compare4_end:
 
 __kefir_text_section_end:
 

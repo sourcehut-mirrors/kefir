@@ -42,6 +42,7 @@
 .section .text
 __kefir_text_section_begin:
 add_f32:
+__kefir_text_func_add_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -127,8 +128,10 @@ _kefir_func_add_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_f32_end:
 
 add_f64:
+__kefir_text_func_add_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $192, %rsp
@@ -224,8 +227,10 @@ _kefir_func_add_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_f64_end:
 
 divide_f32:
+__kefir_text_func_divide_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -309,8 +314,10 @@ _kefir_func_divide_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_divide_f32_end:
 
 divide_f64:
+__kefir_text_func_divide_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $192, %rsp
@@ -407,8 +414,10 @@ _kefir_func_divide_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_divide_f64_end:
 
 multiply_f32:
+__kefir_text_func_multiply_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -492,8 +501,10 @@ _kefir_func_multiply_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_multiply_f32_end:
 
 multiply_f64:
+__kefir_text_func_multiply_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $192, %rsp
@@ -590,8 +601,10 @@ _kefir_func_multiply_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_multiply_f64_end:
 
 subtract_f32:
+__kefir_text_func_subtract_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -677,8 +690,10 @@ _kefir_func_subtract_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_subtract_f32_end:
 
 subtract_f64:
+__kefir_text_func_subtract_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $192, %rsp
@@ -774,6 +789,7 @@ _kefir_func_subtract_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_subtract_f64_end:
 
 __kefir_text_section_end:
 

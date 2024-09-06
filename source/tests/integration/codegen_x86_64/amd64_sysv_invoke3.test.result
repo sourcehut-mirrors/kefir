@@ -28,6 +28,7 @@
 .section .text
 __kefir_text_section_begin:
 proxyadd:
+__kefir_text_func_proxyadd_begin:
     push %rbp
     mov %rbp, %rsp
     sub %rsp, 32
@@ -49,6 +50,7 @@ _kefir_func_proxyadd_label1:
     lea %rsp, [%rbp]
     pop %rbp
     ret
+__kefir_text_func_proxyadd_end:
 
 __kefir_text_section_end:
 

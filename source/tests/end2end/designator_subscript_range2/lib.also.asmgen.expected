@@ -29,6 +29,7 @@
 .section .text
 __kefir_text_section_begin:
 getb:
+__kefir_text_func_getb_begin:
     push %rbp
     mov %rsp, %rbp
     sub $304, %rsp
@@ -301,6 +302,7 @@ _kefir_func_getb_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_getb_end:
 
 __kefir_text_section_end:
 

@@ -36,6 +36,7 @@
 .section .text
 __kefir_text_section_begin:
 add_ld1:
+__kefir_text_func_add_ld1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -92,8 +93,10 @@ _kefir_func_add_ld1_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_ld1_end:
 
 add_cld1:
+__kefir_text_func_add_cld1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $480, %rsp
@@ -180,6 +183,7 @@ _kefir_func_add_cld1_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_add_cld1_end:
 
 __kefir_text_section_end:
 

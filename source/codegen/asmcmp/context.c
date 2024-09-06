@@ -643,6 +643,7 @@ kefir_result_t kefir_asmcmp_context_label_add_public_name(struct kefir_mem *mem,
 
     struct kefir_asmcmp_label *label = &context->labels[label_index];
     REQUIRE_OK(kefir_hashtreeset_add(mem, &label->public_labels, (kefir_hashtreeset_entry_t) public_label));
+    label->external_dependencies = true;
     return KEFIR_OK;
 }
 

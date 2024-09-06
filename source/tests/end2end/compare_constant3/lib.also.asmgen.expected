@@ -34,6 +34,7 @@
 .section .text
 __kefir_text_section_begin:
 compare1:
+__kefir_text_func_compare1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -78,6 +79,7 @@ compare1:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_compare1_end:
 .section .rodata
     .align 4
 _kefir_func_compare1_label2:
@@ -100,6 +102,7 @@ _kefir_func_compare1_label7:
 .section .text
 
 compare2:
+__kefir_text_func_compare2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -145,6 +148,7 @@ compare2:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_compare2_end:
 .section .rodata
     .align 4
 _kefir_func_compare2_label2:
@@ -167,6 +171,7 @@ _kefir_func_compare2_label7:
 .section .text
 
 compare3:
+__kefir_text_func_compare3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -211,6 +216,7 @@ compare3:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_compare3_end:
 .section .rodata
     .align 8
 _kefir_func_compare3_label2:
@@ -233,6 +239,7 @@ _kefir_func_compare3_label7:
 .section .text
 
 compare4:
+__kefir_text_func_compare4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -277,6 +284,7 @@ compare4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_compare4_end:
 .section .rodata
     .align 8
 _kefir_func_compare4_label2:

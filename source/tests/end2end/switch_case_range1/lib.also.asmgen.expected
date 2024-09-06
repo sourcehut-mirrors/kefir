@@ -34,6 +34,7 @@
 .section .text
 __kefir_text_section_begin:
 clamp_int:
+__kefir_text_func_clamp_int_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -270,8 +271,10 @@ _kefir_func_clamp_int_label29:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_clamp_int_end:
 
 clamp_char:
+__kefir_text_func_clamp_char_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -508,8 +511,10 @@ _kefir_func_clamp_char_label29:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_clamp_char_end:
 
 clamp_long:
+__kefir_text_func_clamp_long_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -756,8 +761,10 @@ _kefir_func_clamp_long_label29:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_clamp_long_end:
 
 clamp_short:
+__kefir_text_func_clamp_short_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -994,6 +1001,7 @@ _kefir_func_clamp_short_label29:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_clamp_short_end:
 
 __kefir_text_section_end:
 

@@ -51,6 +51,7 @@
 .section .text
 __kefir_text_section_begin:
 test_atomic_store128:
+__kefir_text_func_test_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -69,8 +70,10 @@ test_atomic_store128:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store128_end:
 
 test_atomic_store256:
+__kefir_text_func_test_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
@@ -95,8 +98,10 @@ test_atomic_store256:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store256_end:
 
 test2_atomic_store128:
+__kefir_text_func_test2_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
@@ -120,8 +125,10 @@ test2_atomic_store128:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store128_end:
 
 test2_atomic_store256:
+__kefir_text_func_test2_atomic_store256_begin:
     push %rbp
     mov %rsp, %rbp
     sub $144, %rsp
@@ -158,8 +165,10 @@ test2_atomic_store256:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store256_end:
 
 test2_atomic_store16:
+__kefir_text_func_test2_atomic_store16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -176,8 +185,10 @@ test2_atomic_store16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store16_end:
 
 test2_atomic_store32:
+__kefir_text_func_test2_atomic_store32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -194,8 +205,10 @@ test2_atomic_store32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store32_end:
 
 test2_atomic_store64:
+__kefir_text_func_test2_atomic_store64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -211,8 +224,10 @@ test2_atomic_store64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
+__kefir_text_func_test_atomic_store8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -228,8 +243,10 @@ test_atomic_store8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store8_end:
 
 test_atomic_store16:
+__kefir_text_func_test_atomic_store16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -245,8 +262,10 @@ test_atomic_store16:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store16_end:
 
 test_atomic_store32:
+__kefir_text_func_test_atomic_store32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -262,8 +281,10 @@ test_atomic_store32:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store32_end:
 
 test_atomic_store64:
+__kefir_text_func_test_atomic_store64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -279,8 +300,10 @@ test_atomic_store64:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
+__kefir_text_func_test2_atomic_store8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -297,6 +320,7 @@ test2_atomic_store8:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test2_atomic_store8_end:
 
 __kefir_text_section_end:
 

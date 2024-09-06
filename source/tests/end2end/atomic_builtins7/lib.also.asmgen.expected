@@ -40,34 +40,43 @@
 .section .text
 __kefir_text_section_begin:
 clear:
+__kefir_text_func_clear_begin:
     push %rbp
     mov %rsp, %rbp
     call __kefir_atomic_seq_cst_clear@PLT
     pop %rbp
     ret
+__kefir_text_func_clear_end:
 
 test_atomic_signal_fence:
+__kefir_text_func_test_atomic_signal_fence_begin:
     push %rbp
     mov %rsp, %rbp
     call __kefir_atomic_seq_cst_fence@PLT
     pop %rbp
     ret
+__kefir_text_func_test_atomic_signal_fence_end:
 
 test_atomic_thread_fence:
+__kefir_text_func_test_atomic_thread_fence_begin:
     push %rbp
     mov %rsp, %rbp
     call __kefir_atomic_seq_cst_fence@PLT
     pop %rbp
     ret
+__kefir_text_func_test_atomic_thread_fence_end:
 
 test_and_set:
+__kefir_text_func_test_and_set_begin:
     push %rbp
     mov %rsp, %rbp
     call __kefir_atomic_seq_cst_test_and_set@PLT
     pop %rbp
     ret
+__kefir_text_func_test_and_set_end:
 
 test_is_lock_free:
+__kefir_text_func_test_is_lock_free_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
@@ -356,6 +365,7 @@ _kefir_func_test_is_lock_free_label19:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_test_is_lock_free_end:
 
 __kefir_text_section_end:
 

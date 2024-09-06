@@ -121,11 +121,20 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                             continue;
                         }
 
-                        REQUIRE_OK(kefir_asmcmp_replace_labels(context, label, instr_label));
-                        kefir_asmcmp_label_index_t next_label =
-                            kefir_asmcmp_context_instr_label_next(context, instr_label);
-                        REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, instr_label));
-                        instr_label = next_label;
+                        const struct kefir_asmcmp_label *asmlabel;
+                        REQUIRE_OK(kefir_asmcmp_context_get_label(context, instr_label, &asmlabel));
+
+                        if (!asmlabel->external_dependencies) {
+                            REQUIRE_OK(kefir_asmcmp_replace_labels(context, label, instr_label));
+                            kefir_asmcmp_label_index_t next_label =
+                                kefir_asmcmp_context_instr_label_next(context, instr_label);
+                            REQUIRE_OK(kefir_asmcmp_context_unbind_label(mem, context, instr_label));
+                            instr_label = next_label;
+                        } else {
+                            drop_instr = false;
+                            instr_label = kefir_asmcmp_context_instr_label_next(context, instr_label);
+                            continue;
+                        }
                     }
 
                     if (drop_instr) {

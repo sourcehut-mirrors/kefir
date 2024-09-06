@@ -66,6 +66,7 @@
 .section .text
 __kefir_text_section_begin:
 postdec_i8:
+__kefir_text_func_postdec_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -102,8 +103,10 @@ _kefir_func_postdec_i8_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_i8_end:
 
 postdec_ld:
+__kefir_text_func_postdec_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -182,6 +185,7 @@ _kefir_func_postdec_ld_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_ld_end:
 .section .rodata
     .align 8
 _kefir_func_postdec_ld_label5:
@@ -190,6 +194,7 @@ _kefir_func_postdec_ld_label5:
 .section .text
 
 postinc_i8:
+__kefir_text_func_postinc_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -226,8 +231,10 @@ _kefir_func_postinc_i8_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_i8_end:
 
 postinc_ld:
+__kefir_text_func_postinc_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $128, %rsp
@@ -306,6 +313,7 @@ _kefir_func_postinc_ld_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_ld_end:
 .section .rodata
     .align 8
 _kefir_func_postinc_ld_label5:
@@ -314,6 +322,7 @@ _kefir_func_postinc_ld_label5:
 .section .text
 
 postdec_f32:
+__kefir_text_func_postdec_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -386,6 +395,7 @@ _kefir_func_postdec_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_f32_end:
 .section .rodata
     .align 4
 _kefir_func_postdec_f32_label5:
@@ -393,6 +403,7 @@ _kefir_func_postdec_f32_label5:
 .section .text
 
 postdec_f64:
+__kefir_text_func_postdec_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -465,6 +476,7 @@ _kefir_func_postdec_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_f64_end:
 .section .rodata
     .align 8
 _kefir_func_postdec_f64_label5:
@@ -472,6 +484,7 @@ _kefir_func_postdec_f64_label5:
 .section .text
 
 postdec_i16:
+__kefir_text_func_postdec_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -508,8 +521,10 @@ _kefir_func_postdec_i16_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_i16_end:
 
 postdec_i32:
+__kefir_text_func_postdec_i32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -546,8 +561,10 @@ _kefir_func_postdec_i32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_i32_end:
 
 postdec_i64:
+__kefir_text_func_postdec_i64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -584,8 +601,10 @@ _kefir_func_postdec_i64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_i64_end:
 
 postdec_ptr:
+__kefir_text_func_postdec_ptr_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -622,8 +641,10 @@ _kefir_func_postdec_ptr_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postdec_ptr_end:
 
 postinc_f32:
+__kefir_text_func_postinc_f32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -696,6 +717,7 @@ _kefir_func_postinc_f32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_f32_end:
 .section .rodata
     .align 4
 _kefir_func_postinc_f32_label5:
@@ -703,6 +725,7 @@ _kefir_func_postinc_f32_label5:
 .section .text
 
 postinc_f64:
+__kefir_text_func_postinc_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $96, %rsp
@@ -775,6 +798,7 @@ _kefir_func_postinc_f64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_f64_end:
 .section .rodata
     .align 8
 _kefir_func_postinc_f64_label5:
@@ -782,6 +806,7 @@ _kefir_func_postinc_f64_label5:
 .section .text
 
 postinc_i16:
+__kefir_text_func_postinc_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -818,8 +843,10 @@ _kefir_func_postinc_i16_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_i16_end:
 
 postinc_i32:
+__kefir_text_func_postinc_i32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -856,8 +883,10 @@ _kefir_func_postinc_i32_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_i32_end:
 
 postinc_i64:
+__kefir_text_func_postinc_i64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -894,8 +923,10 @@ _kefir_func_postinc_i64_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_i64_end:
 
 postinc_ptr:
+__kefir_text_func_postinc_ptr_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
@@ -932,6 +963,7 @@ _kefir_func_postinc_ptr_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+__kefir_text_func_postinc_ptr_end:
 
 __kefir_text_section_end:
 
