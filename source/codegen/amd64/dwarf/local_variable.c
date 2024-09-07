@@ -19,6 +19,7 @@
 */
 
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
+#define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
@@ -43,6 +44,8 @@ static kefir_result_t generate_local_variable_abbrev(struct kefir_mem *mem,
                                                   KEFIR_DWARF(DW_FORM_string)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type),
                                                   KEFIR_DWARF(DW_FORM_ref4)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_location),
+                                                  KEFIR_DWARF(DW_FORM_sec_offset)));
     REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen_function->codegen->xasmgen));
     return KEFIR_OK;
 }
@@ -80,7 +83,93 @@ static kefir_result_t generate_local_variable_info(struct kefir_mem *mem,
                                                   KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                                   KEFIR_AMD64_DWARF_DEBUG_INFO_SECTION))));
 
+    kefir_codegen_amd64_dwarf_entry_id_t loclist_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_LOCLIST_ENTRY_ID(context);
+    REQUIRE_OK(kefir_hashtree_insert(mem, &context->loclists.entries.ir_debug_entries,
+                                     (kefir_hashtree_key_t) variable_entry_id,
+                                     (kefir_hashtree_value_t) loclist_entry_id));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+        kefir_asm_amd64_xasmgen_operand_label(
+            &codegen_function->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+            kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers,
+                                                   KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY, loclist_entry_id))));
+
     ASSIGN_PTR(dwarf_entry_id_ptr, entry_id);
+    return KEFIR_OK;
+}
+
+static kefir_result_t generate_local_variable_simple_location(
+    const struct kefir_codegen_amd64_function *codegen_function, kefir_ir_debug_entry_id_t variable_entry_id,
+    kefir_size_t local_variable_id) {
+    const struct kefir_ir_debug_entry_attribute *attr;
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+                                                  variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
+    const kefir_size_t code_begin_idx = attr->code_index;
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+                                                  variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
+    const kefir_size_t code_end_idx = attr->code_index;
+
+    kefir_asmcmp_label_index_t range_begin_label, range_end_label;
+    REQUIRE_OK(kefir_codegen_amd64_function_find_code_range_labels(codegen_function, code_begin_idx, code_end_idx,
+                                                                   &range_begin_label, &range_end_label));
+
+    if (range_begin_label != KEFIR_ASMCMP_INDEX_NONE && range_end_label != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
+
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
+                                                  codegen_function->function->ir_func->name, &ir_identifier));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL,
+                                                       ir_identifier->symbol, range_begin_label))));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_label(
+                &codegen_function->codegen->xasmgen_helpers.operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL,
+                                                       ir_identifier->symbol, range_end_label))));
+
+        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+        REQUIRE_OK(kefir_abi_amd64_type_layout_at(&codegen_function->locals_layout, local_variable_id, &entry));
+
+        const kefir_int64_t offset = entry->relative_offset + codegen_function->stack_frame.offsets.local_area;
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
+                                             1 + kefir_amd64_dwarf_sleb128_length(offset)));
+        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
+        REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
+                                                       const struct kefir_codegen_amd64_function *codegen_function,
+                                                       struct kefir_codegen_amd64_dwarf_context *context,
+                                                       kefir_ir_debug_entry_id_t variable_entry_id) {
+    UNUSED(mem);
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(&context->loclists.entries.ir_debug_entries, (kefir_hashtree_key_t) variable_entry_id,
+                                 &node));
+    ASSIGN_DECL_CAST(kefir_codegen_amd64_dwarf_entry_id_t, loclist_entry_id, node->value);
+
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_function->codegen->xasmgen, KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY,
+                                         loclist_entry_id));
+
+    kefir_bool_t has_refs;
+    const struct kefir_ir_debug_entry_attribute *attr;
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+                                                  variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE,
+                                                  &attr));
+    REQUIRE_OK(kefir_opt_code_debug_info_local_variable_has_refs(&codegen_function->function->debug_info,
+                                                                 attr->local_variable, &has_refs));
+    if (!has_refs) {
+        REQUIRE_OK(generate_local_variable_simple_location(codegen_function, variable_entry_id, attr->local_variable));
+    }
+
+    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_end_of_list)));
     return KEFIR_OK;
 }
 
@@ -99,6 +188,11 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_local_variable(
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
         REQUIRE_OK(generate_local_variable_info(mem, codegen_function, context, entry_id, dwarf_entry_ptr));
+    }
+
+    KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
+        REQUIRE_OK(generate_local_variable_loclists(mem, codegen_function, context, entry_id));
+        ASSIGN_PTR(dwarf_entry_ptr, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
     }
     return KEFIR_OK;
 }

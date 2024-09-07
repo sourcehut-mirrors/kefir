@@ -31,12 +31,19 @@
 #define KEFIR_AMD64_DWARF_DEBUG_INFO_END "__kefir_debug_info_section_end"
 #define KEFIR_AMD64_DWARF_DEBUG_INFO_ENTRY "__kefir_debug_info_section_entry_%" KEFIR_UINT64_FMT
 #define KEFIR_AMD64_DWARF_DEBUG_LINES "__kefir_debug_lines_section_begin"
+#define KEFIR_AMD64_DWARF_DEBUG_LOCLISTS "__kefir_debug_loclists_section"
+#define KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_BEGIN "__kefir_debug_loclists_section_begin"
+#define KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_END "__kefir_debug_loclists_section_end"
+#define KEFIR_AMD64_DWARF_DEBUG_LOCLIST_ENTRY "__kefir_debug_loclist_section_entry_%" KEFIR_UINT64_FMT
 
 kefir_result_t kefir_amd64_dwarf_byte(struct kefir_amd64_xasmgen *, kefir_uint8_t);
 kefir_result_t kefir_amd64_dwarf_word(struct kefir_amd64_xasmgen *, kefir_uint16_t);
 kefir_result_t kefir_amd64_dwarf_qword(struct kefir_amd64_xasmgen *, kefir_uint64_t);
 kefir_result_t kefir_amd64_dwarf_string(struct kefir_amd64_xasmgen *, const char *);
 kefir_result_t kefir_amd64_dwarf_uleb128(struct kefir_amd64_xasmgen *, kefir_uint64_t);
+kefir_result_t kefir_amd64_dwarf_sleb128(struct kefir_amd64_xasmgen *, kefir_int64_t);
+
+kefir_size_t kefir_amd64_dwarf_sleb128_length(kefir_int64_t);
 
 kefir_result_t kefir_amd64_dwarf_attribute_abbrev(struct kefir_amd64_xasmgen *, kefir_dwarf_attribute_t,
                                                   kefir_dwarf_form_t);
@@ -48,7 +55,8 @@ typedef enum kefir_dwarf_generator_section {
     KEFIR_DWARF_GENERATOR_SECTION_INIT = 0,
     KEFIR_DWARF_GENERATOR_SECTION_ABBREV = 0,
     KEFIR_DWARF_GENERATOR_SECTION_INFO = 1,
-    KEFIR_DWARF_GENERATOR_SECTION_LINES = 2,
+    KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS = 2,
+    KEFIR_DWARF_GENERATOR_SECTION_LINES = 3,
     KEFIR_DWARF_GENERATOR_SECTION_COUNT
 } kefir_dwarf_generator_section_t;
 
@@ -60,6 +68,7 @@ kefir_result_t kefir_dwarf_generator_section_finalize(struct kefir_amd64_xasmgen
 #define KEFIR_AMD64_DWARF_QWORD(_xasmgen, _value) ((kefir_amd64_dwarf_qword((_xasmgen), (_value))))
 #define KEFIR_AMD64_DWARF_STRING(_xasmgen, _value) ((kefir_amd64_dwarf_string((_xasmgen), (_value))))
 #define KEFIR_AMD64_DWARF_ULEB128(_xasmgen, _value) ((kefir_amd64_dwarf_uleb128((_xasmgen), (_value))))
+#define KEFIR_AMD64_DWARF_SLEB128(_xasmgen, _value) ((kefir_amd64_dwarf_sleb128((_xasmgen), (_value))))
 
 #define KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(_xasmgen, _attr, _form) \
     (kefir_amd64_dwarf_attribute_abbrev((_xasmgen), (_attr), (_form)))

@@ -48,7 +48,9 @@ kefir_result_t kefir_opt_code_debug_info_instruction_location(const struct kefir
                                                               kefir_opt_instruction_ref_t, kefir_size_t *);
 
 kefir_result_t kefir_opt_code_debug_info_add_local_variable_ref(struct kefir_mem *, struct kefir_opt_code_debug_info *,
-                                                                kefir_opt_instruction_ref_t, kefir_size_t);
+                                                                kefir_size_t, kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_debug_info_local_variable_has_refs(const struct kefir_opt_code_debug_info *, kefir_size_t,
+                                                                 kefir_bool_t *);
 
 typedef struct kefir_opt_code_debug_info_local_variable_ref_iterator {
     struct kefir_hashtreeset_iterator iter;

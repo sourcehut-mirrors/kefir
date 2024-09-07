@@ -262,6 +262,25 @@ static kefir_result_t node_find_lower_bound(struct kefir_hashtree_node *root, co
     }
 }
 
+static kefir_result_t node_find_upper_bound(struct kefir_hashtree_node *root, const struct kefir_hashtree *tree,
+                                            kefir_hashtree_hash_t hash, kefir_hashtree_key_t key,
+                                            struct kefir_hashtree_node **result) {
+    if (root == NULL) {
+        return *result != NULL ? KEFIR_OK : KEFIR_NOT_FOUND;
+    }
+
+    assert(NODE_BF(root) >= -1 && NODE_BF(root) <= 1);
+    if (hash < root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) < 0)) {
+        *result = root;
+        return node_find_upper_bound(root->left_child, tree, hash, key, result);
+    } else if (hash > root->hash || (hash == root->hash && tree->ops->compare(key, root->key, tree->ops->data) > 0)) {
+        return node_find_upper_bound(root->right_child, tree, hash, key, result);
+    } else {
+        *result = root;
+        return KEFIR_OK;
+    }
+}
+
 static struct kefir_hashtree_node *node_minimum(struct kefir_hashtree_node *root) {
     if (root == NULL || root->left_child == NULL) {
         return root;
@@ -366,8 +385,7 @@ static struct kefir_hashtree_node *max_node(struct kefir_hashtree_node *node) {
     }
 }
 
-kefir_result_t kefir_hashtree_min(const struct kefir_hashtree *tree,
-                                          struct kefir_hashtree_node **result) {
+kefir_result_t kefir_hashtree_min(const struct kefir_hashtree *tree, struct kefir_hashtree_node **result) {
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
     assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
@@ -375,8 +393,7 @@ kefir_result_t kefir_hashtree_min(const struct kefir_hashtree *tree,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashtree_max(const struct kefir_hashtree *tree,
-                                          struct kefir_hashtree_node **result) {
+kefir_result_t kefir_hashtree_max(const struct kefir_hashtree *tree, struct kefir_hashtree_node **result) {
     REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
     assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
@@ -393,6 +410,19 @@ kefir_result_t kefir_hashtree_lower_bound(const struct kefir_hashtree *tree, kef
     kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
     if (node_find_lower_bound(tree->root, tree, hash, key, result) != KEFIR_OK) {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Could not find the lower bound tree node for provided key");
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtree_upper_bound(const struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                          struct kefir_hashtree_node **result) {
+    REQUIRE(tree != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hash tree pointer"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+    assert(NODE_BF(tree->root) >= -1 && NODE_BF(tree->root) <= 1);
+    *result = NULL;
+    kefir_hashtree_hash_t hash = tree->ops->hash(key, tree->ops->data);
+    if (node_find_upper_bound(tree->root, tree, hash, key, result) != KEFIR_OK) {
+        return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Could not find the upper bound tree node for provided key");
     }
     return KEFIR_OK;
 }

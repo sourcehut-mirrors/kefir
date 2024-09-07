@@ -28,7 +28,9 @@
                                     }
                                 },
                                 "ir_instruction": null,
-                                "local_variables": []
+                                "local_variables": [
+                                    11
+                                ]
                             },
                             {
                                 "id": 1,
@@ -45,7 +47,9 @@
                                     }
                                 },
                                 "ir_instruction": null,
-                                "local_variables": []
+                                "local_variables": [
+                                    8
+                                ]
                             },
                             {
                                 "id": 2,
@@ -62,7 +66,9 @@
                                     }
                                 },
                                 "ir_instruction": null,
-                                "local_variables": []
+                                "local_variables": [
+                                    5
+                                ]
                             },
                             {
                                 "id": 3,
@@ -79,7 +85,10 @@
                                     }
                                 },
                                 "ir_instruction": null,
-                                "local_variables": []
+                                "local_variables": [
+                                    18,
+                                    57
+                                ]
                             }
                         ],
                         "public_labels": [],
@@ -146,9 +155,7 @@
                                     }
                                 },
                                 "ir_instruction": 7,
-                                "local_variables": [
-                                    0
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 8,
@@ -166,7 +173,8 @@
                                 },
                                 "ir_instruction": 4,
                                 "local_variables": [
-                                    1
+                                    51,
+                                    96
                                 ]
                             },
                             {
@@ -185,7 +193,8 @@
                                 },
                                 "ir_instruction": 1,
                                 "local_variables": [
-                                    2
+                                    32,
+                                    69
                                 ]
                             },
                             {
@@ -240,9 +249,7 @@
                                     }
                                 },
                                 "ir_instruction": 15,
-                                "local_variables": [
-                                    3
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 81,
@@ -296,9 +303,7 @@
                                     }
                                 },
                                 "ir_instruction": 24,
-                                "local_variables": [
-                                    4
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 83,
@@ -352,9 +357,7 @@
                                     }
                                 },
                                 "ir_instruction": 33,
-                                "local_variables": [
-                                    5
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 85,
@@ -408,9 +411,7 @@
                                     }
                                 },
                                 "ir_instruction": 42,
-                                "local_variables": [
-                                    6
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 87,
@@ -464,9 +465,7 @@
                                     }
                                 },
                                 "ir_instruction": 51,
-                                "local_variables": [
-                                    7
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 89,
@@ -500,9 +499,7 @@
                                     }
                                 },
                                 "ir_instruction": 58,
-                                "local_variables": [
-                                    8
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 90,
@@ -556,9 +553,7 @@
                                     }
                                 },
                                 "ir_instruction": 68,
-                                "local_variables": [
-                                    3
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 92,
@@ -612,9 +607,7 @@
                                     }
                                 },
                                 "ir_instruction": 80,
-                                "local_variables": [
-                                    4
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 94,
@@ -668,9 +661,7 @@
                                     }
                                 },
                                 "ir_instruction": 92,
-                                "local_variables": [
-                                    5
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 96,
@@ -687,9 +678,7 @@
                                     }
                                 },
                                 "ir_instruction": 98,
-                                "local_variables": [
-                                    8
-                                ]
+                                "local_variables": []
                             },
                             {
                                 "id": 97,

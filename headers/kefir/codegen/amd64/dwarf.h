@@ -76,14 +76,23 @@ typedef struct kefir_codegen_amd64_dwarf_info_context {
     } entries;
 } kefir_codegen_amd64_dwarf_info_context_t;
 
+typedef struct kefir_codegen_amd64_dwarf_loclists_context {
+    struct {
+        kefir_codegen_amd64_dwarf_entry_id_t next_entry_id;
+        struct kefir_hashtree ir_debug_entries;
+    } entries;
+} kefir_codegen_amd64_dwarf_loclists_context_t;
+
 typedef struct kefir_codegen_amd64_dwarf_context {
     kefir_dwarf_generator_section_t section;
     struct kefir_codegen_amd64_dwarf_abbrev_context abbrev;
     struct kefir_codegen_amd64_dwarf_info_context info;
+    struct kefir_codegen_amd64_dwarf_loclists_context loclists;
 } kefir_codegen_amd64_dwarf_context_t;
 
 #define KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(_context) (++(_context)->abbrev.entries.next_entry_id)
 #define KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(_context) (++(_context)->info.entries.next_entry_id)
+#define KEFIR_CODEGEN_AMD64_DWARF_NEXT_LOCLIST_ENTRY_ID(_context) (++(_context)->loclists.entries.next_entry_id)
 
 kefir_result_t kefir_codegen_amd64_dwarf_context_init(struct kefir_codegen_amd64_dwarf_context *);
 kefir_result_t kefir_codegen_amd64_dwarf_context_free(struct kefir_mem *, struct kefir_codegen_amd64_dwarf_context *);

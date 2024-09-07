@@ -56,6 +56,16 @@ kefir_result_t kefir_amd64_dwarf_qword(struct kefir_amd64_xasmgen *xasmgen, kefi
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_amd64_dwarf_signed_qword(struct kefir_amd64_xasmgen *xasmgen, kefir_int64_t qword) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
+
+    struct kefir_asm_amd64_xasmgen_operand operands[1];
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+                                        kefir_asm_amd64_xasmgen_operand_imm(&operands[0], qword)));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_amd64_dwarf_string(struct kefir_amd64_xasmgen *xasmgen, const char *content) {
     REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string"));
@@ -83,6 +93,53 @@ kefir_result_t kefir_amd64_dwarf_uleb128(struct kefir_amd64_xasmgen *xasmgen, ke
     } while (value != 0);
 
     return KEFIR_OK;
+}
+
+kefir_result_t kefir_amd64_dwarf_sleb128(struct kefir_amd64_xasmgen *xasmgen, kefir_int64_t value) {
+    REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 xasmgen"));
+
+    kefir_bool_t more = true;
+    const kefir_bool_t negative = (value < 0);
+    while (more) {
+        kefir_uint8_t byte = value & 0x7f;
+        value >>= ULEB128_WIDTH;
+
+        if (negative) {
+            value |= (~0ull << (sizeof(kefir_int64_t) * CHAR_BIT - ULEB128_WIDTH));
+        }
+
+        const kefir_uint8_t sign_bit = byte & 0x40;
+        if ((value == 0 && sign_bit == 0) || (value == -1 && sign_bit != 0)) {
+            more = 0;
+        } else {
+            byte |= 0x80;
+        }
+        REQUIRE_OK(kefir_amd64_dwarf_byte(xasmgen, byte));
+    }
+    return KEFIR_OK;
+}
+
+kefir_size_t kefir_amd64_dwarf_sleb128_length(kefir_int64_t value) {
+    kefir_size_t length = 0;
+    kefir_bool_t more = true;
+    const kefir_bool_t negative = (value < 0);
+    while (more) {
+        kefir_uint8_t byte = value & 0x7f;
+        value >>= ULEB128_WIDTH;
+
+        if (negative) {
+            value |= (~0ull << (sizeof(kefir_int64_t) * CHAR_BIT - ULEB128_WIDTH));
+        }
+
+        const kefir_uint8_t sign_bit = byte & 0x40;
+        if ((value == 0 && sign_bit == 0) || (value == -1 && sign_bit != 0)) {
+            more = 0;
+        } else {
+            byte |= 0x80;
+        }
+        length++;
+    }
+    return length;
 }
 
 kefir_result_t kefir_amd64_dwarf_attribute_abbrev(struct kefir_amd64_xasmgen *xasmgen,
@@ -159,6 +216,31 @@ kefir_result_t kefir_dwarf_generator_section_init(struct kefir_amd64_xasmgen *xa
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_LINES));
             break;
 
+        case KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(xasmgen, 1));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(xasmgen, ".debug_loclists", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_LOCLISTS));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                kefir_asm_amd64_xasmgen_operand_subtract(
+                    &operands[0],
+                    kefir_asm_amd64_xasmgen_operand_label(&operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                                                          KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_END),
+                    kefir_asm_amd64_xasmgen_operand_label(&operands[2], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
+                                                          KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_BEGIN))));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_BEGIN));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint16_t) KEFIR_DWARF_VESION)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+                xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) KEFIR_AMD64_ABI_QWORD)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
+                                                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) 0)));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
+                                                kefir_asm_amd64_xasmgen_operand_immu(&operands[0], (kefir_uint8_t) 0)));
+            break;
+
         case KEFIR_DWARF_GENERATOR_SECTION_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected DWARF generator section");
     }
@@ -178,6 +260,10 @@ kefir_result_t kefir_dwarf_generator_section_finalize(struct kefir_amd64_xasmgen
         case KEFIR_DWARF_GENERATOR_SECTION_INFO:
             REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(xasmgen, 0));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_INFO_END));
+            break;
+
+        case KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS:
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(xasmgen, "%s", KEFIR_AMD64_DWARF_DEBUG_LOCLISTS_END));
             break;
 
         case KEFIR_DWARF_GENERATOR_SECTION_LINES:

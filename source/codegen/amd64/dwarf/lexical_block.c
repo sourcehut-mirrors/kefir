@@ -116,6 +116,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(
         REQUIRE_OK(generate_lexical_block_info(mem, context, codegen_function, entry_id, dwarf_entry_id));
     }
 
+    KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
+    }
+
     return KEFIR_OK;
 }
 

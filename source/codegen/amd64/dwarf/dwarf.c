@@ -32,6 +32,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_init(struct kefir_codegen_amd64
     REQUIRE_OK(kefir_hashtree_init(&context->abbrev.entries.ir_debug_entries, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&context->info.entries.ir_debug_entries, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&context->info.entries.pending_ir_debug_type_entries));
+    REQUIRE_OK(kefir_hashtree_init(&context->loclists.entries.ir_debug_entries, &kefir_hashtree_uint_ops));
     return KEFIR_OK;
 }
 
@@ -40,6 +41,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->loclists.entries.ir_debug_entries));
     REQUIRE_OK(kefir_list_free(mem, &context->info.entries.pending_ir_debug_type_entries));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->info.entries.ir_debug_entries));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->abbrev.entries.ir_debug_entries));

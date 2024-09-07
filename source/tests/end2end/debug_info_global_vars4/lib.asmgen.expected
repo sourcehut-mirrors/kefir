@@ -176,5 +176,15 @@ __kefir_debug_info_section_entry_7:
     .byte 0
 __kefir_debug_info_section_end:
 
+.section .debug_loclists
+__kefir_debug_loclists_section:
+    .long __kefir_debug_loclists_section_end - __kefir_debug_loclists_section_begin
+__kefir_debug_loclists_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_loclists_section_end:
+
 .section .debug_line
 __kefir_debug_lines_section_begin:

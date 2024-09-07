@@ -643,11 +643,10 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
         REQUIRE_OK(res);
         *begin_label = (kefir_asmcmp_label_index_t) node->value;
     } else {
-        res = kefir_hashtree_lower_bound(&codegen_function->debug.instruction_location_labels,
+        res = kefir_hashtree_upper_bound(&codegen_function->debug.instruction_location_labels,
                                          (kefir_hashtree_key_t) block_begin_idx, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            node = kefir_hashtree_next_node(&codegen_function->debug.instruction_location_labels, node);
             if (node != NULL && (kefir_size_t) node->key >= block_begin_idx &&
                 (kefir_size_t) node->key < block_end_idx) {
                 *begin_label = (kefir_asmcmp_label_index_t) node->value;

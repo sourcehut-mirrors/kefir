@@ -159,6 +159,8 @@ __kefir_debug_abbrev_section_entry_6:
     .byte 1
     .byte 18
     .byte 7
+    .byte 64
+    .byte 24
     .byte 0
     .byte 0
     .byte 0
@@ -201,6 +203,9 @@ __kefir_debug_info_section_entry_8:
     .ascii "getb\000"
     .quad __kefir_text_func_getb_begin
     .quad __kefir_text_func_getb_end - __kefir_text_func_getb_begin
+    .byte 2
+    .byte 118
+    .byte 0
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
@@ -226,6 +231,16 @@ __kefir_debug_info_section_entry_9:
     .byte 0
     .byte 0
 __kefir_debug_info_section_end:
+
+.section .debug_loclists
+__kefir_debug_loclists_section:
+    .long __kefir_debug_loclists_section_end - __kefir_debug_loclists_section_begin
+__kefir_debug_loclists_section_begin:
+    .word 5
+    .byte 8
+    .byte 0
+    .long 0
+__kefir_debug_loclists_section_end:
 
 .section .debug_line
 __kefir_debug_lines_section_begin:
