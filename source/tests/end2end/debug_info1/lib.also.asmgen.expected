@@ -127,6 +127,31 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 7
     .byte 0
     .byte 0
+__kefir_debug_abbrev_section_entry_4:
+    .byte 4
+    .byte 36
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 11
+    .byte 11
+    .byte 136
+    .byte 1
+    .byte 11
+    .byte 62
+    .byte 11
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_5:
+    .byte 5
+    .byte 52
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 73
+    .byte 19
+    .byte 0
+    .byte 0
     .byte 0
 
 .section .debug_info
@@ -181,10 +206,24 @@ __kefir_debug_info_section_entry_9:
     .quad _kefir_func_factorial64_label18 - _kefir_func_factorial64_label18
     .byte 0
     .byte 0
+__kefir_debug_info_section_entry_10:
+    .byte 5
+    .ascii "result\000"
+    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
     .byte 0
     .byte 0
     .byte 0
+__kefir_debug_info_section_entry_12:
+    .byte 5
+    .ascii "x\000"
+    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
     .byte 0
+__kefir_debug_info_section_entry_11:
+    .byte 4
+    .ascii "signed long\000"
+    .byte 8
+    .byte 8
+    .byte 5
     .byte 0
     .byte 0
 __kefir_debug_info_section_end:

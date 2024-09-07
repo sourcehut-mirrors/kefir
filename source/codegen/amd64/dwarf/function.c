@@ -75,7 +75,7 @@ static kefir_result_t generate_function_info(struct kefir_codegen_amd64_module *
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_function(struct kefir_codegen_amd64_module *codegen_module,
+static kefir_result_t generate_function(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
                                         struct kefir_codegen_amd64_dwarf_context *context,
                                         const struct kefir_ir_function *function) {
     struct kefir_codegen_amd64_function *codegen_function;
@@ -84,13 +84,13 @@ static kefir_result_t generate_function(struct kefir_codegen_amd64_module *codeg
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_subprogram_abbrev(codegen_module->codegen, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-            codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
+            mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
         REQUIRE_OK(generate_function_info(codegen_module, context, codegen_function));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-            codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
+            mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_module->codegen->xasmgen, KEFIR_DWARF(null)));
     }
     return KEFIR_OK;
@@ -109,7 +109,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *me
          function != NULL; function = kefir_ir_module_function_next(&iter)) {
 
         if (function->debug_info.subprogram_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
-            REQUIRE_OK(generate_function(codegen_module, context, function));
+            REQUIRE_OK(generate_function(mem, codegen_module, context, function));
         }
     }
 

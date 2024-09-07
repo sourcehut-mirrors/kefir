@@ -1215,12 +1215,13 @@ kefir_result_t kefir_codegen_amd64_dwarf_type(struct kefir_mem *mem, struct kefi
             kefir_hashtree_at(&context->info.entries.ir_debug_entries, (kefir_hashtree_key_t) ir_entry_id, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            *dwarf_entry_id = (kefir_ir_debug_entry_id_t) node->value;
+            ASSIGN_PTR(dwarf_entry_id, (kefir_ir_debug_entry_id_t) node->value);
         } else {
-            *dwarf_entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
+            kefir_codegen_amd64_dwarf_entry_id_t entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
+            ASSIGN_PTR(dwarf_entry_id, entry_id);
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->info.entries.ir_debug_entries,
                                              (kefir_hashtree_key_t) ir_debug_entry->identifier,
-                                             (kefir_hashtree_value_t) *dwarf_entry_id));
+                                             (kefir_hashtree_value_t) entry_id));
             REQUIRE_OK(kefir_list_insert_after(mem, &context->info.entries.pending_ir_debug_type_entries,
                                                kefir_list_tail(&context->info.entries.pending_ir_debug_type_entries),
                                                (void *) (kefir_uptr_t) ir_entry_id));

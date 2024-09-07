@@ -40,21 +40,20 @@ static kefir_result_t generate_lexical_block_abbrev(struct kefir_codegen_amd64 *
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwarf_context *context,
+static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
+                                                  struct kefir_codegen_amd64_dwarf_context *context,
                                                   const struct kefir_codegen_amd64_function *codegen_function,
-                                                  const struct kefir_ir_debug_entry *lexical_block_entry,
+                                                  kefir_ir_debug_entry_id_t entry_id,
                                                   kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
                                               codegen_function->function->ir_func->name, &ir_identifier));
 
     const struct kefir_ir_debug_entry_attribute *attr;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
-                                                  lexical_block_entry->identifier,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
     const kefir_size_t block_begin_idx = attr->code_index;
-    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
-                                                  lexical_block_entry->identifier,
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries, entry_id,
                                                   KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, &attr));
     const kefir_size_t block_end_idx = attr->code_index;
 
@@ -91,8 +90,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwa
         ASSIGN_PTR(dwarf_entry_id, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(codegen_function, context,
-                                                                        lexical_block_entry->identifier));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
 
     if (begin_label != KEFIR_ASMCMP_INDEX_NONE && end_label != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, KEFIR_DWARF(null)));
@@ -101,28 +99,30 @@ static kefir_result_t generate_lexical_block_info(struct kefir_codegen_amd64_dwa
 }
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(
-    const struct kefir_codegen_amd64_function *codegen_function, struct kefir_codegen_amd64_dwarf_context *context,
-    const struct kefir_ir_debug_entry *lexical_block_entry, kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+    struct kefir_mem *mem, const struct kefir_codegen_amd64_function *codegen_function,
+    struct kefir_codegen_amd64_dwarf_context *context, kefir_ir_debug_entry_id_t entry_id,
+    kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
-    REQUIRE(lexical_block_entry != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR debug entry of lexical block"));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_lexical_block_abbrev(codegen_function->codegen, context));
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
         ASSIGN_PTR(dwarf_entry_id, context->abbrev.entries.lexical_block);
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
-        REQUIRE_OK(generate_lexical_block_info(context, codegen_function, lexical_block_entry, dwarf_entry_id));
+        REQUIRE_OK(generate_lexical_block_info(mem, context, codegen_function, entry_id, dwarf_entry_id));
     }
 
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-    const struct kefir_codegen_amd64_function *codegen_function, struct kefir_codegen_amd64_dwarf_context *context,
-    kefir_ir_debug_entry_id_t entry_id) {
+    struct kefir_mem *mem, const struct kefir_codegen_amd64_function *codegen_function,
+    struct kefir_codegen_amd64_dwarf_context *context, kefir_ir_debug_entry_id_t entry_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
@@ -140,11 +140,12 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
         switch (child_entry->tag) {
             case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
                 REQUIRE_OK(
-                    kefir_codegen_amd64_dwarf_generate_lexical_block(codegen_function, context, child_entry, NULL));
+                    kefir_codegen_amd64_dwarf_generate_lexical_block(mem, codegen_function, context, child_id, NULL));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
-                // TODO Implement local variables
+                REQUIRE_OK(
+                    kefir_codegen_amd64_dwarf_generate_local_variable(mem, codegen_function, context, child_id, NULL));
                 break;
 
             default:
