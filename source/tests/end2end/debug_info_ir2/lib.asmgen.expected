@@ -519,6 +519,10 @@
                         "value": "test1"
                     },
                     {
+                        "tag": "type",
+                        "value": 1
+                    },
+                    {
                         "tag": "code_begin",
                         "value": 3
                     },

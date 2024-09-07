@@ -2315,6 +2315,10 @@
                         "value": "d2"
                     },
                     {
+                        "tag": "type",
+                        "value": 32
+                    },
+                    {
                         "tag": "code_begin",
                         "value": 9
                     },

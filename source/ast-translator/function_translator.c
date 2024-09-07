@@ -26,6 +26,7 @@
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast-translator/debug/translator.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
@@ -304,6 +305,15 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
                                                   &function_context->module->symbols, subprogram_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(function_context->ir_func->name)));
+
+    kefir_ir_debug_entry_id_t subprogram_return_type_id;
+    REQUIRE_OK(kefir_ast_translate_debug_type(
+        mem, &function_context->local_context->global->context, function_context->local_translator_context.environment,
+        function_context->module, function_context->local_translator_context.debug_entries,
+        function_context->function_declaration->return_layout->type, &subprogram_return_type_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                  &function_context->module->symbols, subprogram_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(subprogram_return_type_id)));
     if (context->function_debug_info != NULL) {
         context->function_debug_info->subprogram_id = subprogram_entry_id;
         REQUIRE_OK(kefir_ir_function_debug_info_set_source_location(

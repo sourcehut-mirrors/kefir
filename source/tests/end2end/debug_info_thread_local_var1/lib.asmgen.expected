@@ -149,6 +149,8 @@ __kefir_debug_abbrev_section_entry_6:
     .byte 7
     .byte 64
     .byte 24
+    .byte 73
+    .byte 19
     .byte 0
     .byte 0
     .byte 0
@@ -203,6 +205,7 @@ __kefir_debug_info_section_entry_8:
     .byte 2
     .byte 118
     .byte 0
+    .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
