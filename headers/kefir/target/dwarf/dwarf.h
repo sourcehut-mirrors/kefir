@@ -109,7 +109,9 @@ typedef enum kefir_dwarf_operation {
     KEFIR_DWARF(DW_OP_plus) = 0x22,
     KEFIR_DWARF(DW_OP_reg6) = 0x56,
     KEFIR_DWARF(DW_OP_breg6) = 0x76,
+    KEFIR_DWARF(DW_OP_regx) = 0x90,
     KEFIR_DWARF(DW_OP_fbreg) = 0x91,
+    KEFIR_DWARF(DW_OP_bregx) = 0x92,
     KEFIR_DWARF(DW_OP_form_tls_address) = 0x9b
 } kefir_dwarf_operation_t;
 

@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -66,8 +65,7 @@
                                         "end": 2
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -87,6 +85,9 @@
                 ],
                 "properties": {
                     "linear_length": 2
+                },
+                "debug": {
+                    "local_variables": []
                 }
             }
         }

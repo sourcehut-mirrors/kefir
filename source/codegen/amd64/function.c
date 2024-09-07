@@ -485,8 +485,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
                                                   .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
                                                   .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
                                                   .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                  .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                  .debug = {.next_instruction_location = 0}};
+                                                  .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE};
 
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, function->ir_func->name, &ir_identifier));
@@ -498,7 +497,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->constants, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func->debug.instruction_location_labels, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
@@ -510,7 +510,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
             kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
             kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
             kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
-            kefir_hashtree_free(mem, &func->debug.instruction_location_labels);
+            kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels);
+            kefir_hashtree_free(mem, &func->debug.ir_instructions);
             kefir_hashtreeset_free(mem, &func->translated_instructions);
             kefir_hashtree_free(mem, &func->constants);
             kefir_hashtree_free(mem, &func->instructions);
@@ -533,7 +534,8 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
-    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.instruction_location_labels));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->constants));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->instructions));
@@ -592,15 +594,23 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(function->codegen->config->debug_info, KEFIR_OK);
 
+    const struct kefir_opt_code_analysis_instruction_properties *instr_props;
+    REQUIRE_OK(kefir_opt_code_analysis_instruction_properties(function->function_analysis, instr_ref, &instr_props));
+
     kefir_size_t instruction_location;
     REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instr_ref,
                                                               &instruction_location));
-    REQUIRE(instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE, KEFIR_OK);
-    REQUIRE(function->debug.next_instruction_location <= instruction_location, KEFIR_OK);
+
+    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE &&
+        !kefir_hashtree_has(&function->debug.ir_instructions, (kefir_hashtree_key_t) instruction_location)) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.ir_instructions,
+                                         (kefir_hashtree_key_t) instruction_location,
+                                         (kefir_hashtree_value_t) instr_ref));
+    }
 
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_lower_bound(&function->debug.instruction_location_labels,
-                                                    (kefir_hashtree_key_t) instruction_location, &node);
+    kefir_result_t res = kefir_hashtree_lower_bound(&function->debug.opt_instruction_location_labels,
+                                                    (kefir_hashtree_key_t) instr_props->linear_position, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, prev_asmlabel, node->value);
@@ -608,10 +618,9 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
         const struct kefir_asmcmp_label *label;
         REQUIRE_OK(kefir_asmcmp_context_get_label(&function->code.context, prev_asmlabel, &label));
         if (label->attached && label->position == KEFIR_ASMCMP_INDEX_NONE) {
-            REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
-                                             (kefir_hashtree_key_t) instruction_location,
+            REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.opt_instruction_location_labels,
+                                             (kefir_hashtree_key_t) instr_props->linear_position,
                                              (kefir_hashtree_value_t) prev_asmlabel));
-            function->debug.next_instruction_location = instruction_location + 1;
             return KEFIR_OK;
         }
     }
@@ -620,55 +629,110 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &asmlabel));
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, asmlabel));
     REQUIRE_OK(kefir_asmcmp_context_label_mark_external_dependencies(mem, &function->code.context, asmlabel));
-    REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.instruction_location_labels,
-                                     (kefir_hashtree_key_t) instruction_location, (kefir_hashtree_value_t) asmlabel));
-    function->debug.next_instruction_location = instruction_location + 1;
+    REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.opt_instruction_location_labels,
+                                     (kefir_hashtree_key_t) instr_props->linear_position,
+                                     (kefir_hashtree_value_t) asmlabel));
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
-    const struct kefir_codegen_amd64_function *codegen_function, kefir_size_t block_begin_idx,
-    kefir_size_t block_end_idx, kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
+kefir_result_t kefir_codegen_amd64_function_find_instruction_lifetime(
+    const struct kefir_codegen_amd64_function *codegen_function, kefir_opt_instruction_ref_t instr_ref,
+    kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(begin_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
     REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
 
     *begin_label = KEFIR_ASMCMP_INDEX_NONE;
+    *end_label = *begin_label;
+
+    const struct kefir_opt_code_analysis_instruction_properties *instr_props;
+    REQUIRE_OK(
+        kefir_opt_code_analysis_instruction_properties(codegen_function->function_analysis, instr_ref, &instr_props));
+    REQUIRE(instr_props->reachable, KEFIR_OK);
+
+    const struct kefir_opt_instruction_liveness_interval *instr_liveness =
+        &codegen_function->function_analysis->liveness.intervals[instr_props->linear_position];
 
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&codegen_function->debug.instruction_location_labels,
-                                           (kefir_hashtree_key_t) block_begin_idx, &node);
+    kefir_result_t res = kefir_hashtree_at(&codegen_function->debug.opt_instruction_location_labels,
+                                           (kefir_hashtree_key_t) instr_liveness->range.begin, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *begin_label = (kefir_asmcmp_label_index_t) node->value;
     } else {
-        res = kefir_hashtree_upper_bound(&codegen_function->debug.instruction_location_labels,
-                                         (kefir_hashtree_key_t) block_begin_idx, &node);
+        res = kefir_hashtree_upper_bound(&codegen_function->debug.opt_instruction_location_labels,
+                                         (kefir_hashtree_key_t) instr_liveness->range.begin, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            if (node != NULL && (kefir_size_t) node->key >= block_begin_idx &&
-                (kefir_size_t) node->key < block_end_idx) {
+            if (node != NULL && (kefir_size_t) node->key >= instr_liveness->range.begin &&
+                (kefir_size_t) node->key < instr_liveness->range.end) {
                 *begin_label = (kefir_asmcmp_label_index_t) node->value;
             }
         }
     }
 
-    *end_label = *begin_label;
-    res = kefir_hashtree_at(&codegen_function->debug.instruction_location_labels, (kefir_hashtree_key_t) block_end_idx,
-                            &node);
+    res = kefir_hashtree_at(&codegen_function->debug.opt_instruction_location_labels,
+                            (kefir_hashtree_key_t) instr_liveness->range.end, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *end_label = (kefir_asmcmp_label_index_t) node->value;
     } else {
-        res = kefir_hashtree_lower_bound(&codegen_function->debug.instruction_location_labels,
-                                         (kefir_hashtree_key_t) block_end_idx, &node);
+        res = kefir_hashtree_lower_bound(&codegen_function->debug.opt_instruction_location_labels,
+                                         (kefir_hashtree_key_t) instr_liveness->range.end, &node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            if ((kefir_size_t) node->key >= block_begin_idx && (kefir_size_t) node->key < block_end_idx) {
+            if ((kefir_size_t) node->key >= instr_liveness->range.begin &&
+                (kefir_size_t) node->key < instr_liveness->range.end) {
                 *end_label = (kefir_asmcmp_label_index_t) node->value;
             }
         }
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
+    const struct kefir_codegen_amd64_function *codegen_function, kefir_size_t begin_index, kefir_size_t end_index,
+    kefir_asmcmp_label_index_t *begin_label, kefir_asmcmp_label_index_t *end_label) {
+    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
+    REQUIRE(begin_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
+    REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
+
+    kefir_asmcmp_label_index_t tmp_label;
+    *begin_label = KEFIR_ASMCMP_INDEX_NONE;
+    *end_label = KEFIR_ASMCMP_INDEX_NONE;
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res =
+        kefir_hashtree_at(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) begin_index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = kefir_hashtree_upper_bound(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) begin_index,
+                                         &node);
+        if (res == KEFIR_OK && (kefir_size_t) node->key >= end_index) {
+            res = KEFIR_NOT_FOUND;
+            node = NULL;
+        }
+    }
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(
+            codegen_function, (kefir_opt_instruction_ref_t) node->value, begin_label, end_label));
+    }
+
+    res = kefir_hashtree_at(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) end_index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = kefir_hashtree_lower_bound(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) end_index,
+                                         &node);
+        if (res == KEFIR_OK && (kefir_size_t) node->key < begin_index) {
+            res = KEFIR_NOT_FOUND;
+            node = NULL;
+        }
+    }
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(
+            codegen_function, (kefir_opt_instruction_ref_t) node->value, &tmp_label, end_label));
     }
 
     return KEFIR_OK;

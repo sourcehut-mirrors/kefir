@@ -43,6 +43,7 @@ kefir_result_t kefir_amd64_dwarf_string(struct kefir_amd64_xasmgen *, const char
 kefir_result_t kefir_amd64_dwarf_uleb128(struct kefir_amd64_xasmgen *, kefir_uint64_t);
 kefir_result_t kefir_amd64_dwarf_sleb128(struct kefir_amd64_xasmgen *, kefir_int64_t);
 
+kefir_size_t kefir_amd64_dwarf_uleb128_length(kefir_uint64_t);
 kefir_size_t kefir_amd64_dwarf_sleb128_length(kefir_int64_t);
 
 kefir_result_t kefir_amd64_dwarf_attribute_abbrev(struct kefir_amd64_xasmgen *, kefir_dwarf_attribute_t,

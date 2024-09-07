@@ -173,19 +173,44 @@ kefir_result_t kefir_opt_code_debug_info_local_variable_has_refs(const struct ke
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_debug_info_local_variable_ref_iter(
-    const struct kefir_opt_code_debug_info *debug_info,
-    struct kefir_opt_code_debug_info_local_variable_ref_iterator *iter, kefir_opt_instruction_ref_t instr_ref,
+kefir_result_t kefir_opt_code_debug_info_local_variable_iter(
+    const struct kefir_opt_code_debug_info *debug_info, struct kefir_opt_code_debug_info_local_variable_iterator *iter,
     kefir_size_t *local_variable_ptr) {
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
     REQUIRE(iter != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                            "Expected valid pointer to optimizer debug information local variable iterator"));
+
+    struct kefir_hashtree_node *node = kefir_hashtree_iter(&debug_info->local_variable_refs, &iter->iter);
+    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(local_variable_ptr, (kefir_size_t) node->key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_debug_info_local_variable_next(
+    struct kefir_opt_code_debug_info_local_variable_iterator *iter, kefir_size_t *local_variable_ptr) {
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                            "Expected valid pointer to optimizer debug information local variable iterator"));
+
+    struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
+    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(local_variable_ptr, (kefir_size_t) node->key);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_debug_info_local_variable_ref_iter(
+    const struct kefir_opt_code_debug_info *debug_info,
+    struct kefir_opt_code_debug_info_local_variable_ref_iterator *iter, kefir_size_t local_variable,
+    kefir_opt_instruction_ref_t *instr_ref_ptr) {
+    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                             "Expected valid pointer to optimizer debug information local variable ref iterator"));
-    REQUIRE(instr_ref != KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction reference"));
 
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&debug_info->local_variable_refs, (kefir_hashtree_key_t) instr_ref, &node);
+    kefir_result_t res =
+        kefir_hashtree_at(&debug_info->local_variable_refs, (kefir_hashtree_key_t) local_variable, &node);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find request instruction reference debug information");
     }
@@ -193,16 +218,16 @@ kefir_result_t kefir_opt_code_debug_info_local_variable_ref_iter(
     ASSIGN_DECL_CAST(struct local_variable_refs *, refs, node->value);
 
     REQUIRE_OK(kefir_hashtreeset_iter(&refs->refs, &iter->iter));
-    ASSIGN_PTR(local_variable_ptr, (kefir_size_t) iter->iter.entry);
+    ASSIGN_PTR(instr_ref_ptr, (kefir_opt_instruction_ref_t) iter->iter.entry);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_debug_info_local_variable_ref_next(
-    struct kefir_opt_code_debug_info_local_variable_ref_iterator *iter, kefir_size_t *local_variable_ptr) {
+    struct kefir_opt_code_debug_info_local_variable_ref_iterator *iter, kefir_opt_instruction_ref_t *instr_ref_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                           "Expected valid optimizer debug information local variable ref iterator"));
 
     REQUIRE_OK(kefir_hashtreeset_next(&iter->iter));
-    ASSIGN_PTR(local_variable_ptr, (kefir_size_t) iter->iter.entry);
+    ASSIGN_PTR(instr_ref_ptr, (kefir_opt_instruction_ref_t) iter->iter.entry);
     return KEFIR_OK;
 }

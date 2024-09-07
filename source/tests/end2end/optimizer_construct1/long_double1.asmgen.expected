@@ -27,8 +27,7 @@
                                         "end": 1
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -66,8 +65,7 @@
                                         "end": 2
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -87,6 +85,9 @@
                 ],
                 "properties": {
                     "linear_length": 2
+                },
+                "debug": {
+                    "local_variables": []
                 }
             }
         },
@@ -117,8 +118,7 @@
                                         "end": 1
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -157,8 +157,7 @@
                                         "end": 4
                                     }
                                 },
-                                "ir_instruction": 0,
-                                "local_variables": []
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 2,
@@ -174,8 +173,7 @@
                                         "end": 4
                                     }
                                 },
-                                "ir_instruction": 2,
-                                "local_variables": []
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 3,
@@ -195,8 +193,7 @@
                                         "end": 4
                                     }
                                 },
-                                "ir_instruction": 3,
-                                "local_variables": []
+                                "ir_instruction": 3
                             },
                             {
                                 "id": 4,
@@ -212,8 +209,7 @@
                                         "end": 5
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -233,6 +229,9 @@
                 ],
                 "properties": {
                     "linear_length": 5
+                },
+                "debug": {
+                    "local_variables": []
                 }
             }
         },
@@ -263,8 +262,7 @@
                                         "end": 1
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -302,8 +300,7 @@
                                         "end": 4
                                     }
                                 },
-                                "ir_instruction": 0,
-                                "local_variables": []
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 2,
@@ -319,8 +316,7 @@
                                         "end": 4
                                     }
                                 },
-                                "ir_instruction": 1,
-                                "local_variables": []
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 3,
@@ -339,8 +335,7 @@
                                         "end": 5
                                     }
                                 },
-                                "ir_instruction": 2,
-                                "local_variables": []
+                                "ir_instruction": 2
                             },
                             {
                                 "id": 4,
@@ -356,8 +351,7 @@
                                         "end": 6
                                     }
                                 },
-                                "ir_instruction": 3,
-                                "local_variables": []
+                                "ir_instruction": 3
                             },
                             {
                                 "id": 5,
@@ -373,8 +367,7 @@
                                         "end": 7
                                     }
                                 },
-                                "ir_instruction": 4,
-                                "local_variables": []
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 6,
@@ -393,8 +386,7 @@
                                         "end": 7
                                     }
                                 },
-                                "ir_instruction": 5,
-                                "local_variables": []
+                                "ir_instruction": 5
                             }
                         ],
                         "public_labels": [],
@@ -435,8 +427,7 @@
                                         "end": 8
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -457,6 +448,9 @@
                 ],
                 "properties": {
                     "linear_length": 8
+                },
+                "debug": {
+                    "local_variables": []
                 }
             }
         },
@@ -487,8 +481,7 @@
                                         "end": 1
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -526,8 +519,7 @@
                                         "end": 2
                                     }
                                 },
-                                "ir_instruction": null,
-                                "local_variables": []
+                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -547,6 +539,9 @@
                 ],
                 "properties": {
                     "linear_length": 2
+                },
+                "debug": {
+                    "local_variables": []
                 }
             }
         }

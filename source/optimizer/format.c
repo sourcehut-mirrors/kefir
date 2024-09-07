@@ -407,20 +407,6 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
         }
-
-        REQUIRE_OK(kefir_json_output_object_key(json, "local_variables"));
-        REQUIRE_OK(kefir_json_output_array_begin(json));
-        struct kefir_opt_code_debug_info_local_variable_ref_iterator iter;
-        kefir_size_t local_variable;
-        kefir_result_t res;
-        for (res = kefir_opt_code_debug_info_local_variable_ref_iter(debug_info, &iter, instr->id, &local_variable);
-             res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&iter, &local_variable)) {
-            REQUIRE_OK(kefir_json_output_uinteger(json, local_variable));
-        }
-        if (res != KEFIR_ITERATOR_END && res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
-        }
-        REQUIRE_OK(kefir_json_output_array_end(json));
     }
 
     REQUIRE_OK(kefir_json_output_object_end(json));
@@ -678,6 +664,44 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
+    }
+
+    if (debug_info != NULL) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "debug"));
+        REQUIRE_OK(kefir_json_output_object_begin(json));
+
+        REQUIRE_OK(kefir_json_output_object_key(json, "local_variables"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        struct kefir_opt_code_debug_info_local_variable_iterator iter;
+        struct kefir_opt_code_debug_info_local_variable_ref_iterator ref_iter;
+        kefir_size_t local_variable;
+        kefir_opt_instruction_ref_t instr_ref;
+        kefir_result_t res;
+
+        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &iter, &local_variable); res == KEFIR_OK;
+             res = kefir_opt_code_debug_info_local_variable_next(&iter, &local_variable)) {
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "variable"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, local_variable));
+            REQUIRE_OK(kefir_json_output_object_key(json, "refs"));
+            REQUIRE_OK(kefir_json_output_array_begin(json));
+            for (res = kefir_opt_code_debug_info_local_variable_ref_iter(debug_info, &ref_iter, local_variable,
+                                                                         &instr_ref);
+                 res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&ref_iter, &instr_ref)) {
+                REQUIRE_OK(kefir_json_output_uinteger(json, instr_ref));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
+            REQUIRE_OK(kefir_json_output_array_end(json));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+
+        REQUIRE_OK(kefir_json_output_object_end(json));
     }
 
     REQUIRE_OK(kefir_json_output_object_end(json));
