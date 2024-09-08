@@ -163,6 +163,8 @@ __kefir_debug_abbrev_section_entry_6:
     .byte 24
     .byte 73
     .byte 19
+    .byte 63
+    .byte 12
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_7:
@@ -193,6 +195,8 @@ __kefir_debug_abbrev_section_entry_9:
     .byte 19
     .byte 2
     .byte 23
+    .byte 63
+    .byte 12
     .byte 0
     .byte 0
     .byte 0
@@ -239,11 +243,13 @@ __kefir_debug_info_section_entry_8:
     .byte 118
     .byte 0
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
+    .byte 1
 __kefir_debug_info_section_entry_9:
     .byte 9
     .ascii "__func__\000"
     .long __kefir_debug_info_section_entry_10 - __kefir_debug_info_section
     .long __kefir_debug_loclist_section_entry_1
+    .byte 0
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2

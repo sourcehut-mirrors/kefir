@@ -114,7 +114,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(
     for (const char *identifier_name = kefir_ir_module_identifiers_iter(ir_module, &iter, &identifier);
          identifier_name != NULL; identifier_name = kefir_ir_module_identifiers_next(&iter, &identifier)) {
 
-        if (identifier->type == KEFIR_IR_IDENTIFIER_FUNCTION || identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_IMPORT ||
+        if (identifier->type == KEFIR_IR_IDENTIFIER_FUNCTION ||
             identifier->debug_info.type == KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
             continue;
         }

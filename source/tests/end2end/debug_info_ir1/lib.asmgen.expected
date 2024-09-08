@@ -2325,6 +2325,10 @@
                     {
                         "tag": "code_end",
                         "value": 33
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
                     }
                 ],
                 "children": [
@@ -2408,6 +2412,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 2
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -2435,6 +2443,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 3
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -2462,6 +2474,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 18
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -2489,6 +2505,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 19
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -2516,6 +2536,10 @@
                             {
                                 "tag": "global_variable",
                                 "value": 66
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []

@@ -74,6 +74,7 @@ typedef enum kefir_ir_debug_entry_attribute_tag {
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_EXTERNAL,
     // Auxillary
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT
 } kefir_ir_debug_entry_attribute_tag_t;
@@ -97,6 +98,7 @@ typedef struct kefir_ir_debug_entry_attribute {
         kefir_id_t global_variable;
         kefir_id_t thread_local_variable;
         kefir_size_t parameter;
+        kefir_bool_t external;
     };
 } kefir_ir_debug_entry_attribute_t;
 
@@ -151,6 +153,8 @@ typedef struct kefir_ir_debug_entries {
                                              .thread_local_variable = (_location)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_PARAMETER(_param) \
     ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER, .parameter = (_param)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(_external) \
+    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_EXTERNAL, .external = (_external)})
 
 typedef struct kefir_ir_debug_source_location {
     struct kefir_source_location location;

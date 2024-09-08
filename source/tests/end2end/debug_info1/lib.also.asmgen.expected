@@ -137,6 +137,8 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 24
     .byte 73
     .byte 19
+    .byte 63
+    .byte 12
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_4:
@@ -171,6 +173,8 @@ __kefir_debug_abbrev_section_entry_6:
     .byte 19
     .byte 2
     .byte 23
+    .byte 63
+    .byte 12
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_7:
@@ -217,6 +221,7 @@ __kefir_debug_info_section_entry_2:
     .byte 118
     .byte 0
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
+    .byte 1
 __kefir_debug_info_section_entry_4:
     .byte 4
     .ascii "x\000"
@@ -262,16 +267,19 @@ __kefir_debug_info_section_entry_12:
     .byte 0
     .byte 0
     .byte 0
+    .byte 0
 __kefir_debug_info_section_entry_13:
     .byte 6
     .ascii "x\000"
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .long __kefir_debug_loclist_section_entry_3
+    .byte 0
 __kefir_debug_info_section_entry_14:
     .byte 6
     .ascii "__func__\000"
     .long __kefir_debug_info_section_entry_15 - __kefir_debug_info_section
     .long __kefir_debug_loclist_section_entry_4
+    .byte 0
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2

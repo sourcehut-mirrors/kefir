@@ -263,6 +263,7 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER:
+        case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_EXTERNAL:
             // Intentionally left blank
             break;
 

@@ -548,6 +548,10 @@
                     {
                         "tag": "code_end",
                         "value": 41
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
                     }
                 ],
                 "children": [
@@ -649,6 +653,10 @@
                                                             {
                                                                 "tag": "local_variable",
                                                                 "value": 6
+                                                            },
+                                                            {
+                                                                "tag": "external",
+                                                                "value": false
                                                             }
                                                         ],
                                                         "children": []
@@ -680,6 +688,10 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": 4
+                                            },
+                                            {
+                                                "tag": "external",
+                                                "value": false
                                             }
                                         ],
                                         "children": []
@@ -707,6 +719,10 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": 5
+                                            },
+                                            {
+                                                "tag": "external",
+                                                "value": false
                                             }
                                         ],
                                         "children": []
@@ -750,6 +766,10 @@
                                             {
                                                 "tag": "local_variable",
                                                 "value": 7
+                                            },
+                                            {
+                                                "tag": "external",
+                                                "value": false
                                             }
                                         ],
                                         "children": []
@@ -781,6 +801,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 0
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -808,6 +832,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 1
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -835,6 +863,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 2
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -862,6 +894,10 @@
                             {
                                 "tag": "local_variable",
                                 "value": 3
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
@@ -889,6 +925,10 @@
                             {
                                 "tag": "global_variable",
                                 "value": 51
+                            },
+                            {
+                                "tag": "external",
+                                "value": false
                             }
                         ],
                         "children": []
