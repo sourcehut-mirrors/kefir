@@ -150,7 +150,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
 
             case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
                 REQUIRE_OK(
-                    kefir_codegen_amd64_dwarf_generate_local_variable(mem, codegen_function, context, child_id, NULL));
+                    kefir_codegen_amd64_dwarf_generate_variable(mem, codegen_function, context, child_id, NULL));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER:

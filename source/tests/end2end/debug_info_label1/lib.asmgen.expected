@@ -34,14 +34,14 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-.loc 0 25 9
+.loc 0 25 5
 _kefir_func_test1_label5:
     call test2@PLT
-.loc 0 28 13
+.loc 0 28 9
 _kefir_func_test1_label6:
 _kefir_func_test1_label2:
     call test2@PLT
-.loc 0 31 17
+.loc 0 31 13
 _kefir_func_test1_label7:
     call test2@PLT
 .loc 0 26 5
@@ -116,6 +116,51 @@ __kefir_debug_abbrev_section_entry_5:
     .byte 7
     .byte 0
     .byte 0
+__kefir_debug_abbrev_section_entry_6:
+    .byte 6
+    .byte 1
+    .byte 1
+    .byte 73
+    .byte 19
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_7:
+    .byte 7
+    .byte 36
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 11
+    .byte 11
+    .byte 136
+    .byte 1
+    .byte 11
+    .byte 62
+    .byte 11
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_8:
+    .byte 8
+    .byte 33
+    .byte 0
+    .byte 73
+    .byte 19
+    .byte 55
+    .byte 15
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_9:
+    .byte 9
+    .byte 52
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 73
+    .byte 19
+    .byte 2
+    .byte 23
+    .byte 0
+    .byte 0
     .byte 0
 
 .section .debug_info
@@ -174,11 +219,36 @@ __kefir_debug_info_section_entry_10:
     .byte 0
     .byte 0
     .byte 0
+__kefir_debug_info_section_entry_11:
+    .byte 9
+    .ascii "__func__\000"
+    .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
+    .long __kefir_debug_loclist_section_entry_1
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
     .ascii "void\000"
     .byte 0
+__kefir_debug_info_section_entry_12:
+    .byte 6
+    .long __kefir_debug_info_section_entry_13 - __kefir_debug_info_section
+__kefir_debug_info_section_entry_14:
+    .byte 8
+    .long __kefir_debug_info_section_entry_15 - __kefir_debug_info_section
+    .byte 6
+    .byte 0
+__kefir_debug_info_section_entry_13:
+    .byte 7
+    .ascii "char\000"
+    .byte 1
+    .byte 1
+    .byte 6
+__kefir_debug_info_section_entry_15:
+    .byte 7
+    .ascii "unsigned long\000"
+    .byte 8
+    .byte 8
+    .byte 7
     .byte 0
     .byte 0
 __kefir_debug_info_section_end:
@@ -191,6 +261,8 @@ __kefir_debug_loclists_section_begin:
     .byte 8
     .byte 0
     .long 0
+__kefir_debug_loclist_section_entry_1:
+    .byte 0
 __kefir_debug_loclists_section_end:
 
 .section .debug_line

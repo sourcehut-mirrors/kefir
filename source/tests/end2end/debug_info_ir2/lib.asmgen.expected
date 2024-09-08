@@ -443,6 +443,25 @@
                 "children": []
             },
             {
+                "identifier": 7,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
                 "identifier": 12,
                 "tag": "type_signed_int",
                 "attributes": [
@@ -846,6 +865,33 @@
                             }
                         ],
                         "children": []
+                    },
+                    {
+                        "identifier": 92,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "__func__"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 93
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 3
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 41
+                            },
+                            {
+                                "tag": "global_variable",
+                                "value": 51
+                            }
+                        ],
+                        "children": []
                     }
                 ]
             },
@@ -924,6 +970,41 @@
                     }
                 ],
                 "children": []
+            },
+            {
+                "identifier": 93,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 6
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 1
+                    },
+                    {
+                        "tag": "type",
+                        "value": 81
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 94,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "length",
+                                "value": 6
+                            },
+                            {
+                                "tag": "type",
+                                "value": 7
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
             }
         ]
     },

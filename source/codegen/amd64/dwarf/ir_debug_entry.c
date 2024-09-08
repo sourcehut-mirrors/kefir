@@ -767,6 +767,8 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
                 REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, ir_attr->name));
+            } else {
+                REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, ""));
             }
 
             struct kefir_ir_debug_entry_child_iterator iter;

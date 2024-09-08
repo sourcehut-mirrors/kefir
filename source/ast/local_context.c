@@ -206,7 +206,7 @@ static kefir_result_t context_define_identifier(
                 REQUIRE(declaration, KEFIR_SET_SOURCE_ERROR(
                                          KEFIR_ANALYSIS_ERROR, location,
                                          "External thread local identifier in block scope cannot have initializer"));
-                REQUIRE_OK(kefir_ast_local_context_declare_external(mem, local_ctx, identifier, type, alignment,
+                REQUIRE_OK(kefir_ast_local_context_declare_external_thread_local(mem, local_ctx, identifier, type, alignment,
                                                                     attributes, location, scoped_id));
                 break;
 

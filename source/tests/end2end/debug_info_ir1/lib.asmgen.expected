@@ -2492,6 +2492,33 @@
                             }
                         ],
                         "children": []
+                    },
+                    {
+                        "identifier": 148,
+                        "tag": "variable",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "__func__"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 149
+                            },
+                            {
+                                "tag": "code_begin",
+                                "value": 9
+                            },
+                            {
+                                "tag": "code_end",
+                                "value": 33
+                            },
+                            {
+                                "tag": "global_variable",
+                                "value": 66
+                            }
+                        ],
+                        "children": []
                     }
                 ]
             },
@@ -2585,6 +2612,41 @@
                         "identifier": 147,
                         "tag": "array_subrange",
                         "attributes": [
+                            {
+                                "tag": "type",
+                                "value": 8
+                            }
+                        ],
+                        "children": []
+                    }
+                ]
+            },
+            {
+                "identifier": 149,
+                "tag": "type_array",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 3
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 1
+                    },
+                    {
+                        "tag": "type",
+                        "value": 1
+                    }
+                ],
+                "children": [
+                    {
+                        "identifier": 150,
+                        "tag": "array_subrange",
+                        "attributes": [
+                            {
+                                "tag": "length",
+                                "value": 3
+                            },
                             {
                                 "tag": "type",
                                 "value": 8

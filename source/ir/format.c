@@ -1385,6 +1385,18 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
                 REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable));
                 break;
 
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE:
+                REQUIRE_OK(kefir_json_output_string(json, "global_variable"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->global_variable));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE:
+                REQUIRE_OK(kefir_json_output_string(json, "thread_local_variable"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->thread_local_variable));
+                break;
+
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER:
                 REQUIRE_OK(kefir_json_output_string(json, "parameter"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
