@@ -112,6 +112,12 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 24
     .byte 73
     .byte 19
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_4:
@@ -225,6 +231,9 @@ __kefir_debug_info_section_entry_2:
     .quad a@dtpoff
     .byte 155
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
+    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
+    .quad 21
+    .quad 19
 __kefir_debug_info_section_entry_4:
     .byte 3
     .ascii "b\000"
@@ -234,6 +243,9 @@ __kefir_debug_info_section_entry_4:
     .quad b@dtpoff
     .byte 155
     .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
+    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
+    .quad 22
+    .quad 28
 __kefir_debug_info_section_entry_6:
     .byte 3
     .ascii "c\000"
@@ -243,6 +255,9 @@ __kefir_debug_info_section_entry_6:
     .quad c@dtpoff
     .byte 155
     .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
+    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
+    .quad 23
+    .quad 20
 __kefir_debug_info_section_entry_8:
     .byte 6
     .ascii "getb\000"

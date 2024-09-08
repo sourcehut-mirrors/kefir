@@ -7,7 +7,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 0
+                "entry": 1
             }
         },
         {
@@ -17,7 +17,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 1
+                "entry": 3
             }
         },
         {
@@ -27,7 +27,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 2
+                "entry": 5
             }
         },
         {
@@ -37,7 +37,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 3
+                "entry": 7
             }
         },
         {
@@ -47,7 +47,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 4
+                "entry": 9
             }
         },
         {
@@ -57,7 +57,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 5
+                "entry": 11
             }
         },
         {
@@ -67,7 +67,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 6
+                "entry": 13
             }
         },
         {
@@ -77,7 +77,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 7
+                "entry": 15
             }
         },
         {
@@ -87,7 +87,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 8
+                "entry": 17
             }
         },
         {
@@ -97,7 +97,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 9
+                "entry": 20
             }
         },
         {
@@ -107,7 +107,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 11
+                "entry": 22
             }
         },
         {
@@ -117,7 +117,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 14
+                "entry": 28
             }
         },
         {
@@ -127,7 +127,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 16
+                "entry": 58
             }
         },
         {
@@ -137,7 +137,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 68
+                "entry": null
             }
         },
         {
@@ -147,7 +147,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 56
+                "entry": 71
             }
         },
         {
@@ -157,7 +157,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 19
+                "entry": 72
             }
         },
         {
@@ -167,7 +167,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 57
+                "entry": 74
             }
         },
         {
@@ -177,7 +177,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 58
+                "entry": 76
             }
         },
         {
@@ -187,7 +187,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 32
+                "entry": 77
             }
         },
         {
@@ -197,7 +197,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 59
+                "entry": 79
             }
         },
         {
@@ -207,7 +207,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 60
+                "entry": 81
             }
         },
         {
@@ -217,7 +217,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 61
+                "entry": 83
             }
         },
         {
@@ -227,7 +227,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 62
+                "entry": 85
             }
         },
         {
@@ -237,7 +237,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 63
+                "entry": 87
             }
         }
     ],
@@ -1001,7 +1001,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 134,
+            "subroutine_id": 88,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
@@ -1058,6 +1058,41 @@
             },
             {
                 "identifier": 1,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a1"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 0
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 1
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 21
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 7
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 2,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -1076,7 +1111,42 @@
                 "children": []
             },
             {
-                "identifier": 2,
+                "identifier": 3,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a2"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 2
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 4
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 22
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 6
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 4,
                 "tag": "type_unsigned_character",
                 "attributes": [
                     {
@@ -1095,7 +1165,42 @@
                 "children": []
             },
             {
-                "identifier": 3,
+                "identifier": 5,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a3"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 4
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 6
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 23
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 15
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 6,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -1114,7 +1219,42 @@
                 "children": []
             },
             {
-                "identifier": 4,
+                "identifier": 7,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a4"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 6
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 8
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 24
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 8,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1133,7 +1273,42 @@
                 "children": []
             },
             {
-                "identifier": 5,
+                "identifier": 9,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a5"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 8
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 10
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 25
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 10,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1152,7 +1327,42 @@
                 "children": []
             },
             {
-                "identifier": 6,
+                "identifier": 11,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a6"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 10
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 12
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 26
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 12,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1171,7 +1381,42 @@
                 "children": []
             },
             {
-                "identifier": 7,
+                "identifier": 13,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a7"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 12
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 14
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 27
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 14
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 14,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1190,7 +1435,42 @@
                 "children": []
             },
             {
-                "identifier": 8,
+                "identifier": 15,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a8"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 14
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 16
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 28
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 16,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1209,7 +1489,42 @@
                 "children": []
             },
             {
-                "identifier": 9,
+                "identifier": 17,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a9"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 16
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 18
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 29
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 15
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 18,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1222,13 +1537,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 10
+                        "value": 19
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 10,
+                "identifier": 19,
                 "tag": "type_void",
                 "attributes": [
                     {
@@ -1239,7 +1554,42 @@
                 "children": []
             },
             {
-                "identifier": 11,
+                "identifier": 20,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "b1"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 18
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 20
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 40
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 6
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 21,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1252,13 +1602,48 @@
                     },
                     {
                         "tag": "type",
-                        "value": 1
+                        "value": 2
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 14,
+                "identifier": 22,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "b2"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 21
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 21
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 41
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 12
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 26,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1271,12 +1656,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 7
+                        "value": 14
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 15,
+                        "identifier": 27,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -1285,7 +1670,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 8
+                                "value": 16
                             }
                         ],
                         "children": []
@@ -1293,7 +1678,42 @@
                 ]
             },
             {
-                "identifier": 16,
+                "identifier": 28,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "b4"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 26
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 23
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 43
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 5
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 29,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1311,7 +1731,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 17,
+                        "identifier": 30,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1332,13 +1752,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 7
+                                "value": 14
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 18,
+                        "identifier": 31,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1355,13 +1775,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 32
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 20,
+                        "identifier": 33,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1378,13 +1798,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 5
+                                "value": 10
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 21,
+                        "identifier": 34,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1405,13 +1825,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 22
+                                "value": 35
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 33,
+                        "identifier": 46,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1432,13 +1852,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 1
+                                "value": 2
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 34,
+                        "identifier": 47,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1459,13 +1879,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 35
+                                "value": 48
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 36,
+                        "identifier": 49,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1486,13 +1906,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 37
+                                "value": 50
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 42,
+                        "identifier": 55,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1513,7 +1933,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 43
+                                "value": 56
                             }
                         ],
                         "children": []
@@ -1521,7 +1941,7 @@
                 ]
             },
             {
-                "identifier": 19,
+                "identifier": 32,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -1540,7 +1960,7 @@
                 "children": []
             },
             {
-                "identifier": 22,
+                "identifier": 35,
                 "tag": "type_union",
                 "attributes": [
                     {
@@ -1554,7 +1974,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 23,
+                        "identifier": 36,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1571,13 +1991,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 24
+                                "value": 37
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 27,
+                        "identifier": 40,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1594,7 +2014,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 28
+                                "value": 41
                             }
                         ],
                         "children": []
@@ -1602,7 +2022,7 @@
                 ]
             },
             {
-                "identifier": 24,
+                "identifier": 37,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1616,7 +2036,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 25,
+                        "identifier": 38,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1637,13 +2057,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 7
+                                "value": 14
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 26,
+                        "identifier": 39,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1664,7 +2084,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 32
                             }
                         ],
                         "children": []
@@ -1672,7 +2092,7 @@
                 ]
             },
             {
-                "identifier": 28,
+                "identifier": 41,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1686,7 +2106,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 29,
+                        "identifier": 42,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1707,7 +2127,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 30
+                                "value": 43
                             }
                         ],
                         "children": []
@@ -1715,7 +2135,7 @@
                 ]
             },
             {
-                "identifier": 30,
+                "identifier": 43,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1728,12 +2148,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 32
+                        "value": 45
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 31,
+                        "identifier": 44,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -1742,7 +2162,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 8
+                                "value": 16
                             }
                         ],
                         "children": []
@@ -1750,7 +2170,7 @@
                 ]
             },
             {
-                "identifier": 32,
+                "identifier": 45,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -1769,7 +2189,7 @@
                 "children": []
             },
             {
-                "identifier": 35,
+                "identifier": 48,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1782,13 +2202,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 16
+                        "value": 29
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 37,
+                "identifier": 50,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1801,18 +2221,18 @@
                     },
                     {
                         "tag": "type",
-                        "value": 38
+                        "value": 51
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 38,
+                "identifier": 51,
                 "tag": "type_function",
                 "attributes": [
                     {
                         "tag": "type",
-                        "value": 7
+                        "value": 14
                     },
                     {
                         "tag": "function_prototyped",
@@ -1821,34 +2241,34 @@
                 ],
                 "children": [
                     {
-                        "identifier": 39,
+                        "identifier": 52,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 7
+                                "value": 14
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 40,
+                        "identifier": 53,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 32
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 41,
+                        "identifier": 54,
                         "tag": "function_parameter",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 5
+                                "value": 10
                             }
                         ],
                         "children": []
@@ -1856,22 +2276,22 @@
                 ]
             },
             {
-                "identifier": 43,
+                "identifier": 56,
                 "tag": "type_array",
                 "attributes": [
                     {
                         "tag": "type",
-                        "value": 7
+                        "value": 14
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 44,
+                        "identifier": 57,
                         "tag": "array_subrange",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 8
+                                "value": 16
                             }
                         ],
                         "children": []
@@ -1879,7 +2299,42 @@
                 ]
             },
             {
-                "identifier": 45,
+                "identifier": 58,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "c1"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 29
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 38
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 62
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 3
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 59,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1898,7 +2353,7 @@
                 "children": []
             },
             {
-                "identifier": 46,
+                "identifier": 60,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -1917,7 +2372,7 @@
                 "children": []
             },
             {
-                "identifier": 47,
+                "identifier": 61,
                 "tag": "type_void",
                 "attributes": [
                     {
@@ -1928,7 +2383,7 @@
                 "children": []
             },
             {
-                "identifier": 48,
+                "identifier": 62,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1941,13 +2396,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 47
+                        "value": 61
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 49,
+                "identifier": 63,
                 "tag": "type_structure",
                 "attributes": [
                     {
@@ -1965,7 +2420,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 50,
+                        "identifier": 64,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -1986,13 +2441,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 46
+                                "value": 60
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 51,
+                        "identifier": 65,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -2013,13 +2468,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 46
+                                "value": 60
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 52,
+                        "identifier": 66,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -2040,13 +2495,13 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 48
+                                "value": 62
                             }
                         ],
                         "children": []
                     },
                     {
-                        "identifier": 53,
+                        "identifier": 67,
                         "tag": "structure_member",
                         "attributes": [
                             {
@@ -2067,7 +2522,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 48
+                                "value": 62
                             }
                         ],
                         "children": []
@@ -2075,7 +2530,7 @@
                 ]
             },
             {
-                "identifier": 54,
+                "identifier": 68,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -2088,12 +2543,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 49
+                        "value": 63
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 55,
+                        "identifier": 69,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -2102,7 +2557,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 45
+                                "value": 59
                             }
                         ],
                         "children": []
@@ -2110,7 +2565,7 @@
                 ]
             },
             {
-                "identifier": 56,
+                "identifier": 70,
                 "tag": "typedef",
                 "attributes": [
                     {
@@ -2119,13 +2574,83 @@
                     },
                     {
                         "tag": "type",
-                        "value": 54
+                        "value": 68
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 57,
+                "identifier": 71,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "e1"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 70
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 39
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 73
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 19
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 72,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a10"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 32
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 40
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 30
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 73,
                 "tag": "type_unsigned_int",
                 "attributes": [
                     {
@@ -2144,7 +2669,42 @@
                 "children": []
             },
             {
-                "identifier": 58,
+                "identifier": 74,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a11"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 73
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 42
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 31
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 20
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 75,
                 "tag": "type_signed_int",
                 "attributes": [
                     {
@@ -2163,7 +2723,77 @@
                 "children": []
             },
             {
-                "identifier": 59,
+                "identifier": 76,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a12"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 75
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 44
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 32
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 18
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 77,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a13"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 45
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 45
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 33
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 7
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 78,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -2182,7 +2812,42 @@
                 "children": []
             },
             {
-                "identifier": 60,
+                "identifier": 79,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a14"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 78
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 47
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 34
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 80,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -2201,7 +2866,42 @@
                 "children": []
             },
             {
-                "identifier": 61,
+                "identifier": 81,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a16"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 80
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 49
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 35
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 82,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -2220,7 +2920,42 @@
                 "children": []
             },
             {
-                "identifier": 62,
+                "identifier": 83,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a17"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 82
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 51
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 36
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 16
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 84,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -2239,7 +2974,42 @@
                 "children": []
             },
             {
-                "identifier": 63,
+                "identifier": 85,
+                "tag": "variable",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "a18"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 84
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 53
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 37
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 17
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 86,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -2258,56 +3028,42 @@
                 "children": []
             },
             {
-                "identifier": 68,
-                "tag": "type_function",
+                "identifier": 87,
+                "tag": "variable",
                 "attributes": [
                     {
-                        "tag": "type",
-                        "value": 32
+                        "tag": "name",
+                        "value": "a19"
                     },
                     {
-                        "tag": "function_prototyped",
-                        "value": false
+                        "tag": "type",
+                        "value": 86
+                    },
+                    {
+                        "tag": "global_variable",
+                        "value": 55
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 38
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 22
                     }
                 ],
-                "children": [
-                    {
-                        "identifier": 69,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "name",
-                                "value": "a"
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 70,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "name",
-                                "value": "b"
-                            }
-                        ],
-                        "children": []
-                    },
-                    {
-                        "identifier": 71,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "name",
-                                "value": "c"
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
+                "children": []
             },
             {
-                "identifier": 134,
+                "identifier": 88,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -2316,7 +3072,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 32
+                        "value": 45
                     },
                     {
                         "tag": "code_begin",
@@ -2345,7 +3101,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 135,
+                        "identifier": 89,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2354,7 +3110,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 32
                             },
                             {
                                 "tag": "parameter",
@@ -2364,7 +3120,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 136,
+                        "identifier": 90,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2373,7 +3129,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 16
+                                "value": 29
                             },
                             {
                                 "tag": "parameter",
@@ -2383,7 +3139,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 137,
+                        "identifier": 91,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -2392,7 +3148,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 138
+                                "value": 92
                             },
                             {
                                 "tag": "parameter",
@@ -2402,7 +3158,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 140,
+                        "identifier": 94,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2411,7 +3167,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 19
+                                "value": 32
                             },
                             {
                                 "tag": "code_begin",
@@ -2445,7 +3201,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 141,
+                        "identifier": 95,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2454,7 +3210,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 16
+                                "value": 29
                             },
                             {
                                 "tag": "code_begin",
@@ -2488,7 +3244,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 142,
+                        "identifier": 96,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2497,7 +3253,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 143
+                                "value": 97
                             },
                             {
                                 "tag": "code_begin",
@@ -2531,7 +3287,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 145,
+                        "identifier": 99,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2540,7 +3296,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 146
+                                "value": 100
                             },
                             {
                                 "tag": "code_begin",
@@ -2574,7 +3330,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 148,
+                        "identifier": 102,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2583,7 +3339,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 149
+                                "value": 103
                             },
                             {
                                 "tag": "code_begin",
@@ -2595,7 +3351,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 66
+                                "value": 90
                             },
                             {
                                 "tag": "external",
@@ -2607,7 +3363,7 @@
                 ]
             },
             {
-                "identifier": 138,
+                "identifier": 92,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -2620,13 +3376,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 139
+                        "value": 93
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 139,
+                "identifier": 93,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -2639,13 +3395,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 10
+                        "value": 19
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 143,
+                "identifier": 97,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -2658,13 +3414,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 144
+                        "value": 98
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 144,
+                "identifier": 98,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -2677,28 +3433,28 @@
                     },
                     {
                         "tag": "type",
-                        "value": 10
+                        "value": 19
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 146,
+                "identifier": 100,
                 "tag": "type_array",
                 "attributes": [
                     {
                         "tag": "type",
-                        "value": 7
+                        "value": 14
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 147,
+                        "identifier": 101,
                         "tag": "array_subrange",
                         "attributes": [
                             {
                                 "tag": "type",
-                                "value": 8
+                                "value": 16
                             }
                         ],
                         "children": []
@@ -2706,7 +3462,7 @@
                 ]
             },
             {
-                "identifier": 149,
+                "identifier": 103,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -2719,12 +3475,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 1
+                        "value": 2
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 150,
+                        "identifier": 104,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -2733,7 +3489,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 8
+                                "value": 16
                             }
                         ],
                         "children": []

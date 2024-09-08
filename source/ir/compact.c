@@ -568,10 +568,10 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
                                                    (void *) ir_identifier->alias));
             }
 
-            if (ir_identifier->debug_info.type != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+            if (ir_identifier->debug_info.entry != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
                 const struct kefir_ir_debug_entry *entry;
                 REQUIRE_OK(
-                    kefir_ir_debug_entry_get(&module->debug_info.entries, ir_identifier->debug_info.type, &entry));
+                    kefir_ir_debug_entry_get(&module->debug_info.entries, ir_identifier->debug_info.entry, &entry));
                 REQUIRE_OK(compact_debug_entry(mem, module, params, entry));
             }
         }

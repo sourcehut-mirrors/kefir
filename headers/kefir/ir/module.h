@@ -57,7 +57,7 @@ typedef struct kefir_ir_identifier {
     kefir_ir_identifier_visibility_t visibility;
     const char *alias;
     struct {
-        kefir_ir_debug_entry_id_t type;
+        kefir_ir_debug_entry_id_t entry;
     } debug_info;
 } kefir_ir_identifier_t;
 

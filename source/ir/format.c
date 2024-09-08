@@ -725,9 +725,9 @@ static kefir_result_t format_identifiers(struct kefir_json_output *json, const s
         if (debug_info) {
             REQUIRE_OK(kefir_json_output_object_key(json, "debug_info"));
             REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-            if (identifier->debug_info.type != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
-                REQUIRE_OK(kefir_json_output_uinteger(json, identifier->debug_info.type));
+            REQUIRE_OK(kefir_json_output_object_key(json, "entry"));
+            if (identifier->debug_info.entry != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+                REQUIRE_OK(kefir_json_output_uinteger(json, identifier->debug_info.entry));
             } else {
                 REQUIRE_OK(kefir_json_output_null(json));
             }

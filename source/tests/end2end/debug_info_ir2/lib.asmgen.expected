@@ -7,7 +7,7 @@
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "type": 0
+                "entry": null
             }
         }
     ],
@@ -272,7 +272,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 73,
+            "subroutine_id": 0,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
@@ -394,143 +394,6 @@
         "entries": [
             {
                 "identifier": 0,
-                "tag": "type_function",
-                "attributes": [
-                    {
-                        "tag": "type",
-                        "value": 1
-                    },
-                    {
-                        "tag": "function_prototyped",
-                        "value": true
-                    }
-                ],
-                "children": [
-                    {
-                        "identifier": 2,
-                        "tag": "function_parameter",
-                        "attributes": [
-                            {
-                                "tag": "name",
-                                "value": "a"
-                            },
-                            {
-                                "tag": "type",
-                                "value": 1
-                            }
-                        ],
-                        "children": []
-                    }
-                ]
-            },
-            {
-                "identifier": 1,
-                "tag": "type_signed_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "signed int"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 7,
-                "tag": "type_unsigned_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "unsigned long"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 12,
-                "tag": "type_signed_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "signed long"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 32,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "float"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 34,
-                "tag": "type_void",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "void"
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 54,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "double"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 73,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -568,7 +431,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 74,
+                        "identifier": 2,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -587,7 +450,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 75,
+                        "identifier": 3,
                         "tag": "lexical_block",
                         "attributes": [
                             {
@@ -601,7 +464,7 @@
                         ],
                         "children": [
                             {
-                                "identifier": 76,
+                                "identifier": 4,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -615,7 +478,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 77,
+                                        "identifier": 5,
                                         "tag": "lexical_block",
                                         "attributes": [
                                             {
@@ -629,7 +492,7 @@
                                         ],
                                         "children": [
                                             {
-                                                "identifier": 78,
+                                                "identifier": 6,
                                                 "tag": "lexical_block",
                                                 "attributes": [
                                                     {
@@ -643,7 +506,7 @@
                                                 ],
                                                 "children": [
                                                     {
-                                                        "identifier": 79,
+                                                        "identifier": 7,
                                                         "tag": "variable",
                                                         "attributes": [
                                                             {
@@ -652,7 +515,7 @@
                                                             },
                                                             {
                                                                 "tag": "type",
-                                                                "value": 80
+                                                                "value": 8
                                                             },
                                                             {
                                                                 "tag": "code_begin",
@@ -690,7 +553,7 @@
                                         ]
                                     },
                                     {
-                                        "identifier": 82,
+                                        "identifier": 10,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -699,7 +562,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 54
+                                                "value": 11
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -733,7 +596,7 @@
                                         "children": []
                                     },
                                     {
-                                        "identifier": 83,
+                                        "identifier": 12,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -742,7 +605,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 84
+                                                "value": 13
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -778,7 +641,7 @@
                                 ]
                             },
                             {
-                                "identifier": 85,
+                                "identifier": 14,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -792,7 +655,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 86,
+                                        "identifier": 15,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -801,7 +664,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 87
+                                                "value": 16
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -839,7 +702,7 @@
                         ]
                     },
                     {
-                        "identifier": 88,
+                        "identifier": 18,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -882,7 +745,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 89,
+                        "identifier": 19,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -925,7 +788,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 90,
+                        "identifier": 20,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -934,7 +797,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 12
+                                "value": 21
                             },
                             {
                                 "tag": "code_begin",
@@ -968,7 +831,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 91,
+                        "identifier": 22,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -977,7 +840,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 32
+                                "value": 23
                             },
                             {
                                 "tag": "code_begin",
@@ -1011,7 +874,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 92,
+                        "identifier": 24,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -1020,7 +883,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 93
+                                "value": 25
                             },
                             {
                                 "tag": "code_begin",
@@ -1032,7 +895,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 51
+                                "value": 48
                             },
                             {
                                 "tag": "external",
@@ -1044,7 +907,26 @@
                 ]
             },
             {
-                "identifier": 80,
+                "identifier": 1,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 8,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1057,13 +939,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 81
+                        "value": 9
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 81,
+                "identifier": 9,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -1082,7 +964,26 @@
                 "children": []
             },
             {
-                "identifier": 84,
+                "identifier": 11,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 13,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -1101,7 +1002,7 @@
                 "children": []
             },
             {
-                "identifier": 87,
+                "identifier": 16,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1114,13 +1015,62 @@
                     },
                     {
                         "tag": "type",
-                        "value": 34
+                        "value": 17
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 93,
+                "identifier": 17,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 21,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 23,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 25,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1133,12 +1083,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 81
+                        "value": 9
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 94,
+                        "identifier": 27,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -1147,12 +1097,31 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 7
+                                "value": 26
                             }
                         ],
                         "children": []
                     }
                 ]
+            },
+            {
+                "identifier": 26,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
             }
         ]
     },

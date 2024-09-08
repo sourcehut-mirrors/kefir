@@ -73,8 +73,8 @@ static kefir_ir_identifier_visibility_t get_ir_visibility(kefir_ast_declarator_v
     }
 }
 
-#define SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(_data) \
-    ((_data)->debug_info.present ? (_data)->debug_info.type : KEFIR_IR_DEBUG_ENTRY_ID_NONE)
+#define SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(_data) \
+    ((_data)->debug_info.present ? (_data)->debug_info.variable : KEFIR_IR_DEBUG_ENTRY_ID_NONE)
 static kefir_result_t translate_externals(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           struct kefir_ir_module *module,
                                           const struct kefir_ast_translator_global_scope_layout *global_scope) {
@@ -95,7 +95,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                                       ? get_ir_visibility(scoped_identifier->value->object.visibility)
                                       : KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 #define DECL_GLOBAL_WEAK                                                 \
     do {                                                                 \
         if (scoped_identifier->value->object.flags.weak) {               \
@@ -141,7 +141,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                     .type = KEFIR_IR_IDENTIFIER_FUNCTION,
                     .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
 #define DECL_GLOBAL_WEAK                                                 \
     do {                                                                 \
@@ -229,7 +229,7 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
                     .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                 struct kefir_ir_data *data = kefir_ir_module_new_named_data(
                     mem, module, scoped_identifier->identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
@@ -277,7 +277,7 @@ static kefir_result_t translate_external_thread_locals(
                         .scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT,
                         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                         .alias = NULL,
-                        .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                        .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                     if (scoped_identifier->value->object.flags.weak) {
                         ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK;
@@ -302,7 +302,7 @@ static kefir_result_t translate_external_thread_locals(
                         .scope = KEFIR_IR_IDENTIFIER_SCOPE_EXPORT,
                         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                         .alias = NULL,
-                        .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                        .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
                     REQUIRE_OK(
                         kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
                 }
@@ -335,7 +335,7 @@ static kefir_result_t translate_static_thread_locals(
                     .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                 struct kefir_ir_data *data =
                     kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
@@ -415,7 +415,7 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
                     .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                 struct kefir_ir_data *data = kefir_ir_module_new_named_data(
                     mem, module, identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
@@ -472,7 +472,7 @@ static kefir_result_t translate_local_static_thread_locals(
                     .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
-                    .debug_info = {.type = SCOPED_IDENTIFIER_DEBUG_INFO_TYPE(identifier_data)}};
+                    .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                 struct kefir_ir_data *data = kefir_ir_module_new_named_data(
                     mem, module, identifier, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, identifier_data->type_id);
@@ -514,7 +514,7 @@ static kefir_result_t translate_label_scope(struct kefir_mem *mem, struct kefir_
                                                                 .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
                                                                 .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                                                                 .alias = NULL,
-                                                                .debug_info = {.type = KEFIR_IR_DEBUG_ENTRY_ID_NONE}};
+                                                                .debug_info = {.entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE}};
                     REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, iter.value->label.public_label,
                                                                   &ir_identifier));
                 }

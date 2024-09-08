@@ -854,7 +854,6 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                         &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(iter.value->source_location.column)));
                 }
 
-                scoped_identifier_layout->debug_info.type = variable_type_id;
                 scoped_identifier_layout->debug_info.variable = variable_entry_id;
                 scoped_identifier_layout->debug_info.present = true;
             } break;
