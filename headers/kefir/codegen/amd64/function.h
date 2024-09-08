@@ -52,6 +52,7 @@ typedef struct kefir_codegen_amd64_function {
     struct {
         struct kefir_hashtree opt_instruction_location_labels;
         struct kefir_hashtree ir_instructions;
+        struct kefir_hashtree function_parameters;
     } debug;
 } kefir_codegen_amd64_function_t;
 

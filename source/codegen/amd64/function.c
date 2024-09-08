@@ -59,6 +59,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
                                                             &source_location->location));
         }
     }
+
+    if (instruction->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT) {
+        kefir_result_t res = kefir_hashtree_insert(mem, &function->debug.function_parameters,
+                                                   (kefir_hashtree_key_t) instruction->operation.parameters.index,
+                                                   (kefir_hashtree_value_t) instruction->id);
+        if (res != KEFIR_ALREADY_EXISTS) {
+            REQUIRE_OK(res);
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -499,6 +508,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen->abi_variant, function->ir_func->declaration,
@@ -510,6 +520,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
             kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
             kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
             kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
+            kefir_hashtree_free(mem, &func->debug.function_parameters);
             kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels);
             kefir_hashtree_free(mem, &func->debug.ir_instructions);
             kefir_hashtreeset_free(mem, &func->translated_instructions);
@@ -534,6 +545,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
     REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));

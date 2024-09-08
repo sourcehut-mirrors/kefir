@@ -281,8 +281,10 @@ static kefir_result_t register_to_dwarf_op(kefir_asm_amd64_xasmgen_register_t re
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_local_variable_complex_location_fragment(
+kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
     struct kefir_codegen_amd64_function *codegen_function, kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
+
     kefir_asmcmp_label_index_t range_begin_label, range_end_label;
     REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(codegen_function, instr_ref, &range_begin_label,
                                                                       &range_end_label));
@@ -448,7 +450,7 @@ static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
         for (res = kefir_opt_code_debug_info_local_variable_ref_iter(&codegen_function->function->debug_info, &iter,
                                                                      attr->local_variable, &instr_ref);
              res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&iter, &instr_ref)) {
-            REQUIRE_OK(generate_local_variable_complex_location_fragment(codegen_function, instr_ref));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_instruction_location(codegen_function, instr_ref));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);

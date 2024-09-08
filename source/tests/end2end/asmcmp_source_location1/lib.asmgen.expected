@@ -1363,6 +1363,8 @@ __kefir_debug_abbrev_section_entry_4:
     .byte 8
     .byte 73
     .byte 19
+    .byte 2
+    .byte 23
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_5:
@@ -1417,6 +1419,7 @@ __kefir_debug_info_section_entry_4:
     .byte 4
     .ascii "x\000"
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
+    .long __kefir_debug_loclist_section_entry_1
 __kefir_debug_info_section_entry_5:
     .byte 5
     .quad _kefir_func_factorial_label12
@@ -1441,12 +1444,12 @@ __kefir_debug_info_section_entry_9:
     .byte 6
     .ascii "x\000"
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
-    .long __kefir_debug_loclist_section_entry_1
+    .long __kefir_debug_loclist_section_entry_2
 __kefir_debug_info_section_entry_10:
     .byte 6
     .ascii "result\000"
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
-    .long __kefir_debug_loclist_section_entry_2
+    .long __kefir_debug_loclist_section_entry_3
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
@@ -1468,13 +1471,21 @@ __kefir_debug_loclists_section_begin:
     .long 0
 __kefir_debug_loclist_section_entry_1:
     .byte 7
+    .quad _kefir_func_factorial_label9
+    .quad _kefir_func_factorial_label11
+    .byte 2
+    .byte 144
+    .byte 5
+    .byte 0
+__kefir_debug_loclist_section_entry_2:
+    .byte 7
     .quad _kefir_func_factorial_label12
     .quad _kefir_func_factorial_label34
     .byte 2
     .byte 145
     .byte 120
     .byte 0
-__kefir_debug_loclist_section_entry_2:
+__kefir_debug_loclist_section_entry_3:
     .byte 7
     .quad _kefir_func_factorial_label12
     .quad _kefir_func_factorial_label34
