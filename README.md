@@ -12,8 +12,9 @@ Kefir supports modern x86-64 Linux, FreeBSD, OpenBSD and NetBSD environments
 JSON streams containing program representation on various stages of compilation
 (tokens, AST, IR), as well as printing source code in preprocessed form. The
 compiler targets GNU As (Intel syntax with/without prefixes and ATT syntax are
-supported) and Yasm assemblers. Position-independent code generation is
-supported. Kefir features `cc`-compatible command line interface.
+supported) and Yasm assemblers. Kefir is able to produce debug information in
+DWARF5 format for GNU As. Position-independent code generation is supported.
+Kefir features `cc`-compatible command line interface.
 
 [Kefir website](https://kefir.protopopov.lv) also provides some additional information.
 
@@ -406,3 +407,4 @@ License:
 * [AMD64 instruction set
   reference](https://www.amd.com/system/files/TechDocs/24594.pdf)
 * [POSIX c99 specification](https://pubs.opengroup.org/onlinepubs/9699919799/)
+* [DWARF Version 5](https://dwarfstd.org/dwarf5std.html)
