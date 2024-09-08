@@ -96,6 +96,12 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 19
     .byte 63
     .byte 12
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_4:
@@ -106,6 +112,12 @@ __kefir_debug_abbrev_section_entry_4:
     .byte 8
     .byte 17
     .byte 1
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_5:
@@ -163,6 +175,12 @@ __kefir_debug_abbrev_section_entry_9:
     .byte 23
     .byte 63
     .byte 12
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
     .byte 0
     .byte 0
     .byte 0
@@ -192,10 +210,16 @@ __kefir_debug_info_section_entry_2:
     .byte 0
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .byte 1
+    .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
+    .quad 23
+    .quad 1
 __kefir_debug_info_section_entry_4:
     .byte 4
     .ascii "label1\000"
     .quad _kefir_func_test1_label5
+    .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
+    .quad 24
+    .quad 1
 __kefir_debug_info_section_entry_5:
     .byte 5
     .quad _kefir_func_test1_label6
@@ -208,6 +232,9 @@ __kefir_debug_info_section_entry_7:
     .byte 4
     .ascii "label2\000"
     .quad _kefir_func_test1_label6
+    .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
+    .quad 27
+    .quad 5
 __kefir_debug_info_section_entry_8:
     .byte 5
     .quad _kefir_func_test1_label7
@@ -220,6 +247,9 @@ __kefir_debug_info_section_entry_10:
     .byte 4
     .ascii "label3\000"
     .quad _kefir_func_test1_label7
+    .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
+    .quad 30
+    .quad 9
     .byte 0
     .byte 0
     .byte 0
@@ -230,6 +260,9 @@ __kefir_debug_info_section_entry_11:
     .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
     .long __kefir_debug_loclist_section_entry_1
     .byte 0
+    .ascii "\000"
+    .quad 0
+    .quad 0
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2

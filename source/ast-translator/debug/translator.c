@@ -842,6 +842,18 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected scoped identifier object storage");
                 }
 
+                if (iter.value->source_location.source != NULL) {
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION(iter.value->source_location.source)));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_LINE(iter.value->source_location.line)));
+                    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                        mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(iter.value->source_location.column)));
+                }
+
                 scoped_identifier_layout->debug_info.type = variable_type_id;
                 scoped_identifier_layout->debug_info.variable = variable_entry_id;
                 scoped_identifier_layout->debug_info.present = true;

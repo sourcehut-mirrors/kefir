@@ -1409,6 +1409,24 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
                 REQUIRE_OK(kefir_json_output_boolean(json, entry_attr->external));
                 break;
 
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION:
+                REQUIRE_OK(kefir_json_output_string(json, "source_location"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_string(json, entry_attr->source_location));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_LINE:
+                REQUIRE_OK(kefir_json_output_string(json, "source_location_line"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->line));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_COLUMN:
+                REQUIRE_OK(kefir_json_output_string(json, "source_location_column"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->column));
+                break;
+
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR debug entry attribute tag");
         }

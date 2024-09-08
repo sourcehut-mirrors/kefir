@@ -2329,6 +2329,18 @@
                     {
                         "tag": "external",
                         "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 65
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 1
                     }
                 ],
                 "children": [
@@ -2416,6 +2428,18 @@
                             {
                                 "tag": "external",
                                 "value": false
+                            },
+                            {
+                                "tag": "source_location",
+                                "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                            },
+                            {
+                                "tag": "source_location_line",
+                                "value": 66
+                            },
+                            {
+                                "tag": "source_location_column",
+                                "value": 5
                             }
                         ],
                         "children": []
@@ -2447,6 +2471,18 @@
                             {
                                 "tag": "external",
                                 "value": false
+                            },
+                            {
+                                "tag": "source_location",
+                                "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                            },
+                            {
+                                "tag": "source_location_line",
+                                "value": 67
+                            },
+                            {
+                                "tag": "source_location_column",
+                                "value": 5
                             }
                         ],
                         "children": []
@@ -2478,6 +2514,18 @@
                             {
                                 "tag": "external",
                                 "value": false
+                            },
+                            {
+                                "tag": "source_location",
+                                "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                            },
+                            {
+                                "tag": "source_location_line",
+                                "value": 68
+                            },
+                            {
+                                "tag": "source_location_column",
+                                "value": 5
                             }
                         ],
                         "children": []
@@ -2509,6 +2557,18 @@
                             {
                                 "tag": "external",
                                 "value": false
+                            },
+                            {
+                                "tag": "source_location",
+                                "value": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c"
+                            },
+                            {
+                                "tag": "source_location_line",
+                                "value": 69
+                            },
+                            {
+                                "tag": "source_location_column",
+                                "value": 9
                             }
                         ],
                         "children": []

@@ -53,6 +53,18 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
             mem, &context->module->debug_info.entries, &context->module->symbols, label_entry_id,
             &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder))));
+
+        if (node->base.source_location.source != NULL) {
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &context->module->debug_info.entries, &context->module->symbols, label_entry_id,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION(node->base.source_location.source)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &context->module->debug_info.entries, &context->module->symbols, label_entry_id,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_LINE(node->base.source_location.line)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &context->module->debug_info.entries, &context->module->symbols, label_entry_id,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(node->base.source_location.column)));
+        }
     }
     REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
     return KEFIR_OK;
