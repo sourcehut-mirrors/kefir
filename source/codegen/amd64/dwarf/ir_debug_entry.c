@@ -638,6 +638,7 @@ static kefir_result_t generate_type_immediate_abbrev(struct kefir_mem *mem, stru
         case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
         case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
         case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
+        case KEFIR_IR_DEBUG_ENTRY_LABEL:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "IR debug entries is not a type");
     }
 
@@ -1150,6 +1151,7 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
         case KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM:
         case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
         case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
+        case KEFIR_IR_DEBUG_ENTRY_LABEL:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "IR debug entries is not a type");
     }
 

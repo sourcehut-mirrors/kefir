@@ -38,6 +38,7 @@ typedef enum kefir_dwarf_tag {
     KEFIR_DWARF(DW_TAG_array_type) = 0x01,
     KEFIR_DWARF(DW_TAG_enumeration_type) = 0x04,
     KEFIR_DWARF(DW_TAG_formal_parameter) = 0x05,
+    KEFIR_DWARF(DW_TAG_label) = 0x0a,
     KEFIR_DWARF(DW_TAG_lexical_block) = 0x0b,
     KEFIR_DWARF(DW_TAG_member) = 0x0d,
     KEFIR_DWARF(DW_TAG_pointer_type) = 0x0f,

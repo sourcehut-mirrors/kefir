@@ -67,6 +67,7 @@ typedef struct kefir_codegen_amd64_dwarf_abbrev_context {
         kefir_codegen_amd64_dwarf_entry_id_t anonymous_subprogram_parameter;
         kefir_codegen_amd64_dwarf_entry_id_t subprogram_parameter_location;
         kefir_codegen_amd64_dwarf_entry_id_t anonymous_subprogram_parameter_location;
+        kefir_codegen_amd64_dwarf_entry_id_t label;
         struct kefir_hashtree ir_debug_entries;
     } entries;
 } kefir_codegen_amd64_dwarf_abbrev_context_t;
@@ -144,6 +145,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_define_unspecified_parameters_abbrev(
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(struct kefir_codegen_amd64_function *,
                                                                        kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_dwarf_generate_label(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                        struct kefir_codegen_amd64_dwarf_context *,
+                                                        kefir_ir_debug_entry_id_t,
+                                                        kefir_codegen_amd64_dwarf_entry_id_t *);
 
 #endif
 

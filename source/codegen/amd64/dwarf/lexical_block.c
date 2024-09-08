@@ -163,6 +163,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
                                                                                              context, child_id, NULL));
                 break;
 
+            case KEFIR_IR_DEBUG_ENTRY_LABEL:
+                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_label(mem, codegen_function, context, child_id, NULL));
+                break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR debug entry tag");
         }

@@ -1293,6 +1293,10 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
         case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
             REQUIRE_OK(kefir_json_output_string(json, "variable"));
             break;
+
+        case KEFIR_IR_DEBUG_ENTRY_LABEL:
+            REQUIRE_OK(kefir_json_output_string(json, "label"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

@@ -53,7 +53,8 @@ typedef enum kefir_ir_debug_entry_tag {
     KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG,
     KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK,
     KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM,
-    KEFIR_IR_DEBUG_ENTRY_VARIABLE
+    KEFIR_IR_DEBUG_ENTRY_VARIABLE,
+    KEFIR_IR_DEBUG_ENTRY_LABEL
 } kefir_ir_debug_entry_tag_t;
 
 typedef enum kefir_ir_debug_entry_attribute_tag {
