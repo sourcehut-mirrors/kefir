@@ -24,48 +24,54 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t generate_subprogram_abbrev(struct kefir_codegen_amd64 *codegen,
+static kefir_result_t generate_subprogram_abbrev(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
                                                  struct kefir_codegen_amd64_dwarf_context *context) {
+    const struct kefir_ir_debug_entry_attribute *attr;
+    REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
+                                                  codegen_function->function->ir_func->debug_info.subprogram_id,
+                                                  KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, &attr));
+    REQUIRE_OK(kefir_codegen_amd64_dwarf_type(mem, codegen_function->codegen, codegen_function->module->ir_module,
+                                              context, attr->type_id, NULL));
+
     REQUIRE(context->abbrev.entries.subprogram == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
     context->abbrev.entries.subprogram = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen->xasmgen, context->abbrev.entries.subprogram,
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen_function->codegen->xasmgen, context->abbrev.entries.subprogram,
                                               KEFIR_DWARF(DW_TAG_subprogram), KEFIR_DWARF(DW_CHILDREN_yes)));
     REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_name), KEFIR_DWARF(DW_FORM_string)));
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_name), KEFIR_DWARF(DW_FORM_string)));
     REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_low_pc), KEFIR_DWARF(DW_FORM_addr)));
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_low_pc), KEFIR_DWARF(DW_FORM_addr)));
     REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_high_pc), KEFIR_DWARF(DW_FORM_data8)));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_frame_base),
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_high_pc), KEFIR_DWARF(DW_FORM_data8)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_frame_base),
                                                   KEFIR_DWARF(DW_FORM_exprloc)));
     REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_type), KEFIR_DWARF(DW_FORM_ref4)));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen->xasmgen));
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_AT_type), KEFIR_DWARF(DW_FORM_ref4)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen_function->codegen->xasmgen));
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_function_info(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                             struct kefir_codegen_amd64_dwarf_context *context,
-                                             struct kefir_codegen_amd64_function *codegen_function) {
+static kefir_result_t generate_function_info(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+                                             struct kefir_codegen_amd64_dwarf_context *context) {
     struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers[2];
 
     const struct kefir_ir_identifier *ir_identifier;
-    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_module->module->ir_module,
+    REQUIRE_OK(kefir_ir_module_get_identifier(codegen_function->module->ir_module,
                                               codegen_function->function->ir_func->name, &ir_identifier));
 
     const kefir_codegen_amd64_dwarf_entry_id_t entry_id = KEFIR_CODEGEN_AMD64_DWARF_NEXT_INFO_ENTRY_ID(context);
     REQUIRE_OK(
-        KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_module->codegen->xasmgen, entry_id, context->abbrev.entries.subprogram));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, ir_identifier->symbol));
+        KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_function->codegen->xasmgen, entry_id, context->abbrev.entries.subprogram));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen_function->codegen->xasmgen, ir_identifier->symbol));
     REQUIRE_OK(
-        KEFIR_AMD64_XASMGEN_DATA(&codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+        KEFIR_AMD64_XASMGEN_DATA(&codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                                  kefir_asm_amd64_xasmgen_operand_label(
                                      &xasmgen_helpers[0].operands[0], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
                                      kefir_asm_amd64_xasmgen_helpers_format(
                                          &xasmgen_helpers[0], KEFIR_AMD64_FUNCTION_BEGIN, ir_identifier->symbol))));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-        &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+        &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
         kefir_asm_amd64_xasmgen_operand_subtract(
             &xasmgen_helpers[0].operands[0],
             kefir_asm_amd64_xasmgen_operand_label(
@@ -77,9 +83,9 @@ static kefir_result_t generate_function_info(struct kefir_mem *mem, struct kefir
                 kefir_asm_amd64_xasmgen_helpers_format(&xasmgen_helpers[1], KEFIR_AMD64_FUNCTION_BEGIN,
                                                        ir_identifier->symbol)))));
 
-    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_module->codegen->xasmgen, 2));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_module->codegen->xasmgen, KEFIR_DWARF_AMD64_BREG_RBP));
-    REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_module->codegen->xasmgen, 0));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, 2));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF_AMD64_BREG_RBP));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, 0));
 
     kefir_codegen_amd64_dwarf_entry_id_t return_type_id;
     const struct kefir_ir_debug_entry_attribute *attr;
@@ -102,23 +108,19 @@ static kefir_result_t generate_function_info(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_function(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                        struct kefir_codegen_amd64_dwarf_context *context,
-                                        const struct kefir_ir_function *function) {
-    struct kefir_codegen_amd64_function *codegen_function;
-    REQUIRE_OK(kefir_codegen_amd64_module_function(codegen_module, function->name, &codegen_function));
-
+static kefir_result_t generate_function(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+                                        struct kefir_codegen_amd64_dwarf_context *context) {
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
-        REQUIRE_OK(generate_subprogram_abbrev(codegen_module->codegen, context));
+        REQUIRE_OK(generate_subprogram_abbrev(mem, codegen_function, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
             mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
-        REQUIRE_OK(generate_function_info(mem, codegen_module, context, codegen_function));
+        REQUIRE_OK(generate_function_info(mem, codegen_function, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
             mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_module->codegen->xasmgen, KEFIR_DWARF(null)));
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, KEFIR_DWARF(null)));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
@@ -141,7 +143,9 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *me
          function != NULL; function = kefir_ir_module_function_next(&iter)) {
 
         if (function->debug_info.subprogram_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
-            REQUIRE_OK(generate_function(mem, codegen_module, context, function));
+            struct kefir_codegen_amd64_function *codegen_function;
+            REQUIRE_OK(kefir_codegen_amd64_module_function(codegen_module, function->name, &codegen_function));
+            REQUIRE_OK(generate_function(mem, codegen_function, context));
         }
     }
 

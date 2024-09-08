@@ -1326,6 +1326,21 @@ __kefir_debug_abbrev_section_entry_1:
     .byte 0
 __kefir_debug_abbrev_section_entry_2:
     .byte 2
+    .byte 36
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 11
+    .byte 11
+    .byte 136
+    .byte 1
+    .byte 11
+    .byte 62
+    .byte 11
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_3:
+    .byte 3
     .byte 46
     .byte 1
     .byte 3
@@ -1340,29 +1355,14 @@ __kefir_debug_abbrev_section_entry_2:
     .byte 19
     .byte 0
     .byte 0
-__kefir_debug_abbrev_section_entry_3:
-    .byte 3
+__kefir_debug_abbrev_section_entry_4:
+    .byte 4
     .byte 11
     .byte 1
     .byte 17
     .byte 1
     .byte 18
     .byte 7
-    .byte 0
-    .byte 0
-__kefir_debug_abbrev_section_entry_4:
-    .byte 4
-    .byte 36
-    .byte 0
-    .byte 3
-    .byte 8
-    .byte 11
-    .byte 11
-    .byte 136
-    .byte 1
-    .byte 11
-    .byte 62
-    .byte 11
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_5:
@@ -1395,7 +1395,7 @@ __kefir_debug_info_section_entry_1:
     .quad __kefir_text_section_end - __kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
-    .byte 2
+    .byte 3
     .ascii "factorial\000"
     .quad __kefir_text_func_factorial_begin
     .quad __kefir_text_func_factorial_end - __kefir_text_func_factorial_begin
@@ -1404,21 +1404,21 @@ __kefir_debug_info_section_entry_2:
     .byte 0
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
 __kefir_debug_info_section_entry_4:
-    .byte 3
+    .byte 4
     .quad _kefir_func_factorial_label12
     .quad _kefir_func_factorial_label17 - _kefir_func_factorial_label12
     .byte 0
 __kefir_debug_info_section_entry_5:
-    .byte 3
+    .byte 4
     .quad _kefir_func_factorial_label16
     .quad _kefir_func_factorial_label22 - _kefir_func_factorial_label16
     .byte 0
 __kefir_debug_info_section_entry_6:
-    .byte 3
+    .byte 4
     .quad _kefir_func_factorial_label23
     .quad _kefir_func_factorial_label34 - _kefir_func_factorial_label23
 __kefir_debug_info_section_entry_7:
-    .byte 3
+    .byte 4
     .quad _kefir_func_factorial_label25
     .quad _kefir_func_factorial_label32 - _kefir_func_factorial_label25
     .byte 0
@@ -1435,7 +1435,7 @@ __kefir_debug_info_section_entry_9:
     .long __kefir_debug_loclist_section_entry_2
     .byte 0
 __kefir_debug_info_section_entry_3:
-    .byte 4
+    .byte 2
     .ascii "signed int\000"
     .byte 4
     .byte 4
