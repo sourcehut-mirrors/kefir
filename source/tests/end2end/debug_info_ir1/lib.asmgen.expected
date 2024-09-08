@@ -2330,6 +2330,63 @@
                 "children": [
                     {
                         "identifier": 135,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 19
+                            },
+                            {
+                                "tag": "parameter",
+                                "value": 0
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 136,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "b"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 16
+                            },
+                            {
+                                "tag": "parameter",
+                                "value": 1
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 137,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "c"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 138
+                            },
+                            {
+                                "tag": "parameter",
+                                "value": 2
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 140,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2356,7 +2413,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 136,
+                        "identifier": 141,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2383,7 +2440,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 137,
+                        "identifier": 142,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2392,7 +2449,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 138
+                                "value": 143
                             },
                             {
                                 "tag": "code_begin",
@@ -2410,7 +2467,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 140,
+                        "identifier": 145,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -2419,7 +2476,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 141
+                                "value": 146
                             },
                             {
                                 "tag": "code_begin",
@@ -2477,7 +2534,45 @@
                 "children": []
             },
             {
-                "identifier": 141,
+                "identifier": 143,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 144
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 144,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 10
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 146,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -2487,7 +2582,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 142,
+                        "identifier": 147,
                         "tag": "array_subrange",
                         "attributes": [
                             {

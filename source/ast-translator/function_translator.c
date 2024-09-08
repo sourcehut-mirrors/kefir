@@ -289,7 +289,13 @@ static kefir_result_t translate_variably_modified(const struct kefir_ast_node_ba
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_debug_info(struct kefir_mem *mem, struct kefir_ast_translator_function_context *function_context, kefir_ir_debug_entry_id_t subprogram_entry_id) {
+static kefir_result_t generate_debug_info(struct kefir_mem *mem,
+                                          struct kefir_ast_translator_function_context *function_context,
+                                          kefir_ir_debug_entry_id_t subprogram_entry_id) {
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                  &function_context->module->symbols, subprogram_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(function_context->ir_func->name)));
+
     kefir_ir_debug_entry_id_t subprogram_return_type_id;
     REQUIRE_OK(kefir_ast_translate_debug_type(
         mem, &function_context->local_context->global->context, function_context->local_translator_context.environment,
@@ -299,6 +305,33 @@ static kefir_result_t generate_debug_info(struct kefir_mem *mem, struct kefir_as
                                                   &function_context->module->symbols, subprogram_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(subprogram_return_type_id)));
 
+    return KEFIR_OK;
+}
+
+static kefir_result_t generate_parameter_debug_info(struct kefir_mem *mem,
+                                                    struct kefir_ast_translator_function_context *function_context,
+                                                    kefir_ir_debug_entry_id_t subprogram_entry_id, const char *name,
+                                                    const struct kefir_ast_type *type, kefir_size_t parameter_index) {
+    kefir_ir_debug_entry_id_t parameter_entry_id, parameter_type_id;
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, &function_context->module->debug_info.entries, subprogram_entry_id,
+                                              KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER, &parameter_entry_id));
+
+    if (name != NULL) {
+        REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                      &function_context->module->symbols, parameter_entry_id,
+                                                      &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(name)));
+    }
+
+    REQUIRE_OK(kefir_ast_translate_debug_type(
+        mem, &function_context->local_context->global->context, function_context->local_translator_context.environment,
+        function_context->module, function_context->local_translator_context.debug_entries, type, &parameter_type_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                  &function_context->module->symbols, parameter_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(parameter_type_id)));
+
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
+                                                  &function_context->module->symbols, parameter_entry_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_PARAMETER(parameter_index)));
     return KEFIR_OK;
 }
 
@@ -315,9 +348,6 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     kefir_ir_debug_entry_id_t subprogram_entry_id;
     REQUIRE_OK(kefir_ast_translator_context_push_debug_hierarchy_entry(
         mem, &function_context->local_translator_context, KEFIR_IR_DEBUG_ENTRY_SUBPROGRAM, &subprogram_entry_id));
-    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &function_context->module->debug_info.entries,
-                                                  &function_context->module->symbols, subprogram_entry_id,
-                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(function_context->ir_func->name)));
 
     if (context->function_debug_info != NULL) {
         context->function_debug_info->subprogram_id = subprogram_entry_id;
@@ -385,6 +415,56 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         } else {
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
                                    "Expected function parameter to be either AST declaration or identifier");
+        }
+    }
+
+    // Generate debug information for parameters
+    if (context->function_debug_info != NULL) {
+        kefir_size_t parameter_index = 0;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&decl_func->parameters); iter != NULL;
+             kefir_list_next(&iter), parameter_index++) {
+
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
+            const struct kefir_ast_scoped_identifier *scoped_id = NULL;
+
+            if (param->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION) {
+                struct kefir_ast_declaration *param_decl = NULL;
+                REQUIRE_MATCH_OK(
+                    &res, kefir_ast_downcast_declaration(param, &param_decl, false),
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function parameter to be an AST declaration"));
+
+                ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl,
+                                 kefir_list_head(&param_decl->init_declarators)->value);
+                struct kefir_ast_declarator_identifier *param_identifier = NULL;
+                REQUIRE_OK(kefir_ast_declarator_unpack_identifier(init_decl->declarator, &param_identifier));
+                if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
+                    if (param_identifier != NULL && param_identifier->identifier != NULL) {
+                        scoped_id = init_decl->base.properties.declaration_props.scoped_id;
+                        REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
+                                                                 param_identifier->identifier, scoped_id->type,
+                                                                 parameter_index));
+                    } else {
+                        REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id, NULL,
+                                                                 init_decl->base.properties.type, parameter_index));
+                    }
+                }
+            } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                       param->properties.expression_props.identifier != NULL) {
+                scoped_id = param->properties.expression_props.scoped_id;
+                REQUIRE_OK(generate_parameter_debug_info(mem, function_context, subprogram_entry_id,
+                                                         param->properties.expression_props.identifier,
+                                                         scoped_id->object.type, parameter_index));
+            } else {
+                return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR,
+                                       "Expected function parameter to be either AST declaration or identifier");
+            }
+        }
+
+        if (function_context->function_declaration->function_type->function_type.ellipsis) {
+            kefir_ir_debug_entry_id_t parameter_entry_id;
+            REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, &function_context->module->debug_info.entries,
+                                                      subprogram_entry_id, KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG,
+                                                      &parameter_entry_id));
         }
     }
 

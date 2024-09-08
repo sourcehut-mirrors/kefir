@@ -322,8 +322,8 @@ static kefir_result_t define_formal_parameter_abbrev(struct kefir_codegen_amd64 
     return KEFIR_OK;
 }
 
-static kefir_result_t define_unspecified_parameters_abbrev(struct kefir_codegen_amd64 *codegen,
-                                                           struct kefir_codegen_amd64_dwarf_context *context) {
+kefir_result_t kefir_codegen_amd64_dwarf_define_unspecified_parameters_abbrev(
+    struct kefir_codegen_amd64 *codegen, struct kefir_codegen_amd64_dwarf_context *context) {
     REQUIRE(context->abbrev.entries.unspecified_paramters == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
 
     context->abbrev.entries.unspecified_paramters = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
@@ -616,7 +616,7 @@ static kefir_result_t generate_type_immediate_abbrev(struct kefir_mem *mem, stru
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG:
-            REQUIRE_OK(define_unspecified_parameters_abbrev(codegen, context));
+            REQUIRE_OK(kefir_codegen_amd64_dwarf_define_unspecified_parameters_abbrev(codegen, context));
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->abbrev.entries.ir_debug_entries,
                                              (kefir_hashtree_key_t) ir_debug_entry->identifier,
                                              (kefir_hashtree_value_t) context->abbrev.entries.unspecified_paramters));

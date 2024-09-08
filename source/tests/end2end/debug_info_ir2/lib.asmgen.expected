@@ -534,6 +534,25 @@
                 "children": [
                     {
                         "identifier": 74,
+                        "tag": "function_parameter",
+                        "attributes": [
+                            {
+                                "tag": "name",
+                                "value": "a"
+                            },
+                            {
+                                "tag": "type",
+                                "value": 1
+                            },
+                            {
+                                "tag": "parameter",
+                                "value": 0
+                            }
+                        ],
+                        "children": []
+                    },
+                    {
+                        "identifier": 75,
                         "tag": "lexical_block",
                         "attributes": [
                             {
@@ -547,7 +566,7 @@
                         ],
                         "children": [
                             {
-                                "identifier": 75,
+                                "identifier": 76,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -561,7 +580,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 76,
+                                        "identifier": 77,
                                         "tag": "lexical_block",
                                         "attributes": [
                                             {
@@ -575,7 +594,7 @@
                                         ],
                                         "children": [
                                             {
-                                                "identifier": 77,
+                                                "identifier": 78,
                                                 "tag": "lexical_block",
                                                 "attributes": [
                                                     {
@@ -589,7 +608,7 @@
                                                 ],
                                                 "children": [
                                                     {
-                                                        "identifier": 78,
+                                                        "identifier": 79,
                                                         "tag": "variable",
                                                         "attributes": [
                                                             {
@@ -598,7 +617,7 @@
                                                             },
                                                             {
                                                                 "tag": "type",
-                                                                "value": 79
+                                                                "value": 80
                                                             },
                                                             {
                                                                 "tag": "code_begin",
@@ -620,7 +639,7 @@
                                         ]
                                     },
                                     {
-                                        "identifier": 81,
+                                        "identifier": 82,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -647,7 +666,7 @@
                                         "children": []
                                     },
                                     {
-                                        "identifier": 82,
+                                        "identifier": 83,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -656,7 +675,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 83
+                                                "value": 84
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -676,7 +695,7 @@
                                 ]
                             },
                             {
-                                "identifier": 84,
+                                "identifier": 85,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -690,7 +709,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 85,
+                                        "identifier": 86,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -699,7 +718,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 86
+                                                "value": 87
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -721,7 +740,7 @@
                         ]
                     },
                     {
-                        "identifier": 87,
+                        "identifier": 88,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -748,7 +767,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 88,
+                        "identifier": 89,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -775,7 +794,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 89,
+                        "identifier": 90,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -802,7 +821,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 90,
+                        "identifier": 91,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -831,7 +850,7 @@
                 ]
             },
             {
-                "identifier": 79,
+                "identifier": 80,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -844,13 +863,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 80
+                        "value": 81
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 80,
+                "identifier": 81,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -869,7 +888,7 @@
                 "children": []
             },
             {
-                "identifier": 83,
+                "identifier": 84,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -888,7 +907,7 @@
                 "children": []
             },
             {
-                "identifier": 86,
+                "identifier": 87,
                 "tag": "type_pointer",
                 "attributes": [
                     {
