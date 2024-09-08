@@ -58,6 +58,10 @@ typedef struct kefir_codegen_amd64_dwarf_abbrev_context {
         kefir_codegen_amd64_dwarf_entry_id_t subroutine_type;
         kefir_codegen_amd64_dwarf_entry_id_t formal_parameter;
         kefir_codegen_amd64_dwarf_entry_id_t unspecified_paramters;
+        kefir_codegen_amd64_dwarf_entry_id_t const_type;
+        kefir_codegen_amd64_dwarf_entry_id_t volatile_type;
+        kefir_codegen_amd64_dwarf_entry_id_t restrict_type;
+        kefir_codegen_amd64_dwarf_entry_id_t atomic_type;
         kefir_codegen_amd64_dwarf_entry_id_t type_def;
         kefir_codegen_amd64_dwarf_entry_id_t global_variable;
         kefir_codegen_amd64_dwarf_entry_id_t subprogram;
@@ -127,11 +131,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(struct k
                                                                         struct kefir_codegen_amd64_function *,
                                                                         struct kefir_codegen_amd64_dwarf_context *,
                                                                         kefir_ir_debug_entry_id_t);
-kefir_result_t kefir_codegen_amd64_dwarf_generate_variable(struct kefir_mem *,
-                                                                 struct kefir_codegen_amd64_function *,
-                                                                 struct kefir_codegen_amd64_dwarf_context *,
-                                                                 kefir_ir_debug_entry_id_t,
-                                                                 kefir_codegen_amd64_dwarf_entry_id_t *);
+kefir_result_t kefir_codegen_amd64_dwarf_generate_variable(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                           struct kefir_codegen_amd64_dwarf_context *,
+                                                           kefir_ir_debug_entry_id_t,
+                                                           kefir_codegen_amd64_dwarf_entry_id_t *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_function_parameter(struct kefir_mem *,
                                                                      struct kefir_codegen_amd64_function *,
                                                                      struct kefir_codegen_amd64_dwarf_context *,

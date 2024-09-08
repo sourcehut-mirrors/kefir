@@ -50,9 +50,13 @@ typedef enum kefir_dwarf_tag {
     KEFIR_DWARF(DW_TAG_unspecified_parameters) = 0x18,
     KEFIR_DWARF(DW_TAG_subrange_type) = 0x21,
     KEFIR_DWARF(DW_TAG_base_type) = 0x24,
+    KEFIR_DWARF(DW_TAG_const_type) = 0x26,
     KEFIR_DWARF(DW_TAG_enumerator) = 0x28,
     KEFIR_DWARF(DW_TAG_subprogram) = 0x2e,
-    KEFIR_DWARF(DW_TAG_variable) = 0x34
+    KEFIR_DWARF(DW_TAG_variable) = 0x34,
+    KEFIR_DWARF(DW_TAG_volatile_type) = 0x35,
+    KEFIR_DWARF(DW_TAG_restrict_type) = 0x37,
+    KEFIR_DWARF(DW_TAG_atomic_type) = 0x47
 } kefir_dwarf_tag_t;
 
 typedef enum kefir_dwarf_attribute {

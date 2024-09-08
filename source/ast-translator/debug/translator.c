@@ -624,7 +624,55 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                                                            &module->debug_info.entries, entry_id_ptr));
             break;
 
-        case KEFIR_AST_TYPE_QUALIFIED:
+        case KEFIR_AST_TYPE_QUALIFIED: {
+            kefir_ir_debug_entry_id_t entry_type_id;
+            REQUIRE_OK(kefir_ast_translate_debug_type(mem, context, translator_env, module, debug_entries,
+                                                      kefir_ast_unqualified_type(type->qualified_type.type),
+                                                      &entry_type_id));
+
+            if (type->qualified_type.qualification.constant) {
+                kefir_ir_debug_entry_id_t qualified_entry_type_id;
+                REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_CONST,
+                                                    &qualified_entry_type_id));
+                REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                              qualified_entry_type_id,
+                                                              &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(entry_type_id)));
+                entry_type_id = qualified_entry_type_id;
+            }
+
+            if (type->qualified_type.qualification.volatile_type) {
+                kefir_ir_debug_entry_id_t qualified_entry_type_id;
+                REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                    KEFIR_IR_DEBUG_ENTRY_TYPE_VOLATILE, &qualified_entry_type_id));
+                REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                              qualified_entry_type_id,
+                                                              &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(entry_type_id)));
+                entry_type_id = qualified_entry_type_id;
+            }
+
+            if (type->qualified_type.qualification.restricted) {
+                kefir_ir_debug_entry_id_t qualified_entry_type_id;
+                REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                    KEFIR_IR_DEBUG_ENTRY_TYPE_RESTRICT, &qualified_entry_type_id));
+                REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                              qualified_entry_type_id,
+                                                              &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(entry_type_id)));
+                entry_type_id = qualified_entry_type_id;
+            }
+
+            if (type->qualified_type.qualification.atomic_type) {
+                kefir_ir_debug_entry_id_t qualified_entry_type_id;
+                REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_ATOMIC,
+                                                    &qualified_entry_type_id));
+                REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                              qualified_entry_type_id,
+                                                              &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(entry_type_id)));
+                entry_type_id = qualified_entry_type_id;
+            }
+
+            *entry_id_ptr = entry_type_id;
+        } break;
+
         case KEFIR_AST_TYPE_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST type");
     }
@@ -648,12 +696,15 @@ static kefir_result_t kefir_ast_translate_debug_type_with_layout(
     REQUIRE(entry_id_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR debug entry identifier"));
 
-    type = kefir_ast_unqualified_type(type);
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain unqualified AST type"));
 
-    REQUIRE(type_layout == NULL || type_layout->type == type,
+    REQUIRE(type_layout == NULL || type_layout->type == unqualified_type,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected AST type layout match"));
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, type));
+
+    unqualified_type = kefir_ast_unqualified_type(type);
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain unqualified AST type"));
 
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&debug_entries->type_index, (kefir_hashtree_key_t) type, &node);
@@ -664,9 +715,10 @@ static kefir_result_t kefir_ast_translate_debug_type_with_layout(
     } else {
         kefir_bool_t free_env_type = false;
         struct kefir_ast_translator_environment_type env_type;
-        if (type_layout == NULL && kefir_ast_type_is_complete(type) && type->tag != KEFIR_AST_TYPE_VOID &&
-            type->tag != KEFIR_AST_TYPE_FUNCTION) {
-            REQUIRE_OK(kefir_ast_translator_environment_new_type(mem, context, translator_env, type, &env_type, NULL));
+        if (type_layout == NULL && kefir_ast_type_is_complete(unqualified_type) &&
+            unqualified_type->tag != KEFIR_AST_TYPE_VOID && unqualified_type->tag != KEFIR_AST_TYPE_FUNCTION) {
+            REQUIRE_OK(kefir_ast_translator_environment_new_type(mem, context, translator_env, unqualified_type,
+                                                                 &env_type, NULL));
             free_env_type = true;
             type_layout = env_type.layout;
         }

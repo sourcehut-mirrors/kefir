@@ -1258,6 +1258,22 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_string(json, "type_function"));
             break;
 
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_CONST:
+            REQUIRE_OK(kefir_json_output_string(json, "type_const"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_VOLATILE:
+            REQUIRE_OK(kefir_json_output_string(json, "type_volatile"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_RESTRICT:
+            REQUIRE_OK(kefir_json_output_string(json, "type_restrict"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_ATOMIC:
+            REQUIRE_OK(kefir_json_output_string(json, "type_atomic"));
+            break;
+
         case KEFIR_IR_DEBUG_ENTRY_TYPEDEF:
             REQUIRE_OK(kefir_json_output_string(json, "typedef"));
             break;
