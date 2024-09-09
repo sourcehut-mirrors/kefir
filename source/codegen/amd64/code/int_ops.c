@@ -1745,6 +1745,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_bool)(struct kefir_me
                                                              arg1_placement_upper_vreg, NULL));                        \
                                                                                                                        \
         _impl                                                                                                          \
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,                                     \
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                                             arg1_placement_upper_vreg, NULL));                        \
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,                                     \
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context), \
+                                                             arg1_placement_lower_vreg, NULL));                        \
+                                                                                                                       \
                                                                                                                        \
             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(                                                      \
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg,           \
