@@ -49,6 +49,10 @@ typedef struct kefir_ast_translator_scoped_identifier_object {
 
 typedef struct kefir_ast_translator_scoped_identifier_function {
     struct kefir_ast_translator_function_declaration *declaration;
+    struct {
+        kefir_bool_t present;
+        kefir_ir_debug_entry_id_t subprogram;
+    } debug_info;
 } kefir_ast_translator_scoped_identifier_function_t;
 
 _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_object) <= KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE,

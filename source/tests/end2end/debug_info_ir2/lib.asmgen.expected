@@ -272,7 +272,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 0,
+            "subroutine_id": 64,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
@@ -393,7 +393,113 @@
     "debug_info": {
         "entries": [
             {
-                "identifier": 0,
+                "identifier": 1,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed int"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 5,
+                "tag": "type_unsigned_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "unsigned long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 10,
+                "tag": "type_signed_int",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "signed long"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 30,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "float"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 4
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 4
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 34,
+                "tag": "type_void",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "void"
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 47,
+                "tag": "type_float",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "double"
+                    },
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 64,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -435,7 +541,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 2,
+                        "identifier": 65,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -454,7 +560,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 3,
+                        "identifier": 66,
                         "tag": "lexical_block",
                         "attributes": [
                             {
@@ -468,7 +574,7 @@
                         ],
                         "children": [
                             {
-                                "identifier": 4,
+                                "identifier": 67,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -482,7 +588,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 5,
+                                        "identifier": 68,
                                         "tag": "lexical_block",
                                         "attributes": [
                                             {
@@ -496,7 +602,7 @@
                                         ],
                                         "children": [
                                             {
-                                                "identifier": 6,
+                                                "identifier": 69,
                                                 "tag": "lexical_block",
                                                 "attributes": [
                                                     {
@@ -510,7 +616,7 @@
                                                 ],
                                                 "children": [
                                                     {
-                                                        "identifier": 7,
+                                                        "identifier": 70,
                                                         "tag": "variable",
                                                         "attributes": [
                                                             {
@@ -519,7 +625,7 @@
                                                             },
                                                             {
                                                                 "tag": "type",
-                                                                "value": 8
+                                                                "value": 71
                                                             },
                                                             {
                                                                 "tag": "code_begin",
@@ -561,7 +667,7 @@
                                         ]
                                     },
                                     {
-                                        "identifier": 10,
+                                        "identifier": 73,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -570,7 +676,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 11
+                                                "value": 47
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -608,7 +714,7 @@
                                         "children": []
                                     },
                                     {
-                                        "identifier": 12,
+                                        "identifier": 74,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -617,7 +723,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 13
+                                                "value": 75
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -657,7 +763,7 @@
                                 ]
                             },
                             {
-                                "identifier": 14,
+                                "identifier": 76,
                                 "tag": "lexical_block",
                                 "attributes": [
                                     {
@@ -671,7 +777,7 @@
                                 ],
                                 "children": [
                                     {
-                                        "identifier": 15,
+                                        "identifier": 77,
                                         "tag": "variable",
                                         "attributes": [
                                             {
@@ -680,7 +786,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 16
+                                                "value": 78
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -722,7 +828,7 @@
                         ]
                     },
                     {
-                        "identifier": 18,
+                        "identifier": 79,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -769,7 +875,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 19,
+                        "identifier": 80,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -816,7 +922,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 20,
+                        "identifier": 81,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -825,7 +931,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 21
+                                "value": 10
                             },
                             {
                                 "tag": "code_begin",
@@ -863,7 +969,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 22,
+                        "identifier": 82,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -872,7 +978,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 23
+                                "value": 30
                             },
                             {
                                 "tag": "code_begin",
@@ -910,7 +1016,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 24,
+                        "identifier": 83,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -919,7 +1025,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 25
+                                "value": 84
                             },
                             {
                                 "tag": "code_begin",
@@ -931,7 +1037,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 48
+                                "value": 52
                             },
                             {
                                 "tag": "external",
@@ -947,26 +1053,7 @@
                 ]
             },
             {
-                "identifier": 1,
-                "tag": "type_signed_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "signed int"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 8,
+                "identifier": 71,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -979,13 +1066,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 9
+                        "value": 72
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 9,
+                "identifier": 72,
                 "tag": "type_signed_character",
                 "attributes": [
                     {
@@ -1004,26 +1091,7 @@
                 "children": []
             },
             {
-                "identifier": 11,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "double"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 13,
+                "identifier": 75,
                 "tag": "type_complex_float",
                 "attributes": [
                     {
@@ -1042,7 +1110,7 @@
                 "children": []
             },
             {
-                "identifier": 16,
+                "identifier": 78,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -1055,62 +1123,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 17
+                        "value": 34
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 17,
-                "tag": "type_void",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "void"
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 21,
-                "tag": "type_signed_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "signed long"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 23,
-                "tag": "type_float",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "float"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 4
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 4
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 25,
+                "identifier": 84,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -1123,12 +1142,12 @@
                     },
                     {
                         "tag": "type",
-                        "value": 9
+                        "value": 72
                     }
                 ],
                 "children": [
                     {
-                        "identifier": 27,
+                        "identifier": 85,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -1137,31 +1156,12 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 26
+                                "value": 5
                             }
                         ],
                         "children": []
                     }
                 ]
-            },
-            {
-                "identifier": 26,
-                "tag": "type_unsigned_int",
-                "attributes": [
-                    {
-                        "tag": "name",
-                        "value": "unsigned long"
-                    },
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    }
-                ],
-                "children": []
             }
         ]
     },

@@ -65,6 +65,10 @@ typedef struct kefir_codegen_amd64_dwarf_abbrev_context {
         kefir_codegen_amd64_dwarf_entry_id_t type_def;
         kefir_codegen_amd64_dwarf_entry_id_t global_variable;
         kefir_codegen_amd64_dwarf_entry_id_t subprogram;
+        kefir_codegen_amd64_dwarf_entry_id_t subprogram_declaration;
+        kefir_codegen_amd64_dwarf_entry_id_t subprogram_declaration_formal_parameter;
+        kefir_codegen_amd64_dwarf_entry_id_t subprogram_declaration_anonymous_formal_parameter;
+        kefir_codegen_amd64_dwarf_entry_id_t subprogram_declaration_untyped_formal_parameter;
         kefir_codegen_amd64_dwarf_entry_id_t lexical_block;
         kefir_codegen_amd64_dwarf_entry_id_t variable;
         kefir_codegen_amd64_dwarf_entry_id_t subprogram_parameter;

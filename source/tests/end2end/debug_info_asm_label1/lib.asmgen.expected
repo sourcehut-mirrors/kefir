@@ -1,12 +1,13 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global a
-.type a, @object
-.global c
-.type c, @object
-.global getb
-.type getb, @function
+.extern SOMEFN0
+.global SOMEFN1
+.type SOMEFN1, @function
+.global SOMEVAR1
+.type SOMEVAR1, @object
+.global SOMEVAR2
+.type SOMEVAR2, @object
 .extern __kefirrt_opt_amd64_sysv_vararg_save
 .extern __kefirrt_opt_load_int_vararg
 .extern __kefirrt_opt_load_sse_vararg
@@ -31,40 +32,53 @@
 
 .section .text
 __kefir_text_section_begin:
-getb:
-.file 0 "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c"
-.loc 0 25 1
-__kefir_text_func_getb_begin:
-.extern __tls_get_addr
-.loc 0 26 12
-_kefir_func_getb_label2:
-    data16     lea b@tlsgd(%rip), %rdi
-    .word 26214
-    rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-.loc 0 26 12
-_kefir_func_getb_label3:
-    movl (%rcx), %eax
-.loc 0 26 5
-_kefir_func_getb_label4:
-    movq %rax, %xmm0
+SOMEFN1:
+.file 0 "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c"
+.loc 0 26 1
+__kefir_text_func_SOMEFN1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+.loc 0 27 12
+_kefir_func_SOMEFN1_label2:
+    movd _kefir_func_SOMEFN1_label3(%rip), %xmm1
+.loc 0 27 25
+_kefir_func_SOMEFN1_label4:
+    mov $1, %rax
+_kefir_func_SOMEFN1_label5:
+    movdqu %xmm1, -32(%rbp)
+.loc 0 27 20
+    mov %rax, %rdi
+    call SOMEFN0@PLT
+    movdqu -32(%rbp), %xmm1
+.loc 0 27 12
+_kefir_func_SOMEFN1_label6:
+    addss %xmm0, %xmm1
+.loc 0 27 5
+_kefir_func_SOMEFN1_label7:
+    movq %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
     ret
-__kefir_text_func_getb_end:
+__kefir_text_func_SOMEFN1_end:
+.section .rodata
+    .align 4
+_kefir_func_SOMEFN1_label3:
+    .long 1078523331
+.section .text
 
 __kefir_text_section_end:
 
-.section .tdata
+.section .bss
     .align 4
-a:
-    .long 100
-
-    .align 4
-b:
-    .long 1078523331
+SOMEVAR1:
+    .skip 4
 
     .align 8
-c:
-    .quad 0
+SOMEVAR2:
+    .skip 8
 
 
 .section .debug_abbrev
@@ -102,6 +116,38 @@ __kefir_debug_abbrev_section_entry_2:
     .byte 0
 __kefir_debug_abbrev_section_entry_3:
     .byte 3
+    .byte 5
+    .byte 0
+    .byte 73
+    .byte 19
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_4:
+    .byte 4
+    .byte 46
+    .byte 1
+    .byte 3
+    .byte 8
+    .byte 73
+    .byte 19
+    .byte 39
+    .byte 12
+    .byte 63
+    .byte 12
+    .byte 60
+    .byte 12
+    .byte 110
+    .byte 8
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_5:
+    .byte 5
     .byte 52
     .byte 0
     .byte 3
@@ -122,29 +168,6 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 7
     .byte 57
     .byte 7
-    .byte 0
-    .byte 0
-__kefir_debug_abbrev_section_entry_4:
-    .byte 4
-    .byte 15
-    .byte 0
-    .byte 11
-    .byte 11
-    .byte 136
-    .byte 1
-    .byte 11
-    .byte 73
-    .byte 19
-    .byte 0
-    .byte 0
-__kefir_debug_abbrev_section_entry_5:
-    .byte 5
-    .byte 36
-    .byte 0
-    .byte 3
-    .byte 8
-    .byte 62
-    .byte 11
     .byte 0
     .byte 0
 __kefir_debug_abbrev_section_entry_6:
@@ -233,66 +256,65 @@ __kefir_debug_info_section_entry_1:
     .quad __kefir_text_section_end - __kefir_text_section_begin
     .long __kefir_debug_lines_section_begin
 __kefir_debug_info_section_entry_2:
-    .byte 3
-    .ascii "a\000"
-    .byte 1
-    .byte 0
-    .byte 10
-    .byte 14
-    .quad a@dtpoff
-    .byte 155
+    .byte 4
+    .ascii "get0\000"
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
-    .ascii "a\000"
-    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
-    .quad 21
-    .quad 19
-__kefir_debug_info_section_entry_4:
+    .byte 1
+    .byte 1
+    .byte 1
+    .ascii "SOMEFN0\000"
+    .ascii "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c\000"
+    .quad 24
+    .quad 7
+__kefir_debug_info_section_entry_5:
     .byte 3
-    .ascii "b\000"
+    .long __kefir_debug_info_section_entry_4 - __kefir_debug_info_section
     .byte 0
-    .byte 0
-    .byte 10
-    .byte 14
-    .quad b@dtpoff
-    .byte 155
-    .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
-    .ascii "b\000"
-    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
-    .quad 22
-    .quad 28
 __kefir_debug_info_section_entry_6:
-    .byte 3
-    .ascii "c\000"
+    .byte 5
+    .ascii "var1\000"
     .byte 1
     .byte 0
-    .byte 10
-    .byte 14
-    .quad c@dtpoff
-    .byte 155
-    .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
-    .ascii "c\000"
-    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
-    .quad 23
-    .quad 20
-__kefir_debug_info_section_entry_8:
+    .byte 9
+    .byte 3
+    .quad SOMEVAR1
+    .long __kefir_debug_info_section_entry_4 - __kefir_debug_info_section
+    .ascii "SOMEVAR1\000"
+    .ascii "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c\000"
+    .quad 21
+    .quad 5
+__kefir_debug_info_section_entry_7:
+    .byte 5
+    .ascii "var2\000"
+    .byte 1
+    .byte 0
+    .byte 9
+    .byte 3
+    .quad SOMEVAR2
+    .long __kefir_debug_info_section_entry_8 - __kefir_debug_info_section
+    .ascii "SOMEVAR2\000"
+    .ascii "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c\000"
+    .quad 22
+    .quad 6
+__kefir_debug_info_section_entry_9:
     .byte 6
-    .ascii "getb\000"
-    .quad __kefir_text_func_getb_begin
-    .quad __kefir_text_func_getb_end - __kefir_text_func_getb_begin
+    .ascii "get1\000"
+    .quad __kefir_text_func_SOMEFN1_begin
+    .quad __kefir_text_func_SOMEFN1_end - __kefir_text_func_SOMEFN1_begin
     .byte 2
     .byte 118
     .byte 0
-    .long __kefir_debug_info_section_entry_5 - __kefir_debug_info_section
+    .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .byte 1
     .byte 0
-    .ascii "getb\000"
-    .ascii "source/tests/end2end/debug_info_thread_local_var1/lib.kefir.asmgen.c\000"
-    .quad 25
+    .ascii "SOMEFN1\000"
+    .ascii "source/tests/end2end/debug_info_asm_label1/lib.kefir.asmgen.c\000"
+    .quad 26
     .quad 1
-__kefir_debug_info_section_entry_9:
+__kefir_debug_info_section_entry_10:
     .byte 9
     .ascii "__func__\000"
-    .long __kefir_debug_info_section_entry_10 - __kefir_debug_info_section
+    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
     .long __kefir_debug_loclist_section_entry_1
     .byte 0
     .byte 0
@@ -302,32 +324,29 @@ __kefir_debug_info_section_entry_9:
     .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
-    .ascii "signed int\000"
-    .byte 4
-    .byte 4
-    .byte 5
-__kefir_debug_info_section_entry_5:
-    .byte 2
     .ascii "float\000"
     .byte 4
     .byte 4
     .byte 4
-__kefir_debug_info_section_entry_7:
+__kefir_debug_info_section_entry_4:
+    .byte 2
+    .ascii "signed int\000"
     .byte 4
+    .byte 4
+    .byte 5
+__kefir_debug_info_section_entry_8:
+    .byte 2
+    .ascii "signed long\000"
     .byte 8
     .byte 8
-    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
-__kefir_debug_info_section_entry_10:
+    .byte 5
+__kefir_debug_info_section_entry_11:
     .byte 7
     .long __kefir_debug_info_section_entry_12 - __kefir_debug_info_section
 __kefir_debug_info_section_entry_13:
     .byte 8
     .long __kefir_debug_info_section_entry_14 - __kefir_debug_info_section
     .byte 5
-    .byte 0
-__kefir_debug_info_section_entry_11:
-    .byte 5
-    .ascii "void\000"
     .byte 0
 __kefir_debug_info_section_entry_12:
     .byte 2

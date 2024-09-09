@@ -1325,6 +1325,8 @@ __kefir_debug_abbrev_section_entry_3:
     .byte 12
     .byte 60
     .byte 12
+    .byte 110
+    .byte 8
     .byte 58
     .byte 8
     .byte 59
@@ -1423,6 +1425,7 @@ __kefir_debug_info_section_entry_2:
     .long __kefir_debug_info_section_entry_3 - __kefir_debug_info_section
     .byte 1
     .byte 0
+    .ascii "factorial\000"
     .ascii "source/tests/end2end/asmcmp_source_location2/lib.kefir.asmgen.c\000"
     .quad 21
     .quad 1

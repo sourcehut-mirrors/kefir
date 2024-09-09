@@ -83,6 +83,7 @@ typedef enum kefir_dwarf_attribute {
     KEFIR_DWARF(DW_AT_frame_base) = 0x40,
     KEFIR_DWARF(DW_AT_type) = 0x49,
     KEFIR_DWARF(DW_AT_data_bit_offset) = 0x6b,
+    KEFIR_DWARF(DW_AT_linkage_name) = 0x6e,
     KEFIR_DWARF(DW_AT_alignment) = 0x88
 } kefir_dwarf_attribute_t;
 

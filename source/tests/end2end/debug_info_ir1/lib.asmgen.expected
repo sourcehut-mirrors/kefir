@@ -1001,7 +1001,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 89,
+            "subroutine_id": 148,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
@@ -3166,7 +3166,7 @@
                 "children": []
             },
             {
-                "identifier": 89,
+                "identifier": 148,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3208,7 +3208,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 90,
+                        "identifier": 149,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3227,7 +3227,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 91,
+                        "identifier": 150,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3246,7 +3246,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 92,
+                        "identifier": 151,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3255,7 +3255,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 93
+                                "value": 152
                             },
                             {
                                 "tag": "parameter",
@@ -3265,7 +3265,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 95,
+                        "identifier": 154,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3312,7 +3312,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 96,
+                        "identifier": 155,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3359,7 +3359,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 97,
+                        "identifier": 156,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3368,7 +3368,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 98
+                                "value": 157
                             },
                             {
                                 "tag": "code_begin",
@@ -3406,7 +3406,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 100,
+                        "identifier": 159,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3415,7 +3415,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 101
+                                "value": 160
                             },
                             {
                                 "tag": "code_begin",
@@ -3453,7 +3453,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 103,
+                        "identifier": 162,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3462,7 +3462,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 104
+                                "value": 163
                             },
                             {
                                 "tag": "code_begin",
@@ -3474,7 +3474,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 90
+                                "value": 91
                             },
                             {
                                 "tag": "external",
@@ -3490,7 +3490,7 @@
                 ]
             },
             {
-                "identifier": 93,
+                "identifier": 152,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -3503,51 +3503,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 94
+                        "value": 153
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 94,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 19
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 98,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 99
-                    }
-                ],
-                "children": []
-            },
-            {
-                "identifier": 99,
+                "identifier": 153,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -3566,7 +3528,45 @@
                 "children": []
             },
             {
-                "identifier": 101,
+                "identifier": 157,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 158
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 158,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
+                        "value": 19
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 160,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -3576,7 +3576,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 102,
+                        "identifier": 161,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -3589,7 +3589,7 @@
                 ]
             },
             {
-                "identifier": 104,
+                "identifier": 163,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -3607,7 +3607,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 105,
+                        "identifier": 164,
                         "tag": "array_subrange",
                         "attributes": [
                             {
