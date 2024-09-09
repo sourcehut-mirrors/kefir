@@ -1008,6 +1008,12 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                 REQUIRE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
                                                "Constant length of AST array declaration shall have integral type"));
+                kefir_bool_t length_signed;
+                REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, declarator->array.length->properties.type,
+                                                    &length_signed));
+                REQUIRE(!length_signed || value.integer >= 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
+                                               "Array length cannot be negative"));
                 if (declarator->array.static_array) {
                     *base_type = kefir_ast_type_array_static(mem, context->type_bundle, *base_type,
                                                              kefir_ast_constant_expression_integer(mem, value.integer),
@@ -1054,11 +1060,13 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
             REQUIRE_CHAIN(&res, kefir_ast_analyze_node(mem, &decl_context->context, node));
             REQUIRE_CHAIN(&res, kefir_ast_declaration_unpack_single(decl_list, &declaration));
             REQUIRE_CHAIN(&res, kefir_ast_declarator_unpack_identifier(declaration->declarator, &parameter_identifier));
-            REQUIRE_CHAIN(&res, kefir_ast_type_function_named_parameter(
-                                    mem, context->type_bundle, func_type,
-                                    parameter_identifier != NULL && parameter_identifier->identifier != NULL ? parameter_identifier->identifier : NULL,
-                                    declaration->base.properties.type,
-                                    &declaration->base.properties.declaration_props.storage));
+            REQUIRE_CHAIN(
+                &res, kefir_ast_type_function_named_parameter(
+                          mem, context->type_bundle, func_type,
+                          parameter_identifier != NULL && parameter_identifier->identifier != NULL
+                              ? parameter_identifier->identifier
+                              : NULL,
+                          declaration->base.properties.type, &declaration->base.properties.declaration_props.storage));
         } else if (res == KEFIR_NO_MATCH) {
             struct kefir_ast_identifier *identifier = NULL;
             REQUIRE_MATCH(
@@ -1072,10 +1080,12 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
                     REQUIRE_CHAIN(&res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type,
                                                                           node->properties.type, NULL));
                 } else {
-                    res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type, identifier->identifier, NULL, NULL);
+                    res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type,
+                                                                  identifier->identifier, NULL, NULL);
                 }
             } else if (res == KEFIR_NOT_FOUND) {
-                res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type, identifier->identifier, NULL, NULL);
+                res = kefir_ast_type_function_named_parameter(mem, context->type_bundle, func_type,
+                                                              identifier->identifier, NULL, NULL);
             }
         } else {
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
@@ -1194,29 +1204,40 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
                 attributes->weak = true;
             } else if (strcmp(attribute->name, "alias") == 0 || strcmp(attribute->name, "__alias__") == 0) {
                 const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
-                REQUIRE(parameter != NULL && parameter->value, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location, "Expected alias attribute to have multibyte string literal parameter"));
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node,
-                    parameter->value);
+                REQUIRE(parameter != NULL && parameter->value,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Expected alias attribute to have multibyte string literal parameter"));
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
                 REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected alias attribute to have multibyte string literal parameter"));
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                               "Expected alias attribute to have multibyte string literal parameter"));
                 struct kefir_ast_string_literal *string_literal;
                 REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
                 REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected alias attribute to have multibyte string literal parameter"));
-                const char *alias = kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
-                REQUIRE(alias != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator alias into string pool"));
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                               "Expected alias attribute to have multibyte string literal parameter"));
+                const char *alias =
+                    kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
+                REQUIRE(alias != NULL,
+                        KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator alias into string pool"));
                 attributes->alias = alias;
             } else if (strcmp(attribute->name, "visibility") == 0 || strcmp(attribute->name, "__visibility__") == 0) {
                 const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
-                REQUIRE(parameter != NULL && parameter->value, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node,
-                    parameter->value);
-                REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
+                REQUIRE(
+                    parameter != NULL && parameter->value,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                           "Expected visibility attribute to have multibyte string literal parameter"));
+                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
+                REQUIRE(
+                    parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                           "Expected visibility attribute to have multibyte string literal parameter"));
                 struct kefir_ast_string_literal *string_literal;
                 REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
-                REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Expected visibility attribute to have multibyte string literal parameter"));
+                REQUIRE(
+                    string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                           "Expected visibility attribute to have multibyte string literal parameter"));
 
                 if (strcmp((const char *) string_literal->literal, "default") == 0) {
                     attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
@@ -1227,7 +1248,9 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
                 } else if (strcmp((const char *) string_literal->literal, "protected") == 0) {
                     attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED;
                 } else {
-                    return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location, "Unknown visibility attribute value \"%s\"", (const char *) string_literal->literal);
+                    return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                                   "Unknown visibility attribute value \"%s\"",
+                                                   (const char *) string_literal->literal);
                 }
             }
         }
