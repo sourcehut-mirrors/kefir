@@ -8,6 +8,8 @@ packages:
   - gettext
   - file
   - wget
+  - openssl
+  - libssl-dev
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:
@@ -18,6 +20,9 @@ tasks:
   - test_bash: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/bash.test.done -j$(nproc)
+  - test_curl: |
+      cd kefir
+      LC_ALL=C.UTF-8 make bin/tests/external/curl.test.done -j$(nproc)
   - test_c_testsuite: |
       cd kefir
       LC_ALL=C.UTF-8 make bin/tests/external/c-testsuite.test.done -j$(nproc)
