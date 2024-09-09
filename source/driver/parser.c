@@ -19,6 +19,7 @@
 */
 
 #include "kefir/driver/parser.h"
+#include "kefir/platform/filesystem.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -31,9 +32,10 @@ static kefir_bool_t detect_shared_object_file_type(const struct kefir_driver_ext
 
     const char *full_extension = NULL;
     const char *filename_end = filename + strlen(filename);
-    for (const char *c = filename; c < filename_end; c++) {
+    for (const char *c = filename_end - 1; c >= filename; c--) {
         if (*c == '.') {
             full_extension = c;
+        } else if (*c == KEFIR_FILESYSTEM_PATH_SEPARATOR) {
             break;
         }
     }

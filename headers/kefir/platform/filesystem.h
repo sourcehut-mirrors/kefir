@@ -24,6 +24,8 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/string_pool.h"
 
+#define KEFIR_FILESYSTEM_PATH_SEPARATOR '/'
+
 typedef struct kefir_filesystem_path_list_iter {
     const char *current_list;
     char separator;
