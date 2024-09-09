@@ -1425,6 +1425,12 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
                 REQUIRE_OK(kefir_json_output_boolean(json, entry_attr->external));
                 break;
 
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_DECLARATION:
+                REQUIRE_OK(kefir_json_output_string(json, "declaration"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_boolean(json, entry_attr->external));
+                break;
+
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION:
                 REQUIRE_OK(kefir_json_output_string(json, "source_location"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));

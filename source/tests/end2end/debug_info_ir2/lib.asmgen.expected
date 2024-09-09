@@ -417,6 +417,10 @@
                         "value": true
                     },
                     {
+                        "tag": "declaration",
+                        "value": false
+                    },
+                    {
                         "tag": "source_location",
                         "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                     },
@@ -534,6 +538,10 @@
                                                                 "value": false
                                                             },
                                                             {
+                                                                "tag": "declaration",
+                                                                "value": false
+                                                            },
+                                                            {
                                                                 "tag": "source_location",
                                                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                                                             },
@@ -581,6 +589,10 @@
                                                 "value": false
                                             },
                                             {
+                                                "tag": "declaration",
+                                                "value": false
+                                            },
+                                            {
                                                 "tag": "source_location",
                                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                                             },
@@ -621,6 +633,10 @@
                                             },
                                             {
                                                 "tag": "external",
+                                                "value": false
+                                            },
+                                            {
+                                                "tag": "declaration",
                                                 "value": false
                                             },
                                             {
@@ -683,6 +699,10 @@
                                                 "value": false
                                             },
                                             {
+                                                "tag": "declaration",
+                                                "value": false
+                                            },
+                                            {
                                                 "tag": "source_location",
                                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                                             },
@@ -730,6 +750,10 @@
                                 "value": false
                             },
                             {
+                                "tag": "declaration",
+                                "value": false
+                            },
+                            {
                                 "tag": "source_location",
                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                             },
@@ -770,6 +794,10 @@
                             },
                             {
                                 "tag": "external",
+                                "value": false
+                            },
+                            {
+                                "tag": "declaration",
                                 "value": false
                             },
                             {
@@ -816,6 +844,10 @@
                                 "value": false
                             },
                             {
+                                "tag": "declaration",
+                                "value": false
+                            },
+                            {
                                 "tag": "source_location",
                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                             },
@@ -859,6 +891,10 @@
                                 "value": false
                             },
                             {
+                                "tag": "declaration",
+                                "value": false
+                            },
+                            {
                                 "tag": "source_location",
                                 "value": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c"
                             },
@@ -899,6 +935,10 @@
                             },
                             {
                                 "tag": "external",
+                                "value": false
+                            },
+                            {
+                                "tag": "declaration",
                                 "value": false
                             }
                         ],

@@ -307,6 +307,9 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST scoped identifier storage class");
     }
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+        mem, &module->debug_info.entries, &module->symbols, scoped_identifier_layout->debug_info.variable,
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(scoped_identifier->object.external)));
 
     if (scoped_identifier->source_location.source != NULL) {
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(

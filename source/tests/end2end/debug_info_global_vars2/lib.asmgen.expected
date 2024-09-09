@@ -138,6 +138,8 @@ __kefir_debug_abbrev_section_entry_4:
     .byte 8
     .byte 63
     .byte 12
+    .byte 60
+    .byte 12
     .byte 2
     .byte 24
     .byte 73
@@ -364,6 +366,7 @@ __kefir_debug_info_section_entry_2:
     .byte 4
     .ascii "a\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad a
@@ -375,6 +378,7 @@ __kefir_debug_info_section_entry_4:
     .byte 4
     .ascii "b\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad b
@@ -386,6 +390,7 @@ __kefir_debug_info_section_entry_6:
     .byte 4
     .ascii "c\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad c
@@ -397,6 +402,7 @@ __kefir_debug_info_section_entry_8:
     .byte 4
     .ascii "d\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad d
@@ -408,6 +414,7 @@ __kefir_debug_info_section_entry_10:
     .byte 4
     .ascii "e\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad e
@@ -419,6 +426,7 @@ __kefir_debug_info_section_entry_12:
     .byte 4
     .ascii "f\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad f
@@ -430,6 +438,7 @@ __kefir_debug_info_section_entry_14:
     .byte 4
     .ascii "g\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad g
@@ -441,6 +450,7 @@ __kefir_debug_info_section_entry_16:
     .byte 4
     .ascii "h\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad h
@@ -452,6 +462,7 @@ __kefir_debug_info_section_entry_18:
     .byte 4
     .ascii "i\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad i
@@ -463,6 +474,7 @@ __kefir_debug_info_section_entry_20:
     .byte 4
     .ascii "j\000"
     .byte 1
+    .byte 0
     .byte 9
     .byte 3
     .quad j

@@ -19,6 +19,6 @@
 */
 
 extern int a;
-int b;
+int *b = &a;
 static int c;
 void *d = &c;

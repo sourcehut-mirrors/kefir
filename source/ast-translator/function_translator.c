@@ -310,6 +310,9 @@ static kefir_result_t generate_debug_info(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
         mem, &function_context->module->debug_info.entries, &function_context->module->symbols, subprogram_entry_id,
         &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(scoped_id->function.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+        mem, &function_context->module->debug_info.entries, &function_context->module->symbols, subprogram_entry_id,
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(!scoped_id->function.defined)));
 
     if (function_context->function_definition->base.source_location.source != NULL) {
         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(

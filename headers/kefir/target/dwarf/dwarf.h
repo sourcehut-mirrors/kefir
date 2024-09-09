@@ -77,6 +77,7 @@ typedef enum kefir_dwarf_attribute {
     KEFIR_DWARF(DW_AT_decl_column) = 0x39,
     KEFIR_DWARF(DW_AT_decl_file) = 0x3a,
     KEFIR_DWARF(DW_AT_decl_line) = 0x3b,
+    KEFIR_DWARF(DW_AT_declaration) = 0x3c,
     KEFIR_DWARF(DW_AT_encoding) = 0x3e,
     KEFIR_DWARF(DW_AT_external) = 0x3f,
     KEFIR_DWARF(DW_AT_frame_base) = 0x40,
