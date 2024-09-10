@@ -14,5 +14,5 @@ no_complex = __STDC_NO_COMPLEX__
 no_threads = __STDC_NO_THREADS__
 no_vla = __STDC_NO_VLA__
 kefircc = 1
-kefircc_version = "0.3.1"
+kefircc_version = "0.4.0"
 __ILP32__ __LLP64__ 1 __ILP64__ __SILP64__
