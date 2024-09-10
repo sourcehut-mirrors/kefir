@@ -2,7 +2,10 @@ KEFIR_BUILD_TIMESTAMP := $(shell date +%s)
 
 $(BOOTSTRAP_DIR)/stage1/kefir: $(KEFIR_BIN_DIR)/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
-	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH \
+		KEFIR_RTLIB=$(KEFIR_BIN_DIR)/libs/libkefirrt.a \
+		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
+		$(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
@@ -15,7 +18,10 @@ $(BOOTSTRAP_DIR)/stage1/kefir: $(KEFIR_BIN_DIR)/kefir $(LIBKEFIRRT_A)
 
 $(BOOTSTRAP_DIR)/stage2/kefir: $(BOOTSTRAP_DIR)/stage1/kefir $(LIBKEFIRRT_A)
 	@echo "Bootstrapping $@"
-	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$$LD_LIBRARY_PATH $(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$$LD_LIBRARY_PATH \
+		KEFIR_RTLIB=$(BOOTSTRAP_DIR)/stage1/libkefirrt.a \
+		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
+		$(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
