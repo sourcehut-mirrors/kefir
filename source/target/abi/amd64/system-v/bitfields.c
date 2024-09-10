@@ -111,7 +111,8 @@ static kefir_result_t struct_current_offset(struct kefir_mem *mem, const struct 
         struct kefir_ir_type_visitor visitor;
         struct struct_layout_visitor payload = {.offset = offset};
         REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, &visit_struct_layout));
-        REQUIRE_OK(kefir_abi_amd64_sysv_calculate_type_layout(mem, type, struct_index, 1, &payload.layout));
+        REQUIRE_OK(kefir_abi_amd64_sysv_calculate_type_layout(mem, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, type,
+                                                              struct_index, 1, &payload.layout));
         kefir_result_t res =
             kefir_ir_type_visitor_list_nodes(type, &visitor, &payload, struct_index + 1, struct_typeentry->param);
         REQUIRE_ELSE(res == KEFIR_OK, {

@@ -50,7 +50,7 @@ b:
 c:
     .skip 8
 
-    .align 8
+    .align 16
 d:
     .skip 80
 

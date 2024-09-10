@@ -39,7 +39,14 @@ typedef struct kefir_abi_amd64_type_layout {
     struct kefir_vector layout;
 } kefir_abi_amd64_type_layout_t;
 
-kefir_result_t kefir_abi_amd64_type_layout(struct kefir_mem *, kefir_abi_amd64_variant_t, const struct kefir_ir_type *,
+typedef enum kefir_abi_amd64_type_layout_context {
+    KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK,
+    KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GLOBAL,
+    KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC
+} kefir_abi_amd64_type_layout_context_t;
+
+kefir_result_t kefir_abi_amd64_type_layout(struct kefir_mem *, kefir_abi_amd64_variant_t,
+                                           kefir_abi_amd64_type_layout_context_t, const struct kefir_ir_type *,
                                            struct kefir_abi_amd64_type_layout *);
 
 kefir_result_t kefir_abi_amd64_type_layout_free(struct kefir_mem *, struct kefir_abi_amd64_type_layout *);

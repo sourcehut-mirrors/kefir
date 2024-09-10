@@ -75,7 +75,7 @@ int32_1:
 int64_1:
     .quad 8589934591
 
-    .align 4
+    .align 16
 array1_1:
     .byte 10
     .byte 20

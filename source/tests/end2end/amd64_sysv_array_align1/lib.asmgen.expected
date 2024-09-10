@@ -1,0 +1,209 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global A
+.type A, @object
+.global B
+.type B, @object
+.global C
+.type C, @object
+.global D
+.type D, @object
+.global E
+.type E, @object
+.global F
+.type F, @object
+.global G
+.type G, @object
+.global H
+.type H, @object
+.global geta
+.type geta, @function
+.global getb
+.type getb, @function
+.global getc
+.type getc, @function
+.global getd
+.type getd, @function
+.global gete
+.type gete, @function
+.global getf
+.type getf, @function
+.global getg
+.type getg, @function
+.global geth
+.type geth, @function
+.global vla1
+.type vla1, @function
+.extern __kefirrt_opt_amd64_sysv_vararg_save
+.extern __kefirrt_opt_load_int_vararg
+.extern __kefirrt_opt_load_sse_vararg
+.extern __kefirrt_opt_float32_to_uint
+.extern __kefirrt_opt_float64_to_uint
+.extern __kefirrt_opt_long_double_to_int
+.extern __kefirrt_opt_long_double_to_uint
+.extern __kefirrt_opt_complex_long_double_equals
+.extern __kefirrt_opt_complex_long_double_truncate_1bit
+.extern __kefirrt_opt_complex_float32_mul
+.extern __kefirrt_opt_complex_float32_div
+.extern __kefirrt_opt_complex_float64_mul
+.extern __kefirrt_opt_complex_float64_div
+.extern __kefirrt_opt_complex_long_double_mul
+.extern __kefirrt_opt_complex_long_double_div
+.extern __kefirrt_fenv_update
+.extern __kefir_opt_float32_neg
+.extern __kefir_opt_float64_neg
+.extern __kefir_opt_uint2long_double
+.extern __kefir_opt_complex_float32_neg
+.extern __kefir_opt_complex_float64_neg
+
+.section .text
+__kefir_text_section_begin:
+geta:
+__kefir_text_func_geta_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    lea -16(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_geta_end:
+
+getb:
+__kefir_text_func_getb_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -17(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_getb_end:
+
+getc:
+__kefir_text_func_getc_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -19(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_getc_end:
+
+getd:
+__kefir_text_func_getd_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -23(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_getd_end:
+
+gete:
+__kefir_text_func_gete_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -30(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_gete_end:
+
+getf:
+__kefir_text_func_getf_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -32(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_getf_end:
+
+getg:
+__kefir_text_func_getg_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    lea -32(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_getg_end:
+
+geth:
+__kefir_text_func_geth_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    lea -48(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_geth_end:
+
+vla1:
+__kefir_text_func_vla1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movq $0, -32(%rbp)
+    movq -32(%rbp), %rax
+    sub $16, %rsp
+    movq -32(%rbp), %rcx
+    movq %rcx, (%rsp)
+    movq %rsp, -32(%rbp)
+    movq %rax, -24(%rbp)
+    movsx %edi, %rax
+    movsx %eax, %rax
+    movq %rax, -8(%rbp)
+    mov $1, %rcx
+    sub %rax, %rsp
+    mov $16, %rax
+    cmp %rcx, %rax
+    cmovl %rcx, %rax
+    neg %rax
+    and %rax, %rsp
+    mov %rsp, %rax
+    movq %rax, -16(%rbp)
+    movq -16(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_vla1_end:
+
+__kefir_text_section_end:
+
+.section .bss
+A:
+    .skip 1
+
+B:
+    .skip 2
+
+C:
+    .skip 4
+
+D:
+    .skip 8
+
+E:
+    .skip 15
+
+    .align 16
+F:
+    .skip 16
+
+    .align 16
+G:
+    .skip 17
+
+    .align 16
+H:
+    .skip 24
+

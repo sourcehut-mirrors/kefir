@@ -217,7 +217,8 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
         snprintf(emutls_identifier, sizeof(emutls_identifier) - 1, KEFIR_AMD64_EMUTLS_V, ir_identifier->symbol);
 
         struct kefir_abi_amd64_type_layout type_layout;
-        REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &type_layout));
+        REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GLOBAL,
+                                               data->type, &type_layout));
         kefir_size_t total_size, total_alignment;
         kefir_result_t res =
             kefir_abi_amd64_calculate_type_properties(data->type, &type_layout, &total_size, &total_alignment);

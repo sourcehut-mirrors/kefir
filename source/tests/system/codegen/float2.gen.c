@@ -59,7 +59,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, func_locals, KEFIR_IR_TYPE_FLOAT64, 0, 0);
 
     struct kefir_abi_amd64_type_layout type_layout;
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, func_locals, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, func_locals, &type_layout));
 
     ASSIGN_DECL_CAST(const struct kefir_abi_amd64_typeentry_layout *, entry_layout,
                      kefir_vector_at(&type_layout.layout, 1));

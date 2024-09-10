@@ -81,7 +81,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test1, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));
@@ -130,7 +131,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test2, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));
@@ -181,7 +183,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test3, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_ARRAY, 0, 8));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_CHAR, 0, 0));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));
@@ -224,7 +227,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test4, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 1));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_ARRAY, 0, 4));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));
@@ -254,7 +258,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test5, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT64, 1, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 1));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT64, 0, 0));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));
@@ -284,7 +289,8 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test6, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type1, KEFIR_IR_TYPE_INT64, 0, 0));
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 2, &type2));
     ASSERT_OK(kefir_irbuilder_type_append_from(&kft_mem, &type2, &type1, 2));
-    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type2, &layout));
+    ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                          KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type2, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type2, &layout,
                                                            &parameters));
     ASSERT_OK(kefir_abi_amd64_function_parameters_allocate(&kft_mem, &parameters));

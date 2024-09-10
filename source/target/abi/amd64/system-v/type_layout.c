@@ -94,6 +94,7 @@ struct compound_type_layout {
     kefir_size_t max_size;
     bool aggregate;
     bool aligned;
+    bool extra_align_array;
 };
 
 static kefir_result_t update_compound_type_layout(struct compound_type_layout *compound_type_layout,
@@ -215,7 +216,8 @@ static kefir_result_t calculate_struct_union_layout(const struct kefir_ir_type *
                                                                .max_alignment = 0,
                                                                .max_size = 0,
                                                                .aggregate = typeentry->typecode == KEFIR_IR_TYPE_STRUCT,
-                                                               .aligned = true};
+                                                               .aligned = true,
+                                                               .extra_align_array = false};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, compound_type_layout->visitor,
                                                 (void *) &nested_compound_type_layout, index + 1, typeentry->param));
     data->alignment = nested_compound_type_layout.max_alignment;
@@ -238,12 +240,16 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
                                                                .max_alignment = 0,
                                                                .max_size = 0,
                                                                .aggregate = false,
-                                                               .aligned = true};
+                                                               .aligned = true,
+                                                               .extra_align_array = false};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, compound_type_layout->visitor,
                                                 (void *) &nested_compound_type_layout, index + 1, 1));
     data->alignment = nested_compound_type_layout.max_alignment;
     data->aligned = nested_compound_type_layout.aligned;
     data->size = nested_compound_type_layout.max_size * typeentry->param;
+    if (compound_type_layout->extra_align_array && data->size >= 2 * KEFIR_AMD64_ABI_QWORD) {
+        data->alignment = MAX(data->alignment, 2 * KEFIR_AMD64_ABI_QWORD);
+    }
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
@@ -267,16 +273,18 @@ static kefir_result_t calculate_builtin_layout(const struct kefir_ir_type *type,
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
-static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_size_t index, kefir_size_t count,
-                                       struct kefir_vector *vector) {
+static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_abi_amd64_type_layout_context_t context,
+                                       kefir_size_t index, kefir_size_t count, struct kefir_vector *vector) {
     struct kefir_ir_type_visitor visitor;
-    struct compound_type_layout compound_type_layout = {.visitor = &visitor,
-                                                        .vector = vector,
-                                                        .offset = 0,
-                                                        .max_alignment = 0,
-                                                        .max_size = 0,
-                                                        .aggregate = true,
-                                                        .aligned = true};
+    struct compound_type_layout compound_type_layout = {
+        .visitor = &visitor,
+        .vector = vector,
+        .offset = 0,
+        .max_alignment = 0,
+        .max_size = 0,
+        .aggregate = true,
+        .aligned = true,
+        .extra_align_array = context != KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC};
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, calculate_integer_layout);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, calculate_sse_layout);
@@ -290,9 +298,10 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_s
     return kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &compound_type_layout, index, count);
 }
 
-kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *mem, const struct kefir_ir_type *type,
-                                                          kefir_size_t index, kefir_size_t count,
-                                                          struct kefir_vector *layout) {
+kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *mem,
+                                                          kefir_abi_amd64_type_layout_context_t context,
+                                                          const struct kefir_ir_type *type, kefir_size_t index,
+                                                          kefir_size_t count, struct kefir_vector *layout) {
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid layout vector"));
@@ -304,7 +313,7 @@ kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *mem,
         kefir_vector_free(mem, layout);
         return res;
     });
-    res = calculate_layout(type, index, count, layout);
+    res = calculate_layout(type, context, index, count, layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_vector_free(mem, layout);
         return res;

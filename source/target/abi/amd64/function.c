@@ -135,7 +135,8 @@ struct abi_amd64_payload {
 static kefir_result_t function_alloc_return(struct kefir_mem *mem, struct abi_amd64_payload *payload) {
     REQUIRE(kefir_ir_type_children(payload->decl->result) <= 1,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected IR function to have return type count less than 2"));
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, payload->variant, payload->decl->result, &payload->returns.layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, payload->variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK,
+                                           payload->decl->result, &payload->returns.layout));
     kefir_result_t res = kefir_abi_amd64_function_parameters_classify(
         mem, payload->variant, payload->decl->result, &payload->returns.layout, &payload->returns.parameters);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -158,7 +159,8 @@ static kefir_result_t function_alloc_return(struct kefir_mem *mem, struct abi_am
 }
 
 static kefir_result_t function_alloc_params(struct kefir_mem *mem, struct abi_amd64_payload *payload) {
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, payload->decl->params,
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK, payload->decl->params,
                                            &payload->parameters.layout));
 
     kefir_result_t res = kefir_abi_amd64_function_parameters_classify(

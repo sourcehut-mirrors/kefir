@@ -515,7 +515,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
                                                    &func->abi_function_declaration));
     if (function->locals.type != NULL) {
         kefir_result_t res =
-            kefir_abi_amd64_type_layout(mem, codegen->abi_variant, function->locals.type, &func->locals_layout);
+            kefir_abi_amd64_type_layout(mem, codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK,
+                                        function->locals.type, &func->locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
             kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);

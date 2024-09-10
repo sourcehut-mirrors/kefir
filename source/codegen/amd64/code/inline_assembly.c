@@ -284,7 +284,8 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain IR inline assembly parameter type"));
 
     struct kefir_abi_amd64_type_layout layouts;
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &layouts));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, ir_type, &layouts));
     const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
     kefir_result_t res = kefir_abi_amd64_type_layout_at(&layouts, ir_type_idx, &layout);
     REQUIRE_ELSE(res == KEFIR_OK, {

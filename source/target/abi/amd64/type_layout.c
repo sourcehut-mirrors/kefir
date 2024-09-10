@@ -25,6 +25,7 @@
 #include "kefir/target/abi/amd64/system-v/type_layout.h"
 
 kefir_result_t kefir_abi_amd64_type_layout(struct kefir_mem *mem, kefir_abi_amd64_variant_t variant,
+                                           kefir_abi_amd64_type_layout_context_t context,
                                            const struct kefir_ir_type *type,
                                            struct kefir_abi_amd64_type_layout *layout) {
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
@@ -33,7 +34,7 @@ kefir_result_t kefir_abi_amd64_type_layout(struct kefir_mem *mem, kefir_abi_amd6
 
     switch (variant) {
         case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
-            REQUIRE_OK(kefir_abi_amd64_sysv_calculate_type_layout(mem, type, 0, kefir_ir_type_children(type),
+            REQUIRE_OK(kefir_abi_amd64_sysv_calculate_type_layout(mem, context, type, 0, kefir_ir_type_children(type),
                                                                   &layout->layout));
             break;
 

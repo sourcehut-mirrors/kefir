@@ -45,7 +45,8 @@ static kefir_result_t amd64_sysv_get_type(struct kefir_mem *mem, const struct ke
     struct kefir_abi_sysv_amd64_type *type = KEFIR_MALLOC(mem, sizeof(struct kefir_abi_sysv_amd64_type));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 SysV platform IR type"));
     type->ir_type = ir_type;
-    kefir_result_t res = kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &type->layout);
+    kefir_result_t res = kefir_abi_amd64_type_layout(
+        mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, ir_type, &type->layout);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);
         return res;

@@ -23,8 +23,10 @@
 
 #include "kefir/target/abi/amd64/type_layout.h"
 
-kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *, const struct kefir_ir_type *,
-                                                          kefir_size_t, kefir_size_t, struct kefir_vector *);
+kefir_result_t kefir_abi_amd64_sysv_calculate_type_layout(struct kefir_mem *,
+                                                          kefir_abi_amd64_type_layout_context_t context,
+                                                          const struct kefir_ir_type *, kefir_size_t, kefir_size_t,
+                                                          struct kefir_vector *);
 
 #define KEFIR_ABI_AMD64_SYSV_MAX_ALIGNMENT (2 * KEFIR_AMD64_ABI_QWORD)
 

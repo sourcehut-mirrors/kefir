@@ -60,11 +60,11 @@ b:
 c:
     .skip 8
 
-    .align 2
+    .align 16
 d:
     .skip 200
 
-    .align 8
+    .align 16
 e:
     .skip 48
 

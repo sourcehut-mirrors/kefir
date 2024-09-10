@@ -346,7 +346,8 @@ static kefir_result_t size_of_memory_operand(struct kefir_mem *mem, struct kefir
     REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
 
     struct kefir_abi_amd64_type_layout type_layout;
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, ir_type, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
+                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, ir_type, &type_layout));
 
     const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
     kefir_result_t res = kefir_abi_amd64_type_layout_at(&type_layout, instruction->operation.parameters.type.type_index,

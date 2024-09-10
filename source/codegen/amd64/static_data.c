@@ -711,7 +711,8 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     struct static_data_param param = {
         .codegen = codegen, .module = module, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};
     REQUIRE_OK(kefir_ir_data_map_iter(data, &param.data_map_iter));
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &param.layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GLOBAL,
+                                           data->type, &param.layout));
 
     kefir_size_t total_size, total_alignment;
     kefir_result_t res =
@@ -751,7 +752,8 @@ kefir_result_t kefir_codegen_amd64_static_data_uninit(struct kefir_mem *mem, str
     REQUIRE(data->finalized, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected finalized IR data"));
 
     struct kefir_abi_amd64_type_layout layout;
-    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, data->type, &layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(mem, codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GLOBAL,
+                                           data->type, &layout));
 
     kefir_size_t total_size, total_alignment;
     kefir_result_t res = kefir_abi_amd64_calculate_type_properties(data->type, &layout, &total_size, &total_alignment);

@@ -621,7 +621,8 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     struct kefir_abi_amd64_type_layout type_layout;
     struct kefir_abi_amd64_function_parameters parameters;
 
-    REQUIRE_OK(kefir_abi_amd64_type_layout(param->mem, param->function->codegen->abi_variant, type, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout(param->mem, param->function->codegen->abi_variant,
+                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK, type, &type_layout));
 
     kefir_result_t res = kefir_abi_amd64_function_parameters_classify(param->mem, param->function->codegen->abi_variant,
                                                                       type, &type_layout, &parameters);
