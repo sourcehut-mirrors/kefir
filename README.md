@@ -344,10 +344,11 @@ Kefir relies on following tests, most of which are executed as part of CI:
 Furthermore, Kefir also provides an [external](source/tests/external) test suite
 comprised of open source software that is known to work with Kefir. This suite
 are not included in the CI, however, it is regularly executed manually.
-Currently, the external test suite includes: bash 5.2.21, git 2.44.0, libsir
-2.2.4, nano 7.2, oksh 7.5, sqlite 3.45.3, tcc 0.9.27, tcl 8.6.14, tin 2.6.3,
-zlib 1.3.1. The external test suite is used to verify Kefir compatbility with
-real world software.
+Currently, the external test suite includes: bash 5.2.21, binutils 2.42 (only as
+and ld), curl 8.9.1, git 2.44.0, libsir 2.2.4, musl 1.2.5, nano 7.2, oksh 7.5,
+sqlite 3.45.3, tcc 0.9.27, tcl 8.6.14, tin 2.6.3, yasm 1.3.0, zlib 1.3.1. The
+external test suite is used to verify Kefir compatbility with real world
+software.
 
 Own test suite is deterministic (that is, tests do not fail spuriously), however
 there might arise problems when executed in unusual environments (e.g. with
