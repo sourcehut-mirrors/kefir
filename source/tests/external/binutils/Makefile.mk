@@ -46,9 +46,15 @@ $(KEFIR_EXTERNAL_TEST_BINUTILS_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_BINUTILS_SOU
 	@echo "Validating binutils $(KEFIR_EXTERNAL_TEST_BINUTILS_VERSION)..."
 	@KEFIR_AS="$(realpath $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR))/gas/as-new" \
 		KEFIR_LD="$(realpath $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR))/ld/ld-new" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		"$(realpath $(KEFIR_EXE))" -O1 -shared -o $(KEFIR_EXTERNAL_TEST_BINUTILS_DIR)/libgreet.so $(SOURCE_DIR)/tests/external/binutils/lib.c
 	@KEFIR_AS="$(realpath $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR))/gas/as-new" \
 		KEFIR_LD="$(realpath $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR))/ld/ld-new" \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		"$(realpath $(KEFIR_EXE))" -O1 -o $(KEFIR_EXTERNAL_TEST_BINUTILS_DIR)/test $(SOURCE_DIR)/tests/external/binutils/test.c -L$(KEFIR_EXTERNAL_TEST_BINUTILS_DIR) -rpath $(KEFIR_EXTERNAL_TEST_BINUTILS_DIR) -lgreet
 	@$(KEFIR_EXTERNAL_TEST_BINUTILS_DIR)/test world > "$@.tmp"
 	@echo -n "Hello, world!" | diff "$@.tmp" -
