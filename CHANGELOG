@@ -2,6 +2,21 @@
 
 This file documents notable changes to the project.
 
+## [0.4.0] - 2024-09-10
+Project release:
+* Implemented complex number support.
+* Implemented atomics support via software library (libatomic/libcompiler_rt).
+* Implemented DWARF-5 debug information generator.
+* Improved compatibility with GNU C language extensions (__auto and __typeof,
+  imaginary numbers, inline assembly, visibility and linkage attributes, ranges
+  in case labels and array initializers).
+* Implemented full 3-stage bootstrap to produce self-compiled portable package
+  with Kefir, GNU As, GNU Ld and Musl libc.
+* Limited support for Yasm as a target assembler.
+* Optimizations in both generated code and compiler.
+* Bug fixes, improved correctness, formalization and extension of external
+  program test suite.
+
 ## [0.3.1] - 2023-11-28
 Project release:
 * Rewrite and clean up of x86_64 code generator. Removal of naive code generator.
