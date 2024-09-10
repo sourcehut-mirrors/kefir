@@ -21,6 +21,7 @@
 #define KEFIR_CODEGEN_AMD64_DWARF_INTERNAL
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/core/version.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -54,7 +55,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(
         REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen_module->codegen->xasmgen, context->info.entries.compile_unit,
                                                 context->abbrev.entries.compile_unit));
         REQUIRE_OK(KEFIR_AMD64_DWARF_WORD(&codegen_module->codegen->xasmgen, KEFIR_DWARF(DW_LANG_C11)));
-        REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, "Kefir C compiler"));
+        REQUIRE_OK(
+            KEFIR_AMD64_DWARF_STRING(&codegen_module->codegen->xasmgen, "Kefir C compiler " KEFIR_VERSION_SHORT));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
                                             kefir_asm_amd64_xasmgen_operand_label(
                                                 &codegen_module->codegen->xasmgen_helpers.operands[0],
