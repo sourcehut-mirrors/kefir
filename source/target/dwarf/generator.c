@@ -121,14 +121,8 @@ kefir_result_t kefir_amd64_dwarf_sleb128(struct kefir_amd64_xasmgen *xasmgen, ke
 
 kefir_size_t kefir_amd64_dwarf_uleb128_length(kefir_uint64_t value) {
     kefir_size_t length = 0;
-    const kefir_uint64_t mask = (1 << ULEB128_WIDTH) - 1;
     do {
-        kefir_uint8_t byte = value & mask;
         value >>= ULEB128_WIDTH;
-        if (value != 0) {
-            byte |= 1 << 7;
-        }
-
         length++;
     } while (value != 0);
     return length;

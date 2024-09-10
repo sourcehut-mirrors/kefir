@@ -838,7 +838,7 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *m
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
-    struct kefir_ast_node_base *expr = NULL, *range_end_expr, *stmt = NULL;
+    struct kefir_ast_node_base *expr = NULL, *range_end_expr = NULL, *stmt = NULL;
     REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &stmt));
     kefir_result_t res = kefir_parser_ast_builder_pop(mem, builder, &range_end_expr);
     REQUIRE_ELSE(res == KEFIR_OK, {
