@@ -24,17 +24,25 @@
 #include <string.h>
 
 #define INIT_CAPACITY 512
-#define CAPACITY_INCREASE(_current) ((_current) * 9 / 8 + INIT_CAPACITY)
+#define CAPACITY_INCREASE(_current) ((_current) * 2 + INIT_CAPACITY)
+
+static kefir_result_t ensure_specific_size(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
+                                           kefir_size_t increase) {
+    if (buffer->length + increase >= buffer->capacity) {
+        kefir_size_t newCapacity = buffer->length + increase + 1;
+        struct kefir_token *newBuffer = KEFIR_REALLOC(mem, buffer->tokens, sizeof(struct kefir_token) * newCapacity);
+        REQUIRE(newBuffer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer"));
+        buffer->tokens = newBuffer;
+        buffer->capacity = newCapacity;
+    }
+    return KEFIR_OK;
+}
 
 static kefir_result_t ensure_size(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
     if (buffer->length + 1 >= buffer->capacity) {
         kefir_size_t newCapacity = buffer->capacity == 0 ? INIT_CAPACITY : CAPACITY_INCREASE(buffer->capacity);
-        struct kefir_token *newBuffer = KEFIR_MALLOC(mem, sizeof(struct kefir_token) * newCapacity);
+        struct kefir_token *newBuffer = KEFIR_REALLOC(mem, buffer->tokens, sizeof(struct kefir_token) * newCapacity);
         REQUIRE(newBuffer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer"));
-        if (buffer->tokens != NULL) {
-            memcpy(newBuffer, buffer->tokens, sizeof(struct kefir_token) * buffer->length);
-            KEFIR_FREE(mem, buffer->tokens);
-        }
         buffer->tokens = newBuffer;
         buffer->capacity = newCapacity;
     }
@@ -82,9 +90,11 @@ kefir_result_t kefir_token_buffer_insert(struct kefir_mem *mem, struct kefir_tok
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
+    REQUIRE_OK(ensure_specific_size(mem, dst, src->length));
     for (kefir_size_t i = 0; i < src->length; i++) {
-        REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, &src->tokens[i]));
+        REQUIRE_OK(kefir_token_move(&dst->tokens[dst->length + i], &src->tokens[i]));
     }
+    dst->length += src->length;
     KEFIR_FREE(mem, src->tokens);
     src->tokens = NULL;
     src->length = 0;
