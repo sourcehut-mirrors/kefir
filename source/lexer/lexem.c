@@ -42,13 +42,22 @@ kefir_result_t kefir_token_macro_expansions_free(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_macro_expansions_add(struct kefir_mem *mem, struct kefir_token_macro_expansions *expansions,
+kefir_result_t kefir_token_macro_expansions_add(struct kefir_mem *mem, struct kefir_token_macro_expansions **expansions,
                                                 const char *identifier) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(expansions != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token macro expansions"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
-    kefir_result_t res = kefir_hashtree_insert(mem, &expansions->macro_expansions, (kefir_hashtree_key_t) identifier,
+    if (*expansions == NULL) {
+        *expansions = KEFIR_MALLOC(mem, sizeof(struct kefir_token_macro_expansions));
+        kefir_result_t res = kefir_token_macro_expansions_init(*expansions);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, *expansions);
+            return res;
+        });
+    }
+
+    kefir_result_t res = kefir_hashtree_insert(mem, &(*expansions)->macro_expansions, (kefir_hashtree_key_t) identifier,
                                                (kefir_hashtree_value_t) 0);
     if (res != KEFIR_ALREADY_EXISTS) {
         REQUIRE_OK(res);
@@ -56,52 +65,42 @@ kefir_result_t kefir_token_macro_expansions_add(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_macro_expansions_merge(struct kefir_mem *mem, struct kefir_token_macro_expansions *dst,
+kefir_result_t kefir_token_macro_expansions_merge(struct kefir_mem *mem, struct kefir_token_macro_expansions **dst,
                                                   const struct kefir_token_macro_expansions *src) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token macro expansions"));
-    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token macro expansions"));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src->macro_expansions, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        REQUIRE_OK(kefir_token_macro_expansions_add(mem, dst, (const char *) node->key));
+    if (src != NULL) {
+        struct kefir_hashtree_node_iterator iter;
+        for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&src->macro_expansions, &iter); node != NULL;
+             node = kefir_hashtree_next(&iter)) {
+            REQUIRE_OK(kefir_token_macro_expansions_add(mem, dst, (const char *) node->key));
+        }
     }
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_token_macro_expansions_move(struct kefir_token_macro_expansions *dst,
-                                                 struct kefir_token_macro_expansions *src) {
-    REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token macro expansions"));
-    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token macro expansions"));
-
-    dst->macro_expansions = src->macro_expansions;
-    src->macro_expansions = (struct kefir_hashtree){0};
     return KEFIR_OK;
 }
 
 kefir_bool_t kefir_token_macro_expansions_has(const struct kefir_token_macro_expansions *expansions,
                                               const char *identifier) {
-    REQUIRE(expansions != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token macro expansions"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
 
-    return kefir_hashtree_has(&expansions->macro_expansions, (kefir_hashtree_key_t) identifier);
+    return expansions != NULL && kefir_hashtree_has(&expansions->macro_expansions, (kefir_hashtree_key_t) identifier);
 }
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_SENTINEL;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t keyword, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_KEYWORD;
     token->keyword = keyword;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -113,7 +112,6 @@ kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_st
     REQUIRE((mem == NULL && symbols == NULL) || (mem != NULL && symbols != NULL),
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                             "Expected both memory allocator and symbol table to be either valid or not"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     if (symbols != NULL) {
@@ -123,160 +121,161 @@ kefir_result_t kefir_token_new_identifier(struct kefir_mem *mem, struct kefir_st
     }
     token->klass = KEFIR_TOKEN_IDENTIFIER;
     token->identifier = identifier;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_int(kefir_int64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_INTEGER;
     token->constant.integer = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_uint(kefir_uint64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER;
     token->constant.uinteger = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_long(kefir_int64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_INTEGER;
     token->constant.integer = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_ulong(kefir_uint64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER;
     token->constant.uinteger = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_long_long(kefir_int64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_LONG_INTEGER;
     token->constant.integer = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_ulong_long(kefir_uint64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER;
     token->constant.integer = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_char(kefir_int_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_CHAR;
     token->constant.character = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_wide_char(kefir_wchar_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_WIDE_CHAR;
     token->constant.wide_char = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_unicode16_char(kefir_char16_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE16_CHAR;
     token->constant.unicode16_char = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_unicode32_char(kefir_char32_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE32_CHAR;
     token->constant.unicode32_char = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_float(kefir_float32_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_FLOAT;
     token->constant.float32 = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_double(kefir_float64_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_DOUBLE;
     token->constant.float64 = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_long_double(kefir_long_double_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_LONG_DOUBLE;
     token->constant.long_double = value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_complex_float(kefir_float32_t real_value, kefir_float32_t imaginary_value,
                                                       struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_FLOAT;
     token->constant.complex_float32.real = real_value;
     token->constant.complex_float32.imaginary = imaginary_value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_constant_complex_double(kefir_float64_t real_value, kefir_float64_t imaginary_value,
                                                        struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_DOUBLE;
     token->constant.complex_float64.real = real_value;
     token->constant.complex_float64.imaginary = imaginary_value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -284,12 +283,12 @@ kefir_result_t kefir_token_new_constant_complex_long_double(kefir_long_double_t 
                                                             kefir_long_double_t imaginary_value,
                                                             struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_COMPLEX_LONG_DOUBLE;
     token->constant.complex_long_double.real = real_value;
     token->constant.complex_long_double.imaginary = imaginary_value;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -298,7 +297,6 @@ kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *mem, c
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     char *dest_content = KEFIR_MALLOC(mem, length);
@@ -309,6 +307,7 @@ kefir_result_t kefir_token_new_string_literal_multibyte(struct kefir_mem *mem, c
     token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -317,7 +316,6 @@ kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *mem, co
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     char *dest_content = KEFIR_MALLOC(mem, length);
@@ -329,6 +327,7 @@ kefir_result_t kefir_token_new_string_literal_unicode8(struct kefir_mem *mem, co
     token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE8;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -337,7 +336,6 @@ kefir_result_t kefir_token_new_string_literal_unicode16(struct kefir_mem *mem, c
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     kefir_size_t sz = sizeof(kefir_char16_t) * length;
@@ -350,6 +348,7 @@ kefir_result_t kefir_token_new_string_literal_unicode16(struct kefir_mem *mem, c
     token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE16;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -358,7 +357,6 @@ kefir_result_t kefir_token_new_string_literal_unicode32(struct kefir_mem *mem, c
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     kefir_size_t sz = sizeof(kefir_char32_t) * length;
@@ -371,6 +369,7 @@ kefir_result_t kefir_token_new_string_literal_unicode32(struct kefir_mem *mem, c
     token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_UNICODE32;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -379,7 +378,6 @@ kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *mem, const 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     kefir_size_t sz = sizeof(kefir_wchar_t) * length;
@@ -391,6 +389,7 @@ kefir_result_t kefir_token_new_string_literal_wide(struct kefir_mem *mem, const 
     token->string_literal.type = KEFIR_STRING_LITERAL_TOKEN_WIDE;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -400,7 +399,6 @@ kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *mem, kefir_s
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(content != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     kefir_size_t sz = sizeof(kefir_char32_t) * length;
@@ -413,6 +411,7 @@ kefir_result_t kefir_token_new_string_literal_raw(struct kefir_mem *mem, kefir_s
     token->string_literal.type = type;
     token->string_literal.literal = dest_content;
     token->string_literal.length = length;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -457,19 +456,19 @@ kefir_bool_t kefir_token_string_literal_type_concat(kefir_string_literal_token_t
 
 kefir_result_t kefir_token_new_punctuator(kefir_punctuator_token_t punctuator, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_PUNCTUATOR;
     token->punctuator = punctuator;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_new_pp_whitespace(kefir_bool_t newline, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_PP_WHITESPACE;
     token->pp_whitespace.newline = newline;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -479,7 +478,6 @@ kefir_result_t kefir_token_new_pp_number(struct kefir_mem *mem, const char *numb
     REQUIRE(number_literal != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid number literal"));
     REQUIRE(length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid non-zero length of the literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     char *clone_number_literal = KEFIR_MALLOC(mem, length + 1);
@@ -489,6 +487,7 @@ kefir_result_t kefir_token_new_pp_number(struct kefir_mem *mem, const char *numb
     clone_number_literal[length] = '\0';
     token->klass = KEFIR_TOKEN_PP_NUMBER;
     token->pp_number.number_literal = clone_number_literal;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -498,7 +497,6 @@ kefir_result_t kefir_token_new_pp_header_name(struct kefir_mem *mem, kefir_bool_
     REQUIRE(header_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid header name"));
     REQUIRE(length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid non-zero length of the literal"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     char *clone_header_name = KEFIR_MALLOC(mem, length + 1);
@@ -508,6 +506,7 @@ kefir_result_t kefir_token_new_pp_header_name(struct kefir_mem *mem, kefir_bool_
     token->klass = KEFIR_TOKEN_PP_HEADER_NAME;
     token->pp_header_name.system = system;
     token->pp_header_name.header_name = clone_header_name;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -515,12 +514,12 @@ kefir_result_t kefir_token_new_extension(const struct kefir_token_extension_clas
                                          struct kefir_token *token) {
     REQUIRE(extension_class != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid extension class"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_init(&token->macro_expansions));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
 
     token->klass = KEFIR_TOKEN_EXTENSION;
     token->extension.klass = extension_class;
     token->extension.payload = payload;
+    token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -529,7 +528,7 @@ kefir_result_t kefir_token_move(struct kefir_token *dst, struct kefir_token *src
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source token"));
     memcpy(dst, src, sizeof(struct kefir_token));
     src->klass = KEFIR_TOKEN_SENTINEL;
-    src->macro_expansions.macro_expansions = (struct kefir_hashtree){0};
+    src->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
@@ -588,19 +587,36 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
         REQUIRE_OK(src->extension.klass->copy(mem, dst, src));
     }
 
-    REQUIRE_OK(kefir_token_macro_expansions_init(&dst->macro_expansions));
-    kefir_result_t res = kefir_token_macro_expansions_merge(mem, &dst->macro_expansions, &src->macro_expansions);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_macro_expansions_free(mem, &dst->macro_expansions);
-        return res;
-    });
+    if (src->macro_expansions != NULL) {
+        dst->macro_expansions = KEFIR_MALLOC(mem, sizeof(struct kefir_token_macro_expansions));
+        REQUIRE(dst->macro_expansions != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token macro expansions"));
+
+        kefir_result_t res = kefir_token_macro_expansions_init(dst->macro_expansions);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, dst->macro_expansions);
+            return res;
+        });
+        res = kefir_token_macro_expansions_merge(mem, &dst->macro_expansions, src->macro_expansions);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_macro_expansions_free(mem, dst->macro_expansions);
+            KEFIR_FREE(mem, dst->macro_expansions);
+            return res;
+        });
+    } else {
+        dst->macro_expansions = NULL;
+    }
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
-    REQUIRE_OK(kefir_token_macro_expansions_free(mem, &token->macro_expansions));
+    if (token->macro_expansions != NULL) {
+        REQUIRE_OK(kefir_token_macro_expansions_free(mem, token->macro_expansions));
+        KEFIR_FREE(mem, token->macro_expansions);
+        token->macro_expansions = NULL;
+    }
     switch (token->klass) {
         case KEFIR_TOKEN_STRING_LITERAL:
             KEFIR_FREE(mem, token->string_literal.literal);

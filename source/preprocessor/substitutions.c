@@ -248,10 +248,10 @@ static kefir_result_t substitute_function_macro(struct kefir_mem *mem, struct ke
 
     if (token != NULL && token->klass == KEFIR_TOKEN_PUNCTUATOR &&
         token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE &&
-        !kefir_token_macro_expansions_has(&token->macro_expansions, macro->identifier)) {
+        !kefir_token_macro_expansions_has(token->macro_expansions, macro->identifier)) {
         res = kefir_token_buffer_free(mem, &buffer);
         REQUIRE_OK(
-            substitute_function_macro_impl(mem, preprocessor, seq, macro, &token->macro_expansions, source_location));
+            substitute_function_macro_impl(mem, preprocessor, seq, macro, token->macro_expansions, source_location));
     } else {
         kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, seq, &buffer);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -395,7 +395,7 @@ static kefir_result_t run_substitutions(struct kefir_mem *mem, struct kefir_prep
             kefir_result_t res = KEFIR_NO_MATCH;
             if (token.klass == KEFIR_TOKEN_IDENTIFIER) {
                 res = substitute_identifier(mem, preprocessor, seq, token.identifier, subst_context,
-                                            &token.macro_expansions, &token.source_location);
+                                            token.macro_expansions, &token.source_location);
                 REQUIRE_CHAIN(&res, kefir_token_free(mem, &token));
             }
 
