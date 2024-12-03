@@ -329,4 +329,10 @@ kefir_result_t kefir_token_move(struct kefir_token *, struct kefir_token *);
 kefir_result_t kefir_token_copy(struct kefir_mem *, struct kefir_token *, const struct kefir_token *);
 kefir_result_t kefir_token_free(struct kefir_mem *, struct kefir_token *);
 
+typedef struct kefir_token_cursor_handle {
+    kefir_result_t (*get_token)(kefir_size_t, const struct kefir_token **, const struct kefir_token_cursor_handle *);
+    kefir_result_t (*length)(kefir_size_t *, const struct kefir_token_cursor_handle *);
+    kefir_uptr_t payload[2];
+} kefir_token_cursor_handle_t;
+
 #endif

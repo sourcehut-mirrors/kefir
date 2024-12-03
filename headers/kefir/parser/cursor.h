@@ -24,13 +24,19 @@
 #include "kefir/lexer/lexem.h"
 
 typedef struct kefir_parser_token_cursor {
-    struct kefir_token *tokens;
-    kefir_size_t length;
+    const struct kefir_token_cursor_handle *handle;
     kefir_size_t index;
     struct kefir_token sentinel;
+
+    struct {
+        struct kefir_token_cursor_handle handle;
+    } direct_cursor;
 } kefir_parser_token_cursor_t;
 
-kefir_result_t kefir_parser_token_cursor_init(struct kefir_parser_token_cursor *, struct kefir_token *, kefir_size_t);
+kefir_result_t kefir_parser_token_cursor_init(struct kefir_parser_token_cursor *,
+                                              const struct kefir_token_cursor_handle *);
+kefir_result_t kefir_parser_token_cursor_init_direct(struct kefir_parser_token_cursor *, struct kefir_token *,
+                                                     kefir_size_t);
 const struct kefir_token *kefir_parser_token_cursor_at(const struct kefir_parser_token_cursor *, kefir_size_t);
 kefir_result_t kefir_parser_token_cursor_reset(struct kefir_parser_token_cursor *);
 kefir_result_t kefir_parser_token_cursor_next(struct kefir_parser_token_cursor *);

@@ -46,7 +46,7 @@ DEFINE_CASE(parser_extensions1, "Parser - extensions #1") {
     kefir_size_t counter = 0;
     ASSERT_OK(kefir_token_new_identifier(&kft_mem, &symbols, "idx", &TOKENS[counter++]));
 
-    ASSERT_OK(kefir_parser_token_cursor_init(&cursor, TOKENS, counter));
+    ASSERT_OK(kefir_parser_token_cursor_init_direct(&cursor, TOKENS, counter));
     ASSERT_OK(kefir_parser_init(&kft_mem, &parser, &symbols, &cursor, &extensions));
 
     ASSERT(parser.extension_payload != NULL);

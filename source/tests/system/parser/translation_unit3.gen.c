@@ -61,12 +61,10 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
 
-    struct kefir_token *tokens_ptr;
-    kefir_size_t tokens_length;
-    REQUIRE_OK(kefir_token_buffer_flush(mem, &tokens));
-    REQUIRE_OK(kefir_token_buffer_content(&tokens, &tokens_ptr, &tokens_length));
+    struct kefir_token_cursor_handle tokens_handle;
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(&tokens, &tokens_handle));
 
-    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens_ptr, tokens_length));
+    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, &tokens_handle));
     REQUIRE_OK(kefir_parser_init(mem, &parser, context->symbols, &cursor, NULL));
     struct kefir_ast_node_base *node = NULL;
     REQUIRE_OK(KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node));
@@ -99,8 +97,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
     translator_context.global_scope_layout = &global_scope;
 
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
     REQUIRE_OK(kefir_ast_translate_unit(mem, KEFIR_AST_NODE_BASE(unit), &translator_context));
     REQUIRE_OK(kefir_ast_translate_global_scope(mem, &global_context.context, module, &global_scope));
 

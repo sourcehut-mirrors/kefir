@@ -358,12 +358,10 @@ kefir_result_t kefir_compiler_parse(struct kefir_mem *mem, struct kefir_compiler
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
 
-    struct kefir_token *tokens;
-    kefir_size_t tokens_length;
-    REQUIRE_OK(kefir_token_buffer_flush(mem, buffer));
-    REQUIRE_OK(kefir_token_buffer_content(buffer, &tokens, &tokens_length));
+    struct kefir_token_cursor_handle tokens_handle;
+    REQUIRE_OK(kefir_token_buffer_cursor_handle(buffer, &tokens_handle));
 
-    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens, tokens_length));
+    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, &tokens_handle));
     REQUIRE_OK(kefir_parser_init(mem, &parser, &context->ast_global_context.symbols, &cursor,
                                  context->extensions != NULL ? context->extensions->parser : NULL));
     parser.configuration = &context->parser_configuration;

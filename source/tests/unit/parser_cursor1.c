@@ -31,7 +31,7 @@ DEFINE_CASE(parser_token_cursor1, "Parser - token array stream") {
     ASSERT_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_RIGHT_ARROW, &TOKENS[3]));
 
     struct kefir_parser_token_cursor cursor;
-    ASSERT_OK(kefir_parser_token_cursor_init(&cursor, TOKENS, 4));
+    ASSERT_OK(kefir_parser_token_cursor_init_direct(&cursor, TOKENS, 4));
 
     const struct kefir_token *token = NULL;
 
