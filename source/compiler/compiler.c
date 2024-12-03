@@ -189,8 +189,10 @@ static kefir_result_t preprocessor_tokenize_impl(struct kefir_mem *mem, struct k
     }
     REQUIRE_OK(kefir_token_free(mem, &token));
 
-    while (buffer->length > 0 && buffer->tokens[buffer->length - 1].klass == KEFIR_TOKEN_PP_WHITESPACE) {
+    kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    while (buffer_length > 0 && kefir_token_buffer_at(buffer, buffer_length - 1)->klass == KEFIR_TOKEN_PP_WHITESPACE) {
         REQUIRE_OK(kefir_token_buffer_pop(mem, buffer));
+        buffer_length = kefir_token_buffer_length(buffer);
     }
     return KEFIR_OK;
 }
@@ -268,7 +270,7 @@ kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *mem, struct kefir
         return res;
     });
 
-    res = kefir_token_buffer_move(mem, &pp_tokens, buffer);
+    res = kefir_token_buffer_insert(mem, &pp_tokens, buffer);
     REQUIRE_CHAIN(&res, kefir_preprocessor_run(mem, &preprocessor, &pp_tokens));
     REQUIRE_CHAIN(&res, kefir_preprocessor_token_convert_buffer(mem, &preprocessor, buffer, &pp_tokens));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -310,8 +312,10 @@ kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *mem, struct k
     });
     REQUIRE_OK(source_file.close(mem, &source_file));
 
-    if (buffer->length > 0 && buffer->tokens[buffer->length - 1].klass == KEFIR_TOKEN_SENTINEL) {
+    kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    while (buffer_length > 0 && kefir_token_buffer_at(buffer, buffer_length - 1)->klass == KEFIR_TOKEN_SENTINEL) {
         REQUIRE_OK(kefir_token_buffer_pop(mem, buffer));
+        buffer_length = kefir_token_buffer_length(buffer);
     }
     return KEFIR_OK;
 }
@@ -349,7 +353,11 @@ kefir_result_t kefir_compiler_parse(struct kefir_mem *mem, struct kefir_compiler
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
 
-    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, buffer->tokens, buffer->length));
+    struct kefir_token *tokens;
+    kefir_size_t tokens_length;
+    REQUIRE_OK(kefir_token_buffer_content(buffer, &tokens, &tokens_length));
+
+    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens, tokens_length));
     REQUIRE_OK(kefir_parser_init(mem, &parser, &context->ast_global_context.symbols, &cursor,
                                  context->extensions != NULL ? context->extensions->parser : NULL));
     parser.configuration = &context->parser_configuration;
@@ -433,7 +441,8 @@ kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_comp
     translator_context.global_scope_layout = &global_scope;
 
     res = kefir_ast_translator_build_global_scope_layout(mem, module, &context->ast_global_context,
-                                                         translator_context.environment, translator_context.debug_entries, &global_scope);
+                                                         translator_context.environment,
+                                                         translator_context.debug_entries, &global_scope);
     REQUIRE_CHAIN(&res, kefir_ast_translate_unit(mem, KEFIR_AST_NODE_BASE(unit), &translator_context));
     REQUIRE_CHAIN(&res,
                   kefir_ast_translate_global_scope(mem, &context->ast_global_context.context, module, &global_scope));

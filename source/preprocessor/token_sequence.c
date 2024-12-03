@@ -87,7 +87,7 @@ static kefir_result_t next_buffer_elt(struct kefir_mem *mem, struct kefir_prepro
         struct kefir_list_entry *entry = kefir_list_tail(&seq->buffer_stack);
         REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "Token sequence is empty"));
         *buffer_elt = entry->value;
-        if ((*buffer_elt)->index == (*buffer_elt)->buffer.length) {
+        if ((*buffer_elt)->index == kefir_token_buffer_length(&(*buffer_elt)->buffer)) {
             REQUIRE_OK(kefir_list_pop(mem, &seq->buffer_stack, entry));
             *buffer_elt = NULL;
         }
@@ -104,7 +104,7 @@ kefir_result_t kefir_preprocessor_token_sequence_next(struct kefir_mem *mem,
     struct buffer_element *buffer_elt = NULL;
     REQUIRE_OK(next_buffer_elt(mem, seq, &buffer_elt));
     if (token_ptr != NULL) {
-        REQUIRE_OK(kefir_token_move(token_ptr, &buffer_elt->buffer.tokens[buffer_elt->index]));
+        REQUIRE_OK(kefir_token_move(token_ptr, kefir_token_buffer_at(&buffer_elt->buffer, buffer_elt->index)));
     }
     buffer_elt->index++;
     return KEFIR_OK;
@@ -136,7 +136,7 @@ kefir_result_t kefir_preprocessor_token_sequence_current(struct kefir_mem *mem,
 
     struct buffer_element *buffer_elt = NULL;
     REQUIRE_OK(next_buffer_elt(mem, seq, &buffer_elt));
-    *token_ptr = &buffer_elt->buffer.tokens[buffer_elt->index];
+    *token_ptr = kefir_token_buffer_at(&buffer_elt->buffer, buffer_elt->index);
     return KEFIR_OK;
 }
 

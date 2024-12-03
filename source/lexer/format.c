@@ -765,8 +765,8 @@ kefir_result_t kefir_token_buffer_format(struct kefir_json_output *json, const s
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
     REQUIRE_OK(kefir_json_output_array_begin(json));
-    for (kefir_size_t i = 0; i < buffer->length; i++) {
-        REQUIRE_OK(kefir_token_format(json, &buffer->tokens[i], display_source_location));
+    for (kefir_size_t i = 0; i < kefir_token_buffer_length(buffer); i++) {
+        REQUIRE_OK(kefir_token_format(json, kefir_token_buffer_at(buffer, i), display_source_location));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;

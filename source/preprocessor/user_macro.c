@@ -147,19 +147,20 @@ static kefir_result_t concat_resolve_left_argument(struct kefir_mem *mem, const 
             REQUIRE_OK(res);
             ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, node->value);
 
-            if (arg_buffer->length == 0) {
+            const kefir_size_t arg_buffer_length = kefir_token_buffer_length(arg_buffer);
+            if (arg_buffer_length == 0) {
                 *result = &PlacemakerToken;
             } else {
                 struct kefir_token token_copy;
-                for (kefir_size_t i = 0; i < arg_buffer->length - 1; i++) {
-                    REQUIRE_OK(kefir_token_copy(mem, &token_copy, &arg_buffer->tokens[i]));
+                for (kefir_size_t i = 0; i < arg_buffer_length - 1; i++) {
+                    REQUIRE_OK(kefir_token_copy(mem, &token_copy, kefir_token_buffer_at(arg_buffer, i)));
                     res = kefir_token_buffer_emplace(mem, buffer, &token_copy);
                     REQUIRE_ELSE(res == KEFIR_OK, {
                         kefir_token_free(mem, &token_copy);
                         return res;
                     });
                 }
-                *result = &arg_buffer->tokens[arg_buffer->length - 1];
+                *result = kefir_token_buffer_at(arg_buffer, arg_buffer_length - 1);
             }
             return KEFIR_OK;
         }
@@ -179,19 +180,20 @@ static kefir_result_t concat_resolve_right_argument(struct kefir_mem *mem, const
             REQUIRE_OK(res);
             ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, node->value);
 
-            if (arg_buffer->length == 0) {
+            const kefir_size_t arg_buffer_length = kefir_token_buffer_length(arg_buffer);
+            if (arg_buffer_length == 0) {
                 *result = &PlacemakerToken;
             } else {
                 struct kefir_token token_copy;
-                for (kefir_size_t i = 1; i < arg_buffer->length; i++) {
-                    REQUIRE_OK(kefir_token_copy(mem, &token_copy, &arg_buffer->tokens[i]));
+                for (kefir_size_t i = 1; i < arg_buffer_length; i++) {
+                    REQUIRE_OK(kefir_token_copy(mem, &token_copy, kefir_token_buffer_at(arg_buffer, i)));
                     res = kefir_token_buffer_emplace(mem, buffer, &token_copy);
                     REQUIRE_ELSE(res == KEFIR_OK, {
                         kefir_token_free(mem, &token_copy);
                         return res;
                     });
                 }
-                *result = &arg_buffer->tokens[0];
+                *result = kefir_token_buffer_at(arg_buffer, 0);
             }
             return KEFIR_OK;
         }
@@ -472,7 +474,8 @@ static kefir_result_t macro_concatenation(struct kefir_mem *mem, struct kefir_pr
         REQUIRE(res == KEFIR_OK, KEFIR_SET_SOURCE_ERRORF(KEFIR_LEXER_ERROR, &arg2->source_location,
                                                          "Unable to find %s in macro parameters", arg2->identifier));
         ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, node->value);
-        if (arg_buffer->length == 0) {
+        const kefir_size_t arg_buffer_length = kefir_token_buffer_length(arg_buffer);
+        if (arg_buffer_length == 0) {
             struct kefir_token copy;
             REQUIRE_OK(kefir_token_copy(mem, &copy, &PlacemakerToken));
             res = kefir_token_buffer_emplace(mem, buffer, &copy);
@@ -717,8 +720,9 @@ static kefir_result_t user_macro_apply(struct kefir_mem *mem, struct kefir_prepr
         return res;
     });
 
-    for (kefir_size_t i = 0; i < inner_buffer.length; i++) {
-        struct kefir_token *token = &inner_buffer.tokens[i];
+    const kefir_size_t inner_buffer_length = kefir_token_buffer_length(&inner_buffer);
+    for (kefir_size_t i = 0; i < inner_buffer_length; i++) {
+        struct kefir_token *token = kefir_token_buffer_at(&inner_buffer, i);
         token->source_location = *source_location;
 
         // REQUIRE_OK(kefir_token_macro_expansions_add(mem, &token->macro_expansions, macro->identifier));

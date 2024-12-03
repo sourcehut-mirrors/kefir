@@ -27,8 +27,9 @@
 static kefir_result_t update_buffer_with_macro_expansions(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
                                                           const char *identifier,
                                                           const struct kefir_token_macro_expansions *macro_expansions) {
-    for (kefir_size_t i = 0; i < buffer->length; i++) {
-        struct kefir_token *token = &buffer->tokens[i];
+    const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    for (kefir_size_t i = 0; i < buffer_length; i++) {
+        struct kefir_token *token = kefir_token_buffer_at(buffer, i);
         REQUIRE_OK(kefir_token_macro_expansions_add(mem, &token->macro_expansions, identifier));
         REQUIRE_OK(kefir_token_macro_expansions_merge(mem, &token->macro_expansions, macro_expansions));
     }
@@ -113,8 +114,10 @@ static kefir_result_t function_macro_arguments_push(struct kefir_mem *mem, struc
 }
 
 static kefir_result_t prepare_function_macro_argument(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
-    while (buffer->length > 0 && buffer->tokens[buffer->length - 1].klass == KEFIR_TOKEN_PP_WHITESPACE) {
+    kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    while (buffer_length > 0 && kefir_token_buffer_at(buffer, buffer_length - 1)->klass == KEFIR_TOKEN_PP_WHITESPACE) {
         REQUIRE_OK(kefir_token_buffer_pop(mem, buffer));
+        buffer_length = kefir_token_buffer_length(buffer);
     }
     return KEFIR_OK;
 }

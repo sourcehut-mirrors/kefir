@@ -416,8 +416,9 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
     REQUIRE(out != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
-    for (kefir_size_t i = 0; i < buffer->length; i++) {
-        REQUIRE_OK(format_token(out, &buffer->tokens[i], ws_format));
+    const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    for (kefir_size_t i = 0; i < buffer_length; i++) {
+        REQUIRE_OK(format_token(out, kefir_token_buffer_at(buffer, i), ws_format));
     }
     return KEFIR_OK;
 }

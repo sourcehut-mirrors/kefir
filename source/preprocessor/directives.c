@@ -334,9 +334,10 @@ static kefir_result_t next_define_replacement_list(struct kefir_mem *mem,
     });
 
     kefir_bool_t drop_ws = true;
-    while (directive->define_directive.replacement.length > 0 && drop_ws) {
+    while (kefir_token_buffer_length(&directive->define_directive.replacement) > 0 && drop_ws) {
         const struct kefir_token *last_token =
-            &directive->define_directive.replacement.tokens[directive->define_directive.replacement.length - 1];
+            kefir_token_buffer_at(&directive->define_directive.replacement,
+                                  kefir_token_buffer_length(&directive->define_directive.replacement) - 1);
         drop_ws = last_token->klass == KEFIR_TOKEN_PP_WHITESPACE;
         if (drop_ws) {
             kefir_result_t res = kefir_token_buffer_pop(mem, &directive->define_directive.replacement);

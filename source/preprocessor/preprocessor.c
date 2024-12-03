@@ -282,9 +282,10 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
                                       struct kefir_preprocessor_directive *directive) {
     REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, &directive->pp_tokens,
                                                     KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
-    REQUIRE(directive->pp_tokens.length > 0,
+    const kefir_size_t pp_tokens_length = kefir_token_buffer_length(&directive->pp_tokens);
+    REQUIRE(pp_tokens_length > 0,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected file path"));
-    struct kefir_token *token = &directive->pp_tokens.tokens[0];
+    struct kefir_token *token = kefir_token_buffer_at(&directive->pp_tokens, 0);
     const char *include_path = NULL;
     kefir_bool_t system_include = false;
     if (token->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
@@ -316,8 +317,10 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     subpreprocessor.parent = preprocessor;
 
     res = kefir_preprocessor_run(mem, &subpreprocessor, buffer);
-    if (buffer->length > 0 && buffer->tokens[buffer->length - 1].klass == KEFIR_TOKEN_SENTINEL) {
+    kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    if (buffer_length > 0 && kefir_token_buffer_at(buffer, buffer_length - 1)->klass == KEFIR_TOKEN_SENTINEL) {
         REQUIRE_CHAIN(&res, kefir_token_buffer_pop(mem, buffer));
+        buffer_length = kefir_token_buffer_length(buffer);
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_free(mem, &subpreprocessor);
@@ -390,9 +393,13 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     kefir_result_t res = kefir_preprocessor_token_convert_buffer(mem, preprocessor, &tokens, pp_tokens);
-    REQUIRE_CHAIN_SET(&res, tokens.length > 0,
+
+    struct kefir_token *tokens_ptr;
+    kefir_size_t tokens_length;
+    res = kefir_token_buffer_content(&tokens, &tokens_ptr, &tokens_length);
+    REQUIRE_CHAIN_SET(&res, tokens_length > 0,
                       KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected non-empty if condition"));
-    REQUIRE_CHAIN(&res, kefir_parser_token_cursor_init(&cursor, tokens.tokens, tokens.length));
+    REQUIRE_CHAIN(&res, kefir_parser_token_cursor_init(&cursor, tokens_ptr, tokens_length));
     REQUIRE_CHAIN(&res, kefir_parser_init(mem, &parser, preprocessor->lexer.symbols, &cursor,
                                           preprocessor->extensions != NULL ? preprocessor->extensions->parser : NULL));
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -496,9 +503,10 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
                                    struct kefir_preprocessor_directive *directive) {
     REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, &directive->pp_tokens,
                                                     KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
-    REQUIRE(directive->pp_tokens.length > 0,
+    const kefir_size_t pp_tokens_length = kefir_token_buffer_length(&directive->pp_tokens);
+    REQUIRE(pp_tokens_length > 0,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected line number"));
-    struct kefir_token *token = &directive->pp_tokens.tokens[0];
+    struct kefir_token *token = kefir_token_buffer_at(&directive->pp_tokens, 0);
     REQUIRE(token->klass == KEFIR_TOKEN_PP_NUMBER,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Expected line number"));
 
@@ -509,8 +517,8 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
                                    "Unable to parse line number as unsigned integer"));
 
     const char *source_file = NULL;
-    for (kefir_size_t i = 1; i < directive->pp_tokens.length && source_file == NULL; i++) {
-        token = &directive->pp_tokens.tokens[i];
+    for (kefir_size_t i = 1; i < pp_tokens_length && source_file == NULL; i++) {
+        token = kefir_token_buffer_at(&directive->pp_tokens, i);
         if (token->klass != KEFIR_TOKEN_PP_WHITESPACE) {
             REQUIRE(token->klass == KEFIR_TOKEN_STRING_LITERAL &&
                         token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
