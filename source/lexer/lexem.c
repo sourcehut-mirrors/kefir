@@ -527,19 +527,9 @@ kefir_result_t kefir_token_new_extension(const struct kefir_token_extension_clas
 kefir_result_t kefir_token_move(struct kefir_token *dst, struct kefir_token *src) {
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to destination token"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source token"));
-    *dst = *src;
-    if (src->klass == KEFIR_TOKEN_STRING_LITERAL) {
-        src->string_literal.literal = NULL;
-        src->string_literal.length = 0;
-    } else if (src->klass == KEFIR_TOKEN_PP_NUMBER) {
-        src->pp_number.number_literal = NULL;
-    } else if (src->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
-        src->pp_header_name.header_name = NULL;
-    } else if (src->klass == KEFIR_TOKEN_EXTENSION) {
-        src->extension.klass = NULL;
-        src->extension.payload = NULL;
-    }
-    REQUIRE_OK(kefir_token_macro_expansions_move(&dst->macro_expansions, &src->macro_expansions));
+    memcpy(dst, src, sizeof(struct kefir_token));
+    src->klass = KEFIR_TOKEN_SENTINEL;
+    src->macro_expansions.macro_expansions = (struct kefir_hashtree){0};
     return KEFIR_OK;
 }
 

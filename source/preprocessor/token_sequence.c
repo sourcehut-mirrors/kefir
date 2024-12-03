@@ -67,7 +67,7 @@ kefir_result_t kefir_preprocessor_token_sequence_push_front(struct kefir_mem *me
     struct buffer_element *buffer_elt = KEFIR_MALLOC(mem, sizeof(struct buffer_element));
     REQUIRE(buffer_elt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token buffer element"));
     buffer_elt->buffer = *src;
-    *src = (struct kefir_token_buffer){0};
+    REQUIRE_OK(kefir_token_buffer_init(src));
     buffer_elt->index = 0;
 
     kefir_result_t res =

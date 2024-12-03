@@ -43,7 +43,12 @@ static void *kefir_calloc(struct kefir_mem *mem, kefir_size_t num, kefir_size_t 
 
 static void *kefir_realloc(struct kefir_mem *mem, void *ptr, kefir_size_t sz) {
     UNUSED(mem);
-    return realloc(ptr, sz);
+    if (sz > 0) {
+        return realloc(ptr, sz);
+    } else {
+        free(ptr);
+        return NULL;
+    }
 }
 
 static void kefir_free(struct kefir_mem *mem, void *ptr) {
@@ -355,6 +360,7 @@ kefir_result_t kefir_compiler_parse(struct kefir_mem *mem, struct kefir_compiler
 
     struct kefir_token *tokens;
     kefir_size_t tokens_length;
+    REQUIRE_OK(kefir_token_buffer_flush(mem, buffer));
     REQUIRE_OK(kefir_token_buffer_content(buffer, &tokens, &tokens_length));
 
     REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens, tokens_length));

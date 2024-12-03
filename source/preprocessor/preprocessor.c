@@ -396,6 +396,7 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
 
     struct kefir_token *tokens_ptr;
     kefir_size_t tokens_length;
+    REQUIRE_OK(kefir_token_buffer_flush(mem, &tokens));
     res = kefir_token_buffer_content(&tokens, &tokens_ptr, &tokens_length);
     REQUIRE_CHAIN_SET(&res, tokens_length > 0,
                       KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected non-empty if condition"));

@@ -61,7 +61,12 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
 
-    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens.tokens, tokens.length));
+    struct kefir_token *tokens_ptr;
+    kefir_size_t tokens_length;
+    REQUIRE_OK(kefir_token_buffer_flush(mem, &tokens));
+    REQUIRE_OK(kefir_token_buffer_content(&tokens, &tokens_ptr, &tokens_length));
+
+    REQUIRE_OK(kefir_parser_token_cursor_init(&cursor, tokens_ptr, tokens_length));
     REQUIRE_OK(kefir_parser_init(mem, &parser, context->symbols, &cursor, NULL));
     struct kefir_ast_node_base *node = NULL;
     REQUIRE_OK(KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node));

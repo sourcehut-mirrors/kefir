@@ -23,28 +23,21 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
-#define INIT_CAPACITY 512
-#define CAPACITY_INCREASE(_current) ((_current) * 2 + INIT_CAPACITY)
+static kefir_result_t chunk_free(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                                    kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                                    void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk,  
+        value);
 
-static kefir_result_t ensure_specific_capacity(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
-                                               kefir_size_t increase) {
-    if (buffer->length + increase >= buffer->capacity) {
-        kefir_size_t newCapacity = buffer->length + increase + 1;
-        struct kefir_token *newBuffer = KEFIR_REALLOC(mem, buffer->tokens, sizeof(struct kefir_token) * newCapacity);
-        REQUIRE(newBuffer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer"));
-        buffer->tokens = newBuffer;
-        buffer->capacity = newCapacity;
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t ensure_capacity(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
-    if (buffer->length + 1 >= buffer->capacity) {
-        kefir_size_t newCapacity = buffer->capacity == 0 ? INIT_CAPACITY : CAPACITY_INCREASE(buffer->capacity);
-        struct kefir_token *newBuffer = KEFIR_REALLOC(mem, buffer->tokens, sizeof(struct kefir_token) * newCapacity);
-        REQUIRE(newBuffer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer"));
-        buffer->tokens = newBuffer;
-        buffer->capacity = newCapacity;
+    if (chunk != NULL) {
+        for (kefir_size_t i = 0; i < chunk->length; i++) {
+            REQUIRE_OK(kefir_token_free(mem, &chunk->content[i]));
+        }
+        KEFIR_FREE(mem, chunk);
     }
     return KEFIR_OK;
 }
@@ -52,9 +45,9 @@ static kefir_result_t ensure_capacity(struct kefir_mem *mem, struct kefir_token_
 kefir_result_t kefir_token_buffer_init(struct kefir_token_buffer *buffer) {
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
+    REQUIRE_OK(kefir_hashtree_init(&buffer->chunks, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&buffer->chunks, chunk_free, NULL));
     buffer->length = 0;
-    buffer->capacity = 0;
-    buffer->tokens = NULL;
     return KEFIR_OK;
 }
 
@@ -62,13 +55,54 @@ kefir_result_t kefir_token_buffer_free(struct kefir_mem *mem, struct kefir_token
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
-    for (kefir_size_t i = 0; i < buffer->length; i++) {
-        REQUIRE_OK(kefir_token_free(mem, &buffer->tokens[i]));
-    }
-    KEFIR_FREE(mem, buffer->tokens);
-    buffer->tokens = NULL;
-    buffer->capacity = 0;
+    REQUIRE_OK(kefir_hashtree_free(mem, &buffer->chunks));
     buffer->length = 0;
+    return KEFIR_OK;
+}
+
+#define INIT_CHUNK_CAPACITY 32
+#define MAX_CHUNK_LENGTH 4096
+#define CHUNK_SIZEOF(_len) (sizeof(struct kefir_token_buffer_chunk) + (_len) * sizeof(struct kefir_token))
+
+static struct kefir_token_buffer_chunk *last_chunk(struct kefir_token_buffer *buffer) {
+    struct kefir_hashtree_node *last_node = NULL;
+    kefir_result_t res = kefir_hashtree_max(&buffer->chunks, &last_node);
+    if (res == KEFIR_OK && last_node != NULL) {
+        return (struct kefir_token_buffer_chunk *) last_node->value;
+    } else {
+        return NULL;
+    }
+}
+
+static kefir_result_t ensure_capacity(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
+    struct kefir_hashtree_node *last_node = NULL;
+    struct kefir_token_buffer_chunk *chunk = NULL;
+    kefir_result_t res = kefir_hashtree_max(&buffer->chunks, &last_node);
+    if (res != KEFIR_NOT_FOUND && last_node != NULL) {
+        REQUIRE_OK(res);
+        chunk = (struct kefir_token_buffer_chunk *) last_node->value;
+    }
+
+    if (chunk == NULL || chunk->length >= MAX_CHUNK_LENGTH) {
+        chunk = KEFIR_MALLOC(mem, CHUNK_SIZEOF(INIT_CHUNK_CAPACITY));
+        REQUIRE(chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token buffer chunk"));
+
+        chunk->capacity = INIT_CHUNK_CAPACITY;
+        chunk->length = 0;
+
+        res = kefir_hashtree_insert(mem, &buffer->chunks, (kefir_hashtree_key_t) buffer->length, (kefir_hashtree_value_t) chunk);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, chunk);
+            return res;
+        });
+    } else if (chunk->length == chunk->capacity) {
+        const kefir_size_t new_capacity = chunk->capacity * 2;
+        struct kefir_token_buffer_chunk *new_chunk = KEFIR_REALLOC(mem, chunk, CHUNK_SIZEOF(new_capacity));
+        REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer chunk"));
+        
+        new_chunk->capacity = new_capacity;
+        last_node->value = (kefir_hashtree_value_t) new_chunk;
+    }
     return KEFIR_OK;
 }
 
@@ -79,9 +113,26 @@ kefir_result_t kefir_token_buffer_emplace(struct kefir_mem *mem, struct kefir_to
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
 
     REQUIRE_OK(ensure_capacity(mem, buffer));
-    REQUIRE_OK(kefir_token_move(&buffer->tokens[buffer->length], token));
+    struct kefir_token_buffer_chunk *chunk = last_chunk(buffer);
+    REQUIRE_OK(kefir_token_move(&chunk->content[chunk->length], token));
+    chunk->length++;
     buffer->length++;
     return KEFIR_OK;
+}
+
+static kefir_uint64_t round_capacity_up(kefir_uint64_t n) { 
+    if (n <= 1) {
+        return n;
+    }
+    n--;
+    n |= n >> 1;
+    n |= n >> 2;
+    n |= n >> 4;
+    n |= n >> 8;
+    n |= n >> 16;
+    n |= n >> 32;
+    n++;
+    return n;
 }
 
 kefir_result_t kefir_token_buffer_insert(struct kefir_mem *mem, struct kefir_token_buffer *dst,
@@ -90,15 +141,59 @@ kefir_result_t kefir_token_buffer_insert(struct kefir_mem *mem, struct kefir_tok
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
-    REQUIRE_OK(ensure_specific_capacity(mem, dst, src->length));
-    for (kefir_size_t i = 0; i < kefir_token_buffer_length(src); i++) {
-        REQUIRE_OK(kefir_token_move(&dst->tokens[dst->length + i], kefir_token_buffer_at(src, i)));
+    struct kefir_hashtree_node *last_node = NULL;
+    struct kefir_token_buffer_chunk *last_chunk = NULL;
+    kefir_result_t res = kefir_hashtree_max(&dst->chunks, &last_node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        if (last_node != NULL) {
+            last_chunk = (struct kefir_token_buffer_chunk *) last_node->value;
+        }
     }
-    dst->length += src->length;
-    KEFIR_FREE(mem, src->tokens);
-    src->tokens = NULL;
+
+    struct kefir_hashtree_node_iterator iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&src->chunks, &iter);
+        node != NULL;
+        node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk,
+            node->value);
+
+        if (last_chunk != NULL && last_chunk->length + chunk->length < MAX_CHUNK_LENGTH) {
+            const kefir_size_t acc_length = last_chunk->length + chunk->length;
+            if (acc_length > last_chunk->capacity) {
+                const kefir_size_t new_capacity = round_capacity_up(acc_length);
+                struct kefir_token_buffer_chunk *new_chunk = KEFIR_REALLOC(mem, last_chunk, CHUNK_SIZEOF(new_capacity));
+                REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer chunk"));
+                new_chunk->capacity = new_capacity;
+                last_chunk = new_chunk;
+                last_node->value = (kefir_hashtree_value_t) new_chunk;
+            }
+
+            memcpy(&last_chunk->content[last_chunk->length], chunk->content, sizeof(struct kefir_token) * chunk->length);
+            last_chunk->length += chunk->length;
+            dst->length += chunk->length;
+            KEFIR_FREE(mem, chunk);
+            node->value = (kefir_hashtree_value_t) NULL;
+            continue;
+        }
+
+        if (chunk->length < chunk->capacity) {
+            const kefir_size_t new_capacity = round_capacity_up(chunk->length);
+            struct kefir_token_buffer_chunk *new_chunk = KEFIR_REALLOC(mem, chunk, CHUNK_SIZEOF(new_capacity));
+            REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer chunk"));
+            new_chunk->capacity = new_capacity;
+            chunk = new_chunk;
+        }
+
+        REQUIRE_OK(kefir_hashtree_insert(mem, &dst->chunks, (kefir_hashtree_key_t) dst->length, (kefir_hashtree_value_t) chunk));
+        dst->length += chunk->length;
+        node->value = (kefir_hashtree_value_t) NULL;
+
+        REQUIRE_OK(kefir_hashtree_max(&dst->chunks, &last_node));
+        last_chunk = (struct kefir_token_buffer_chunk *) last_node->value;
+    }
+    REQUIRE_OK(kefir_hashtree_clean(mem, &src->chunks));
     src->length = 0;
-    src->capacity = 0;
     return KEFIR_OK;
 }
 
@@ -107,7 +202,16 @@ kefir_result_t kefir_token_buffer_pop(struct kefir_mem *mem, struct kefir_token_
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(buffer->length > 0, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Cannot pop token from empty buffer"));
 
-    REQUIRE_OK(kefir_token_free(mem, &buffer->tokens[buffer->length - 1]));
+    struct kefir_hashtree_node *last_node = NULL;
+    REQUIRE_OK(kefir_hashtree_max(&buffer->chunks, &last_node));
+    ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk,
+        last_node->value);
+
+    REQUIRE_OK(kefir_token_free(mem, &chunk->content[chunk->length - 1]));
+    chunk->length--;
+    if (chunk->length == 0) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &buffer->chunks, last_node->key));
+    }
     buffer->length--;
     return KEFIR_OK;
 }
@@ -138,7 +242,47 @@ kefir_size_t kefir_token_buffer_length(const struct kefir_token_buffer *buffer) 
 struct kefir_token *kefir_token_buffer_at(const struct kefir_token_buffer *buffer, kefir_size_t index) {
     REQUIRE(buffer != NULL, NULL);
     REQUIRE(index < buffer->length, NULL);
-    return &buffer->tokens[index];
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_lower_bound(&buffer->chunks, (kefir_hashtree_key_t) index, &node);
+    REQUIRE(res == KEFIR_OK, NULL);
+    ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk,
+        node->value);
+        
+    return &chunk->content[index - (kefir_size_t) node->key];
+}
+
+kefir_result_t kefir_token_buffer_flush(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(buffer->length > 0, KEFIR_OK);
+
+    struct kefir_hashtree_node *first_node = NULL;
+    REQUIRE_OK(kefir_hashtree_min(&buffer->chunks, &first_node));
+    ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, chunk,
+        first_node->value);
+
+    const kefir_size_t new_capacity = buffer->length;
+    struct kefir_token_buffer_chunk *new_chunk = KEFIR_REALLOC(mem, chunk, CHUNK_SIZEOF(new_capacity));
+    REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate token buffer chunk"));
+    new_chunk->capacity = new_capacity;
+    first_node->value = (kefir_hashtree_value_t) new_chunk;
+
+    for (struct kefir_hashtree_node *node = kefir_hashtree_next_node(&buffer->chunks, first_node);
+        node != NULL;) {
+        ASSIGN_DECL_CAST(struct kefir_token_buffer_chunk *, next_chunk,
+            node->value);
+        
+        memcpy(&new_chunk->content[new_chunk->length], next_chunk->content, sizeof(struct kefir_token) * next_chunk->length);
+        new_chunk->length += next_chunk->length;
+        KEFIR_FREE(mem, next_chunk);
+        node->value = (kefir_hashtree_value_t) NULL;
+        REQUIRE_OK(kefir_hashtree_delete(mem, &buffer->chunks, (kefir_hashtree_key_t) node->key));
+
+        node = kefir_hashtree_next_node(&buffer->chunks, first_node);
+    }
+
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_token_buffer_content(const struct kefir_token_buffer *buffer, struct kefir_token **tokens_ptr,
@@ -147,7 +291,18 @@ kefir_result_t kefir_token_buffer_content(const struct kefir_token_buffer *buffe
     REQUIRE(tokens_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to tokens"));
     REQUIRE(length_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to length"));
 
-    *tokens_ptr = buffer->tokens;
-    *length_ptr = buffer->length;
+    struct kefir_hashtree_node *first_node = NULL;
+    kefir_result_t res = kefir_hashtree_min(&buffer->chunks, &first_node);
+    if (res != KEFIR_NOT_FOUND && first_node != NULL) {
+        REQUIRE_OK(res);
+        REQUIRE(kefir_hashtree_next_node(&buffer->chunks, first_node) == NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected flushed token buffer"));
+        struct kefir_token_buffer_chunk *chunk = (struct kefir_token_buffer_chunk *) first_node->value;
+        *tokens_ptr = chunk->content;
+        *length_ptr = chunk->length;
+    } else {
+        *tokens_ptr = NULL;
+        *length_ptr = 0;
+    }
     return KEFIR_OK;
 }
