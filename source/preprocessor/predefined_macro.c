@@ -31,27 +31,31 @@ struct predefined_macro_payload {
     struct kefir_preprocessor_predefined_macro_scope *scope;
 };
 
-static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_buffer *buffer, const char *buf,
+static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
+                                     struct kefir_token_buffer *buffer, const char *buf,
                                      const struct kefir_source_location *source_location) {
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     if (buf[0] == '-') {
         buf++;
         REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_MINUS, &token));
         token.source_location = *source_location;
-        kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+        kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_free(mem, &token);
             return res;
         });
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     }
 
     REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     return KEFIR_OK;
 }
 
@@ -66,13 +70,15 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
 #define MACRO(_name)                                                                                                  \
     static kefir_result_t macro_##_name##_apply(                                                                      \
         struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, const struct kefir_preprocessor_macro *macro, \
-        struct kefir_string_pool *symbols, const struct kefir_list *args, struct kefir_token_buffer *buffer,          \
+        struct kefir_string_pool *symbols, const struct kefir_list *args,                                             \
+        struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer,                             \
         const struct kefir_source_location *source_location) {                                                        \
         UNUSED(symbols);                                                                                              \
         UNUSED(preprocessor);                                                                                         \
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
         REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));        \
         REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));        \
+        REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator")); \
         REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));             \
         REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location")); \
         ASSIGN_DECL_CAST(struct predefined_macro_payload *, macro_payload, macro->payload);                           \
@@ -89,14 +95,16 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
 MACRO(file) {
     const char *file = source_location->source;
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
                                                                          file, strlen(file), &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
 
@@ -104,7 +112,7 @@ MACRO(line) {
     kefir_source_location_line_t line = source_location->line;
     char strbuf[64] = {0};
     snprintf(strbuf, sizeof(strbuf), "%" KEFIR_UINT_FMT, line);
-    REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location));
+    REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, strbuf, source_location));
 }
 MACRO_END
 
@@ -115,14 +123,16 @@ MACRO(date) {
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current date"));
 
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
                                                                          strbuf, count, &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
 
@@ -133,14 +143,16 @@ MACRO(time) {
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current time"));
 
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
                                                                          strbuf, count, &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
 
@@ -150,14 +162,16 @@ MACRO(kefircc_version) {
     REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
 
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
                                                                          version_buf, len, &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
 
@@ -167,23 +181,25 @@ MACRO(kefircc_full_version) {
     REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
 
     struct kefir_token token;
+    const struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
                                                                          version_buf, len, &token));
     token.source_location = *source_location;
-    kefir_result_t res = kefir_token_buffer_emplace(mem, buffer, &token);
+    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &token);
         return res;
     });
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
 
-#define MACRO_PP_NUMBER_FMT(_name, _buflen, _format, ...)                 \
-    MACRO(_name) {                                                        \
-        char strbuf[_buflen + 1] = {0};                                   \
-        snprintf(strbuf, sizeof(strbuf) - 1, _format, __VA_ARGS__);       \
-        REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location)); \
-    }                                                                     \
+#define MACRO_PP_NUMBER_FMT(_name, _buflen, _format, ...)                                  \
+    MACRO(_name) {                                                                         \
+        char strbuf[_buflen + 1] = {0};                                                    \
+        snprintf(strbuf, sizeof(strbuf) - 1, _format, __VA_ARGS__);                        \
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, strbuf, source_location)); \
+    }                                                                                      \
     MACRO_END
 
 MACRO_PP_NUMBER_FMT(stdc_hosted, 64, "%d", macro_payload->scope->preprocessor->context->environment.hosted ? 1 : 0)
@@ -298,7 +314,7 @@ MACRO(counter) {
     kefir_uint_t counter = macro_payload->scope->preprocessor->context->state.counter++;
     char strbuf[64] = {0};
     snprintf(strbuf, sizeof(strbuf), "%" KEFIR_UINT_FMT, counter);
-    REQUIRE_OK(make_pp_number(mem, buffer, strbuf, source_location));
+    REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, strbuf, source_location));
 }
 MACRO_END
 
@@ -307,8 +323,8 @@ static kefir_result_t define_predefined_macro(
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
     const char *identifier,
     kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
-                            struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_buffer *,
-                            const struct kefir_source_location *)) {
+                            struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_allocator *,
+                            struct kefir_token_buffer *, const struct kefir_source_location *)) {
     struct predefined_macro_payload *payload = KEFIR_MALLOC(mem, sizeof(struct predefined_macro_payload));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate predefined macro payload"));
     payload->scope = scope;

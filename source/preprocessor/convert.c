@@ -67,16 +67,18 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
 }
 
 kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                       struct kefir_token_allocator *token_allocator,
                                                        struct kefir_token_buffer *dst,
                                                        const struct kefir_token_buffer *src) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(preprocessor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor"));
+    REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination token buffer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source token buffer"));
 
     const kefir_size_t src_length = kefir_token_buffer_length(src);
     for (kefir_size_t i = 0; i < src_length;) {
-        struct kefir_token *src_token = kefir_token_buffer_at(src, i);
+        const struct kefir_token *src_token = kefir_token_buffer_at(src, i);
         switch (src_token->klass) {
             case KEFIR_TOKEN_PP_NUMBER:
             case KEFIR_TOKEN_IDENTIFIER:
@@ -87,11 +89,13 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
             case KEFIR_TOKEN_EXTENSION: {
                 struct kefir_token token;
                 REQUIRE_OK(kefir_preprocessor_token_convert(mem, preprocessor, &token, src_token));
-                kefir_result_t res = kefir_token_buffer_emplace(mem, dst, &token);
+                const struct kefir_token *allocated_token;
+                kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
                 REQUIRE_ELSE(res == KEFIR_OK, {
                     kefir_token_free(mem, &token);
                     return res;
                 });
+                REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, allocated_token));
                 i++;
             } break;
 
@@ -123,11 +127,13 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
                     return res;
                 });
                 res = kefir_list_free(mem, &literals);
-                REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, dst, &token));
+                const struct kefir_token *allocated_token;
+                res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
                 REQUIRE_ELSE(res == KEFIR_OK, {
                     kefir_token_free(mem, &token);
                     return res;
                 });
+                REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, allocated_token));
             } break;
 
             case KEFIR_TOKEN_PP_WHITESPACE:

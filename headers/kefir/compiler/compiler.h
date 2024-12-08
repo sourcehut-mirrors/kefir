@@ -59,6 +59,7 @@ typedef struct kefir_compiler_context {
     struct kefir_parser_configuration parser_configuration;
     struct kefir_ast_translator_environment translator_env;
     struct kefir_ast_global_context ast_global_context;
+    struct kefir_token_allocator builtin_token_allocator;
     struct kefir_preprocessor_context preprocessor_context;
     struct kefir_preprocessor_ast_context preprocessor_ast_context;
     struct kefir_ast_translator_configuration translator_configuration;
@@ -75,18 +76,19 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *, struct kefir_comp
                                            const struct kefir_compiler_extensions *);
 kefir_result_t kefir_compiler_context_free(struct kefir_mem *, struct kefir_compiler_context *);
 kefir_result_t kefir_compiler_preprocessor_tokenize(struct kefir_mem *, struct kefir_compiler_context *,
-                                                    struct kefir_token_buffer *, const char *, kefir_size_t,
-                                                    const char *);
+                                                    struct kefir_token_allocator *, struct kefir_token_buffer *,
+                                                    const char *, kefir_size_t, const char *);
 kefir_result_t kefir_compiler_preprocess(struct kefir_mem *, struct kefir_compiler_context *,
-                                         struct kefir_token_buffer *, const char *, kefir_size_t, const char *,
-                                         const char *);
+                                         struct kefir_token_allocator *, struct kefir_token_buffer *, const char *,
+                                         kefir_size_t, const char *, const char *);
 kefir_result_t kefir_compiler_preprocess_lex(struct kefir_mem *, struct kefir_compiler_context *,
-                                             struct kefir_token_buffer *, const char *, kefir_size_t, const char *,
-                                             const char *);
+                                             struct kefir_token_allocator *, struct kefir_token_buffer *, const char *,
+                                             kefir_size_t, const char *, const char *);
 kefir_result_t kefir_compiler_preprocess_include(struct kefir_mem *, struct kefir_compiler_context *,
-                                                 struct kefir_token_buffer *, const char *, const char *);
-kefir_result_t kefir_compiler_lex(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_token_buffer *,
-                                  const char *, kefir_size_t, const char *);
+                                                 struct kefir_token_allocator *, struct kefir_token_buffer *,
+                                                 const char *, const char *);
+kefir_result_t kefir_compiler_lex(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_token_allocator *,
+                                  struct kefir_token_buffer *, const char *, kefir_size_t, const char *);
 kefir_result_t kefir_compiler_parse(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_token_buffer *,
                                     struct kefir_ast_translation_unit **);
 kefir_result_t kefir_compiler_parse_source(struct kefir_mem *, struct kefir_compiler_context *, const char *,

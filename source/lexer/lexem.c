@@ -537,7 +537,7 @@ kefir_result_t kefir_token_copy(struct kefir_mem *mem, struct kefir_token *dst, 
     REQUIRE(dst != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to destination token"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to source token"));
 
-    *dst = *src;
+    memcpy(dst, src, sizeof(struct kefir_token));
     if (src->klass == KEFIR_TOKEN_STRING_LITERAL) {
         kefir_size_t sz = 0;
         if (src->string_literal.raw_literal) {

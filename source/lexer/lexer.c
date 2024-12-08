@@ -146,9 +146,10 @@ kefir_result_t kefir_lexer_next(struct kefir_mem *mem, struct kefir_lexer *lexer
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
-                                           struct kefir_lexer *lexer) {
+kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
+                                           struct kefir_token_buffer *buffer, struct kefir_lexer *lexer) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
 
@@ -157,7 +158,10 @@ kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *mem, struct kefir_t
         struct kefir_token token = {0};
         REQUIRE_OK(kefir_lexer_next(mem, lexer, &token));
         scan_tokens = token.klass != KEFIR_TOKEN_SENTINEL;
-        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, &token));
+
+        const struct kefir_token *allocated_token;
+        REQUIRE_OK(kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token));
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     }
     return KEFIR_OK;
 }

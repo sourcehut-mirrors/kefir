@@ -40,9 +40,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_string_pool symbols;
     struct kefir_lexer_context parser_context;
     struct kefir_token_buffer tokens;
+    struct kefir_token_allocator token_allocator;
     REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
 
     struct kefir_preprocessor_virtual_source_locator virtual_source;
     struct kefir_preprocessor_context context;
@@ -58,14 +60,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
     REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &symbols, &cursor, &parser_context, &context, NULL, NULL));
-    REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &tokens));
+    REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &token_allocator, &tokens));
     REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context));
     REQUIRE_OK(kefir_preprocessor_virtual_source_locator_free(mem, &virtual_source));
 
     struct kefir_token_buffer lexer_tokens;
     REQUIRE_OK(kefir_token_buffer_init(&lexer_tokens));
-    REQUIRE_OK(kefir_preprocessor_token_convert_buffer(mem, &preprocessor, &lexer_tokens, &tokens));
+    REQUIRE_OK(kefir_preprocessor_token_convert_buffer(mem, &preprocessor, &token_allocator, &lexer_tokens, &tokens));
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, stdout, 4));
     REQUIRE_OK(kefir_token_buffer_format(&json, &lexer_tokens, true));
@@ -73,6 +75,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_token_buffer_free(mem, &lexer_tokens));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &ast_context));
     REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;

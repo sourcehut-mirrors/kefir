@@ -26,7 +26,7 @@
 typedef struct kefir_token_buffer_chunk {
     kefir_size_t length;
     kefir_size_t capacity;
-    struct kefir_token content[];
+    const struct kefir_token *content[];
 } kefir_token_buffer_chunk_t;
 
 typedef struct kefir_token_buffer {
@@ -36,14 +36,14 @@ typedef struct kefir_token_buffer {
 
 kefir_result_t kefir_token_buffer_init(struct kefir_token_buffer *);
 kefir_result_t kefir_token_buffer_free(struct kefir_mem *, struct kefir_token_buffer *);
-kefir_result_t kefir_token_buffer_emplace(struct kefir_mem *, struct kefir_token_buffer *, struct kefir_token *);
+kefir_result_t kefir_token_buffer_emplace(struct kefir_mem *, struct kefir_token_buffer *, const struct kefir_token *);
 kefir_result_t kefir_token_buffer_insert(struct kefir_mem *, struct kefir_token_buffer *, struct kefir_token_buffer *);
 kefir_result_t kefir_token_buffer_pop(struct kefir_mem *, struct kefir_token_buffer *);
 kefir_result_t kefir_token_buffer_copy(struct kefir_mem *, struct kefir_token_buffer *,
                                        const struct kefir_token_buffer *);
 
 kefir_size_t kefir_token_buffer_length(const struct kefir_token_buffer *);
-struct kefir_token *kefir_token_buffer_at(const struct kefir_token_buffer *, kefir_size_t);
+const struct kefir_token *kefir_token_buffer_at(const struct kefir_token_buffer *, kefir_size_t);
 
 kefir_result_t kefir_token_buffer_cursor_handle(const struct kefir_token_buffer *, struct kefir_token_cursor_handle *);
 

@@ -24,31 +24,51 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t update_buffer_with_macro_expansions(struct kefir_mem *mem, struct kefir_token_buffer *buffer,
-                                                          const char *identifier,
+static kefir_result_t update_buffer_with_macro_expansions(struct kefir_mem *mem,
+                                                          struct kefir_token_allocator *token_allocator,
+                                                          struct kefir_token_buffer *src,
+                                                          struct kefir_token_buffer *dst, const char *identifier,
                                                           const struct kefir_token_macro_expansions *macro_expansions) {
-    const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    const kefir_size_t buffer_length = kefir_token_buffer_length(src);
     for (kefir_size_t i = 0; i < buffer_length; i++) {
-        struct kefir_token *token = kefir_token_buffer_at(buffer, i);
-        REQUIRE_OK(kefir_token_macro_expansions_add(mem, &token->macro_expansions, identifier));
-        REQUIRE_OK(kefir_token_macro_expansions_merge(mem, &token->macro_expansions, macro_expansions));
+        struct kefir_token copy = {0};
+        const struct kefir_token *dst_token;
+        const struct kefir_token *token = kefir_token_buffer_at(src, i);
+        REQUIRE_OK(kefir_token_copy(mem, &copy, token));
+        kefir_result_t res = kefir_token_macro_expansions_add(mem, &copy.macro_expansions, identifier);
+        REQUIRE_CHAIN(&res, kefir_token_macro_expansions_merge(mem, &copy.macro_expansions, macro_expansions));
+        REQUIRE_CHAIN(&res, kefir_token_allocator_allocate(mem, token_allocator, &copy, &dst_token));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_free(mem, &copy);
+            return res;
+        });
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, dst_token));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t substitute_object_macro(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                              struct kefir_token_allocator *token_allocator,
                                               struct kefir_preprocessor_token_sequence *seq,
                                               const struct kefir_preprocessor_macro *macro,
                                               const struct kefir_token_macro_expansions *macro_expansions,
                                               const struct kefir_source_location *source_location) {
     REQUIRE(!kefir_token_macro_expansions_has(macro_expansions, macro->identifier),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to recursively substitute object macro"));
-    struct kefir_token_buffer subst_buf;
+    struct kefir_token_buffer subst_buf, macro_expanded_buf;
     REQUIRE_OK(kefir_token_buffer_init(&subst_buf));
-    kefir_result_t res =
-        macro->apply(mem, preprocessor, macro, preprocessor->lexer.symbols, NULL, &subst_buf, source_location);
-    REQUIRE_CHAIN(&res, update_buffer_with_macro_expansions(mem, &subst_buf, macro->identifier, macro_expansions));
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &subst_buf));
+    REQUIRE_OK(kefir_token_buffer_init(&macro_expanded_buf));
+    kefir_result_t res = macro->apply(mem, preprocessor, macro, preprocessor->lexer.symbols, NULL, token_allocator,
+                                      &subst_buf, source_location);
+    REQUIRE_CHAIN(&res, update_buffer_with_macro_expansions(mem, token_allocator, &subst_buf, &macro_expanded_buf,
+                                                            macro->identifier, macro_expansions));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &macro_expanded_buf));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &macro_expanded_buf);
+        kefir_token_buffer_free(mem, &subst_buf);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &macro_expanded_buf);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &subst_buf);
         return res;
@@ -191,16 +211,25 @@ static kefir_result_t scan_function_macro_arguments(struct kefir_mem *mem,
 }
 
 static kefir_result_t apply_function_macro(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
+                                           struct kefir_token_allocator *token_allocator,
                                            struct kefir_preprocessor *preprocessor,
                                            const struct kefir_preprocessor_macro *macro, const struct kefir_list *args,
                                            const struct kefir_token_macro_expansions *macro_expansions,
                                            const struct kefir_source_location *source_location) {
-    struct kefir_token_buffer subst_buf;
+    struct kefir_token_buffer subst_buf, macro_expanded_buf;
     REQUIRE_OK(kefir_token_buffer_init(&subst_buf));
-    kefir_result_t res =
-        macro->apply(mem, preprocessor, macro, preprocessor->lexer.symbols, args, &subst_buf, source_location);
-    REQUIRE_CHAIN(&res, update_buffer_with_macro_expansions(mem, &subst_buf, macro->identifier, macro_expansions));
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &subst_buf));
+    REQUIRE_OK(kefir_token_buffer_init(&macro_expanded_buf));
+    kefir_result_t res = macro->apply(mem, preprocessor, macro, preprocessor->lexer.symbols, args, token_allocator,
+                                      &subst_buf, source_location);
+    REQUIRE_CHAIN(&res, update_buffer_with_macro_expansions(mem, token_allocator, &subst_buf, &macro_expanded_buf,
+                                                            macro->identifier, macro_expansions));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &macro_expanded_buf));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &macro_expanded_buf);
+        kefir_token_buffer_free(mem, &subst_buf);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &macro_expanded_buf);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &subst_buf);
         return res;
@@ -210,6 +239,7 @@ static kefir_result_t apply_function_macro(struct kefir_mem *mem, struct kefir_p
 }
 
 static kefir_result_t substitute_function_macro_impl(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                     struct kefir_token_allocator *token_allocator,
                                                      struct kefir_preprocessor_token_sequence *seq,
                                                      const struct kefir_preprocessor_macro *macro,
                                                      const struct kefir_token_macro_expansions *macro_expansions,
@@ -222,8 +252,8 @@ static kefir_result_t substitute_function_macro_impl(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_list_init(&arguments));
     REQUIRE_OK(kefir_list_on_remove(&arguments, free_argument, NULL));
     kefir_result_t res = scan_function_macro_arguments(mem, seq, &arguments, argc, vararg);
-    REQUIRE_CHAIN(&res,
-                  apply_function_macro(mem, seq, preprocessor, macro, &arguments, macro_expansions, source_location));
+    REQUIRE_CHAIN(&res, apply_function_macro(mem, seq, token_allocator, preprocessor, macro, &arguments,
+                                             macro_expansions, source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &arguments);
         return res;
@@ -233,6 +263,7 @@ static kefir_result_t substitute_function_macro_impl(struct kefir_mem *mem, stru
 }
 
 static kefir_result_t substitute_function_macro(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                struct kefir_token_allocator *token_allocator,
                                                 struct kefir_preprocessor_token_sequence *seq,
                                                 const struct kefir_preprocessor_macro *macro,
                                                 const struct kefir_source_location *source_location) {
@@ -250,8 +281,8 @@ static kefir_result_t substitute_function_macro(struct kefir_mem *mem, struct ke
         token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE &&
         !kefir_token_macro_expansions_has(token->macro_expansions, macro->identifier)) {
         res = kefir_token_buffer_free(mem, &buffer);
-        REQUIRE_OK(
-            substitute_function_macro_impl(mem, preprocessor, seq, macro, token->macro_expansions, source_location));
+        REQUIRE_OK(substitute_function_macro_impl(mem, preprocessor, token_allocator, seq, macro,
+                                                  token->macro_expansions, source_location));
     } else {
         kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, seq, &buffer);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -263,8 +294,8 @@ static kefir_result_t substitute_function_macro(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t insert_pp_number(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
-                                       const char *number_literal,
+static kefir_result_t insert_pp_number(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
+                                       struct kefir_preprocessor_token_sequence *seq, const char *number_literal,
                                        const struct kefir_source_location *source_location) {
     struct kefir_token number;
     struct kefir_token_buffer buffer;
@@ -275,9 +306,15 @@ static kefir_result_t insert_pp_number(struct kefir_mem *mem, struct kefir_prepr
         return res;
     });
     number.source_location = *source_location;
-    res = kefir_token_buffer_emplace(mem, &buffer, &number);
+    const struct kefir_token *allocated_token;
+    res = kefir_token_allocator_allocate(mem, token_allocator, &number, &allocated_token);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_free(mem, &number);
+        kefir_token_buffer_free(mem, &buffer);
+        return res;
+    });
+    res = kefir_token_buffer_emplace(mem, &buffer, allocated_token);
+    REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
         return res;
     });
@@ -291,16 +328,18 @@ static kefir_result_t insert_pp_number(struct kefir_mem *mem, struct kefir_prepr
 }
 
 static kefir_result_t substitute_unknown_identifier(struct kefir_mem *mem,
+                                                    struct kefir_token_allocator *token_allocator,
                                                     struct kefir_preprocessor_token_sequence *seq,
                                                     kefir_preprocessor_substitution_context_t subst_context,
                                                     const struct kefir_source_location *source_location) {
     REQUIRE(subst_context == KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Macro not found for specified identifier"));
-    REQUIRE_OK(insert_pp_number(mem, seq, "0", source_location));
+    REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "0", source_location));
     return KEFIR_OK;
 }
 
 static kefir_result_t substitute_defined_operator(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                  struct kefir_token_allocator *token_allocator,
                                                   struct kefir_preprocessor_token_sequence *seq,
                                                   const struct kefir_source_location *source_location) {
     const struct kefir_token *current_token = NULL;
@@ -347,45 +386,48 @@ static kefir_result_t substitute_defined_operator(struct kefir_mem *mem, struct 
     }
 
     if (found_identifier) {
-        REQUIRE_OK(insert_pp_number(mem, seq, "1", source_location));
+        REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "1", source_location));
     } else {
-        REQUIRE_OK(insert_pp_number(mem, seq, "0", source_location));
+        REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "0", source_location));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t substitute_identifier(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                            struct kefir_token_allocator *token_allocator,
                                             struct kefir_preprocessor_token_sequence *seq, const char *identifier,
                                             kefir_preprocessor_substitution_context_t subst_context,
                                             const struct kefir_token_macro_expansions *macro_expansions,
                                             const struct kefir_source_location *source_location) {
     if (strcmp(identifier, "defined") == 0 && subst_context == KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION) {
-        REQUIRE_OK(substitute_defined_operator(mem, preprocessor, seq, source_location));
+        REQUIRE_OK(substitute_defined_operator(mem, preprocessor, token_allocator, seq, source_location));
     } else {
         const struct kefir_preprocessor_macro *macro = NULL;
         kefir_result_t res = preprocessor->macros->locate(preprocessor->macros, identifier, &macro);
         if (res != KEFIR_OK) {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
-            REQUIRE_OK(substitute_unknown_identifier(mem, seq, subst_context, source_location));
+            REQUIRE_OK(substitute_unknown_identifier(mem, token_allocator, seq, subst_context, source_location));
             return KEFIR_OK;
         }
 
         if (macro->type == KEFIR_PREPROCESSOR_MACRO_OBJECT) {
-            REQUIRE_OK(substitute_object_macro(mem, preprocessor, seq, macro, macro_expansions, source_location));
+            REQUIRE_OK(substitute_object_macro(mem, preprocessor, token_allocator, seq, macro, macro_expansions,
+                                               source_location));
         } else {
-            REQUIRE_OK(substitute_function_macro(mem, preprocessor, seq, macro, source_location));
+            REQUIRE_OK(substitute_function_macro(mem, preprocessor, token_allocator, seq, macro, source_location));
         }
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t run_substitutions(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                        struct kefir_token_allocator *token_allocator,
                                         struct kefir_preprocessor_token_sequence *seq,
                                         struct kefir_token_buffer *result,
                                         kefir_preprocessor_substitution_context_t subst_context) {
     kefir_bool_t scan_tokens = true;
     while (scan_tokens) {
-        struct kefir_token token;
+        const struct kefir_token *token;
         kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &token);
         if (res == KEFIR_ITERATOR_END) {
             scan_tokens = false;
@@ -393,19 +435,16 @@ static kefir_result_t run_substitutions(struct kefir_mem *mem, struct kefir_prep
             REQUIRE_OK(res);
 
             kefir_result_t res = KEFIR_NO_MATCH;
-            if (token.klass == KEFIR_TOKEN_IDENTIFIER) {
-                res = substitute_identifier(mem, preprocessor, seq, token.identifier, subst_context,
-                                            token.macro_expansions, &token.source_location);
-                REQUIRE_CHAIN(&res, kefir_token_free(mem, &token));
+            if (token->klass == KEFIR_TOKEN_IDENTIFIER) {
+                res = substitute_identifier(mem, preprocessor, token_allocator, seq, token->identifier, subst_context,
+                                            token->macro_expansions, &token->source_location);
             }
 
             if (res == KEFIR_NO_MATCH) {
-                res = kefir_token_buffer_emplace(mem, result, &token);
+                REQUIRE_OK(kefir_token_buffer_emplace(mem, result, token));
+            } else {
+                REQUIRE_OK(res);
             }
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_token_free(mem, &token);
-                return res;
-            });
         }
     }
     return KEFIR_OK;
@@ -441,47 +480,44 @@ static kefir_result_t run_pragma_operator(struct kefir_mem *mem, struct kefir_pr
 }
 
 static kefir_result_t run_substitutions_impl(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                             struct kefir_token_allocator *token_allocator,
                                              struct kefir_token_buffer *buffer,
                                              struct kefir_preprocessor_token_sequence *seq,
                                              kefir_preprocessor_substitution_context_t subst_context) {
     REQUIRE_OK(kefir_preprocessor_token_sequence_push_front(mem, seq, buffer));
-    REQUIRE_OK(run_substitutions(mem, preprocessor, seq, buffer, subst_context));
+    REQUIRE_OK(run_substitutions(mem, preprocessor, token_allocator, seq, buffer, subst_context));
     REQUIRE_OK(kefir_preprocessor_token_sequence_push_front(mem, seq, buffer));
     kefir_bool_t scan_tokens = true;
     while (scan_tokens) {
-        struct kefir_token token;
+        const struct kefir_token *token;
         kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &token);
         if (res == KEFIR_ITERATOR_END) {
             scan_tokens = false;
         } else {
             REQUIRE_OK(res);
 
-            kefir_result_t res;
-            if (token.klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token.identifier, "_Pragma") == 0) {
-                res = run_pragma_operator(mem, seq, &token.source_location);
-                REQUIRE_CHAIN(&res, kefir_token_free(mem, &token));
+            if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "_Pragma") == 0) {
+                REQUIRE_OK(run_pragma_operator(mem, seq, &token->source_location));
             } else {
-                res = kefir_token_buffer_emplace(mem, buffer, &token);
+                REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
             }
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_token_free(mem, &token);
-                return res;
-            });
         }
     }
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_preprocessor_run_substitutions(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                    struct kefir_token_allocator *token_allocator,
                                                     struct kefir_token_buffer *buffer,
                                                     kefir_preprocessor_substitution_context_t subst_context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(preprocessor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor"));
+    REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid tokem buffer"));
 
     struct kefir_preprocessor_token_sequence seq;
     REQUIRE_OK(kefir_preprocessor_token_sequence_init(&seq));
-    kefir_result_t res = run_substitutions_impl(mem, preprocessor, buffer, &seq, subst_context);
+    kefir_result_t res = run_substitutions_impl(mem, preprocessor, token_allocator, buffer, &seq, subst_context);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);
         return res;

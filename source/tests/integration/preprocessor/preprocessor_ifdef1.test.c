@@ -46,9 +46,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_string_pool symbols;
     struct kefir_lexer_context parser_context;
     struct kefir_token_buffer tokens;
+    struct kefir_token_allocator token_allocator;
     REQUIRE_OK(kefir_string_pool_init(&symbols));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
+    REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
 
 #define RUN_PREPROCESSOR(_init)                                                                                       \
     do {                                                                                                              \
@@ -67,7 +69,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));                            \
         REQUIRE_OK(                                                                                                   \
             kefir_preprocessor_init(mem, &preprocessor, &symbols, &cursor, &parser_context, &context, NULL, NULL));   \
-        _init REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &tokens));                                        \
+        _init REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &token_allocator, &tokens));                      \
         REQUIRE_OK(kefir_preprocessor_free(mem, &preprocessor));                                                      \
         REQUIRE_OK(kefir_preprocessor_context_free(mem, &context));                                                   \
         REQUIRE_OK(kefir_preprocessor_virtual_source_locator_free(mem, &virtual_source));                             \
@@ -97,6 +99,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_preprocessor_format(stdout, &tokens, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     REQUIRE_OK(kefir_string_pool_free(mem, &symbols));
     return KEFIR_OK;
 }

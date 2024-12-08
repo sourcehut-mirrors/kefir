@@ -39,11 +39,11 @@ DEFINE_CASE(preprocessor_macro_construction1, "Preprocessor - macro construction
     ASSERT_OK(kefir_list_insert_after(&kft_mem, &macro1->parameters, kefir_list_tail(&macro1->parameters), "p3"));
     macro1->vararg = true;
 
-    struct kefir_token token;
-    ASSERT_OK(kefir_token_new_pp_number(&kft_mem, "123", 3, &token));
-    ASSERT_OK(kefir_token_buffer_emplace(&kft_mem, &macro1->replacement, &token));
-    ASSERT_OK(kefir_token_new_pp_number(&kft_mem, "3210", 4, &token));
-    ASSERT_OK(kefir_token_buffer_emplace(&kft_mem, &macro1->replacement, &token));
+    struct kefir_token token[2];
+    ASSERT_OK(kefir_token_new_pp_number(&kft_mem, "123", 3, &token[0]));
+    ASSERT_OK(kefir_token_buffer_emplace(&kft_mem, &macro1->replacement, &token[0]));
+    ASSERT_OK(kefir_token_new_pp_number(&kft_mem, "3210", 4, &token[1]));
+    ASSERT_OK(kefir_token_buffer_emplace(&kft_mem, &macro1->replacement, &token[1]));
 
     ASSERT_OK(kefir_preprocessor_user_macro_free(&kft_mem, macro1));
 
@@ -56,6 +56,8 @@ DEFINE_CASE(preprocessor_macro_construction1, "Preprocessor - macro construction
     ASSERT_OK(kefir_preprocessor_user_macro_free(&kft_mem, macro2));
 
     ASSERT_OK(kefir_string_pool_free(&kft_mem, &symbols));
+    REQUIRE_OK(kefir_token_free(&kft_mem, &token[0]));
+    REQUIRE_OK(kefir_token_free(&kft_mem, &token[1]));
 }
 END_CASE
 

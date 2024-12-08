@@ -23,6 +23,7 @@
 
 #include "kefir/lexer/lexem.h"
 #include "kefir/lexer/buffer.h"
+#include "kefir/lexer/allocator.h"
 #include "kefir/lexer/source_cursor.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/string_pool.h"
@@ -97,6 +98,7 @@ kefir_result_t kefir_lexer_match_constant(struct kefir_mem *, struct kefir_lexer
 kefir_result_t kefir_lexer_match_pp_number(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 kefir_result_t kefir_lexer_match_pp_header_name(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 
-kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *, struct kefir_token_buffer *, struct kefir_lexer *);
+kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *, struct kefir_token_allocator *,
+                                           struct kefir_token_buffer *, struct kefir_lexer *);
 
 #endif

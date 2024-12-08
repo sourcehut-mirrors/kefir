@@ -41,8 +41,10 @@ typedef struct kefir_preprocessor_extensions {
     kefir_result_t (*on_free)(struct kefir_mem *, struct kefir_preprocessor *);
     kefir_result_t (*on_next_directive)(struct kefir_mem *, struct kefir_preprocessor *,
                                         struct kefir_preprocessor_directive *);
-    kefir_result_t (*before_run)(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_buffer *);
-    kefir_result_t (*after_run)(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_buffer *);
+    kefir_result_t (*before_run)(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
+                                 struct kefir_token_buffer *);
+    kefir_result_t (*after_run)(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
+                                struct kefir_token_buffer *);
     const struct kefir_lexer_extensions *lexer_extensions;
     const struct kefir_parser_extensions *parser;
     void *payload;
@@ -128,15 +130,17 @@ kefir_result_t kefir_preprocessor_free(struct kefir_mem *, struct kefir_preproce
 
 kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *, struct kefir_preprocessor *);
 kefir_result_t kefir_preprocessor_run_group(struct kefir_mem *, struct kefir_preprocessor *,
-                                            struct kefir_token_buffer *);
+                                            struct kefir_token_allocator *, struct kefir_token_buffer *);
 kefir_result_t kefir_preprocessor_run_substitutions(struct kefir_mem *, struct kefir_preprocessor *,
-                                                    struct kefir_token_buffer *,
+                                                    struct kefir_token_allocator *, struct kefir_token_buffer *,
                                                     kefir_preprocessor_substitution_context_t);
-kefir_result_t kefir_preprocessor_run(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_buffer *);
+kefir_result_t kefir_preprocessor_run(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
+                                      struct kefir_token_buffer *);
 
 kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token *,
                                                 const struct kefir_token *);
 kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *, struct kefir_preprocessor *,
-                                                       struct kefir_token_buffer *, const struct kefir_token_buffer *);
+                                                       struct kefir_token_allocator *, struct kefir_token_buffer *,
+                                                       const struct kefir_token_buffer *);
 
 #endif

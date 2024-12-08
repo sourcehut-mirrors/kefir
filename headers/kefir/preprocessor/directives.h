@@ -25,6 +25,7 @@
 #include "kefir/lexer/source_cursor.h"
 #include "kefir/core/list.h"
 #include "kefir/lexer/buffer.h"
+#include "kefir/lexer/allocator.h"
 
 typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
 
@@ -108,6 +109,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(struct kefir_mem *,
                                                           kefir_preprocessor_directive_type_t *);
 kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *,
                                                          struct kefir_preprocessor_directive_scanner *,
+                                                         struct kefir_token_allocator *,
                                                          struct kefir_preprocessor_directive *);
 kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *, struct kefir_preprocessor_directive *);
 
