@@ -23,7 +23,7 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
-#define ALLOCATOR_CHUNK_CAPACITY 4096
+#define ALLOCATOR_CHUNK_CAPACITY 4095 /* 1 element for chunk header */
 #define CHUNK_SIZEOF(_capacity) (sizeof(struct kefir_token_allocator_chunk) + (_capacity) * sizeof(struct kefir_token))
 
 kefir_result_t kefir_token_allocator_init(struct kefir_token_allocator *allocator) {
@@ -71,7 +71,7 @@ static kefir_result_t allocator_ensure_capacity(struct kefir_mem *mem, struct ke
 }
 
 kefir_result_t kefir_token_allocator_emplace(struct kefir_mem *mem, struct kefir_token_allocator *allocator,
-                                              struct kefir_token *token, const struct kefir_token **token_ptr) {
+                                             struct kefir_token *token, const struct kefir_token **token_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
@@ -84,7 +84,8 @@ kefir_result_t kefir_token_allocator_emplace(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *mem, struct kefir_token_allocator *allocator, struct kefir_token **token_ptr) {
+kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *mem, struct kefir_token_allocator *allocator,
+                                                    struct kefir_token **token_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
     REQUIRE(token_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to allocated token"));

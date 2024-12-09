@@ -198,7 +198,6 @@ static kefir_result_t preprocessor_tokenize_impl(struct kefir_mem *mem, struct k
             kefir_token_free(mem, &token);
             return res;
         });
-        REQUIRE_OK(kefir_token_free(mem, &token));
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
         REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, lexer, &token));
     }

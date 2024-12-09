@@ -122,8 +122,8 @@ static kefir_result_t fn_macro_parameter_stringification(struct kefir_mem *mem, 
 
     struct kefir_token *allocated_token;
     res = kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token);
-    REQUIRE_CHAIN(&res, kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE, string,
-                                                                    string_sz - 1, allocated_token));
+    REQUIRE_CHAIN(&res, kefir_token_new_string_literal_raw_from_escaped_multibyte(
+                            mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE, string, string_sz - 1, allocated_token));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, string);
         return res;
@@ -222,9 +222,11 @@ static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_str
         if (strcmp(left->identifier, "L") == 0) {
             REQUIRE_OK(kefir_token_new_constant_wide_char(right->constant.character, allocated_token));
         } else if (strcmp(left->identifier, "u") == 0) {
-            REQUIRE_OK(kefir_token_new_constant_unicode16_char((kefir_char16_t) right->constant.character, allocated_token));
+            REQUIRE_OK(
+                kefir_token_new_constant_unicode16_char((kefir_char16_t) right->constant.character, allocated_token));
         } else if (strcmp(left->identifier, "U") == 0) {
-            REQUIRE_OK(kefir_token_new_constant_unicode32_char((kefir_char32_t) right->constant.character, allocated_token));
+            REQUIRE_OK(
+                kefir_token_new_constant_unicode32_char((kefir_char32_t) right->constant.character, allocated_token));
         } else {
             return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &left->source_location,
                                           "Expected character literal prefix");
@@ -358,15 +360,9 @@ static kefir_result_t macro_concatenation_impl(struct kefir_mem *mem, struct kef
                                                struct kefir_token_buffer *buffer, const struct kefir_token *left,
                                                const struct kefir_token *right) {
     if (left->klass == KEFIR_TOKEN_PP_PLACEMAKER) {
-        struct kefir_token *allocated_token;
-        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
-        REQUIRE_OK(kefir_token_copy(mem, allocated_token, right));
-        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, right));
     } else if (right->klass == KEFIR_TOKEN_PP_PLACEMAKER) {
-        struct kefir_token *allocated_token;
-        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
-        REQUIRE_OK(kefir_token_copy(mem, allocated_token, left));
-        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, left));
     } else {
         switch (left->klass) {
             case KEFIR_TOKEN_SENTINEL:
@@ -454,15 +450,9 @@ static kefir_result_t macro_concatenation(struct kefir_mem *mem, struct kefir_pr
         ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, node->value);
         const kefir_size_t arg_buffer_length = kefir_token_buffer_length(arg_buffer);
         if (arg_buffer_length == 0) {
-            struct kefir_token *allocated_token;
-            REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
-            REQUIRE_OK(kefir_token_copy(mem, allocated_token, &PlacemakerToken));
-            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, &PlacemakerToken));
         } else {
-            struct kefir_token *allocated_token;
-            REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
-            REQUIRE_OK(kefir_token_copy(mem, allocated_token, arg1));
-            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, arg1));
             REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, arg_buffer));
         }
         return KEFIR_OK;
