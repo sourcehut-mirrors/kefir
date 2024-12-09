@@ -659,7 +659,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN: {
             const struct kefir_token *allocated_token;
-            REQUIRE_OK(kefir_token_allocator_allocate(mem, token_allocator, &directive->pp_token, &allocated_token));
+            REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &directive->pp_token, &allocated_token));
             REQUIRE_OK(kefir_token_buffer_emplace(mem, group_buffer, allocated_token));
         } break;
 
@@ -719,11 +719,10 @@ kefir_result_t kefir_preprocessor_run_group(struct kefir_mem *mem, struct kefir_
 static kefir_result_t insert_sentinel(struct kefir_mem *mem, struct kefir_preprocessor_directive *directive,
                                       struct kefir_token_allocator *token_allocator,
                                       struct kefir_token_buffer *buffer) {
-    struct kefir_token token;
-    REQUIRE_OK(kefir_token_new_sentinel(&token));
-    token.source_location = directive->source_location;
-    const struct kefir_token *allocated_token;
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token));
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+    REQUIRE_OK(kefir_token_new_sentinel(allocated_token));
+    allocated_token->source_location = directive->source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     return KEFIR_OK;
 }

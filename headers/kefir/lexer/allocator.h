@@ -37,7 +37,8 @@ typedef struct kefir_token_allocator {
 kefir_result_t kefir_token_allocator_init(struct kefir_token_allocator *);
 kefir_result_t kefir_token_allocator_free(struct kefir_mem *, struct kefir_token_allocator *);
 
-kefir_result_t kefir_token_allocator_allocate(struct kefir_mem *, struct kefir_token_allocator *, struct kefir_token *,
+kefir_result_t kefir_token_allocator_emplace(struct kefir_mem *, struct kefir_token_allocator *, struct kefir_token *,
                                               const struct kefir_token **);
+kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *, struct kefir_token_allocator *, struct kefir_token **);
 
 #endif

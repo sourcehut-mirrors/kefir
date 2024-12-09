@@ -87,20 +87,14 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
             case KEFIR_TOKEN_CONSTANT:
             case KEFIR_TOKEN_PUNCTUATOR:
             case KEFIR_TOKEN_EXTENSION: {
-                struct kefir_token token;
-                REQUIRE_OK(kefir_preprocessor_token_convert(mem, preprocessor, &token, src_token));
-                const struct kefir_token *allocated_token;
-                kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    kefir_token_free(mem, &token);
-                    return res;
-                });
+                struct kefir_token *allocated_token;
+                REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+                REQUIRE_OK(kefir_preprocessor_token_convert(mem, preprocessor, allocated_token, src_token));
                 REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, allocated_token));
                 i++;
             } break;
 
             case KEFIR_TOKEN_STRING_LITERAL: {
-                struct kefir_token token;
                 struct kefir_list literals;
                 REQUIRE_OK(kefir_list_init(&literals));
                 kefir_result_t res = KEFIR_OK;
@@ -121,18 +115,14 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *mem, st
                         i++;
                     }
                 }
-                REQUIRE_CHAIN(&res, kefir_lexer_merge_raw_string_literals(mem, &literals, &token));
+                struct kefir_token *allocated_token;
+                REQUIRE_CHAIN(&res, kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+                REQUIRE_CHAIN(&res, kefir_lexer_merge_raw_string_literals(mem, &literals, allocated_token));
                 REQUIRE_ELSE(res == KEFIR_OK, {
                     kefir_list_free(mem, &literals);
                     return res;
                 });
-                res = kefir_list_free(mem, &literals);
-                const struct kefir_token *allocated_token;
-                res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    kefir_token_free(mem, &token);
-                    return res;
-                });
+                REQUIRE_OK(kefir_list_free(mem, &literals));
                 REQUIRE_OK(kefir_token_buffer_emplace(mem, dst, allocated_token));
             } break;
 

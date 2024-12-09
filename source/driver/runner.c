@@ -214,11 +214,9 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
             res = kefir_compiler_preprocessor_tokenize(mem, compiler, &compiler->builtin_token_allocator,
                                                        &macro->replacement, raw_value, strlen(raw_value), identifier);
         } else {
-            struct kefir_token token;
-            const struct kefir_token *allocated_token;
-            res = kefir_token_new_constant_int(1, &token);
-            REQUIRE_CHAIN(&res, kefir_token_allocator_allocate(mem, &compiler->builtin_token_allocator, &token,
-                                                               &allocated_token));
+            struct kefir_token *allocated_token;
+            res = kefir_token_allocator_allocate_empty(mem, &compiler->builtin_token_allocator, &allocated_token);
+            REQUIRE_CHAIN(&res, kefir_token_new_constant_int(1, allocated_token));
             REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &macro->replacement, allocated_token));
         }
         REQUIRE_CHAIN(

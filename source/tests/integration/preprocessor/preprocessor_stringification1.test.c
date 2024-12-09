@@ -62,10 +62,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_preprocessor_user_macro *macro1 = kefir_preprocessor_user_macro_new_function(mem, &symbols, "STR");
     macro1->vararg = true;
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_HASH, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro1->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "__VA_ARGS__", &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro1->replacement, allocated_token));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_insert(mem, &context.user_macros, macro1));
 
@@ -73,25 +73,25 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_list_insert_after(mem, &macro2->parameters, kefir_list_tail(&macro2->parameters), "x"));
     REQUIRE_OK(kefir_list_insert_after(mem, &macro2->parameters, kefir_list_tail(&macro2->parameters), "y"));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_LEFT_PARENTHESE, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "x", &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_PLUS, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_LEFT_PARENTHESE, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "y", &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_RIGHT_PARENTHESE, &token));
-    REQUIRE_OK(kefir_token_allocator_allocate(mem, &token_allocator, &token, &allocated_token));
+    REQUIRE_OK(kefir_token_allocator_emplace(mem, &token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, &macro2->replacement, allocated_token));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_insert(mem, &context.user_macros, macro2));
 

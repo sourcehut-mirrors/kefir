@@ -57,13 +57,7 @@ kefir_result_t kefir_token_allocator_free(struct kefir_mem *mem, struct kefir_to
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_allocator_allocate(struct kefir_mem *mem, struct kefir_token_allocator *allocator,
-                                              struct kefir_token *token, const struct kefir_token **token_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
-    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
-    REQUIRE(token_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to allocated token"));
-
+static kefir_result_t allocator_ensure_capacity(struct kefir_mem *mem, struct kefir_token_allocator *allocator) {
     if (allocator->last_chunk == NULL || allocator->last_token_index == allocator->chunk_capacity) {
         struct kefir_token_allocator_chunk *new_chunk = KEFIR_MALLOC(mem, CHUNK_SIZEOF(allocator->chunk_capacity));
         REQUIRE(new_chunk != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate token chunk"));
@@ -73,7 +67,31 @@ kefir_result_t kefir_token_allocator_allocate(struct kefir_mem *mem, struct kefi
         allocator->last_token_index = 0;
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_allocator_emplace(struct kefir_mem *mem, struct kefir_token_allocator *allocator,
+                                              struct kefir_token *token, const struct kefir_token **token_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
+    REQUIRE(token_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to allocated token"));
+
+    REQUIRE_OK(allocator_ensure_capacity(mem, allocator));
+
     REQUIRE_OK(kefir_token_move(&allocator->last_chunk->tokens[allocator->last_token_index], token));
+    *token_ptr = &allocator->last_chunk->tokens[allocator->last_token_index++];
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_allocator_allocate_empty(struct kefir_mem *mem, struct kefir_token_allocator *allocator, struct kefir_token **token_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator"));
+    REQUIRE(token_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to allocated token"));
+
+    REQUIRE_OK(allocator_ensure_capacity(mem, allocator));
+
+    REQUIRE_OK(kefir_token_new_sentinel(&allocator->last_chunk->tokens[allocator->last_token_index]));
     *token_ptr = &allocator->last_chunk->tokens[allocator->last_token_index++];
     return KEFIR_OK;
 }

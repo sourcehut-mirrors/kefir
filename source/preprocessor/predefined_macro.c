@@ -34,27 +34,18 @@ struct predefined_macro_payload {
 static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
                                      struct kefir_token_buffer *buffer, const char *buf,
                                      const struct kefir_source_location *source_location) {
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
     if (buf[0] == '-') {
         buf++;
-        REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_MINUS, &token));
-        token.source_location = *source_location;
-        kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_token_free(mem, &token);
-            return res;
-        });
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+        REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_MINUS, allocated_token));
+        allocated_token->source_location = *source_location;
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     }
 
-    REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+    REQUIRE_OK(kefir_token_new_pp_number(mem, buf, strlen(buf), allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     return KEFIR_OK;
 }
@@ -94,16 +85,11 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
 
 MACRO(file) {
     const char *file = source_location->source;
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
-                                                                         file, strlen(file), &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+                                                                         file, strlen(file), allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
@@ -122,16 +108,11 @@ MACRO(date) {
     size_t count = strftime(strbuf, sizeof(strbuf), "%b %e %Y", tm);
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current date"));
 
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
-                                                                         strbuf, count, &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+                                                                         strbuf, count, allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
@@ -142,16 +123,11 @@ MACRO(time) {
     size_t count = strftime(strbuf, sizeof(strbuf), "%H:%M:%S", tm);
     REQUIRE(count != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Failed to format current time"));
 
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
-                                                                         strbuf, count, &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+                                                                         strbuf, count, allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
@@ -161,16 +137,11 @@ MACRO(kefircc_version) {
     int len = snprintf(version_buf, sizeof(version_buf) - 1, "%s", KEFIR_VERSION_SHORT);
     REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
 
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
-                                                                         version_buf, len, &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+                                                                         version_buf, len, allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END
@@ -180,16 +151,11 @@ MACRO(kefircc_full_version) {
     int len = snprintf(version_buf, sizeof(version_buf) - 1, "%s", KEFIR_VERSION_FULL);
     REQUIRE(len > 0, KEFIR_SET_OS_ERROR("Failed to format compiler version"));
 
-    struct kefir_token token;
-    const struct kefir_token *allocated_token;
+    struct kefir_token *allocated_token;
+    REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_string_literal_raw_from_escaped_multibyte(mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE,
-                                                                         version_buf, len, &token));
-    token.source_location = *source_location;
-    kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_free(mem, &token);
-        return res;
-    });
+                                                                         version_buf, len, allocated_token));
+    allocated_token->source_location = *source_location;
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
 }
 MACRO_END

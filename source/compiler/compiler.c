@@ -193,7 +193,7 @@ static kefir_result_t preprocessor_tokenize_impl(struct kefir_mem *mem, struct k
 
     while (token.klass != KEFIR_TOKEN_SENTINEL) {
         const struct kefir_token *allocated_token;
-        kefir_result_t res = kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token);
+        kefir_result_t res = kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_free(mem, &token);
             return res;

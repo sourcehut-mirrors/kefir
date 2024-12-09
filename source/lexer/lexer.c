@@ -160,7 +160,7 @@ kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *mem, struct kefir_t
         scan_tokens = token.klass != KEFIR_TOKEN_SENTINEL;
 
         const struct kefir_token *allocated_token;
-        REQUIRE_OK(kefir_token_allocator_allocate(mem, token_allocator, &token, &allocated_token));
+        REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     }
     return KEFIR_OK;
