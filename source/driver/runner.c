@@ -433,12 +433,13 @@ static kefir_result_t dump_ir_impl(struct kefir_mem *mem, const struct kefir_com
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
 
+    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
+
     REQUIRE_OK(kefir_ir_format_module(output, &module, options->debug_info));
 
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
-    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     return KEFIR_OK;
 }
 
@@ -465,6 +466,9 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
+    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_analysis));
 
@@ -476,9 +480,6 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_opt_module_analysis_free(mem, &opt_analysis));
     REQUIRE_OK(kefir_opt_module_free(mem, &opt_module));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
-    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     return KEFIR_OK;
 }
 
@@ -506,6 +507,9 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(kefir_compiler_analyze(mem, compiler, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
     REQUIRE_OK(kefir_compiler_translate(mem, compiler, unit, &module, true));
+    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     if (compiler->profile->optimizer_enabled) {
         REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_module_analysis));
@@ -517,9 +521,6 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_opt_module_free(mem, &opt_module));
     REQUIRE_OK(kefir_ir_module_free(mem, &module));
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
-    REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
-    REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     return KEFIR_OK;
 }
 

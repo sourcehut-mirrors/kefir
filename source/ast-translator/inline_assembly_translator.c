@@ -74,7 +74,8 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
             REQUIRE(constraints.explicit_register == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Explicit register specification conflicts with parameter constraint"));
-            constraints.explicit_register = param->explicit_register;
+            constraints.explicit_register = kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
+            REQUIRE(constraints.explicit_register != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
         }
 
         const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
@@ -243,7 +244,8 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             REQUIRE(constraints.explicit_register == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Explicit register specification conflicts with parameter constraint"));
-            constraints.explicit_register = param->explicit_register;
+            constraints.explicit_register = kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
+            REQUIRE(constraints.explicit_register != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
         }
 
         if (constraints.immediate && param->parameter->properties.expression_props.constant_expression) {
