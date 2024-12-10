@@ -451,6 +451,10 @@ static kefir_result_t scan_asm_label(struct kefir_mem *mem, struct kefir_parser 
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {
             const char *asm_label = token->string_literal.literal;
+            asm_label = kefir_string_pool_insert(mem, parser->symbols, asm_label, NULL);
+            REQUIRE(asm_label != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembly label into string pool"));
+
             struct kefir_ast_declarator_identifier *identifier = NULL;
             REQUIRE_OK(kefir_ast_declarator_unpack_identifier(*declarator_ptr, &identifier));
             REQUIRE(identifier != NULL && identifier->identifier != NULL,

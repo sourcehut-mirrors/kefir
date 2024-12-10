@@ -52,10 +52,13 @@ static kefir_result_t scan_assembly_template(struct kefir_mem *mem, struct kefir
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected raw string literal in parsing phase"));
     switch (token->string_literal.type) {
         case KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE:
-        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8:
-            REQUIRE_OK(
-                kefir_parser_ast_builder_inline_assembly(mem, builder, *qualifiers, token->string_literal.literal));
-            break;
+        case KEFIR_STRING_LITERAL_TOKEN_UNICODE8: {
+            const char *asm_template =
+                kefir_string_pool_insert(mem, builder->parser->symbols, token->string_literal.literal, NULL);
+            REQUIRE(asm_template != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert assembly template into string pool"));
+            REQUIRE_OK(kefir_parser_ast_builder_inline_assembly(mem, builder, *qualifiers, asm_template));
+        } break;
 
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE16:
         case KEFIR_STRING_LITERAL_TOKEN_UNICODE32:
