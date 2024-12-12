@@ -23,6 +23,8 @@
 #define __thread _Thread_local
 #define __extension__
 
+#define __USER_LABEL_PREFIX__
+
 // Type definitions
 #ifdef __LP64__
 #define __SIZE_TYPE__ long unsigned int
