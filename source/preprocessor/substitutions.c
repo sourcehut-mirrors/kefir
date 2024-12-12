@@ -393,10 +393,16 @@ static kefir_result_t substitute_identifier(struct kefir_mem *mem, struct kefir_
         }
 
         if (macro->type == KEFIR_PREPROCESSOR_MACRO_OBJECT) {
-            REQUIRE_OK(substitute_object_macro(mem, preprocessor, token_allocator, seq, macro, macro_expansions,
-                                               source_location));
+            res = substitute_object_macro(mem, preprocessor, token_allocator, seq, macro, macro_expansions,
+                                          source_location);
         } else {
-            REQUIRE_OK(substitute_function_macro(mem, preprocessor, token_allocator, seq, macro, source_location));
+            res = substitute_function_macro(mem, preprocessor, token_allocator, seq, macro, source_location);
+        }
+
+        if (res == KEFIR_NO_MATCH && subst_context == KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION) {
+            REQUIRE_OK(substitute_unknown_identifier(mem, token_allocator, seq, subst_context, source_location));
+        } else {
+            REQUIRE_OK(res);
         }
     }
     return KEFIR_OK;
