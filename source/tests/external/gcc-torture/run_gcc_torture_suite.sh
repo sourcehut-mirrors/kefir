@@ -73,4 +73,4 @@ function run_tests {
 run_tests compile
 run_tests execute
 echo "Failed tests: $FAILED_TESTS; Skipped tests: $SKIPPED_TESTS; Total tests: $TOTAL_TESTS"
-
+exit 0
