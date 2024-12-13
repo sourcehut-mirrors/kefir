@@ -1,0 +1,13 @@
+ 
+
+
+{ .hi = (1) }
+{ .hi = (A) }
+{ .hi = (hi) }
+{ .xyz = 1000 }
+{ .abc = 1001 }
+{ .XY = abc }
+{ .xyzghi = 6 }
+{ .xyzghi = xyzghi }
+{ .xyzghi = abcdef }
+{ .xad = 5 }
