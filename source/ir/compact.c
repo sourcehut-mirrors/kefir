@@ -24,10 +24,32 @@
 #include <string.h>
 #include <stdio.h>
 
+struct compact_params {
+    struct kefir_mem *mem;
+    struct kefir_hashtree type_index;
+    struct kefir_hashtree type_hashes;
+    struct kefir_hashtree function_decl_index;
+    struct kefir_hashtree symbol_index;
+    struct kefir_hashtree inline_asm_index;
+    struct kefir_hashtree string_literal_index;
+    struct kefir_hashtree debug_entry_index;
+
+    struct kefir_list symbol_scan_queue;
+};
+
 static kefir_hashtree_hash_t ir_type_hash(kefir_hashtree_key_t key, void *data) {
-    UNUSED(data);
+    ASSIGN_DECL_CAST(struct compact_params *, params,
+        data);
+    REQUIRE(params != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compaction parameters"));
     const struct kefir_ir_type *type = (const struct kefir_ir_type *) key;
     REQUIRE(type != NULL, 0);
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&params->type_hashes, key, &node);
+    if (res == KEFIR_OK) {
+        return (kefir_hashtree_hash_t) node->value;
+    }
+
     kefir_hashtree_hash_t hash = 0;
 
     for (kefir_size_t i = 0; i < kefir_ir_type_length(type); i++) {
@@ -36,6 +58,8 @@ static kefir_hashtree_hash_t ir_type_hash(kefir_hashtree_key_t key, void *data) 
         hash *= 37;
         hash += ((((kefir_uint64_t) typeentry->typecode) << 8) | typeentry->alignment) ^ typeentry->param;
     }
+
+    kefir_hashtree_insert(params->mem, &params->type_hashes, key, (kefir_hashtree_value_t) hash);
     return hash;
 }
 
@@ -84,20 +108,6 @@ static kefir_int_t ir_type_compare(kefir_hashtree_key_t key1, kefir_hashtree_key
     }
     return 0;
 }
-
-const struct kefir_hashtree_ops kefir_hashtree_ir_type_ops = {
-    .hash = ir_type_hash, .compare = ir_type_compare, .data = NULL};
-
-struct compact_params {
-    struct kefir_hashtree type_index;
-    struct kefir_hashtree function_decl_index;
-    struct kefir_hashtree symbol_index;
-    struct kefir_hashtree inline_asm_index;
-    struct kefir_hashtree string_literal_index;
-    struct kefir_hashtree debug_entry_index;
-
-    struct kefir_list symbol_scan_queue;
-};
 
 static kefir_result_t compact_type(struct kefir_mem *mem, struct compact_params *params,
                                    const struct kefir_ir_type **type, kefir_id_t *type_id) {
@@ -593,9 +603,14 @@ kefir_result_t kefir_ir_module_compact(struct kefir_mem *mem, struct kefir_ir_mo
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
 
-    struct compact_params params;
+    struct compact_params params = {
+        .mem = mem
+    };
+    const struct kefir_hashtree_ops kefir_hashtree_ir_type_ops = {
+        .hash = ir_type_hash, .compare = ir_type_compare, .data = &params};
     REQUIRE_OK(kefir_list_init(&params.symbol_scan_queue));
     REQUIRE_OK(kefir_hashtree_init(&params.type_index, &kefir_hashtree_ir_type_ops));
+    REQUIRE_OK(kefir_hashtree_init(&params.type_hashes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&params.function_decl_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&params.symbol_index, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_init(&params.inline_asm_index, &kefir_hashtree_uint_ops));
@@ -609,6 +624,7 @@ kefir_result_t kefir_ir_module_compact(struct kefir_mem *mem, struct kefir_ir_mo
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.inline_asm_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.symbol_index));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.function_decl_index));
+    REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.type_hashes));
     REQUIRE_CHAIN(&res, kefir_hashtree_free(mem, &params.type_index));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &params.symbol_scan_queue);
@@ -617,6 +633,7 @@ kefir_result_t kefir_ir_module_compact(struct kefir_mem *mem, struct kefir_ir_mo
         kefir_hashtree_free(mem, &params.inline_asm_index);
         kefir_hashtree_free(mem, &params.symbol_index);
         kefir_hashtree_free(mem, &params.function_decl_index);
+        kefir_hashtree_free(mem, &params.type_hashes);
         kefir_hashtree_free(mem, &params.type_index);
         return res;
     });
