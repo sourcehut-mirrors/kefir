@@ -360,6 +360,88 @@ FUNCTION_MACRO(has_attribute) {
 }
 MACRO_END
 
+FUNCTION_MACRO(has_include) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include expects a single header name argument"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer,
+        args_iter->value);
+    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include expects a single header name argument"));
+    const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+
+    kefir_result_t res;
+    struct kefir_preprocessor_source_file source_file;
+    if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
+        REQUIRE(arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+            arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include expects a single header name argument"));
+        
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+            arg->string_literal.literal, false, preprocessor->current_file,
+                KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+                &source_file);
+    } else {
+        REQUIRE(arg->klass == KEFIR_TOKEN_PP_HEADER_NAME,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include expects a single header name argument"));
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+            arg->pp_header_name.header_name, arg->pp_header_name.system, preprocessor->current_file,
+                KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+                &source_file);
+    }
+
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(source_file.close(mem, &source_file));
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
+    } else {
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+    }
+    return KEFIR_OK;
+}
+MACRO_END
+
+FUNCTION_MACRO(has_include_next) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include_next expects a single header name argument"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer,
+        args_iter->value);
+    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include_next expects a single header name argument"));
+    const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+
+    kefir_result_t res;
+    struct kefir_preprocessor_source_file source_file;
+    if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
+        REQUIRE(arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+            arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include_next expects a single header name argument"));
+        
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+            arg->string_literal.literal, false, preprocessor->current_file,
+                KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT,
+                &source_file);
+    } else {
+        REQUIRE(arg->klass == KEFIR_TOKEN_PP_HEADER_NAME,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_include_next expects a single header name argument"));
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+            arg->pp_header_name.header_name, arg->pp_header_name.system, preprocessor->current_file,
+                KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT,
+                &source_file);
+    }
+
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(source_file.close(mem, &source_file));
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
+    } else {
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+    }
+    return KEFIR_OK;
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -757,6 +839,10 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_attribute, "__has_attribute",
                                                 macro_has_attribute_apply, 1, false));
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_include, "__has_include",
+                                                macro_has_include_apply, 1, false));
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_include_next, "__has_include_next",
+                                                macro_has_include_next_apply, 1, false));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

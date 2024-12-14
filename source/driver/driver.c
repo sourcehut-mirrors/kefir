@@ -219,6 +219,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
+        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
+        REQUIRE(include_dir != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
         if (include_insert_iter == NULL) {
@@ -230,12 +232,16 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_files); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_file, iter->value);
+        include_file = kefir_string_pool_insert(mem, symbols, include_file, NULL);
+        REQUIRE(include_file != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include file into string pool"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_files,
                                            kefir_list_tail(&compiler_config->include_files), (void *) include_file));
     }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->undefines); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, identifier, iter->value);
+        identifier = kefir_string_pool_insert(mem, symbols, identifier, NULL);
+        REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to identifier into string pool"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->undefines,
                                            kefir_list_tail(&compiler_config->undefines), (void *) identifier));
         if (kefir_hashtree_has(&compiler_config->defines, (kefir_hashtree_key_t) identifier)) {

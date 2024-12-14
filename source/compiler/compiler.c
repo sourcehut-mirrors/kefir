@@ -182,8 +182,10 @@ static kefir_result_t preprocessor_tokenize_impl(struct kefir_mem *mem, struct k
                                                  struct kefir_token_buffer *buffer, struct kefir_lexer *lexer) {
     struct kefir_token token;
     kefir_bool_t skip_whitespaces = true;
+    struct kefir_preprocessor_tokenizer_context tokenizer_context;
+    REQUIRE_OK(kefir_preprocessor_tokenizer_context_init(&tokenizer_context));
     while (skip_whitespaces) {
-        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, lexer, &token));
+        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, lexer, &tokenizer_context, &token));
         if (token.klass != KEFIR_TOKEN_PP_WHITESPACE || token.pp_whitespace.newline) {
             skip_whitespaces = false;
         } else {
@@ -199,7 +201,7 @@ static kefir_result_t preprocessor_tokenize_impl(struct kefir_mem *mem, struct k
             return res;
         });
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
-        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, lexer, &token));
+        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, lexer, &tokenizer_context, &token));
     }
 
     kefir_size_t buffer_length = kefir_token_buffer_length(buffer);

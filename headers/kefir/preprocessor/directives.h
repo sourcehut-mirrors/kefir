@@ -26,6 +26,7 @@
 #include "kefir/core/list.h"
 #include "kefir/lexer/buffer.h"
 #include "kefir/lexer/allocator.h"
+#include "kefir/preprocessor/tokenizer.h"
 
 typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
 
@@ -85,6 +86,7 @@ typedef struct kefir_preprocessor_directive {
 
 typedef struct kefir_preprocessor_directive_scanner {
     struct kefir_lexer *lexer;
+    struct kefir_preprocessor_tokenizer_context tokenizer_context;
     kefir_bool_t newline_flag;
     const struct kefir_preprocessor_context *context;
 } kefir_preprocessor_directive_scanner_t;

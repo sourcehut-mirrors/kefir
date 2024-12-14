@@ -43,9 +43,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_json_output_array_begin(&json));
 
     kefir_bool_t scan_tokens = true;
+    struct kefir_preprocessor_tokenizer_context tokenizer_context;
+    REQUIRE_OK(kefir_preprocessor_tokenizer_context_init(&tokenizer_context));
     while (scan_tokens) {
         struct kefir_token token;
-        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, &lexer, &token));
+        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, &lexer, &tokenizer_context, &token));
         REQUIRE_OK(kefir_token_format(&json, &token, false));
         scan_tokens = token.klass != KEFIR_TOKEN_SENTINEL;
         REQUIRE_OK(kefir_token_free(mem, &token));

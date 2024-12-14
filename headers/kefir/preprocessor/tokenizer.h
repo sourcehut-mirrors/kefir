@@ -23,6 +23,17 @@
 
 #include "kefir/lexer/lexer.h"
 
-kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
+typedef enum kefir_preprocessor_tokenizer_state {
+    KEFIR_PREPROCESSOR_TOKENIZER_NORMAL,
+    KEFIR_PREPROCESSOR_TOKENIZER_HAS_INCLUDE1,
+    KEFIR_PREPROCESSOR_TOKENIZER_HAS_INCLUDE2
+} kefir_preprocessor_tokenizer_state_t;
+
+typedef struct kefir_preprocessor_tokenizer_context {
+    kefir_preprocessor_tokenizer_state_t state;
+} kefir_preprocessor_tokenizer_context_t;
+
+kefir_result_t kefir_preprocessor_tokenizer_context_init(struct kefir_preprocessor_tokenizer_context *);
+kefir_result_t kefir_preprocessor_tokenize_next(struct kefir_mem *, struct kefir_lexer *, struct kefir_preprocessor_tokenizer_context *, struct kefir_token *);
 
 #endif

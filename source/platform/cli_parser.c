@@ -90,7 +90,7 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_st
         }
 
         if (res == KEFIR_OK && cli_option->prehook != NULL) {
-            REQUIRE_CHAIN(&res, cli_option->prehook(mem, cli_option, data_obj, optarg));
+            REQUIRE_CHAIN(&res, cli_option->prehook(mem, symbols, cli_option, data_obj, optarg));
         }
 
         if (res == KEFIR_OK) {
@@ -168,7 +168,7 @@ static kefir_result_t parse_impl_internal(struct kefir_mem *mem, struct kefir_st
         }
 
         if (res == KEFIR_OK && cli_option->posthook != NULL) {
-            REQUIRE_CHAIN(&res, cli_option->posthook(mem, cli_option, data_obj, optarg));
+            REQUIRE_CHAIN(&res, cli_option->posthook(mem, symbols, cli_option, data_obj, optarg));
         }
     }
     REQUIRE_ELSE(res == KEFIR_OK, {

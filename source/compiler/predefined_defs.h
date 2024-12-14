@@ -94,9 +94,6 @@
 #define __SIZEOF_WINT_T__ __SIZEOF_INT__
 #endif
 
-// Builtins
-#define __has_include_next(...) 0
-
 // Atomics
 #define __ATOMIC_RELAXED 0
 #define __ATOMIC_CONSUME 1
