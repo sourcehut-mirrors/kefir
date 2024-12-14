@@ -389,8 +389,9 @@ static kefir_result_t drop_unused_named_types(struct kefir_mem *mem, struct kefi
         kefir_result_t res = kefir_hashtree_at(&params->type_index, (kefir_hashtree_key_t) type, &index_node);
         if (res == KEFIR_NOT_FOUND || node->key != index_node->value) {
             REQUIRE(res == KEFIR_NOT_FOUND || res == KEFIR_OK, res);
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->named_types, node->key));
-            node = kefir_hashtree_iter(&module->named_types, &iter);
+            node = next_node;
         } else {
             REQUIRE_OK(res);
             node = kefir_hashtree_next(&iter);
@@ -408,8 +409,9 @@ static kefir_result_t drop_unused_function_decls(struct kefir_mem *mem, struct k
         ASSIGN_DECL_CAST(struct kefir_ir_function_decl *, decl, node->value);
 
         if (!kefir_hashtree_has(&params->function_decl_index, decl->id)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->function_declarations, node->key));
-            node = kefir_hashtree_iter(&module->function_declarations, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
@@ -425,8 +427,9 @@ static kefir_result_t drop_unused_functions(struct kefir_mem *mem, struct kefir_
         ASSIGN_DECL_CAST(struct kefir_ir_function *, func, node->value);
 
         if (!kefir_hashtree_has(&params->symbol_index, (kefir_hashtree_key_t) func->name)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->functions, node->key));
-            node = kefir_hashtree_iter(&module->functions, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
@@ -442,8 +445,9 @@ static kefir_result_t drop_unused_data(struct kefir_mem *mem, struct kefir_ir_mo
         ASSIGN_DECL_CAST(const char *, name, node->key);
 
         if (!kefir_hashtree_has(&params->symbol_index, (kefir_hashtree_key_t) name)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->named_data, node->key));
-            node = kefir_hashtree_iter(&module->named_data, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
@@ -459,8 +463,9 @@ static kefir_result_t drop_unused_identifiers(struct kefir_mem *mem, struct kefi
         ASSIGN_DECL_CAST(const char *, symbol, node->key);
 
         if (!kefir_hashtree_has(&params->symbol_index, (kefir_hashtree_key_t) symbol)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->identifiers, node->key));
-            node = kefir_hashtree_iter(&module->identifiers, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
@@ -476,8 +481,9 @@ static kefir_result_t drop_unused_inline_asm(struct kefir_mem *mem, struct kefir
         ASSIGN_DECL_CAST(kefir_id_t, id, node->key);
 
         if (!kefir_hashtree_has(&params->inline_asm_index, (kefir_hashtree_key_t) id)) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->inline_assembly, node->key));
-            node = kefir_hashtree_iter(&module->inline_assembly, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
@@ -494,8 +500,9 @@ static kefir_result_t drop_unused_string_literals(struct kefir_mem *mem, struct 
         ASSIGN_DECL_CAST(const struct kefir_ir_module_string_literal *, literal, node->value);
 
         if (!kefir_hashtree_has(&params->string_literal_index, (kefir_hashtree_key_t) id) && literal->public) {
+            const struct kefir_hashtree_node *next_node = kefir_hashtree_next(&iter);
             REQUIRE_OK(kefir_hashtree_delete(mem, &module->string_literals, node->key));
-            node = kefir_hashtree_iter(&module->string_literals, &iter);
+            node = next_node;
         } else {
             node = kefir_hashtree_next(&iter);
         }
