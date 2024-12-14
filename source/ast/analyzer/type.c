@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/analyzer/analyzer.h"
+#include "kefir/ast/type_completion.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -171,9 +172,6 @@ static kefir_result_t analyze_function(struct kefir_mem *mem, const struct kefir
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Void type parameter shall be the only function parameter"));
             } else {
-                REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(param->adjusted_type),
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                               "Function parameters shall not have incomplete type"));
                 REQUIRE(KEFIR_OPTIONAL_EMPTY(&param->storage) ||
                             *KEFIR_OPTIONAL_VALUE(&param->storage) == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
                             *KEFIR_OPTIONAL_VALUE(&param->storage) == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
