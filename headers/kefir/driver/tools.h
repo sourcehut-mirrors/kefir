@@ -28,7 +28,7 @@
 #include "kefir/compiler/configuration.h"
 
 kefir_result_t kefir_driver_run_compiler(const struct kefir_compiler_runner_configuration *, struct kefir_process *);
-kefir_result_t kefir_driver_run_assembler(struct kefir_mem *, const char *,
+kefir_result_t kefir_driver_run_assembler(struct kefir_mem *, const char *, const char *,
                                           const struct kefir_driver_assembler_configuration *,
                                           const struct kefir_driver_external_resources *, struct kefir_process *);
 kefir_result_t kefir_driver_run_linker(struct kefir_mem *, const char *,

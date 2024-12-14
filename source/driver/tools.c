@@ -258,7 +258,7 @@ static kefir_result_t output_argv(FILE *output, const struct kefir_string_array 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *output_file,
+kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *output_file, const char *input_file,
                                           const struct kefir_driver_assembler_configuration *config,
                                           const struct kefir_driver_external_resources *resources,
                                           struct kefir_process *process) {
@@ -275,6 +275,9 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, resources->assembler_path));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-o"));
     REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, output_file));
+    if (input_file != NULL) {
+        REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, input_file));
+    }
 
     switch (config->target) {
         case KEFIR_DRIVER_ASSEMBLER_GAS_INTEL:
