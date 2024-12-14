@@ -60,5 +60,7 @@ DEFINE_DOWNCAST(inline_assembly, struct kefir_ast_inline_assembly, node->klass->
                 "AST inline assembly node")
 DEFINE_DOWNCAST(string_literal, struct kefir_ast_string_literal, node->klass->type == KEFIR_AST_STRING_LITERAL,
                 "AST inline assembly node")
+DEFINE_DOWNCAST(compound_literal, struct kefir_ast_compound_literal, node->klass->type == KEFIR_AST_COMPOUND_LITERAL,
+                "AST compound literal node")
 
 #undef DEFINE_DOWNCAST

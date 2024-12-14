@@ -25,6 +25,7 @@
 #include "kefir/ir/type_tree.h"
 #include "kefir/ast/constant_expression.h"
 #include "kefir/ast/runtime.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/ast/initializer_traversal.h"
 #include "kefir/core/source_error.h"
 
@@ -186,6 +187,17 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
     kefir_size_t slot = 0;
     REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, &param->ir_type_tree, param->base_slot,
                                        &resolved_layout, &slot, &expression->source_location));
+
+    struct kefir_ast_compound_literal *compound_literal;
+    kefir_result_t res = kefir_ast_downcast_compound_literal(expression, &compound_literal, false);
+    if (res != KEFIR_NO_MATCH) {
+        REQUIRE_OK(res);
+        REQUIRE(KEFIR_AST_TYPE_SAME(expression->properties.type, resolved_layout->type),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location, "Compound literal type mismatch"));
+        REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
+                                                        param->type, compound_literal->initializer, param->data, slot));
+        return KEFIR_OK;
+    }
 
     struct kefir_ast_constant_expression_value uncasted_value, value;
     REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, expression, &uncasted_value));
