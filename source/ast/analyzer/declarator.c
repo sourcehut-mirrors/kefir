@@ -1189,6 +1189,7 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
+            // !!! Update has_attribute macro upon changing this !!!
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                 REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
                     mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));

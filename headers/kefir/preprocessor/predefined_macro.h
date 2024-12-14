@@ -55,6 +55,8 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro kefircc_full_version;
         struct kefir_preprocessor_macro counter;
 
+        struct kefir_preprocessor_macro has_attribute;
+
         // Extension macros
         struct kefir_preprocessor_macro data_model;
         struct kefir_preprocessor_macro byte_order;

@@ -24,11 +24,14 @@
 #include "kefir/core/version.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 #include "kefir/core/os_error.h"
 #include <float.h>
 
 struct predefined_macro_payload {
     struct kefir_preprocessor_predefined_macro_scope *scope;
+    kefir_size_t argc;
+    kefir_size_t vararg;
 };
 
 static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
@@ -58,6 +61,20 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to retrieve argument count of predefined object macro");
 }
 
+static kefir_result_t predefined_function_macro_argc(const struct kefir_preprocessor_macro *macro, kefir_size_t *argc_ptr,
+                                            kefir_bool_t *vararg_ptr) {
+    REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
+    REQUIRE(argc_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to argument count"));
+    REQUIRE(vararg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to vararg flag"));
+    ASSIGN_DECL_CAST(struct predefined_macro_payload *, payload, macro->payload);
+
+    REQUIRE(macro->type == KEFIR_PREPROCESSOR_MACRO_FUNCTION,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to retrieve argument count of object macro"));
+    *argc_ptr = payload->argc;
+    *vararg_ptr = payload->vararg;
+    return KEFIR_OK;
+}
+
 #define MACRO(_name)                                                                                                  \
     static kefir_result_t macro_##_name##_apply(                                                                      \
         struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, const struct kefir_preprocessor_macro *macro, \
@@ -69,6 +86,24 @@ static kefir_result_t predefined_macro_argc(const struct kefir_preprocessor_macr
         REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
         REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));        \
         REQUIRE(args == NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected empty macro argument list"));        \
+        REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator")); \
+        REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));             \
+        REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location")); \
+        ASSIGN_DECL_CAST(struct predefined_macro_payload *, macro_payload, macro->payload);                           \
+        UNUSED(macro_payload);                                                                                        \
+                                                                                                                      \
+        do
+
+#define FUNCTION_MACRO(_name)                                                                                                  \
+    static kefir_result_t macro_##_name##_apply(                                                                      \
+        struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, const struct kefir_preprocessor_macro *macro, \
+        struct kefir_string_pool *symbols, const struct kefir_list *args,                                             \
+        struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer,                             \
+        const struct kefir_source_location *source_location) {                                                        \
+        UNUSED(symbols);                                                                                              \
+        UNUSED(preprocessor);                                                                                         \
+        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));            \
+        REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));        \
         REQUIRE(token_allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token allocator")); \
         REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));             \
         REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location")); \
@@ -284,6 +319,47 @@ MACRO(counter) {
 }
 MACRO_END
 
+FUNCTION_MACRO(has_attribute) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_attribute expects a single identifier argument"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer,
+        args_iter->value);
+    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_attribute expects a single identifier argument"));
+    const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+    REQUIRE(arg->klass == KEFIR_TOKEN_IDENTIFIER,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_attribute expects a single identifier argument"));
+
+    // See source/ast/analyzer/declarator.c
+    static const char *SUPPORTED_ATTRIBUTES[] = {
+        "aligned",
+        "__aligned__",
+        "gnu_inline",
+        "__gnu_inline__",
+        "returns_twice",
+        "__returns_twice__",
+        "weak",
+        "__weak__",
+        "alias",
+        "__alias__",
+        "visibility",
+        "__visibility__"
+    };
+    const kefir_size_t SUPPORTED_ATTRIBUTES_LENGTH = sizeof(SUPPORTED_ATTRIBUTES) / sizeof(SUPPORTED_ATTRIBUTES[0]);
+
+    for (kefir_size_t i = 0; i < SUPPORTED_ATTRIBUTES_LENGTH; i++) {
+        if (strcmp(SUPPORTED_ATTRIBUTES[i], arg->identifier) == 0) {
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
+            return KEFIR_OK;
+        }
+    }
+
+    REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+    return KEFIR_OK;
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -294,11 +370,45 @@ static kefir_result_t define_predefined_macro(
     struct predefined_macro_payload *payload = KEFIR_MALLOC(mem, sizeof(struct predefined_macro_payload));
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate predefined macro payload"));
     payload->scope = scope;
+    payload->argc = 0;
+    payload->vararg = false;
     macro->identifier = identifier;
     macro->type = KEFIR_PREPROCESSOR_MACRO_OBJECT;
     macro->payload = payload;
     macro->apply = apply;
     macro->argc = predefined_macro_argc;
+
+    if (!kefir_hashtree_has(&preprocessor->context->undefined_macros, (kefir_hashtree_key_t) identifier)) {
+        kefir_result_t res = kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
+                                                   (kefir_hashtree_value_t) macro);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, payload);
+            return res;
+        });
+    } else {
+        KEFIR_FREE(mem, payload);
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t define_predefined_function_macro(
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+    struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
+    const char *identifier,
+    kefir_result_t (*apply)(struct kefir_mem *, struct kefir_preprocessor *, const struct kefir_preprocessor_macro *,
+                            struct kefir_string_pool *, const struct kefir_list *, struct kefir_token_allocator *,
+                            struct kefir_token_buffer *, const struct kefir_source_location *),
+                            kefir_size_t argc, kefir_bool_t vararg) {
+    struct predefined_macro_payload *payload = KEFIR_MALLOC(mem, sizeof(struct predefined_macro_payload));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate predefined macro payload"));
+    payload->scope = scope;
+    payload->argc = argc;
+    payload->vararg = vararg;
+    macro->identifier = identifier;
+    macro->type = KEFIR_PREPROCESSOR_MACRO_FUNCTION;
+    macro->payload = payload;
+    macro->apply = apply;
+    macro->argc = predefined_function_macro_argc;
 
     if (!kefir_hashtree_has(&preprocessor->context->undefined_macros, (kefir_hashtree_key_t) identifier)) {
         kefir_result_t res = kefir_hashtree_insert(mem, &scope->macro_tree, (kefir_hashtree_key_t) identifier,
@@ -644,6 +754,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.counter, "__COUNTER__",
                                                 macro_counter_apply));
+
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_attribute, "__has_attribute",
+                                                macro_has_attribute_apply, 1, false));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

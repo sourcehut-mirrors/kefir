@@ -1,0 +1,18 @@
+ 
+
+
+aligned = 1;
+__aligned__ = 1;
+gnu_inline = 1;
+__gnu_inline__ = 1;
+returns_twice = 1;
+__returns_twice__ = 1;
+weak = 1;
+__weak__ = 1;
+alias = 1;
+__alias__ = 1;
+visibility = 1;
+__visibility__ = 1;
+
+TEST1 = 0;
+ONETWOTHREE = 0;
