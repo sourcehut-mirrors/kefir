@@ -442,6 +442,48 @@ FUNCTION_MACRO(has_include_next) {
 }
 MACRO_END
 
+FUNCTION_MACRO(has_builtin) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_builtin expects a single identifier argument"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer,
+        args_iter->value);
+    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_builtin expects a single identifier argument"));
+    const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+    REQUIRE(arg->klass == KEFIR_TOKEN_IDENTIFIER,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_builtin expects a single identifier argument"));
+
+    // See headers/kefir/parser/builtins.h
+    static const char *SUPPORTED_BUILTINS[] = {
+        "__builtin_va_start",
+        "__builtin_va_end",
+        "__builtin_va_arg",
+        "__builtin_va_copy",
+        "__builtin_va_list",
+        "__builtin_alloca",
+        "__builtin_alloca_with_align",
+        "__builtin_alloca_with_align_and_max",
+        "__builtin_offsetof",
+        "__builtin_types_compatible_p",
+        "__builtin_choose_expr",
+        "__builtin_constant_p",
+        "__builtin_classify_type"
+    };
+    const kefir_size_t SUPPORTED_BUILTINS_LENGTH = sizeof(SUPPORTED_BUILTINS) / sizeof(SUPPORTED_BUILTINS[0]);
+
+    for (kefir_size_t i = 0; i < SUPPORTED_BUILTINS_LENGTH; i++) {
+        if (strcmp(SUPPORTED_BUILTINS[i], arg->identifier) == 0) {
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
+            return KEFIR_OK;
+        }
+    }
+
+    REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+    return KEFIR_OK;
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -843,6 +885,8 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                                                 macro_has_include_apply, 1, false));
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_include_next, "__has_include_next",
                                                 macro_has_include_next_apply, 1, false));
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_builtin, "__has_builtin",
+                                                macro_has_builtin_apply, 1, false));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

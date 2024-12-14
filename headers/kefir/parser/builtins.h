@@ -24,6 +24,7 @@
 #include "kefir/parser/parser.h"
 #include "kefir/ast/constants.h"
 
+// !!! Update __has_attribute predefined macro upon chaning this !!!
 #define KEFIR_PARSER_BUILTIN_VA_START "__builtin_va_start"
 #define KEFIR_PARSER_BUILTIN_VA_END "__builtin_va_end"
 #define KEFIR_PARSER_BUILTIN_VA_ARG "__builtin_va_arg"
