@@ -38,6 +38,8 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/format.h"
 #include "kefir/optimizer/analysis.h"
+#include "kefir/parser/builtins.h"
+#include "kefir/ast/analyzer/declarator.h"
 
 // ATTENTION: This is module is not a part of the core library, thus memory management
 //            is different here. While all the modules from core library shall correctly
@@ -108,6 +110,14 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.include_next = options->features.include_next;
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
+    for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES; *attribute != NULL; ++attribute) {
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_attributes,
+                                         (kefir_hashtreeset_entry_t) *attribute));
+    }
+    for (const char **builtin = KEFIR_PARSER_SUPPORTED_BUILTINS; *builtin != NULL; ++builtin) {
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_builtins,
+                                         (kefir_hashtreeset_entry_t) *builtin));
+    }
 
     compiler.parser_configuration.fail_on_attributes = options->features.fail_on_attributes;
     compiler.parser_configuration.implicit_function_definition_int = options->features.missing_function_return_type;

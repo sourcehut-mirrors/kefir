@@ -23,6 +23,21 @@
 #include "kefir/core/error.h"
 #include <string.h>
 
+const char *KEFIR_PARSER_SUPPORTED_BUILTINS[] = {KEFIR_PARSER_BUILTIN_VA_START,
+                                                 KEFIR_PARSER_BUILTIN_VA_END,
+                                                 KEFIR_PARSER_BUILTIN_VA_ARG,
+                                                 KEFIR_PARSER_BUILTIN_VA_COPY,
+                                                 KEFIR_PARSER_BUILTIN_VA_LIST,
+                                                 KEFIR_PARSER_BUILTIN_ALLOCA,
+                                                 KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN,
+                                                 KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX,
+                                                 KEFIR_PARSER_BUILTIN_OFFSETOF,
+                                                 KEFIR_PARSER_BUILTIN_TYPES_COMPATIBLE,
+                                                 KEFIR_PARSER_BUILTIN_CHOOSE_EXPRESSION,
+                                                 KEFIR_PARSER_BUILTIN_CONSTANT,
+                                                 KEFIR_PARSER_BUILTIN_CLASSIFY_TYPE,
+                                                 NULL};
+
 static const struct {
     const char *identifier;
     kefir_ast_builtin_operator_t builtin_op;

@@ -31,6 +31,7 @@
 #include "kefir/ast/context.h"
 #include "kefir/core/data_model.h"
 #include "kefir/core/hashtree.h"
+#include "kefir/core/hashtreeset.h"
 #include <time.h>
 
 typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
@@ -73,6 +74,8 @@ typedef struct kefir_preprocessor_environment {
     kefir_bool_t stdc_no_threads;
     kefir_bool_t stdc_no_vla;
     const struct kefir_data_model_descriptor *data_model;
+    struct kefir_hashtreeset supported_attributes;
+    struct kefir_hashtreeset supported_builtins;
 } kefir_preprocessor_environment_t;
 
 typedef struct kefir_preprocessor_configuration {

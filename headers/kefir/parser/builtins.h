@@ -24,7 +24,6 @@
 #include "kefir/parser/parser.h"
 #include "kefir/ast/constants.h"
 
-// !!! Update __has_attribute predefined macro upon chaning this !!!
 #define KEFIR_PARSER_BUILTIN_VA_START "__builtin_va_start"
 #define KEFIR_PARSER_BUILTIN_VA_END "__builtin_va_end"
 #define KEFIR_PARSER_BUILTIN_VA_ARG "__builtin_va_arg"
@@ -40,5 +39,7 @@
 #define KEFIR_PARSER_BUILTIN_CLASSIFY_TYPE "__builtin_classify_type"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
+
+extern const char *KEFIR_PARSER_SUPPORTED_BUILTINS[];
 
 #endif

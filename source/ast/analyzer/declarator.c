@@ -31,6 +31,11 @@
 #include "kefir/ast/type_completion.h"
 #include "kefir/core/source_error.h"
 
+const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {
+    "aligned",           "__aligned__",    "gnu_inline", "__gnu_inline__", "returns_twice",
+    "__returns_twice__", "weak",           "__weak__",   "alias",          "__alias__",
+    "visibility",        "__visibility__", NULL};
+
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
 enum real_class { REAL_SCALAR, REAL_COMPLEX, REAL_COMPLEX_LONG };
@@ -1189,7 +1194,7 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
-            // !!! Update has_attribute macro upon changing this !!!
+            // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES macro upon changing this !!!
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                 REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
                     mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));
