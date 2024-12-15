@@ -1,0 +1,25 @@
++++ gcc/config/i386/linux-unwind.h	2024-12-15 15:57:45.067798870 +0200
+--- gcc/config/i386/linux-unwind.h	2005-02-11 03:12:57.000000000 +0200
+@@ -51,7 +51,7 @@
+   if (*(unsigned char *)(pc+0) == 0x48
+       && *(unsigned long *)(pc+1) == 0x050f0000000fc0c7)
+     {
++      ucontext_t *uc_ = context->cfa;
+-      struct ucontext *uc_ = context->cfa;
+       sc = (struct sigcontext *) &uc_->uc_mcontext;
+     }
+   else
+@@ -133,10 +133,10 @@
+     {
+       struct rt_sigframe {
+ 	int sig;
++	siginfo_t *pinfo;
+-	struct siginfo *pinfo;
+ 	void *puc;
++	siginfo_t info;
++	ucontext_t uc;
+-	struct siginfo info;
+-	struct ucontext uc;
+       } *rt_ = context->cfa;
+       sc = (struct sigcontext *) &rt_->uc.uc_mcontext;
+     }

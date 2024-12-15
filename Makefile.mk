@@ -8,6 +8,7 @@ PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 # Tools
 CC=cc
 LD=$(CC)
+SYSTEM_LD=ld
 AS=as
 AR=ar
 STRIP=strip
