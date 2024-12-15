@@ -500,7 +500,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_prologue(xasmgen, target->abi_variant,
-                                                                target->position_independent_code, stack_frame));
+                                                                stack_frame, target->function_name));
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):

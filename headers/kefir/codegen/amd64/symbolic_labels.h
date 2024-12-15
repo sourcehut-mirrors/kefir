@@ -34,6 +34,8 @@
 #define KEFIR_AMD64_FUNCTION_BEGIN "__kefir_text_func_%s_begin"
 #define KEFIR_AMD64_FUNCTION_END "__kefir_text_func_%s_end"
 
+#define KEFIR_AMD64_VARARG_SAVE_INT "__kefir_text_func_%s_vararg_save_int"
+
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT
 #define KEFIR_AMD64_CONSTANT_FLOAT32_NEG "__kefir_opt_float32_neg"
@@ -42,9 +44,6 @@
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG "__kefir_opt_complex_float32_neg"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG "__kefir_opt_complex_float64_neg"
 
-#define KEFIR_AMD64_SYSTEM_V_RUNTIME_VARARG_SAVE "__kefirrt_opt_amd64_sysv_vararg_save"
-#define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_INT_VARARG "__kefirrt_opt_load_int_vararg"
-#define KEFIR_AMD64_SYSTEM_V_RUNTIME_LOAD_SSE_VARARG "__kefirrt_opt_load_sse_vararg"
 #define KEFIR_AMD64_RUNTIME_FLOAT32_TO_UINT "__kefirrt_opt_float32_to_uint"
 #define KEFIR_AMD64_RUNTIME_FLOAT64_TO_UINT "__kefirrt_opt_float64_to_uint"
 #define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_INT "__kefirrt_opt_long_double_to_int"

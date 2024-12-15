@@ -86,7 +86,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant
                                                          struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
-                                                        kefir_bool_t, const struct kefir_codegen_amd64_stack_frame *);
+                                                        const struct kefir_codegen_amd64_stack_frame *, const char *);
 kefir_result_t kefir_codegen_amd64_stack_frame_epilogue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,
                                                         const struct kefir_codegen_amd64_stack_frame *);
 

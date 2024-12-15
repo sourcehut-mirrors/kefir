@@ -257,9 +257,6 @@
 .type generate_buf_126, @function
 .global generate_buf_127
 .type generate_buf_127, @function
-.extern __kefirrt_opt_amd64_sysv_vararg_save
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int

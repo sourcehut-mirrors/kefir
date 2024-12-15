@@ -18,9 +18,6 @@
 .type test_atomic_exchange32, @function
 .global test_atomic_exchange64
 .type test_atomic_exchange64, @function
-.extern __kefirrt_opt_amd64_sysv_vararg_save
-.extern __kefirrt_opt_load_int_vararg
-.extern __kefirrt_opt_load_sse_vararg
 .extern __kefirrt_opt_float32_to_uint
 .extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
