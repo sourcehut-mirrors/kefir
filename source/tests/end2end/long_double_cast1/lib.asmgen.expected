@@ -23,8 +23,6 @@
 .type uintcld, @function
 .global imp_cast
 .type imp_cast, @function
-.extern __kefirrt_opt_float32_to_uint
-.extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
 .extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals

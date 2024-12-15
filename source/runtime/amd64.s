@@ -31,32 +31,6 @@
 
 .section .text
 
-.global __kefirrt_opt_float32_to_uint
-.hidden __kefirrt_opt_float32_to_uint
-__kefirrt_opt_float32_to_uint:
-    comiss xmm0, DWORD PTR __kefirrt_opt_float32_to_uint_constant[rip]
-    jnb __kefirrt_opt_float32_to_uint_overflow
-    cvttss2si rax, xmm0
-    ret
-__kefirrt_opt_float32_to_uint_overflow:
-    subss xmm0, DWORD PTR __kefirrt_opt_float32_to_uint_constant[rip]
-    cvttss2si rax, xmm0
-    btc rax, 63
-    ret
-
-.global __kefirrt_opt_float64_to_uint
-.hidden __kefirrt_opt_float64_to_uint
-__kefirrt_opt_float64_to_uint:
-    comisd xmm0, QWORD PTR __kefirrt_opt_float64_to_uint_constant[rip]
-    jnb __kefirrt_opt_float64_to_uint_overflow
-    cvttsd2si rax, xmm0
-    ret
-__kefirrt_opt_float64_to_uint_overflow:
-    subsd xmm0, QWORD PTR __kefirrt_opt_float64_to_uint_constant[rip]
-    cvttsd2si rax, xmm0
-    btc rax, 63
-    ret
-
 .global __kefirrt_opt_long_double_to_int
 .hidden __kefirrt_opt_long_double_to_int
 __kefirrt_opt_long_double_to_int:
@@ -668,23 +642,14 @@ __kefirrt_bswap64:
 __kefirrt_opt_long_double_to_uint_constant:
     .long   1593835520
 
-    .align 4
-__kefirrt_opt_float32_to_uint_constant:
-    .long   1593835520
-
-    .align 8
-__kefirrt_opt_float64_to_uint_constant:
-    .long   0
-    .long   1138753536
-
-    .align 4
+    .align 16
 __kefirrt_opt_complex_float32_mul_const:
     .long 0x00000000
     .long 0x80000000
     .long 0x00000000
     .long 0x80000000
 
-    .align 8
+    .align 16
 __kefirrt_opt_complex_float32_div_const:
 __kefirrt_opt_complex_float64_mul_const:
     .long 0x00000000

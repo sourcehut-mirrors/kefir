@@ -34,8 +34,6 @@
 .type sub_f32, @function
 .global sub_f64
 .type sub_f64, @function
-.extern __kefirrt_opt_float32_to_uint
-.extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
 .extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals

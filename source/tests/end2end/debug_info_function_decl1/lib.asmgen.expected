@@ -10,8 +10,6 @@
 .extern test5
 .extern test6
 .extern test7
-.extern __kefirrt_opt_float32_to_uint
-.extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
 .extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals

@@ -44,8 +44,6 @@
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG "__kefir_opt_complex_float32_neg"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG "__kefir_opt_complex_float64_neg"
 
-#define KEFIR_AMD64_RUNTIME_FLOAT32_TO_UINT "__kefirrt_opt_float32_to_uint"
-#define KEFIR_AMD64_RUNTIME_FLOAT64_TO_UINT "__kefirrt_opt_float64_to_uint"
 #define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_INT "__kefirrt_opt_long_double_to_int"
 #define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_UINT "__kefirrt_opt_long_double_to_uint"
 #define KEFIR_AMD64_RUNTIME_COMPLEX_LONG_DOUBLE_EQUALS "__kefirrt_opt_complex_long_double_equals"

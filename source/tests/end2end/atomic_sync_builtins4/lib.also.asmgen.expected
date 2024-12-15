@@ -10,8 +10,6 @@
 .global test_sync_synchronize
 .type test_sync_synchronize, @function
 .extern __kefir_atomic_seq_cst_fence
-.extern __kefirrt_opt_float32_to_uint
-.extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
 .extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals

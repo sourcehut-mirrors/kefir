@@ -26,8 +26,6 @@
 .type test_atomic_store64, @function
 .global test2_atomic_store8
 .type test2_atomic_store8, @function
-.extern __kefirrt_opt_float32_to_uint
-.extern __kefirrt_opt_float64_to_uint
 .extern __kefirrt_opt_long_double_to_int
 .extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals
