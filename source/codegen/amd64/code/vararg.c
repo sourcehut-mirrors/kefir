@@ -195,7 +195,7 @@ static kefir_result_t vararg_load_int(struct kefir_mem *mem, struct kefir_codege
     // Determine whether the argument is in reg_save or overflow area
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
         NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_cmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
@@ -211,7 +211,7 @@ static kefir_result_t vararg_load_int(struct kefir_mem *mem, struct kefir_codege
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
         NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
         &KEFIR_ASMCMP_MAKE_VREG32(result_vreg),
         NULL));
 
@@ -290,7 +290,7 @@ static kefir_result_t vararg_load_sse(struct kefir_mem *mem, struct kefir_codege
     // Determine whether the argument is in reg_save or overflow area
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 4, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 4, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
         NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_cmp(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg),
@@ -306,7 +306,7 @@ static kefir_result_t vararg_load_sse(struct kefir_mem *mem, struct kefir_codege
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, 2 * KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
         NULL));
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 4, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(valist_vreg, 4, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
         &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg),
         NULL));
 
