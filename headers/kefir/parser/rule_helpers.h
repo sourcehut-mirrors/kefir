@@ -101,4 +101,7 @@
         }                                                                                      \
     } while (0)
 
+kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
+                                   struct kefir_ast_declaration *);
+
 #endif

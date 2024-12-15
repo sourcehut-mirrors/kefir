@@ -131,8 +131,12 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     return KEFIR_OK;
 }
 
-static kefir_result_t update_scope(struct kefir_mem *mem, struct kefir_parser *parser,
+kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
                                    struct kefir_ast_declaration *declaration) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
+
     kefir_bool_t is_typedef = false;
     struct kefir_ast_declarator_specifier *specifier = NULL;
     kefir_result_t res = KEFIR_OK;
@@ -170,7 +174,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(declaration)(struct kefir_mem *mem, s
     struct kefir_ast_declaration *decl_list = NULL;
     kefir_result_t res = kefir_ast_downcast_declaration(*result, &decl_list, false);
     if (res == KEFIR_OK) {
-        res = update_scope(mem, parser, decl_list);
+        res = kefir_parser_update_scope_with_declaration(mem, parser, decl_list);
     } else if (res == KEFIR_NO_MATCH) {
         if ((*result)->klass->type == KEFIR_AST_STATIC_ASSERTION) {
             res = KEFIR_OK;
