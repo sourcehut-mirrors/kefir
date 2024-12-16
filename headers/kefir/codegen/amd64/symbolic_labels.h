@@ -38,14 +38,9 @@
 
 #define KEFIR_AMD64_STRING_LITERAL "__kefir_string_literal%" KEFIR_ID_FMT
 #define KEFIR_AMD64_LABEL "_kefir_func_%s_label%" KEFIR_SIZE_FMT
-#define KEFIR_AMD64_CONSTANT_FLOAT32_NEG "__kefir_opt_float32_neg"
-#define KEFIR_AMD64_CONSTANT_FLOAT64_NEG "__kefir_opt_float64_neg"
-#define KEFIR_AMD64_CONSTANT_UINT_TO_LONG_DOUBLE "__kefir_opt_uint2long_double"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT32_NEG "__kefir_opt_complex_float32_neg"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_NEG "__kefir_opt_complex_float64_neg"
 
-#define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_INT "__kefirrt_opt_long_double_to_int"
-#define KEFIR_AMD64_RUNTIME_LONG_DOUBLE_TO_UINT "__kefirrt_opt_long_double_to_uint"
 #define KEFIR_AMD64_RUNTIME_COMPLEX_LONG_DOUBLE_EQUALS "__kefirrt_opt_complex_long_double_equals"
 #define KEFIR_AMD64_RUNTIME_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT "__kefirrt_opt_complex_long_double_truncate_1bit"
 #define KEFIR_AMD64_RUNTIME_COMPLEX_FLOAT32_MUL "__kefirrt_opt_complex_float32_mul"

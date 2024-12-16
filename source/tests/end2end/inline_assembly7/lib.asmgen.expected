@@ -9,8 +9,6 @@
 .type sum3_one, @function
 .global unwrap_s1
 .type unwrap_s1, @function
-.extern __kefirrt_opt_long_double_to_int
-.extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals
 .extern __kefirrt_opt_complex_long_double_truncate_1bit
 .extern __kefirrt_opt_complex_float32_mul
@@ -20,9 +18,6 @@
 .extern __kefirrt_opt_complex_long_double_mul
 .extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
-.extern __kefir_opt_float32_neg
-.extern __kefir_opt_float64_neg
-.extern __kefir_opt_uint2long_double
 .extern __kefir_opt_complex_float32_neg
 .extern __kefir_opt_complex_float64_neg
 

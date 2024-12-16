@@ -23,8 +23,6 @@
 .type uintcld, @function
 .global imp_cast
 .type imp_cast, @function
-.extern __kefirrt_opt_long_double_to_int
-.extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals
 .extern __kefirrt_opt_complex_long_double_truncate_1bit
 .extern __kefirrt_opt_complex_float32_mul
@@ -34,9 +32,6 @@
 .extern __kefirrt_opt_complex_long_double_mul
 .extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
-.extern __kefir_opt_float32_neg
-.extern __kefir_opt_float64_neg
-.extern __kefir_opt_uint2long_double
 .extern __kefir_opt_complex_float32_neg
 .extern __kefir_opt_complex_float64_neg
 
@@ -226,7 +221,14 @@ _kefir_func_ldcint_label1:
     fldt -48(%rbp)
     fstpt -64(%rbp)
     fldt -64(%rbp)
-    call __kefirrt_opt_long_double_to_int@PLT
+    fnstcww -64(%rbp)
+    movzxw -64(%rbp), %eax
+    or $3072, %eax
+    movw %ax, -56(%rbp)
+    fldcww -56(%rbp)
+    fistpq -56(%rbp)
+    mov -56(%rbp), %rax
+    fldcww -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -237,7 +239,7 @@ ldcuint:
 __kefir_text_func_ldcuint_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $80, %rsp
     fstcw -8(%rbp)
 _kefir_func_ldcuint_label0:
     lea 16(%rbp), %rax
@@ -246,14 +248,44 @@ _kefir_func_ldcuint_label1:
     fldt (%rax)
     fstpt -48(%rbp)
     fldt -48(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
-    call __kefirrt_opt_long_double_to_uint@PLT
+    fstpt -80(%rbp)
+    fldt -80(%rbp)
+    flds _kefir_func_ldcuint_label2(%rip)
+    fstp %st(2)
+    fcomi %st(1)
+    jnb _kefir_func_ldcuint_label3
+    fstp %st(1)
+    fnstcww -80(%rbp)
+    movzxw -80(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -72(%rbp)
+    fldcww -72(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -80(%rbp)
+    jmp _kefir_func_ldcuint_label4
+_kefir_func_ldcuint_label3:
+    fnstcww -80(%rbp)
+    fsubp
+    movzxw -80(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -72(%rbp)
+    fldcww -72(%rbp)
+    fistpq -64(%rbp)
+    mov -64(%rbp), %rax
+    fldcww -80(%rbp)
+    btc $63, %rax
+_kefir_func_ldcuint_label4:
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_ldcuint_end:
+.section .rodata
+    .align 4
+_kefir_func_ldcuint_label2:
+    .long 1593835520
+.section .text
 
 uintcld:
 __kefir_text_func_uintcld_begin:
@@ -272,7 +304,7 @@ _kefir_func_uintcld_label1:
     add $8, %rsp
     test %rax, %rax
     jns _kefir_func_uintcld_label2
-    fadds __kefir_opt_uint2long_double(%rip)
+    fadds _kefir_func_uintcld_label3(%rip)
 _kefir_func_uintcld_label2:
     fstpt -64(%rbp)
     fldt -64(%rbp)
@@ -281,6 +313,11 @@ _kefir_func_uintcld_label2:
     pop %rbp
     ret
 __kefir_text_func_uintcld_end:
+.section .rodata
+    .align 16
+_kefir_func_uintcld_label3:
+    .long 1602224128
+.section .text
 
 imp_cast:
 __kefir_text_func_imp_cast_begin:

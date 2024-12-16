@@ -12,8 +12,6 @@
 .type factorialf32, @function
 .global factorialf64
 .type factorialf64, @function
-.extern __kefirrt_opt_long_double_to_int
-.extern __kefirrt_opt_long_double_to_uint
 .extern __kefirrt_opt_complex_long_double_equals
 .extern __kefirrt_opt_complex_long_double_truncate_1bit
 .extern __kefirrt_opt_complex_float32_mul
@@ -23,9 +21,6 @@
 .extern __kefirrt_opt_complex_long_double_mul
 .extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
-.extern __kefir_opt_float32_neg
-.extern __kefir_opt_float64_neg
-.extern __kefir_opt_uint2long_double
 .extern __kefir_opt_complex_float32_neg
 .extern __kefir_opt_complex_float64_neg
 
@@ -139,12 +134,12 @@ _kefir_func_quad_equation_label1:
     mulsd %xmm0, %xmm4
     mulsd %xmm2, %xmm4
     subsd %xmm4, %xmm3
-    xorpd __kefir_opt_float64_neg(%rip), %xmm1
+    xorpd _kefir_func_quad_equation_label5(%rip), %xmm1
     movsx %edi, %rax
     test %eax, %eax
-    jz _kefir_func_quad_equation_label5
+    jz _kefir_func_quad_equation_label6
     jmp _kefir_func_quad_equation_label3
-_kefir_func_quad_equation_label5:
+_kefir_func_quad_equation_label6:
 _kefir_func_quad_equation_label2:
     mov $1, %rax
     neg %eax
@@ -182,6 +177,14 @@ _kefir_func_quad_equation_label4:
     pop %rbp
     ret
 __kefir_text_func_quad_equation_end:
+.section .rodata
+    .align 16
+_kefir_func_quad_equation_label5:
+    .long 0
+    .long 2147483648
+    .long 0
+    .long 0
+.section .text
 
 factorialf32:
 __kefir_text_func_factorialf32_begin:

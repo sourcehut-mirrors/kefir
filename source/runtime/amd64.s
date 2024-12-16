@@ -31,49 +31,6 @@
 
 .section .text
 
-.global __kefirrt_opt_long_double_to_int
-.hidden __kefirrt_opt_long_double_to_int
-__kefirrt_opt_long_double_to_int:
-    fnstcw WORD PTR [rsp - 2]
-    movzx eax, WORD PTR [rsp - 2]
-    or eax, 3072
-    mov WORD PTR [rsp - 2], ax
-    fldcw WORD PTR [rsp - 2]
-    fistp QWORD PTR [rsp - 16]
-    mov rax, QWORD PTR [rsp - 16]
-    fldcw WORD PTR [rsp - 2]
-    ret
-
-.global __kefirrt_opt_long_double_to_uint
-.hidden __kefirrt_opt_long_double_to_uint
-__kefirrt_opt_long_double_to_uint:
-    fld DWORD PTR __kefirrt_opt_long_double_to_uint_constant[rip]
-    fstp st(2)
-    fcomi st, st(1)
-    jnb __kefirrt_opt_long_double_to_uint_overflow
-    fstp st(1)
-    fnstcw WORD PTR [rsp - 10]
-    movzx eax, WORD PTR [rsp - 10]
-    or ah, 12
-    mov WORD PTR [rsp - 12], ax
-    fldcw WORD PTR [rsp - 12]
-    fistp QWORD PTR [rsp - 24]
-    fldcw WORD PTR [rsp - 10]
-    mov rax, QWORD PTR [rsp - 24]
-    ret
-__kefirrt_opt_long_double_to_uint_overflow:
-    fnstcw WORD PTR [rsp - 10]
-    fsubrp st(1), st
-    movzx eax, WORD PTR [rsp - 10]
-    or ah, 12
-    mov WORD PTR [rsp - 12], ax
-    fldcw WORD PTR [rsp - 12]
-    fistp QWORD PTR [rsp - 24]
-    fldcw WORD PTR [rsp - 10]
-    mov rax, QWORD PTR [rsp - 24]
-    btc rax, 63
-    ret
-
 .global __kefirrt_opt_complex_long_double_equals
 .hidden __kefirrt_opt_complex_long_double_equals
 __kefirrt_opt_complex_long_double_equals:
@@ -638,10 +595,6 @@ __kefirrt_bswap64:
     ret
 
 .section .rodata
-    .align 4
-__kefirrt_opt_long_double_to_uint_constant:
-    .long   1593835520
-
     .align 16
 __kefirrt_opt_complex_float32_mul_const:
     .long 0x00000000
@@ -663,30 +616,6 @@ __kefirrt_opt_complex_long_double_div_const:
     .byte 0x00, 0x00, 0x00, 0x80
     .byte 0xff, 0x3f, 0x00, 0x00
     .byte 0x00, 0x00 ,0x00, 0x00
-
-    .align 16
-.global __kefir_opt_uint2long_double
-.hidden __kefir_opt_uint2long_double
-__kefir_opt_uint2long_double:
-    .long 1602224128
-
-    .align 16
-.global __kefir_opt_float32_neg
-.hidden __kefir_opt_float32_neg
-__kefir_opt_float32_neg:
-    .long   -2147483648
-    .long   0
-    .long   0
-    .long   0
-
-    .align 16
-.global __kefir_opt_float64_neg
-.hidden __kefir_opt_float64_neg
-__kefir_opt_float64_neg:
-    .long   0
-    .long   -2147483648
-    .long   0
-    .long   0
 
     .align 16
 .global __kefir_opt_complex_float32_neg
