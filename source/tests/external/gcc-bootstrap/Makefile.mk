@@ -39,7 +39,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_BUILD_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_G
 		CC=$(realpath $(KEFIR_EXE)) \
 		KEFIR_AS=$(AS) \
 		KEFIR_LD=$(LD) \
-		$(realpath $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_SOURCE_DIR))/configure --enable-languages=c --disable-multilib --prefix=$(realpath $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_INSTALL_DIR))
+		$(realpath $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_SOURCE_DIR))/configure --enable-languages=c,c++ --disable-multilib --prefix=$(realpath $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_INSTALL_DIR))
 
 $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_BUILD_DIR)/gcc/stage2/xgcc: $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_BUILD_DIR)/Makefile
 	@echo "Building gcc $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_VERSION)..."
@@ -69,7 +69,15 @@ $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_GCC_BOO
 	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/gcc-bootstrap/test.log.expected"
 	@mv "$@.tmp" "$@"
 
-$(KEFIR_EXTERNAL_TESTS_DIR)/gcc-bootstrap.test.done: $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.log
+$(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.cxx.log: $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_INSTALL_DIR)/bin/gcc
+	@echo "Validating g++ $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_VERSION)..."
+	@"$(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_INSTALL_DIR)/bin/g++" \
+		-O2 "$(SOURCE_DIR)/tests/external/gcc-bootstrap/test.cpp" -o "$(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.cxx"
+	@cd "$(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)" && ./test.cxx "test case" | tee "test.cxx.log.tmp"
+	@diff "$@.tmp" "$(SOURCE_DIR)/tests/external/gcc-bootstrap/test.cxx.log.expected"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/gcc-bootstrap.test.done: $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.log $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_DIR)/test.cxx.log
 	@touch "$@"
 	@echo "Successfully validated gcc $(KEFIR_EXTERNAL_TEST_GCC_BOOTSTRAP_VERSION)"
 
