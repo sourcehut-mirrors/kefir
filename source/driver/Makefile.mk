@@ -15,9 +15,9 @@ $(KEFIR_EXE): $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_DEPENDENCY)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
 ifeq ($(USE_SHARED),yes)
-	@$(LD) $(LDFLAGS) -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(KEFIR_DRIVER_LIBS) -L $(LIB_DIR) -lkefir
+	@$(CCLD) $(LDFLAGS) -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(KEFIR_DRIVER_LIBS) -L $(LIB_DIR) -lkefir
 else
-	@$(LD) $(LDFLAGS) -static -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_DRIVER_LIBS)
+	@$(CCLD) $(LDFLAGS) -static -o $@ $(KEFIR_DRIVER_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_DRIVER_LIBS)
 endif
 ifneq (,$(findstring release,$(PROFILE)))
 	@echo "Stripping $@"

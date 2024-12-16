@@ -30,7 +30,7 @@ $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BINUT
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1" \
-		KEFIR_LD="$(shell which ld)" \
+		KEFIR_LD="$(LD)" \
 		./configure
 
 $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/ld/ld-new: $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/Makefile
@@ -39,7 +39,7 @@ $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/ld/ld-new: $(KEFIR_EXTERNAL_TEST_BINU
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
-		KEFIR_LD="$(shell which ld)" \
+		KEFIR_LD="$(LD)" \
 		$(MAKE) CC="$(realpath $(KEFIR_EXE))" CFLAGS="-O1" all-ld all-gas
 
 $(KEFIR_EXTERNAL_TEST_BINUTILS_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_BINUTILS_SOURCE_DIR)/ld/ld-new $(SOURCE_DIR)/tests/external/binutils/lib.c $(SOURCE_DIR)/tests/external/binutils/test.c
