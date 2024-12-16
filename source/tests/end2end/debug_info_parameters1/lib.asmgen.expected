@@ -30,34 +30,11 @@ test:
 .file 0 "source/tests/end2end/debug_info_parameters1/lib.kefir.asmgen.c"
 .loc 0 21 1
 __kefir_text_func_test_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $176, %rsp
-    lea -176(%rbp), %r10
-    test %al, %al
-    je __kefir_text_func_test_vararg_save_int
-    movdqu %xmm0, -128(%rbp)
-    movdqu %xmm1, -112(%rbp)
-    movdqu %xmm2, -96(%rbp)
-    movdqu %xmm3, -80(%rbp)
-    movdqu %xmm4, -64(%rbp)
-    movdqu %xmm5, -48(%rbp)
-    movdqu %xmm6, -32(%rbp)
-    movdqu %xmm7, -16(%rbp)
-__kefir_text_func_test_vararg_save_int:
-    mov %rdi, -176(%rbp)
-    mov %rsi, -168(%rbp)
-    mov %rdx, -160(%rbp)
-    mov %rcx, -152(%rbp)
-    mov %r8, -144(%rbp)
-    mov %r9, -136(%rbp)
 .loc 0 22 12
 _kefir_func_test_label2:
     xor %eax, %eax
 .loc 0 22 5
 _kefir_func_test_label3:
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test_end:
 
@@ -71,30 +48,7 @@ __kefir_text_func_test2_end:
 test3:
 .loc 0 27 1
 __kefir_text_func_test3_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $176, %rsp
-    lea -176(%rbp), %r10
-    test %al, %al
-    je __kefir_text_func_test3_vararg_save_int
-    movdqu %xmm0, -128(%rbp)
-    movdqu %xmm1, -112(%rbp)
-    movdqu %xmm2, -96(%rbp)
-    movdqu %xmm3, -80(%rbp)
-    movdqu %xmm4, -64(%rbp)
-    movdqu %xmm5, -48(%rbp)
-    movdqu %xmm6, -32(%rbp)
-    movdqu %xmm7, -16(%rbp)
-__kefir_text_func_test3_vararg_save_int:
-    mov %rdi, -176(%rbp)
-    mov %rsi, -168(%rbp)
-    mov %rdx, -160(%rbp)
-    mov %rcx, -152(%rbp)
-    mov %r8, -144(%rbp)
-    mov %r9, -136(%rbp)
 _kefir_func_test3_label2:
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test3_end:
 

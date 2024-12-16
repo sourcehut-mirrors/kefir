@@ -236,12 +236,6 @@ kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmg
     if (frame->requirements.vararg) {
         switch (abi_variant) {
             case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
-                REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_LEA(
-                    xasmgen, kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_R10),
-                    kefir_asm_amd64_xasmgen_operand_indirect(
-                        &operands[0], kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        frame->offsets.vararg_area)));
-
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_TEST(xasmgen,
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_AL),
                     kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_AL)));

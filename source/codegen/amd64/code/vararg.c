@@ -28,8 +28,11 @@
 
 static kefir_result_t vararg_start_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                         const struct kefir_opt_instruction *instruction) {
-    kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+    REQUIRE(function->function->ir_func->declaration->vararg,
+        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected function to have variable arguments"));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_vararg(&function->stack_frame));
 
+    kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
