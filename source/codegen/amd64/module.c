@@ -45,6 +45,8 @@ kefir_result_t kefir_codegen_amd64_module_init(struct kefir_codegen_amd64_module
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
 
+    memset(module, 0, sizeof(struct kefir_codegen_amd64_module));
+
     module->codegen = codegen;
     module->module = opt_module;
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_str_ops));
@@ -77,7 +79,7 @@ kefir_result_t kefir_codegen_amd64_module_insert_function(struct kefir_mem *mem,
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 codegen function"));
 
     kefir_result_t res =
-        kefir_codegen_amd64_function_init(mem, function, module->codegen, module->module, opt_function, code_analysis);
+        kefir_codegen_amd64_function_init(mem, function, module, module->module, opt_function, code_analysis);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, function);
         return res;

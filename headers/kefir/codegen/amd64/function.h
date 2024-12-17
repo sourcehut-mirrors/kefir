@@ -28,8 +28,11 @@
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
 
+typedef struct kefir_codegen_amd64_module kefir_codegen_amd64_module_t;
+
 typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64 *codegen;
+    struct kefir_codegen_amd64_module *codegen_module;
     const struct kefir_opt_module *module;
     const struct kefir_opt_function *function;
     const struct kefir_opt_code_analysis *function_analysis;
@@ -57,7 +60,7 @@ typedef struct kefir_codegen_amd64_function {
 } kefir_codegen_amd64_function_t;
 
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                 struct kefir_codegen_amd64 *, const struct kefir_opt_module *,
+                                                 struct kefir_codegen_amd64_module *, const struct kefir_opt_module *,
                                                  const struct kefir_opt_function *,
                                                  const struct kefir_opt_code_analysis *);
 kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *, struct kefir_codegen_amd64_function *);

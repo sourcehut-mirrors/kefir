@@ -20,6 +20,7 @@
 
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/codegen/amd64/module.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -202,11 +203,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float64_to_int)(struct kefir
 }
 
 static kefir_result_t float32_to_uint(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                      const struct kefir_opt_instruction *instruction,
                                       kefir_asmcmp_virtual_register_index_t arg_vreg,
                                       kefir_asmcmp_virtual_register_index_t result_vreg) {
-    kefir_asmcmp_label_index_t constant_label, overflow_label, no_overflow_label;
-    REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &constant_label));
+    function->codegen_module->constants.float32_to_uint = true;
+    kefir_asmcmp_label_index_t overflow_label, no_overflow_label;
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &overflow_label));
     REQUIRE_OK(
         kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &no_overflow_label));
@@ -215,13 +215,17 @@ static kefir_result_t float32_to_uint(struct kefir_mem *mem, struct kefir_codege
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &tmp_vreg));
 
-    REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) constant_label,
-                                     (kefir_hashtree_value_t) instruction->id));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_comiss(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
-        &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    if (function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_comiss(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_comiss(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    }
     REQUIRE_OK(kefir_asmcmp_amd64_jnb(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(overflow_label), NULL));
     REQUIRE_OK(
@@ -233,10 +237,17 @@ static kefir_result_t float32_to_uint(struct kefir_mem *mem, struct kefir_codege
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, overflow_label));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_subss(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
-        &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    if (function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_subss(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_subss(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_TO_UINT, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    }
     REQUIRE_OK(
         kefir_asmcmp_amd64_cvttss2si(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                      &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
@@ -247,11 +258,10 @@ static kefir_result_t float32_to_uint(struct kefir_mem *mem, struct kefir_codege
 }
 
 static kefir_result_t float64_to_uint(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                      const struct kefir_opt_instruction *instruction,
                                       kefir_asmcmp_virtual_register_index_t arg_vreg,
                                       kefir_asmcmp_virtual_register_index_t result_vreg) {
-    kefir_asmcmp_label_index_t constant_label, overflow_label, no_overflow_label;
-    REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &constant_label));
+    function->codegen_module->constants.float64_to_uint = true;
+    kefir_asmcmp_label_index_t overflow_label, no_overflow_label;
     REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &overflow_label));
     REQUIRE_OK(
         kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &no_overflow_label));
@@ -260,13 +270,17 @@ static kefir_result_t float64_to_uint(struct kefir_mem *mem, struct kefir_codege
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &tmp_vreg));
 
-    REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) constant_label,
-                                     (kefir_hashtree_value_t) instruction->id));
-
-    REQUIRE_OK(kefir_asmcmp_amd64_comisd(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
-        &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    if (function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_comisd(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_comisd(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(arg_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    }
     REQUIRE_OK(kefir_asmcmp_amd64_jnb(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(overflow_label), NULL));
     REQUIRE_OK(
@@ -278,10 +292,17 @@ static kefir_result_t float64_to_uint(struct kefir_mem *mem, struct kefir_codege
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, overflow_label));
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_subsd(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
-        &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    if (function->codegen->config->position_independent_code) {
+        REQUIRE_OK(kefir_asmcmp_amd64_subsd(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_subsd(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_TO_UINT, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    }
     REQUIRE_OK(
         kefir_asmcmp_amd64_cvttsd2si(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                      &KEFIR_ASMCMP_MAKE_VREG(result_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
@@ -307,9 +328,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_to_uint)(struct kefir_
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
 
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_TO_UINT) {
-        REQUIRE_OK(float32_to_uint(mem, function, instruction, arg_vreg, result_vreg));
+        REQUIRE_OK(float32_to_uint(mem, function, arg_vreg, result_vreg));
     } else {
-        REQUIRE_OK(float64_to_uint(mem, function, instruction, arg_vreg, result_vreg));
+        REQUIRE_OK(float64_to_uint(mem, function, arg_vreg, result_vreg));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
@@ -467,44 +488,41 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(float_unary_op)(struct kefir
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, arg1_vreg, NULL));
 
-    kefir_asmcmp_label_index_t negation_constant_label;
-    REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE,
-                                              &negation_constant_label));
-    REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) negation_constant_label,
-                                     (kefir_hashtree_value_t) instruction->id));
     switch (instruction->operation.opcode) {
         case KEFIR_OPT_OPCODE_FLOAT32_NEG:
+            function->codegen_module->constants.float32_neg = true;
             if (function->codegen->config->position_independent_code) {
                 REQUIRE_OK(kefir_asmcmp_amd64_xorps(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
                                                     &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(
-                                                        negation_constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(
+                                                        KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_NEG, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                                     NULL));
             } else {
                 REQUIRE_OK(kefir_asmcmp_amd64_xorps(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
                                                     &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(
-                                                        negation_constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                                    &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(
+                                                        KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT32_NEG, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                                     NULL));
             }
             break;
 
         case KEFIR_OPT_OPCODE_FLOAT64_NEG:
+            function->codegen_module->constants.float64_neg = true;
             if (function->codegen->config->position_independent_code) {
                 REQUIRE_OK(kefir_asmcmp_amd64_xorpd(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
                                                     &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(
-                                                        negation_constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                                    &KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(
+                                                        KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_NEG, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                                     NULL));
             } else {
                 REQUIRE_OK(kefir_asmcmp_amd64_xorpd(mem, &function->code,
                                                     kefir_asmcmp_context_instr_tail(&function->code.context),
                                                     &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
-                                                    &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(
-                                                        negation_constant_label, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                                    &KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(
+                                                        KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, KEFIR_AMD64_CONSTANT_FLOAT64_NEG, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                                     NULL));
             }
             break;

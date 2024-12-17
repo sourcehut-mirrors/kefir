@@ -27,6 +27,15 @@ typedef struct kefir_codegen_amd64_module {
     struct kefir_codegen_amd64 *codegen;
     struct kefir_opt_module *module;
     struct kefir_hashtree functions;
+
+    struct {
+        kefir_bool_t float32_to_uint;
+        kefir_bool_t float64_to_uint;
+        kefir_bool_t long_double_to_uint;
+        kefir_bool_t uint_to_long_double;
+        kefir_bool_t float32_neg;
+        kefir_bool_t float64_neg;
+    } constants;
 } kefir_codegen_amd64_module_t;
 
 kefir_result_t kefir_codegen_amd64_module_init(struct kefir_codegen_amd64_module *, struct kefir_codegen_amd64 *,
