@@ -7,7 +7,6 @@
 .type test2, @function
 .global test3
 .type test3, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

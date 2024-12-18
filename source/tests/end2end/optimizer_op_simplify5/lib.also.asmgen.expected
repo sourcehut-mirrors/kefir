@@ -9,7 +9,6 @@
 .type less_or_equalsd, @function
 .global greater_or_equalsld
 .type greater_or_equalsld, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

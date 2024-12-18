@@ -8,7 +8,6 @@
 .type assign_abs, @function
 .global condition1
 .type condition1, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

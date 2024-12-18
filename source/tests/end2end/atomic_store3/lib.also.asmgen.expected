@@ -19,7 +19,6 @@
 .type set_arr1_el, @function
 .global set_arr2_el
 .type set_arr2_el, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

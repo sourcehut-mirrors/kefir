@@ -5,7 +5,6 @@
 .type func1, @object
 .global func2
 .type func2, @object
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

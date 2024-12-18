@@ -9,7 +9,6 @@
 .type dnotf, @function
 .global dnotld
 .type dnotld, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

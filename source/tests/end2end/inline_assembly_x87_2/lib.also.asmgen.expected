@@ -19,7 +19,6 @@
 .type mydivrf, @function
 .global mydivrl
 .type mydivrl, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

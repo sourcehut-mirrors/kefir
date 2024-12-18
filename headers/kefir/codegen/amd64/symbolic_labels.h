@@ -51,6 +51,4 @@
 #define KEFIR_AMD64_CONSTANT_COMPLEX_FLOAT64_MUL "__kefir_constant_complex_float64_mul"
 #define KEFIR_AMD64_CONSTANT_COMPLEX_LONG_DOUBLE_DIV "__kefir_constant_complex_long_double_div"
 
-#define KEFIR_AMD64_RUNTIME_FENV_UPDATE "__kefirrt_fenv_update"
-
 #endif

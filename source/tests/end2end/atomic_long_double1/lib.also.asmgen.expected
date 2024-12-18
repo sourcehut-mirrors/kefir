@@ -6,7 +6,6 @@
 .type get_ld1, @function
 .global set_ld1
 .type set_ld1, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

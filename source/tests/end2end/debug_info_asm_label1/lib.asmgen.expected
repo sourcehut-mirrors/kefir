@@ -8,7 +8,6 @@
 .type SOMEVAR1, @object
 .global SOMEVAR2
 .type SOMEVAR2, @object
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

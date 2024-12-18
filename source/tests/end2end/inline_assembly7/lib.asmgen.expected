@@ -9,7 +9,6 @@
 .type sum3_one, @function
 .global unwrap_s1
 .type unwrap_s1, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

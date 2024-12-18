@@ -35,7 +35,6 @@
 .type geth, @function
 .global vla1
 .type vla1, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

@@ -10,7 +10,6 @@
 .global test_sync_synchronize
 .type test_sync_synchronize, @function
 .extern __kefir_atomic_seq_cst_fence
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

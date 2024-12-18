@@ -25,7 +25,6 @@
 .type test11, @function
 .global test12
 .type test12, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

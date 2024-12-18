@@ -19,7 +19,6 @@
 .type int_below_const, @function
 .global int_above_or_equal_const
 .type int_above_or_equal_const, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

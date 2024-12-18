@@ -23,7 +23,6 @@
 .type not_equals2, @function
 .global not_greater
 .type not_greater, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

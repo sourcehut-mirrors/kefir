@@ -5,7 +5,6 @@
 .type struct1, @object
 .global getfield40
 .type getfield40, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

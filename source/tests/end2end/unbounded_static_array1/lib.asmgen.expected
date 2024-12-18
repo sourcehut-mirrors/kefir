@@ -13,7 +13,6 @@
 .type publicarray, @object
 .global tpublicarray
 .type tpublicarray, @object
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

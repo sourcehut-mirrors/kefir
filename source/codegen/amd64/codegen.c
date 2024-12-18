@@ -111,8 +111,6 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
                 break;
         }
     }
-
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", KEFIR_AMD64_RUNTIME_FENV_UPDATE));
     return KEFIR_OK;
 }
 

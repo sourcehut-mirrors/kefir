@@ -5,7 +5,6 @@
 .type load_buffer, @function
 .global store_buffer
 .type store_buffer, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

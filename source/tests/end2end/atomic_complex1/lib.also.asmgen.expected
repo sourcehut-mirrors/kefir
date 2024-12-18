@@ -34,7 +34,6 @@
 .type sub_f32, @function
 .global sub_f64
 .type sub_f64, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

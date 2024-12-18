@@ -4,7 +4,6 @@
 .extern sum10
 .global sum_progression
 .type sum_progression, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

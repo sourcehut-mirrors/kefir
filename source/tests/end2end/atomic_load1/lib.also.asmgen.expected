@@ -29,7 +29,6 @@
 .type get_u32, @function
 .global get_u64
 .type get_u64, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

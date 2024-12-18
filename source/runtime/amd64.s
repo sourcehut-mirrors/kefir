@@ -31,25 +31,6 @@
 
 .section .text
 
-.global __kefirrt_fenv_update
-.hidden __kefirrt_fenv_update
-__kefirrt_fenv_update:
-# Test exceptions
-	push rax
-	stmxcsr [rsp]
-	pop rsi
-	fnstsw ax
-	or eax, esi
-	and eax, 0x3f
-# Set environment
-	fldenv [rdi]
-	ldmxcsr [rdi + 28]
-# Raise exceptions
-	stmxcsr [rsp - 8]
-	or [rsp - 8], eax
-	ldmxcsr [rsp - 8]
-    ret
-
 .global __kefir_atomic_seq_cst_fence
 .hidden __kefir_atomic_seq_cst_fence
 __kefir_atomic_seq_cst_fence:

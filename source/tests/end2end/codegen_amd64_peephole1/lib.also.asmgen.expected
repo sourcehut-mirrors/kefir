@@ -7,7 +7,6 @@
 .type get_zero, @function
 .global some_math
 .type some_math, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

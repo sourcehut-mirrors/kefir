@@ -17,7 +17,6 @@
 .type subtract_f32, @function
 .global subtract_f64
 .type subtract_f64, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:
@@ -101,8 +100,18 @@ _kefir_func_add_f32_label5:
     movq %rax, -96(%rbp)
     jmp _kefir_func_add_f32_label2
 _kefir_func_add_f32_label4:
-    lea -56(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -56(%rbp)
+    ldmxcsr -28(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -80(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -199,8 +208,18 @@ _kefir_func_add_f64_label5:
     movq %rax, -152(%rbp)
     jmp _kefir_func_add_f64_label2
 _kefir_func_add_f64_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -192(%rbp)
+    mov -192(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -192(%rbp)
+    movl -192(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -192(%rbp)
+    ldmxcsr -192(%rbp)
     movq -120(%rbp), %xmm0
     movq -112(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -303,8 +322,18 @@ _kefir_func_divide_f32_label5:
     movq %rax, -96(%rbp)
     jmp _kefir_func_divide_f32_label2
 _kefir_func_divide_f32_label4:
-    lea -56(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -56(%rbp)
+    ldmxcsr -28(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -80(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -423,8 +452,18 @@ _kefir_func_divide_f64_label5:
     movq %rax, -152(%rbp)
     jmp _kefir_func_divide_f64_label2
 _kefir_func_divide_f64_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -192(%rbp)
+    mov -192(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -192(%rbp)
+    movl -192(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -192(%rbp)
+    ldmxcsr -192(%rbp)
     movq -120(%rbp), %xmm0
     movq -112(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -518,8 +557,18 @@ _kefir_func_multiply_f32_label5:
     movq %rax, -96(%rbp)
     jmp _kefir_func_multiply_f32_label2
 _kefir_func_multiply_f32_label4:
-    lea -56(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -56(%rbp)
+    ldmxcsr -28(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -80(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -628,8 +677,18 @@ _kefir_func_multiply_f64_label5:
     movq %rax, -152(%rbp)
     jmp _kefir_func_multiply_f64_label2
 _kefir_func_multiply_f64_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -192(%rbp)
+    mov -192(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -192(%rbp)
+    movl -192(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -192(%rbp)
+    ldmxcsr -192(%rbp)
     movq -120(%rbp), %xmm0
     movq -112(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -718,8 +777,18 @@ _kefir_func_subtract_f32_label5:
     movq %rax, -96(%rbp)
     jmp _kefir_func_subtract_f32_label2
 _kefir_func_subtract_f32_label4:
-    lea -56(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -56(%rbp)
+    ldmxcsr -28(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -80(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -816,8 +885,18 @@ _kefir_func_subtract_f64_label5:
     movq %rax, -152(%rbp)
     jmp _kefir_func_subtract_f64_label2
 _kefir_func_subtract_f64_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -192(%rbp)
+    mov -192(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -192(%rbp)
+    movl -192(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -192(%rbp)
+    ldmxcsr -192(%rbp)
     movq -120(%rbp), %xmm0
     movq -112(%rbp), %xmm1
     ldmxcsr -8(%rbp)

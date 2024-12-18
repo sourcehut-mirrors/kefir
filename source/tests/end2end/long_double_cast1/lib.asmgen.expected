@@ -23,7 +23,6 @@
 .type uintcld, @function
 .global imp_cast
 .type imp_cast, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

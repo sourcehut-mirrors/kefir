@@ -13,7 +13,6 @@
 .type test4, @function
 .global test5
 .type test5, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

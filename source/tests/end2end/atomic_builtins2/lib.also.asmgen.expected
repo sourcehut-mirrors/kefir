@@ -26,7 +26,6 @@
 .type test2_atomic_load32, @function
 .global test2_atomic_load64
 .type test2_atomic_load64, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

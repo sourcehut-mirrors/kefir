@@ -3,7 +3,6 @@
 
 .global test_syscall
 .type test_syscall, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

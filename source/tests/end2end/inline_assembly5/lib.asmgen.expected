@@ -17,7 +17,6 @@
 .type clear32, @function
 .global clear64
 .type clear64, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

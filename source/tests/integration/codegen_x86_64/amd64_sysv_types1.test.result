@@ -5,7 +5,6 @@
 .type DataX, @object
 .global func1
 .type func1, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

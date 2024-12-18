@@ -9,7 +9,6 @@
 .type clamp_long, @function
 .global clamp_short
 .type clamp_short, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

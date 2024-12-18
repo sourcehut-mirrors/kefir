@@ -10,7 +10,6 @@
 .extern test5
 .extern test6
 .extern test7
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

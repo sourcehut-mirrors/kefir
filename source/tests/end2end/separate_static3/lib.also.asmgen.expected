@@ -6,7 +6,6 @@
 .type value, @object
 .global get_real_value
 .type get_real_value, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

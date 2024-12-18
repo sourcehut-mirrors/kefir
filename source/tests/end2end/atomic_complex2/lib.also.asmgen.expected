@@ -37,7 +37,6 @@
 .type f64_load_index, @function
 .global f64_store_index
 .type f64_store_index, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

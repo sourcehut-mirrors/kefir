@@ -15,7 +15,6 @@
 .extern __atomic_is_lock_free
 .extern __kefir_atomic_seq_cst_clear
 .extern __kefir_atomic_seq_cst_fence
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

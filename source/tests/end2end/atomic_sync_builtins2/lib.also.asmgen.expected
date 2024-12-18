@@ -43,7 +43,6 @@
 .type test_fetch_sub_int, @function
 .global test_fetch_xor_int
 .type test_fetch_xor_int, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

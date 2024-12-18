@@ -33,7 +33,6 @@
 .type struct1_1, @object
 .global pointer1_1
 .type pointer1_1, @object
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

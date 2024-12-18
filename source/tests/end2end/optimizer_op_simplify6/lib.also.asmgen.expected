@@ -25,7 +25,6 @@
 .type uint_sub, @function
 .global uint_xor
 .type uint_xor, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

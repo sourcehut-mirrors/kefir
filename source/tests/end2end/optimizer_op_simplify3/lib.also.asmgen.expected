@@ -7,7 +7,6 @@
 .type ulong2uchar, @function
 .global ulong2ushort
 .type ulong2ushort, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

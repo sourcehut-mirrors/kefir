@@ -17,7 +17,6 @@
 .type f64_postdec, @function
 .global f64_postinc
 .type f64_postinc, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:
@@ -99,8 +98,18 @@ _kefir_func_f32_predec_label3:
     movq %rax, -104(%rbp)
     jmp _kefir_func_f32_predec_label2
 _kefir_func_f32_predec_label4:
-    lea -64(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -194,8 +203,18 @@ _kefir_func_f32_preinc_label3:
     movq %rax, -104(%rbp)
     jmp _kefir_func_f32_preinc_label2
 _kefir_func_f32_preinc_label4:
-    lea -64(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -289,8 +308,18 @@ _kefir_func_f64_predec_label3:
     movq %rax, -152(%rbp)
     jmp _kefir_func_f64_predec_label2
 _kefir_func_f64_predec_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -176(%rbp)
+    mov -176(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -176(%rbp)
+    movl -176(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -176(%rbp)
+    ldmxcsr -176(%rbp)
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -385,8 +414,18 @@ _kefir_func_f64_preinc_label3:
     movq %rax, -152(%rbp)
     jmp _kefir_func_f64_preinc_label2
 _kefir_func_f64_preinc_label4:
-    lea -88(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -176(%rbp)
+    mov -176(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -88(%rbp)
+    ldmxcsr -60(%rbp)
+    stmxcsr -176(%rbp)
+    movl -176(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -176(%rbp)
+    ldmxcsr -176(%rbp)
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -481,8 +520,18 @@ _kefir_func_f32_postdec_label3:
     movq %rax, -104(%rbp)
     jmp _kefir_func_f32_postdec_label2
 _kefir_func_f32_postdec_label4:
-    lea -64(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -96(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -576,8 +625,18 @@ _kefir_func_f32_postinc_label3:
     movq %rax, -104(%rbp)
     jmp _kefir_func_f32_postinc_label2
 _kefir_func_f32_postinc_label4:
-    lea -64(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -128(%rbp)
+    mov -128(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -64(%rbp)
+    ldmxcsr -36(%rbp)
+    stmxcsr -128(%rbp)
+    movl -128(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -128(%rbp)
+    ldmxcsr -128(%rbp)
     movq -96(%rbp), %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -671,8 +730,18 @@ _kefir_func_f64_postdec_label3:
     movq %rax, -120(%rbp)
     jmp _kefir_func_f64_postdec_label2
 _kefir_func_f64_postdec_label4:
-    lea -96(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -144(%rbp)
+    mov -144(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -96(%rbp)
+    ldmxcsr -68(%rbp)
+    stmxcsr -144(%rbp)
+    movl -144(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -144(%rbp)
+    ldmxcsr -144(%rbp)
     movq -112(%rbp), %xmm0
     movq -104(%rbp), %xmm1
     ldmxcsr -8(%rbp)
@@ -767,8 +836,18 @@ _kefir_func_f64_postinc_label3:
     movq %rax, -120(%rbp)
     jmp _kefir_func_f64_postinc_label2
 _kefir_func_f64_postinc_label4:
-    lea -96(%rbp), %rdi
-    call __kefirrt_fenv_update@PLT
+    stmxcsr -144(%rbp)
+    mov -144(%rbp), %rcx
+    fnstsw %ax
+    or %ecx, %eax
+    and $63, %eax
+    fldenv -96(%rbp)
+    ldmxcsr -68(%rbp)
+    stmxcsr -144(%rbp)
+    movl -144(%rbp), %ecx
+    or %eax, %ecx
+    movl %ecx, -144(%rbp)
+    ldmxcsr -144(%rbp)
     movq -112(%rbp), %xmm0
     movq -104(%rbp), %xmm1
     ldmxcsr -8(%rbp)

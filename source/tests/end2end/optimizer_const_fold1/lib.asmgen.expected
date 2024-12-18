@@ -97,7 +97,6 @@
 .type int_below_or_equals2, @function
 .global int_above_or_equals2
 .type int_above_or_equals2, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:

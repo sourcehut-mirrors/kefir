@@ -257,7 +257,6 @@
 .type generate_buf_126, @function
 .global generate_buf_127
 .type generate_buf_127, @function
-.extern __kefirrt_fenv_update
 
 .section .text
 __kefir_text_section_begin:
