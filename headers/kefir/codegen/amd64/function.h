@@ -581,6 +581,9 @@ kefir_result_t kefir_codegen_amd64_util_translate_float_comparison(
     struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *,
     const struct kefir_codegen_amd64_comparison_match_op *);
 
+kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                     const struct kefir_opt_instruction *, kefir_bool_t *);
+
 #endif
 
 #endif

@@ -106,9 +106,7 @@ _kefir_func_f32_predec_label4:
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
     stmxcsr -128(%rbp)
-    movl -128(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -128(%rbp)
+    orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
     movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
@@ -211,9 +209,7 @@ _kefir_func_f32_preinc_label4:
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
     stmxcsr -128(%rbp)
-    movl -128(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -128(%rbp)
+    orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
     movq -88(%rbp), %xmm0
     ldmxcsr -8(%rbp)
@@ -316,9 +312,7 @@ _kefir_func_f64_predec_label4:
     fldenv -88(%rbp)
     ldmxcsr -60(%rbp)
     stmxcsr -176(%rbp)
-    movl -176(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -176(%rbp)
+    orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
@@ -422,9 +416,7 @@ _kefir_func_f64_preinc_label4:
     fldenv -88(%rbp)
     ldmxcsr -60(%rbp)
     stmxcsr -176(%rbp)
-    movl -176(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -176(%rbp)
+    orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
     movq -128(%rbp), %xmm0
     movq -120(%rbp), %xmm1
@@ -528,9 +520,7 @@ _kefir_func_f32_postdec_label4:
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
     stmxcsr -128(%rbp)
-    movl -128(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -128(%rbp)
+    orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
     movq -96(%rbp), %xmm0
     ldmxcsr -8(%rbp)
@@ -633,9 +623,7 @@ _kefir_func_f32_postinc_label4:
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
     stmxcsr -128(%rbp)
-    movl -128(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -128(%rbp)
+    orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
     movq -96(%rbp), %xmm0
     ldmxcsr -8(%rbp)
@@ -738,9 +726,7 @@ _kefir_func_f64_postdec_label4:
     fldenv -96(%rbp)
     ldmxcsr -68(%rbp)
     stmxcsr -144(%rbp)
-    movl -144(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -144(%rbp)
+    orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
     movq -112(%rbp), %xmm0
     movq -104(%rbp), %xmm1
@@ -844,9 +830,7 @@ _kefir_func_f64_postinc_label4:
     fldenv -96(%rbp)
     ldmxcsr -68(%rbp)
     stmxcsr -144(%rbp)
-    movl -144(%rbp), %ecx
-    or %eax, %ecx
-    movl %ecx, -144(%rbp)
+    orl %eax, -144(%rbp)
     ldmxcsr -144(%rbp)
     movq -112(%rbp), %xmm0
     movq -104(%rbp), %xmm1

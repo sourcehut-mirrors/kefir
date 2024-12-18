@@ -34,6 +34,7 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
                                                    struct kefir_codegen_amd64 *codegen) {
     struct kefir_hashtree_node_iterator identifiers_iter;
     const struct kefir_ir_identifier *identifier;
+    static const char BUILTIN_PREFIX[] = "__kefir_builtin";
     for (const char *symbol = kefir_ir_module_identifiers_iter(module, &identifiers_iter, &identifier); symbol != NULL;
          symbol = kefir_ir_module_identifiers_next(&identifiers_iter, &identifier)) {
 
@@ -98,11 +99,13 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
                 break;
 
             case KEFIR_IR_IDENTIFIER_SCOPE_IMPORT:
-                if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
-                    REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", identifier->symbol));
-                } else {
-                    REQUIRE_OK(
-                        KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, identifier->symbol));
+                if (strncmp(BUILTIN_PREFIX, symbol, sizeof(BUILTIN_PREFIX) - 1) != 0) {
+                    if (!codegen->config->emulated_tls || identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
+                        REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", identifier->symbol));
+                    } else {
+                        REQUIRE_OK(
+                            KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, KEFIR_AMD64_EMUTLS_V, identifier->symbol));
+                    }
                 }
                 break;
 

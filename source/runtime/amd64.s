@@ -31,27 +31,6 @@
 
 .section .text
 
-.global __kefir_atomic_seq_cst_fence
-.hidden __kefir_atomic_seq_cst_fence
-__kefir_atomic_seq_cst_fence:
-    lock or QWORD PTR [rsp], 0
-    ret
-
-.global __kefir_atomic_seq_cst_test_and_set
-.hidden __kefir_atomic_seq_cst_test_and_set
-__kefir_atomic_seq_cst_test_and_set:
-    mov eax, 1
-    lock xchg BYTE PTR [rdi], al
-    movzx eax, al
-    ret
-
-.global __kefir_atomic_seq_cst_clear
-.hidden __kefir_atomic_seq_cst_clear
-__kefir_atomic_seq_cst_clear:
-    xor eax, eax
-    lock xchg BYTE PTR [rdi], al
-    ret
-
 .global __kefirrt_trap
 .hidden __kefirrt_trap
 __kefirrt_trap:

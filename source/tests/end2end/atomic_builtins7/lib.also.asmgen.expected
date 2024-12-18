@@ -9,48 +9,36 @@
 .type test_atomic_thread_fence, @function
 .global test_and_set
 .type test_and_set, @function
-.extern __kefir_atomic_seq_cst_test_and_set
 .global test_is_lock_free
 .type test_is_lock_free, @function
 .extern __atomic_is_lock_free
-.extern __kefir_atomic_seq_cst_clear
-.extern __kefir_atomic_seq_cst_fence
 
 .section .text
 __kefir_text_section_begin:
 clear:
 __kefir_text_func_clear_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call __kefir_atomic_seq_cst_clear@PLT
-    pop %rbp
+    xor %eax, %eax
+    lock     xchgb %al, (%rdi)
     ret
 __kefir_text_func_clear_end:
 
 test_atomic_signal_fence:
 __kefir_text_func_test_atomic_signal_fence_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call __kefir_atomic_seq_cst_fence@PLT
-    pop %rbp
+    lock     orq $0, (%rsp)
     ret
 __kefir_text_func_test_atomic_signal_fence_end:
 
 test_atomic_thread_fence:
 __kefir_text_func_test_atomic_thread_fence_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call __kefir_atomic_seq_cst_fence@PLT
-    pop %rbp
+    lock     orq $0, (%rsp)
     ret
 __kefir_text_func_test_atomic_thread_fence_end:
 
 test_and_set:
 __kefir_text_func_test_and_set_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call __kefir_atomic_seq_cst_test_and_set@PLT
-    pop %rbp
+    mov $1, %eax
+    lock     xchgb %al, (%rdi)
+    movzx %al, %eax
     ret
 __kefir_text_func_test_and_set_end:
 

@@ -9,7 +9,6 @@
 .type test_and_set, @function
 .global test_sync_synchronize
 .type test_sync_synchronize, @function
-.extern __kefir_atomic_seq_cst_fence
 
 .section .text
 __kefir_text_section_begin:
@@ -59,10 +58,7 @@ __kefir_text_func_test_and_set_end:
 
 test_sync_synchronize:
 __kefir_text_func_test_sync_synchronize_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call __kefir_atomic_seq_cst_fence@PLT
-    pop %rbp
+    lock     orq $0, (%rsp)
     ret
 __kefir_text_func_test_sync_synchronize_end:
 

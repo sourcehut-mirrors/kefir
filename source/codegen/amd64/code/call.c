@@ -24,6 +24,7 @@
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 static kefir_result_t prepare_stack(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                     struct kefir_abi_amd64_function_decl *abi_func_decl,
@@ -725,6 +726,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(invoke)(struct kefir_mem *me
     const struct kefir_ir_function_decl *ir_func_decl =
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
+
+    const char BUILTIN_PREFIX[] = "__kefir_builtin_";
+    if (ir_func_decl->name != NULL && strncmp(BUILTIN_PREFIX, ir_func_decl->name, sizeof(BUILTIN_PREFIX) - 1) == 0) {
+        kefir_bool_t found_builtin = false;
+        REQUIRE_OK(kefir_codegen_amd64_translate_builtin(mem, function, instruction, &found_builtin));
+        REQUIRE(!found_builtin, KEFIR_OK);
+    }
 
     struct kefir_abi_amd64_function_decl abi_func_decl;
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, function->codegen->abi_variant, ir_func_decl, &abi_func_decl));
