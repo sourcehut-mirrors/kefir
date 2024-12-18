@@ -5,17 +5,7 @@
 .type gety, @function
 .global setx
 .type setx, @function
-.extern __kefirrt_opt_complex_long_double_equals
-.extern __kefirrt_opt_complex_long_double_truncate_1bit
-.extern __kefirrt_opt_complex_float32_mul
-.extern __kefirrt_opt_complex_float32_div
-.extern __kefirrt_opt_complex_float64_mul
-.extern __kefirrt_opt_complex_float64_div
-.extern __kefirrt_opt_complex_long_double_mul
-.extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
-.extern __kefir_opt_complex_float32_neg
-.extern __kefir_opt_complex_float64_neg
 
 .section .text
 __kefir_text_section_begin:

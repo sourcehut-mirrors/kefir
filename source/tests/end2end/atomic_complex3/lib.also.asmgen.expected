@@ -17,17 +17,7 @@
 .type subtract_f32, @function
 .global subtract_f64
 .type subtract_f64, @function
-.extern __kefirrt_opt_complex_long_double_equals
-.extern __kefirrt_opt_complex_long_double_truncate_1bit
-.extern __kefirrt_opt_complex_float32_mul
-.extern __kefirrt_opt_complex_float32_div
-.extern __kefirrt_opt_complex_float64_mul
-.extern __kefirrt_opt_complex_float64_div
-.extern __kefirrt_opt_complex_long_double_mul
-.extern __kefirrt_opt_complex_long_double_div
 .extern __kefirrt_fenv_update
-.extern __kefir_opt_complex_float32_neg
-.extern __kefir_opt_complex_float64_neg
 
 .section .text
 __kefir_text_section_begin:
@@ -246,7 +236,23 @@ _kefir_func_divide_f32_label2:
     movq -80(%rbp), %r10
     movq -88(%rbp), %xmm0
     movq -128(%rbp), %xmm1
-    call __kefirrt_opt_complex_float32_div@PLT
+    cvtps2pd %xmm1, %xmm1
+    cvtps2pd %xmm0, %xmm0
+    movaps %xmm1, %xmm2
+    movaps %xmm1, %xmm3
+    unpcklpd %xmm1, %xmm2
+    mulpd %xmm0, %xmm2
+    shufpd $1, %xmm0, %xmm0
+    unpckhpd %xmm1, %xmm3
+    mulpd %xmm1, %xmm1
+    mulpd %xmm3, %xmm0
+    movaps %xmm1, %xmm3
+    xorps __kefir_constant_complex_float32_div(%rip), %xmm0
+    shufpd $1, %xmm1, %xmm3
+    addpd %xmm0, %xmm2
+    addpd %xmm3, %xmm1
+    divpd %xmm1, %xmm2
+    cvtpd2ps %xmm2, %xmm0
     movq %xmm0, -80(%rbp)
     movq %r10, -64(%rbp)
     movq -88(%rbp), %rax
@@ -336,13 +342,34 @@ _kefir_func_divide_f64_label2:
     mov $5, %rcx
     call __atomic_load@PLT
     movq -128(%rbp), %r10
-    movq -144(%rbp), %xmm0
-    movq -136(%rbp), %xmm1
-    movq -192(%rbp), %xmm2
-    movq -184(%rbp), %xmm3
-    call __kefirrt_opt_complex_float64_div@PLT
-    movq %xmm0, -120(%rbp)
-    movq %xmm1, -112(%rbp)
+    fld1
+    fldl -192(%rbp)
+    fld %st(0)
+    fmul %st(1)
+    fldl -184(%rbp)
+    fld %st(0)
+    fmul %st(1)
+    faddp %st(2)
+    fxch %st(1)
+    fdivrp %st(3)
+    fldl -144(%rbp)
+    fld %st(0)
+    fmul %st(3)
+    fxch %st(1)
+    fmul %st(2)
+    fldl -136(%rbp)
+    fld %st(0)
+    fmulp %st(4)
+    fxch %st(3)
+    faddp %st(2)
+    fxch %st(1)
+    fmul %st(4)
+    fstpl -120(%rbp)
+    fxch %st(2)
+    fmulp %st(1)
+    fsubp
+    fmulp
+    fstpl -112(%rbp)
     movq %r10, -128(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -104(%rbp)
@@ -433,7 +460,14 @@ _kefir_func_multiply_f32_label2:
     movq -80(%rbp), %r10
     movq -88(%rbp), %xmm0
     movq -128(%rbp), %xmm1
-    call __kefirrt_opt_complex_float32_mul@PLT
+    movaps %xmm1, %xmm2
+    shufps $160, %xmm1, %xmm2
+    mulps %xmm0, %xmm2
+    xorps __kefir_constant_complex_float32_mul(%rip), %xmm0
+    shufps $177, %xmm0, %xmm0
+    shufps $245, %xmm1, %xmm1
+    mulps %xmm1, %xmm0
+    addps %xmm2, %xmm0
     movq %xmm0, -80(%rbp)
     movq %r10, -64(%rbp)
     movq -88(%rbp), %rax
@@ -527,9 +561,20 @@ _kefir_func_multiply_f64_label2:
     movq -136(%rbp), %xmm1
     movq -192(%rbp), %xmm2
     movq -184(%rbp), %xmm3
-    call __kefirrt_opt_complex_float64_mul@PLT
-    movq %xmm0, -120(%rbp)
-    movq %xmm1, -112(%rbp)
+    unpcklpd %xmm1, %xmm0
+    movaps %xmm0, %xmm1
+    xorps __kefir_constant_complex_float64_mul(%rip), %xmm1
+    shufpd $1, %xmm1, %xmm1
+    unpcklpd %xmm2, %xmm2
+    unpcklpd %xmm3, %xmm3
+    mulpd %xmm0, %xmm2
+    mulpd %xmm1, %xmm3
+    addpd %xmm2, %xmm3
+    movaps %xmm3, %xmm0
+    movaps %xmm3, %xmm1
+    unpckhpd %xmm3, %xmm0
+    movq %xmm1, -120(%rbp)
+    movq %xmm0, -112(%rbp)
     movq %r10, -128(%rbp)
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -104(%rbp)
@@ -783,3 +828,22 @@ __kefir_text_func_subtract_f64_end:
 
 __kefir_text_section_end:
 
+.section .rodata
+    .align 16
+__kefir_constant_complex_float32_mul:
+    .long 0
+    .long 2147483648
+    .long 0
+    .long 2147483648
+    .align 16
+__kefir_constant_complex_float32_div:
+    .long 0
+    .long 0
+    .long 0
+    .long 2147483648
+    .align 16
+__kefir_constant_complex_float64_mul:
+    .long 0
+    .long 0
+    .long 0
+    .long 2147483648

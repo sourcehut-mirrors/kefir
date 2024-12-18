@@ -303,12 +303,12 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
     _def(complex_float32_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_SUB) _separator \
     _def(complex_float64_add_sub, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_SUB) _separator \
     _def(complex_long_double_add_sub, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_SUB) _separator \
-    _def(complex_float32_mul_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL) _separator \
-    _def(complex_float32_mul_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV) _separator \
-    _def(complex_float64_mul_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL) _separator \
-    _def(complex_float64_mul_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV) _separator \
-    _def(complex_long_double_mul_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL) _separator \
-    _def(complex_long_double_mul_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV) _separator \
+    _def(complex_float32_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_MUL) _separator \
+    _def(complex_float32_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_DIV) _separator \
+    _def(complex_float64_mul, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_MUL) _separator \
+    _def(complex_float64_div, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_DIV) _separator \
+    _def(complex_long_double_mul, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_MUL) _separator \
+    _def(complex_long_double_div, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_DIV) _separator \
     _def(complex_float32_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_NEG) _separator \
     _def(complex_float64_neg, KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_NEG) _separator \
     _def(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG) _separator \
