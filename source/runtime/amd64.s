@@ -31,11 +31,6 @@
 
 .section .text
 
-.global __kefirrt_trap
-.hidden __kefirrt_trap
-__kefirrt_trap:
-    ud2
-
 __kefirrt_return_frame_address:
     mov rdx, rbp                 # Current frame address
     mov rax, QWORD PTR [rdx + 8] # Current return address

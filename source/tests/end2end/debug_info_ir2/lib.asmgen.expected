@@ -469,7 +469,7 @@
                 "children": []
             },
             {
-                "identifier": 34,
+                "identifier": 39,
                 "tag": "type_void",
                 "attributes": [
                     {
@@ -480,7 +480,7 @@
                 "children": []
             },
             {
-                "identifier": 47,
+                "identifier": 46,
                 "tag": "type_float",
                 "attributes": [
                     {
@@ -676,7 +676,7 @@
                                             },
                                             {
                                                 "tag": "type",
-                                                "value": 47
+                                                "value": 46
                                             },
                                             {
                                                 "tag": "code_begin",
@@ -1123,7 +1123,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 34
+                        "value": 39
                     }
                 ],
                 "children": []

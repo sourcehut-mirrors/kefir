@@ -93,6 +93,14 @@ static kefir_result_t translate_atomic_seq_cst_clear(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_trap(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                     const struct kefir_opt_instruction *instruction) {
+    UNUSED(instruction);
+    REQUIRE_OK(
+        kefir_asmcmp_amd64_ud2(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
                                                      struct kefir_codegen_amd64_function *function,
                                                      const struct kefir_opt_instruction *instruction,
@@ -118,6 +126,9 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_seq_cst_clear") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_atomic_seq_cst_clear(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_trap") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_trap(mem, function, instruction));
     } else {
         ASSIGN_PTR(found_builtin, false);
     }

@@ -129,6 +129,7 @@
     _instr1(jle, "jle", BRANCH, KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_BRANCH_TAGET) _separator \
     _instr0(ret, "ret", , KEFIR_AMD64_INSTRDB_NONE) _separator \
+    _instr0(ud2, "ud2", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     /* Data moves */ \
     _instr1(push, "push", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER) _separator \

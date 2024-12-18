@@ -351,7 +351,7 @@
 #define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
 
 // Runtime functions
-extern _Noreturn void __kefirrt_trap(void);
+extern _Noreturn void __kefir_builtin_trap(void);
 extern void *__kefirrt_return_address(int);
 extern void *__kefirrt_frame_address(int);
 
@@ -397,8 +397,8 @@ extern long double __kefirrt_infl(void);
     } while (0)
 #define __builtin_assume_aligned(_exp, ...) (__VA_ARGS__, (_exp))
 
-#define __builtin_trap() __kefirrt_trap()
-#define __builtin_unreachable() __kefirrt_trap()
+#define __builtin_trap() __kefir_builtin_trap()
+#define __builtin_unreachable() __kefir_builtin_trap()
 #define __builtin_return_address(_level) __kefirrt_return_address((_level))
 #define __builtin_frame_address(_level) __kefirrt_frame_address((_level))
 #define __builtin_extract_return_addr(_addr) (_addr)
