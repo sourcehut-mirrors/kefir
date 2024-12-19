@@ -355,12 +355,12 @@ extern _Noreturn void __kefir_builtin_trap(void);
 extern void *__kefir_builtin_return_address(int);
 extern void *__kefir_builtin_frame_address(int);
 
-extern int __kefirrt_ffs(int);
-extern int __kefirrt_clz(unsigned int);
-extern int __kefirrt_ctz(unsigned int);
-extern int __kefirrt_clrsb(int);
-extern int __kefirrt_popcount(unsigned int);
-extern int __kefirrt_parity(int);
+extern int __kefir_builtin_ffs(int);
+extern int __kefir_builtin_clz(unsigned int);
+extern int __kefir_builtin_ctz(unsigned int);
+extern int __kefir_builtin_clrsb(int);
+extern int __kefir_builtin_popcount(unsigned int);
+extern int __kefir_builtin_parity(int);
 
 extern unsigned short __kefirrt_bswap16(unsigned short);
 extern unsigned int __kefirrt_bswap32(unsigned int);
@@ -404,12 +404,12 @@ extern long double __kefirrt_infl(void);
 #define __builtin_extract_return_addr(_addr) (_addr)
 #define __builtin_frob_return_addr(_addr) (_addr)
 
-#define __builtin_ffs(_x) __kefirrt_ffs((_x))
-#define __builtin_clz(_x) __kefirrt_clz((_x))
-#define __builtin_ctz(_x) __kefirrt_ctz((_x))
-#define __builtin_clrsb(_x) __kefirrt_clrsb((_x))
-#define __builtin_popcount(_x) __kefirrt_popcount((_x))
-#define __builtin_parity(_x) __kefirrt_parity((_x))
+#define __builtin_ffs(_x) __kefir_builtin_ffs((_x))
+#define __builtin_clz(_x) __kefir_builtin_clz((_x))
+#define __builtin_ctz(_x) __kefir_builtin_ctz((_x))
+#define __builtin_clrsb(_x) __kefir_builtin_clrsb((_x))
+#define __builtin_popcount(_x) __kefir_builtin_popcount((_x))
+#define __builtin_parity(_x) __kefir_builtin_parity((_x))
 
 #define __builtin_bswap16(_x) __kefirrt_bswap16((_x))
 #define __builtin_bswap32(_x) __kefirrt_bswap32((_x))
