@@ -352,8 +352,8 @@
 
 // Runtime functions
 extern _Noreturn void __kefir_builtin_trap(void);
-extern void *__kefirrt_return_address(int);
-extern void *__kefirrt_frame_address(int);
+extern void *__kefir_builtin_return_address(int);
+extern void *__kefir_builtin_frame_address(int);
 
 extern int __kefirrt_ffs(int);
 extern int __kefirrt_clz(unsigned int);
@@ -399,8 +399,8 @@ extern long double __kefirrt_infl(void);
 
 #define __builtin_trap() __kefir_builtin_trap()
 #define __builtin_unreachable() __kefir_builtin_trap()
-#define __builtin_return_address(_level) __kefirrt_return_address((_level))
-#define __builtin_frame_address(_level) __kefirrt_frame_address((_level))
+#define __builtin_return_address(_level) __kefir_builtin_return_address((_level))
+#define __builtin_frame_address(_level) __kefir_builtin_frame_address((_level))
 #define __builtin_extract_return_addr(_addr) (_addr)
 #define __builtin_frob_return_addr(_addr) (_addr)
 

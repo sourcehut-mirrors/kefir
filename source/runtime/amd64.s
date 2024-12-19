@@ -31,34 +31,6 @@
 
 .section .text
 
-__kefirrt_return_frame_address:
-    mov rdx, rbp                 # Current frame address
-    mov rax, QWORD PTR [rdx + 8] # Current return address
-__kefirrt_return_frame_address_loop:
-    cmp rdi, 0
-    je __kefirrt_return_frame_address_done
-    xor rax, rax
-    mov rdx, QWORD PTR [rdx]
-    test rdx, rdx
-    jz __kefirrt_return_frame_address_done
-    mov rax, QWORD PTR [rdx + 8]
-    dec rdi
-    jmp __kefirrt_return_frame_address_loop
-__kefirrt_return_frame_address_done:
-    ret
-
-.global __kefirrt_return_address
-.hidden __kefirrt_return_address
-__kefirrt_return_address:
-    jmp __kefirrt_return_frame_address
-
-.global __kefirrt_frame_address
-.hidden __kefirrt_frame_address
-__kefirrt_frame_address:
-    call __kefirrt_return_frame_address
-    mov rax, rdx
-    ret
-
 .global __kefirrt_ffs
 .hidden __kefirrt_ffs
 __kefirrt_ffs:
