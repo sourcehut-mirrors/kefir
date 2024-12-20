@@ -380,14 +380,6 @@ extern int __kefir_builtin_clrsbll(long);
 extern int __kefir_builtin_popcountll(unsigned long);
 extern int __kefir_builtin_parityll(long);
 
-extern double __kefirrt_huge_val(void);
-extern float __kefirrt_huge_valf(void);
-extern long double __kefirrt_huge_vall(void);
-
-extern double __kefirrt_inf(void);
-extern float __kefirrt_inff(void);
-extern long double __kefirrt_infl(void);
-
 // Builtins
 #define __builtin_expect(_exp, _c) ((_c), (_exp))
 #define __builtin_expect_with_probability(_expr, _c, _prob) ((_prob), (_c), (_exp))
@@ -429,13 +421,9 @@ extern long double __kefirrt_infl(void);
 #define __builtin_popcountll(_x) __kefir_builtin_popcountll((_x))
 #define __builtin_parityll(_x) __kefir_builtin_parityll((_x))
 
-#define __builtin_huge_val(_x) __kefirrt_huge_val()
-#define __builtin_huge_valf(_x) __kefirrt_huge_valf()
-#define __builtin_huge_vall(_x) __kefirrt_huge_vall()
-
-#define __builtin_inf(_x) __kefirrt_inf()
-#define __builtin_inff(_x) __kefirrt_inff()
-#define __builtin_infl(_x) __kefirrt_infl()
+#define __builtin_huge_val() __builtin_inf()
+#define __builtin_huge_valf() __builtin_inff()
+#define __builtin_huge_vall() __builtin_infl()
 
 #define __builtin_LINE() __LINE__
 #define __builtin_FILE() __FILE__

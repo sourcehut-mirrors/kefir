@@ -37,6 +37,9 @@
 #define KEFIR_PARSER_BUILTIN_CHOOSE_EXPRESSION "__builtin_choose_expr"
 #define KEFIR_PARSER_BUILTIN_CONSTANT "__builtin_constant_p"
 #define KEFIR_PARSER_BUILTIN_CLASSIFY_TYPE "__builtin_classify_type"
+#define KEFIR_PARSER_BUILTIN_INF "__builtin_inf"
+#define KEFIR_PARSER_BUILTIN_INFF "__builtin_inff"
+#define KEFIR_PARSER_BUILTIN_INFL "__builtin_infl"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

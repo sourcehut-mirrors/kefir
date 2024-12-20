@@ -281,6 +281,33 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.type = kefir_ast_type_signed_int();
             base->properties.expression_props.constant_expression = true;
         } break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT32: {
+            REQUIRE(kefir_list_length(&node->arguments) == 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "inff type builtin invocation should have no parameters"));
+
+            base->properties.type = kefir_ast_type_float();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT64: {
+            REQUIRE(kefir_list_length(&node->arguments) == 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "inf type builtin invocation should have no parameters"));
+
+            base->properties.type = kefir_ast_type_double();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE: {
+            REQUIRE(kefir_list_length(&node->arguments) == 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "infl type builtin invocation should have no parameters"));
+
+            base->properties.type = kefir_ast_type_long_double();
+            base->properties.expression_props.constant_expression = true;
+        } break;
     }
     return KEFIR_OK;
 }

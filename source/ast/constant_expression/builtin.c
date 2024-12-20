@@ -23,6 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 #include "kefir/ir/type.h"
+#include <math.h>
 
 struct designator_param {
     struct kefir_mem *mem;
@@ -222,6 +223,13 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
             value->integer = klass;
         } break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT32:
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
+        case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
+            value->floating_point = INFINITY;
+            break;
 
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:

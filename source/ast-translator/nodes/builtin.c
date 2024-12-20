@@ -28,6 +28,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include <math.h>
 
 static kefir_result_t resolve_vararg(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                      struct kefir_irbuilder_block *builder, const struct kefir_ast_node_base *vararg) {
@@ -206,6 +207,18 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_ast_type_classify(node->properties.type, &klass));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHI64, klass));
         } break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT32:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IROPCODE_PUSHF32, INFINITY, 0.0f));
+            break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IROPCODE_PUSHF64, INFINITY));
+            break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD, INFINITY));
+            break;
     }
     return KEFIR_OK;
 }

@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 33,
+            "id": 27,
             "name": "none",
             "code": {
                 "entry_point": 0,
@@ -92,7 +92,7 @@
             }
         },
         {
-            "id": 34,
+            "id": 28,
             "name": "test1",
             "code": {
                 "entry_point": 0,
@@ -775,7 +775,7 @@
             }
         },
         {
-            "id": 35,
+            "id": 29,
             "name": "test2",
             "code": {
                 "entry_point": 0,

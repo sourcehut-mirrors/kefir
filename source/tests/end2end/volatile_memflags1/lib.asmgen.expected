@@ -108,11 +108,11 @@
     ],
     "types": [
         {
-            "identifier": 86,
+            "identifier": 74,
             "type": []
         },
         {
-            "identifier": 87,
+            "identifier": 75,
             "type": [
                 {
                     "type": "char"
@@ -120,7 +120,7 @@
             ]
         },
         {
-            "identifier": 91,
+            "identifier": 79,
             "type": [
                 {
                     "type": "short"
@@ -128,7 +128,7 @@
             ]
         },
         {
-            "identifier": 95,
+            "identifier": 83,
             "type": [
                 {
                     "type": "int"
@@ -136,7 +136,7 @@
             ]
         },
         {
-            "identifier": 99,
+            "identifier": 87,
             "type": [
                 {
                     "type": "long"
@@ -144,7 +144,7 @@
             ]
         },
         {
-            "identifier": 118,
+            "identifier": 106,
             "type": [
                 {
                     "type": "word"
@@ -155,7 +155,7 @@
             ]
         },
         {
-            "identifier": 131,
+            "identifier": 119,
             "type": [
                 {
                     "type": "word"
@@ -163,7 +163,7 @@
             ]
         },
         {
-            "identifier": 146,
+            "identifier": 134,
             "type": [
                 {
                     "type": "array",
@@ -271,99 +271,99 @@
     ],
     "function_declarations": [
         {
-            "identifier": 41,
+            "identifier": 35,
             "name": "getA",
-            "parameters": 86,
+            "parameters": 74,
+            "vararg": false,
+            "returns": 75,
+            "returns_twice": false
+        },
+        {
+            "identifier": 36,
+            "name": "getB",
+            "parameters": 74,
+            "vararg": false,
+            "returns": 79,
+            "returns_twice": false
+        },
+        {
+            "identifier": 37,
+            "name": "getC",
+            "parameters": 74,
+            "vararg": false,
+            "returns": 83,
+            "returns_twice": false
+        },
+        {
+            "identifier": 38,
+            "name": "getD",
+            "parameters": 74,
             "vararg": false,
             "returns": 87,
             "returns_twice": false
         },
         {
-            "identifier": 42,
-            "name": "getB",
-            "parameters": 86,
+            "identifier": 39,
+            "name": "setA",
+            "parameters": 75,
             "vararg": false,
-            "returns": 91,
+            "returns": 74,
+            "returns_twice": false
+        },
+        {
+            "identifier": 40,
+            "name": "setB",
+            "parameters": 79,
+            "vararg": false,
+            "returns": 74,
+            "returns_twice": false
+        },
+        {
+            "identifier": 41,
+            "name": "setC",
+            "parameters": 83,
+            "vararg": false,
+            "returns": 74,
+            "returns_twice": false
+        },
+        {
+            "identifier": 42,
+            "name": "setD",
+            "parameters": 87,
+            "vararg": false,
+            "returns": 74,
             "returns_twice": false
         },
         {
             "identifier": 43,
-            "name": "getC",
-            "parameters": 86,
+            "name": "setS",
+            "parameters": 106,
             "vararg": false,
-            "returns": 95,
+            "returns": 74,
             "returns_twice": false
         },
         {
             "identifier": 44,
-            "name": "getD",
-            "parameters": 86,
+            "name": "sumS",
+            "parameters": 119,
             "vararg": false,
-            "returns": 99,
+            "returns": 87,
             "returns_twice": false
         },
         {
             "identifier": 45,
-            "name": "setA",
-            "parameters": 87,
-            "vararg": false,
-            "returns": 86,
-            "returns_twice": false
-        },
-        {
-            "identifier": 46,
-            "name": "setB",
-            "parameters": 91,
-            "vararg": false,
-            "returns": 86,
-            "returns_twice": false
-        },
-        {
-            "identifier": 47,
-            "name": "setC",
-            "parameters": 95,
-            "vararg": false,
-            "returns": 86,
-            "returns_twice": false
-        },
-        {
-            "identifier": 48,
-            "name": "setD",
-            "parameters": 99,
-            "vararg": false,
-            "returns": 86,
-            "returns_twice": false
-        },
-        {
-            "identifier": 49,
-            "name": "setS",
-            "parameters": 118,
-            "vararg": false,
-            "returns": 86,
-            "returns_twice": false
-        },
-        {
-            "identifier": 50,
-            "name": "sumS",
-            "parameters": 131,
-            "vararg": false,
-            "returns": 99,
-            "returns_twice": false
-        },
-        {
-            "identifier": 51,
             "name": "vla_test",
-            "parameters": 95,
+            "parameters": 83,
             "vararg": false,
-            "returns": 86,
+            "returns": 74,
             "returns_twice": false
         }
     ],
     "functions": [
         {
-            "identifier": 41,
+            "identifier": 35,
             "name": "getA",
-            "locals": 86,
+            "locals": 74,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -384,9 +384,9 @@
             "public_labels": []
         },
         {
-            "identifier": 42,
+            "identifier": 36,
             "name": "getB",
-            "locals": 86,
+            "locals": 74,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -407,9 +407,9 @@
             "public_labels": []
         },
         {
-            "identifier": 43,
+            "identifier": 37,
             "name": "getC",
-            "locals": 86,
+            "locals": 74,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -430,9 +430,9 @@
             "public_labels": []
         },
         {
-            "identifier": 44,
+            "identifier": 38,
             "name": "getD",
-            "locals": 86,
+            "locals": 74,
             "body": [
                 {
                     "opcode": "getglobal",
@@ -453,8 +453,203 @@
             "public_labels": []
         },
         {
-            "identifier": 45,
+            "identifier": 39,
             "name": "setA",
+            "locals": 75,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 75,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 75,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load8i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "a"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store8",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ],
+            "public_labels": []
+        },
+        {
+            "identifier": 40,
+            "name": "setB",
+            "locals": 79,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 79,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 79,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load16i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "b"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store16",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ],
+            "public_labels": []
+        },
+        {
+            "identifier": 41,
+            "name": "setC",
+            "locals": 83,
+            "body": [
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 83,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getlocal",
+                    "arg": {
+                        "type": 83,
+                        "index": 0
+                    }
+                },
+                {
+                    "opcode": "load32i",
+                    "memory_flags": {
+                        "volatile": false
+                    }
+                },
+                {
+                    "opcode": "getglobal",
+                    "arg": {
+                        "data": "c"
+                    }
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "xchg",
+                    "arg": 1
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 1
+                },
+                {
+                    "opcode": "store32",
+                    "memory_flags": {
+                        "volatile": true
+                    }
+                },
+                {
+                    "opcode": "pop"
+                }
+            ],
+            "public_labels": []
+        },
+        {
+            "identifier": 42,
+            "name": "setD",
             "locals": 87,
             "body": [
                 {
@@ -469,201 +664,6 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store8",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 87,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "load8i",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getglobal",
-                    "arg": {
-                        "data": "a"
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store8",
-                    "memory_flags": {
-                        "volatile": true
-                    }
-                },
-                {
-                    "opcode": "pop"
-                }
-            ],
-            "public_labels": []
-        },
-        {
-            "identifier": 46,
-            "name": "setB",
-            "locals": 91,
-            "body": [
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 91,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store16",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 91,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "load16i",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getglobal",
-                    "arg": {
-                        "data": "b"
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store16",
-                    "memory_flags": {
-                        "volatile": true
-                    }
-                },
-                {
-                    "opcode": "pop"
-                }
-            ],
-            "public_labels": []
-        },
-        {
-            "identifier": 47,
-            "name": "setC",
-            "locals": 95,
-            "body": [
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 95,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store32",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 95,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "load32i",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
-                    "opcode": "getglobal",
-                    "arg": {
-                        "data": "c"
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 1
-                },
-                {
-                    "opcode": "store32",
-                    "memory_flags": {
-                        "volatile": true
-                    }
-                },
-                {
-                    "opcode": "pop"
-                }
-            ],
-            "public_labels": []
-        },
-        {
-            "identifier": 48,
-            "name": "setD",
-            "locals": 99,
-            "body": [
-                {
-                    "opcode": "getlocal",
-                    "arg": {
-                        "type": 99,
-                        "index": 0
-                    }
-                },
-                {
-                    "opcode": "xchg",
-                    "arg": 1
-                },
-                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false
@@ -672,7 +672,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 99,
+                        "type": 87,
                         "index": 0
                     }
                 },
@@ -713,14 +713,14 @@
             "public_labels": []
         },
         {
-            "identifier": 49,
+            "identifier": 43,
             "name": "setS",
-            "locals": 118,
+            "locals": 106,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -737,7 +737,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -754,7 +754,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -767,7 +767,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -851,7 +851,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -864,7 +864,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -948,7 +948,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -961,7 +961,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -1115,7 +1115,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -1131,7 +1131,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -1285,7 +1285,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 1
                     }
                 },
@@ -1298,7 +1298,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 118,
+                        "type": 106,
                         "index": 0
                     }
                 },
@@ -1340,14 +1340,14 @@
             "public_labels": []
         },
         {
-            "identifier": 50,
+            "identifier": 44,
             "name": "sumS",
-            "locals": 131,
+            "locals": 119,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1364,7 +1364,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1400,7 +1400,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1439,7 +1439,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1516,7 +1516,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1590,7 +1590,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 131,
+                        "type": 119,
                         "index": 0
                     }
                 },
@@ -1626,14 +1626,14 @@
             "public_labels": []
         },
         {
-            "identifier": 51,
+            "identifier": 45,
             "name": "vla_test",
-            "locals": 146,
+            "locals": 134,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 2
                     }
                 },
@@ -1650,7 +1650,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 0
                     }
                 },
@@ -1680,7 +1680,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 3
                     }
                 },
@@ -1698,7 +1698,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 2
                     }
                 },
@@ -1717,7 +1717,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 3
                     }
                 },
@@ -1755,7 +1755,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 3
                     }
                 },
@@ -1775,7 +1775,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 3
                     }
                 },
@@ -1821,7 +1821,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 3
                     }
                 },
@@ -1879,7 +1879,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 146,
+                        "type": 134,
                         "index": 0
                     }
                 },

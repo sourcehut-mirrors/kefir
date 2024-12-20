@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 35,
+            "id": 29,
             "name": "load_unsigned",
             "code": {
                 "entry_point": 0,
@@ -92,7 +92,7 @@
             }
         },
         {
-            "id": 36,
+            "id": 30,
             "name": "load_signed",
             "code": {
                 "entry_point": 0,
@@ -183,7 +183,7 @@
             }
         },
         {
-            "id": 37,
+            "id": 31,
             "name": "store",
             "code": {
                 "entry_point": 0,
@@ -730,7 +730,7 @@
             }
         },
         {
-            "id": 38,
+            "id": 32,
             "name": "locals",
             "code": {
                 "entry_point": 0,
@@ -1177,7 +1177,7 @@
                             {
                                 "id": 22,
                                 "opcode": "get_thread_local",
-                                "global_ref": 65,
+                                "global_ref": 56,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1305,7 +1305,7 @@
             }
         },
         {
-            "id": 39,
+            "id": 33,
             "name": "volatiles1",
             "code": {
                 "entry_point": 0,
@@ -1358,7 +1358,7 @@
                             {
                                 "id": 1,
                                 "opcode": "get_global",
-                                "global_ref": 67,
+                                "global_ref": 58,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1394,7 +1394,7 @@
                             {
                                 "id": 3,
                                 "opcode": "get_global",
-                                "global_ref": 68,
+                                "global_ref": 59,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1446,7 +1446,7 @@
                             {
                                 "id": 6,
                                 "opcode": "get_global",
-                                "global_ref": 69,
+                                "global_ref": 60,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1517,7 +1517,7 @@
                             {
                                 "id": 10,
                                 "opcode": "get_global",
-                                "global_ref": 70,
+                                "global_ref": 61,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1661,7 +1661,7 @@
                             {
                                 "id": 18,
                                 "opcode": "get_global",
-                                "global_ref": 68,
+                                "global_ref": 59,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1714,7 +1714,7 @@
                             {
                                 "id": 21,
                                 "opcode": "get_global",
-                                "global_ref": 69,
+                                "global_ref": 60,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1783,7 +1783,7 @@
                             {
                                 "id": 25,
                                 "opcode": "get_global",
-                                "global_ref": 70,
+                                "global_ref": 61,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {
@@ -1852,7 +1852,7 @@
                             {
                                 "id": 29,
                                 "opcode": "get_global",
-                                "global_ref": 67,
+                                "global_ref": 58,
                                 "offset": 0,
                                 "control_next": null,
                                 "properties": {

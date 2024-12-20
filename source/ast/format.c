@@ -362,6 +362,18 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE:
             REQUIRE_OK(kefir_json_output_string(json, "classify_type"));
             break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT32:
+            REQUIRE_OK(kefir_json_output_string(json, "inf_float32"));
+            break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
+            REQUIRE_OK(kefir_json_output_string(json, "inf_float64"));
+            break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
+            REQUIRE_OK(kefir_json_output_string(json, "inf_long_double"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
