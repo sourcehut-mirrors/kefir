@@ -366,19 +366,19 @@ extern unsigned short __kefirrt_bswap16(unsigned short);
 extern unsigned int __kefirrt_bswap32(unsigned int);
 extern unsigned long __kefirrt_bswap64(unsigned long);
 
-extern int __kefirrt_ffsl(long);
-extern int __kefirrt_clzl(unsigned long);
-extern int __kefirrt_ctzl(unsigned long);
-extern int __kefirrt_clrsbl(long);
-extern int __kefirrt_popcountl(unsigned long);
-extern int __kefirrt_parityl(long);
+extern int __kefir_builtin_ffsl(long);
+extern int __kefir_builtin_clzl(unsigned long);
+extern int __kefir_builtin_ctzl(unsigned long);
+extern int __kefir_builtin_clrsbl(long);
+extern int __kefir_builtin_popcountl(unsigned long);
+extern int __kefir_builtin_parityl(long);
 
-extern int __kefirrt_ffsll(long);
-extern int __kefirrt_clzll(unsigned long);
-extern int __kefirrt_ctzll(unsigned long);
-extern int __kefirrt_clrsbll(long);
-extern int __kefirrt_popcountll(unsigned long);
-extern int __kefirrt_parityll(long);
+extern int __kefir_builtin_ffsll(long);
+extern int __kefir_builtin_clzll(unsigned long);
+extern int __kefir_builtin_ctzll(unsigned long);
+extern int __kefir_builtin_clrsbll(long);
+extern int __kefir_builtin_popcountll(unsigned long);
+extern int __kefir_builtin_parityll(long);
 
 extern double __kefirrt_huge_val(void);
 extern float __kefirrt_huge_valf(void);
@@ -415,19 +415,19 @@ extern long double __kefirrt_infl(void);
 #define __builtin_bswap32(_x) __kefirrt_bswap32((_x))
 #define __builtin_bswap64(_x) __kefirrt_bswap64((_x))
 
-#define __builtin_ffsl(_x) __kefirrt_ffsl((_x))
-#define __builtin_clzl(_x) __kefirrt_clzl((_x))
-#define __builtin_ctzl(_x) __kefirrt_ctzl((_x))
-#define __builtin_clrsbl(_x) __kefirrt_clrsbl((_x))
-#define __builtin_popcountl(_x) __kefirrt_popcountl((_x))
-#define __builtin_parityl(_x) __kefirrt_parityl((_x))
+#define __builtin_ffsl(_x) __kefir_builtin_ffsl((_x))
+#define __builtin_clzl(_x) __kefir_builtin_clzl((_x))
+#define __builtin_ctzl(_x) __kefir_builtin_ctzl((_x))
+#define __builtin_clrsbl(_x) __kefir_builtin_clrsbl((_x))
+#define __builtin_popcountl(_x) __kefir_builtin_popcountl((_x))
+#define __builtin_parityl(_x) __kefir_builtin_parityl((_x))
 
-#define __builtin_ffsll(_x) __kefirrt_ffsll((_x))
-#define __builtin_clzll(_x) __kefirrt_clzll((_x))
-#define __builtin_ctzll(_x) __kefirrt_ctzll((_x))
-#define __builtin_clrsbll(_x) __kefirrt_clrsbll((_x))
-#define __builtin_popcountll(_x) __kefirrt_popcountll((_x))
-#define __builtin_parityll(_x) __kefirrt_parityll((_x))
+#define __builtin_ffsll(_x) __kefir_builtin_ffsll((_x))
+#define __builtin_clzll(_x) __kefir_builtin_clzll((_x))
+#define __builtin_ctzll(_x) __kefir_builtin_ctzll((_x))
+#define __builtin_clrsbll(_x) __kefir_builtin_clrsbll((_x))
+#define __builtin_popcountll(_x) __kefir_builtin_popcountll((_x))
+#define __builtin_parityll(_x) __kefir_builtin_parityll((_x))
 
 #define __builtin_huge_val(_x) __kefirrt_huge_val()
 #define __builtin_huge_valf(_x) __kefirrt_huge_valf()
