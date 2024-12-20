@@ -118,12 +118,8 @@ extending the compiler, including:
 
 ### Implementation quirks
 Some implementation details that user needs to take into account:
-* **Attention:** code produced by Kefir shall be linked with a runtime library
-  `libkefirrt.a`. The library is linked automatically if environment is
-  configured correctly. Kefir can also link built-in versions of runtime,
-  however make sure that correct `--target` is specified during link phase.
-  Kefir might provide own versions of some header files as well -- if
-  environment is configured correctly, they are also added to include path
+* Kefir might provide own versions of some header files as well -- if
+  environment is configured correctly, they are added to include path
   automatically.
 * Atomic implementation fully relies on software atomic library (`libatomic` for
   GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
@@ -392,7 +388,7 @@ The code base also includes patches from:
 
 License:
 * Main body of the compiler - GNU GPLv3
-* Runtime library and includes - BSD 3-clause
+* Compiler-specific includes - BSD 3-clause
   
 ## Useful links
 * [C11 standard final working

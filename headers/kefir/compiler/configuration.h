@@ -35,8 +35,7 @@ typedef enum kefir_compiler_runner_action {
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT,
-    KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY,
-    KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE
+    KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY
 } kefir_compiler_runner_action_t;
 
 typedef enum kefir_compiler_runner_error_report_type {

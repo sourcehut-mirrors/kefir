@@ -21,7 +21,6 @@ DIR="$(dirname $0)"
 TMPDIR="$(mktemp -d)"
 ASM_FILE="$TMPDIR/gen.asm"
 ASM_OBJ="$TMPDIR/gen.o"
-LIB_OBJ="$TMPDIR/lib.o"
 TEST_EXE="$TMPDIR/test"
 VALGRIND_FILE="$TMPDIR/gen.log"
 VALGRIND="valgrind $VALGRIND_TEST_OPTIONS --log-file=$VALGRIND_FILE"
@@ -46,10 +45,6 @@ function cleanup {
 trap cleanup EXIT HUP INT QUIT PIPE TERM
 
 mkdir -p "$TMPDIR"
-$AS -o "$LIB_OBJ" "$DIR/../../runtime/amd64.s"
-if [[ "x$?" != "x0" ]]; then
-    exit 126
-fi
 
 for SYS_TEST in "$@"
 do
@@ -66,7 +61,7 @@ do
         exit 128
     fi
     TEST_FILE="$DIR/$(basename $(dirname $SYS_TEST))/$(basename $SYS_TEST .gen).test.c"
-    $COMPILE $TEST_FILE $ASM_OBJ $LIB_OBJ
+    $COMPILE $TEST_FILE $ASM_OBJ
     if [[ "x$DISASM" == "xexe" ]]; then
         objdump -d "$TEST_EXE"
     fi

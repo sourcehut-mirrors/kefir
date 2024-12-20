@@ -21,12 +21,11 @@ $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TCL_ARCH
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_TCL_ARCHIVE_FILENAME)"
 	@touch "$@"
 
-$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/Makefile: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring tcl $(KEFIR_EXTERNAL_TEST_TCL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
 		./configure
@@ -36,7 +35,6 @@ $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh: $(KEFIR_EXTERNAL_TEST_TCL_SOUR
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix/tclsh
@@ -44,7 +42,6 @@ $(KEFIR_EXTERNAL_TEST_TCL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/
 	@cd "$(KEFIR_EXTERNAL_TEST_TCL_SOURCE_DIR)/unix" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
 	@mv "$@.tmp" "$@"
 

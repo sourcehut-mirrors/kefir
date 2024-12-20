@@ -25,10 +25,6 @@
 #include "kefir/codegen/amd64/codegen.h"
 #include <float.h>
 
-static const char KefirAmd64RuntimeCode[] = {
-#include STRINGIFY(KEFIR_AMD64_RUNTIME_INCLUDE)
-};
-
 static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefir_codegen *codegen) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid code generator"));
@@ -112,7 +108,6 @@ static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_compile
     profile->type_traits = &TYPE_TRAITS;
     profile->new_codegen = amd64_new_codegen;
     profile->free_codegen = amd64_sysv_free_codegen;
-    profile->runtime_code = KefirAmd64RuntimeCode;
     profile->runtime_include_dirname = NULL;
     return KEFIR_OK;
 }

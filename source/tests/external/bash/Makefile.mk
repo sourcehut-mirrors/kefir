@@ -21,12 +21,11 @@ $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BASH_AR
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_BASH_ARCHIVE_FILENAME)"
 	@touch "$@"
 
-$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring bash $(KEFIR_EXTERNAL_TEST_BASH_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
 		./configure
@@ -36,7 +35,6 @@ $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_D
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_BASH_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)/bash
@@ -44,7 +42,6 @@ $(KEFIR_EXTERNAL_TEST_BASH_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR
 	@cd "$(KEFIR_EXTERNAL_TEST_BASH_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
 	@mv "$@.tmp" "$@"
 

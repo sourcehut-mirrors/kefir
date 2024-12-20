@@ -551,17 +551,6 @@ static kefir_result_t action_dump_asm(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t action_dump_runtime_code(struct kefir_mem *mem,
-                                               const struct kefir_compiler_runner_configuration *options) {
-    UNUSED(mem);
-    struct kefir_compiler_profile profile;
-    REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile));
-    REQUIRE(profile.runtime_code != NULL,
-            KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Runtime code is not available for specified profile"));
-    printf("%s", profile.runtime_code);
-    return KEFIR_OK;
-}
-
 static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compiler_runner_configuration *) = {
     [KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS] = action_dump_preprocessed,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES] = action_dump_dependencies,
@@ -569,8 +558,7 @@ static kefir_result_t (*Actions[])(struct kefir_mem *, const struct kefir_compil
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST] = action_dump_ast,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR] = action_dump_ir,
     [KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT] = action_dump_opt,
-    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY] = action_dump_asm,
-    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE] = action_dump_runtime_code};
+    [KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY] = action_dump_asm};
 
 kefir_result_t kefir_run_compiler(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options) {
     REQUIRE_OK(Actions[options->action](mem, options));

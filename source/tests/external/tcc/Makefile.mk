@@ -25,13 +25,12 @@ $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TCC_ARCH
 	@patch "$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/lib/bcheck.c" < "$(SOURCE_DIR)/tests/external/tcc/bcheck.patch"
 	@touch "$@"
 
-$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/config.h: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/config.h: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring tcc $(KEFIR_EXTERNAL_TEST_TCC_VERSION)..."
 	@rm -f "$@"
 	@cd "$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		./configure --cc="$(realpath $(KEFIR_EXE))" --extra-cflags="-O1 -fPIC -pie"
 
 $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/tcc: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/config.h
@@ -39,7 +38,6 @@ $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/tcc: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)
 	@cd "$(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		$(MAKE) all
 
 $(KEFIR_EXTERNAL_TEST_TCC_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_TCC_SOURCE_DIR)/tcc

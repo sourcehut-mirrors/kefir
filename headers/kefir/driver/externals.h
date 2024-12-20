@@ -41,7 +41,6 @@ typedef struct kefir_driver_external_resources {
 
     // Libraries
     const char *runtime_include;
-    const char *runtime_library;
 
     struct kefir_driver_external_resource_toolchain_config musl;
     struct kefir_driver_external_resource_toolchain_config gnu;

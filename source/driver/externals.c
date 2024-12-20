@@ -66,7 +66,6 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
         externals->linker_path = "ld";
     }
 
-    externals->runtime_library = getenv("KEFIR_RTLIB");
     externals->runtime_include = getenv("KEFIR_RTINC");
     externals->musl.include_path = getenv("KEFIR_MUSL_INCLUDE");
     externals->musl.library_path = getenv("KEFIR_MUSL_LIB");

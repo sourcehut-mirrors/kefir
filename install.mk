@@ -24,7 +24,6 @@ ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
 	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)$(libdir)"/libkefir.so
 endif
 	@install -D "$(LIBKEFIR_A)" -t "$(DESTDIR)$(libdir)"
-	@install -D "$(LIBKEFIRRT_A)" -t "$(DESTDIR)$(libdir)"
 	@echo "Installing headers..."
 	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
 	@ln -sfn toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
@@ -69,7 +68,6 @@ uninstall:
 	@echo "Removing libraries..."
 	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.so
 	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.so.$(LIBKEFIR_SO_VERSION)
-	@rm -rf "$(DESTDIR)$(libdir)"/libkefirrt.a
 	@rm -rf "$(DESTDIR)$(libdir)"/libkefir.a
 
 .PHONY: install uninstall

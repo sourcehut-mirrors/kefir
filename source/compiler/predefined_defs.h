@@ -350,7 +350,7 @@
 #define __sync_lock_test_and_set(_ptr, _value, ...) __atomic_exchange_n((_ptr), (_value), __ATOMIC_ACQUIRE)
 #define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
 
-// Runtime functions
+// Builtin functions
 extern _Noreturn void __kefir_builtin_trap(void);
 extern void *__kefir_builtin_return_address(int);
 extern void *__kefir_builtin_frame_address(int);

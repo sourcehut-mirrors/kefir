@@ -68,7 +68,6 @@ static kefir_result_t driver_generate_linker_config(struct kefir_mem *mem, struc
     linker_config->flags.link_default_libs = config->flags.link_default_libs;
     linker_config->flags.link_libc = config->flags.link_libc;
     linker_config->flags.link_atomics = config->flags.soft_atomics;
-    linker_config->flags.link_rtlib = config->flags.link_rtlib;
     linker_config->flags.verbose = config->flags.verbose;
     REQUIRE_OK(kefir_driver_apply_target_linker_initial_configuration(mem, symbols, externals, linker_config,
                                                                       &config->target));
@@ -127,12 +126,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
     compiler_config->verbose = config->flags.verbose;
-    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
-        REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, &config->target));
-    } else {
-        REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
-                                                                    &config->target, config));
-    }
+    REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
+                                                                &config->target, config));
 
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_PREPROCESS:
@@ -167,10 +162,6 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         case KEFIR_DRIVER_STAGE_LINK:
         case KEFIR_DRIVER_STAGE_RUN:
             compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY;
-            break;
-
-        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
-            compiler_config->action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE;
             break;
     }
 
@@ -220,7 +211,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
         include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
-        REQUIRE(include_dir != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
+        REQUIRE(include_dir != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
         if (include_insert_iter == NULL) {
@@ -233,7 +225,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_file, iter->value);
         include_file = kefir_string_pool_insert(mem, symbols, include_file, NULL);
-        REQUIRE(include_file != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include file into string pool"));
+        REQUIRE(include_file != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include file into string pool"));
         REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_files,
                                            kefir_list_tail(&compiler_config->include_files), (void *) include_file));
     }
@@ -352,9 +345,8 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_asm_name(struct kefir_mem *mem,
-                                           const struct kefir_driver_external_resources *externals,
-                                           const char **output_filename) {
+static kefir_result_t generate_asm_name(struct kefir_mem *mem, const struct kefir_driver_external_resources *externals,
+                                        const char **output_filename) {
     REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "asm-file", output_filename));
     return KEFIR_OK;
 }
@@ -385,8 +377,8 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
 
     res = KEFIR_OK;
     REQUIRE_OK(kefir_process_init(&assembler_process));
-    REQUIRE_CHAIN(&res,
-                  kefir_driver_run_assembler(mem, object_filename, asm_filename, assembler_config, externals, &assembler_process));
+    REQUIRE_CHAIN(&res, kefir_driver_run_assembler(mem, object_filename, asm_filename, assembler_config, externals,
+                                                   &assembler_process));
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
     REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
                       KEFIR_SET_ERRORF(KEFIR_SUBPROCESS_ERROR, "Failed to assemble '%s'", argument->value));
@@ -436,8 +428,8 @@ static kefir_result_t driver_assemble(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(kefir_process_init(&assembler_process));
     kefir_result_t res = KEFIR_OK;
 
-    REQUIRE_CHAIN(&res,
-                  kefir_driver_run_assembler(mem, object_filename, argument->value, assembler_config, externals, &assembler_process));
+    REQUIRE_CHAIN(&res, kefir_driver_run_assembler(mem, object_filename, argument->value, assembler_config, externals,
+                                                   &assembler_process));
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
     REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
@@ -652,44 +644,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
             }
             compiler_config->dependency_output.target_name = NULL;
         } break;
-
-        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
-            // Intentionally left blank
-            break;
     }
-    return KEFIR_OK;
-}
-
-static kefir_result_t driver_assemble_runtime(struct kefir_mem *mem,
-                                              const struct kefir_driver_external_resources *externals,
-                                              struct kefir_compiler_runner_configuration *compiler_config,
-                                              struct kefir_driver_assembler_configuration *assembler_config,
-                                              const char **runtime_code_object_ptr) {
-    const char *runtime_assembly_filename, *runtime_object_filename;
-    REQUIRE_OK(kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.s",
-                                                  &runtime_assembly_filename));
-    REQUIRE_OK(
-        kefir_tempfile_manager_create_file(mem, externals->tmpfile_manager, "libkefirrt.o", &runtime_object_filename));
-
-    struct kefir_compiler_runner_configuration patched_compiler_config = *compiler_config;
-    patched_compiler_config.action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE;
-
-    REQUIRE_OK(driver_compile(&patched_compiler_config, NULL, runtime_object_filename));
-
-    struct kefir_process assembler_process;
-    REQUIRE_OK(kefir_process_init(&assembler_process));
-    kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, kefir_driver_run_assembler(mem, runtime_object_filename, runtime_assembly_filename, assembler_config, externals,
-                                                   &assembler_process));
-    REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
-    REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
-                      KEFIR_SET_ERROR(KEFIR_SUBPROCESS_ERROR, "Failed to assemble kefir runtime code"));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_process_kill(&assembler_process);
-        return res;
-    });
-
-    *runtime_code_object_ptr = runtime_object_filename;
     return KEFIR_OK;
 }
 
@@ -712,19 +667,13 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_stri
     return KEFIR_OK;
 }
 
-static kefir_result_t driver_print_runtime_code(struct kefir_driver_configuration *config,
-                                                struct kefir_compiler_runner_configuration *compiler_config) {
-    REQUIRE_OK(driver_compile(compiler_config, NULL, config->output_file));
-    return KEFIR_OK;
-}
-
 static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                       struct kefir_driver_configuration *config,
                                       const struct kefir_driver_external_resources *externals,
                                       struct kefir_driver_assembler_configuration *assembler_config,
                                       struct kefir_driver_linker_configuration *linker_config,
                                       struct kefir_compiler_runner_configuration *compiler_config) {
-    REQUIRE(config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE || kefir_list_length(&config->arguments) > 0,
+    REQUIRE(kefir_list_length(&config->arguments) > 0,
             KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Selected operation requires non-empty argument list"));
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_LINK:
@@ -744,7 +693,6 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
         case KEFIR_DRIVER_STAGE_PRINT_IR:
         case KEFIR_DRIVER_STAGE_PRINT_OPT:
         case KEFIR_DRIVER_STAGE_COMPILE:
-        case KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE:
             REQUIRE_OK(kefir_driver_generate_compiler_config(mem, symbols, config, externals, compiler_config));
             // Intentionally left blank
             break;
@@ -756,20 +704,6 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
         ASSIGN_DECL_CAST(struct kefir_driver_argument *, argument, iter->value);
         REQUIRE_OK(
             driver_run_argument(mem, config, externals, assembler_config, linker_config, compiler_config, argument));
-    }
-
-    if (config->stage == KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE) {
-        REQUIRE_OK(driver_print_runtime_code(config, compiler_config));
-        return KEFIR_OK;
-    }
-
-    if (linker_config->flags.link_rtlib) {
-        if (externals->runtime_library == NULL) {
-            REQUIRE_OK(driver_assemble_runtime(mem, externals, compiler_config, assembler_config,
-                                               &linker_config->rtlib_location));
-        } else {
-            linker_config->rtlib_location = externals->runtime_library;
-        }
     }
 
     if (config->stage == KEFIR_DRIVER_STAGE_LINK) {

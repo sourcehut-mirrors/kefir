@@ -202,9 +202,6 @@ Do not link libc
 .It Fl nostdlib
 Do not link start files and default libraries
 .\"
-.It Fl nortlib
-Do not link runtime routine library
-.\"
 .It Fl nostdinc
 Do not add standard library to include path
 .\"
@@ -261,9 +258,6 @@ Print intermediate representation in JSON format
 .\"
 .It Fl \-print-opt
 Print optimization representation in JSON format
-.\"
-.It Fl \-print-runtime-code
-Print runtime code for selected target
 .\"
 .It Fl run Op file Ar args...
 Run the linked executable with the rest of command line arguments. If no input file was specified, the first argument is treated as input file.
@@ -549,9 +543,6 @@ Override the default "as" assembler
 .\"
 .It Ev KEFIR_LD | Ev LD
 Override the default "ld" linker
-.\"
-.It Ev KEFIR_RTLIB
-Specify kefir runtime library location. Optional: it not specified, built-in runtime library will be used.
 .\"
 .It Ev KEFIR_RTINC
 Specify kefir runtime include location. Mandatory for all platform variants except "*-none"

@@ -76,7 +76,6 @@ KEFIR_LIB_SOURCE := $(wildcard \
 	$(SOURCE)/target/asm/amd64/*.c \
 	$(SOURCE)/target/dwarf/*.c \
 	$(SOURCE)/util/*.c)
-KEFIR_RTLIB_SOURCE := $(SOURCE)/runtime/amd64.s
 KEFIR_LIB_ASM_FILES := $(KEFIR_LIB_SOURCE:$(SOURCE)/%.c=$(BOOTSTRAP)/%.s)
 
 KEFIR_DRIVER_SOURCE := $(wildcard $(SOURCE)/driver/*.c)
@@ -118,23 +117,12 @@ $(BOOTSTRAP)/libkefir.so: $(KEFIR_LIB_ASM_FILES)
 	@echo "Linking $@"
 	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) -shared $^ -o $@
 
-$(BOOTSTRAP)/libkefirrt.o: $(KEFIR_RTLIB_SOURCE)
-	@mkdir -p $(shell dirname "$@")
-	@echo "Building $@"
-	@$(KEFIR_AS) -o $@ $<
-
-$(BOOTSTRAP)/libkefirrt.a: $(BOOTSTRAP)/libkefirrt.o
-	@mkdir -p $(shell dirname "$@")
-	@echo "Archiving $@"
-	@$(AR) cr $@ $^
-	@ranlib $@
-
 ifeq ($(USE_SHARED),yes)
-$(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so $(BOOTSTRAP)/libkefirrt.a
+$(BOOTSTRAP)/kefir: $(KEFIR_DRIVER_ASM_FILES) $(BOOTSTRAP)/libkefir.so
 	@echo "Linking $@"
 	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) -pie $(BOOTSTRAP_CFLAGS) $(KEFIR_DRIVER_ASM_FILES) -o $@ -L$(BOOTSTRAP) -lkefir
 else
-$(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES) $(BOOTSTRAP)/libkefirrt.a
+$(BOOTSTRAP)/kefir: $(KEFIR_ASM_FILES)
 	@echo "Linking $@"
 	@KEFIR_AS=$(KEFIR_AS) KEFIR_LD=$(KEFIR_LD) $(BOOTSTRAP_CC) $(BOOTSTRAP_CFLAGS) $(KEFIR_ASM_FILES) -o $@
 endif

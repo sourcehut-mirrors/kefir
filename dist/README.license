@@ -1,4 +1,4 @@
-Kefir C17 compiler project is distributed under the terms of GNU GPLv3 software license (see COPYING) with except for runtime parts (both runtime library and include files),
+Kefir C17 compiler project is distributed under the terms of GNU GPLv3 software license (see COPYING) with except for compiler-specific include files,
 which are inteded to be directly linked with/included into programs compiled by kefir, licensed under the terms of BSD license (see runtime/LICENSE).
 
 More information regarding the project, as well as project source code can be obtained at https://sr.ht/~jprotopopov/kefir

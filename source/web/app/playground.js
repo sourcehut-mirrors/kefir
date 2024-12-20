@@ -81,7 +81,6 @@ async function kefir(args, input) {
         }
 
         kefir.ENV.KEFIR_RTINC="/includes/kefir";
-        kefir.ENV.KEFIR_RTLIB="";
         kefir.ENV.KEFIR_MUSL_INCLUDE="/includes/musl";
       },
 

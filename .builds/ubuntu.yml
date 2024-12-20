@@ -35,7 +35,6 @@ tasks:
   - bootstrap: |
       cd kefir
       make clean clean_bootstrap
-      export KEFIR_RTLIB="$HOME/kefir/bin/libs/libkefirrt.a"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       LC_ALL=C.UTF-8 make bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1" -j$(nproc)
 triggers:

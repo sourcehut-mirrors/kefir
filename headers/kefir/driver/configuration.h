@@ -57,11 +57,8 @@ typedef struct kefir_driver_linker_configuration {
         kefir_bool_t link_default_libs;
         kefir_bool_t link_libc;
         kefir_bool_t link_atomics;
-        kefir_bool_t link_rtlib;
         kefir_bool_t verbose;
     } flags;
-
-    const char *rtlib_location;
 } kefir_driver_linker_configuration_t;
 
 kefir_result_t kefir_driver_linker_configuration_init(struct kefir_driver_linker_configuration *);
@@ -80,7 +77,6 @@ typedef enum kefir_driver_stage {
     KEFIR_DRIVER_STAGE_COMPILE,
     KEFIR_DRIVER_STAGE_ASSEMBLE,
     KEFIR_DRIVER_STAGE_LINK,
-    KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE,
     KEFIR_DRIVER_STAGE_RUN
 } kefir_driver_stage_t;
 
@@ -150,7 +146,6 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t include_stdinc;
         kefir_bool_t link_libc;
         kefir_bool_t include_rtinc;
-        kefir_bool_t link_rtlib;
         kefir_bool_t soft_atomics;
         kefir_bool_t verbose;
     } flags;

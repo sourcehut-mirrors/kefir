@@ -20,12 +20,11 @@ $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_CURL_AR
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_CURL_ARCHIVE_FILENAME)"
 	@touch "$@"
 
-$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/.extracted $(KEFIR_EXE) $(LIBKEFIRRT_A)
+$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
 	@echo "Configuring curl $(KEFIR_EXTERNAL_TEST_CURL_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		CFLAGS="-O1 -fPIC -pie" \
 		./configure --with-openssl
@@ -35,7 +34,6 @@ $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)/src/curl: $(KEFIR_EXTERNAL_TEST_CURL_SOUR
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		LC_ALL=C.UTF-8 \
 		$(MAKE)
 
@@ -45,7 +43,6 @@ $(KEFIR_EXTERNAL_TEST_CURL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR
 	@cd "$(KEFIR_EXTERNAL_TEST_CURL_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		KEFIR_RTLIB="$(realpath $(LIBKEFIRRT_A))" \
 		LC_ALL=C.UTF-8 \
 		$(MAKE) test TFLAGS='!165 !433 !537 !962 !963 !964 !965 !966 !967 !1448 !1560 !2046 !2047 $(shell echo $(MAKEFLAGS) | grep -Eo "\-j[0-9]+" || true)' 2>&1 | tee "$(shell realpath $@.tmp)"
 	@mv "$@.tmp" "$@"

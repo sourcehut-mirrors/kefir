@@ -539,12 +539,6 @@ kefir_result_t kefir_driver_apply_target_linker_final_configuration(
             LINK_FILE(externals->netbsd.library_path, "crtn.o");
         }
     }
-
-    if (linker_config->flags.link_rtlib && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
-        REQUIRE(linker_config->rtlib_location != NULL,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid kefir runtime library file name"));
-        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, linker_config->rtlib_location));
-    }
     return KEFIR_OK;
 }
 

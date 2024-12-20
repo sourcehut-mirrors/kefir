@@ -66,10 +66,6 @@ static kefir_result_t output_compiler_config(FILE *output,
         case KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY:
             // Intentionally left blank
             break;
-
-        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE:
-            fprintf(output, " --dump-runtime-code");
-            break;
     }
 
     if (configuration->input_filepath != NULL) {

@@ -313,7 +313,7 @@ generate_environment () {
 
     if [ "$host_cc" = "kefir" ]; then
         log -n "Generating environment..."
-        $cc $cflags --environment-info | grep -v "WORKDIR\|RTLIB\|RTINC" | sed -e "s/^/export /g"
+        $cc $cflags --environment-info | grep -v "WORKDIR\|RTINC" | sed -e "s/^/export /g"
         log "done"
         exit 0
     fi

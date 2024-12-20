@@ -25,8 +25,8 @@
 
 #define MEMBERSZ(structure, field) (sizeof(((structure *) NULL)->field))
 
-static kefir_result_t preprocess_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                      const char *arg) {
+static kefir_result_t preprocess_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                      const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -38,8 +38,9 @@ static kefir_result_t preprocess_hook(struct kefir_mem *mem, struct kefir_string
     return KEFIR_OK;
 }
 
-static kefir_result_t skip_preprocessor_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option,
-                                             void *raw_options, const char *arg) {
+static kefir_result_t skip_preprocessor_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                             const struct kefir_cli_option *option, void *raw_options,
+                                             const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -51,8 +52,8 @@ static kefir_result_t skip_preprocessor_hook(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t pp_timestamp_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                        const char *arg) {
+static kefir_result_t pp_timestamp_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                        const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -63,8 +64,8 @@ static kefir_result_t pp_timestamp_hook(struct kefir_mem *mem, struct kefir_stri
     return KEFIR_OK;
 }
 
-static kefir_result_t define_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                  const char *arg) {
+static kefir_result_t define_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                  const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -84,8 +85,8 @@ static kefir_result_t define_hook(struct kefir_mem *mem, struct kefir_string_poo
     return KEFIR_OK;
 }
 
-static kefir_result_t undefine_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                    const char *arg) {
+static kefir_result_t undefine_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                    const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -94,15 +95,16 @@ static kefir_result_t undefine_hook(struct kefir_mem *mem, struct kefir_string_p
     const char *symbol = kefir_string_pool_insert(mem, symbols, arg, NULL);
     REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
 
-    REQUIRE_OK(kefir_list_insert_after(mem, &options->undefines, kefir_list_tail(&options->undefines), (void *) symbol));
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &options->undefines, kefir_list_tail(&options->undefines), (void *) symbol));
     if (kefir_hashtree_has(&options->defines, (kefir_hashtree_key_t) symbol)) {
         REQUIRE_OK(kefir_hashtree_delete(mem, &options->defines, (kefir_hashtree_key_t) symbol));
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t include_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                   const char *arg) {
+static kefir_result_t include_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                   const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -116,8 +118,8 @@ static kefir_result_t include_hook(struct kefir_mem *mem, struct kefir_string_po
     return KEFIR_OK;
 }
 
-static kefir_result_t sys_include_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                       const char *arg) {
+static kefir_result_t sys_include_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                       const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -132,8 +134,8 @@ static kefir_result_t sys_include_hook(struct kefir_mem *mem, struct kefir_strin
     return KEFIR_OK;
 }
 
-static kefir_result_t include_file_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_cli_option *option, void *raw_options,
-                                        const char *arg) {
+static kefir_result_t include_file_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                        const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
     UNUSED(symbols);
     UNUSED(option);
@@ -142,8 +144,8 @@ static kefir_result_t include_file_hook(struct kefir_mem *mem, struct kefir_stri
     const char *symbol = kefir_string_pool_insert(mem, symbols, arg, NULL);
     REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
 
-    REQUIRE_OK(
-        kefir_list_insert_after(mem, &options->include_files, kefir_list_tail(&options->include_files), (void *) symbol));
+    REQUIRE_OK(kefir_list_insert_after(mem, &options->include_files, kefir_list_tail(&options->include_files),
+                                       (void *) symbol));
     return KEFIR_OK;
 }
 
@@ -207,8 +209,6 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE(0, "dump-ir", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR, action),
     SIMPLE(0, "dump-opt", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_DUMP_OPT,
            action),
-    SIMPLE(0, "dump-runtime-code", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT,
-           KEFIR_COMPILER_RUNNER_ACTION_DUMP_RUNTIME_CODE, action),
     SIMPLE(0, "json-errors", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON,
            error_report_type),
     SIMPLE(0, "tabular-errors", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT,

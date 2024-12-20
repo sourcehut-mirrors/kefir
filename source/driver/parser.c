@@ -139,9 +139,6 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("--print-opt", arg) == 0) {
             // Print optimizer code
             config->stage = KEFIR_DRIVER_STAGE_PRINT_OPT;
-        } else if (strcmp("--print-runtime-code", arg) == 0) {
-            // Print runtime code
-            config->stage = KEFIR_DRIVER_STAGE_PRINT_RUNTIME_CODE;
         } else if (strcmp("-run", arg) == 0) {
             // Run executable
             config->stage = KEFIR_DRIVER_STAGE_RUN;
@@ -432,9 +429,6 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Do not link start files and default libraries
             config->flags.link_start_files = false;
             config->flags.link_default_libs = false;
-        } else if (strcmp("-nortlib", arg) == 0) {
-            // Do not link runtime library
-            config->flags.link_rtlib = false;
         } else if (strcmp("-nortinc", arg) == 0) {
             // Do not include runtime headers
             config->flags.include_rtinc = false;

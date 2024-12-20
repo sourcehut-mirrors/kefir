@@ -20,13 +20,11 @@ endif
 $(WORK_DIR)/stage0/bin/kefir:
 	@echo "Bootstrapping stage0 portable kefir distribution..."
 	@unset KEFIR_RTINC && \
-		unset KEFIR_RTLIB && \
 		$(MAKE) -f "$(ROOT_DIR)/dist/portable/Makefile.stage" WORK_DIR="$(WORK_DIR)/stage0.work" TARGET_DIR="$(WORK_DIR)/stage0" all
 
 $(WORK_DIR)/stage1/bin/kefir: $(WORK_DIR)/stage0/bin/kefir
 	@echo "Bootstrapping stage1 portable kefir distribution..."
 	@unset KEFIR_RTINC && \
-		unset KEFIR_RTLIB && \
 		$(MAKE) -f "$(ROOT_DIR)/dist/portable/Makefile.stage" \
 		WORK_DIR="$(WORK_DIR)/stage1.work" TARGET_DIR="$(WORK_DIR)/stage1" \
 		CC="$(WORK_DIR)/stage0/bin/kefir" \
@@ -37,7 +35,6 @@ $(WORK_DIR)/stage1/bin/kefir: $(WORK_DIR)/stage0/bin/kefir
 $(WORK_DIR)/stage2/bin/kefir: $(WORK_DIR)/stage1/bin/kefir
 	@echo "Bootstrapping stage2 portable kefir distribution..."
 	@unset KEFIR_RTINC && \
-		unset KEFIR_RTLIB && \
 		$(MAKE) -f "$(ROOT_DIR)/dist/portable/Makefile.stage" \
 		WORK_DIR="$(WORK_DIR)/stage2.work" TARGET_DIR="$(WORK_DIR)/stage2" \
 		CC="$(WORK_DIR)/stage1/bin/kefir" \
