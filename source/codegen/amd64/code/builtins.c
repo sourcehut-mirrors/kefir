@@ -629,7 +629,7 @@ static kefir_result_t translate_parityl(struct kefir_mem *mem, struct kefir_code
 
     REQUIRE(call_node->argument_count == 1,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                            "Expected a single argument for __kefir_builtin_popcountl/__kefir_builtin_popcountll"));
+                            "Expected a single argument for __kefir_builtin_parityl/__kefir_builtin_parityll"));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &argument_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
@@ -669,6 +669,69 @@ static kefir_result_t translate_parityl(struct kefir_mem *mem, struct kefir_code
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, tmp_result_vreg, NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_bswap16(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                        const struct kefir_opt_instruction *instruction,
+                                        const struct kefir_opt_call_node *call_node) {
+    kefir_asmcmp_virtual_register_index_t argument_vreg, result_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected a single argument for __kefir_builtin_bswap16"));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &argument_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         result_vreg, argument_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_rol(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_VREG16(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(8), NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_bswap32(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                        const struct kefir_opt_instruction *instruction,
+                                        const struct kefir_opt_call_node *call_node) {
+    kefir_asmcmp_virtual_register_index_t argument_vreg, result_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected a single argument for __kefir_builtin_bswap32"));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &argument_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         result_vreg, argument_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_bswap(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_bswap64(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                        const struct kefir_opt_instruction *instruction,
+                                        const struct kefir_opt_call_node *call_node) {
+    kefir_asmcmp_virtual_register_index_t argument_vreg, result_vreg;
+
+    REQUIRE(call_node->argument_count == 1,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected a single argument for __kefir_builtin_bswap64"));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &argument_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         result_vreg, argument_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_bswap(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        &KEFIR_ASMCMP_MAKE_VREG(result_vreg), NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
@@ -750,6 +813,18 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
                strcmp(ir_func_decl->name, "__kefir_builtin_parityll") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_parityl(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_bswap16") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_bswap16(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_bswap16") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_bswap16(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_bswap32") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_bswap32(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_bswap64") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_bswap64(mem, function, instruction, call_node));
     } else {
         ASSIGN_PTR(found_builtin, false);
     }

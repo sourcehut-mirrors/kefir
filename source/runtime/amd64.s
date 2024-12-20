@@ -98,24 +98,3 @@ __kefirrt_infl:
 __kefirrt_infl_const:
     .long   2139095040
 .section .text
-
-.global __kefirrt_bswap16
-.hidden __kefirrt_bswap16
-__kefirrt_bswap16:
-    mov eax, edi
-    rol ax, 8
-    ret
-
-.global __kefirrt_bswap32
-.hidden __kefirrt_bswap32
-__kefirrt_bswap32:
-    mov eax, edi
-    bswap eax
-    ret
-
-.global __kefirrt_bswap64
-.hidden __kefirrt_bswap64
-__kefirrt_bswap64:
-    mov rax, rdi
-    bswap rax
-    ret
