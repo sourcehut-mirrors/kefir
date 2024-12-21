@@ -45,7 +45,6 @@ ifeq ($(INSTALL_LICENSES),yes)
 	@echo "Installing license files..."
 	@mkdir -p "$(DESTDIR)$(datarootdir)/licenses/kefir/runtime"
 	@install $(ROOT)/COPYING "$(DESTDIR)$(datarootdir)/licenses/kefir/COPYING"
-	@install $(SOURCE_DIR)/runtime/LICENSE "$(DESTDIR)$(datarootdir)/licenses/kefir/runtime/LICENSE"
 	@install $(ROOT)/dist/README.license "$(DESTDIR)$(datarootdir)/licenses/kefir/README"
 endif
 	@echo "Initializing local config..."
