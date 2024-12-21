@@ -43,7 +43,7 @@ endif
 	@install "$(KEFIR_BIN_DIR)"/man/kefir-detect-host-env.1.gz -t "$(DESTDIR)$(man1dir)"
 ifeq ($(INSTALL_LICENSES),yes)
 	@echo "Installing license files..."
-	@mkdir -p "$(DESTDIR)$(datarootdir)/licenses/kefir/runtime"
+	@mkdir -p "$(DESTDIR)$(datarootdir)/licenses/kefir"
 	@install $(ROOT)/COPYING "$(DESTDIR)$(datarootdir)/licenses/kefir/COPYING"
 	@install $(ROOT)/dist/README.license "$(DESTDIR)$(datarootdir)/licenses/kefir/README"
 endif
