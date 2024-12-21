@@ -35,7 +35,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log: $(KEFIR_EXTERNAL_TEST_GCC_DI
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/runtime)" \
 		KEFIR_EXTRAFLAGS="$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS)" \
-		bash -c 'set -o pipefail; "$(SOURCE_DIR)/tests/external/gcc-torture/run_gcc_torture_suite.sh" 2>&1 | (tee "$@.tmp" || true)'
+		"$(SOURCE_DIR)/tests/external/gcc-torture/run_gcc_torture_suite.sh" 2>&1 | tee "$@.tmp"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/gcc-torture.test.done: $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log
