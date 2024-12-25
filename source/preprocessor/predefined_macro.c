@@ -276,6 +276,12 @@ MACRO_PP_NUMBER_FMT(dbl_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.double_digits)
 MACRO_PP_NUMBER_FMT(ldbl_dig, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.long_double_digits)
+MACRO_PP_NUMBER_FMT(flt_decimal_dig, 64, "%" KEFIR_INT64_FMT,
+                    preprocessor->context->environment.data_model->floating_point.float_decimal_digits)
+MACRO_PP_NUMBER_FMT(dbl_decimal_dig, 64, "%" KEFIR_INT64_FMT,
+                    preprocessor->context->environment.data_model->floating_point.double_decimal_digits)
+MACRO_PP_NUMBER_FMT(ldbl_decimal_dig, 64, "%" KEFIR_INT64_FMT,
+                    preprocessor->context->environment.data_model->floating_point.long_double_decimal_digits)
 MACRO_PP_NUMBER_FMT(flt_min_exp, 64, "%" KEFIR_INT64_FMT,
                     preprocessor->context->environment.data_model->floating_point.float_min_exponent)
 MACRO_PP_NUMBER_FMT(dbl_min_exp, 64, "%" KEFIR_INT64_FMT,
@@ -770,6 +776,15 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_dig,
                                                     "__LDBL_DIG__", macro_ldbl_dig_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_decimal_dig,
+                                                    "__FLT_DECIMAL_DIG__", macro_flt_decimal_dig_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.dbl_decimal_dig,
+                                                    "__DBL_DECIMAL_DIG__", macro_dbl_decimal_dig_apply));
+
+        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_decimal_dig,
+                                                    "__LDBL_DECIMAL_DIG__", macro_ldbl_decimal_dig_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_min_exp,
                                                     "__FLT_MIN_EXP__", macro_flt_min_exp_apply));

@@ -97,6 +97,9 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
             struct kefir_preprocessor_macro flt_dig;
             struct kefir_preprocessor_macro dbl_dig;
             struct kefir_preprocessor_macro ldbl_dig;
+            struct kefir_preprocessor_macro flt_decimal_dig;
+            struct kefir_preprocessor_macro dbl_decimal_dig;
+            struct kefir_preprocessor_macro ldbl_decimal_dig;
             struct kefir_preprocessor_macro flt_min_exp;
             struct kefir_preprocessor_macro dbl_min_exp;
             struct kefir_preprocessor_macro ldbl_min_exp;

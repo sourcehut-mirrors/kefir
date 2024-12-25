@@ -60,6 +60,9 @@ typedef struct kefir_data_model_descriptor {
         kefir_int64_t float_digits;
         kefir_int64_t double_digits;
         kefir_int64_t long_double_digits;
+        kefir_int64_t float_decimal_digits;
+        kefir_int64_t double_decimal_digits;
+        kefir_int64_t long_double_decimal_digits;
         kefir_int64_t float_min_exponent;
         kefir_int64_t double_min_exponent;
         kefir_int64_t long_double_min_exponent;
