@@ -125,16 +125,16 @@ kefir_result_t kefir_lexer_init_punctuators(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t match_punctuator(struct kefir_lexer_source_cursor *cursor, struct kefir_trie *trie,
+static kefir_result_t match_punctuator(struct kefir_lexer_source_cursor *cursor, kefir_size_t cursor_offset, struct kefir_trie *trie,
                                        struct kefir_token *token) {
     struct kefir_trie_vertex *vertex = NULL;
-    REQUIRE_OK(kefir_trie_at(trie, (kefir_trie_key_t) kefir_lexer_source_cursor_at(cursor, 0), &vertex));
-    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+    REQUIRE_OK(kefir_trie_at(trie, (kefir_trie_key_t) kefir_lexer_source_cursor_at(cursor, cursor_offset), &vertex));
 
-    kefir_result_t res = match_punctuator(cursor, &vertex->node, token);
-    if (res == KEFIR_NOT_FOUND) {
+    kefir_result_t res = match_punctuator(cursor, cursor_offset + 1, &vertex->node, token);
+    if (res == KEFIR_NOT_FOUND || res == KEFIR_NO_MATCH) {
         REQUIRE(vertex->node.value != PUNCTUATOR_NONE, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match punctuator"));
         REQUIRE_OK(kefir_token_new_punctuator((kefir_punctuator_token_t) vertex->node.value, token));
+        REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, cursor_offset + 1));
     } else {
         REQUIRE_OK(res);
     }
@@ -147,7 +147,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct kefir_token *, token, payload);
 
-    kefir_result_t res = match_punctuator(lexer->cursor, &lexer->punctuators, token);
+    kefir_result_t res = match_punctuator(lexer->cursor, 0, &lexer->punctuators, token);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match punctuator");
     }
