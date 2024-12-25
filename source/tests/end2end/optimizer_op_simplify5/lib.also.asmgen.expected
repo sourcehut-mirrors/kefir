@@ -32,16 +32,23 @@ _kefir_func_less_or_equalsld_label1:
     fstpt -96(%rbp)
     fldt -48(%rbp)
     fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldt -96(%rbp)
+    fldt -80(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
+    fldt -96(%rbp)
+    fldt -80(%rbp)
     mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    mov %rcx, %rax
+    mov $0, %rdx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rdx, %rcx
+    or %rcx, %rax
+    setne %al
+    movzx %al, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -116,16 +123,23 @@ _kefir_func_greater_or_equalsld_label1:
     fstpt -96(%rbp)
     fldt -48(%rbp)
     fstpt -80(%rbp)
-    fldt -96(%rbp)
     fldt -80(%rbp)
+    fldt -96(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
+    fldt -96(%rbp)
+    fldt -80(%rbp)
     mov $0, %rcx
-    test %rax, %rax
-    sete %cl
-    mov %rcx, %rax
+    mov $0, %rdx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rdx, %rcx
+    or %rcx, %rax
+    setne %al
+    movzx %al, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

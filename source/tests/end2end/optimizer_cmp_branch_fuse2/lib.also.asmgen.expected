@@ -31,7 +31,9 @@ _kefir_func_lessf_label1:
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
+    jp _kefir_func_lessf_label4
     jb _kefir_func_lessf_label2
+_kefir_func_lessf_label4:
     jmp _kefir_func_lessf_label3
 _kefir_func_lessf_label2:
     mov $1, %rax
@@ -95,7 +97,9 @@ _kefir_func_greaterf_label1:
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
+    jp _kefir_func_greaterf_label4
     ja _kefir_func_greaterf_label2
+_kefir_func_greaterf_label4:
     jmp _kefir_func_greaterf_label3
 _kefir_func_greaterf_label2:
     mov $1, %rax
@@ -158,7 +162,9 @@ _kefir_func_greater_or_equalsf_label1:
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
+    jp _kefir_func_greater_or_equalsf_label4
     jae _kefir_func_greater_or_equalsf_label2
+_kefir_func_greater_or_equalsf_label4:
     jmp _kefir_func_greater_or_equalsf_label3
 _kefir_func_greater_or_equalsf_label2:
     mov $1, %rax
@@ -189,7 +195,9 @@ _kefir_func_less_or_equalsf_label1:
     movd %eax, %xmm0
     movd %ecx, %xmm1
     ucomiss %xmm1, %xmm0
+    jp _kefir_func_less_or_equalsf_label4
     jbe _kefir_func_less_or_equalsf_label2
+_kefir_func_less_or_equalsf_label4:
     jmp _kefir_func_less_or_equalsf_label3
 _kefir_func_less_or_equalsf_label2:
     mov $1, %rax
