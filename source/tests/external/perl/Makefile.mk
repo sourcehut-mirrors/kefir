@@ -1,0 +1,54 @@
+
+KEFIR_EXTERNAL_TEST_PERL_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/perl
+
+KEFIR_EXTERNAL_TEST_PERL_VERSION := 5.40.0
+KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_FILENAME := perl-$(KEFIR_EXTERNAL_TEST_PERL_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_PERL_ARCHIVE := $(KEFIR_EXTERNAL_TEST_PERL_DIR)/$(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_PERL_DIR)/perl-$(KEFIR_EXTERNAL_TEST_PERL_VERSION)
+KEFIR_EXTERNAL_TEST_PERL_URL := https://www.cpan.org/src/5.0/perl-$(KEFIR_EXTERNAL_TEST_PERL_VERSION).tar.gz
+
+KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_SHA256 := c740348f357396327a9795d3e8323bafd0fe8a5c7835fc1cbaba0cc8dfe7161f
+
+$(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_PERL_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_PERL_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_PERL_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_PERL_ARCHIVE_FILENAME)"
+	@echo "Applying $(SOURCE_DIR)/tests/external/perl/perl-5.40.0.patch..."
+	@patch -l "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/ext/Errno/Errno_pm.PL" < "$(SOURCE_DIR)/tests/external/perl/perl-5.40.0.patch"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure.gnu
+
+$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/perl: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/Makefile
+	@echo "Building perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)/perl
+	@echo "Testing perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/perl.test.done: $(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/perl/validate.sh "$(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log"
+	@touch "$@"
+	@echo "Perl $(KEFIR_EXTERNAL_TEST_PERL_VERSION) test suite successfully finished"
+
+EXTERNAL_TESTS_SLOW_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/perl.test.done

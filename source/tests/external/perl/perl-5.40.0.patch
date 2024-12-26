@@ -1,0 +1,11 @@
++++ ext/Errno/Errno_pm.PL     2024-12-26 13:57:39.924563042 +0200
+--- ext/Errno/Errno_pm.PL     2024-04-16 20:11:38.000000000 +0300
+@@ -184,6 +184,8 @@
+            }
+        }
+        close(CPPO);
++push(@file, '/usr/include/asm-generic/errno-base.h');
++push(@file, '/usr/include/asm-generic/errno.h');
+     }
+     return uniq(@file);
+ }
