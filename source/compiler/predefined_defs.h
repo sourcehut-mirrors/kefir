@@ -380,6 +380,8 @@ extern int __kefir_builtin_clrsbll(long);
 extern int __kefir_builtin_popcountll(unsigned long);
 extern int __kefir_builtin_parityll(long);
 
+extern int __kefir_builtin_flt_rounds(void);
+
 // Builtins
 #define __builtin_expect(_exp, _c) ((_c), (_exp))
 #define __builtin_expect_with_probability(_expr, _c, _prob) ((_prob), (_c), (_exp))
@@ -424,6 +426,8 @@ extern int __kefir_builtin_parityll(long);
 #define __builtin_huge_val() __builtin_inf()
 #define __builtin_huge_valf() __builtin_inff()
 #define __builtin_huge_vall() __builtin_infl()
+
+#define __builtin_flt_rounds() __kefir_builtin_flt_rounds()
 
 #define __builtin_LINE() __LINE__
 #define __builtin_FILE() __FILE__

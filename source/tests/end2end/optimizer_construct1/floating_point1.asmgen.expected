@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 29,
+            "id": 30,
             "name": "arith1",
             "code": {
                 "entry_point": 0,
@@ -657,7 +657,7 @@
             }
         },
         {
-            "id": 30,
+            "id": 31,
             "name": "arith2",
             "code": {
                 "entry_point": 0,
@@ -1313,7 +1313,7 @@
             }
         },
         {
-            "id": 31,
+            "id": 32,
             "name": "comparison1",
             "code": {
                 "entry_point": 0,
@@ -1561,7 +1561,7 @@
             }
         },
         {
-            "id": 32,
+            "id": 33,
             "name": "comparison2",
             "code": {
                 "entry_point": 0,
@@ -1809,7 +1809,7 @@
             }
         },
         {
-            "id": 33,
+            "id": 34,
             "name": "conversion",
             "code": {
                 "entry_point": 0,

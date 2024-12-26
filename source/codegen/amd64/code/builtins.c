@@ -737,6 +737,34 @@ static kefir_result_t translate_bswap64(struct kefir_mem *mem, struct kefir_code
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_flt_rounds(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                           const struct kefir_opt_instruction *instruction,
+                                           const struct kefir_opt_call_node *call_node) {
+    kefir_asmcmp_virtual_register_index_t tmp_area_vreg, result_vreg;
+
+    REQUIRE(call_node->argument_count == 0,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected no arguments for __kefir_builtin_flt_rounds"));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
+                                                                                 &tmp_area_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_stmxcsr(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_area_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_mov(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
+        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_area_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_shr(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(3), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_and(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                      &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_UINT(0xc00), NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
                                                      struct kefir_codegen_amd64_function *function,
                                                      const struct kefir_opt_instruction *instruction,
@@ -825,6 +853,9 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_bswap64") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_bswap64(mem, function, instruction, call_node));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_flt_rounds") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_flt_rounds(mem, function, instruction, call_node));
     } else {
         ASSIGN_PTR(found_builtin, false);
     }

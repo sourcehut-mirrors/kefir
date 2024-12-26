@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 26,
+            "id": 27,
             "name": "test",
             "code": {
                 "entry_point": 0,
@@ -238,7 +238,7 @@
                                 "opcode": "vararg_get",
                                 "ref": 12,
                                 "type": {
-                                    "id": 56,
+                                    "id": 58,
                                     "index": 0
                                 },
                                 "control_next": 15,
@@ -327,7 +327,7 @@
             }
         },
         {
-            "id": 27,
+            "id": 28,
             "name": "test2",
             "code": {
                 "entry_point": 0,

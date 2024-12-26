@@ -415,7 +415,7 @@
             ]
         },
         {
-            "identifier": 76,
+            "identifier": 78,
             "type": [
                 {
                     "type": "long"
@@ -484,7 +484,7 @@
             ]
         },
         {
-            "identifier": 77,
+            "identifier": 79,
             "type": [
                 {
                     "type": "float"
@@ -492,7 +492,7 @@
             ]
         },
         {
-            "identifier": 78,
+            "identifier": 80,
             "type": [
                 {
                     "type": "array",
@@ -755,7 +755,7 @@
         {
             "identifier": "a13",
             "storage": "global",
-            "type": 77,
+            "type": 79,
             "value": [
                 {
                     "class": "undefined"
@@ -824,24 +824,24 @@
     ],
     "function_declarations": [
         {
-            "identifier": 26,
+            "identifier": 27,
             "name": "d2",
-            "parameters": 76,
+            "parameters": 78,
             "vararg": false,
-            "returns": 77,
+            "returns": 79,
             "returns_twice": false
         }
     ],
     "functions": [
         {
-            "identifier": 26,
+            "identifier": 27,
             "name": "d2",
-            "locals": 78,
+            "locals": 80,
             "body": [
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 18
                     }
                 },
@@ -858,7 +858,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 3
                     }
                 },
@@ -876,7 +876,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 2
                     }
                 },
@@ -893,7 +893,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 0
                     }
                 },
@@ -923,7 +923,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 19
                     }
                 },
@@ -941,7 +941,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 2
                     }
                 },
@@ -957,7 +957,7 @@
                 {
                     "opcode": "getlocal",
                     "arg": {
-                        "type": 78,
+                        "type": 80,
                         "index": 19
                     }
                 },
@@ -1001,7 +1001,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 142,
+            "subroutine_id": 143,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
@@ -3166,7 +3166,7 @@
                 "children": []
             },
             {
-                "identifier": 142,
+                "identifier": 143,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -3208,7 +3208,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 143,
+                        "identifier": 144,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3227,7 +3227,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 144,
+                        "identifier": 145,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3246,7 +3246,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 145,
+                        "identifier": 146,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -3255,7 +3255,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 146
+                                "value": 147
                             },
                             {
                                 "tag": "parameter",
@@ -3265,7 +3265,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 148,
+                        "identifier": 149,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3312,7 +3312,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 149,
+                        "identifier": 150,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3359,7 +3359,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 150,
+                        "identifier": 151,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3368,7 +3368,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 151
+                                "value": 152
                             },
                             {
                                 "tag": "code_begin",
@@ -3406,7 +3406,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 153,
+                        "identifier": 154,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3415,7 +3415,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 154
+                                "value": 155
                             },
                             {
                                 "tag": "code_begin",
@@ -3453,7 +3453,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 156,
+                        "identifier": 157,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -3462,7 +3462,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 157
+                                "value": 158
                             },
                             {
                                 "tag": "code_begin",
@@ -3474,7 +3474,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 85
+                                "value": 86
                             },
                             {
                                 "tag": "external",
@@ -3490,25 +3490,6 @@
                 ]
             },
             {
-                "identifier": 146,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 147
-                    }
-                ],
-                "children": []
-            },
-            {
                 "identifier": 147,
                 "tag": "type_pointer",
                 "attributes": [
@@ -3522,13 +3503,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 19
+                        "value": 148
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 151,
+                "identifier": 148,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -3541,7 +3522,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 152
+                        "value": 19
                     }
                 ],
                 "children": []
@@ -3560,13 +3541,32 @@
                     },
                     {
                         "tag": "type",
+                        "value": 153
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 153,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
                         "value": 19
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 154,
+                "identifier": 155,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -3576,7 +3576,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 155,
+                        "identifier": 156,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -3589,7 +3589,7 @@
                 ]
             },
             {
-                "identifier": 157,
+                "identifier": 158,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -3607,7 +3607,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 158,
+                        "identifier": 159,
                         "tag": "array_subrange",
                         "attributes": [
                             {
