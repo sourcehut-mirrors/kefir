@@ -198,7 +198,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             kefir_uint_t level;
             if (strlen(arg) == 2) {
                 EXPECT_ARG;
-                level = strtoul(argv[++index], NULL, 10);
+                if (argv[index + 1][0] != '-') {
+                    level = strtoul(argv[++index], NULL, 10);
+                } else {
+                    level = 1;
+                }
             } else {
                 level = strtoul(&arg[2], NULL, 10);
             }
