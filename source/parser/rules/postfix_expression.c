@@ -113,29 +113,77 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected left parenthese"));
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
-    while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
-        kefir_result_t res =
-            kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);
-        if (res == KEFIR_NO_MATCH) {
-            res = kefir_parser_ast_builder_scan(mem, builder,
-                                                KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL);
-        }
-        if (res == KEFIR_NO_MATCH) {
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                          "Expected either assignment expresion or type name");
-        } else {
-            REQUIRE_OK(res);
-        }
-        REQUIRE_OK(kefir_parser_ast_builder_builtin_append(mem, builder));
-
-        if (PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
-            REQUIRE_OK(PARSER_SHIFT(builder->parser));
-        } else {
-            REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+    kefir_result_t res;
+    switch (builtin_op) {
+        case KEFIR_AST_BUILTIN_OFFSETOF:
+            REQUIRE_MATCH_OK(
+                &res,
+                kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                       "Expected type name"));
+            REQUIRE_OK(kefir_parser_ast_builder_builtin_append(mem, builder));
+            REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_COMMA),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                           "Expected either comma, or right parenthese"));
-        }
+                                           "Expected comma"));
+            REQUIRE_OK(PARSER_SHIFT(builder->parser));
+            REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                           "Expected identifier"));
+            struct kefir_ast_identifier *identifier =
+                kefir_ast_new_identifier(mem, parser->symbols, PARSER_CURSOR(parser, 0)->identifier);
+            REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate identifier"));
+            REQUIRE_OK(kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(identifier)));
+            REQUIRE_OK(PARSER_SHIFT(builder->parser));
+            REQUIRE_OK(scan_postfixes(mem, builder));
+            REQUIRE_OK(kefir_parser_ast_builder_builtin_append(mem, builder));
+            break;
+
+        case KEFIR_AST_BUILTIN_VA_START:
+        case KEFIR_AST_BUILTIN_VA_END:
+        case KEFIR_AST_BUILTIN_VA_ARG:
+        case KEFIR_AST_BUILTIN_VA_COPY:
+        case KEFIR_AST_BUILTIN_ALLOCA:
+        case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN:
+        case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX:
+        case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE:
+        case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION:
+        case KEFIR_AST_BUILTIN_CONSTANT:
+        case KEFIR_AST_BUILTIN_CLASSIFY_TYPE:
+            while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
+                res =
+                    kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);
+                if (res == KEFIR_NO_MATCH) {
+                    res = kefir_parser_ast_builder_scan(
+                        mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, assignment_expression), NULL);
+                }
+                if (res == KEFIR_NO_MATCH) {
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                  "Expected either assignment expresion or type name");
+                } else {
+                    REQUIRE_OK(res);
+                }
+                REQUIRE_OK(kefir_parser_ast_builder_builtin_append(mem, builder));
+
+                if (PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
+                    REQUIRE_OK(PARSER_SHIFT(builder->parser));
+                } else {
+                    REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                   "Expected either comma, or right parenthese"));
+                }
+            }
+            break;
+
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT64:
+        case KEFIR_AST_BUILTIN_INFINITY_FLOAT32:
+        case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
+            // Intentionally left blank
+            break;
     }
+
+    REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                   "Expected right parenthese"));
     REQUIRE_OK(PARSER_SHIFT(builder->parser));
     return KEFIR_OK;
 }

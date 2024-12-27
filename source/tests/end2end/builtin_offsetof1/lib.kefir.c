@@ -22,6 +22,9 @@
 
 #define offsetof(_type, _field) __builtin_offsetof(_type, _field)
 
+typedef int a;
+typedef long f;
+
 extern int offsets[] = {offsetof(struct Struct1, a),     offsetof(struct Struct1, b),   offsetof(struct Struct1, c),
                         offsetof(struct Struct1, d),     offsetof(struct Struct1, e),   offsetof(struct Struct1, f),
                         offsetof(struct Struct1, g),     offsetof(struct Struct1, x),   offsetof(union Union1, a),
