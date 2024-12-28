@@ -93,6 +93,25 @@ static kefir_result_t kefir_asmcmp_format_impl(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+struct vreg_type_dependents {
+    struct kefir_list vreg_idx;
+};
+
+static kefir_result_t vreg_type_dependents_free(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct vreg_type_dependents *, dependents, value);
+    REQUIRE(dependents != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid virtual register type dependents"));
+
+    REQUIRE_OK(kefir_list_free(mem, &dependents->vreg_idx));
+    KEFIR_FREE(mem, dependents);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class *klass, void *payload,
                                          struct kefir_asmcmp_context *context) {
     REQUIRE(klass != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context class"));
@@ -105,6 +124,8 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_hashtree_init(&context->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->inline_assembly, free_inline_asm, NULL));
     REQUIRE_OK(kefir_asmcmp_lifetime_map_init(&context->vreg_liveness));
+    REQUIRE_OK(kefir_hashtree_init(&context->vreg_type_dependents, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->vreg_type_dependents, vreg_type_dependents_free, NULL));
     REQUIRE_OK(kefir_asmcmp_debug_info_init(&context->debug_info));
     context->klass = klass;
     context->payload = payload;
@@ -129,6 +150,7 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
 
     REQUIRE_OK(kefir_asmcmp_debug_info_free(mem, &context->debug_info));
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->vreg_type_dependents));
     REQUIRE_OK(kefir_asmcmp_lifetime_map_free(mem, &context->vreg_liveness));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
@@ -864,18 +886,74 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_virtual_register_specify_type(const struct kefir_asmcmp_context *context,
-                                                          kefir_asmcmp_virtual_register_index_t reg_idx,
-                                                          kefir_asmcmp_virtual_register_type_t type) {
-    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
-    REQUIRE(VALID_VREG_IDX(context, reg_idx),
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
-
+static kefir_result_t kefir_asmcmp_virtual_register_specify_type(struct kefir_mem *mem,
+                                                                 struct kefir_asmcmp_context *context,
+                                                                 kefir_asmcmp_virtual_register_index_t reg_idx,
+                                                                 kefir_asmcmp_virtual_register_type_t type) {
     struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[reg_idx];
-    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type has already been specified"));
+    if (vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED) {
+        REQUIRE(vreg->type == type, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Virtual register has confliting types"));
+    }
 
     vreg->type = type;
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&context->vreg_type_dependents, (kefir_hashtree_key_t) reg_idx, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(struct vreg_type_dependents *, dependents, node->value);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&dependents->vreg_idx); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, target_vreg_idx, iter->value);
+            REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type(mem, context, target_vreg_idx, type));
+        }
+        REQUIRE_OK(kefir_hashtree_delete(mem, &context->vreg_type_dependents, (kefir_hashtree_key_t) reg_idx));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_virtual_register_specify_type_dependent(
+    struct kefir_mem *mem, struct kefir_asmcmp_context *context, kefir_asmcmp_virtual_register_index_t target_reg_idx,
+    kefir_asmcmp_virtual_register_index_t source_reg_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_VREG_IDX(context, target_reg_idx),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen target virtual register index"));
+    REQUIRE(VALID_VREG_IDX(context, source_reg_idx),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen source virtual register index"));
+
+    struct kefir_asmcmp_virtual_register *const source_vreg = &context->virtual_registers[source_reg_idx];
+    struct kefir_asmcmp_virtual_register *const target_vreg = &context->virtual_registers[target_reg_idx];
+    REQUIRE(target_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Target virtual register type has already been specified"));
+
+    if (source_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED) {
+        REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type(mem, context, target_reg_idx, source_vreg->type));
+    } else {
+        struct vreg_type_dependents *dependents = NULL;
+        struct kefir_hashtree_node *node;
+        kefir_result_t res =
+            kefir_hashtree_at(&context->vreg_type_dependents, (kefir_hashtree_key_t) source_reg_idx, &node);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            dependents = (struct vreg_type_dependents *) node->value;
+        } else {
+            dependents = KEFIR_MALLOC(mem, sizeof(struct vreg_type_dependents));
+            REQUIRE(dependents != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate virtual register type dependents"));
+            res = kefir_list_init(&dependents->vreg_idx);
+            REQUIRE_CHAIN(
+                &res, kefir_hashtree_insert(mem, &context->vreg_type_dependents, (kefir_hashtree_key_t) source_reg_idx,
+                                            (kefir_hashtree_value_t) dependents));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                KEFIR_FREE(mem, dependents);
+                return res;
+            });
+        }
+
+        REQUIRE_OK(kefir_list_insert_after(mem, &dependents->vreg_idx, kefir_list_tail(&dependents->vreg_idx),
+                                           (void *) target_reg_idx));
+    }
     return KEFIR_OK;
 }
 

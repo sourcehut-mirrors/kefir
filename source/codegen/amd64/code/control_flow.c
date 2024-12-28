@@ -278,6 +278,12 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
 
             switch (source_vreg->type) {
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type,
+                                                                 &target_vreg_idx));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, &function->code.context,
+                                                                                    target_vreg_idx, source_vreg_idx));
+                    break;
+
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, source_vreg->type,
@@ -315,8 +321,8 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
             REQUIRE_OK(res);
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, target_vreg_idx, &target_vreg));
             if (target_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED) {
-                REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type(&function->code.context, target_vreg_idx,
-                                                                      source_vreg->type));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_specify_type_dependent(mem, &function->code.context,
+                                                                                target_vreg_idx, source_vreg_idx));
             }
         }
 
