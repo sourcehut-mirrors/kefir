@@ -68,11 +68,15 @@ struct kefir_ast_designator *kefir_ast_new_range_designator(struct kefir_mem *me
     return designator;
 }
 
-
-kefir_result_t kefir_ast_temporary_index_designator_from_range(const struct kefir_ast_designator *range_designator, kefir_size_t index, struct kefir_ast_designator *designator) {
-    REQUIRE(range_designator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid subscript range designator"));
-    REQUIRE(range_designator->type == KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid subscript range designator"));
-    REQUIRE(index < kefir_ast_designator_elements(range_designator), KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index is out of subscript designator range"));
+kefir_result_t kefir_ast_temporary_index_designator_from_range(const struct kefir_ast_designator *range_designator,
+                                                               kefir_size_t index,
+                                                               struct kefir_ast_designator *designator) {
+    REQUIRE(range_designator != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid subscript range designator"));
+    REQUIRE(range_designator->type == KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid subscript range designator"));
+    REQUIRE(index < kefir_ast_designator_elements(range_designator),
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested index is out of subscript designator range"));
 
     designator->type = KEFIR_AST_DESIGNATOR_SUBSCRIPT;
     designator->index = range_designator->range.begin + index;
@@ -138,7 +142,10 @@ struct kefir_ast_designator *kefir_ast_designator_clone(struct kefir_mem *mem, c
     return dst;
 }
 
-static kefir_result_t kefir_ast_designator_unroll_impl(struct kefir_ast_designator *root_designator, struct kefir_ast_designator *prev_designator, struct kefir_ast_designator *designator, kefir_result_t (*callback)(struct kefir_ast_designator *, void *), void *payload) {
+static kefir_result_t kefir_ast_designator_unroll_impl(
+    struct kefir_ast_designator *root_designator, struct kefir_ast_designator *prev_designator,
+    const struct kefir_ast_designator *designator, kefir_result_t (*callback)(struct kefir_ast_designator *, void *),
+    void *payload) {
     if (designator == NULL) {
         REQUIRE_OK(callback(root_designator, payload));
         return KEFIR_OK;
@@ -166,27 +173,32 @@ static kefir_result_t kefir_ast_designator_unroll_impl(struct kefir_ast_designat
     switch (designator_iter.type) {
         case KEFIR_AST_DESIGNATOR_MEMBER:
         case KEFIR_AST_DESIGNATOR_SUBSCRIPT:
-            REQUIRE_OK(kefir_ast_designator_unroll_impl(root_designator, &designator_iter, designator->next, callback, payload));
+            REQUIRE_OK(kefir_ast_designator_unroll_impl(root_designator, &designator_iter, designator->next, callback,
+                                                        payload));
             break;
 
         case KEFIR_AST_DESIGNATOR_SUBSCRIPT_RANGE:
             designator_iter.type = KEFIR_AST_DESIGNATOR_SUBSCRIPT;
             for (kefir_size_t i = designator->range.begin; i <= designator->range.end; i++) {
                 designator_iter.index = i;
-                REQUIRE_OK(kefir_ast_designator_unroll_impl(root_designator, &designator_iter, designator->next, callback, payload));
+                REQUIRE_OK(kefir_ast_designator_unroll_impl(root_designator, &designator_iter, designator->next,
+                                                            callback, payload));
             }
             break;
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_designator_unroll(struct kefir_ast_designator *designator, kefir_result_t (*callback)(struct kefir_ast_designator *, void *), void *payload) {
-    REQUIRE(callback != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST designator unroll callback"));
+kefir_result_t kefir_ast_designator_unroll(const struct kefir_ast_designator *designator,
+                                           kefir_result_t (*callback)(struct kefir_ast_designator *, void *),
+                                           void *payload) {
+    REQUIRE(callback != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST designator unroll callback"));
 
     if (designator != NULL) {
         REQUIRE_OK(kefir_ast_designator_unroll_impl(NULL, NULL, designator, callback, payload));
     } else {
-        REQUIRE_OK(callback(designator, payload));
+        REQUIRE_OK(callback(NULL, payload));
     }
     return KEFIR_OK;
 }

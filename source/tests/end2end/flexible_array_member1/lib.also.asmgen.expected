@@ -1,0 +1,138 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global T3
+.type T3, @object
+.global t1
+.type t1, @object
+.global t2
+.type t2, @object
+.global t3
+.type t3, @function
+.global get_T2
+.type get_T2, @function
+
+.section .text
+__kefir_text_section_begin:
+t3:
+__kefir_text_func_t3_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_t3_label0:
+_kefir_func_t3_label1:
+    lea __kefir_function_t3_static_t3_8(%rip), %rax
+    pop %rbp
+    ret
+__kefir_text_func_t3_end:
+
+get_T2:
+__kefir_text_func_get_T2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_get_T2_label0:
+_kefir_func_get_T2_label1:
+    movl %edi, -4(%rbp)
+    movsxl -4(%rbp), %rax
+    mov $0, %rcx
+    cmp $0, %eax
+    setge %cl
+    test %ecx, %ecx
+    setne %al
+    movzx %al, %rax
+    mov $0, %rcx
+    test %al, %al
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func_get_T2_label6
+    mov %rax, %rcx
+    jmp _kefir_func_get_T2_label3
+_kefir_func_get_T2_label6:
+_kefir_func_get_T2_label2:
+    movsxl -4(%rbp), %rcx
+    lea T1(%rip), %rdx
+    movsxl (%rdx), %rdx
+    mov $0, %rsi
+    cmp %edx, %ecx
+    setl %sil
+    test %eax, %eax
+    setne %al
+    test %esi, %esi
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov %rax, %rcx
+_kefir_func_get_T2_label3:
+    mov $0, %rax
+    test %ecx, %ecx
+    sete %al
+    test %al, %al
+    jz _kefir_func_get_T2_label4
+    jmp _kefir_func_get_T2_label5
+_kefir_func_get_T2_label4:
+    lea T1(%rip), %rax
+    add $8, %rax
+    movsxl -4(%rbp), %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_get_T2_label5:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get_T2_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+T1:
+    .long 2
+    .zero 4
+    .long 3
+    .zero 4
+    .long 20
+    .zero 4
+
+    .align 4
+T3:
+    .long 12
+    .byte 0x48, 0x45, 0x4c, 0x4c, 0x4f, 0x20, 0x57, 0x4f, 0x52, 0x4c, 0x44, 0x00
+
+    .align 8
+t1:
+    .long 5
+    .zero 4
+    .quad 1
+    .quad 2
+    .quad 3
+    .quad 8
+    .quad 5
+
+    .align 8
+t2:
+    .quad t2s
+
+    .align 8
+t2s:
+    .long 6
+    .zero 4
+    .quad 10
+    .quad 9
+    .quad 8
+    .quad 7
+    .quad 6
+    .quad 5
+
+    .align 8
+__kefir_function_t3_static_t3_8:
+    .long 3
+    .zero 4
+    .quad 4
+    .quad 5
+    .quad 6
+

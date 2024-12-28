@@ -62,4 +62,9 @@ _Static_assert(sizeof(struct kefir_ast_translator_scoped_identifier_function) <=
                    KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE,
                "Unable to fit scoped identifier function into payload field");
 
+kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(struct kefir_mem *,
+                                                                      const struct kefir_ast_context *, const char *,
+                                                                      const struct kefir_ast_scoped_identifier *,
+                                                                      const struct kefir_ast_type **);
+
 #endif

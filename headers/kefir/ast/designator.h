@@ -52,7 +52,8 @@ struct kefir_ast_designator *kefir_ast_new_index_designator(struct kefir_mem *, 
 struct kefir_ast_designator *kefir_ast_new_range_designator(struct kefir_mem *, kefir_size_t, kefir_size_t,
                                                             struct kefir_ast_designator *);
 
-kefir_result_t kefir_ast_temporary_index_designator_from_range(const struct kefir_ast_designator *, kefir_size_t, struct kefir_ast_designator *);
+kefir_result_t kefir_ast_temporary_index_designator_from_range(const struct kefir_ast_designator *, kefir_size_t,
+                                                               struct kefir_ast_designator *);
 
 kefir_size_t kefir_ast_designator_elements(const struct kefir_ast_designator *);
 
@@ -60,6 +61,7 @@ kefir_result_t kefir_ast_designator_free(struct kefir_mem *, struct kefir_ast_de
 
 struct kefir_ast_designator *kefir_ast_designator_clone(struct kefir_mem *, const struct kefir_ast_designator *);
 
-kefir_result_t kefir_ast_designator_unroll(struct kefir_ast_designator *, kefir_result_t (*)(struct kefir_ast_designator *, void *), void *);
+kefir_result_t kefir_ast_designator_unroll(const struct kefir_ast_designator *,
+                                           kefir_result_t (*)(struct kefir_ast_designator *, void *), void *);
 
 #endif
