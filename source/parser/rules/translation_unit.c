@@ -34,12 +34,14 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         while (PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
             PARSER_SHIFT(builder->parser);
         }
-        REQUIRE_MATCH_OK(&res,
-                         kefir_parser_ast_builder_scan(
-                             mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL),
-                         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
-                                                "Expected declaration or function definition"));
-        REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));
+        if (!PARSER_TOKEN_IS_SENTINEL(builder->parser, 0)) {
+            REQUIRE_MATCH_OK(&res,
+                             kefir_parser_ast_builder_scan(
+                                 mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, external_declaration), NULL),
+                             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(builder->parser, 0),
+                                                    "Expected declaration or function definition"));
+            REQUIRE_OK(kefir_parser_ast_builder_translation_unit_append(mem, builder));
+        }
     }
     return KEFIR_OK;
 }
