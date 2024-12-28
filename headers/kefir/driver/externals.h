@@ -49,13 +49,14 @@ typedef struct kefir_driver_external_resources {
     struct kefir_driver_external_resource_toolchain_config netbsd;
 
     struct {
-        const char *source_file;
-        const char *assembly_file;
-        const char *object_file;
-        const char *library_object_file;
-        const char *static_library;
-        const char *shared_library;
-        const char *preprocessed_file;
+        const char **source_file;
+        const char **assembly_file;
+        const char **preprocessed_assembly_file;
+        const char **object_file;
+        const char **library_object_file;
+        const char **static_library;
+        const char **shared_library;
+        const char **preprocessed_file;
     } extensions;
 
     struct kefir_tempfile_manager *tmpfile_manager;

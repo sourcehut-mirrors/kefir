@@ -149,12 +149,46 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     set_if_null(&externals->netbsd.dynamic_linker, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
 #endif
 
-    externals->extensions.source_file = ".c";
-    externals->extensions.preprocessed_file = ".i";
-    externals->extensions.assembly_file = ".s";
-    externals->extensions.object_file = ".o";
-    externals->extensions.library_object_file = ".lo";
-    externals->extensions.static_library = ".a";
-    externals->extensions.shared_library = ".so";
+    static const char *SOURCE_FILE_SUFFIXES[] = {
+        ".c",
+        NULL
+    };
+    static const char *PREPROCESSED_FILE_SUFFIXES[] = {
+        ".i",
+        NULL
+    };
+    static const char *ASSEMBLY_FILE_SUFFIXES[] = {
+        ".s",
+        NULL
+    };
+    static const char *PREPROCESSED_ASSEMBLY_FILE_SUFFIXES[] = {
+        ".S",
+        NULL
+    };
+    static const char *OBJECT_FILE_SUFFIXES[] = {
+        ".o",
+        NULL
+    };
+    static const char *LIBRARY_OBJECT_FILE_SUFFIXES[] = {
+        ".lo",
+        NULL
+    };
+    static const char *STATIC_LIBRARY_FILE_SUFFIXES[] = {
+        ".a",
+        NULL
+    };
+    static const char *SHARED_LIBRARY_FILE_SUFFIXES[] = {
+        ".so",
+        NULL
+    };
+
+    externals->extensions.source_file = SOURCE_FILE_SUFFIXES;
+    externals->extensions.preprocessed_file = PREPROCESSED_FILE_SUFFIXES;
+    externals->extensions.assembly_file = ASSEMBLY_FILE_SUFFIXES;
+    externals->extensions.preprocessed_assembly_file = PREPROCESSED_ASSEMBLY_FILE_SUFFIXES;
+    externals->extensions.object_file = OBJECT_FILE_SUFFIXES;
+    externals->extensions.library_object_file = LIBRARY_OBJECT_FILE_SUFFIXES;
+    externals->extensions.static_library = STATIC_LIBRARY_FILE_SUFFIXES;
+    externals->extensions.shared_library = SHARED_LIBRARY_FILE_SUFFIXES;
     return KEFIR_OK;
 }

@@ -80,6 +80,7 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
             assert(false);
@@ -319,6 +320,7 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
             if (strcmp(argument->value, "-") == 0) {
@@ -392,6 +394,50 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t driver_preprocess_and_assemble(struct kefir_mem *mem,
+                                                  const struct kefir_driver_external_resources *externals,
+                                                  struct kefir_driver_assembler_configuration *assembler_config,
+                                                  struct kefir_compiler_runner_configuration *compiler_config,
+                                                  struct kefir_driver_argument *argument, const char *object_filename) {
+    struct kefir_process compiler_process, assembler_process;
+    REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
+
+    struct kefir_compiler_runner_configuration local_compiler_config = *compiler_config;
+    local_compiler_config.action = KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS;
+
+    const char *asm_filename;
+    REQUIRE_OK(generate_asm_name(mem, externals, &asm_filename));
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_OK(kefir_process_init(&compiler_process));
+    REQUIRE_CHAIN(&res, kefir_process_redirect_stdout_to_file(&compiler_process, asm_filename));
+    REQUIRE_CHAIN(&res, kefir_driver_run_compiler(&local_compiler_config, &compiler_process));
+    REQUIRE_CHAIN(&res, kefir_process_wait(&compiler_process));
+    REQUIRE_CHAIN_SET(&res, compiler_process.status.exited && compiler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_process_kill(&compiler_process);
+        remove(asm_filename);
+        return res;
+    });
+
+    res = KEFIR_OK;
+    REQUIRE_OK(kefir_process_init(&assembler_process));
+    REQUIRE_CHAIN(&res, kefir_driver_run_assembler(mem, object_filename, asm_filename, assembler_config, externals,
+                                                   &assembler_process));
+    REQUIRE_CHAIN(&res, kefir_process_wait(&assembler_process));
+    REQUIRE_CHAIN_SET(&res, assembler_process.status.exited && assembler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_SET_ERRORF(KEFIR_SUBPROCESS_ERROR, "Failed to assemble '%s'", argument->value));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_process_kill(&assembler_process);
+        remove(object_filename);
+        remove(asm_filename);
+        return res;
+    });
+    remove(asm_filename);
+    return KEFIR_OK;
+}
+
 static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration *compiler_config,
                                      struct kefir_driver_argument *argument, const char *output_filename) {
     struct kefir_process compiler_process;
@@ -407,6 +453,36 @@ static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration 
     }
 
     REQUIRE_CHAIN(&res, kefir_driver_run_compiler(compiler_config, &compiler_process));
+
+    REQUIRE_CHAIN(&res, kefir_process_wait(&compiler_process));
+    REQUIRE_CHAIN_SET(&res, compiler_process.status.exited && compiler_process.status.exit_code == EXIT_SUCCESS,
+                      KEFIR_INTERRUPT);
+
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_process_kill(&compiler_process);
+        remove(output_filename);
+        return res;
+    });
+    return KEFIR_OK;
+}
+
+static kefir_result_t driver_preprocess(struct kefir_compiler_runner_configuration *compiler_config,
+                                     struct kefir_driver_argument *argument, const char *output_filename) {
+    struct kefir_process compiler_process;
+    if (argument != NULL) {
+        REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
+    }
+    struct kefir_compiler_runner_configuration local_compiler_config = *compiler_config;
+    local_compiler_config.action = KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS;
+
+    REQUIRE_OK(kefir_process_init(&compiler_process));
+    kefir_result_t res = KEFIR_OK;
+
+    if (output_filename != NULL) {
+        REQUIRE_CHAIN(&res, kefir_process_redirect_stdout_to_file(&compiler_process, output_filename));
+    }
+
+    REQUIRE_CHAIN(&res, kefir_driver_run_compiler(&local_compiler_config, &compiler_process));
 
     REQUIRE_CHAIN(&res, kefir_process_wait(&compiler_process));
     REQUIRE_CHAIN_SET(&res, compiler_process.status.exited && compiler_process.status.exit_code == EXIT_SUCCESS,
@@ -494,6 +570,12 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
                     break;
 
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                    REQUIRE_OK(generate_object_name(mem, externals, &output_filename));
+                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config, argument, output_filename));
+                    REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
+                    break;
+
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
                     output_filename = argument->value;
@@ -522,7 +604,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
-                         externals->extensions.object_file);
+                         externals->extensions.object_file[0]);
                 output_filename = object_filename;
             }
             switch (argument->type) {
@@ -534,6 +616,10 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
                     REQUIRE_OK(driver_assemble(mem, externals, assembler_config, argument, output_filename));
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config, argument, output_filename));
                     break;
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
@@ -563,13 +649,17 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
-                         externals->extensions.assembly_file);
+                         externals->extensions.assembly_file[0]);
                 output_filename = object_filename;
             }
             switch (argument->type) {
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
                     REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                    REQUIRE_OK(driver_preprocess(compiler_config, argument, output_filename));
                     break;
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
@@ -606,7 +696,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
-                         externals->extensions.preprocessed_file);
+                         externals->extensions.preprocessed_file[0]);
                 output_filename = object_filename;
             }
 
@@ -617,13 +707,17 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                 REQUIRE_OK(get_file_basename(input_basename_buf, sizeof(input_basename_buf) - 1, argument->value,
                                              &input_basename));
                 snprintf(object_filename, sizeof(object_filename) - 1, "%s%s", input_basename,
-                         externals->extensions.object_file);
+                         externals->extensions.object_file[0]);
                 compiler_config->dependency_output.target_name = object_filename;
             }
             switch (argument->type) {
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
                     REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
+                    break;
+
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                    REQUIRE_OK(driver_preprocess(compiler_config, argument, output_filename));
                     break;
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:

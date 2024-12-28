@@ -28,8 +28,6 @@
 
 static kefir_bool_t detect_shared_object_file_type(const struct kefir_driver_external_resources *externals,
                                                    const char *filename) {
-    kefir_size_t suffix_len = strlen(externals->extensions.shared_library);
-
     const char *full_extension = NULL;
     const char *filename_end = filename + strlen(filename);
     for (const char *c = filename_end - 1; c >= filename; c--) {
@@ -44,18 +42,33 @@ static kefir_bool_t detect_shared_object_file_type(const struct kefir_driver_ext
         return false;
     }
 
-    for (; *full_extension != '\0';) {
-        if (*full_extension != '.' && !isdigit(*full_extension)) {
-            return false;
-        } else if (suffix_len > 0 && strncmp(full_extension, externals->extensions.shared_library, suffix_len) == 0) {
-            full_extension += suffix_len;
-            suffix_len = 0;
-        } else {
-            full_extension++;
+    kefir_bool_t found = false;
+    for (const char **iter = externals->extensions.shared_library; !found && *iter != NULL; ++iter) {
+        kefir_size_t suffix_len = strlen(*iter);
+
+        found = true;
+        for (const char *full_ext = full_extension; found && *full_ext != '\0';) {
+            if (*full_ext != '.' && !isdigit(*full_ext)) {
+                found = false;
+            } else if (suffix_len > 0 && strncmp(full_ext, *iter, suffix_len) == 0) {
+                full_ext += suffix_len;
+                suffix_len = 0;
+            } else {
+                full_ext++;
+            }
         }
     }
 
-    return true;
+    return found;
+}
+
+static kefir_bool_t check_suffixes(const char *extension, const char **suffixes) {
+    for (const char **iter = suffixes; *iter != NULL; ++iter) {
+        if (strcmp(extension, *iter) == 0) {
+            return true;
+        }
+    }
+    return false;
 }
 
 static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_external_resources *externals,
@@ -71,16 +84,18 @@ static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_e
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     }
 
-    if (strcmp(extension, externals->extensions.source_file) == 0) {
+    if (check_suffixes(extension, externals->extensions.source_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
-    } else if (strcmp(extension, externals->extensions.preprocessed_file) == 0) {
+    } else if (check_suffixes(extension, externals->extensions.preprocessed_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED;
-    } else if (strcmp(extension, externals->extensions.assembly_file) == 0) {
+    } else if (check_suffixes(extension, externals->extensions.assembly_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY;
-    } else if (strcmp(extension, externals->extensions.object_file) == 0 ||
-               strcmp(extension, externals->extensions.library_object_file) == 0) {
+    } else if (check_suffixes(extension, externals->extensions.preprocessed_assembly_file)) {
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY;
+    } else if (check_suffixes(extension, externals->extensions.object_file) ||
+               check_suffixes(extension, externals->extensions.library_object_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT;
-    } else if (strcmp(extension, externals->extensions.static_library) == 0 ||
+    } else if (check_suffixes(extension, externals->extensions.static_library) ||
                detect_shared_object_file_type(externals, filename)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY;
     } else {
