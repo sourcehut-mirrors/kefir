@@ -22,6 +22,7 @@
 #define KEFIR_PREPROCESSOR_USER_MACRO_H_
 
 #include "kefir/preprocessor/macro.h"
+#include "kefir/core/hashtreeset.h"
 
 typedef struct kefir_preprocessor_user_macro {
     struct kefir_preprocessor_macro macro;
@@ -42,7 +43,8 @@ kefir_result_t kefir_preprocessor_user_macro_free(struct kefir_mem *, struct kef
 typedef struct kefir_preprocessor_user_macro_scope {
     struct kefir_preprocessor_macro_scope scope;
     const struct kefir_preprocessor_user_macro_scope *parent;
-    struct kefir_hashtree macros;
+    struct kefir_hashtree macro_index;
+    struct kefir_hashtreeset macros;
 } kefir_preprocessor_user_macro_scope_t;
 
 kefir_result_t kefir_preprocessor_user_macro_scope_init(const struct kefir_preprocessor_user_macro_scope *,

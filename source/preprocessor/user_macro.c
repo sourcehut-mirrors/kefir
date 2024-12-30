@@ -88,7 +88,7 @@ static kefir_result_t fn_macro_parameter_substitution(struct kefir_mem *mem, str
         REQUIRE_OK(kefir_token_buffer_init(&subst_buffer));
         kefir_result_t res = kefir_token_buffer_copy(mem, &subst_buffer, arg_buffer);
         REQUIRE_CHAIN(&res, kefir_preprocessor_run_substitutions(mem, preprocessor, token_allocator, &subst_buffer,
-                                                                 KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
+                                                                 NULL, KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
         REQUIRE_CHAIN(&res, kefir_token_buffer_copy(mem, buffer, &subst_buffer));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &subst_buffer);
@@ -495,7 +495,8 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_pr
     });
     if (next_nonws_token == NULL || next_nonws_token->klass != KEFIR_TOKEN_PUNCTUATOR ||
         next_nonws_token->punctuator != KEFIR_PUNCTUATOR_DOUBLE_HASH) {
-        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces);
+        res = kefir_preprocessor_token_sequence_push_front(mem, seq, &whitespaces,
+                                                           KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &whitespaces);
             return res;
@@ -505,7 +506,7 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_pr
     }
     struct kefir_source_location source_location = next_nonws_token->source_location;
     REQUIRE_OK(kefir_token_buffer_free(mem, &whitespaces));
-    REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL));
+    REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
 
     const struct kefir_token *right_operand = NULL;
     REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &right_operand, NULL));
@@ -518,8 +519,9 @@ static kefir_result_t match_concatenation(struct kefir_mem *mem, struct kefir_pr
     REQUIRE_OK(kefir_token_buffer_init(&result));
     res = macro_concatenation(mem, preprocessor, arg_tree, user_macro, symbols, token_allocator, &result, left_operand,
                               right_operand);
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_next(mem, seq, NULL));
-    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &result,
+                                                                     KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &result);
         return res;
@@ -533,10 +535,15 @@ static kefir_result_t run_replacement_list_substitutions_impl(
     struct kefir_token_allocator *token_allocator, const struct kefir_preprocessor_user_macro *user_macro,
     struct kefir_preprocessor_token_sequence *seq, const struct kefir_hashtree *arg_tree,
     struct kefir_token_buffer *result) {
-    kefir_bool_t concatenated_flag[2] = { false, false };
+    kefir_bool_t concatenated_flag[2] = {false, false};
     while (true) {
         const struct kefir_token *current_token;
-        kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &current_token);
+        kefir_preprocessor_token_destination_t current_token_destination;
+        kefir_result_t res =
+            kefir_preprocessor_token_sequence_next(mem, seq, &current_token, &current_token_destination);
+        REQUIRE_CHAIN_SET(
+            &res, current_token_destination == KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Unexpected include directive"));
         if (res == KEFIR_ITERATOR_END) {
             break;
         } else {
@@ -575,7 +582,7 @@ static kefir_result_t run_replacement_list_substitutions_impl(
             const char *identifier = param_token->identifier;
             REQUIRE_OK(fn_macro_parameter_stringification(mem, arg_tree, token_allocator, result, identifier,
                                                           &source_location));
-            REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL));
+            REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
             matched = true;
         }
 
@@ -603,12 +610,13 @@ static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *mem, 
     });
 
     struct kefir_preprocessor_token_sequence seq;
-    res = kefir_preprocessor_token_sequence_init(&seq);
+    res = kefir_preprocessor_token_sequence_init(&seq, NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &replacement_copy);
         return res;
     });
-    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy);
+    res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &replacement_copy,
+                                                       KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);
         kefir_token_buffer_free(mem, &replacement_copy);
@@ -791,13 +799,12 @@ kefir_result_t kefir_preprocessor_user_macro_free(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t free_macro(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                 kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t free_macro(struct kefir_mem *mem, struct kefir_hashtreeset *tree, kefir_hashtreeset_entry_t entry,
+                                 void *payload) {
     UNUSED(tree);
-    UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_preprocessor_user_macro *, macro, value);
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_user_macro *, macro, entry);
     REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
 
     REQUIRE_OK(kefir_preprocessor_user_macro_free(mem, macro));
@@ -823,8 +830,9 @@ kefir_result_t kefir_preprocessor_user_macro_scope_init(const struct kefir_prepr
     REQUIRE(scope != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor macro scope"));
 
-    REQUIRE_OK(kefir_hashtree_init(&scope->macros, &kefir_hashtree_str_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&scope->macros, free_macro, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&scope->macro_index, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&scope->macros, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_on_remove(&scope->macros, free_macro, NULL));
     scope->parent = parent;
     scope->scope.locate = user_macro_locate;
     scope->scope.payload = scope;
@@ -836,7 +844,8 @@ kefir_result_t kefir_preprocessor_user_macro_scope_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro scope"));
 
-    REQUIRE_OK(kefir_hashtree_free(mem, &scope->macros));
+    REQUIRE_OK(kefir_hashtree_free(mem, &scope->macro_index));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &scope->macros));
     return KEFIR_OK;
 }
 
@@ -847,10 +856,11 @@ kefir_result_t kefir_preprocessor_user_macro_scope_insert(struct kefir_mem *mem,
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro scope"));
     REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro"));
 
-    if (kefir_hashtree_has(&scope->macros, (kefir_hashtree_key_t) macro->macro.identifier)) {
-        REQUIRE_OK(kefir_hashtree_delete(mem, &scope->macros, (kefir_hashtree_key_t) macro->macro.identifier));
+    if (kefir_hashtree_has(&scope->macro_index, (kefir_hashtree_key_t) macro->macro.identifier)) {
+        REQUIRE_OK(kefir_hashtree_delete(mem, &scope->macro_index, (kefir_hashtree_key_t) macro->macro.identifier));
     }
-    REQUIRE_OK(kefir_hashtree_insert(mem, &scope->macros, (kefir_hashtree_key_t) macro->macro.identifier,
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &scope->macros, (kefir_hashtreeset_entry_t) macro));
+    REQUIRE_OK(kefir_hashtree_insert(mem, &scope->macro_index, (kefir_hashtree_key_t) macro->macro.identifier,
                                      (kefir_hashtree_value_t) macro));
     return KEFIR_OK;
 }
@@ -864,7 +874,7 @@ kefir_result_t kefir_preprocessor_user_macro_scope_at(const struct kefir_preproc
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to preprocessor macro"));
 
     struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&scope->macros, (kefir_hashtree_key_t) identifier, &node);
+    kefir_result_t res = kefir_hashtree_at(&scope->macro_index, (kefir_hashtree_key_t) identifier, &node);
     if (res == KEFIR_NOT_FOUND && scope->parent != NULL) {
         REQUIRE_OK(kefir_preprocessor_user_macro_scope_at(scope->parent, identifier, macro_ptr));
     } else {
@@ -881,7 +891,7 @@ kefir_result_t kefir_preprocessor_user_macro_scope_remove(struct kefir_mem *mem,
     REQUIRE(scope != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor macro scope"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid dentifier"));
 
-    kefir_result_t res = kefir_hashtree_delete(mem, &scope->macros, (kefir_hashtree_key_t) identifier);
+    kefir_result_t res = kefir_hashtree_delete(mem, &scope->macro_index, (kefir_hashtree_key_t) identifier);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
     }

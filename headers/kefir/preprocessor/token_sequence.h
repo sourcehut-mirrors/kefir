@@ -25,21 +25,38 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 
+typedef struct kefir_preprocessor_token_sequence kefir_preprocessor_token_sequence_t;
+
+typedef struct kefir_preprocessor_token_sequence_source {
+    kefir_result_t (*next_buffer)(struct kefir_mem *, struct kefir_preprocessor_token_sequence *, void *);
+    void *payload;
+} kefir_preprocessor_token_sequence_source_t;
+
 typedef struct kefir_preprocessor_token_sequence {
     struct kefir_list buffer_stack;
+    const struct kefir_preprocessor_token_sequence_source *source;
 } kefir_preprocessor_token_sequence_t;
 
-kefir_result_t kefir_preprocessor_token_sequence_init(struct kefir_preprocessor_token_sequence *);
+typedef enum kefir_preprocessor_token_destination {
+    KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL,
+    KEFIR_PREPROCESSOR_TOKEN_DESTINATION_VERBATIM
+} kefir_preprocessor_token_destination_t;
+
+kefir_result_t kefir_preprocessor_token_sequence_init(struct kefir_preprocessor_token_sequence *,
+                                                      const struct kefir_preprocessor_token_sequence_source *);
 kefir_result_t kefir_preprocessor_token_sequence_free(struct kefir_mem *, struct kefir_preprocessor_token_sequence *);
 kefir_result_t kefir_preprocessor_token_sequence_push_front(struct kefir_mem *,
                                                             struct kefir_preprocessor_token_sequence *,
-                                                            struct kefir_token_buffer *);
+                                                            struct kefir_token_buffer *,
+                                                            kefir_preprocessor_token_destination_t);
 kefir_result_t kefir_preprocessor_token_sequence_next(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
-                                                      const struct kefir_token **);
+                                                      const struct kefir_token **,
+                                                      kefir_preprocessor_token_destination_t *);
 kefir_result_t kefir_preprocessor_token_sequence_shift(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
                                                        struct kefir_token_buffer *);
 kefir_result_t kefir_preprocessor_token_sequence_current(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
-                                                         const struct kefir_token **);
+                                                         const struct kefir_token **,
+                                                         kefir_preprocessor_token_destination_t *);
 
 kefir_result_t kefir_preprocessor_token_sequence_skip_whitespaces(struct kefir_mem *,
                                                                   struct kefir_preprocessor_token_sequence *,
