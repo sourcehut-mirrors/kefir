@@ -444,8 +444,8 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
             if (undefined_elements > 0) {
                 subparam.slot += undefined_elements * array_element_slots;
                 i += undefined_elements - 1;
+                continue;
             }
-            continue;
         }
 
         REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, param->visitor, &subparam, index + 1, 1));
