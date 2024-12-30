@@ -26,6 +26,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 #include "kefir/ast/type_completion.h"
+#include "kefir/ast/constant_expression.h"
 
 kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                     const struct kefir_ast_struct_member *node,
@@ -101,14 +102,13 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
     }
 
     if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
-        base->properties.expression_props.constant_expression =
-            node->structure->properties.expression_props.constant_expression ||
-            (node->structure->klass->type == KEFIR_AST_IDENTIFIER &&
-             node->structure->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-             (node->structure->properties.expression_props.scoped_id->object.storage ==
-                  KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-              node->structure->properties.expression_props.scoped_id->object.storage ==
-                  KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC));
+        if (base->klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
+            base->properties.expression_props.constant_expression =
+                node->structure->properties.expression_props.constant_expression;
+        } else {
+            REQUIRE_OK(kefir_ast_node_is_lvalue_reference_constant(
+                context, node->structure, &base->properties.expression_props.constant_expression));
+        }
     }
     return KEFIR_OK;
 }

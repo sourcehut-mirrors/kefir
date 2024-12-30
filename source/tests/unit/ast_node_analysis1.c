@@ -634,7 +634,7 @@ DEFINE_CASE(ast_node_analysis_indirect_struct_members1, "AST node analysis - ind
     ASSERT_INDIRECT_STRUCT_MEMBER(&kft_mem, context, "var1", "field3", kefir_ast_type_signed_int(), false);
     ASSERT_INDIRECT_STRUCT_MEMBER(
         &kft_mem, context, "var1", "field4",
-        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL), true);
+        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL), false);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

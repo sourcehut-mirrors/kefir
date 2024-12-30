@@ -76,34 +76,17 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
     kefir_size_t member_offset = 0;
     REQUIRE_OK(calculate_member_offset(mem, context, node, &member_offset));
 
-    if (node->structure->properties.expression_props.constant_expression) {
+    if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->structure, value));
         REQUIRE(value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
                                        "Expected constant expression of pointer type"));
-        value->pointer.offset += member_offset;
-        value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     } else {
-        REQUIRE(node->structure->klass->type == KEFIR_AST_IDENTIFIER,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected constant expression AST node"));
-
-        const struct kefir_ast_scoped_identifier *scoped_id = node->structure->properties.expression_props.scoped_id;
-        REQUIRE(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                    (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                     scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Expected constant expression AST node"));
-
-        struct kefir_ast_identifier *identifier_node;
-        REQUIRE_OK(kefir_ast_downcast_identifier(node->structure, &identifier_node, false));
-
+        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, node->structure,
+                                                                                 &value->pointer));
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
-        value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
-        value->pointer.base.literal = identifier_node->identifier;
-        value->pointer.offset = member_offset;
-        value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
-        value->pointer.scoped_id = scoped_id;
     }
+    value->pointer.offset += member_offset;
+    value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     return KEFIR_OK;
 }

@@ -1,0 +1,146 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global t2
+.type t2, @object
+.global t3
+.type t3, @object
+.global arr1
+.type arr1, @object
+.global arr2
+.type arr2, @object
+.global arr3
+.type arr3, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+t1:
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+
+    .align 8
+t2:
+    .byte 0
+    .zero 7
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+
+    .align 8
+t3:
+    .byte 0
+    .zero 7
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .quad 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+
+    .align 8
+arr1:
+    .quad t1 + 8
+
+    .align 8
+arr2:
+    .quad t2 + 88
+
+    .align 8
+arr3:
+    .quad t3 + 16
+
