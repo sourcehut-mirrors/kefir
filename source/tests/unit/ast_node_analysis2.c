@@ -550,7 +550,7 @@ DEFINE_CASE(ast_node_analysis_subtract_operator, "AST node analysis - subtractio
                 &kft_mem, KEFIR_AST_OPERATION_SUBTRACT,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
-            ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(oper)));
+            ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(oper)));
             ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(oper)));
         } else {
             struct kefir_ast_binary_operation *oper = kefir_ast_new_binary_operation(

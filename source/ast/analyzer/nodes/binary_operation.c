@@ -114,8 +114,11 @@ static kefir_result_t analyze_subtraction(
                (context->configuration->analysis.ext_pointer_arithmetics &&
                 type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
                 kefir_ast_unqualified_type(type2->referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
-        REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location2, "Right operand shal have an integral type"));
+        REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2) || type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location2,
+                                       "Right operand shall have an integral or pointer type"));
+        base->properties.type = type1;
+    } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2)) {
         base->properties.type = type1;
     } else {
         REQUIRE(KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type1),
