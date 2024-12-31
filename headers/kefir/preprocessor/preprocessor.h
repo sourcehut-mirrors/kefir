@@ -90,6 +90,7 @@ kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocesso
 typedef struct kefir_preprocessor_context {
     struct kefir_preprocessor_user_macro_scope user_macros;
     struct kefir_hashtree undefined_macros;
+    struct kefir_hashtreeset include_once;
     const struct kefir_preprocessor_source_locator *source_locator;
     struct kefir_ast_context *ast_context;
     const struct kefir_preprocessor_configuration *preprocessor_config;

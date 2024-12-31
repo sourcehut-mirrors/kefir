@@ -53,6 +53,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
 
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_init(NULL, &context->user_macros));
     REQUIRE_OK(kefir_hashtree_init(&context->undefined_macros, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&context->include_once, &kefir_hashtree_str_ops));
     context->source_locator = locator;
     context->ast_context = ast_context;
 
@@ -121,6 +122,7 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
     context->extensions = NULL;
     context->extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &context->include_once));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_attributes));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_builtins));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->undefined_macros));
@@ -311,6 +313,11 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
         directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT ? KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT
                                                                      : KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
         &source_file));
+    if (kefir_hashtreeset_has(&preprocessor->context->include_once,
+                              (kefir_hashtreeset_entry_t) source_file.info.filepath)) {
+        REQUIRE_OK(source_file.close(mem, &source_file));
+        return KEFIR_OK;
+    }
 
     struct kefir_preprocessor subpreprocessor;
     kefir_result_t res = kefir_preprocessor_init(mem, &subpreprocessor, preprocessor->lexer.symbols,
@@ -543,6 +550,25 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
     return KEFIR_OK;
 }
 
+static kefir_result_t process_pragma(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                     struct kefir_preprocessor_directive *directive) {
+    UNUSED(mem);
+    UNUSED(preprocessor);
+    const kefir_size_t pp_tokens_length = kefir_token_buffer_length(&directive->pp_tokens);
+    REQUIRE(pp_tokens_length > 0, KEFIR_OK);
+
+    const struct kefir_token *token = kefir_token_buffer_at(&directive->pp_tokens, 0);
+    if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "once") == 0) {
+        const char *filepath =
+            kefir_string_pool_insert(mem, preprocessor->lexer.symbols, preprocessor->current_file->filepath, NULL);
+        REQUIRE(filepath != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert file path into string pool"));
+        REQUIRE_OK(
+            kefir_hashtreeset_add(mem, &preprocessor->context->include_once, (kefir_hashtreeset_entry_t) filepath));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                     struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer,
                                     struct kefir_preprocessor_directive *directive, struct kefir_list *condition_stack,
@@ -628,7 +654,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
-            // TODO Implement STDC pragmas
+            REQUIRE_OK(process_pragma(mem, preprocessor, directive));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:

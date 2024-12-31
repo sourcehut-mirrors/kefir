@@ -193,7 +193,8 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
                            {U"define", KEFIR_PREPROCESSOR_DIRECTIVE_DEFINE},
                            {U"undef", KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF},
                            {U"error", KEFIR_PREPROCESSOR_DIRECTIVE_ERROR},
-                           {U"line", KEFIR_PREPROCESSOR_DIRECTIVE_LINE}};
+                           {U"line", KEFIR_PREPROCESSOR_DIRECTIVE_LINE},
+                           {U"pragma", KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA}};
     for (kefir_size_t i = 0; i < sizeof(KnownDirectives) / sizeof(KnownDirectives[0]); i++) {
         if (kefir_strcmp32(KnownDirectives[i].literal, directive_name) == 0) {
             *directive_type = KnownDirectives[i].directive;
