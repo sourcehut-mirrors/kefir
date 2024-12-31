@@ -1,8 +1,8 @@
  
 
 
-do { a;
-b;
-c; } while (0)
+do {              a;
+  b;
+  c;        } while (0)
 
 X(1)

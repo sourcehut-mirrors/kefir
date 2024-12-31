@@ -244,20 +244,24 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
             *has_rodata = true;
         }
 
-        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, id));
         switch (literal_type) {
             case KEFIR_IR_STRING_LITERAL_MULTIBYTE:
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, id));
                 REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_ASCII, 1,
                                                     kefir_asm_amd64_xasmgen_operand_string_literal(
                                                         &codegen->xasmgen_helpers.operands[0], content, length)));
                 break;
 
             case KEFIR_IR_STRING_LITERAL_UNICODE16:
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 2));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, id));
                 REQUIRE_OK(
                     KEFIR_AMD64_XASMGEN_BINDATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, content, length));
                 break;
 
             case KEFIR_IR_STRING_LITERAL_UNICODE32:
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen->xasmgen, 4));
+                REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen->xasmgen, KEFIR_AMD64_STRING_LITERAL, id));
                 REQUIRE_OK(
                     KEFIR_AMD64_XASMGEN_BINDATA(&codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, content, length));
                 break;
