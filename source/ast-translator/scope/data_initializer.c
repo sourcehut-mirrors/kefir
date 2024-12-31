@@ -193,13 +193,32 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
     kefir_result_t res = kefir_ast_downcast_compound_literal(expression, &compound_literal, false);
     if (res != KEFIR_NO_MATCH) {
         REQUIRE_OK(res);
-        const struct kefir_ast_type *expr_type =
-            KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(param->mem, param->context->type_bundle, expression->properties.type);
-        REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(param->context->type_traits, expr_type, resolved_layout->type),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
-                                       "Compound literal type mismatch"));
-        REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
-                                                        param->type, compound_literal->initializer, param->data, slot));
+        const struct kefir_ast_type *expr_type = kefir_ast_unqualified_type(expression->properties.type);
+        if (expr_type->tag == KEFIR_AST_TYPE_ARRAY && resolved_layout->type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+            const struct kefir_ast_type *unqualified_array_element_type =
+                kefir_ast_unqualified_type(expr_type->array_type.element_type);
+            const struct kefir_ast_type *unqualified_pointee_type =
+                kefir_ast_unqualified_type(resolved_layout->type->referenced_type);
+            REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(param->context->type_traits, unqualified_array_element_type,
+                                              unqualified_pointee_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
+                                           "Compound literal type mismatch"));
+
+            const char *literal =
+                kefir_ir_module_symbol(param->mem, param->module,
+                                       expression->properties.expression_props.temporary_identifier.identifier, NULL);
+            REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
+            REQUIRE_OK(
+                kefir_ir_data_set_pointer(param->mem, param->data, slot,
+                                          expression->properties.expression_props.temporary_identifier.identifier, 0));
+        } else {
+            REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(param->context->type_traits, expr_type, resolved_layout->type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
+                                           "Compound literal type mismatch"));
+            REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
+                                                            param->type, compound_literal->initializer, param->data,
+                                                            slot));
+        }
         return KEFIR_OK;
     }
 
