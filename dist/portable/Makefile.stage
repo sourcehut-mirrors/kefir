@@ -1,5 +1,6 @@
 CC=cc
 LD=ld
+CCLD=$(CC)
 AS=as
 ROOT_DIR := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))/../..
 WORK_DIR=$(ROOT_DIR)/bin/portable/work
@@ -19,7 +20,7 @@ BINUTILS_ARCHIVE_SHA256 := f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae99
 
 $(TARGET_DIR)/bin/kefir:
 	@mkdir -p "$(TARGET_DIR)"
-	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" CC="$(CC)" AS="$(AS)" LD="$(CC)" PROFILE="release" USE_SHARED=no LDFLAGS="-static" all
+	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" CC="$(CC)" AS="$(AS)" CCLD="$(CCLD)" PROFILE="release" USE_SHARED=no LDFLAGS="-static" all
 	@$(MAKE) -f "$(ROOT_DIR)/Makefile" ROOT="$(ROOT_DIR)" KEFIR_BIN_DIR="$(WORK_DIR)/kefir" DESTDIR="$(TARGET_DIR)" prefix="" install
 
 $(MUSL_ARCHIVE):
