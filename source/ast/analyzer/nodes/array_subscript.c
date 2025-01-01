@@ -48,6 +48,9 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
     const struct kefir_ast_type *subcript_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->subscript->properties.type);
     const struct kefir_ast_type *type = NULL;
+
+    struct kefir_ast_node_base *array_node;
+    struct kefir_ast_node_base *subscript_node;
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         REQUIRE(!node->array->properties.expression_props.atomic,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location,
@@ -56,6 +59,8 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
                                        "Expected one of subscript operands to have integral type"));
         type = array_type->referenced_type;
+        array_node = node->array;
+        subscript_node = node->subscript;
     } else {
         REQUIRE(!node->subscript->properties.expression_props.atomic,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
@@ -67,6 +72,8 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location,
                                        "Expected one of subscript operands to have integral type"));
         type = subcript_type->referenced_type;
+        array_node = node->subscript;
+        subscript_node = node->array;
     }
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
@@ -79,6 +86,13 @@ kefir_result_t kefir_ast_analyze_array_subscript_node(struct kefir_mem *mem, con
         (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
         REQUIRE_OK(context->allocate_temporary_value(mem, context, type, NULL, &base->source_location,
                                                      &base->properties.expression_props.temporary_identifier));
+    }
+
+    if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
+        kefir_bool_t array_const_ref = false;
+        REQUIRE_OK(kefir_ast_node_is_lvalue_reference_constant(context, array_node, &array_const_ref));
+        base->properties.expression_props.constant_expression =
+            array_const_ref && subscript_node->properties.expression_props.constant_expression;
     }
     return KEFIR_OK;
 }
