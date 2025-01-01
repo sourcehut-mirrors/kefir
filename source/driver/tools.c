@@ -101,18 +101,11 @@ static kefir_result_t output_compiler_config(FILE *output,
     for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->include_path); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, str, iter->value);
-        fprintf(output, " --include-dir %s", str);
-    }
-
-    struct kefir_hashtreeset_iterator iter;
-    kefir_result_t res;
-    for (res = kefir_hashtreeset_iter(&configuration->system_include_directories, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, str, iter.entry);
-        fprintf(output, " --system-include-dir %s", str);
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
+        if (kefir_hashtreeset_has(&configuration->system_include_directories, (kefir_hashtreeset_entry_t) str)) {
+            fprintf(output, " --system-include-dir %s", str);
+        } else {
+            fprintf(output, " --include-dir %s", str);
+        }
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&configuration->include_files); iter != NULL;

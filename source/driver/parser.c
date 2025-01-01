@@ -291,6 +291,28 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
 
             REQUIRE_OK(kefir_driver_configuration_add_include_directory(mem, symbols, config, directory));
+        } else if (STRNCMP("-isystem", arg) == 0) {
+            // Add directory to include search path
+            const char *directory = NULL;
+            if (strlen(arg) == 8) {
+                EXPECT_ARG;
+                directory = argv[++index];
+            } else {
+                directory = &arg[8];
+            }
+
+            REQUIRE_OK(kefir_driver_configuration_add_system_include_directory(mem, symbols, config, directory));
+        } else if (STRNCMP("-idirafter", arg) == 0) {
+            // Add directory to include search path
+            const char *directory = NULL;
+            if (strlen(arg) == 10) {
+                EXPECT_ARG;
+                directory = argv[++index];
+            } else {
+                directory = &arg[8];
+            }
+
+            REQUIRE_OK(kefir_driver_configuration_add_after_include_directory(mem, symbols, config, directory));
         } else if (strcmp("-include", arg) == 0) {
             // Include file
             EXPECT_ARG;

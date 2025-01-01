@@ -127,6 +127,39 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
     compiler_config->verbose = config->flags.verbose;
+
+    struct kefir_list_entry *include_insert_iter = NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
+        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
+        REQUIRE(include_dir != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
+        REQUIRE_OK(
+            kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
+        if (include_insert_iter == NULL) {
+            include_insert_iter = kefir_list_head(&compiler_config->include_path);
+        } else {
+            kefir_list_next((const struct kefir_list_entry **) &include_insert_iter);
+        }
+    }
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->system_include_directories); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
+        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
+        REQUIRE(include_dir != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
+        REQUIRE_OK(
+            kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
+                                         (kefir_hashtreeset_entry_t) include_dir));
+        if (include_insert_iter == NULL) {
+            include_insert_iter = kefir_list_head(&compiler_config->include_path);
+        } else {
+            kefir_list_next((const struct kefir_list_entry **) &include_insert_iter);
+        }
+    }
+
     REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
                                                                 &config->target, config));
 
@@ -207,8 +240,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             break;
     }
 
-    struct kefir_list_entry *include_insert_iter = NULL;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
+    include_insert_iter = kefir_list_tail(&compiler_config->include_path);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->after_include_directories); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
         include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
@@ -216,6 +249,8 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
+                                         (kefir_hashtreeset_entry_t) include_dir));
         if (include_insert_iter == NULL) {
             include_insert_iter = kefir_list_head(&compiler_config->include_path);
         } else {
@@ -395,10 +430,11 @@ static kefir_result_t driver_compile_and_assemble(struct kefir_mem *mem,
 }
 
 static kefir_result_t driver_preprocess_and_assemble(struct kefir_mem *mem,
-                                                  const struct kefir_driver_external_resources *externals,
-                                                  struct kefir_driver_assembler_configuration *assembler_config,
-                                                  struct kefir_compiler_runner_configuration *compiler_config,
-                                                  struct kefir_driver_argument *argument, const char *object_filename) {
+                                                     const struct kefir_driver_external_resources *externals,
+                                                     struct kefir_driver_assembler_configuration *assembler_config,
+                                                     struct kefir_compiler_runner_configuration *compiler_config,
+                                                     struct kefir_driver_argument *argument,
+                                                     const char *object_filename) {
     struct kefir_process compiler_process, assembler_process;
     REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
 
@@ -467,7 +503,7 @@ static kefir_result_t driver_compile(struct kefir_compiler_runner_configuration 
 }
 
 static kefir_result_t driver_preprocess(struct kefir_compiler_runner_configuration *compiler_config,
-                                     struct kefir_driver_argument *argument, const char *output_filename) {
+                                        struct kefir_driver_argument *argument, const char *output_filename) {
     struct kefir_process compiler_process;
     if (argument != NULL) {
         REQUIRE_OK(driver_update_compiler_config(compiler_config, argument));
@@ -572,7 +608,8 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
                     REQUIRE_OK(generate_object_name(mem, externals, &output_filename));
-                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config, argument, output_filename));
+                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config,
+                                                              argument, output_filename));
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
                     break;
 
@@ -619,7 +656,8 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_dr
                     break;
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
-                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config, argument, output_filename));
+                    REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config,
+                                                              argument, output_filename));
                     break;
 
                 case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:

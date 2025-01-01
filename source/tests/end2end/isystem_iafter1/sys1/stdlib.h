@@ -1,0 +1,1 @@
+#define FAKE_STDLIB 1
