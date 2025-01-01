@@ -185,6 +185,10 @@ static kefir_result_t traverse_string_literal(const struct kefir_ast_designator 
         type_layout = param->translator_type->object.layout;
     }
 
+    if (type_layout->type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED || type_layout->type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) {
+        length = MIN(length, kefir_ast_type_array_const_length(&type_layout->type->array_type));
+    }
+
     REQUIRE_OK(translate_address(param->translator_type, designator, param->builder));
     REQUIRE_OK(zero_type(param->builder, param->translator_type->object.ir_type_id, type_layout));
     const struct kefir_ast_type *array_type = kefir_ast_type_array(

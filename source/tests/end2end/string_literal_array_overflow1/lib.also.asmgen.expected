@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global somefn
+.type somefn, @function
+
+.section .text
+__kefir_text_section_begin:
+somefn:
+__kefir_text_func_somefn_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_somefn_label0:
+_kefir_func_somefn_label1:
+    lea -8(%rbp), %rdx
+    mov %rdx, %rdi
+    mov $0, %rax
+    mov $8, %rcx
+    rep stosb
+    lea __kefir_string_literal0(%rip), %rax
+    movq (%rax), %rcx
+    movq %rcx, (%rdx)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_somefn_end:
+
+__kefir_text_section_end:
+
+.section .rodata
+__kefir_string_literal0:
+    .ascii "SOME ABSURDLY CLEARLY LONG STRING THAT WOULD CAUSE CORRUPTION\000"
