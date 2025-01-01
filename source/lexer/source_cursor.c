@@ -99,7 +99,8 @@ kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_curs
     return at_impl(cursor, count);
 }
 
-static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
+static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_size_t count,
+                                kefir_bool_t ignore_errors) {
     while (count--) {
         kefir_char32_t chr;
         if (cursor->length == cursor->index) {
@@ -110,7 +111,10 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
             case (size_t) -1:
             case (size_t) -2:
             case (size_t) -3:
-                if (cursor->length > cursor->index) {
+                if (ignore_errors && cursor->index < cursor->length) {
+                    cursor->index += 1;
+                    break;
+                } else if (cursor->index < cursor->length) {
                     return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
                                             "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
                                             cursor->location.source, cursor->location.line, cursor->location.column);
@@ -171,7 +175,13 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
 
 kefir_result_t kefir_lexer_source_cursor_next(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
-    REQUIRE_OK(next_impl(cursor, count));
+    REQUIRE_OK(next_impl(cursor, count, false));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_lexer_source_cursor_skip(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
+    REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
+    REQUIRE_OK(next_impl(cursor, count, true));
     return KEFIR_OK;
 }
 

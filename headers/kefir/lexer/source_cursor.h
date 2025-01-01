@@ -44,6 +44,7 @@ kefir_result_t kefir_lexer_source_cursor_init(struct kefir_lexer_source_cursor *
                                               const char *);
 kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_cursor *, kefir_size_t);
 kefir_result_t kefir_lexer_source_cursor_next(struct kefir_lexer_source_cursor *, kefir_size_t);
+kefir_result_t kefir_lexer_source_cursor_skip(struct kefir_lexer_source_cursor *, kefir_size_t);
 kefir_result_t kefir_lexer_source_cursor_save(const struct kefir_lexer_source_cursor *,
                                               struct kefir_lexer_source_cursor_state *);
 kefir_result_t kefir_lexer_source_cursor_restore(struct kefir_lexer_source_cursor *,

@@ -45,9 +45,13 @@ static kefir_result_t skip_multiline_comment(struct kefir_lexer_source_cursor *c
         *match = MAX(*match, WHITESPACE_MATCH);
 
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
-        while (!(kefir_lexer_source_cursor_at(cursor, 0) == U'*' && kefir_lexer_source_cursor_at(cursor, 1) == U'/') &&
-               kefir_lexer_source_cursor_at(cursor, 0) != U'\0') {
-            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+        for (;;) {
+            if ((kefir_lexer_source_cursor_at(cursor, 0) == U'*' && kefir_lexer_source_cursor_at(cursor, 1) == U'/') ||
+                kefir_lexer_source_cursor_at(cursor, 0) == U'\0') {
+                break;
+            } else {
+                REQUIRE_OK(kefir_lexer_source_cursor_skip(cursor, 1));
+            }
         }
         REQUIRE((kefir_lexer_source_cursor_at(cursor, 0) == U'*' && kefir_lexer_source_cursor_at(cursor, 1) == U'/'),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor->location, "Expected end of multiline comment"));
@@ -64,7 +68,7 @@ static kefir_result_t skip_oneline_comment(const struct kefir_lexer_context *con
         REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
         while (kefir_lexer_source_cursor_at(cursor, 0) != context->newline &&
                kefir_lexer_source_cursor_at(cursor, 0) != U'\0') {
-            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
+            REQUIRE_OK(kefir_lexer_source_cursor_skip(cursor, 1));
         }
 
         if (kefir_lexer_source_cursor_at(cursor, 0) == context->newline) {
