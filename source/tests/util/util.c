@@ -59,9 +59,21 @@ const struct kefir_data_model_descriptor *kefir_util_default_data_model(void) {
                            .float_digits = FLT_DIG,
                            .double_digits = DBL_DIG,
                            .long_double_digits = LDBL_DIG,
+#ifdef FLT_DECIMAL_DIG
                            .float_decimal_digits = FLT_DECIMAL_DIG,
+#else
+                           .float_decimal_digits = 9,
+#endif
+#ifdef DBL_DECIMAL_DIG
                            .double_decimal_digits = DBL_DECIMAL_DIG,
+#else
+                           .double_decimal_digits = 17,
+#endif
+#ifdef LDBL_DECIMAL_DIG
                            .long_double_decimal_digits = LDBL_DECIMAL_DIG,
+#else
+                           .long_double_decimal_digits = 21,
+#endif
                            .float_min_exponent = FLT_MIN_EXP,
                            .double_min_exponent = DBL_MIN_EXP,
                            .long_double_min_exponent = LDBL_MIN_EXP,
