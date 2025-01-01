@@ -512,9 +512,12 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_origin) ||
-                        normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin type to be integral or pointer"));
+            if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_origin)) {
+                REQUIRE_OK(cast_to_integer(type_traits, builder, normalized_origin, type_traits->uintptr_type));
+            } else {
+                REQUIRE(normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin type to be integral or pointer"));
+            }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:

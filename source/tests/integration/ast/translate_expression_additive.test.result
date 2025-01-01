@@ -253,6 +253,9 @@
                     "arg": 100
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 16
                 },
@@ -271,8 +274,14 @@
                     "arg": 200
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 9
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "extend32"
@@ -292,8 +301,18 @@
                     "arg": 2
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 1
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushu",
@@ -317,8 +336,18 @@
                     "arg": 42
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 0
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "pushu",
@@ -350,6 +379,9 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 67
                 },
@@ -369,6 +401,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -392,6 +427,9 @@
                     "arg": 101
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 100
                 },
@@ -411,6 +449,9 @@
                 {
                     "opcode": "pushi",
                     "arg": -1
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "pushi",
@@ -497,8 +538,14 @@
                     "arg": 128
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 64
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "isub64"
@@ -515,8 +562,14 @@
                     "arg": 1024
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 32
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "isub64"
@@ -533,8 +586,14 @@
                     "arg": 256
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 8
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "isub64"
@@ -551,8 +610,14 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 0
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "isub64"

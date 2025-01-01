@@ -174,6 +174,7 @@ kefir_result_t kefir_ast_type_traits_init(const struct kefir_data_model_descript
     switch (data_model->model) {
         case KEFIR_DATA_MODEL_LP64:
             type_traits->size_type = kefir_ast_type_unsigned_long();
+            type_traits->uintptr_type = kefir_ast_type_unsigned_long();
             type_traits->ptrdiff_type = kefir_ast_type_signed_long();
             type_traits->unicode16_char_type = kefir_ast_type_unsigned_short();
             type_traits->unicode32_char_type = kefir_ast_type_unsigned_int();

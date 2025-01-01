@@ -81,6 +81,7 @@ _kefir_func_get_T2_label4:
     ret
 _kefir_func_get_T2_label5:
     mov $0, %rax
+    movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -416,6 +416,9 @@
                     "arg": 5
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "store64",
                     "memory_flags": {
                         "volatile": false

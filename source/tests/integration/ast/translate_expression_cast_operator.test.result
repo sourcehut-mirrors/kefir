@@ -215,8 +215,18 @@
                     "arg": -4078
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushu",
                     "arg": 51934
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "getglobal",

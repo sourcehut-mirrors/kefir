@@ -344,6 +344,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 0
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

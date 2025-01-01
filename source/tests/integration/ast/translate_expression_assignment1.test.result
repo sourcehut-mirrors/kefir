@@ -442,6 +442,9 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "getglobal",
                     "arg": {
                         "data": "ptr"

@@ -657,6 +657,9 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "load8i",
                     "memory_flags": {
                         "volatile": false
@@ -665,6 +668,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 1
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "load16i",
@@ -677,6 +683,9 @@
                     "arg": 2
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "load32u",
                     "memory_flags": {
                         "volatile": false
@@ -687,6 +696,9 @@
                     "arg": 3
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "load64",
                     "memory_flags": {
                         "volatile": false
@@ -695,6 +707,9 @@
                 {
                     "opcode": "pushi",
                     "arg": 4
+                },
+                {
+                    "opcode": "extend32"
                 },
                 {
                     "opcode": "load64",
@@ -713,6 +728,9 @@
                     "arg": 5
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "load32u",
                     "memory_flags": {
                         "volatile": false
@@ -723,12 +741,21 @@
                     "arg": 6
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 7
                 },
                 {
+                    "opcode": "extend32"
+                },
+                {
                     "opcode": "pushi",
                     "arg": 8
+                },
+                {
+                    "opcode": "extend32"
                 }
             ],
             "public_labels": []

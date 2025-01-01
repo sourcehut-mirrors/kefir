@@ -69,6 +69,7 @@ _kefir_func_test4_label1:
     movsx %eax, %rax
     movq %rax, -16(%rbp)
     mov $0, %rax
+    movsx %eax, %rax
     movq %rax, -8(%rbp)
     movq -16(%rbp), %rax
     movq %rax, -8(%rbp)
