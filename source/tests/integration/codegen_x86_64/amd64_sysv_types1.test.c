@@ -67,7 +67,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_data *data1 =
         kefir_ir_module_new_named_data(mem, &module, "DataX", KEFIR_IR_DATA_GLOBAL_STORAGE, type_id);
     REQUIRE(data1 != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_data_finalize(data1));
+    REQUIRE_OK(kefir_ir_data_finalize(mem, data1));
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, "DataX", KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
     REQUIRE_OK(KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module));

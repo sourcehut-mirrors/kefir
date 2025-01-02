@@ -349,6 +349,7 @@ kefir_result_t kefir_ir_data_set_raw(struct kefir_mem *mem, struct kefir_ir_data
 }
 
 struct finalize_param {
+    struct kefir_mem *mem;
     struct kefir_ir_type_visitor *visitor;
     struct kefir_ir_data *data;
     kefir_size_t slot;
@@ -387,15 +388,17 @@ static kefir_result_t finalize_struct_union(const struct kefir_ir_type *type, ke
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct finalize_param *, param, payload);
 
+    const kefir_size_t entry_slot = param->slot++;
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_get_entry(param->data, param->slot++, &entry));
+    REQUIRE_OK(value_get_entry(param->data, entry_slot, &entry));
     if (entry != NULL) {
         REQUIRE(
             entry->type == KEFIR_IR_DATA_VALUE_UNDEFINED,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "IR data for structure/union cannot have directly assigned value"));
     }
 
-    struct finalize_param subparam = {.visitor = param->visitor,
+    struct finalize_param subparam = {.mem = param->mem,
+                                      .visitor = param->visitor,
                                       .data = param->data,
                                       .slot = param->slot,
                                       .defined = false,
@@ -405,11 +408,12 @@ static kefir_result_t finalize_struct_union(const struct kefir_ir_type *type, ke
     param->defined = param->defined || subparam.defined;
     param->block_iterator = subparam.block_iterator;
 
-    if (entry != NULL) {
-        entry->defined = subparam.defined;
-        if (subparam.defined) {
-            entry->type = KEFIR_IR_DATA_VALUE_AGGREGATE;
+    if (subparam.defined) {
+        if (entry == NULL) {
+            REQUIRE_OK(value_entry_at(param->mem, param->data, entry_slot, &entry));
         }
+        entry->defined = subparam.defined;
+        entry->type = KEFIR_IR_DATA_VALUE_AGGREGATE;
     }
 
     return KEFIR_OK;
@@ -420,9 +424,11 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct finalize_param *, param, payload);
 
+    const kefir_size_t entry_slot = param->slot++;
     struct kefir_ir_data_value *entry;
-    REQUIRE_OK(value_get_entry(param->data, param->slot++, &entry));
-    struct finalize_param subparam = {.visitor = param->visitor,
+    REQUIRE_OK(value_get_entry(param->data, entry_slot, &entry));
+    struct finalize_param subparam = {.mem = param->mem,
+                                      .visitor = param->visitor,
                                       .data = param->data,
                                       .slot = param->slot,
                                       .defined = false,
@@ -454,6 +460,9 @@ static kefir_result_t finalize_array(const struct kefir_ir_type *type, kefir_siz
     param->slot = subparam.slot;
     param->block_iterator = subparam.block_iterator;
 
+    if (subparam.defined && entry == NULL) {
+        REQUIRE_OK(value_entry_at(param->mem, param->data, entry_slot, &entry));
+    }
     if (entry != NULL) {
         entry->defined = subparam.defined || entry->type != KEFIR_IR_DATA_VALUE_UNDEFINED;
         param->defined = param->defined || entry->defined;
@@ -492,10 +501,11 @@ static kefir_result_t finalize_builtin(const struct kefir_ir_type *type, kefir_s
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *data) {
+kefir_result_t kefir_ir_data_finalize(struct kefir_mem *mem, struct kefir_ir_data *data) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR data pointer"));
     struct kefir_ir_type_visitor visitor;
-    struct finalize_param param = {.visitor = &visitor, .data = data, .slot = 0, .defined = false};
+    struct finalize_param param = {.mem = mem, .visitor = &visitor, .data = data, .slot = 0, .defined = false};
 
     REQUIRE_OK(kefir_block_tree_iter(&data->value_tree, &param.block_iterator));
 

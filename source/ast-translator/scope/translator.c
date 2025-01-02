@@ -125,7 +125,7 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                         REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                    scoped_identifier->value->object.initializer, data));
                     }
-                    REQUIRE_OK(kefir_ir_data_finalize(data));
+                    REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                     DECL_GLOBAL_WEAK;
                 }
@@ -239,7 +239,7 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                scoped_identifier->value->object.initializer, data));
                 }
-                REQUIRE_OK(kefir_ir_data_finalize(data));
+                REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                 REQUIRE_OK(
                     kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
@@ -300,7 +300,7 @@ static kefir_result_t translate_external_thread_locals(
                         REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                    scoped_identifier->value->object.initializer, data));
                     }
-                    REQUIRE_OK(kefir_ir_data_finalize(data));
+                    REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                     struct kefir_ir_identifier ir_identifier = {
                         .symbol = scoped_identifier->identifier,
@@ -350,7 +350,7 @@ static kefir_result_t translate_static_thread_locals(
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                scoped_identifier->value->object.initializer, data));
                 }
-                REQUIRE_OK(kefir_ir_data_finalize(data));
+                REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                 REQUIRE_OK(
                     kefir_ir_module_declare_identifier(mem, module, scoped_identifier->identifier, &ir_identifier));
@@ -436,7 +436,7 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
                         REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
                     }
                 }
-                REQUIRE_OK(kefir_ir_data_finalize(data));
+                REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                 REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, identifier, &ir_identifier));
             } break;
@@ -493,7 +493,7 @@ static kefir_result_t translate_local_static_thread_locals(
                         REQUIRE_OK(context->pop_external_oridnary_scope(mem, context));
                     }
                 }
-                REQUIRE_OK(kefir_ir_data_finalize(data));
+                REQUIRE_OK(kefir_ir_data_finalize(mem, data));
 
                 REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module, identifier, &ir_identifier));
             } break;

@@ -141,7 +141,7 @@ kefir_result_t kefir_ir_data_set_string_pointer(struct kefir_mem *, struct kefir
 kefir_result_t kefir_ir_data_set_raw(struct kefir_mem *, struct kefir_ir_data *, kefir_size_t, const void *,
                                      kefir_size_t);
 
-kefir_result_t kefir_ir_data_finalize(struct kefir_ir_data *);
+kefir_result_t kefir_ir_data_finalize(struct kefir_mem *, struct kefir_ir_data *);
 
 kefir_result_t kefir_ir_data_value_at(const struct kefir_ir_data *, kefir_size_t, const struct kefir_ir_data_value **);
 
