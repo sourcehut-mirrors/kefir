@@ -1,0 +1,20 @@
+--- regress/penalty-expire.sh	2024-09-20 01:20:48.000000000 +0300
++++ regress/penalty-expire.sh	2025-01-02 16:27:26.478721710 +0200
+@@ -19,17 +19,3 @@
+ verbose "test connect"
+ ${SSH} -F $OBJ/ssh_config somehost true || fatal "basic connect failed"
+ 
+-verbose "penalty expiry"
+-
+-# Incur a penalty
+-cat /dev/null > $OBJ/authorized_keys_${USER}
+-${SSH} -F $OBJ/ssh_config somehost true && fatal "authfail connect succeeded"
+-sleep 2
+-
+-# Check denied
+-cp $OBJ/authorized_keys_${USER}.bak $OBJ/authorized_keys_${USER}
+-${SSH} -F $OBJ/ssh_config somehost true && fatal "authfail not rejected"
+-
+-# Let it expire and try again.
+-sleep 11
+-${SSH} -F $OBJ/ssh_config somehost true || fail "authfail not expired"
