@@ -261,6 +261,7 @@ _kefir_func_clamp_char_label0:
 _kefir_func_clamp_char_label1:
     movb %dil, -1(%rbp)
     movsxb -1(%rbp), %rax
+    movsx %al, %rax
     cmp $0, %eax
     je _kefir_func_clamp_char_label2
     jmp _kefir_func_clamp_char_label3
@@ -751,6 +752,7 @@ _kefir_func_clamp_short_label0:
 _kefir_func_clamp_short_label1:
     movw %di, -2(%rbp)
     movsxw -2(%rbp), %rax
+    movsx %ax, %rax
     cmp $0, %eax
     je _kefir_func_clamp_short_label2
     jmp _kefir_func_clamp_short_label3

@@ -22,6 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/flow_control.h"
 #include "kefir/ast-translator/util.h"
+#include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -46,6 +47,9 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
 
     struct kefir_ast_flow_control_structure *flow_control_stmt =
         node->base.properties.statement_props.flow_control_statement;
+    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                            node->expression->properties.type,
+                                            flow_control_stmt->value.switchStatement.controlling_expression_type));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *switchCase =
              kefir_hashtree_iter(&flow_control_stmt->value.switchStatement.cases, &iter);
