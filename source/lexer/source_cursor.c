@@ -48,9 +48,7 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
             case (size_t) -2:
             case (size_t) -3:
                 if (cursor->length > index) {
-                    return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
-                                            "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
-                                            cursor->location.source, cursor->location.line, cursor->location.column);
+                    return KEFIR_LEXER_SOURCE_CURSOR_REPLACMENT_CHARACTER;
                 }
                 // Fallthrough
 
@@ -73,10 +71,7 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
                         case (size_t) -2:
                         case (size_t) -3:
                             if (cursor->length > index) {
-                                return KEFIR_SET_ERRORF(
-                                    KEFIR_INVALID_STATE,
-                                    "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
-                                    cursor->location.source, cursor->location.line, cursor->location.column);
+                                return KEFIR_LEXER_SOURCE_CURSOR_REPLACMENT_CHARACTER;
                             }
                             break;
 
@@ -113,6 +108,7 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
             case (size_t) -3:
                 if (ignore_errors && cursor->index < cursor->length) {
                     cursor->index += 1;
+                    cursor->mbstate = (mbstate_t){0};
                     break;
                 } else if (cursor->index < cursor->length) {
                     return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,

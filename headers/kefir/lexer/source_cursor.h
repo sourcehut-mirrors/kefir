@@ -25,6 +25,8 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/source_location.h"
 
+#define KEFIR_LEXER_SOURCE_CURSOR_REPLACMENT_CHARACTER ((kefir_char32_t) U'\uFFFD')
+
 typedef struct kefir_lexer_source_cursor {
     const char *content;
     kefir_size_t index;
