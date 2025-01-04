@@ -26,6 +26,7 @@
 #include "kefir/driver/runner.h"
 #include "kefir/compiler/compiler.h"
 #include <stdio.h>
+#include <signal.h>
 
 static kefir_result_t output_compiler_config(FILE *output,
                                              const struct kefir_compiler_runner_configuration *configuration) {
@@ -202,7 +203,23 @@ static kefir_result_t output_compiler_config(FILE *output,
     return KEFIR_OK;
 }
 
+static void sighandler(int signum) {
+    fprintf(stderr, "Kefir compiler caught signal: %d, terminating\n", signum);
+    exit(EXIT_FAILURE);
+}
+
+static void configure_compiler_signals(void) {
+    signal(SIGTERM, sighandler);
+    signal(SIGABRT, sighandler);
+    signal(SIGINT, sighandler);
+    signal(SIGHUP, sighandler);
+    signal(SIGQUIT, sighandler);
+    signal(SIGSEGV, sighandler);
+    signal(SIGFPE, sighandler);
+}
+
 static int run_compiler(void *payload) {
+    configure_compiler_signals();
     ASSIGN_DECL_CAST(const struct kefir_compiler_runner_configuration *, configuration, payload);
     kefir_result_t res = kefir_run_compiler(kefir_system_memalloc(), configuration);
     return kefir_report_error(stderr, res, configuration->error_report_type == KEFIR_COMPILER_RUNNER_ERROR_REPORT_JSON)
