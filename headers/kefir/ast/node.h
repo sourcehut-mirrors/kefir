@@ -300,6 +300,8 @@ struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct k
                                                                         kefir_size_t);
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *, const kefir_wchar_t *,
                                                                    kefir_size_t);
+struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *, const void *, kefir_size_t,
+                                                              kefir_ast_string_literal_type_t);
 
 #define KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(_mem, _string) \
     (kefir_ast_new_string_literal_multibyte((_mem), (_string), strlen((_string)) + 1))

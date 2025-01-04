@@ -90,8 +90,9 @@ struct kefir_ast_node_base *ast_string_literal_clone(struct kefir_mem *mem, stru
     return KEFIR_AST_NODE_BASE(clone);
 }
 
-static struct kefir_ast_string_literal *alloc_literal(struct kefir_mem *mem, const void *literal, kefir_size_t length,
-                                                      kefir_ast_string_literal_type_t type) {
+struct kefir_ast_string_literal *kefir_ast_new_string_literal(struct kefir_mem *mem, const void *literal,
+                                                              kefir_size_t length,
+                                                              kefir_ast_string_literal_type_t type) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(literal != NULL, NULL);
 
@@ -130,27 +131,27 @@ static struct kefir_ast_string_literal *alloc_literal(struct kefir_mem *mem, con
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_multibyte(struct kefir_mem *mem, const char *literal,
                                                                         kefir_size_t length) {
-    return alloc_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_MULTIBYTE);
+    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_MULTIBYTE);
 }
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode8(struct kefir_mem *mem, const char *literal,
                                                                        kefir_size_t length) {
-    return alloc_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE8);
+    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE8);
 }
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode16(struct kefir_mem *mem,
                                                                         const kefir_char16_t *literal,
                                                                         kefir_size_t length) {
-    return alloc_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE16);
+    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE16);
 }
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_unicode32(struct kefir_mem *mem,
                                                                         const kefir_char32_t *literal,
                                                                         kefir_size_t length) {
-    return alloc_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE32);
+    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_UNICODE32);
 }
 
 struct kefir_ast_string_literal *kefir_ast_new_string_literal_wide(struct kefir_mem *mem, const kefir_wchar_t *literal,
                                                                    kefir_size_t length) {
-    return alloc_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_WIDE);
+    return kefir_ast_new_string_literal(mem, literal, length, KEFIR_AST_STRING_LITERAL_WIDE);
 }

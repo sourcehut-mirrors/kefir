@@ -62,6 +62,13 @@ struct kefir_ast_node_base *ast_static_assertion_clone(struct kefir_mem *mem, st
         KEFIR_FREE(mem, clone);
         return NULL;
     });
+
+    clone->string = kefir_ast_new_string_literal(mem, node->string->literal, node->string->length, node->string->type);
+    REQUIRE_ELSE(clone->string != NULL, {
+        KEFIR_AST_NODE_FREE(mem, clone->condition);
+        KEFIR_FREE(mem, clone);
+        return NULL;
+    });
     return KEFIR_AST_NODE_BASE(clone);
 }
 
