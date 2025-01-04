@@ -1,0 +1,42 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2024  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
+
+#define DECL(_size)                    \
+    struct X##_size {                  \
+        char content[_size];           \
+    };                                 \
+    long call##_size(struct X##_size); \
+    long call##_size##_proxy(struct X##_size *)
+
+DECL(1);
+DECL(2);
+DECL(3);
+DECL(4);
+DECL(5);
+DECL(6);
+DECL(7);
+DECL(8);
+
+#undef DECL
+
+#endif
