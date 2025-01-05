@@ -330,8 +330,6 @@ Kefir relies on following tests, most of which are executed as part of CI:
   failures. The torture tests are included into CI pipeline with some basic test
   result checks.
 * Miscallenous tests:
-    - Lua test -- kefir is used to build Lua 5.4 interpreter and then Lua basic
-      test suite is executed on the resulting executable 
     - [Test suite](https://git.sr.ht/~jprotopopov/c-testsuite) which is a fork
       of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is executed.
       Currently, the test suite reports 3 failures that happen due to C language
@@ -344,7 +342,8 @@ Currently, the external test suite includes: bash 5.2.21, binutils 2.42 (only as
 and ld), curl 8.9.1, git 2.44.0, libsir 2.2.4, musl 1.2.5, nano 7.2, oksh 7.5,
 sqlite 3.45.3, tcc 0.9.27, tcl 8.6.14, tin 2.6.3, yasm 1.3.0, zlib 1.3.1. The
 external test suite is used to verify Kefir compatbility with real world
-software.
+software. Source code for third-party projects has been archived and available
+at [Kefir website](https://kefir.protopopov.lv/archive/third-party/).
 
 Own test suite is deterministic (that is, tests do not fail spuriously), however
 there might arise problems when executed in unusual environments (e.g. with
