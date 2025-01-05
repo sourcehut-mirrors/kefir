@@ -292,6 +292,8 @@
     OPCODE(ATOMIC_CMPXCHG_LONG_DOUBLE, "atomic_cmpxchg_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE, "atomic_cmpxchg_complex_long_double", memory_order) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_MEMORY, "atomic_cmpxchg_memory", atomic_typeref) SEPARATOR \
+    /* Overflow arithmetics */ \
+    OPCODE(ADD_OVERFLOW, "add_overflow", overflow_arith) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on

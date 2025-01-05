@@ -149,6 +149,7 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION:
         case KEFIR_AST_BUILTIN_CONSTANT:
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE:
+        case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
             while (!PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_RIGHT_PARENTHESE)) {
                 res =
                     kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(builder->parser, type_name), NULL);

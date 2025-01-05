@@ -238,6 +238,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
         case KEFIR_AST_BUILTIN_ALLOCA:
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN:
         case KEFIR_AST_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX:
+        case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
             return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                           "Builtin operation is not a constant expression");
     }

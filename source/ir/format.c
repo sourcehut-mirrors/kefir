@@ -168,6 +168,33 @@ kefir_result_t kefir_ir_format_instr_typeref(struct kefir_json_output *json, con
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_instr_overflow_arith(struct kefir_json_output *json,
+                                                    const struct kefir_ir_module *module,
+                                                    const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[1]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "signedness"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    REQUIRE_OK(kefir_json_output_boolean(json, (instr->arg.u32[2] & 1) == 1));
+    REQUIRE_OK(kefir_json_output_boolean(json, ((instr->arg.u32[2] >> 1) & 1) == 1));
+    REQUIRE_OK(kefir_json_output_boolean(json, ((instr->arg.u32[2] >> 2) & 1) == 1));
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_instr_identifier(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                                 const struct kefir_irinstr *instr) {
     UNUSED(module);

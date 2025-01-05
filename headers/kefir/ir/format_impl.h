@@ -46,6 +46,8 @@ kefir_result_t kefir_ir_format_instr_ldouble(struct kefir_json_output *, const s
                                              const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_typeref(struct kefir_json_output *, const struct kefir_ir_module *,
                                              const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_overflow_arith(struct kefir_json_output *, const struct kefir_ir_module *,
+                                                    const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_identifier(struct kefir_json_output *, const struct kefir_ir_module *,
                                                 const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_funcref(struct kefir_json_output *, const struct kefir_ir_module *,

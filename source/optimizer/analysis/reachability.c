@@ -42,7 +42,8 @@ static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
     kefir_opt_instruction_ref_t instr_ref;
     kefir_result_t res;
-    for (res = kefir_opt_code_block_instr_control_head(analysis->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+    for (res = kefir_opt_code_block_instr_control_head(analysis->code, block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
          res = kefir_opt_instruction_next_control(analysis->code, instr_ref, &instr_ref)) {
         INSERT_INTO_QUEUE(mem, queue, instr_ref);
     }
@@ -111,6 +112,17 @@ static kefir_result_t find_reachable_code_typed_ref2(struct kefir_mem *mem, stru
     UNUSED(analysis);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
+    return KEFIR_OK;
+}
+
+static kefir_result_t find_reachable_code_overflow_arith(struct kefir_mem *mem,
+                                                         struct kefir_opt_code_analysis *analysis,
+                                                         struct kefir_list *queue,
+                                                         const struct kefir_opt_instruction *instr) {
+    UNUSED(analysis);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
+    INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[2]);
     return KEFIR_OK;
 }
 

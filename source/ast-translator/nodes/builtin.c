@@ -23,6 +23,7 @@
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast-translator/layout.h"
+#include "kefir/ast-translator/type.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
@@ -219,6 +220,64 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD, INFINITY));
             break;
+
+        case KEFIR_AST_BUILTIN_ADD_OVERFLOW: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
+            kefir_list_next(&iter);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, ptr_node, iter->value);
+
+            const struct kefir_ast_type *arg1_type = kefir_ast_unqualified_type(arg1_node->properties.type);
+            const struct kefir_ast_type *arg2_type = kefir_ast_unqualified_type(arg2_node->properties.type);
+            const struct kefir_ast_type *ptr_type =
+                KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, ptr_node->properties.type);
+            const struct kefir_ast_type *result_type = kefir_ast_unqualified_type(ptr_type->referenced_type);
+
+            kefir_bool_t arg1_signed, arg2_signed, result_signed;
+            REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, arg1_type, &arg1_signed));
+            REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, arg2_type, &arg2_signed));
+            REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_type, &result_signed));
+
+            kefir_id_t overflow_type_arg_id;
+            struct kefir_ir_type *overflow_type_arg =
+                kefir_ir_module_new_type(mem, context->module, 0, &overflow_type_arg_id);
+            REQUIRE(overflow_type_arg != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+            struct kefir_irbuilder_type overflow_type_builder;
+            REQUIRE_OK(kefir_irbuilder_type_init(mem, &overflow_type_builder, overflow_type_arg));
+
+            kefir_result_t res =
+                kefir_ast_translate_object_type(mem, context->ast_context, arg1_type, 0, context->environment,
+                                                &overflow_type_builder, NULL, &arg1_node->source_location);
+            REQUIRE_CHAIN(&res,
+                          kefir_ast_translate_object_type(mem, context->ast_context, arg2_type, 0, context->environment,
+                                                          &overflow_type_builder, NULL, &arg1_node->source_location));
+            REQUIRE_CHAIN(
+                &res, kefir_ast_translate_object_type(mem, context->ast_context, result_type, 0, context->environment,
+                                                      &overflow_type_builder, NULL, &arg1_node->source_location));
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                overflow_type_builder.free(&overflow_type_builder);
+                return res;
+            });
+            REQUIRE_OK(overflow_type_builder.free(&overflow_type_builder));
+
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg1_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, arg2_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, ptr_node, builder, context));
+
+            kefir_uint32_t signedness_flag = 0;
+            if (arg1_signed) {
+                signedness_flag |= 1;
+            }
+            if (arg2_signed) {
+                signedness_flag |= 1 << 1;
+            }
+            if (result_signed) {
+                signedness_flag |= 1 << 2;
+            }
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IROPCODE_ADD_OVERFLOW, overflow_type_arg_id, 0,
+                                                         signedness_flag, 0));
+        } break;
     }
     return KEFIR_OK;
 }

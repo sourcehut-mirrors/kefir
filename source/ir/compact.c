@@ -38,8 +38,7 @@ struct compact_params {
 };
 
 static kefir_hashtree_hash_t ir_type_hash(kefir_hashtree_key_t key, void *data) {
-    ASSIGN_DECL_CAST(struct compact_params *, params,
-        data);
+    ASSIGN_DECL_CAST(struct compact_params *, params, data);
     REQUIRE(params != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compaction parameters"));
     const struct kefir_ir_type *type = (const struct kefir_ir_type *) key;
     REQUIRE(type != NULL, 0);
@@ -267,7 +266,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             case KEFIR_IROPCODE_GETLOCAL:
             case KEFIR_IROPCODE_BZERO:
             case KEFIR_IROPCODE_BCOPY:
-            case KEFIR_IROPCODE_VARARG_GET: {
+            case KEFIR_IROPCODE_VARARG_GET:
+            case KEFIR_IROPCODE_ADD_OVERFLOW: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
@@ -610,9 +610,7 @@ kefir_result_t kefir_ir_module_compact(struct kefir_mem *mem, struct kefir_ir_mo
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
 
-    struct compact_params params = {
-        .mem = mem
-    };
+    struct compact_params params = {.mem = mem};
     const struct kefir_hashtree_ops kefir_hashtree_ir_type_ops = {
         .hash = ir_type_hash, .compare = ir_type_compare, .data = &params};
     REQUIRE_OK(kefir_list_init(&params.symbol_scan_queue));

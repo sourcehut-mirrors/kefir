@@ -1116,3 +1116,25 @@ ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double, KEFIR_OPT_OPCODE_ATOMIC_C
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_long_double, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE)
 
 #undef ATOMIC_CMPXCHG_OP
+
+kefir_result_t kefir_opt_code_builder_add_overflow(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                   kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t arg1_ref,
+                                                   kefir_opt_instruction_ref_t arg2_ref,
+                                                   kefir_opt_instruction_ref_t result_ptr_ref, kefir_id_t type_id,
+                                                   kefir_size_t type_index, kefir_uint8_t signedness,
+                                                   kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, arg1_ref, false));
+    REQUIRE_OK(instr_exists(code, block_id, arg2_ref, false));
+    REQUIRE_OK(instr_exists(code, block_id, result_ptr_ref, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation){.opcode = KEFIR_OPT_OPCODE_ADD_OVERFLOW,
+                                      .parameters = {.refs = {arg1_ref, arg2_ref, result_ptr_ref},
+                                                     .type = {.type_id = type_id, .type_index = type_index},
+                                                     .overflow_arith.signedness = signedness}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}

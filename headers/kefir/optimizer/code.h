@@ -119,6 +119,10 @@ typedef struct kefir_opt_operation_parameters {
         struct {
             kefir_opt_memory_order_t model;
         } atomic_op;
+
+        struct {
+            kefir_uint8_t signedness;
+        } overflow_arith;
     };
 } kefir_opt_operation_parameters_t;
 

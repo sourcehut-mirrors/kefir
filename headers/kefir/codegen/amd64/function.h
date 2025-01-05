@@ -340,6 +340,7 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
     _def(atomic_compare_exchange_long_double, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE) _separator \
     _def(atomic_compare_exchange_complex_long_double, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE) _separator \
     _def(atomic_compare_exchange_memory, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG_MEMORY) _separator \
+    _def(add_overflow, KEFIR_OPT_OPCODE_ADD_OVERFLOW) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

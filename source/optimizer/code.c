@@ -1600,6 +1600,15 @@ static kefir_result_t replace_references_typed_ref2(struct kefir_opt_instruction
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_overflow_arith(struct kefir_opt_instruction *instr,
+                                                        kefir_opt_instruction_ref_t to_ref,
+                                                        kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[2], to_ref, from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_atomic_op(struct kefir_opt_instruction *instr,
                                                    kefir_opt_instruction_ref_t to_ref,
                                                    kefir_opt_instruction_ref_t from_ref) {
