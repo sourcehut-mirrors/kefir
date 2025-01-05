@@ -432,3 +432,16 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_LINE() __LINE__
 #define __builtin_FILE() __FILE__
 #define __builtin_FUNCTION() __FUNCTION__
+
+#define __builtin_sadd_overflow(_a, _b, _r) (__builtin_add_overflow((int) (_a), (int) (_b), (int *) (_r)))
+#define __builtin_saddl_overflow(_a, _b, _r) \
+    (__builtin_add_overflow((long int) (_a), (long int) (_b), (long int *) (_r)))
+#define __builtin_saddll_overflow(_a, _b, _r) \
+    (__builtin_add_overflow((long long int) (_a), (long long int) (_b), (long long int *) (_r)))
+#define __builtin_uadd_overflow(_a, _b, _r) \
+    (__builtin_add_overflow((unsigned int) (_a), (unsigned int) (_b), (unsigned int *) (_r)))
+#define __builtin_uaddl_overflow(_a, _b, _r) \
+    (__builtin_add_overflow((unsigned long int) (_a), (unsigned long int) (_b), (unsigned long int *) (_r)))
+#define __builtin_uaddll_overflow(_a, _b, _r)                                             \
+    (__builtin_add_overflow((unsigned long long int) (_a), (unsigned long long int) (_b), \
+                            (unsigned long long int *) (_r)))

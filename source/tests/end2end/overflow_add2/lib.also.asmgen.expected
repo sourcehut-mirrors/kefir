@@ -1,0 +1,92 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global overflow_sadd
+.type overflow_sadd, @function
+.global overflow_uadd
+.type overflow_uadd, @function
+.global overflow_saddl
+.type overflow_saddl, @function
+.global overflow_uaddl
+.type overflow_uaddl, @function
+.global overflow_saddll
+.type overflow_saddll, @function
+.global overflow_uaddll
+.type overflow_uaddll, @function
+
+.section .text
+__kefir_text_section_begin:
+overflow_sadd:
+__kefir_text_func_overflow_sadd_begin:
+    movsx %edi, %rax
+    movsx %esi, %rcx
+    movsx %eax, %rax
+    movsx %ecx, %rcx
+    add %rcx, %rax
+    seto %cl
+    movsx %eax, %rsi
+    movl %eax, (%rdx)
+    cmp %rsi, %rax
+    setne %al
+    or %al, %cl
+    and $1, %rcx
+    mov %rcx, %rax
+    ret
+__kefir_text_func_overflow_sadd_end:
+
+overflow_uadd:
+__kefir_text_func_overflow_uadd_begin:
+    mov %edi, %eax
+    mov %esi, %ecx
+    mov %eax, %eax
+    mov %ecx, %ecx
+    add %rcx, %rax
+    seto %cl
+    mov %eax, %esi
+    movl %eax, (%rdx)
+    cmp %rsi, %rax
+    setne %al
+    or %al, %cl
+    and $1, %rcx
+    mov %rcx, %rax
+    ret
+__kefir_text_func_overflow_uadd_end:
+
+overflow_saddl:
+__kefir_text_func_overflow_saddl_begin:
+    add %rsi, %rdi
+    seto %al
+    movq %rdi, (%rdx)
+    and $1, %rax
+    ret
+__kefir_text_func_overflow_saddl_end:
+
+overflow_uaddl:
+__kefir_text_func_overflow_uaddl_begin:
+    add %rsi, %rdi
+    setc %al
+    movq %rdi, (%rdx)
+    and $1, %rax
+    ret
+__kefir_text_func_overflow_uaddl_end:
+
+overflow_saddll:
+__kefir_text_func_overflow_saddll_begin:
+    add %rsi, %rdi
+    seto %al
+    movq %rdi, (%rdx)
+    and $1, %rax
+    ret
+__kefir_text_func_overflow_saddll_end:
+
+overflow_uaddll:
+__kefir_text_func_overflow_uaddll_begin:
+    add %rsi, %rdi
+    setc %al
+    movq %rdi, (%rdx)
+    and $1, %rax
+    ret
+__kefir_text_func_overflow_uaddll_end:
+
+__kefir_text_section_end:
+
