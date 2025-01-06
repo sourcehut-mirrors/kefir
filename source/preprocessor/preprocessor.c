@@ -54,6 +54,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_init(NULL, &context->user_macros));
     REQUIRE_OK(kefir_hashtree_init(&context->undefined_macros, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&context->include_once, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&context->builltin_prefixes, &kefir_hashtree_str_ops));
     context->source_locator = locator;
     context->ast_context = ast_context;
 
@@ -122,6 +123,7 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
     context->extensions = NULL;
     context->extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &context->builltin_prefixes));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->include_once));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_attributes));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_builtins));
@@ -382,6 +384,27 @@ static kefir_result_t process_define(struct kefir_mem *mem, struct kefir_preproc
             kefir_preprocessor_user_macro_free(mem, macro);
             return res;
         });
+    }
+
+    if (kefir_preprocessor_user_macro_scope_has(&preprocessor->context->user_macros, "__KEFIR_PREDEFINED_AREA__")) {
+        struct kefir_hashtreeset_iterator iter;
+        kefir_result_t res;
+        for (res = kefir_hashtreeset_iter(&preprocessor->context->builltin_prefixes, &iter); res == KEFIR_OK;
+             res = kefir_hashtreeset_next(&iter)) {
+            const char *const prefix = (const char *) iter.entry;
+            const kefir_size_t prefix_length = strlen(prefix);
+            if (strncmp(macro->macro.identifier, prefix, prefix_length) == 0) {
+                const char *const identifier = kefir_string_pool_insert(
+                    mem, preprocessor->context->ast_context->symbols, macro->macro.identifier, NULL);
+                REQUIRE(identifier != NULL,
+                        KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into string pool"));
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &preprocessor->context->environment.supported_builtins,
+                                                 (kefir_hashtreeset_entry_t) identifier));
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
     }
     return KEFIR_OK;
 }

@@ -458,6 +458,30 @@ FUNCTION_MACRO(has_builtin) {
 }
 MACRO_END
 
+FUNCTION_MACRO(define_builtin_prefix) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                   "Macro __kefir_define_builtin_prefix expects a single identifier argument"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, args_iter->value);
+    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                   "Macro __kefir_define_builtin_prefix expects a single identifier argument"));
+    const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+    REQUIRE(arg->klass == KEFIR_TOKEN_IDENTIFIER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                   "Macro __kefir_define_builtin_prefix expects a single identifier argument"));
+
+    const char *const identifier =
+        kefir_string_pool_insert(mem, preprocessor->context->ast_context->symbols, arg->identifier, NULL);
+    REQUIRE(identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into string pool"));
+    REQUIRE_OK(
+        kefir_hashtreeset_add(mem, &preprocessor->context->builltin_prefixes, (kefir_hashtreeset_entry_t) identifier));
+    return KEFIR_OK;
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -777,14 +801,17 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_dig,
                                                     "__LDBL_DIG__", macro_ldbl_dig_apply));
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_decimal_dig,
-                                                    "__FLT_DECIMAL_DIG__", macro_flt_decimal_dig_apply));
+        REQUIRE_CHAIN(&res,
+                      define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_decimal_dig,
+                                              "__FLT_DECIMAL_DIG__", macro_flt_decimal_dig_apply));
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.dbl_decimal_dig,
-                                                    "__DBL_DECIMAL_DIG__", macro_dbl_decimal_dig_apply));
+        REQUIRE_CHAIN(&res,
+                      define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.dbl_decimal_dig,
+                                              "__DBL_DECIMAL_DIG__", macro_dbl_decimal_dig_apply));
 
-        REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_decimal_dig,
-                                                    "__LDBL_DECIMAL_DIG__", macro_ldbl_decimal_dig_apply));
+        REQUIRE_CHAIN(&res,
+                      define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.ldbl_decimal_dig,
+                                              "__LDBL_DECIMAL_DIG__", macro_ldbl_decimal_dig_apply));
 
         REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.floating_point.flt_min_exp,
                                                     "__FLT_MIN_EXP__", macro_flt_min_exp_apply));
@@ -870,6 +897,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                                                          "__has_include_next", macro_has_include_next_apply, 1, false));
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_builtin,
                                                          "__has_builtin", macro_has_builtin_apply, 1, false));
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.define_builtin_prefix,
+                                                         "__kefir_define_builtin_prefix",
+                                                         macro_define_builtin_prefix_apply, 1, false));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

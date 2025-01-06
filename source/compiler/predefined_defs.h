@@ -18,6 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define __KEFIR_PREDEFINED_AREA__
+#ifdef __KEFIRCC__
+__kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic_)
+    __kefir_define_builtin_prefix(__sync_)
+#endif
+
 // Keywords
 #define __FUNCTION__ __func__
 #define __thread _Thread_local
@@ -350,8 +356,8 @@
 #define __sync_lock_test_and_set(_ptr, _value, ...) __atomic_exchange_n((_ptr), (_value), __ATOMIC_ACQUIRE)
 #define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
 
-// Builtin functions
-extern _Noreturn void __kefir_builtin_trap(void);
+    // Builtin functions
+    extern _Noreturn void __kefir_builtin_trap(void);
 extern void *__kefir_builtin_return_address(int);
 extern void *__kefir_builtin_frame_address(int);
 
@@ -445,3 +451,5 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_uaddll_overflow(_a, _b, _r)                                             \
     (__builtin_add_overflow((unsigned long long int) (_a), (unsigned long long int) (_b), \
                             (unsigned long long int *) (_r)))
+
+#undef __KEFIR_PREDEFINED_AREA__

@@ -95,6 +95,7 @@ typedef struct kefir_preprocessor_context {
     struct kefir_ast_context *ast_context;
     const struct kefir_preprocessor_configuration *preprocessor_config;
     struct kefir_preprocessor_environment environment;
+    struct kefir_hashtreeset builltin_prefixes;
     const struct kefir_preprocessor_context_extensions *extensions;
     struct {
         kefir_uint_t counter;

@@ -884,6 +884,15 @@ kefir_result_t kefir_preprocessor_user_macro_scope_at(const struct kefir_preproc
     return KEFIR_OK;
 }
 
+kefir_bool_t kefir_preprocessor_user_macro_scope_has(const struct kefir_preprocessor_user_macro_scope *scope,
+                                                     const char *identifier) {
+    REQUIRE(scope != NULL, false);
+    REQUIRE(identifier != NULL, false);
+
+    return kefir_hashtree_has(&scope->macro_index, (kefir_hashtree_key_t) identifier) ||
+           (scope->parent != NULL && kefir_preprocessor_user_macro_scope_has(scope->parent, identifier));
+}
+
 kefir_result_t kefir_preprocessor_user_macro_scope_remove(struct kefir_mem *mem,
                                                           struct kefir_preprocessor_user_macro_scope *scope,
                                                           const char *identifier) {
