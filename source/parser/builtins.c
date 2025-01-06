@@ -40,6 +40,7 @@ const char *KEFIR_PARSER_SUPPORTED_BUILTINS[] = {KEFIR_PARSER_BUILTIN_VA_START,
                                                  KEFIR_PARSER_BUILTIN_INFF,
                                                  KEFIR_PARSER_BUILTIN_INFL,
                                                  KEFIR_PARSER_BUILTIN_ADD_OVERFLOW,
+                                                 KEFIR_PARSER_BUILTIN_SUB_OVERFLOW,
                                                  NULL};
 
 static const struct {
@@ -60,7 +61,8 @@ static const struct {
                 {KEFIR_PARSER_BUILTIN_INF, KEFIR_AST_BUILTIN_INFINITY_FLOAT64},
                 {KEFIR_PARSER_BUILTIN_INFF, KEFIR_AST_BUILTIN_INFINITY_FLOAT32},
                 {KEFIR_PARSER_BUILTIN_INFL, KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE},
-                {KEFIR_PARSER_BUILTIN_ADD_OVERFLOW, KEFIR_AST_BUILTIN_ADD_OVERFLOW}};
+                {KEFIR_PARSER_BUILTIN_ADD_OVERFLOW, KEFIR_AST_BUILTIN_ADD_OVERFLOW},
+                {KEFIR_PARSER_BUILTIN_SUB_OVERFLOW, KEFIR_AST_BUILTIN_SUB_OVERFLOW}};
 static const kefir_size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(BUILTINS[0]);
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *identifier, kefir_ast_builtin_operator_t *builtin_op) {

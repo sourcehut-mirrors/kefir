@@ -267,7 +267,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
             case KEFIR_IROPCODE_BZERO:
             case KEFIR_IROPCODE_BCOPY:
             case KEFIR_IROPCODE_VARARG_GET:
-            case KEFIR_IROPCODE_ADD_OVERFLOW: {
+            case KEFIR_IROPCODE_ADD_OVERFLOW:
+            case KEFIR_IROPCODE_SUB_OVERFLOW: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));

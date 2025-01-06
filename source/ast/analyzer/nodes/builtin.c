@@ -309,10 +309,12 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.expression_props.constant_expression = true;
         } break;
 
-        case KEFIR_AST_BUILTIN_ADD_OVERFLOW: {
-            REQUIRE(kefir_list_length(&node->arguments) == 3,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                           "Add overflow builtin invocation should have exactly three parameters"));
+        case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
+        case KEFIR_AST_BUILTIN_SUB_OVERFLOW: {
+            REQUIRE(
+                kefir_list_length(&node->arguments) == 3,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                       "Overflow arithmetics builtin invocation should have exactly three parameters"));
 
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);

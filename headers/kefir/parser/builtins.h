@@ -41,6 +41,7 @@
 #define KEFIR_PARSER_BUILTIN_INFF "__builtin_inff"
 #define KEFIR_PARSER_BUILTIN_INFL "__builtin_infl"
 #define KEFIR_PARSER_BUILTIN_ADD_OVERFLOW "__builtin_add_overflow"
+#define KEFIR_PARSER_BUILTIN_SUB_OVERFLOW "__builtin_sub_overflow"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

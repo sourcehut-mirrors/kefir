@@ -434,9 +434,15 @@ STORE_OP(complex_long_double_store);
 
 #undef STORE_OP
 
-kefir_result_t kefir_opt_code_builder_add_overflow(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                   kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
-                                                   kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_id_t,
-                                                   kefir_size_t, kefir_uint8_t, kefir_opt_instruction_ref_t *);
+#define OVERFLOW_ARITH(_id)                                                                                       \
+    kefir_result_t kefir_opt_code_builder_##_id##_overflow(                                                       \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
+        kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_id_t, kefir_size_t, kefir_uint8_t,        \
+        kefir_opt_instruction_ref_t *)
+
+OVERFLOW_ARITH(add);
+OVERFLOW_ARITH(sub);
+
+#undef OVERFLOW_ARITH
 
 #endif
