@@ -51,7 +51,7 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
     const struct kefir_ast_type *function_return_type =
         kefir_ast_unqualified_type(context->surrounding_function->function.type->function_type.return_type);
     if (function_return_type->tag == KEFIR_AST_TYPE_VOID) {
-        REQUIRE(node->expression == NULL,
+        REQUIRE(node->expression == NULL || node->expression->properties.type->tag == KEFIR_AST_TYPE_VOID,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Return statement with expression shall appear only in non-void function"));
     } else {
