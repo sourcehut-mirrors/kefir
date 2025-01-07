@@ -16,7 +16,7 @@ ifeq ($(PLATFORM),netbsd)
 KEFIR_END2END_TEST_LIBS+=-latomic
 endif
 
-$(KEFIR_END2END_BIN_PATH)/%.o: CFLAGS += -Wno-int-in-bool-context
+$(KEFIR_END2END_BIN_PATH)/%.o: CFLAGS += -Wno-int-in-bool-context -UNDEBUG
 
 $(KEFIR_END2END_BIN_PATH)/%.kefir.o: $(SOURCE_DIR)/tests/end2end/%.kefir.c $(KEFIR_BIN_DIR)/kefir
 	@mkdir -p $(shell dirname "$@")
