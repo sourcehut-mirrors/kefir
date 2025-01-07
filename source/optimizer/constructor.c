@@ -954,6 +954,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                                            instr_ref4, instr->arg.u32[0], instr->arg.u32[1],    \
                                                            instr->arg.u32[2], &instr_ref));                     \
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                    \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
     } break
 
             OVERFLOW_ARITH(KEFIR_IROPCODE_ADD_OVERFLOW, add);
