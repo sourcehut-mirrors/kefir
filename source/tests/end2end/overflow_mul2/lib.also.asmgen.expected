@@ -1,0 +1,98 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global overflow_smul
+.type overflow_smul, @function
+.global overflow_umul
+.type overflow_umul, @function
+.global overflow_smull
+.type overflow_smull, @function
+.global overflow_umull
+.type overflow_umull, @function
+.global overflow_smulll
+.type overflow_smulll, @function
+.global overflow_umulll
+.type overflow_umulll, @function
+
+.section .text
+__kefir_text_section_begin:
+overflow_smul:
+__kefir_text_func_overflow_smul_begin:
+    movsx %edi, %rax
+    movsx %esi, %rcx
+    movsx %eax, %rax
+    movsx %ecx, %rcx
+    imul %rcx, %rax
+    seto %cl
+    movsx %eax, %rsi
+    movl %eax, (%rdx)
+    cmp %rsi, %rax
+    setne %al
+    or %al, %cl
+    and $1, %ecx
+    mov %rcx, %rax
+    ret
+__kefir_text_func_overflow_smul_end:
+
+overflow_umul:
+__kefir_text_func_overflow_umul_begin:
+    mov %edi, %eax
+    mov %esi, %ecx
+    mov %eax, %eax
+    mov %ecx, %ecx
+    imul %rcx, %rax
+    seto %cl
+    mov %eax, %esi
+    movl %eax, (%rdx)
+    cmp %rsi, %rax
+    setne %al
+    or %al, %cl
+    and $1, %ecx
+    mov %rcx, %rax
+    ret
+__kefir_text_func_overflow_umul_end:
+
+overflow_smull:
+__kefir_text_func_overflow_smull_begin:
+    imul %rsi, %rdi
+    seto %al
+    movq %rdi, (%rdx)
+    and $1, %eax
+    ret
+__kefir_text_func_overflow_smull_end:
+
+overflow_umull:
+__kefir_text_func_overflow_umull_begin:
+    mov %rdx, %rcx
+    mov %rdi, %rax
+    mul %rsi
+    seto %dl
+    movq %rax, (%rcx)
+    and $1, %edx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_overflow_umull_end:
+
+overflow_smulll:
+__kefir_text_func_overflow_smulll_begin:
+    imul %rsi, %rdi
+    seto %al
+    movq %rdi, (%rdx)
+    and $1, %eax
+    ret
+__kefir_text_func_overflow_smulll_end:
+
+overflow_umulll:
+__kefir_text_func_overflow_umulll_begin:
+    mov %rdx, %rcx
+    mov %rdi, %rax
+    mul %rsi
+    seto %dl
+    movq %rax, (%rcx)
+    and $1, %edx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_overflow_umulll_end:
+
+__kefir_text_section_end:
+

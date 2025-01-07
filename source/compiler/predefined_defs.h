@@ -465,4 +465,17 @@ extern int __kefir_builtin_flt_rounds(void);
     (__builtin_sub_overflow((unsigned long long int) (_a), (unsigned long long int) (_b), \
                             (unsigned long long int *) (_r)))
 
+#define __builtin_smul_overflow(_a, _b, _r) (__builtin_mul_overflow((int) (_a), (int) (_b), (int *) (_r)))
+#define __builtin_smull_overflow(_a, _b, _r) \
+    (__builtin_mul_overflow((long int) (_a), (long int) (_b), (long int *) (_r)))
+#define __builtin_smulll_overflow(_a, _b, _r) \
+    (__builtin_mul_overflow((long long int) (_a), (long long int) (_b), (long long int *) (_r)))
+#define __builtin_umul_overflow(_a, _b, _r) \
+    (__builtin_mul_overflow((unsigned int) (_a), (unsigned int) (_b), (unsigned int *) (_r)))
+#define __builtin_umull_overflow(_a, _b, _r) \
+    (__builtin_mul_overflow((unsigned long int) (_a), (unsigned long int) (_b), (unsigned long int *) (_r)))
+#define __builtin_umulll_overflow(_a, _b, _r)                                             \
+    (__builtin_mul_overflow((unsigned long long int) (_a), (unsigned long long int) (_b), \
+                            (unsigned long long int *) (_r)))
+
 #undef __KEFIR_PREDEFINED_AREA__
