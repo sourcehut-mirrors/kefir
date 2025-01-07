@@ -294,7 +294,8 @@
     OPCODE(ATOMIC_CMPXCHG_MEMORY, "atomic_cmpxchg_memory", atomic_op) SEPARATOR \
     /* Overflow arithmetics */ \
     OPCODE(ADD_OVERFLOW, "add_overflow", overflow_arith) SEPARATOR \
-    OPCODE(SUB_OVERFLOW, "sub_overflow", overflow_arith)
+    OPCODE(SUB_OVERFLOW, "sub_overflow", overflow_arith) SEPARATOR \
+    OPCODE(MUL_OVERFLOW, "mul_overflow", overflow_arith)
 // clang-format on
 
 #endif

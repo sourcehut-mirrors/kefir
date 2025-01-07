@@ -442,6 +442,7 @@ STORE_OP(complex_long_double_store);
 
 OVERFLOW_ARITH(add);
 OVERFLOW_ARITH(sub);
+OVERFLOW_ARITH(mul);
 
 #undef OVERFLOW_ARITH
 

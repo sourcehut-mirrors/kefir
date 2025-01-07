@@ -222,7 +222,8 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             break;
 
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
-        case KEFIR_AST_BUILTIN_SUB_OVERFLOW: {
+        case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
+        case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg2_node, iter->value);
@@ -279,8 +280,11 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (node->builtin == KEFIR_AST_BUILTIN_ADD_OVERFLOW) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IROPCODE_ADD_OVERFLOW, overflow_type_arg_id,
                                                              0, signedness_flag, 0));
-            } else {
+            } else if (node->builtin == KEFIR_AST_BUILTIN_SUB_OVERFLOW) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IROPCODE_SUB_OVERFLOW, overflow_type_arg_id,
+                                                             0, signedness_flag, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IROPCODE_MUL_OVERFLOW, overflow_type_arg_id,
                                                              0, signedness_flag, 0));
             }
         } break;

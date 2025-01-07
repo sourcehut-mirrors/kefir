@@ -295,6 +295,7 @@
     /* Overflow arithmetics */ \
     OPCODE(ADD_OVERFLOW, "add_overflow", overflow_arith) SEPARATOR \
     OPCODE(SUB_OVERFLOW, "sub_overflow", overflow_arith) SEPARATOR \
+    OPCODE(MUL_OVERFLOW, "mul_overflow", overflow_arith) SEPARATOR \
     /* Miscallenous */ \
     OPCODE(INLINEASM,    "inlineasm",   u64)
 // clang-format on

@@ -311,7 +311,8 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_INFINITY_FLOAT32,
     KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE,
     KEFIR_AST_BUILTIN_ADD_OVERFLOW,
-    KEFIR_AST_BUILTIN_SUB_OVERFLOW
+    KEFIR_AST_BUILTIN_SUB_OVERFLOW,
+    KEFIR_AST_BUILTIN_MUL_OVERFLOW
 } kefir_ast_builtin_operator_t;
 
 typedef enum kefir_ast_declarator_visibility_attr {

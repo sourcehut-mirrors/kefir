@@ -958,6 +958,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             OVERFLOW_ARITH(KEFIR_IROPCODE_ADD_OVERFLOW, add);
             OVERFLOW_ARITH(KEFIR_IROPCODE_SUB_OVERFLOW, sub);
+            OVERFLOW_ARITH(KEFIR_IROPCODE_MUL_OVERFLOW, mul);
 
 #undef OVERFLOW_ARITH
     }

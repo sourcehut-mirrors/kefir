@@ -310,7 +310,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         } break;
 
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
-        case KEFIR_AST_BUILTIN_SUB_OVERFLOW: {
+        case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
+        case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {
             REQUIRE(
                 kefir_list_length(&node->arguments) == 3,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
