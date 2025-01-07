@@ -558,6 +558,16 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (STRNCMP("-Wl,", arg) == 0) {
             // Linker options
             SPLIT_OPTIONS(arg + 4, ADD_LINKER_ARG);
+        } else if (STRNCMP("-z", arg) == 0) {
+            // Linker options
+            if (strlen(arg) == 2) {
+                EXPECT_ARG;
+                arg = argv[++index];
+            } else {
+                arg = &arg[2];
+            }
+            REQUIRE_OK(ADD_LINKER_ARG(mem, symbols, config, "-z"));
+            REQUIRE_OK(ADD_LINKER_ARG(mem, symbols, config, arg));
         } else if (strcmp("-Xlinker", arg) == 0) {
             // Linker options
             EXPECT_ARG;
