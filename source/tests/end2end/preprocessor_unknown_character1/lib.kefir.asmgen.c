@@ -1,7 +1,7 @@
 /*
     SPDX-License-Identifier: GPL-3.0
 
-    Copyright (C) 2020-2024  Jevgenijs Protopopovs
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
 
     This file is part of Kefir project.
 
@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-/* Somÿ comment */
+/* Somï¿½ comment */
 A;
-// Some ÿther comment
+// Some ï¿½ther comment
 B;
