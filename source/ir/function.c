@@ -67,6 +67,8 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
     func->declaration = decl;
     func->locals = locals;
     func->locals_type_id = locals_type_id;
+    func->flags.constructor = false;
+    func->flags.destructor = false;
     kefir_result_t res = kefir_ir_function_debug_info_init(&func->debug_info);
     REQUIRE_CHAIN(&res, kefir_irblock_alloc(mem, bodySz, &func->body));
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -529,6 +529,54 @@ static kefir_result_t translate_global_inline_assembly(struct kefir_codegen_amd6
     return KEFIR_OK;
 }
 
+static kefir_result_t generate_init_array(struct kefir_codegen_amd64_module *codegen_module) {
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".init_array",
+                                           KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 8));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_ir_function *ir_func =
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+        if (!ir_func->flags.constructor) {
+            continue;
+        }
+
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_module->module->ir_module, ir_func->name, &ir_identifier));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[0],
+                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
+            0));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t generate_fini_array(struct kefir_codegen_amd64_module *codegen_module) {
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".fini_array",
+                                           KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(KEFIR_AMD64_XASMGEN_ALIGN(&codegen_module->codegen->xasmgen, 8));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_ir_function *ir_func =
+             kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+        if (!ir_func->flags.destructor) {
+            continue;
+        }
+
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(codegen_module->module->ir_module, ir_func->name, &ir_identifier));
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
+            &codegen_module->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
+            kefir_asm_amd64_xasmgen_operand_label(&codegen_module->codegen->xasmgen_helpers.operands[0],
+                                                  KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
+            0));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
                                      struct kefir_opt_module_analysis *analysis) {
 
@@ -540,6 +588,8 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
         KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
 
+    kefir_bool_t has_constructors = false;
+    kefir_bool_t has_destructors = false;
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func =
              kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
@@ -553,6 +603,13 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_codegen_amd64_module_insert_function(mem, codegen_module, func, func_analysis, &codegen_func));
         REQUIRE_OK(kefir_codegen_amd64_function_translate(mem, codegen_func));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+
+        if (ir_func->flags.constructor) {
+            has_constructors = true;
+        }
+        if (ir_func->flags.destructor) {
+            has_destructors = true;
+        }
     }
 
     REQUIRE_OK(translate_global_inline_assembly(codegen_module->codegen, codegen_module->module));
@@ -560,6 +617,15 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
     REQUIRE_OK(translate_data(mem, codegen_module));
+
+    if (has_constructors) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+        REQUIRE_OK(generate_init_array(codegen_module));
+    }
+    if (has_destructors) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
+        REQUIRE_OK(generate_fini_array(codegen_module));
+    }
 
     if (codegen_module->codegen->config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));

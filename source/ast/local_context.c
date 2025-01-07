@@ -206,8 +206,8 @@ static kefir_result_t context_define_identifier(
                 REQUIRE(declaration, KEFIR_SET_SOURCE_ERROR(
                                          KEFIR_ANALYSIS_ERROR, location,
                                          "External thread local identifier in block scope cannot have initializer"));
-                REQUIRE_OK(kefir_ast_local_context_declare_external_thread_local(mem, local_ctx, identifier, type, alignment,
-                                                                    attributes, location, scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_declare_external_thread_local(
+                    mem, local_ctx, identifier, type, alignment, attributes, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL:
@@ -1275,6 +1275,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.constructor, attributes->constructor);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.destructor, attributes->destructor);
         }
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     } else if (global_ordinary_id != NULL) {
@@ -1298,6 +1300,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.constructor, attributes->constructor);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.destructor, attributes->destructor);
         }
         ASSIGN_PTR(scoped_id_ptr, global_ordinary_id);
     } else {
@@ -1323,6 +1327,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.weak = attributes != NULL && attributes->weak;
         ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
+        ordinary_id->function.flags.constructor = attributes != NULL && attributes->constructor;
+        ordinary_id->function.flags.destructor = attributes != NULL && attributes->destructor;
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     }
     return KEFIR_OK;

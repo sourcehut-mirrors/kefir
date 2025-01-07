@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+
+.section .text
+__kefir_text_section_begin:
+close1:
+__kefir_text_func_close1_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_close1_label0:
+_kefir_func_close1_label1:
+    pop %rbp
+    ret
+__kefir_text_func_close1_end:
+
+close2:
+__kefir_text_func_close2_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_close2_label0:
+_kefir_func_close2_label1:
+    pop %rbp
+    ret
+__kefir_text_func_close2_end:
+
+__kefir_text_section_end:
+
+
+.section .fini_array
+    .align 8
+    .quad close1
+    .quad close2

@@ -32,9 +32,8 @@
 #include "kefir/core/source_error.h"
 
 const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {
-    "aligned",           "__aligned__",    "gnu_inline", "__gnu_inline__", "returns_twice",
-    "__returns_twice__", "weak",           "__weak__",   "alias",          "__alias__",
-    "visibility",        "__visibility__", NULL};
+    "aligned", "__aligned__", "gnu_inline", "__gnu_inline__", "returns_twice", "__returns_twice__", "weak", "__weak__",
+    "alias",   "__alias__",   "visibility", "__visibility__", "constructor",   "destructor",        NULL};
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
@@ -1198,6 +1197,22 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
             if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                 REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
                     mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));
+            } else if (strcmp(attribute->name, "constructor") == 0 && attributes != NULL) {
+                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Attribute constructor can only be used on function declarators"));
+                REQUIRE(kefir_list_length(&attribute->parameters) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Attribute constructor with priority is not supported"));
+                attributes->constructor = true;
+            } else if (strcmp(attribute->name, "destructor") == 0 && attributes != NULL) {
+                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Attribute destructor can only be used on function declarators"));
+                REQUIRE(kefir_list_length(&attribute->parameters) == 0,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                               "Attribute destructor with priority is not supported"));
+                attributes->destructor = true;
             } else if ((strcmp(attribute->name, "gnu_inline") == 0 || strcmp(attribute->name, "__gnu_inline__") == 0) &&
                        attributes != NULL) {
                 attributes->gnu_inline = true;

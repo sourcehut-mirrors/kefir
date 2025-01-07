@@ -546,6 +546,17 @@ static kefir_result_t compact_impl(struct kefir_mem *mem, struct kefir_ir_module
         }
     }
 
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->functions, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+
+        ASSIGN_DECL_CAST(const char *, symbol, node->key);
+        ASSIGN_DECL_CAST(const struct kefir_ir_function *, function, node->value);
+        if (function->flags.constructor || function->flags.destructor) {
+            REQUIRE_OK(kefir_list_insert_after(mem, &params->symbol_scan_queue,
+                                               kefir_list_tail(&params->symbol_scan_queue), (void *) symbol));
+        }
+    }
+
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->global_inline_asm, &iter); node != NULL;
          node = kefir_hashtree_next(&iter)) {
 

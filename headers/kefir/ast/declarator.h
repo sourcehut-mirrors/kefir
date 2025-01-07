@@ -77,6 +77,8 @@ typedef struct kefir_ast_declarator_attributes {
     kefir_ast_declarator_visibility_attr_t visibility;
     const char *alias;
     const char *asm_label;
+    kefir_bool_t constructor;
+    kefir_bool_t destructor;
 } kefir_ast_declarator_attributes_t;
 
 struct kefir_ast_declarator *kefir_ast_declarator_identifier(struct kefir_mem *, struct kefir_string_pool *,

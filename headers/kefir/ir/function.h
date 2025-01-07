@@ -51,6 +51,10 @@ typedef struct kefir_ir_function {
         kefir_id_t locals_type_id;
     };
     struct kefir_irblock body;
+    struct {
+        kefir_bool_t constructor;
+        kefir_bool_t destructor;
+    } flags;
     struct kefir_ir_function_debug_info debug_info;
 } kefir_ir_function_t;
 

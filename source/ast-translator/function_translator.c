@@ -232,6 +232,10 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         return res;
     });
 
+    ctx->ir_func->flags.constructor =
+        function->base.properties.function_definition.scoped_id->function.flags.constructor;
+    ctx->ir_func->flags.destructor = function->base.properties.function_definition.scoped_id->function.flags.destructor;
+
     ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
 
     return KEFIR_OK;

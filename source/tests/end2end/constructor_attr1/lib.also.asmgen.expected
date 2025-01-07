@@ -1,0 +1,54 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global flag
+.type flag, @object
+.global flag2
+.type flag2, @object
+.global init2
+.type init2, @function
+
+.section .text
+__kefir_text_section_begin:
+init:
+__kefir_text_func_init_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_init_label0:
+_kefir_func_init_label1:
+    mov $1, %rax
+    movq flag@GOTPCREL(%rip), %rcx
+    movl %eax, (%rcx)
+    pop %rbp
+    ret
+__kefir_text_func_init_end:
+
+init2:
+__kefir_text_func_init2_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_init2_label0:
+_kefir_func_init2_label1:
+    mov $1, %rax
+    movq flag2@GOTPCREL(%rip), %rcx
+    movl %eax, (%rcx)
+    pop %rbp
+    ret
+__kefir_text_func_init2_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+flag:
+    .long 0
+
+    .align 4
+flag2:
+    .long 0
+
+
+.section .init_array
+    .align 8
+    .quad init
+    .quad init2
