@@ -31,21 +31,23 @@
 static kefir_result_t output_compiler_config(FILE *output,
                                              const struct kefir_compiler_runner_configuration *configuration) {
     fprintf(output, "+ kefir -cc1");
+    if (configuration->dependency_output.output_dependencies) {
+        fprintf(output, " --dump-dependencies");
+        if (configuration->dependency_output.output_system_deps) {
+            fprintf(output, " --system-dependencies");
+        } else {
+            fprintf(output, " --no-system-dependencies");
+        }
+        if (configuration->dependency_output.target_name != NULL) {
+            fprintf(output, " --dependency-target %s", configuration->dependency_output.target_name);
+        }
+        if (configuration->dependency_output.output_filename != NULL) {
+            fprintf(output, " --dependency-output %s", configuration->dependency_output.output_filename);
+        }
+    }
     switch (configuration->action) {
         case KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS:
             fprintf(output, " --preprocess");
-            break;
-
-        case KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES:
-            fprintf(output, " --dump-dependencies");
-            if (configuration->dependency_output.output_system_deps) {
-                fprintf(output, " --system-dependencies");
-            } else {
-                fprintf(output, " --no-system-dependencies");
-            }
-            if (configuration->dependency_output.target_name != NULL) {
-                fprintf(output, " --dependency-target %s", configuration->dependency_output.target_name);
-            }
             break;
 
         case KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS:

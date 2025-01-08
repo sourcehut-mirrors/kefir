@@ -57,7 +57,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .print_details = NULL,
                     .pipeline_spec = NULL},
         .optimizer_pipeline_spec = NULL,
-        .dependency_output = {.target_name = NULL, .output_system_deps = true}};
+        .dependency_output = {.target_name = NULL, .output_filename = NULL, .output_system_deps = true}};
     REQUIRE_OK(kefir_list_init(&options->include_path));
     REQUIRE_OK(kefir_hashtreeset_init(&options->system_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&options->include_files));

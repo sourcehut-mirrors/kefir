@@ -30,7 +30,6 @@
 
 typedef enum kefir_compiler_runner_action {
     KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
-    KEFIR_COMPILER_RUNNER_ACTION_DUMP_DEPENDENCIES,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST,
     KEFIR_COMPILER_RUNNER_ACTION_DUMP_IR,
@@ -64,7 +63,9 @@ typedef struct kefir_compiler_runner_configuration {
 
     struct {
         const char *target_name;
+        kefir_bool_t output_dependencies;
         kefir_bool_t output_system_deps;
+        const char *output_filename;
     } dependency_output;
 
     struct {

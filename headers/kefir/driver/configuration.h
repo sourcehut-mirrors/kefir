@@ -69,7 +69,6 @@ kefir_result_t kefir_driver_linker_configuration_add_argument(struct kefir_mem *
 typedef enum kefir_driver_stage {
     KEFIR_DRIVER_STAGE_PREPROCESS,
     KEFIR_DRIVER_STAGE_PREPROCESS_SAVE,
-    KEFIR_DRIVER_STAGE_DEPENDENCY_OUTPUT,
     KEFIR_DRIVER_STAGE_PRINT_TOKENS,
     KEFIR_DRIVER_STAGE_PRINT_AST,
     KEFIR_DRIVER_STAGE_PRINT_IR,
@@ -154,8 +153,10 @@ typedef struct kefir_driver_configuration {
     } flags;
 
     struct {
+        kefir_bool_t output_dependencies;
         kefir_bool_t output_system_deps;
         const char *target_name;
+        const char *output_filename;
     } dependency_output;
 
     struct {

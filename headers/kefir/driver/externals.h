@@ -57,6 +57,7 @@ typedef struct kefir_driver_external_resources {
         const char **static_library;
         const char **shared_library;
         const char **preprocessed_file;
+        const char **dependency_file;
     } extensions;
 
     struct kefir_tempfile_manager *tmpfile_manager;

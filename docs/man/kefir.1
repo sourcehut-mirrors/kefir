@@ -119,12 +119,17 @@ Output a make rule describing the dependencies of source file (including the dep
 .It Fl MM
 Output a make rule describing the dependencies of source file (excluding the dependencies from system path and their transitive includes)
 .\"
+.It Fl MD
+Output a make rule describing the dependencies of source file (including the dependencies from system path), while also running normal compilation pipeline.
+.\"
+.It Fl MMD
+Output a make rule describing the dependencies of source file (excluding the dependencies from system path and their transitive includes), while also running normal compilation pipeline.
+.\"
 .It Fl MT Ar target
-Override the default target name of make rule produced by dependency generation (used with
-.Fl M
-and
-.Fl MM
-options)
+Override the default target name of make rule produced by dependency generation
+.\"
+.It Fl MF Ar filename
+Override the default output file for make rule produced by dependency generation.
 .\"
 .It Fl include Ar file
 Include file during preprocessing phase

@@ -136,11 +136,21 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS_SAVE;
         } else if (strcmp("-M", arg) == 0) {
             // Print all dependencies
-            config->stage = KEFIR_DRIVER_STAGE_DEPENDENCY_OUTPUT;
+            config->stage = KEFIR_DRIVER_STAGE_PREPROCESS;
+            config->dependency_output.output_dependencies = true;
             config->dependency_output.output_system_deps = true;
         } else if (strcmp("-MM", arg) == 0) {
             // Print all non-system dependencies
-            config->stage = KEFIR_DRIVER_STAGE_DEPENDENCY_OUTPUT;
+            config->stage = KEFIR_DRIVER_STAGE_PREPROCESS;
+            config->dependency_output.output_dependencies = true;
+            config->dependency_output.output_system_deps = false;
+        } else if (strcmp("-MD", arg) == 0) {
+            // Print all dependencies
+            config->dependency_output.output_dependencies = true;
+            config->dependency_output.output_system_deps = true;
+        } else if (strcmp("-MMD", arg) == 0) {
+            // Print all non-system dependencies
+            config->dependency_output.output_dependencies = true;
             config->dependency_output.output_system_deps = false;
         } else if (strcmp("--print-tokens", arg) == 0) {
             // Print tokens
@@ -328,6 +338,21 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert dependency target name into symbols"));
 
             config->dependency_output.target_name = target_name;
+        } else if (strcmp("-MF", arg) == 0) {
+            // Dependency output filename
+            EXPECT_ARG;
+            const char *output_filename;
+            if (strlen(arg) > 3) {
+                output_filename = &arg[3];
+            } else {
+                EXPECT_ARG;
+                output_filename = argv[++index];
+            }
+            output_filename = kefir_string_pool_insert(mem, symbols, output_filename, NULL);
+            REQUIRE(output_filename != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert dependency target name into symbols"));
+
+            config->dependency_output.output_filename = output_filename;
         }
 
         // Assembler options
