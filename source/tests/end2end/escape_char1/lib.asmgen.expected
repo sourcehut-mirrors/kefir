@@ -1,0 +1,25 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global arr
+.type arr, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+arr:
+    .byte 39
+    .byte 34
+    .byte 63
+    .byte 92
+    .byte 7
+    .byte 8
+    .byte 12
+    .byte 10
+    .byte 13
+    .byte 9
+    .byte 11
+    .byte 27
+

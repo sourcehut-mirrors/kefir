@@ -105,6 +105,11 @@ static kefir_result_t next_simple_escape_sequence(struct kefir_lexer_source_curs
             REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
             break;
 
+        case U'e':
+            *target = U'\x1B';
+            REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Cannot match simple escape sequence");
     }
