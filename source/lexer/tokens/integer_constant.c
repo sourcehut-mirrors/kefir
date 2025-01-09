@@ -190,6 +190,23 @@ static kefir_result_t next_hexadecimal_constant(struct kefir_lexer_source_cursor
     return KEFIR_OK;
 }
 
+static kefir_result_t next_binary_constant(struct kefir_lexer_source_cursor *cursor, kefir_uint64_t *value) {
+    kefir_char32_t init_chr = kefir_lexer_source_cursor_at(cursor, 0);
+    kefir_char32_t init_chr2 = kefir_lexer_source_cursor_at(cursor, 1);
+    kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 2);
+    REQUIRE(init_chr == U'0' && (init_chr2 == U'b' || init_chr2 == U'B') && (chr == U'0' || chr == U'1'),
+            KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match binary integer constant"));
+    REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
+
+    *value = 0;
+    for (; chr == U'0' || chr == U'1';
+         kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
+        *value <<= 1;
+        *value += chr - U'0';
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t next_octal_constant(struct kefir_lexer_source_cursor *cursor, kefir_uint64_t *value) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
     REQUIRE(chr == U'0', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
@@ -270,6 +287,10 @@ kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_lexer_source_curs
     if (res == KEFIR_NO_MATCH) {
         decimal = false;
         res = next_hexadecimal_constant(cursor, &value);
+    }
+    if (res == KEFIR_NO_MATCH) {
+        decimal = false;
+        res = next_binary_constant(cursor, &value);
     }
     if (res == KEFIR_NO_MATCH) {
         res = next_octal_constant(cursor, &value);
