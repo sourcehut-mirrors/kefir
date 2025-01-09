@@ -331,19 +331,19 @@ DEFINE_CASE(ast_constant_expression_binary_operations1, "AST constant expression
                 kefir_ast_new_binary_operation(&kft_mem, KEFIR_AST_OPERATION_BITWISE_AND,
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)),
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, j))),
-                i & j);
+                (kefir_uint32_t) (i & j));
             ASSERT_INTEGER_CONST_EXPR(
                 &kft_mem, context,
                 kefir_ast_new_binary_operation(&kft_mem, KEFIR_AST_OPERATION_BITWISE_OR,
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)),
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, j))),
-                i | j);
+                (kefir_uint32_t) (i | j));
             ASSERT_INTEGER_CONST_EXPR(
                 &kft_mem, context,
                 kefir_ast_new_binary_operation(&kft_mem, KEFIR_AST_OPERATION_BITWISE_XOR,
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, i)),
                                                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, j))),
-                i ^ j);
+                (kefir_uint32_t) (i ^ j));
             ASSERT_INTEGER_CONST_EXPR(
                 &kft_mem, context,
                 kefir_ast_new_binary_operation(&kft_mem, KEFIR_AST_OPERATION_LOGICAL_AND,

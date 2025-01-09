@@ -47,23 +47,32 @@ static kefir_result_t unwrap_vla_type(struct kefir_mem *mem, const struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t calculate_type_alignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                               const struct kefir_ast_type *base_type, kefir_size_t *alignment,
-                                               const struct kefir_source_location *source_location) {
+static kefir_result_t get_type_info(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                    const struct kefir_ast_type *type,
+                                    const struct kefir_source_location *source_location,
+                                    struct kefir_ast_target_environment_object_info *type_info) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    struct kefir_ast_target_environment_object_info type_info;
-    const struct kefir_ast_type *type = NULL;
-    REQUIRE_OK(unwrap_vla_type(mem, context, base_type, &type));
     REQUIRE_OK(
         KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type, source_location));
     kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
+        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, type_info);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
         return res;
     });
-    *alignment = type_info.alignment;
     REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t calculate_type_alignment(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                               const struct kefir_ast_type *base_type, kefir_size_t *alignment,
+                                               const struct kefir_source_location *source_location) {
+    const struct kefir_ast_type *type = NULL;
+    REQUIRE_OK(unwrap_vla_type(mem, context, base_type, &type));
+    struct kefir_ast_target_environment_object_info type_info;
+    REQUIRE_OK(get_type_info(mem, context, type, source_location, &type_info));
+    *alignment = type_info.alignment;
     return KEFIR_OK;
 }
 
@@ -81,6 +90,11 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
     REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                    "Expected constant expression AST node"));
+
+    kefir_bool_t type_signed_integer = false;
+    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(node->base.properties.type)) {
+        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, node->base.properties.type, &type_signed_integer));
+    }
 
     struct kefir_ast_constant_expression_value arg_value;
     switch (node->type) {
@@ -102,11 +116,60 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             }
             break;
 
+#define APPLY_UNARY_SIGNED_OP(_size, _result, _op, _arg)                \
+    do {                                                                \
+        switch ((_size)) {                                              \
+            case 1:                                                     \
+                (_result)->integer = _op(kefir_int8_t)(_arg)->integer;  \
+                break;                                                  \
+                                                                        \
+            case 2:                                                     \
+                (_result)->integer = _op(kefir_int16_t)(_arg)->integer; \
+                break;                                                  \
+                                                                        \
+            case 3:                                                     \
+            case 4:                                                     \
+                (_result)->integer = _op(kefir_int32_t)(_arg)->integer; \
+                break;                                                  \
+                                                                        \
+            default:                                                    \
+                (_result)->integer = _op(_arg)->integer;                \
+                break;                                                  \
+        }                                                               \
+    } while (0)
+#define APPLY_UNARY_UNSIGNED_OP(_size, _result, _op, _arg)                 \
+    do {                                                                   \
+        switch ((_size)) {                                                 \
+            case 1:                                                        \
+                (_result)->uinteger = _op(kefir_uint8_t)(_arg)->uinteger;  \
+                break;                                                     \
+                                                                           \
+            case 2:                                                        \
+                (_result)->uinteger = _op(kefir_uint16_t)(_arg)->uinteger; \
+                break;                                                     \
+                                                                           \
+            case 3:                                                        \
+            case 4:                                                        \
+                (_result)->uinteger = _op(kefir_uint32_t)(_arg)->uinteger; \
+                break;                                                     \
+                                                                           \
+            default:                                                       \
+                (_result)->uinteger = _op(_arg)->uinteger;                 \
+                break;                                                     \
+        }                                                                  \
+    } while (0)
         case KEFIR_AST_OPERATION_NEGATE:
             REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg, &arg_value));
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = -arg_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                if (type_signed_integer) {
+                    APPLY_UNARY_SIGNED_OP(type_info.size, value, -, &arg_value);
+                } else {
+                    APPLY_UNARY_UNSIGNED_OP(type_info.size, value, -, &arg_value);
+                }
             } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
                 value->complex_floating_point.real = -arg_value.complex_floating_point.real;
@@ -124,7 +187,14 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg, &arg_value));
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = ~arg_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                if (type_signed_integer) {
+                    APPLY_UNARY_SIGNED_OP(type_info.size, value, ~, &arg_value);
+                } else {
+                    APPLY_UNARY_UNSIGNED_OP(type_info.size, value, ~, &arg_value);
+                }
             } else {
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                               "Expected integeral constant expression");
@@ -135,7 +205,14 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg, &arg_value));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) {
-                value->integer = !arg_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                if (type_signed_integer) {
+                    APPLY_UNARY_SIGNED_OP(type_info.size, value, !, &arg_value);
+                } else {
+                    APPLY_UNARY_UNSIGNED_OP(type_info.size, value, !, &arg_value);
+                }
             } else if (arg_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT) {
                 value->integer = !((kefir_bool_t) arg_value.complex_floating_point.real ||
                                    (kefir_bool_t) arg_value.complex_floating_point.imaginary);
@@ -154,6 +231,8 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 }
             }
             break;
+#undef APPLY_UNARY_SIGNED_OP
+#undef APPLY_UNARY_UNSIGNED_OP
 
         case KEFIR_AST_OPERATION_POSTFIX_INCREMENT:
         case KEFIR_AST_OPERATION_POSTFIX_DECREMENT:
@@ -182,19 +261,10 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
 
             REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, type));
 
-            kefir_ast_target_environment_opaque_type_t opaque_type;
             struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type,
-                                                             &node->base.source_location));
-            kefir_result_t res =
-                KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
-                return res;
-            });
+            REQUIRE_OK(get_type_info(mem, context, type, &node->base.source_location, &type_info));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             value->integer = type_info.size;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
         } break;
 
         case KEFIR_AST_OPERATION_ALIGNOF: {

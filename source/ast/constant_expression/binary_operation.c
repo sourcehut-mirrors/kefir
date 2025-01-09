@@ -147,6 +147,24 @@ static kefir_result_t evaluate_pointer_diff(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t get_type_info(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                    const struct kefir_ast_type *type,
+                                    const struct kefir_source_location *source_location,
+                                    struct kefir_ast_target_environment_object_info *type_info) {
+    kefir_ast_target_environment_opaque_type_t opaque_type;
+    REQUIRE_OK(
+        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type, source_location));
+    kefir_result_t res =
+        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, type_info);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
+        return res;
+    });
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                         const struct kefir_ast_binary_operation *node,
                                                         struct kefir_ast_constant_expression_value *value) {
@@ -176,6 +194,55 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg2, &arg2_value));
     }
     switch (node->type) {
+#define APPLY_SIGNED_OP(_size, _value, _arg1, _op, _arg2)                                                       \
+    do {                                                                                                        \
+        switch ((_size)) {                                                                                      \
+            case 1:                                                                                             \
+                (_value)->integer =                                                                             \
+                    (kefir_int8_t) (((kefir_int8_t) (_arg1)->integer) _op((kefir_int8_t) (_arg2)->integer));    \
+                break;                                                                                          \
+                                                                                                                \
+            case 2:                                                                                             \
+                (_value)->integer =                                                                             \
+                    (kefir_int16_t) (((kefir_int16_t) (_arg1)->integer) _op((kefir_int16_t) (_arg2)->integer)); \
+                break;                                                                                          \
+                                                                                                                \
+            case 3:                                                                                             \
+            case 4:                                                                                             \
+                (_value)->integer =                                                                             \
+                    (kefir_int32_t) (((kefir_int32_t) (_arg1)->integer) _op((kefir_int32_t) (_arg2)->integer)); \
+                break;                                                                                          \
+                                                                                                                \
+            default:                                                                                            \
+                (_value)->integer = (kefir_int64_t) ((_arg1)->integer _op(_arg2)->integer);                     \
+                break;                                                                                          \
+        }                                                                                                       \
+    } while (0)
+#define APPLY_UNSIGNED_OP(_size, _value, _arg1, _op, _arg2)                                                          \
+    do {                                                                                                             \
+        switch ((_size)) {                                                                                           \
+            case 1:                                                                                                  \
+                (_value)->uinteger =                                                                                 \
+                    (kefir_uint8_t) (((kefir_uint8_t) (_arg1)->uinteger) _op((kefir_uint8_t) (_arg2)->uinteger));    \
+                break;                                                                                               \
+                                                                                                                     \
+            case 2:                                                                                                  \
+                (_value)->uinteger =                                                                                 \
+                    (kefir_uint16_t) (((kefir_uint16_t) (_arg1)->uinteger) _op((kefir_uint16_t) (_arg2)->uinteger)); \
+                break;                                                                                               \
+                                                                                                                     \
+            case 3:                                                                                                  \
+            case 4:                                                                                                  \
+                (_value)->uinteger =                                                                                 \
+                    (kefir_uint32_t) (((kefir_uint32_t) (_arg1)->uinteger) _op((kefir_uint32_t) (_arg2)->uinteger)); \
+                break;                                                                                               \
+                                                                                                                     \
+            default:                                                                                                 \
+                (_value)->uinteger = (kefir_uint64_t) ((_arg1)->uinteger _op(_arg2)->uinteger);                      \
+                break;                                                                                               \
+        }                                                                                                            \
+    } while (0)
+
         case KEFIR_AST_OPERATION_ADD:
             if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) {
                 REQUIRE_OK(evaluate_pointer_offset(mem, context, KEFIR_AST_NODE_BASE(node), &arg1_value.pointer,
@@ -192,9 +259,18 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) + as_float(&arg2_value);
+            } else if (common_type_signed_integer) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, +, &arg2_value);
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = arg1_value.integer + arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, +, &arg2_value);
             }
             break;
 
@@ -220,9 +296,18 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = as_float(&arg1_value) - as_float(&arg2_value);
+            } else if (common_type_signed_integer) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, -, &arg2_value);
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = arg1_value.integer - arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, -, &arg2_value);
             }
             break;
 
@@ -238,7 +323,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 value->floating_point = as_float(&arg1_value) * as_float(&arg2_value);
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = arg1_value.integer * arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, *, &arg2_value);
             }
             break;
 
@@ -258,42 +346,60 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
                                                "Expected non-zero divisor in constant expression"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->integer = arg1_value.integer / arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, /, &arg2_value);
             } else {
                 REQUIRE(arg2_value.integer != 0,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
                                                "Expected non-zero divisor in constant expression"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                value->uinteger = arg1_value.uinteger / arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, /, &arg2_value);
             }
             break;
 
         case KEFIR_AST_OPERATION_MODULO:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (common_type_signed_integer) {
-                value->integer = arg1_value.integer % arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, %, &arg2_value);
             } else {
-                value->uinteger = arg1_value.uinteger % arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, %, &arg2_value);
             }
             break;
 
-        case KEFIR_AST_OPERATION_SHIFT_LEFT:
+        case KEFIR_AST_OPERATION_SHIFT_LEFT: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            struct kefir_ast_target_environment_object_info type_info;
+            REQUIRE_OK(
+                get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
             if (common_type_signed_integer) {
-                value->integer = arg1_value.integer << arg2_value.integer;
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, <<, &arg2_value);
             } else {
-                value->uinteger = arg1_value.uinteger << arg2_value.integer;
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, <<, &arg2_value);
             }
-            break;
+        } break;
 
-        case KEFIR_AST_OPERATION_SHIFT_RIGHT:
+        case KEFIR_AST_OPERATION_SHIFT_RIGHT: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            struct kefir_ast_target_environment_object_info type_info;
+            REQUIRE_OK(
+                get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
             if (common_type_signed_integer) {
-                value->integer = arg1_value.integer >> arg2_value.integer;
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, >>, &arg2_value);
             } else {
-                value->uinteger = arg1_value.uinteger >> arg2_value.integer;
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, >>, &arg2_value);
             }
-            break;
+        } break;
 
         case KEFIR_AST_OPERATION_LESS:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
@@ -307,9 +413,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) < as_float(&arg2_value);
             } else if (common_type_signed_integer) {
-                value->integer = arg1_value.integer < arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, <, &arg2_value);
             } else {
-                value->integer = arg1_value.uinteger < arg2_value.uinteger;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, <, &arg2_value);
             }
             break;
 
@@ -325,9 +435,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) <= as_float(&arg2_value);
             } else if (common_type_signed_integer) {
-                value->integer = arg1_value.integer <= arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, <=, &arg2_value);
             } else {
-                value->integer = arg1_value.uinteger <= arg2_value.uinteger;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, <=, &arg2_value);
             }
             break;
 
@@ -343,9 +457,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) > as_float(&arg2_value);
             } else if (common_type_signed_integer) {
-                value->integer = arg1_value.integer > arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, >, &arg2_value);
             } else {
-                value->integer = arg1_value.uinteger > arg2_value.uinteger;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, >, &arg2_value);
             }
             break;
 
@@ -361,9 +479,13 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) >= as_float(&arg2_value);
             } else if (common_type_signed_integer) {
-                value->integer = arg1_value.integer >= arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, >=, &arg2_value);
             } else {
-                value->integer = arg1_value.uinteger >= arg2_value.uinteger;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, >=, &arg2_value);
             }
             break;
 
@@ -379,7 +501,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) == as_float(&arg2_value);
             } else {
-                value->integer = arg1_value.integer == arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, ==, &arg2_value);
             }
             break;
 
@@ -395,25 +519,54 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) != as_float(&arg2_value);
             } else {
-                value->integer = arg1_value.integer != arg2_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_SIGNED_OP(type_info.size, value, &arg1_value, !=, &arg2_value);
             }
             break;
 
-        case KEFIR_AST_OPERATION_BITWISE_AND:
+        case KEFIR_AST_OPERATION_BITWISE_AND: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            value->integer = arg1_value.integer & arg2_value.integer;
-            break;
+            struct kefir_ast_target_environment_object_info type_info;
+            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+            APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, &, &arg2_value);
+        } break;
 
-        case KEFIR_AST_OPERATION_BITWISE_OR:
+        case KEFIR_AST_OPERATION_BITWISE_OR: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            value->integer = arg1_value.integer | arg2_value.integer;
-            break;
+            struct kefir_ast_target_environment_object_info type_info;
+            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+            APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, |, &arg2_value);
+        } break;
 
-        case KEFIR_AST_OPERATION_BITWISE_XOR:
+        case KEFIR_AST_OPERATION_BITWISE_XOR: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            value->integer = arg1_value.integer ^ arg2_value.integer;
-            break;
+            struct kefir_ast_target_environment_object_info type_info;
+            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+            APPLY_UNSIGNED_OP(type_info.size, value, &arg1_value, ^, &arg2_value);
+        } break;
 
+#define CONV_BOOL(_size, _result, _arg)                                        \
+    do {                                                                       \
+        switch ((_size)) {                                                     \
+            case 1:                                                            \
+                *(_result) = (kefir_bool_t) (kefir_uint8_t) (_arg)->uinteger;  \
+                break;                                                         \
+                                                                               \
+            case 2:                                                            \
+                *(_result) = (kefir_bool_t) (kefir_uint16_t) (_arg)->uinteger; \
+                break;                                                         \
+                                                                               \
+            case 3:                                                            \
+            case 4:                                                            \
+                *(_result) = (kefir_bool_t) (kefir_uint32_t) (_arg)->uinteger; \
+                break;                                                         \
+                                                                               \
+            default:                                                           \
+                *(_result) = (kefir_bool_t) (_arg)->uinteger;                  \
+                break;                                                         \
+        }                                                                      \
+    } while (0)
         case KEFIR_AST_OPERATION_LOGICAL_AND: {
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             REQUIRE(
@@ -427,7 +580,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 arg1_bool = (kefir_bool_t) arg1_value.complex_floating_point.real ||
                             (kefir_bool_t) arg1_value.complex_floating_point.imaginary;
             } else {
-                arg1_bool = (kefir_bool_t) arg1_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->arg1->properties.type, &node->arg1->source_location, &type_info));
+                CONV_BOOL(type_info.size, &arg1_bool, &arg1_value);
             }
 
             if (arg1_bool) {
@@ -442,7 +598,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     arg2_bool = (kefir_bool_t) arg2_value.complex_floating_point.real ||
                                 (kefir_bool_t) arg2_value.complex_floating_point.imaginary;
                 } else {
-                    arg2_bool = (kefir_bool_t) arg2_value.integer;
+                    struct kefir_ast_target_environment_object_info type_info;
+                    REQUIRE_OK(get_type_info(mem, context, node->arg2->properties.type, &node->arg2->source_location,
+                                             &type_info));
+                    CONV_BOOL(type_info.size, &arg2_bool, &arg2_value);
                 }
             }
 
@@ -462,7 +621,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 arg1_bool = (kefir_bool_t) arg1_value.complex_floating_point.real ||
                             (kefir_bool_t) arg1_value.complex_floating_point.imaginary;
             } else {
-                arg1_bool = (kefir_bool_t) arg1_value.integer;
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(
+                    get_type_info(mem, context, node->arg1->properties.type, &node->arg1->source_location, &type_info));
+                CONV_BOOL(type_info.size, &arg1_bool, &arg1_value);
             }
 
             if (!arg1_bool) {
@@ -477,12 +639,18 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     arg2_bool = (kefir_bool_t) arg2_value.complex_floating_point.real ||
                                 (kefir_bool_t) arg2_value.complex_floating_point.imaginary;
                 } else {
-                    arg2_bool = (kefir_bool_t) arg2_value.integer;
+                    struct kefir_ast_target_environment_object_info type_info;
+                    REQUIRE_OK(get_type_info(mem, context, node->arg2->properties.type, &node->arg2->source_location,
+                                             &type_info));
+                    CONV_BOOL(type_info.size, &arg2_bool, &arg2_value);
                 }
             }
 
             value->integer = arg1_bool || arg2_bool;
         } break;
+#undef CONV_BOOL
+#undef APPLY_SIGNED_OP
+#undef APPLY_UNSIGNED_OP
     }
     return KEFIR_OK;
 }
