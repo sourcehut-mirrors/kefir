@@ -36,7 +36,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "char",
-        "value": 92
+        "value": 96
     },
     {
         "class": "punctuator",
@@ -73,7 +73,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "char",
-        "value": 92
+        "value": 96
     },
     {
         "class": "punctuator",

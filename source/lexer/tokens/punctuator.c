@@ -73,6 +73,7 @@ static const struct Punctuators {
                    {KEFIR_PUNCTUATOR_COMMA, U","},
                    {KEFIR_PUNCTUATOR_HASH, U"#"},
                    {KEFIR_PUNCTUATOR_DOUBLE_HASH, U"##"},
+                   {KEFIR_PUNCTUATOR_BACKSLASH, U"\\"},
                    {KEFIR_PUNCTUATOR_DIGRAPH_LEFT_BRACKET, U"<:"},
                    {KEFIR_PUNCTUATOR_DIGRAPH_RIGHT_BRACKET, U":>"},
                    {KEFIR_PUNCTUATOR_DIGRAPH_LEFT_BRACE, U"<%"},
@@ -125,8 +126,8 @@ kefir_result_t kefir_lexer_init_punctuators(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t match_punctuator(struct kefir_lexer_source_cursor *cursor, kefir_size_t cursor_offset, struct kefir_trie *trie,
-                                       struct kefir_token *token) {
+static kefir_result_t match_punctuator(struct kefir_lexer_source_cursor *cursor, kefir_size_t cursor_offset,
+                                       struct kefir_trie *trie, struct kefir_token *token) {
     struct kefir_trie_vertex *vertex = NULL;
     REQUIRE_OK(kefir_trie_at(trie, (kefir_trie_key_t) kefir_lexer_source_cursor_at(cursor, cursor_offset), &vertex));
 

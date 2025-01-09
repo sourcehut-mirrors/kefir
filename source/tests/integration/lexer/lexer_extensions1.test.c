@@ -36,8 +36,8 @@ static kefir_result_t before_lex(struct kefir_mem *mem, struct kefir_lexer *lexe
 
 static kefir_result_t failed_lex(struct kefir_mem *mem, struct kefir_lexer *lexer, struct kefir_token *token) {
     UNUSED(mem);
-    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'\\') {
-        REQUIRE_OK(kefir_token_new_constant_char('\\', token));
+    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'`') {
+        REQUIRE_OK(kefir_token_new_constant_char('`', token));
         REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
         return KEFIR_OK;
     }
@@ -65,7 +65,7 @@ static kefir_result_t lexer_free(struct kefir_mem *mem, struct kefir_lexer *lexe
 }
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
-    const char CONTENT[] = "2+___3*4+\\/fn(0);\n_\\-000";
+    const char CONTENT[] = "2+___3*4+`/fn(0);\n_`-000";
 
     struct kefir_lexer_extensions extensions = {.on_init = lexer_init,
                                                 .on_free = lexer_free,

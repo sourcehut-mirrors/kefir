@@ -88,7 +88,8 @@ static kefir_result_t format_punctuator(FILE *out, kefir_punctuator_token_t punc
                                               [KEFIR_PUNCTUATOR_DIGRAPH_LEFT_BRACE] = "{",
                                               [KEFIR_PUNCTUATOR_DIGRAPH_RIGHT_BRACE] = "}",
                                               [KEFIR_PUNCTUATOR_DIGRAPH_HASH] = "#",
-                                              [KEFIR_PUNCTUATOR_DIGRAPH_DOUBLE_HASH] = "##"};
+                                              [KEFIR_PUNCTUATOR_DIGRAPH_DOUBLE_HASH] = "##",
+                                              [KEFIR_PUNCTUATOR_BACKSLASH] = "\\"};
     fprintf(out, "%s", PUNCTUATORS[punctuator]);
     return KEFIR_OK;
 }

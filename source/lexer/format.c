@@ -419,6 +419,10 @@ static kefir_result_t format_punctuator(struct kefir_json_output *json, kefir_pu
             REQUIRE_OK(kefir_json_output_string(json, "##"));
             break;
 
+        case KEFIR_PUNCTUATOR_BACKSLASH:
+            REQUIRE_OK(kefir_json_output_string(json, "\\"));
+            break;
+
         case KEFIR_PUNCTUATOR_DIGRAPH_LEFT_BRACKET:
             REQUIRE_OK(kefir_json_output_string(json, "<:"));
             break;
