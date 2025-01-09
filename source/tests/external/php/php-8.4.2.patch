@@ -1,0 +1,20 @@
+--- ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c    2024-12-17 17:31:31.000000000 +0200
++++ ext/pcre/pcre2lib/sljit/sljitNativeX86_common.c     2025-01-09 17:24:29.243740263 +0200
+@@ -429,7 +429,7 @@
+ 
+        __cpuidex((int*)info, (int)info[0], (int)info[2]);
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__TINYC__)
++#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__KEFIRCC__)
+ 
+        /* AT&T syntax. */
+        __asm__ (
+@@ -499,7 +499,7 @@
+ 
+        xcr0 = (sljit_u32)_xgetbv(0);
+ 
+-#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__TINYC__)
++#elif defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__SUNPRO_C) || defined(__KEFIRCC__)
+ 
+        /* AT&T syntax. */
+        __asm__ (
