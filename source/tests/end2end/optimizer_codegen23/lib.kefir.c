@@ -35,8 +35,8 @@ long test1(long a, long b, long c, long d) {
 int sum1(struct S1 s) {
     int result;
     asm("mov %d1, %[result]\n"
-        "mov $32, %cl\n"
-        "shr %cl, %1\n"
+        "mov $32, %%cl\n"
+        "shr %%cl, %1\n"
         "add %d1, %[result]"
         : [result] "=r"(result)
         : "r"(s)

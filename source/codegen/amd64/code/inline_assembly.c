@@ -1281,6 +1281,19 @@ static kefir_result_t inline_assembly_build(struct kefir_mem *mem, struct kefir_
                     REQUIRE_OK(res);
                 } break;
 
+                case 'c': {
+                    template_iter = format_specifier + 2;
+                    const struct kefir_ir_inline_assembly_parameter *asm_param;
+                    const struct kefir_ir_inline_assembly_jump_target *jump_target;
+                    REQUIRE_OK(match_parameter(context->ir_inline_assembly, &template_iter, &asm_param, &jump_target));
+                    REQUIRE(
+                        asm_param != NULL && asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected immediate integral inline assembly parameter"));
+                    REQUIRE_OK(kefir_asmcmp_inline_assembly_add_text(mem, &function->code.context,
+                                                                     context->inline_asm_idx, "%" KEFIR_INT64_FMT,
+                                                                     asm_param->immediate_value));
+                } break;
+
                 default: {
                     template_iter = format_specifier + 1;
                     kefir_result_t res = default_param_modifier(mem, function, context, &template_iter);
