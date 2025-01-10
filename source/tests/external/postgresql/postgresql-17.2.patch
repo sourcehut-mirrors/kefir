@@ -1,0 +1,30 @@
+--- ./src/include/port/simd.h	2024-11-18 22:32:12.000000000 +0200
++++ ./src/include/port/simd.h	2025-01-10 11:57:02.784418454 +0200
+@@ -18,7 +18,7 @@
+ #ifndef SIMD_H
+ #define SIMD_H
+ 
+-#if (defined(__x86_64__) || defined(_M_AMD64))
++#if (defined(__x86_64__) || defined(_M_AMD64)) && !defined(__KEFIRCC__)
+ /*
+  * SSE2 instructions are part of the spec for the 64-bit x86 ISA. We assume
+  * that compilers targeting this architecture understand SSE2 intrinsics.
+--- ./src/include/storage/s_lock.h	2024-11-18 22:32:12.000000000 +0200
++++ /home/jprotopopov/postgresql-17.2/src/include/storage/s_lock.h	2025-01-10 08:52:49.900551679 +0200
+@@ -102,7 +102,7 @@
+ 
+ #ifdef HAVE_SPINLOCKS	/* skip spinlocks if requested */
+ 
+-#if defined(__GNUC__) || defined(__INTEL_COMPILER)
++#if defined(__GNUC__) || defined(__INTEL_COMPILER) || defined(__KEFIRCC__)
+ /*************************************************************************
+  * All the gcc inlines
+  * Gcc consistently defines the CPU as __cpu__.
+@@ -202,6 +202,7 @@
+ #endif	 /* __i386__ */
+ 
+ 
++#define HAS_TEST_AND_SET
+ #ifdef __x86_64__		/* AMD Opteron, Intel EM64T */
+ #define HAS_TEST_AND_SET
+ 
