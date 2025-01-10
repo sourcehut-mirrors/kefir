@@ -211,10 +211,7 @@ static void sighandler(int signum) {
 }
 
 static void configure_compiler_signals(void) {
-    signal(SIGTERM, sighandler);
     signal(SIGABRT, sighandler);
-    signal(SIGINT, sighandler);
-    signal(SIGHUP, sighandler);
     signal(SIGQUIT, sighandler);
     signal(SIGSEGV, sighandler);
     signal(SIGFPE, sighandler);
