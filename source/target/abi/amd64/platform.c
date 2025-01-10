@@ -128,6 +128,7 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
                 break;
 
             case 'r':
+            case 'q':
                 decoded_constraints->general_purpose_register = true;
                 break;
 
