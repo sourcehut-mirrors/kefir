@@ -1364,9 +1364,32 @@ static kefir_result_t simplify_int_sar(struct kefir_mem *mem, struct kefir_opt_f
 
         const kefir_opt_instruction_ref_t sar_arg1_id = sar_arg1->id;
 
+        kefir_int64_t max_arshift = 0;
+        switch (original_opcode) {
+            case KEFIR_OPT_OPCODE_INT8_ARSHIFT:
+                max_arshift = 8;
+                break;
+
+            case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
+                max_arshift = 16;
+                break;
+
+            case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
+                max_arshift = 32;
+                break;
+
+            case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
+                max_arshift = 64;
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected original instruction opcode");
+        }
+
         kefir_int64_t imm_operand = arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST
                                         ? arg2->operation.parameters.imm.integer
                                         : (kefir_int64_t) arg2->operation.parameters.imm.uinteger;
+        const kefir_int64_t original_imm_operand = imm_operand;
         kefir_opt_instruction_ref_t operand_ref = KEFIR_ID_NONE;
         if (sar_arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
             imm_operand += sar_arg2->operation.parameters.imm.integer;
@@ -1374,6 +1397,9 @@ static kefir_result_t simplify_int_sar(struct kefir_mem *mem, struct kefir_opt_f
         } else if (sar_arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
             imm_operand += (kefir_int64_t) sar_arg2->operation.parameters.imm.uinteger;
             operand_ref = sar_arg1_id;
+        }
+        if (original_imm_operand < max_arshift && imm_operand >= max_arshift) {
+            imm_operand = max_arshift - 1;
         }
 
         if (operand_ref != KEFIR_ID_NONE) {

@@ -1313,52 +1313,96 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
             CONST_OP(xor, 64, true);
             break;
 
+#define SHL(_width)                                                                                            \
+    do {                                                                                                       \
+        if (op.int_value < (_width)) {                                                                         \
+            CONST_SHIFT_OP(shl, _width);                                                                       \
+        } else {                                                                                               \
+            kefir_asmcmp_virtual_register_index_t result_vreg;                                                 \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                      \
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));   \
+            REQUIRE_OK(kefir_asmcmp_amd64_xor(                                                                 \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                \
+                &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));        \
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg)); \
+        }                                                                                                      \
+    } while (0)
         case INT_ARITHMETICS_SHL8_CONST:
-            CONST_SHIFT_OP(shl, 8);
+            SHL(8);
             break;
 
         case INT_ARITHMETICS_SHL16_CONST:
-            CONST_SHIFT_OP(shl, 16);
+            SHL(16);
             break;
 
         case INT_ARITHMETICS_SHL32_CONST:
-            CONST_SHIFT_OP(shl, 32);
+            SHL(32);
             break;
 
         case INT_ARITHMETICS_SHL64_CONST:
-            CONST_SHIFT_OP(shl, 64);
+            SHL(64);
             break;
+#undef SHL
 
+#define SHR(_width)                                                                                            \
+    do {                                                                                                       \
+        if (op.int_value < (_width)) {                                                                         \
+            CONST_SHIFT_OP(shr, _width);                                                                       \
+        } else {                                                                                               \
+            kefir_asmcmp_virtual_register_index_t result_vreg;                                                 \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                      \
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));   \
+            REQUIRE_OK(kefir_asmcmp_amd64_xor(                                                                 \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                \
+                &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));        \
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg)); \
+        }                                                                                                      \
+    } while (0)
         case INT_ARITHMETICS_SHR8_CONST:
-            CONST_SHIFT_OP(shr, 8);
+            SHR(8);
             break;
 
         case INT_ARITHMETICS_SHR16_CONST:
-            CONST_SHIFT_OP(shr, 16);
+            SHR(16);
             break;
 
         case INT_ARITHMETICS_SHR32_CONST:
-            CONST_SHIFT_OP(shr, 32);
+            SHR(32);
             break;
 
         case INT_ARITHMETICS_SHR64_CONST:
-            CONST_SHIFT_OP(shr, 64);
+            SHR(64);
             break;
+#undef SHR
 
+#define SAR(_width)                                                                                            \
+    do {                                                                                                       \
+        if (op.int_value < (_width)) {                                                                         \
+            CONST_SHIFT_OP(sar, _width);                                                                       \
+        } else {                                                                                               \
+            kefir_asmcmp_virtual_register_index_t result_vreg;                                                 \
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(                                                      \
+                mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));   \
+            REQUIRE_OK(kefir_asmcmp_amd64_xor(                                                                 \
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                \
+                &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), NULL));        \
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg)); \
+        }                                                                                                      \
+    } while (0)
         case INT_ARITHMETICS_SAR8_CONST:
-            CONST_SHIFT_OP(sar, 8);
+            SAR(8);
             break;
 
         case INT_ARITHMETICS_SAR16_CONST:
-            CONST_SHIFT_OP(sar, 16);
+            SAR(16);
             break;
 
         case INT_ARITHMETICS_SAR32_CONST:
-            CONST_SHIFT_OP(sar, 32);
+            SAR(32);
             break;
 
         case INT_ARITHMETICS_SAR64_CONST:
-            CONST_SHIFT_OP(sar, 64);
+            SAR(64);
             break;
 
         case INT_ARITHMETICS_NOT8:

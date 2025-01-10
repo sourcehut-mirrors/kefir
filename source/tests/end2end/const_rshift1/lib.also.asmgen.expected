@@ -1,0 +1,556 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sint_shr1
+.type sint_shr1, @function
+.global sint_shr2
+.type sint_shr2, @function
+.global sint_shr4
+.type sint_shr4, @function
+.global sint_shr8
+.type sint_shr8, @function
+.global uint_shr1
+.type uint_shr1, @function
+.global uint_shr2
+.type uint_shr2, @function
+.global uint_shr4
+.type uint_shr4, @function
+.global uint_shr8
+.type uint_shr8, @function
+.global schar_shr1
+.type schar_shr1, @function
+.global schar_shr2
+.type schar_shr2, @function
+.global schar_shr4
+.type schar_shr4, @function
+.global schar_shr8
+.type schar_shr8, @function
+.global sint_shr16
+.type sint_shr16, @function
+.global sint_shr32
+.type sint_shr32, @function
+.global sint_shr64
+.type sint_shr64, @function
+.global slong_shr1
+.type slong_shr1, @function
+.global slong_shr2
+.type slong_shr2, @function
+.global slong_shr4
+.type slong_shr4, @function
+.global slong_shr8
+.type slong_shr8, @function
+.global uchar_shr1
+.type uchar_shr1, @function
+.global uchar_shr2
+.type uchar_shr2, @function
+.global uchar_shr4
+.type uchar_shr4, @function
+.global uchar_shr8
+.type uchar_shr8, @function
+.global uint_shr16
+.type uint_shr16, @function
+.global uint_shr32
+.type uint_shr32, @function
+.global uint_shr64
+.type uint_shr64, @function
+.global ulong_shr1
+.type ulong_shr1, @function
+.global ulong_shr2
+.type ulong_shr2, @function
+.global ulong_shr4
+.type ulong_shr4, @function
+.global ulong_shr8
+.type ulong_shr8, @function
+.global int_sar31_1
+.type int_sar31_1, @function
+.global schar_shr16
+.type schar_shr16, @function
+.global schar_shr32
+.type schar_shr32, @function
+.global schar_shr64
+.type schar_shr64, @function
+.global slong_shr16
+.type slong_shr16, @function
+.global slong_shr32
+.type slong_shr32, @function
+.global slong_shr64
+.type slong_shr64, @function
+.global sshort_shr1
+.type sshort_shr1, @function
+.global sshort_shr2
+.type sshort_shr2, @function
+.global sshort_shr4
+.type sshort_shr4, @function
+.global sshort_shr8
+.type sshort_shr8, @function
+.global uchar_shr16
+.type uchar_shr16, @function
+.global uchar_shr32
+.type uchar_shr32, @function
+.global uchar_shr64
+.type uchar_shr64, @function
+.global ulong_shr16
+.type ulong_shr16, @function
+.global ulong_shr32
+.type ulong_shr32, @function
+.global ulong_shr64
+.type ulong_shr64, @function
+.global ushort_shr1
+.type ushort_shr1, @function
+.global ushort_shr2
+.type ushort_shr2, @function
+.global ushort_shr4
+.type ushort_shr4, @function
+.global ushort_shr8
+.type ushort_shr8, @function
+.global long_sar63_1
+.type long_sar63_1, @function
+.global sshort_shr16
+.type sshort_shr16, @function
+.global sshort_shr32
+.type sshort_shr32, @function
+.global sshort_shr64
+.type sshort_shr64, @function
+.global ushort_shr16
+.type ushort_shr16, @function
+.global ushort_shr32
+.type ushort_shr32, @function
+.global ushort_shr64
+.type ushort_shr64, @function
+
+.section .text
+__kefir_text_section_begin:
+sint_shr1:
+__kefir_text_func_sint_shr1_begin:
+    movsx %edi, %rax
+    sar $1, %eax
+    ret
+__kefir_text_func_sint_shr1_end:
+
+sint_shr2:
+__kefir_text_func_sint_shr2_begin:
+    movsx %edi, %rax
+    sar $2, %eax
+    ret
+__kefir_text_func_sint_shr2_end:
+
+sint_shr4:
+__kefir_text_func_sint_shr4_begin:
+    movsx %edi, %rax
+    sar $4, %eax
+    ret
+__kefir_text_func_sint_shr4_end:
+
+sint_shr8:
+__kefir_text_func_sint_shr8_begin:
+    movsx %edi, %rax
+    sar $8, %eax
+    ret
+__kefir_text_func_sint_shr8_end:
+
+uint_shr1:
+__kefir_text_func_uint_shr1_begin:
+    mov %edi, %eax
+    shr $1, %eax
+    ret
+__kefir_text_func_uint_shr1_end:
+
+uint_shr2:
+__kefir_text_func_uint_shr2_begin:
+    mov %edi, %eax
+    shr $2, %eax
+    ret
+__kefir_text_func_uint_shr2_end:
+
+uint_shr4:
+__kefir_text_func_uint_shr4_begin:
+    mov %edi, %eax
+    shr $4, %eax
+    ret
+__kefir_text_func_uint_shr4_end:
+
+uint_shr8:
+__kefir_text_func_uint_shr8_begin:
+    mov %edi, %eax
+    shr $8, %eax
+    ret
+__kefir_text_func_uint_shr8_end:
+
+schar_shr1:
+__kefir_text_func_schar_shr1_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    sar $1, %al
+    ret
+__kefir_text_func_schar_shr1_end:
+
+schar_shr2:
+__kefir_text_func_schar_shr2_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    sar $2, %al
+    ret
+__kefir_text_func_schar_shr2_end:
+
+schar_shr4:
+__kefir_text_func_schar_shr4_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    sar $4, %al
+    ret
+__kefir_text_func_schar_shr4_end:
+
+schar_shr8:
+__kefir_text_func_schar_shr8_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_schar_shr8_end:
+
+sint_shr16:
+__kefir_text_func_sint_shr16_begin:
+    movsx %edi, %rax
+    sar $16, %eax
+    ret
+__kefir_text_func_sint_shr16_end:
+
+sint_shr32:
+__kefir_text_func_sint_shr32_begin:
+    movsx %edi, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_sint_shr32_end:
+
+sint_shr64:
+__kefir_text_func_sint_shr64_begin:
+    movsx %edi, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_sint_shr64_end:
+
+slong_shr1:
+__kefir_text_func_slong_shr1_begin:
+    sar $1, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr1_end:
+
+slong_shr2:
+__kefir_text_func_slong_shr2_begin:
+    sar $2, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr2_end:
+
+slong_shr4:
+__kefir_text_func_slong_shr4_begin:
+    sar $4, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr4_end:
+
+slong_shr8:
+__kefir_text_func_slong_shr8_begin:
+    sar $8, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr8_end:
+
+uchar_shr1:
+__kefir_text_func_uchar_shr1_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    shr $1, %al
+    ret
+__kefir_text_func_uchar_shr1_end:
+
+uchar_shr2:
+__kefir_text_func_uchar_shr2_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    shr $2, %al
+    ret
+__kefir_text_func_uchar_shr2_end:
+
+uchar_shr4:
+__kefir_text_func_uchar_shr4_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    shr $4, %al
+    ret
+__kefir_text_func_uchar_shr4_end:
+
+uchar_shr8:
+__kefir_text_func_uchar_shr8_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uchar_shr8_end:
+
+uint_shr16:
+__kefir_text_func_uint_shr16_begin:
+    mov %edi, %eax
+    shr $16, %eax
+    ret
+__kefir_text_func_uint_shr16_end:
+
+uint_shr32:
+__kefir_text_func_uint_shr32_begin:
+    mov %edi, %eax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uint_shr32_end:
+
+uint_shr64:
+__kefir_text_func_uint_shr64_begin:
+    mov %edi, %eax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uint_shr64_end:
+
+ulong_shr1:
+__kefir_text_func_ulong_shr1_begin:
+    shr $1, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr1_end:
+
+ulong_shr2:
+__kefir_text_func_ulong_shr2_begin:
+    shr $2, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr2_end:
+
+ulong_shr4:
+__kefir_text_func_ulong_shr4_begin:
+    shr $4, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr4_end:
+
+ulong_shr8:
+__kefir_text_func_ulong_shr8_begin:
+    shr $8, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr8_end:
+
+int_sar31_1:
+__kefir_text_func_int_sar31_1_begin:
+    movsx %edi, %rax
+    sar $31, %eax
+    ret
+__kefir_text_func_int_sar31_1_end:
+
+schar_shr16:
+__kefir_text_func_schar_shr16_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_schar_shr16_end:
+
+schar_shr32:
+__kefir_text_func_schar_shr32_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_schar_shr32_end:
+
+schar_shr64:
+__kefir_text_func_schar_shr64_begin:
+    movsx %dil, %rax
+    movsx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_schar_shr64_end:
+
+slong_shr16:
+__kefir_text_func_slong_shr16_begin:
+    sar $16, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr16_end:
+
+slong_shr32:
+__kefir_text_func_slong_shr32_begin:
+    sar $32, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_slong_shr32_end:
+
+slong_shr64:
+__kefir_text_func_slong_shr64_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_slong_shr64_end:
+
+sshort_shr1:
+__kefir_text_func_sshort_shr1_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    sar $1, %ax
+    ret
+__kefir_text_func_sshort_shr1_end:
+
+sshort_shr2:
+__kefir_text_func_sshort_shr2_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    sar $2, %ax
+    ret
+__kefir_text_func_sshort_shr2_end:
+
+sshort_shr4:
+__kefir_text_func_sshort_shr4_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    sar $4, %ax
+    ret
+__kefir_text_func_sshort_shr4_end:
+
+sshort_shr8:
+__kefir_text_func_sshort_shr8_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    sar $8, %ax
+    ret
+__kefir_text_func_sshort_shr8_end:
+
+uchar_shr16:
+__kefir_text_func_uchar_shr16_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uchar_shr16_end:
+
+uchar_shr32:
+__kefir_text_func_uchar_shr32_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uchar_shr32_end:
+
+uchar_shr64:
+__kefir_text_func_uchar_shr64_begin:
+    movzx %dil, %rax
+    movzx %al, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_uchar_shr64_end:
+
+ulong_shr16:
+__kefir_text_func_ulong_shr16_begin:
+    shr $16, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr16_end:
+
+ulong_shr32:
+__kefir_text_func_ulong_shr32_begin:
+    shr $32, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ulong_shr32_end:
+
+ulong_shr64:
+__kefir_text_func_ulong_shr64_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_ulong_shr64_end:
+
+ushort_shr1:
+__kefir_text_func_ushort_shr1_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    shr $1, %ax
+    ret
+__kefir_text_func_ushort_shr1_end:
+
+ushort_shr2:
+__kefir_text_func_ushort_shr2_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    shr $2, %ax
+    ret
+__kefir_text_func_ushort_shr2_end:
+
+ushort_shr4:
+__kefir_text_func_ushort_shr4_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    shr $4, %ax
+    ret
+__kefir_text_func_ushort_shr4_end:
+
+ushort_shr8:
+__kefir_text_func_ushort_shr8_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    shr $8, %ax
+    ret
+__kefir_text_func_ushort_shr8_end:
+
+long_sar63_1:
+__kefir_text_func_long_sar63_1_begin:
+    sar $63, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_long_sar63_1_end:
+
+sshort_shr16:
+__kefir_text_func_sshort_shr16_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_sshort_shr16_end:
+
+sshort_shr32:
+__kefir_text_func_sshort_shr32_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_sshort_shr32_end:
+
+sshort_shr64:
+__kefir_text_func_sshort_shr64_begin:
+    movsx %di, %rax
+    movsx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_sshort_shr64_end:
+
+ushort_shr16:
+__kefir_text_func_ushort_shr16_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_ushort_shr16_end:
+
+ushort_shr32:
+__kefir_text_func_ushort_shr32_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_ushort_shr32_end:
+
+ushort_shr64:
+__kefir_text_func_ushort_shr64_begin:
+    movzx %di, %rax
+    movzx %ax, %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_ushort_shr64_end:
+
+__kefir_text_section_end:
+
