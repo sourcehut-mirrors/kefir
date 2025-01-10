@@ -16,7 +16,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "init_declarators": [
@@ -103,11 +104,13 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "unsigned"
+                            "specifier": "unsigned",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "char"
+                            "specifier": "char",
+                            "attributes": []
                         }
                     ],
                     "init_declarators": [
@@ -148,7 +151,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "init_declarators": [
@@ -202,7 +206,8 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "int"
+                                "specifier": "int",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [
@@ -256,7 +261,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "int"
+                                            "specifier": "int",
+                                            "attributes": []
                                         }
                                     ],
                                     "init_declarators": [

@@ -7,6 +7,7 @@
                 {
                     "class": "type_specifier",
                     "specifier": "int",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 1,
@@ -192,6 +193,7 @@
                 {
                     "class": "type_specifier",
                     "specifier": "char",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 2,
@@ -302,6 +304,7 @@
                 {
                     "class": "type_specifier",
                     "specifier": "int",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 3,

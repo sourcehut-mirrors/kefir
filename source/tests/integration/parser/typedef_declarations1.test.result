@@ -28,11 +28,13 @@
         "specifiers": [
             {
                 "class": "storage_class",
-                "storage": "typedef"
+                "storage": "typedef",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "int"
+                "specifier": "int",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -54,7 +56,8 @@
             {
                 "class": "type_specifier",
                 "specifier": "typedef",
-                "identifier": "A"
+                "identifier": "A",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -92,11 +95,13 @@
         "specifiers": [
             {
                 "class": "storage_class",
-                "storage": "typedef"
+                "storage": "typedef",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "long"
+                "specifier": "long",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -118,7 +123,8 @@
             {
                 "class": "type_specifier",
                 "specifier": "typedef",
-                "identifier": "A"
+                "identifier": "A",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -145,7 +151,8 @@
             {
                 "class": "type_specifier",
                 "specifier": "typedef",
-                "identifier": "B"
+                "identifier": "B",
+                "attributes": []
             }
         ],
         "init_declarators": [

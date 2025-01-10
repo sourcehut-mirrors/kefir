@@ -36,6 +36,7 @@ static kefir_bool_t same_structure_type(const struct kefir_ast_type *type1, cons
     REQUIRE(type2 != NULL, false);
     REQUIRE(type1->tag == KEFIR_AST_TYPE_STRUCTURE && type2->tag == KEFIR_AST_TYPE_STRUCTURE, false);
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
+    REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
     if (type1->structure_type.complete) {
         REQUIRE(kefir_list_length(&type1->structure_type.fields) == kefir_list_length(&type2->structure_type.fields),
@@ -101,6 +102,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
         composite_type =
             kefir_ast_type_structure(mem, type_bundle, type1->structure_type.identifier, &composite_struct);
         REQUIRE(composite_type != NULL && composite_struct != NULL, NULL);
+        composite_struct->packed = type1->structure_type.packed;
 
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
         const struct kefir_list_entry *iter2 = kefir_list_head(&type2->structure_type.fields);
@@ -135,6 +137,7 @@ static kefir_bool_t same_union_type(const struct kefir_ast_type *type1, const st
     REQUIRE(type2 != NULL, false);
     REQUIRE(type1->tag == KEFIR_AST_TYPE_UNION && type2->tag == KEFIR_AST_TYPE_UNION, false);
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
+    REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
     if (type1->structure_type.complete) {
         struct kefir_hashtree_node_iterator iter;
@@ -165,6 +168,7 @@ static kefir_bool_t compatible_union_types(const struct kefir_ast_type_traits *t
     REQUIRE(type2 != NULL, false);
     REQUIRE(type1->tag == KEFIR_AST_TYPE_UNION && type2->tag == KEFIR_AST_TYPE_UNION, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
+    REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
 
     if (type1->structure_type.complete && type2->structure_type.complete) {
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
@@ -224,6 +228,7 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
     if (type1->structure_type.complete && type2->structure_type.complete) {
         composite_type = kefir_ast_type_union(mem, type_bundle, type1->structure_type.identifier, &composite_union);
         REQUIRE(composite_type != NULL && composite_union != NULL, NULL);
+        composite_union->packed = type1->structure_type.packed;
 
         kefir_result_t res;
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->structure_type.fields);
@@ -315,6 +320,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
     type->ops.composite = composite_struct_types;
     type->ops.free = free_structure;
     type->structure_type.complete = false;
+    type->structure_type.packed = false;
     type->structure_type.identifier = identifier;
     return type;
 }
@@ -346,6 +352,7 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
     type->ops.composite = composite_union_types;
     type->ops.free = free_structure;
     type->structure_type.complete = false;
+    type->structure_type.packed = false;
     type->structure_type.identifier = identifier;
     return type;
 }
@@ -511,6 +518,7 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
     type->ops.composite = composite_struct_types;
     type->ops.free = free_structure;
     type->structure_type.complete = true;
+    type->structure_type.packed = false;
     type->structure_type.identifier = identifier;
     kefir_result_t res = kefir_hashtree_init(&type->structure_type.field_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -562,6 +570,7 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
     type->ops.composite = composite_union_types;
     type->ops.free = free_structure;
     type->structure_type.complete = true;
+    type->structure_type.packed = false;
     type->structure_type.identifier = identifier;
     kefir_result_t res = kefir_hashtree_init(&type->structure_type.field_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {

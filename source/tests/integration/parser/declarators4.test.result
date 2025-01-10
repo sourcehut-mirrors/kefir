@@ -14,7 +14,8 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "int"
+                        "specifier": "int",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -46,7 +47,8 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "float"
+                        "specifier": "float",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -77,15 +79,18 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "long"
+                        "specifier": "long",
+                        "attributes": []
                     },
                     {
                         "class": "type_specifier",
-                        "specifier": "long"
+                        "specifier": "long",
+                        "attributes": []
                     },
                     {
                         "class": "type_qualifier",
-                        "qualifier": "const"
+                        "qualifier": "const",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -114,11 +119,13 @@
                 "specifiers": [
                     {
                         "class": "type_qualifier",
-                        "qualifier": "volatile"
+                        "qualifier": "volatile",
+                        "attributes": []
                     },
                     {
                         "class": "type_specifier",
-                        "specifier": "unsigned"
+                        "specifier": "unsigned",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -159,7 +166,8 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "char"
+                        "specifier": "char",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -185,7 +193,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "short"
+                                            "specifier": "short",
+                                            "attributes": []
                                         }
                                     ],
                                     "init_declarators": [
@@ -206,7 +215,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "void"
+                                            "specifier": "void",
+                                            "attributes": []
                                         }
                                     ],
                                     "init_declarators": [
@@ -237,7 +247,8 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "void"
+                        "specifier": "void",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -276,7 +287,8 @@
                                         "specifiers": [
                                             {
                                                 "class": "type_specifier",
-                                                "specifier": "void"
+                                                "specifier": "void",
+                                                "attributes": []
                                             }
                                         ],
                                         "init_declarators": [

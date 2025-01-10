@@ -32,8 +32,9 @@
 #include "kefir/core/source_error.h"
 
 const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {
-    "aligned", "__aligned__", "gnu_inline", "__gnu_inline__", "returns_twice", "__returns_twice__", "weak", "__weak__",
-    "alias",   "__alias__",   "visibility", "__visibility__", "constructor",   "destructor",        NULL};
+    "aligned",  "__aligned__", "gnu_inline", "__gnu_inline__", "returns_twice",  "__returns_twice__", "weak",
+    "__weak__", "alias",       "__alias__",  "visibility",     "__visibility__", "constructor",       "destructor",
+    "packed",   "__packed__",  NULL};
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
@@ -204,6 +205,20 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
                 REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(entry->static_assertion)));
             } else {
                 REQUIRE_OK(process_struct_declaration_entry(mem, context, struct_type, entry, flags, source_location));
+            }
+        }
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&decl_specifier->attributes.attributes);
+             iter != NULL; kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+            for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+                 kefir_list_next(&iter2)) {
+                ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+                if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
+                    struct_type->packed = true;
+                }
             }
         }
     } else {

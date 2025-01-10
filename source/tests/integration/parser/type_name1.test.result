@@ -4,7 +4,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "int"
+                "specifier": "int",
+                "attributes": []
             }
         ],
         "declarator": {
@@ -17,19 +18,23 @@
         "specifiers": [
             {
                 "class": "type_qualifier",
-                "qualifier": "const"
+                "qualifier": "const",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "unsigned"
+                "specifier": "unsigned",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "long"
+                "specifier": "long",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "int"
+                "specifier": "int",
+                "attributes": []
             }
         ],
         "declarator": {
@@ -49,7 +54,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "declarator": {
@@ -94,7 +100,8 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "float"
+                                "specifier": "float",
+                                "attributes": []
                             }
                         ],
                         "declarators": [
@@ -109,7 +116,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "attributes": []
             }
         ],
         "declarator": {
@@ -129,7 +137,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "double"
+                "specifier": "double",
+                "attributes": []
             }
         ],
         "declarator": {

@@ -6,7 +6,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "init_declarators": [
@@ -47,7 +48,8 @@
                             "specifiers": [
                                 {
                                     "class": "type_specifier",
-                                    "specifier": "char"
+                                    "specifier": "char",
+                                    "attributes": []
                                 }
                             ],
                             "declarators": [
@@ -62,7 +64,8 @@
                                 }
                             ]
                         }
-                    ]
+                    ],
+                    "attributes": []
                 }
             ],
             "init_declarators": [
@@ -78,7 +81,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "void"
+                    "specifier": "void",
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -102,15 +106,18 @@
                         "specifiers": [
                             {
                                 "class": "storage_class",
-                                "storage": "static"
+                                "storage": "static",
+                                "attributes": []
                             },
                             {
                                 "class": "type_qualifier",
-                                "qualifier": "const"
+                                "qualifier": "const",
+                                "attributes": []
                             },
                             {
                                 "class": "type_specifier",
-                                "specifier": "char"
+                                "specifier": "char",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [
@@ -146,7 +153,8 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "int"
+                                "specifier": "int",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [

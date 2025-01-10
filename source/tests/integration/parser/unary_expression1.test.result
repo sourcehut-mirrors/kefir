@@ -71,7 +71,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "long"
+                    "specifier": "long",
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -100,7 +101,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "char"
+                    "specifier": "char",
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -121,7 +123,8 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "int"
+                                "specifier": "int",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [

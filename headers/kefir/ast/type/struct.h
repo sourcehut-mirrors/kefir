@@ -34,6 +34,7 @@ typedef struct kefir_ast_struct_field {
 
 typedef struct kefir_ast_struct_type {
     kefir_bool_t complete;
+    kefir_bool_t packed;
     const char *identifier;
     struct kefir_list fields;
     struct kefir_hashtree field_index;

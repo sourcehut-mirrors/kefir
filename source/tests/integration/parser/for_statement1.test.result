@@ -55,7 +55,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "init_declarators": [
@@ -114,7 +115,8 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "init_declarators": [

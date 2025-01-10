@@ -6,11 +6,13 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "long"
+                    "specifier": "long",
+                    "attributes": []
                 },
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -31,11 +33,13 @@
             "specifiers": [
                 {
                     "class": "type_qualifier",
-                    "qualifier": "const"
+                    "qualifier": "const",
+                    "attributes": []
                 },
                 {
                     "class": "type_specifier",
-                    "specifier": "void"
+                    "specifier": "void",
+                    "attributes": []
                 }
             ],
             "declarator": {

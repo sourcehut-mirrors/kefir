@@ -302,6 +302,16 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected declarator specifier");
     }
 
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->attributes.attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+
     if (display_source_location) {
         REQUIRE_OK(kefir_json_output_object_key(json, "source_location"));
         if (kefir_source_location_get(&specifier->source_location, NULL, NULL, NULL)) {

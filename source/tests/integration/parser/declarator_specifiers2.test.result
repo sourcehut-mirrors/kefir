@@ -10,7 +10,8 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "int"
+                            "specifier": "int",
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -30,7 +31,8 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "void"
+                            "specifier": "void",
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -74,23 +76,28 @@
                     "specifiers": [
                         {
                             "class": "type_qualifier",
-                            "qualifier": "const"
+                            "qualifier": "const",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "unsigned"
+                            "specifier": "unsigned",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "long"
+                            "specifier": "long",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "long"
+                            "specifier": "long",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "int"
+                            "specifier": "int",
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -139,7 +146,8 @@
                             "class": "type_specifier",
                             "specifier": "struct",
                             "identifier": "somestruct",
-                            "members": null
+                            "members": null,
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -167,7 +175,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "int"
+                                            "specifier": "int",
+                                            "attributes": []
                                         }
                                     ],
                                     "declarators": [
@@ -187,7 +196,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "float"
+                                            "specifier": "float",
+                                            "attributes": []
                                         }
                                     ],
                                     "declarators": [
@@ -202,12 +212,14 @@
                                         }
                                     ]
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         }
                     ],
                     "declarators": []
                 }
-            ]
+            ],
+            "attributes": []
         }
     ],
     [
@@ -237,7 +249,8 @@
                                                     "specifiers": [
                                                         {
                                                             "class": "type_specifier",
-                                                            "specifier": "char"
+                                                            "specifier": "char",
+                                                            "attributes": []
                                                         }
                                                     ],
                                                     "declarators": [
@@ -277,17 +290,20 @@
                                                         }
                                                     ]
                                                 }
-                                            ]
+                                            ],
+                                            "attributes": []
                                         }
                                     ],
                                     "declarators": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         }
                     ],
                     "declarators": []
                 }
-            ]
+            ],
+            "attributes": []
         }
     ]
 ]

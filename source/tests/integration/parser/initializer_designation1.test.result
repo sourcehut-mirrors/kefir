@@ -62,11 +62,13 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "long"
+                            "specifier": "long",
+                            "attributes": []
                         },
                         {
                             "class": "type_specifier",
-                            "specifier": "unsigned"
+                            "specifier": "unsigned",
+                            "attributes": []
                         }
                     ],
                     "declarator": {

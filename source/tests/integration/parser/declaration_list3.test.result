@@ -4,7 +4,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -50,11 +51,13 @@
         "specifiers": [
             {
                 "class": "storage_class",
-                "storage": "extern"
+                "storage": "extern",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "long"
+                "specifier": "long",
+                "attributes": []
             }
         ],
         "init_declarators": [

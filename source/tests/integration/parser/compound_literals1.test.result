@@ -6,15 +6,18 @@
             "specifiers": [
                 {
                     "class": "type_specifier",
-                    "specifier": "unsigned"
+                    "specifier": "unsigned",
+                    "attributes": []
                 },
                 {
                     "class": "type_specifier",
-                    "specifier": "short"
+                    "specifier": "short",
+                    "attributes": []
                 },
                 {
                     "class": "type_specifier",
-                    "specifier": "int"
+                    "specifier": "int",
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -48,7 +51,8 @@
                     "class": "type_specifier",
                     "specifier": "struct",
                     "identifier": "packet",
-                    "members": null
+                    "members": null,
+                    "attributes": []
                 }
             ],
             "declarator": {
@@ -104,7 +108,8 @@
                     "class": "type_specifier",
                     "specifier": "struct",
                     "identifier": "packet",
-                    "members": null
+                    "members": null,
+                    "attributes": []
                 }
             ],
             "declarator": {

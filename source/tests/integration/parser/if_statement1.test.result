@@ -87,7 +87,8 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "double"
+                            "specifier": "double",
+                            "attributes": []
                         }
                     ],
                     "init_declarators": [

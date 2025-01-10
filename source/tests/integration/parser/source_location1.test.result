@@ -7,6 +7,7 @@
                 {
                     "class": "storage_class",
                     "storage": "extern",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 1,
@@ -16,6 +17,7 @@
                 {
                     "class": "type_specifier",
                     "specifier": "char",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 1,
@@ -74,6 +76,7 @@
                 {
                     "class": "type_specifier",
                     "specifier": "int",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 3,
@@ -102,6 +105,7 @@
                             {
                                 "class": "type_specifier",
                                 "specifier": "int",
+                                "attributes": [],
                                 "source_location": {
                                     "source": "<stdin>",
                                     "line": 3,
@@ -155,16 +159,19 @@
                             {
                                 "class": "storage_class",
                                 "storage": "static",
+                                "attributes": [],
                                 "source_location": null
                             },
                             {
                                 "class": "type_qualifier",
                                 "qualifier": "const",
+                                "attributes": [],
                                 "source_location": null
                             },
                             {
                                 "class": "type_specifier",
                                 "specifier": "char",
+                                "attributes": [],
                                 "source_location": null
                             }
                         ],
@@ -227,6 +234,7 @@
                                             "specifier": "struct",
                                             "identifier": "X",
                                             "members": null,
+                                            "attributes": [],
                                             "source_location": {
                                                 "source": "<stdin>",
                                                 "line": 4,
@@ -286,6 +294,7 @@
                 {
                     "class": "storage_class",
                     "storage": "typedef",
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 6,
@@ -303,6 +312,7 @@
                                 {
                                     "class": "type_specifier",
                                     "specifier": "int",
+                                    "attributes": [],
                                     "source_location": {
                                         "source": "<stdin>",
                                         "line": 7,
@@ -333,6 +343,7 @@
                                 {
                                     "class": "type_specifier",
                                     "specifier": "long",
+                                    "attributes": [],
                                     "source_location": {
                                         "source": "<stdin>",
                                         "line": 8,
@@ -367,6 +378,7 @@
                             ]
                         }
                     ],
+                    "attributes": [],
                     "source_location": {
                         "source": "<stdin>",
                         "line": 6,

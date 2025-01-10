@@ -4,7 +4,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "int"
+                "specifier": "int",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -32,11 +33,13 @@
         "specifiers": [
             {
                 "class": "type_qualifier",
-                "qualifier": "const"
+                "qualifier": "const",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -100,11 +103,13 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "unsigned"
+                                "specifier": "unsigned",
+                                "attributes": []
                             },
                             {
                                 "class": "type_specifier",
-                                "specifier": "char"
+                                "specifier": "char",
+                                "attributes": []
                             }
                         ],
                         "declarators": [
@@ -136,11 +141,13 @@
                         "specifiers": [
                             {
                                 "class": "type_specifier",
-                                "specifier": "unsigned"
+                                "specifier": "unsigned",
+                                "attributes": []
                             },
                             {
                                 "class": "type_specifier",
-                                "specifier": "int"
+                                "specifier": "int",
+                                "attributes": []
                             }
                         ],
                         "declarators": [
@@ -168,7 +175,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "attributes": []
             }
         ],
         "init_declarators": [

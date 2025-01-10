@@ -11,7 +11,8 @@
                 "specifiers": [
                     {
                         "class": "type_specifier",
-                        "specifier": "long"
+                        "specifier": "long",
+                        "attributes": []
                     }
                 ],
                 "init_declarators": [
@@ -120,11 +121,13 @@
                         "specifiers": [
                             {
                                 "class": "storage_class",
-                                "storage": "typedef"
+                                "storage": "typedef",
+                                "attributes": []
                             },
                             {
                                 "class": "type_specifier",
-                                "specifier": "char"
+                                "specifier": "char",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [
@@ -146,7 +149,8 @@
                             {
                                 "class": "type_specifier",
                                 "specifier": "typedef",
-                                "identifier": "T"
+                                "identifier": "T",
+                                "attributes": []
                             }
                         ],
                         "init_declarators": [

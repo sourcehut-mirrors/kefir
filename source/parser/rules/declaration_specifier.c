@@ -227,27 +227,41 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     kefir_bool_t complete;
     kefir_result_t res = KEFIR_OK;
 
-    SKIP_ATTRIBUTES(&res, mem, parser);
-    REQUIRE_OK(res);
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
 
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
         identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
-        REQUIRE_OK(PARSER_SHIFT(parser));
+        res = PARSER_SHIFT(parser);
         complete = PARSER_TOKEN_IS_LEFT_BRACE(parser, 0);
     } else {
-        REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Anonymous structure shall be complete"));
+        if (!PARSER_TOKEN_IS_LEFT_BRACE(parser, 0)) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                         "Anonymous structure shall be complete");
+        }
         complete = true;
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
 
     struct kefir_ast_structure_specifier *specifier =
         kefir_ast_structure_specifier_init(mem, parser->symbols, identifier, complete);
-    REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure specifier"));
+    REQUIRE_ELSE(specifier != NULL, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure specifier");
+    });
     if (complete) {
         res = scan_struct_specifier_body(mem, parser, specifier, NULL);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_structure_specifier_free(mem, specifier);
+            kefir_ast_node_attributes_free(mem, &attributes);
             return res;
         });
     }
@@ -260,13 +274,21 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     }
     REQUIRE_ELSE(decl_specifier != NULL, {
         kefir_ast_structure_specifier_free(mem, specifier);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
     });
+    res = kefir_ast_node_attributes_clone(mem, &decl_specifier->attributes, &attributes);
+    REQUIRE_ELSE(decl_specifier != NULL, {
+        kefir_ast_structure_specifier_free(mem, specifier);
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
+    });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
 
     *specifier_ptr = decl_specifier;
 
     if (complete) {
-        SKIP_ATTRIBUTES(&res, mem, parser);
+        SCAN_ATTRIBUTES(&res, mem, parser, &decl_specifier->attributes);
         REQUIRE_OK(res);
     }
 

@@ -4,7 +4,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -36,7 +37,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -68,11 +70,13 @@
         "specifiers": [
             {
                 "class": "storage_class",
-                "storage": "typedef"
+                "storage": "typedef",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "float"
+                "specifier": "float",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -93,7 +97,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -115,7 +120,8 @@
                                 {
                                     "class": "type_specifier",
                                     "specifier": "typedef",
-                                    "identifier": "a"
+                                    "identifier": "a",
+                                    "attributes": []
                                 }
                             ],
                             "init_declarators": [
@@ -141,7 +147,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -173,11 +180,13 @@
         "specifiers": [
             {
                 "class": "storage_class",
-                "storage": "typedef"
+                "storage": "typedef",
+                "attributes": []
             },
             {
                 "class": "type_specifier",
-                "specifier": "double"
+                "specifier": "double",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -198,7 +207,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -220,7 +230,8 @@
                                 {
                                     "class": "type_specifier",
                                     "specifier": "typedef",
-                                    "identifier": "a"
+                                    "identifier": "a",
+                                    "attributes": []
                                 }
                             ],
                             "init_declarators": [
@@ -246,7 +257,8 @@
         "specifiers": [
             {
                 "class": "type_specifier",
-                "specifier": "void"
+                "specifier": "void",
+                "attributes": []
             }
         ],
         "init_declarators": [
@@ -268,7 +280,8 @@
                                 {
                                     "class": "type_specifier",
                                     "specifier": "typedef",
-                                    "identifier": "b"
+                                    "identifier": "b",
+                                    "attributes": []
                                 }
                             ],
                             "init_declarators": [

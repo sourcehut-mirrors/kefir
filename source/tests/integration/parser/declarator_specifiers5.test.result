@@ -21,7 +21,8 @@
                                     "identifier": "TYPE2",
                                     "value": null
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -49,7 +50,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "long"
+                                            "specifier": "long",
+                                            "attributes": []
                                         }
                                     ],
                                     "declarators": [
@@ -69,7 +71,8 @@
                                     "specifiers": [
                                         {
                                             "class": "type_specifier",
-                                            "specifier": "double"
+                                            "specifier": "double",
+                                            "attributes": []
                                         }
                                     ],
                                     "declarators": [
@@ -84,7 +87,8 @@
                                         }
                                     ]
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         }
                     ],
                     "declarators": []
@@ -94,7 +98,8 @@
                     "specifiers": [
                         {
                             "class": "type_specifier",
-                            "specifier": "void"
+                            "specifier": "void",
+                            "attributes": []
                         }
                     ],
                     "declarators": [
@@ -114,13 +119,15 @@
                         }
                     ]
                 }
-            ]
+            ],
+            "attributes": []
         }
     ],
     [
         {
             "class": "type_specifier",
-            "specifier": "va_list"
+            "specifier": "va_list",
+            "attributes": []
         }
     ]
 ]
