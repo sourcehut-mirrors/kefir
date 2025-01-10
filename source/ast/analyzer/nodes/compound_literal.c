@@ -48,8 +48,13 @@ kefir_result_t kefir_ast_analyze_compound_literal_node(struct kefir_mem *mem, co
                                                  &node->base.source_location,
                                                  &base->properties.expression_props.temporary_identifier));
 
+    const struct kefir_ast_type *type = initializer_properties.type;
+    if (node->type_name->base.properties.type->tag == KEFIR_AST_TYPE_QUALIFIED) {
+        type = kefir_ast_type_qualified(mem, context->type_bundle, type, node->type_name->base.properties.type->qualified_type.qualification);
+    }
+
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
-    base->properties.type = initializer_properties.type;
+    base->properties.type = type;
     base->properties.expression_props.lvalue = true;
     base->properties.expression_props.addressable = true;
     base->properties.expression_props.constant_expression = initializer_properties.constant;

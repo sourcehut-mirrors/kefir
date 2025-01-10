@@ -181,8 +181,13 @@ const struct kefir_ast_type *kefir_ast_type_array_conversion(struct kefir_mem *m
                                                              const struct kefir_ast_type *type) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(type != NULL, NULL);
-    REQUIRE(type->tag == KEFIR_AST_TYPE_ARRAY, type);
-    return kefir_ast_type_pointer(mem, type_bundle, type->array_type.element_type);
+    if (type->tag == KEFIR_AST_TYPE_QUALIFIED) {
+        REQUIRE(type->qualified_type.type->tag == KEFIR_AST_TYPE_ARRAY, type);
+        return kefir_ast_type_pointer(mem, type_bundle, kefir_ast_type_qualified(mem, type_bundle, type->qualified_type.type->array_type.element_type, type->qualified_type.qualification));
+    } else {
+        REQUIRE(type->tag == KEFIR_AST_TYPE_ARRAY, type);
+        return kefir_ast_type_pointer(mem, type_bundle, type->array_type.element_type);
+    }
 }
 
 const struct kefir_ast_type *kefir_ast_type_va_list_conversion(struct kefir_mem *mem,
@@ -209,11 +214,11 @@ const struct kefir_ast_type *kefir_ast_type_conv_expression_wrapper(struct kefir
                                                                     kefir_int_t param) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(type != NULL, NULL);
-    if ((param & KEFIR_AST_TYPE_CONV_EXPRESSION_WRAPPER_PARAM_LVALUE) != 0) {
-        type = kefir_ast_type_lvalue_conversion(type);
-    }
     if ((param & KEFIR_AST_TYPE_CONV_EXPRESSION_WRAPPER_PARAM_ARRAY) != 0) {
         type = kefir_ast_type_array_conversion(mem, type_bundle, type);
+    }
+    if ((param & KEFIR_AST_TYPE_CONV_EXPRESSION_WRAPPER_PARAM_LVALUE) != 0) {
+        type = kefir_ast_type_lvalue_conversion(type);
     }
     if ((param & KEFIR_AST_TYPE_CONV_EXPRESSION_WRAPPER_PARAM_FUNCTION) != 0) {
         type = kefir_ast_type_function_conversion(mem, type_bundle, type);

@@ -45,6 +45,7 @@ static kefir_result_t push_layer(struct kefir_mem *mem, struct kefir_ast_type_tr
                                  const struct kefir_ast_type_traversal_layer *parent) {
     struct kefir_ast_type_traversal_layer *layer = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type_traversal_layer));
     REQUIRE(layer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST type traversal layer"));
+    object_type = kefir_ast_unqualified_type(object_type);
     layer->parent = parent;
     layer->object_type = object_type;
     layer->init = true;
