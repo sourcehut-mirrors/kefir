@@ -20,6 +20,7 @@
 
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/type_completion.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -87,7 +88,9 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
         case KEFIR_AST_ARRAY_VLA_STATIC:
             if (array_type->vla_length != NULL) {
                 REQUIRE_OK(kefir_ast_analyze_node(mem, context, array_type->vla_length));
-                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(array_type->vla_length->properties.type),
+                const struct kefir_ast_type *type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
+                    mem, context->type_bundle, array_type->vla_length->properties.type);
+                REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Array type subscript shall have integral type"));
             }
