@@ -114,8 +114,10 @@ static kefir_result_t insert_buffer(struct kefir_mem *mem, struct kefir_string_b
 static kefir_result_t convert_to_multibyte(kefir_char32_t character, char *narrow_string, size_t *sz) {
     mbstate_t mbstate = {0};
     *sz = c32rtomb(narrow_string, character, &mbstate);
-    REQUIRE(*sz != (size_t) -1,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to convert unicode32 character into multi-byte string"));
+    if (*sz == (size_t) -1) {
+        *narrow_string = (char) character;
+        *sz = 1;
+    }
     return KEFIR_OK;
 }
 

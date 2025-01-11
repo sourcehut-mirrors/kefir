@@ -145,11 +145,7 @@ static kefir_result_t format_char(FILE *out, char chr) {
             break;
 
         default:
-            if (isprint(chr)) {
-                fprintf(out, "%c", chr);
-            } else {
-                fprintf(out, "\\%03o", chr);
-            }
+            fprintf(out, "%c", chr);
             break;
     }
     return KEFIR_OK;
@@ -251,7 +247,7 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
             if (sz >= 0) {
                 fprintf(out, "u'%.*s'", sz, buffer);
             } else {
-                fprintf(out, "u'\\x%x'", token->constant.unicode16_char);
+                fprintf(out, "u'%c'", token->constant.unicode16_char);
             }
         } break;
 
@@ -300,7 +296,7 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
             size_t rc = c32rtomb(mb, chr, &mbstate);
             if (rc == (size_t) -1) {
                 mbstate = (mbstate_t){0};
-                fprintf(out, "\\U%8x", chr);
+                fprintf(out, "%c", chr);
             } else if (rc != 0) {
                 fprintf(out, "%.*s", (int) rc, mb);
             }

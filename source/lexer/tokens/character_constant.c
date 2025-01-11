@@ -25,7 +25,7 @@
 #include "kefir/core/source_error.h"
 #include "kefir/util/uchar.h"
 
-static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, kefir_int_t *value,
+static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, kefir_uint_t *value,
                                      kefir_bool_t *continueScan) {
     struct kefir_source_location char_location = cursor->location;
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
@@ -52,7 +52,10 @@ static kefir_result_t next_character(struct kefir_lexer_source_cursor *cursor, k
         } else {
             mbstate_t mbstate = {0};
             sz = c32rtomb(multibyte, chr, &mbstate);
-            REQUIRE(sz != (size_t) -1, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &char_location, "Invalid character"));
+            if (sz == (size_t) -1) {
+                *multibyte = (char) chr;
+                sz = 1;
+            }
         }
         char *iter = multibyte;
         while (sz--) {
@@ -84,7 +87,7 @@ static kefir_result_t match_narrow_character(struct kefir_lexer *lexer, struct k
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match character constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
 
-    kefir_int_t character_value = 0;
+    kefir_uint_t character_value = 0;
     kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
     REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
                                                  "Empty character constant is not permitted"));

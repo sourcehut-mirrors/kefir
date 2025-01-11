@@ -88,8 +88,11 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, str
         mbstate_t mbstate = {0};
         for (kefir_size_t i = 0; i <= length; i++) {
             size_t sz = c32rtomb(mb_identifier_ptr, identifier[i], &mbstate);
-            REQUIRE(sz != ((size_t) -1),
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to convert wide character to multibyte character"));
+            if (sz == (size_t) -1) {
+                *mb_identifier_ptr = (char) identifier[i];
+                sz = 1;
+                mbstate = (mbstate_t){0};
+            }
             mb_identifier_ptr += sz;
         }
         REQUIRE_OK(kefir_token_new_identifier(mem, symbols, mb_identifier, token));

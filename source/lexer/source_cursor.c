@@ -48,7 +48,8 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
             case (size_t) -2:
             case (size_t) -3:
                 if (cursor->length > index) {
-                    return KEFIR_LEXER_SOURCE_CURSOR_REPLACMENT_CHARACTER;
+                    character = (kefir_int32_t) * (cursor->content + index);
+                    break;
                 }
                 // Fallthrough
 
@@ -64,15 +65,10 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
                     mbstate_t mbstate2 = {0};
                     rc = mbrtoc32(&character2, cursor->content + index, cursor->length - index, &mbstate2);
                     switch (rc) {
-                        case 0:
-                            break;
-
                         case (size_t) -1:
                         case (size_t) -2:
                         case (size_t) -3:
-                            if (cursor->length > index) {
-                                return KEFIR_LEXER_SOURCE_CURSOR_REPLACMENT_CHARACTER;
-                            }
+                        case 0:
                             break;
 
                         default:
@@ -94,8 +90,7 @@ kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_curs
     return at_impl(cursor, count);
 }
 
-static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_size_t count,
-                                kefir_bool_t ignore_errors) {
+static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     while (count--) {
         kefir_char32_t chr;
         if (cursor->length == cursor->index) {
@@ -106,14 +101,11 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
             case (size_t) -1:
             case (size_t) -2:
             case (size_t) -3:
-                if (ignore_errors && cursor->index < cursor->length) {
-                    cursor->index += 1;
+                if (cursor->index < cursor->length) {
+                    chr = (kefir_char32_t) * (cursor->content + cursor->index);
+                    cursor->index++;
                     cursor->mbstate = (mbstate_t){0};
                     break;
-                } else if (cursor->index < cursor->length) {
-                    return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
-                                            "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
-                                            cursor->location.source, cursor->location.line, cursor->location.column);
                 }
                 // Fallthrough
 
@@ -133,18 +125,10 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                         rc = mbrtoc32(&character2, cursor->content + cursor->index, cursor->length - cursor->index,
                                       &mbstate2);
                         switch (rc) {
-                            case 0:
-                                break;
-
                             case (size_t) -1:
                             case (size_t) -2:
                             case (size_t) -3:
-                                if (cursor->length > cursor->index) {
-                                    return KEFIR_SET_ERRORF(
-                                        KEFIR_INVALID_STATE,
-                                        "Decoding error occured at %s@%" KEFIR_UINT64_FMT ":%" KEFIR_UINT64_FMT,
-                                        cursor->location.source, cursor->location.line, cursor->location.column);
-                                }
+                            case 0:
                                 break;
 
                             default:
@@ -171,13 +155,13 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
 
 kefir_result_t kefir_lexer_source_cursor_next(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
-    REQUIRE_OK(next_impl(cursor, count, false));
+    REQUIRE_OK(next_impl(cursor, count));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_lexer_source_cursor_skip(struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
-    REQUIRE_OK(next_impl(cursor, count, true));
+    REQUIRE_OK(next_impl(cursor, count));
     return KEFIR_OK;
 }
 
