@@ -1,0 +1,57 @@
+
+KEFIR_EXTERNAL_TEST_WGET_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/wget
+
+KEFIR_EXTERNAL_TEST_WGET_VERSION := 2.2.0
+KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME := wget2-$(KEFIR_EXTERNAL_TEST_WGET_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_WGET_ARCHIVE := $(KEFIR_EXTERNAL_TEST_WGET_DIR)/$(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_WGET_DIR)/wget2-$(KEFIR_EXTERNAL_TEST_WGET_VERSION)
+KEFIR_EXTERNAL_TEST_WGET_URL := https://ftp.gnu.org/gnu/wget/wget2-$(KEFIR_EXTERNAL_TEST_WGET_VERSION).tar.gz
+
+KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_SHA256 := 2b3b9c85b7fb26d33ca5f41f1f8daca71838d869a19b406063aa5c655294d357
+
+$(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_WGET_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_WGET_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_WGET_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_WGET_ARCHIVE_FILENAME)"
+	@echo "Patching wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)..."
+	@find $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
+	@find $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/wget: $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/Makefile
+	@echo "Building wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_WGET_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)/wget
+	@echo "Testing wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_WGET_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE) check | tee "$(shell realpath $@.tmp)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/wget.test.done: $(KEFIR_EXTERNAL_TEST_WGET_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/wget/validate.sh "$(KEFIR_EXTERNAL_TEST_WGET_DIR)/tests.log"
+	@touch "$@"
+	@echo "Successfully tested wget $(KEFIR_EXTERNAL_TEST_WGET_VERSION)"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/wget.test.done
