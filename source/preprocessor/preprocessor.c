@@ -287,6 +287,82 @@ static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_str
     return KEFIR_OK;
 }
 
+static kefir_result_t scan_include_path_impl(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
+                                             struct kefir_token_buffer *buffer, struct kefir_string_pool *symbols,
+                                             const char **result) {
+    REQUIRE_OK(
+        kefir_preprocessor_token_sequence_push_front(mem, seq, buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
+    REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, NULL, NULL));
+
+    const struct kefir_token *current_token;
+    REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, &current_token, NULL));
+    REQUIRE(current_token->klass == KEFIR_TOKEN_PUNCTUATOR && current_token->punctuator == KEFIR_PUNCTUATOR_LESS_THAN,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Expected < token"));
+
+    struct kefir_token_buffer header_name_tokens;
+    REQUIRE_OK(kefir_token_buffer_init(&header_name_tokens));
+    kefir_result_t res = KEFIR_OK;
+    for (; res == KEFIR_OK;) {
+        res = kefir_preprocessor_token_sequence_next(mem, seq, &current_token, NULL);
+        if (res != KEFIR_OK) {
+            break;
+        } else if (current_token->klass == KEFIR_TOKEN_SENTINEL ||
+                   (current_token->klass == KEFIR_TOKEN_PP_WHITESPACE && current_token->pp_whitespace.newline)) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Expected > token");
+        } else if (current_token->klass == KEFIR_TOKEN_PUNCTUATOR &&
+                   current_token->punctuator == KEFIR_PUNCTUATOR_GREATER_THAN) {
+            break;
+        } else {
+            res = kefir_token_buffer_emplace(mem, &header_name_tokens, current_token);
+        }
+    }
+
+    char *string = NULL;
+    kefir_size_t string_sz = 0;
+    REQUIRE_CHAIN(&res, kefir_preprocessor_format_string(mem, &string, &string_sz, &header_name_tokens,
+                                                         KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &header_name_tokens);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &header_name_tokens);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, string);
+        return res;
+    });
+
+    const char *header_name = kefir_string_pool_insert(mem, symbols, string, NULL);
+    REQUIRE_ELSE(header_name != NULL, {
+        KEFIR_FREE(mem, string);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert header name into string pool");
+    });
+    KEFIR_FREE(mem, string);
+
+    *result = header_name;
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_preprocessor_construct_system_header_name_from_buffer(struct kefir_mem *mem,
+                                                                           struct kefir_token_buffer *buffer,
+                                                                           struct kefir_string_pool *symbols,
+                                                                           const char **result) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+    REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string pool"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to result header name"));
+
+    struct kefir_preprocessor_token_sequence seq;
+    REQUIRE_OK(kefir_preprocessor_token_sequence_init(&seq, NULL));
+    kefir_result_t res = scan_include_path_impl(mem, &seq, buffer, symbols, result);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_preprocessor_token_sequence_free(mem, &seq);
+        return res;
+    });
+    REQUIRE_OK(kefir_preprocessor_token_sequence_free(mem, &seq));
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                       struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer,
                                       struct kefir_preprocessor_directive *directive) {
@@ -306,7 +382,8 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
                token->string_literal.raw_literal) {
         REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &include_path));
     } else {
-        return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected file path");
+        REQUIRE_OK(kefir_preprocessor_construct_system_header_name_from_buffer(
+            mem, &directive->pp_tokens, preprocessor->lexer.symbols, &include_path));
     }
 
     struct kefir_preprocessor_source_file source_file;

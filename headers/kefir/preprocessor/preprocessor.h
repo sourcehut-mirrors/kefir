@@ -147,5 +147,8 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *, struct kefir
 kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *, struct kefir_preprocessor *,
                                                        struct kefir_token_allocator *, struct kefir_token_buffer *,
                                                        const struct kefir_token_buffer *);
+kefir_result_t kefir_preprocessor_construct_system_header_name_from_buffer(struct kefir_mem *,
+                                                                           struct kefir_token_buffer *,
+                                                                           struct kefir_string_pool *, const char **);
 
 #endif

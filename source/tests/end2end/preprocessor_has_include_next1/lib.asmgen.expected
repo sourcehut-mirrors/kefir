@@ -2,6 +2,6 @@
 
 int test1 = 1;
 int test2 = 1;
-int test3 = 0;
+int test3 = 1;
 int TEST1 = 1
-int TEST2 = 0
+int TEST2 = 1

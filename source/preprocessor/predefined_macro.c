@@ -354,8 +354,12 @@ FUNCTION_MACRO(has_include) {
     REQUIRE(args_iter != NULL && args_iter->next == NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_include expects a single header name argument"));
-    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, args_iter->value);
-    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+    ASSIGN_DECL_CAST(struct kefir_token_buffer *, arg_buffer, args_iter->value);
+
+    REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, token_allocator, arg_buffer, NULL,
+                                                    KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
+
+    REQUIRE(kefir_token_buffer_length(arg_buffer) > 0,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_include expects a single header name argument"));
     const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
@@ -371,13 +375,18 @@ FUNCTION_MACRO(has_include) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->string_literal.literal, false, preprocessor->current_file,
             KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
-    } else {
-        REQUIRE(arg->klass == KEFIR_TOKEN_PP_HEADER_NAME,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
-                                       "Macro __has_include expects a single header name argument"));
+    } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
             preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
+    } else {
+        const char *header_name;
+        res = kefir_preprocessor_construct_system_header_name_from_buffer(mem, arg_buffer, preprocessor->lexer.symbols,
+                                                                          &header_name);
+        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+                                                                        header_name, true, preprocessor->current_file,
+                                                                        KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+                                                                        &source_file));
     }
 
     if (res != KEFIR_NOT_FOUND) {
@@ -396,8 +405,12 @@ FUNCTION_MACRO(has_include_next) {
     REQUIRE(args_iter != NULL && args_iter->next == NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_include_next expects a single header name argument"));
-    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, args_iter->value);
-    REQUIRE(kefir_token_buffer_length(arg_buffer) == 1,
+    ASSIGN_DECL_CAST(struct kefir_token_buffer *, arg_buffer, args_iter->value);
+
+    REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, token_allocator, arg_buffer, NULL,
+                                                    KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
+
+    REQUIRE(kefir_token_buffer_length(arg_buffer) > 0,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_include_next expects a single header name argument"));
     const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
@@ -413,13 +426,18 @@ FUNCTION_MACRO(has_include_next) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->string_literal.literal, false, preprocessor->current_file,
             KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
-    } else {
-        REQUIRE(arg->klass == KEFIR_TOKEN_PP_HEADER_NAME,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
-                                       "Macro __has_include_next expects a single header name argument"));
+    } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
-            preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
+            preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
+    } else {
+        const char *header_name;
+        res = kefir_preprocessor_construct_system_header_name_from_buffer(mem, arg_buffer, preprocessor->lexer.symbols,
+                                                                          &header_name);
+        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
+                                                                        header_name, true, preprocessor->current_file,
+                                                                        KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
+                                                                        &source_file));
     }
 
     if (res != KEFIR_NOT_FOUND) {
