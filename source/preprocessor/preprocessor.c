@@ -384,6 +384,7 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     } else {
         REQUIRE_OK(kefir_preprocessor_construct_system_header_name_from_buffer(
             mem, &directive->pp_tokens, preprocessor->lexer.symbols, &include_path));
+        system_include = true;
     }
 
     struct kefir_preprocessor_source_file source_file;

@@ -429,15 +429,14 @@ FUNCTION_MACRO(has_include_next) {
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
-            preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
+            preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
     } else {
         const char *header_name;
         res = kefir_preprocessor_construct_system_header_name_from_buffer(mem, arg_buffer, preprocessor->lexer.symbols,
                                                                           &header_name);
-        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator,
-                                                                        header_name, true, preprocessor->current_file,
-                                                                        KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
-                                                                        &source_file));
+        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open(
+                                mem, preprocessor->context->source_locator, header_name, true,
+                                preprocessor->current_file, KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file));
     }
 
     if (res != KEFIR_NOT_FOUND) {
