@@ -23,6 +23,14 @@ RUN cd /opt/emsdk-3.1.74 && ./emsdk install 3.1.74
 RUN cd /opt/emsdk-3.1.74 && ./emsdk activate 3.1.74
 RUN echo "export EM_CACHE=\$HOME/.emcache" >> /opt/emsdk-3.1.74/emsdk_env.sh
 
+# Locales
+RUN apt install -y locales
+RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
+RUN echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen  
+RUN echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen  
+RUN echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen  
+RUN locale-gen
+
 ENV PATH=/opt/make-4.4.1/bin:$PATH
 ENV LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
 ENV LC_ALL=C.UTF-8
