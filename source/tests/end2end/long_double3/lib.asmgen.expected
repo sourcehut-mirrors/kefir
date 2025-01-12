@@ -205,7 +205,9 @@ _kefir_func_sum_progression_label1:
     lea -48(%rbp), %rcx
     movdqu (%rax), %xmm0
     movdqu %xmm0, (%rcx)
-    fldt (%rcx)
+    fldt -48(%rbp)
+    fstpt -288(%rbp)
+    fldt -288(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
