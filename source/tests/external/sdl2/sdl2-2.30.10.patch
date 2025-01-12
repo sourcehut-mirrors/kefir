@@ -1,0 +1,22 @@
+--- ./include/SDL_endian.h	2024-01-01 23:19:49.000000000 +0200
++++ ./include/SDL_endian.h	2025-01-12 11:39:27.057654405 +0200
+@@ -150,7 +150,7 @@
+   __asm__("xchgb %b0,%h0": "=q"(x):"0"(x));
+     return x;
+ }
+-#elif defined(__x86_64__)
++#elif defined(__x86_64__) && !defined(__KEFIRCC__)
+ SDL_FORCE_INLINE Uint16
+ SDL_Swap16(Uint16 x)
+ {
+--- ./src/dynapi/SDL_dynapi.c	2024-01-01 23:19:49.000000000 +0200
++++ ./src/dynapi/SDL_dynapi.c	2025-01-12 11:41:54.877329473 +0200
+@@ -379,7 +379,7 @@
+     return retval;
+ }
+ 
+-#elif defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__HAIKU__) || defined(__QNX__)
++#elif defined(unix) || defined(__unix__) || defined(__APPLE__) || defined(__HAIKU__) || defined(__QNX__) || defined(__linux__)
+ #include <dlfcn.h>
+ static SDL_INLINE void *get_sdlapi_entry(const char *fname, const char *sym)
+ {
