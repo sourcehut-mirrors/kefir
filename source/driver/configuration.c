@@ -154,6 +154,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
 
     config->dependency_output.output_dependencies = false;
     config->dependency_output.output_system_deps = true;
+    config->dependency_output.add_phony_targets = false;
     config->dependency_output.target_name = NULL;
     config->dependency_output.output_filename = NULL;
 

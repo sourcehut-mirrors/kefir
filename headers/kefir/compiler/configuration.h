@@ -65,6 +65,7 @@ typedef struct kefir_compiler_runner_configuration {
         const char *target_name;
         kefir_bool_t output_dependencies;
         kefir_bool_t output_system_deps;
+        kefir_bool_t add_phony_targets;
         const char *output_filename;
     } dependency_output;
 

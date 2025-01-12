@@ -165,6 +165,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
 
     compiler_config->dependency_output.output_dependencies = config->dependency_output.output_dependencies;
     compiler_config->dependency_output.output_system_deps = config->dependency_output.output_system_deps;
+    compiler_config->dependency_output.add_phony_targets = config->dependency_output.add_phony_targets;
     compiler_config->dependency_output.target_name = config->dependency_output.target_name;
     compiler_config->dependency_output.output_filename = config->dependency_output.output_filename;
 

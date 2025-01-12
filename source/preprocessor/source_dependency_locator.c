@@ -161,3 +161,23 @@ kefir_result_t kefir_preprocessor_dependencies_source_locator_format_make_rule_p
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_preprocessor_dependencies_source_locator_format_make_rule_phony_targets(
+    const struct kefir_preprocessor_dependencies_source_locator *locator, kefir_bool_t include_system_paths,
+    FILE *output) {
+    REQUIRE(locator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid dependency source locator"));
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
+
+    kefir_result_t res;
+    struct kefir_preprocessor_dependencies_source_locator_iterator iter;
+    for (res = kefir_preprocessor_dependencies_source_locator_iter(locator, &iter); res == KEFIR_OK;
+         res = kefir_preprocessor_dependencies_source_locator_next(&iter)) {
+        if (include_system_paths || !iter.system_dependency) {
+            fprintf(output, "%s:\n", iter.filepath);
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}

@@ -152,6 +152,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             // Print all non-system dependencies
             config->dependency_output.output_dependencies = true;
             config->dependency_output.output_system_deps = false;
+        } else if (strcmp("-MP", arg) == 0) {
+            // Add phony targets
+            config->dependency_output.add_phony_targets = true;
         } else if (strcmp("--print-tokens", arg) == 0) {
             // Print tokens
             config->stage = KEFIR_DRIVER_STAGE_PRINT_TOKENS;

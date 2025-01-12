@@ -125,6 +125,9 @@ Output a make rule describing the dependencies of source file (including the dep
 .It Fl MMD
 Output a make rule describing the dependencies of source file (excluding the dependencies from system path and their transitive includes), while also running normal compilation pipeline.
 .\"
+.It Fl MP
+Output a phony target for each depenendency of source file
+.\"
 .It Fl MT Ar target
 Override the default target name of make rule produced by dependency generation
 .\"

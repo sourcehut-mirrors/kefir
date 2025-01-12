@@ -223,6 +223,10 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            dependency_output.output_system_deps),
     SIMPLE(0, "no-system-dependencies", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
            dependency_output.output_system_deps),
+    SIMPLE(0, "add-phony-targets", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
+           dependency_output.add_phony_targets),
+    SIMPLE(0, "no-add-phony-targets", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           dependency_output.add_phony_targets),
     SIMPLE(0, "dependency-target", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.target_name),
     SIMPLE(0, "dependency-output", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.output_filename),
 

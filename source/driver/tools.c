@@ -38,6 +38,11 @@ static kefir_result_t output_compiler_config(FILE *output,
         } else {
             fprintf(output, " --no-system-dependencies");
         }
+        if (configuration->dependency_output.add_phony_targets) {
+            fprintf(output, " --add-phony-targets");
+        } else {
+            fprintf(output, " --no-add-phony-targets");
+        }
         if (configuration->dependency_output.target_name != NULL) {
             fprintf(output, " --dependency-target %s", configuration->dependency_output.target_name);
         }

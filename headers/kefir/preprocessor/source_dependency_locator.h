@@ -58,5 +58,7 @@ kefir_result_t kefir_preprocessor_dependencies_source_locator_next(
 
 kefir_result_t kefir_preprocessor_dependencies_source_locator_format_make_rule_prerequisites(
     const struct kefir_preprocessor_dependencies_source_locator *, kefir_bool_t, FILE *);
+kefir_result_t kefir_preprocessor_dependencies_source_locator_format_make_rule_phony_targets(
+    const struct kefir_preprocessor_dependencies_source_locator *, kefir_bool_t, FILE *);
 
 #endif

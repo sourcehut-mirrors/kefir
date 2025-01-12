@@ -155,6 +155,7 @@ typedef struct kefir_driver_configuration {
     struct {
         kefir_bool_t output_dependencies;
         kefir_bool_t output_system_deps;
+        kefir_bool_t add_phony_targets;
         const char *target_name;
         const char *output_filename;
     } dependency_output;

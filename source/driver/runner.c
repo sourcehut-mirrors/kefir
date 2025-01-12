@@ -95,6 +95,11 @@ static kefir_result_t output_dependencies(
     REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_format_make_rule_prerequisites(
         dependencies_source_locator, options->dependency_output.output_system_deps, dependency_output));
     fprintf(dependency_output, "\n");
+    if (options->dependency_output.add_phony_targets) {
+        REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_format_make_rule_phony_targets(
+            dependencies_source_locator, options->dependency_output.output_system_deps, dependency_output));
+    }
+    fprintf(dependency_output, "\n");
     return KEFIR_OK;
 }
 
