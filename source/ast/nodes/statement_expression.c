@@ -85,7 +85,7 @@ struct kefir_ast_node_base *ast_statement_expression_clone(struct kefir_mem *mem
         return NULL;
     });
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&clone->block_items); iter != NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->block_items); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, item, iter->value);
         struct kefir_ast_node_base *item_clone = KEFIR_AST_NODE_CLONE(mem, item);
