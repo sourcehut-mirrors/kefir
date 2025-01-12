@@ -468,6 +468,7 @@ kefir_result_t kefir_preprocessor_escape_string(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\x", 2));
             REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, kefir_dectohex32(content[i] >> 4)));
             REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, kefir_dectohex32(content[i])));
+            i++;
         } else if (rc == 0) {
             REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\0", 2));
             i++;
