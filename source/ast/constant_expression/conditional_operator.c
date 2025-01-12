@@ -43,36 +43,7 @@ kefir_result_t kefir_ast_evaluate_conditional_operator_node(struct kefir_mem *me
     REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->condition, &cond_value));
 
     kefir_bool_t condition = false;
-    switch (cond_value.klass) {
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-            condition = cond_value.integer;
-            break;
-
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
-            condition = (kefir_bool_t) cond_value.floating_point;
-            break;
-
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
-            condition = (kefir_bool_t) cond_value.complex_floating_point.real ||
-                        (kefir_bool_t) cond_value.complex_floating_point.imaginary;
-            break;
-
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
-            switch (cond_value.pointer.type) {
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL:
-                    condition = true;
-                    break;
-
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
-                    condition = (kefir_bool_t) (cond_value.pointer.base.integral + cond_value.pointer.offset);
-                    break;
-            }
-            break;
-
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
-    }
+    REQUIRE_OK(kefir_ast_constant_expression_value_to_boolean(&cond_value, &condition));
 
     if (condition) {
         if (node->expr1 != NULL) {

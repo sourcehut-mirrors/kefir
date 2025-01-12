@@ -142,3 +142,42 @@ kefir_result_t kefir_ast_constant_expression_evaluate(struct kefir_mem *mem, con
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *value,
+                                                              kefir_bool_t *boolean) {
+    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value"));
+    REQUIRE(boolean != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
+
+    *boolean = false;
+    switch (value->klass) {
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+            *boolean = value->integer;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            *boolean = (kefir_bool_t) value->floating_point;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            *boolean = (kefir_bool_t) value->complex_floating_point.real ||
+                       (kefir_bool_t) value->complex_floating_point.imaginary;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+            switch (value->pointer.type) {
+                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
+                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL:
+                    *boolean = true;
+                    break;
+
+                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
+                    *boolean = (kefir_bool_t) (value->pointer.base.integral + value->pointer.offset);
+                    break;
+            }
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
+    }
+    return KEFIR_OK;
+}

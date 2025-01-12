@@ -206,7 +206,7 @@ DEFINE_CASE(ast_node_analysis_conditional_operator2, "AST node analysis - condit
         ASSERT_CONDITIONAL(
             &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
             KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")), false, {
+            KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "x")), true, {
                 ASSERT(KEFIR_AST_TYPE_SAME(
                     oper->base.properties.type,
                     kefir_ast_type_common_arithmetic(context->type_traits, TYPES[i], KEFIR_AST_BITFIELD_PROPERTIES_NONE,

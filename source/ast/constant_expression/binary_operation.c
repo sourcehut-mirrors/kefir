@@ -404,7 +404,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_LESS:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
@@ -426,7 +426,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_LESS_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
@@ -448,7 +448,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_GREATER:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
@@ -470,7 +470,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_GREATER_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
@@ -492,7 +492,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 struct complex_float f1 = as_complex_float(&arg1_value);
@@ -510,7 +510,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         case KEFIR_AST_OPERATION_NOT_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 struct complex_float f1 = as_complex_float(&arg1_value);
@@ -571,7 +571,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             REQUIRE(
                 arg1_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Constant logical expressions with addresses are not supported"));
+                KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Constant logical expressions with addresses are not supported"));
             kefir_bool_t arg1_bool = false;
             kefir_bool_t arg2_bool = false;
             if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
@@ -589,7 +589,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (arg1_bool) {
                 REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg2, &arg2_value));
                 REQUIRE(arg2_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                        KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                        KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                         "Constant logical expressions with addresses are not supported"));
 
                 if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
@@ -612,7 +612,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             REQUIRE(
                 arg1_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Constant logical expressions with addresses are not supported"));
+                KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Constant logical expressions with addresses are not supported"));
             kefir_bool_t arg1_bool = false;
             kefir_bool_t arg2_bool = false;
             if (arg1_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
@@ -630,7 +630,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (!arg1_bool) {
                 REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->arg2, &arg2_value));
                 REQUIRE(arg2_value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                        KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED,
+                        KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
                                         "Constant logical expressions with addresses are not supported"));
 
                 if (arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {

@@ -105,4 +105,7 @@ kefir_result_t kefir_ast_constant_expression_free(struct kefir_mem *, struct kef
 kefir_result_t kefir_ast_constant_expression_evaluate(struct kefir_mem *, const struct kefir_ast_context *,
                                                       struct kefir_ast_constant_expression *);
 
+kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *,
+                                                              kefir_bool_t *);
+
 #endif
