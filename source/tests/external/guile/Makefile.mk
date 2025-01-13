@@ -1,0 +1,56 @@
+
+KEFIR_EXTERNAL_TEST_GUILE_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/guile
+
+KEFIR_EXTERNAL_TEST_GUILE_VERSION := 3.0.10
+KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_FILENAME := guile-$(KEFIR_EXTERNAL_TEST_GUILE_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE := $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/$(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/guile-$(KEFIR_EXTERNAL_TEST_GUILE_VERSION)
+KEFIR_EXTERNAL_TEST_GUILE_URL := https://ftp.gnu.org/gnu/guile/guile-$(KEFIR_EXTERNAL_TEST_GUILE_VERSION).tar.gz
+
+KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_SHA256 := 2dbdbc97598b2faf31013564efb48e4fed44131d28e996c26abe8a5b23b56c2a
+
+$(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_GUILE_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GUILE_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_GUILE_ARCHIVE_FILENAME)"
+	@echo "Applying $(SOURCE_DIR)/tests/external/guile/guile-3.0.10.patch..."
+	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/guile/guile-3.0.10.patch"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/libguile/.libs/guile: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/Makefile
+	@echo "Building guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)/libguile/.libs/guile
+	@echo "Testing guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/guile.test.done: $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/guile/validate.sh "$(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log"
+	@touch "$@"
+	@echo "Guile $(KEFIR_EXTERNAL_TEST_GUILE_VERSION) test suite successfully finished"
+
+EXTERNAL_TESTS_SLOW_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/guile.test.done

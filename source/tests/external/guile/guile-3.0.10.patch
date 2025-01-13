@@ -1,0 +1,20 @@
+--- ./libguile/gc.h	2024-06-19 21:54:50.000000000 +0300
++++ ./libguile/gc.h	2025-01-13 09:06:27.388045396 +0200
+@@ -199,7 +199,7 @@
+      by Guile users.  Instead, the following statements prevent the
+      reordering.
+    */
+-#ifdef __GNUC__
++#if defined(__GNUC__) || defined(__KEFIRCC__)
+   __asm__ volatile ("" : : : "memory");
+ #else
+   /* portable version, just in case any other compiler does the same
+@@ -232,7 +232,7 @@
+      by Guile users.  Instead, the following statements prevent the
+      reordering.
+    */
+-#ifdef __GNUC__
++#if defined(__GNUC__) || defined(__KEFIRCC__)
+   __asm__ volatile ("" : : : "memory");
+ #else
+   /* portable version, just in case any other compiler does the same
