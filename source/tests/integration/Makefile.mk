@@ -37,7 +37,8 @@ $(KEFIR_BIN_DIR)/tests/integration/%: $(KEFIR_BIN_DIR)/tests/integration/%.o $(L
 	                             $(KEFIR_BIN_DIR)/tests/util/codegen.o \
 	                             $(KEFIR_BIN_DIR)/tests/util/module_shim.o \
 								 $< \
-								 $(KEFIR_INTEGRATION_TEST_LIBS)
+								 $(KEFIR_INTEGRATION_TEST_LIBS) \
+								 $(LDFLAGS)
 								 
 
 $(KEFIR_BIN_DIR)/tests/integration/%.done: $(KEFIR_BIN_DIR)/tests/integration/%

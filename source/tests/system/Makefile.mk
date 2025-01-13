@@ -34,7 +34,7 @@ $(KEFIR_BIN_DIR)/tests/system/%.gen: $(KEFIR_BIN_DIR)/tests/system/%.gen.o \
 							   $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES)
 	@mkdir -p $(@D)
 	@echo "Linking $@"
-	@$(CC) -o $@ $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES) $< $(KEFIR_SYSTEM_TEST_LIBS)
+	@$(CC) -o $@ $(KEFIR_SYSTEM_TEST_GEN_COMMON_OBJECT_FILES) $< $(KEFIR_SYSTEM_TEST_LIBS) $(LDFLAGS)
 
 $(KEFIR_BIN_DIR)/tests/system/%.test.done: $(KEFIR_BIN_DIR)/tests/system/%.gen
 	@CC="$(CC)" \

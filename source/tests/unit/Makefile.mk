@@ -22,7 +22,7 @@ endif
 $(KEFIR_BIN_DIR)/tests/unit.tests: $(LIBKEFIR_DEPENDENCY) $(KEFIR_UNIT_TEST_OBJECT_FILES)
 	@mkdir -p $(@D)
 	@echo "Linking $@"
-	@$(CC) -o $@ $(KEFIR_UNIT_TEST_OBJECT_FILES) $(KEFIR_UNIT_TEST_LIBS) -lm
+	@$(CC) -o $@ $(KEFIR_UNIT_TEST_OBJECT_FILES) $(KEFIR_UNIT_TEST_LIBS) -lm $(LDFLAGS)
 
 $(KEFIR_BIN_DIR)/tests/unit.tests.done: $(KEFIR_BIN_DIR)/tests/unit.tests
 	@LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:$(LIB_DIR) \

@@ -3,6 +3,7 @@ PROFILE=release
 USE_SHARED=yes
 USE_SANITIZER=no
 USE_VALGRIND=no
+USE_GCOV=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
@@ -55,6 +56,10 @@ PROFILE_CFLAGS=-O3 -DNDEBUG -DKEFIR_BUILD_RELEASE
 endif
 ifeq ($(USE_SANITIZER),yes)
 SANITIZER_FLAGS=-fsanitize=undefined -fno-sanitize-recover=all
+endif
+ifeq ($(USE_GCOV),yes)
+CFLAGS+=-fprofile-arcs -ftest-coverage
+LDFLAGS+=-lgcov --coverage
 endif
 CFLAGS+=$(PROFILE_CFLAGS) $(SANITIZER_FLAGS) $(EXTRA_CFLAGS)
 
