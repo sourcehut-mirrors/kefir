@@ -610,7 +610,7 @@ static kefir_result_t int_addition_counterpart(kefir_opt_opcode_t opcode, kefir_
 static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_function *func,
                                        const struct kefir_opt_instruction *instr,
                                        kefir_opt_instruction_ref_t *replacement_ref) {
-    kefir_opt_opcode_t original_opcode = instr->operation.opcode, counterpart_opcode;
+    kefir_opt_opcode_t original_opcode = instr->operation.opcode, counterpart_opcode = 0;
     REQUIRE_OK(int_addition_counterpart(original_opcode, &counterpart_opcode));
     const kefir_opt_block_id_t block_id = instr->block_id;
     const kefir_opt_instruction_ref_t instr_id = instr->id;
