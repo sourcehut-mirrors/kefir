@@ -499,6 +499,54 @@ FUNCTION_MACRO(define_builtin_prefix) {
 }
 MACRO_END
 
+MACRO(supported_builtins) {
+    struct kefir_hashtreeset_iterator iter;
+    kefir_result_t res;
+    for (res = kefir_hashtreeset_iter(&preprocessor->context->environment.supported_builtins, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, builtin, iter.entry);
+        struct kefir_token *allocated_token;
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+        REQUIRE_OK(kefir_token_new_identifier(mem, symbols, builtin, allocated_token));
+        allocated_token->source_location = *source_location;
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+        REQUIRE_OK(kefir_token_new_pp_whitespace(true, allocated_token));
+        allocated_token->source_location = *source_location;
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+MACRO_END
+
+MACRO(supported_attributes) {
+    struct kefir_hashtreeset_iterator iter;
+    kefir_result_t res;
+    for (res = kefir_hashtreeset_iter(&preprocessor->context->environment.supported_attributes, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, builtin, iter.entry);
+        struct kefir_token *allocated_token;
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+        REQUIRE_OK(kefir_token_new_identifier(mem, symbols, builtin, allocated_token));
+        allocated_token->source_location = *source_location;
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
+        REQUIRE_OK(kefir_token_new_pp_whitespace(true, allocated_token));
+        allocated_token->source_location = *source_location;
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+MACRO_END
+
 static kefir_result_t define_predefined_macro(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
     struct kefir_preprocessor_predefined_macro_scope *scope, struct kefir_preprocessor_macro *macro,
@@ -917,6 +965,11 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.define_builtin_prefix,
                                                          "__kefir_define_builtin_prefix",
                                                          macro_define_builtin_prefix_apply, 1, false));
+
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.supported_builtins,
+                                                "__KEFIRCC_SUPPORTED_BUILTINS__", macro_supported_builtins_apply));
+    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.supported_attributes,
+                                                "__KEFIRCC_SUPPORTED_ATTRIBUTES__", macro_supported_attributes_apply));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

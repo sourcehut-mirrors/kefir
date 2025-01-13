@@ -168,7 +168,12 @@ guarantees are provided. Among the implemented extensions (non-exaustive list):
   type specifiers.
 * Vararg builtins.
 * Some of `__atomic*` and `__sync*` builtins.
-* Full list of built-ins can be obtained [here](docs/builtins.txt).
+* Some of overflow arithmetics builtins.
+* Full list of supported builtins and attributes can be obtained via
+```bash
+echo '__KEFIRCC_SUPPORTED_BUILTINS__' | kefir -E -
+echo '__KEFIRCC_SUPPORTED_ATTRIBUTES__' | kefir -E -
+```
 
 Kefir also defines a few non-standard macros by default, such as macros
 indicating data model (`__LP64__`), endianess (`__BYTE_ORDER__` and

@@ -61,6 +61,9 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro has_builtin;
         struct kefir_preprocessor_macro define_builtin_prefix;
 
+        struct kefir_preprocessor_macro supported_builtins;
+        struct kefir_preprocessor_macro supported_attributes;
+
         // Extension macros
         struct kefir_preprocessor_macro data_model;
         struct kefir_preprocessor_macro byte_order;
