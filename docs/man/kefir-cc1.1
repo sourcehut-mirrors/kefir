@@ -52,6 +52,38 @@ Add directory to include search path and mark it as a system include path (used 
 .It Fl \-debug-info
 Include debug information into produced output
 .\"
+.It Fl \-dump-dependencies
+Output a make rule describing the dependencies of source file.
+.\"
+.It Fl \-system-dependencies
+Include dependencies from system include directories into the make rule (used with
+.Fl \-dump-dependencies
+flag) [default: on].
+.\"
+.It Fl \-no-system-dependencies
+Do not include dependencies from system include directories into the make rule (used with
+.Fl \-dump-dependencies
+flag).
+.\"
+.It Fl \-add-phony-targets
+Generate phony make targets for each dependency (used with
+.Fl \-dump-dependencies
+flag) [default: off].
+.\"
+.It Fl \-no-add-phony-targets
+Do not generate phony make targets for each dependency (used with
+.Fl \-dump-dependencies
+.\"
+.It Fl \-dependency-target Ar target
+Override default make rule target (used with
+.Fl \-dump-dependencies
+flag).
+.\"
+.It Fl \-dependency-output Ar filename
+Output make rule into specified file (used with
+.Fl \-dump-dependencies
+flag).
+.\"
 .It Fl \-feature-[name]
 Enable compiler feature (see
 .Sx FEATURES
