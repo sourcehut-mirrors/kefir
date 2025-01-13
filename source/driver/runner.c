@@ -131,8 +131,9 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_init(&filesystem_source_locator, &symbols));
     for (const struct kefir_list_entry *iter = kefir_list_head(&options->include_path); iter != NULL;
          kefir_list_next(&iter)) {
-        REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_append(mem, &filesystem_source_locator,
-                                                                       (const char *) iter->value));
+        REQUIRE_OK(kefir_preprocessor_filesystem_source_locator_append(
+            mem, &filesystem_source_locator, (const char *) iter->value,
+            kefir_hashtreeset_has(&options->quote_include_directories, (kefir_hashtreeset_entry_t) iter->value)));
     }
     struct kefir_preprocessor_source_locator *source_locator = &filesystem_source_locator.locator;
 

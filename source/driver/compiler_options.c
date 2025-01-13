@@ -134,6 +134,22 @@ static kefir_result_t sys_include_hook(struct kefir_mem *mem, struct kefir_strin
     return KEFIR_OK;
 }
 
+static kefir_result_t quote_include_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                         const struct kefir_cli_option *option, void *raw_options, const char *arg) {
+    UNUSED(mem);
+    UNUSED(symbols);
+    UNUSED(option);
+    ASSIGN_DECL_CAST(struct kefir_compiler_runner_configuration *, options, raw_options);
+
+    const char *symbol = kefir_string_pool_insert(mem, symbols, arg, NULL);
+    REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into string pool"));
+
+    REQUIRE_OK(
+        kefir_list_insert_after(mem, &options->include_path, kefir_list_tail(&options->include_path), (void *) symbol));
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &options->quote_include_directories, (kefir_hashtreeset_entry_t) symbol));
+    return KEFIR_OK;
+}
+
 static kefir_result_t include_file_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                         const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
@@ -234,6 +250,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),
     CUSTOM(0, "system-include-dir", true, sys_include_hook),
+    CUSTOM(0, "quote-include-dir", true, quote_include_hook),
     CUSTOM(0, "include", true, include_file_hook),
 
     FEATURE("non-strict-qualifiers", features.non_strict_qualifiers),

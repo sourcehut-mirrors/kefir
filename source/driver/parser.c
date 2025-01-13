@@ -304,6 +304,17 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
 
             REQUIRE_OK(kefir_driver_configuration_add_include_directory(mem, symbols, config, directory));
+        } else if (STRNCMP("-iquote", arg) == 0) {
+            // Add directory to include search path
+            const char *directory = NULL;
+            if (strlen(arg) == 7) {
+                EXPECT_ARG;
+                directory = argv[++index];
+            } else {
+                directory = &arg[7];
+            }
+
+            REQUIRE_OK(kefir_driver_configuration_add_quote_include_directory(mem, symbols, config, directory));
         } else if (STRNCMP("-isystem", arg) == 0) {
             // Add directory to include search path
             const char *directory = NULL;
@@ -322,7 +333,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                 EXPECT_ARG;
                 directory = argv[++index];
             } else {
-                directory = &arg[8];
+                directory = &arg[10];
             }
 
             REQUIRE_OK(kefir_driver_configuration_add_after_include_directory(mem, symbols, config, directory));

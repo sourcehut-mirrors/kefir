@@ -128,37 +128,36 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
 
     compiler_config->verbose = config->flags.verbose;
 
-    struct kefir_list_entry *include_insert_iter = NULL;
+#define ADD_INCLUDE_DIR(_iter, _quote, _system)                                                                     \
+    do {                                                                                                            \
+        ASSIGN_DECL_CAST(const char *, include_dir, (_iter)->value);                                                \
+        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);                                    \
+        REQUIRE(include_dir != NULL,                                                                                \
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));    \
+        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,                                     \
+                                           kefir_list_tail(&compiler_config->include_path), (void *) include_dir)); \
+        if ((_quote)) {                                                                                             \
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->quote_include_directories,                      \
+                                             (kefir_hashtreeset_entry_t) include_dir));                             \
+        }                                                                                                           \
+        if ((_system)) {                                                                                            \
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,                     \
+                                             (kefir_hashtreeset_entry_t) include_dir));                             \
+        }                                                                                                           \
+    } while (0)
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->quote_include_directories); iter != NULL;
+         kefir_list_next(&iter)) {
+        ADD_INCLUDE_DIR(iter, true, false);
+    }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_directories); iter != NULL;
          kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
-        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
-        REQUIRE(include_dir != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
-        REQUIRE_OK(
-            kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
-        if (include_insert_iter == NULL) {
-            include_insert_iter = kefir_list_head(&compiler_config->include_path);
-        } else {
-            kefir_list_next((const struct kefir_list_entry **) &include_insert_iter);
-        }
+        ADD_INCLUDE_DIR(iter, false, false);
     }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->system_include_directories); iter != NULL;
          kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
-        include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
-        REQUIRE(include_dir != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
-        REQUIRE_OK(
-            kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
-                                         (kefir_hashtreeset_entry_t) include_dir));
-        if (include_insert_iter == NULL) {
-            include_insert_iter = kefir_list_head(&compiler_config->include_path);
-        } else {
-            kefir_list_next((const struct kefir_list_entry **) &include_insert_iter);
-        }
+        ADD_INCLUDE_DIR(iter, false, true);
     }
+#undef ADD_INCLUDE_DIR
 
     REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
                                                                 &config->target, config));
@@ -240,22 +239,16 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             break;
     }
 
-    include_insert_iter = kefir_list_tail(&compiler_config->include_path);
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->after_include_directories); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, include_dir, iter->value);
         include_dir = kefir_string_pool_insert(mem, symbols, include_dir, NULL);
         REQUIRE(include_dir != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into string pool"));
-        REQUIRE_OK(
-            kefir_list_insert_after(mem, &compiler_config->include_path, include_insert_iter, (void *) include_dir));
+        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->include_path,
+                                           kefir_list_tail(&compiler_config->include_path), (void *) include_dir));
         REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler_config->system_include_directories,
                                          (kefir_hashtreeset_entry_t) include_dir));
-        if (include_insert_iter == NULL) {
-            include_insert_iter = kefir_list_head(&compiler_config->include_path);
-        } else {
-            kefir_list_next((const struct kefir_list_entry **) &include_insert_iter);
-        }
     }
     for (const struct kefir_list_entry *iter = kefir_list_head(&config->include_files); iter != NULL;
          kefir_list_next(&iter)) {

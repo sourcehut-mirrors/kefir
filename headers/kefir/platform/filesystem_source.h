@@ -38,6 +38,6 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_init(struct kefir_pr
 kefir_result_t kefir_preprocessor_filesystem_source_locator_free(struct kefir_mem *,
                                                                  struct kefir_preprocessor_filesystem_source_locator *);
 kefir_result_t kefir_preprocessor_filesystem_source_locator_append(
-    struct kefir_mem *, struct kefir_preprocessor_filesystem_source_locator *, const char *);
+    struct kefir_mem *, struct kefir_preprocessor_filesystem_source_locator *, const char *, kefir_bool_t);
 
 #endif

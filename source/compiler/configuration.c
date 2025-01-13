@@ -61,6 +61,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
             .target_name = NULL, .output_filename = NULL, .output_system_deps = true, .add_phony_targets = false}};
     REQUIRE_OK(kefir_list_init(&options->include_path));
     REQUIRE_OK(kefir_hashtreeset_init(&options->system_include_directories, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&options->quote_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&options->include_files));
     REQUIRE_OK(kefir_hashtree_init(&options->defines, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&options->defines, free_define_identifier, NULL));
@@ -75,6 +76,7 @@ kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_list_free(mem, &options->include_files));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &options->system_include_directories));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &options->quote_include_directories));
     REQUIRE_OK(kefir_list_free(mem, &options->include_path));
     REQUIRE_OK(kefir_hashtree_free(mem, &options->defines));
     REQUIRE_OK(kefir_list_free(mem, &options->undefines));

@@ -35,6 +35,11 @@
 #include <libgen.h>
 #include <errno.h>
 
+struct include_directory_descriptor {
+    char *path;
+    kefir_bool_t quote_only;
+};
+
 static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preprocessor_source_file *source_file) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(source_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source file"));
@@ -151,8 +156,8 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     if (mode == KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT && current_file != NULL &&
         current_file->base_include_dir != NULL) {
         for (; iter != NULL; kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(const char *, root, iter->value);
-            if (strcmp(current_file->base_include_dir, root) == 0) {
+            ASSIGN_DECL_CAST(struct include_directory_descriptor *, root, iter->value);
+            if (strcmp(current_file->base_include_dir, root->path) == 0) {
                 break;
             }
         }
@@ -165,8 +170,11 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     }
     for (; iter != NULL; kefir_list_next(&iter)) {
 
-        ASSIGN_DECL_CAST(const char *, root, iter->value);
-        kefir_result_t res = try_open_file(mem, root, filepath, system, source_file, locator);
+        ASSIGN_DECL_CAST(struct include_directory_descriptor *, root, iter->value);
+        if (system && root->quote_only) {
+            continue;
+        }
+        kefir_result_t res = try_open_file(mem, root->path, filepath, system, source_file, locator);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             return KEFIR_OK;
@@ -182,15 +190,16 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     return KEFIR_SET_ERRORF(KEFIR_NOT_FOUND, "Unable to find requested include file %s", filepath);
 }
 
-static kefir_result_t free_string(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
-                                  void *payload) {
+static kefir_result_t free_include_directory_descr(struct kefir_mem *mem, struct kefir_list *list,
+                                                   struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
 
-    ASSIGN_DECL_CAST(char *, path, entry->value);
-    KEFIR_FREE(mem, path);
+    ASSIGN_DECL_CAST(struct include_directory_descriptor *, descr, entry->value);
+    KEFIR_FREE(mem, descr->path);
+    KEFIR_FREE(mem, descr);
     return KEFIR_OK;
 }
 
@@ -201,7 +210,7 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_init(
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
 
     REQUIRE_OK(kefir_list_init(&locator->include_roots));
-    REQUIRE_OK(kefir_list_on_remove(&locator->include_roots, free_string, NULL));
+    REQUIRE_OK(kefir_list_on_remove(&locator->include_roots, free_include_directory_descr, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&locator->include_root_set, &kefir_hashtree_str_ops));
     locator->symbols = symbols;
     locator->locator.payload = &locator;
@@ -223,7 +232,8 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_free(
 }
 
 kefir_result_t kefir_preprocessor_filesystem_source_locator_append(
-    struct kefir_mem *mem, struct kefir_preprocessor_filesystem_source_locator *locator, const char *path) {
+    struct kefir_mem *mem, struct kefir_preprocessor_filesystem_source_locator *locator, const char *path,
+    kefir_bool_t quote_only) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(locator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to filesystem source locator"));
@@ -232,9 +242,16 @@ kefir_result_t kefir_preprocessor_filesystem_source_locator_append(
 
     char *copy = KEFIR_MALLOC(mem, strlen(path) + 1);
     REQUIRE(copy != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate filesystem path"));
+    struct include_directory_descriptor *descr = KEFIR_MALLOC(mem, sizeof(struct include_directory_descriptor));
+    REQUIRE_ELSE(descr != NULL, {
+        KEFIR_FREE(mem, copy);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate include directory descriptor");
+    });
+    descr->path = copy;
+    descr->quote_only = quote_only;
     strcpy(copy, path);
     kefir_result_t res =
-        kefir_list_insert_after(mem, &locator->include_roots, kefir_list_tail(&locator->include_roots), copy);
+        kefir_list_insert_after(mem, &locator->include_roots, kefir_list_tail(&locator->include_roots), (void *) descr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, copy);
         return res;

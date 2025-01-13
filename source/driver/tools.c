@@ -111,6 +111,8 @@ static kefir_result_t output_compiler_config(FILE *output,
         ASSIGN_DECL_CAST(const char *, str, iter->value);
         if (kefir_hashtreeset_has(&configuration->system_include_directories, (kefir_hashtreeset_entry_t) str)) {
             fprintf(output, " --system-include-dir %s", str);
+        } else if (kefir_hashtreeset_has(&configuration->quote_include_directories, (kefir_hashtreeset_entry_t) str)) {
+            fprintf(output, " --quote-include-dir %s", str);
         } else {
             fprintf(output, " --include-dir %s", str);
         }
