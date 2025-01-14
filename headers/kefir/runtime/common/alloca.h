@@ -35,6 +35,15 @@
     "Included alloca.h is inteded to be used strictly with Kefir C compiler. Use <alloca.h> from system standard library with other compilers"
 #endif
 
+#if defined(__has_include_next) && __has_include_next(<alloca.h>)
+#include_next <alloca.h>
+#ifdef alloca
+#undef alloca
+#endif
+#else
+void *alloca(__SIZE_TYPE__);
+#endif
+
 #define alloca(size) __builtin_alloca((size))
 
 #endif
