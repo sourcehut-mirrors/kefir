@@ -230,14 +230,8 @@ static kefir_result_t ensure_availability(struct kefir_mem *mem, void **array, k
     REQUIRE(*capacity - *length < required_elements, KEFIR_OK);
 
     const kefir_size_t new_capacity = *capacity + MAX(MIN_CAPACITY_INCREASE(*capacity), required_elements);
-    void *const new_array = KEFIR_MALLOC(mem, elt_size * new_capacity);
+    void *const new_array = KEFIR_REALLOC(mem, *array, elt_size * new_capacity);
     REQUIRE(new_array != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate asmgen array"));
-
-    if (*array != NULL) {
-        memcpy(new_array, *array, elt_size * (*length));
-        KEFIR_FREE(mem, *array);
-    }
-
     *array = new_array;
     *capacity = new_capacity;
     return KEFIR_OK;
