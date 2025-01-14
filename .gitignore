@@ -64,3 +64,6 @@ callgrind.out.*
 # GCC Torture
 test.s
 test.bin
+
+# GCov
+*.gcov.json.gz

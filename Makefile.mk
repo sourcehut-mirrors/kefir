@@ -16,6 +16,7 @@ STRIP=strip
 EMCC=emcc
 GZIP=gzip
 REALPATH=realpath
+GCOVR=gcovr
 
 # Platform-dependent tools
 MDOC_CONV=groff -mandoc
@@ -89,6 +90,7 @@ KEFIR_EXE=$(KEFIR_BIN_DIR)/kefir
 KEFIR_CC1_EXE=$(KEFIR_BIN_DIR)/kefir-cc1
 KEFIR_JS=$(KEFIR_BIN_DIR)/kefir.js
 HEXDUMP_EXE=$(KEFIR_BIN_DIR)/hexdump
+COVERAGE_HTML=$(KEFIR_BIN_DIR)/coverage/index.html
 
 COMPILE_DEPS :=
 DEPENDENCIES :=
@@ -140,3 +142,8 @@ $(KEFIR_BIN_DIR)/%.binary.h: $(HEXDUMP_EXE)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
 	@$(HEXDUMP_EXE) $(BINARY_HEADER_CONTENT) > $@
+
+$(COVERAGE_HTML):
+	@mkdir -p $(shell dirname "$@")
+	@echo "Generating gcov report $@..."
+	@$(GCOVR) --root $(realpath $(ROOT)) --html --html-details --output "$@"
