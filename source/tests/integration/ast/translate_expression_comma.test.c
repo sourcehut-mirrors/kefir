@@ -108,7 +108,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_ast_comma_append(
             mem, comma,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1))->self,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true))))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 21e4))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 66536))));
@@ -130,7 +130,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         REQUIRE_OK(kefir_ast_comma_append(
             mem, comma,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1))->self,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(mem, 3e-1))))));
         REQUIRE_OK(kefir_ast_comma_append(mem, comma, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1 << 4))));
 

@@ -1015,12 +1015,12 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                                                "Variable-length array declaration length shall have integral type"));
                 if (declarator->array.static_array) {
                     *base_type = kefir_ast_type_vlen_array_static(mem, context->type_bundle, *base_type,
-                                                                  KEFIR_AST_NODE_CLONE(mem, declarator->array.length),
+                                                                  KEFIR_AST_NODE_REF(mem, declarator->array.length),
                                                                   &qualification);
                 } else {
                     *base_type =
                         kefir_ast_type_vlen_array(mem, context->type_bundle, *base_type,
-                                                  KEFIR_AST_NODE_CLONE(mem, declarator->array.length), &qualification);
+                                                  KEFIR_AST_NODE_REF(mem, declarator->array.length), &qualification);
                 }
             } else {
                 REQUIRE_OK(res);

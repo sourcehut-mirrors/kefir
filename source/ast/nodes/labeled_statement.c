@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_labeled_statement_visit, kefir_ast_labeled_statement, labeled_statement)
 
-struct kefir_ast_node_base *ast_labeled_statement_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_labeled_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -36,34 +34,8 @@ kefir_result_t ast_labeled_statement_free(struct kefir_mem *mem, struct kefir_as
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_LABELED_STATEMENT_CLASS = {.type = KEFIR_AST_LABELED_STATEMENT,
-                                                                 .visit = ast_labeled_statement_visit,
-                                                                 .clone = ast_labeled_statement_clone,
-                                                                 .free = ast_labeled_statement_free};
-
-struct kefir_ast_node_base *ast_labeled_statement_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_labeled_statement *, node, base->self);
-    struct kefir_ast_labeled_statement *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_labeled_statement));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_LABELED_STATEMENT_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    clone->label = node->label;
-    clone->statement = KEFIR_AST_NODE_CLONE(mem, node->statement);
-    REQUIRE_ELSE(clone->statement != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_LABELED_STATEMENT_CLASS = {
+    .type = KEFIR_AST_LABELED_STATEMENT, .visit = ast_labeled_statement_visit, .free = ast_labeled_statement_free};
 
 struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir_mem *mem,
                                                                     struct kefir_string_pool *symbols,
@@ -78,6 +50,7 @@ struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir
 
     struct kefir_ast_labeled_statement *labeled_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_labeled_statement));
     REQUIRE(labeled_stmt != NULL, NULL);
+    labeled_stmt->base.refcount = 1;
     labeled_stmt->base.klass = &AST_LABELED_STATEMENT_CLASS;
     labeled_stmt->base.self = labeled_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&labeled_stmt->base.properties);

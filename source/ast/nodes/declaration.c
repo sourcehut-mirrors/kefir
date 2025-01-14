@@ -26,8 +26,6 @@
 
 NODE_VISIT_IMPL(ast_declaration_visit, kefir_ast_declaration, declaration)
 
-struct kefir_ast_node_base *ast_declaration_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_declaration_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -38,10 +36,8 @@ kefir_result_t ast_declaration_free(struct kefir_mem *mem, struct kefir_ast_node
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_DECLARATION_LIST_CLASS = {.type = KEFIR_AST_DECLARATION,
-                                                                .visit = ast_declaration_visit,
-                                                                .clone = ast_declaration_clone,
-                                                                .free = ast_declaration_free};
+const struct kefir_ast_node_class AST_DECLARATION_LIST_CLASS = {
+    .type = KEFIR_AST_DECLARATION, .visit = ast_declaration_visit, .free = ast_declaration_free};
 
 static kefir_result_t declaration_free(struct kefir_mem *mem, struct kefir_list *list, struct kefir_list_entry *entry,
                                        void *payload) {
@@ -55,77 +51,12 @@ static kefir_result_t declaration_free(struct kefir_mem *mem, struct kefir_list 
     return KEFIR_OK;
 }
 
-struct kefir_ast_node_base *ast_declaration_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, node, base->self);
-    struct kefir_ast_declaration *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declaration));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_DECLARATION_LIST_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    res = kefir_ast_declarator_specifier_list_init(&clone->specifiers);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    res = kefir_ast_declarator_specifier_list_clone(mem, &clone->specifiers, &node->specifiers);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_declarator_specifier_list_free(mem, &clone->specifiers);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    res = kefir_list_init(&clone->init_declarators);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_declarator_specifier_list_free(mem, &clone->specifiers);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    res = kefir_list_on_remove(&clone->init_declarators, declaration_free, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &clone->init_declarators);
-        kefir_ast_declarator_specifier_list_free(mem, &clone->specifiers);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->init_declarators); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, declaration, iter->value);
-        struct kefir_ast_node_base *declaration_clone = KEFIR_AST_NODE_CLONE(mem, declaration);
-        REQUIRE_ELSE(declaration_clone != NULL, {
-            kefir_list_free(mem, &clone->init_declarators);
-            kefir_ast_declarator_specifier_list_free(mem, &clone->specifiers);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-
-        REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &clone->init_declarators,
-                                                    kefir_list_tail(&clone->init_declarators), declaration_clone));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_list_free(mem, &clone->init_declarators);
-            kefir_ast_declarator_specifier_list_free(mem, &clone->specifiers);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    }
-
-    return KEFIR_AST_NODE_BASE(clone);
-}
-
 struct kefir_ast_declaration *kefir_ast_new_declaration(struct kefir_mem *mem) {
     REQUIRE(mem != NULL, NULL);
 
     struct kefir_ast_declaration *declaration = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declaration));
     REQUIRE(declaration != NULL, NULL);
+    declaration->base.refcount = 1;
     declaration->base.klass = &AST_DECLARATION_LIST_CLASS;
     declaration->base.self = declaration;
     kefir_result_t res = kefir_ast_node_properties_init(&declaration->base.properties);

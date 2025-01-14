@@ -22,6 +22,23 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
+struct kefir_ast_node_base *kefir_ast_node_ref(struct kefir_ast_node_base *node) {
+    REQUIRE(node != NULL, NULL);
+    node->refcount++;
+    return node;
+}
+
+kefir_result_t kefir_ast_node_free(struct kefir_mem *mem, struct kefir_ast_node_base *node) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+    REQUIRE(node->refcount > 0, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected reference count of AST node"));
+
+    if (--node->refcount == 0) {
+        REQUIRE_OK(node->klass->free(mem, node));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_visitor_init(struct kefir_ast_visitor *visitor,
                                       kefir_result_t (*generic)(const struct kefir_ast_visitor *,
                                                                 const struct kefir_ast_node_base *, void *)) {

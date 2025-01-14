@@ -165,15 +165,15 @@ DEFINE_CASE(ast_constant_expression_generic_selection1, "AST constant expression
         kefir_ast_new_generic_selection(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection1,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection1,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection1,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
 
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, selection1, 1);
@@ -182,34 +182,34 @@ DEFINE_CASE(ast_constant_expression_generic_selection1, "AST constant expression
         kefir_ast_new_generic_selection(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_float(&kft_mem, 0)));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection2,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection2,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection2,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
 
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, selection2, 2);
 
     struct kefir_ast_generic_selection *selection3 = kefir_ast_new_generic_selection(
         &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                      &kft_mem, KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+                      &kft_mem, KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
                       KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'A')))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection3,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection3,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
     ASSERT_OK(kefir_ast_generic_selection_append(
         &kft_mem, selection3,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
 
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, selection3, 0);

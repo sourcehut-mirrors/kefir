@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_constant_visit, kefir_ast_constant, constant)
 
-struct kefir_ast_node_base *ast_constant_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -36,31 +34,13 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
 }
 
 const struct kefir_ast_node_class AST_CONSTANT_CLASS = {
-    .type = KEFIR_AST_CONSTANT, .visit = ast_constant_visit, .clone = ast_constant_clone, .free = ast_constant_free};
-
-struct kefir_ast_node_base *ast_constant_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_constant *, node, base->self);
-    struct kefir_ast_constant *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_CONSTANT_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->type = node->type;
-    clone->value = node->value;
-    return KEFIR_AST_NODE_BASE(clone);
-}
+    .type = KEFIR_AST_CONSTANT, .visit = ast_constant_visit, .free = ast_constant_free};
 
 struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, kefir_bool_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -82,6 +62,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, ke
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -103,6 +84,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *me
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -124,6 +106,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_me
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -145,6 +128,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_me
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -166,6 +150,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *mem, kef
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -187,6 +172,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_uint(struct kefir_mem *mem, ke
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -208,6 +194,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *mem, ke
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -229,6 +216,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *mem, k
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -250,6 +238,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *me
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -271,6 +260,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *m
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -292,6 +282,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *mem, k
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -313,6 +304,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *mem, 
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -334,6 +326,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -356,6 +349,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_float(struct kefir_mem
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -379,6 +373,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_double(struct kefir_me
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
@@ -402,6 +397,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_complex_long_double(struct kef
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
     constant->base.klass = &AST_CONSTANT_CLASS;
     constant->base.self = constant;
     kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);

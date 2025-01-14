@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_case_statement_visit, kefir_ast_case_statement, case_statement)
 
-struct kefir_ast_node_base *ast_case_statement_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_case_statement_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -42,58 +40,8 @@ kefir_result_t ast_case_statement_free(struct kefir_mem *mem, struct kefir_ast_n
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_CASE_STATEMENT_CLASS = {.type = KEFIR_AST_CASE_STATEMENT,
-                                                              .visit = ast_case_statement_visit,
-                                                              .clone = ast_case_statement_clone,
-                                                              .free = ast_case_statement_free};
-
-struct kefir_ast_node_base *ast_case_statement_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_case_statement *, node, base->self);
-    struct kefir_ast_case_statement *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_CASE_STATEMENT_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    clone->statement = KEFIR_AST_NODE_CLONE(mem, node->statement);
-    REQUIRE_ELSE(clone->statement != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    if (node->expression != NULL) {
-        clone->expression = KEFIR_AST_NODE_CLONE(mem, node->expression);
-        REQUIRE_ELSE(clone->expression != NULL, {
-            KEFIR_AST_NODE_FREE(mem, clone->statement);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    } else {
-        clone->expression = NULL;
-    }
-
-    if (node->range_end_expression != NULL) {
-        clone->range_end_expression = KEFIR_AST_NODE_CLONE(mem, node->range_end_expression);
-        REQUIRE_ELSE(clone->range_end_expression != NULL, {
-            if (clone->expression != NULL) {
-                KEFIR_AST_NODE_FREE(mem, clone->expression);
-            }
-            KEFIR_AST_NODE_FREE(mem, clone->statement);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    } else {
-        clone->range_end_expression = NULL;
-    }
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_CASE_STATEMENT_CLASS = {
+    .type = KEFIR_AST_CASE_STATEMENT, .visit = ast_case_statement_visit, .free = ast_case_statement_free};
 
 struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *mem,
                                                               struct kefir_ast_node_base *expression,
@@ -103,6 +51,7 @@ struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
     REQUIRE(case_stmt != NULL, NULL);
+    case_stmt->base.refcount = 1;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     case_stmt->base.self = case_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);
@@ -132,6 +81,7 @@ struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
     REQUIRE(case_stmt != NULL, NULL);
+    case_stmt->base.refcount = 1;
     case_stmt->base.klass = &AST_CASE_STATEMENT_CLASS;
     case_stmt->base.self = case_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&case_stmt->base.properties);

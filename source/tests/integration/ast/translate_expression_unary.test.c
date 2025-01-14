@@ -264,7 +264,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("sizeof1", {
         for (kefir_size_t i = 0; i < TYPES_LEN; i++) {
-            UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(TYPES[i])));
+            UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(TYPES[i])));
         }
     });
 

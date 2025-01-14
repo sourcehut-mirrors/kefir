@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_conditional_operator_visit, kefir_ast_conditional_operator, conditional_operator)
 
-struct kefir_ast_node_base *ast_conditional_operator_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_conditional_operator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -42,51 +40,7 @@ kefir_result_t ast_conditional_operator_free(struct kefir_mem *mem, struct kefir
 
 const struct kefir_ast_node_class AST_CONDITIONAL_OPERATION_CLASS = {.type = KEFIR_AST_CONDITIONAL_OPERATION,
                                                                      .visit = ast_conditional_operator_visit,
-                                                                     .clone = ast_conditional_operator_clone,
                                                                      .free = ast_conditional_operator_free};
-
-struct kefir_ast_node_base *ast_conditional_operator_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_conditional_operator *, node, base->self);
-    struct kefir_ast_conditional_operator *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_conditional_operator));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_CONDITIONAL_OPERATION_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->condition = KEFIR_AST_NODE_CLONE(mem, node->condition);
-    REQUIRE_ELSE(clone->condition != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    if (node->expr1 != NULL) {
-        clone->expr1 = KEFIR_AST_NODE_CLONE(mem, node->expr1);
-        REQUIRE_ELSE(clone->expr1 != NULL, {
-            KEFIR_AST_NODE_FREE(mem, clone->condition);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    } else {
-        clone->expr1 = NULL;
-    }
-
-    clone->expr2 = KEFIR_AST_NODE_CLONE(mem, node->expr2);
-    REQUIRE_ELSE(clone->expr2 != NULL, {
-        if (clone->expr1 != NULL) {
-            KEFIR_AST_NODE_FREE(mem, clone->expr1);
-        }
-        KEFIR_AST_NODE_FREE(mem, clone->condition);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    return KEFIR_AST_NODE_BASE(clone);
-}
 
 struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct kefir_mem *mem,
                                                                           struct kefir_ast_node_base *condition,
@@ -98,6 +52,7 @@ struct kefir_ast_conditional_operator *kefir_ast_new_conditional_operator(struct
 
     struct kefir_ast_conditional_operator *oper = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_conditional_operator));
     REQUIRE(oper != NULL, NULL);
+    oper->base.refcount = 1;
     oper->base.klass = &AST_CONDITIONAL_OPERATION_CLASS;
     oper->base.self = oper;
     kefir_result_t res = kefir_ast_node_properties_init(&oper->base.properties);

@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_identifier_visit, kefir_ast_identifier, identifier)
 
-struct kefir_ast_node_base *ast_identifier_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_identifier_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -35,28 +33,8 @@ kefir_result_t ast_identifier_free(struct kefir_mem *mem, struct kefir_ast_node_
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_IDENTIFIER_CLASS = {.type = KEFIR_AST_IDENTIFIER,
-                                                          .visit = ast_identifier_visit,
-                                                          .clone = ast_identifier_clone,
-                                                          .free = ast_identifier_free};
-
-struct kefir_ast_node_base *ast_identifier_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_identifier *, node, base->self);
-    struct kefir_ast_identifier *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_identifier));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_IDENTIFIER_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->identifier = node->identifier;
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_IDENTIFIER_CLASS = {
+    .type = KEFIR_AST_IDENTIFIER, .visit = ast_identifier_visit, .free = ast_identifier_free};
 
 struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                       const char *identifier) {
@@ -67,6 +45,7 @@ struct kefir_ast_identifier *kefir_ast_new_identifier(struct kefir_mem *mem, str
     REQUIRE(id_copy != NULL, NULL);
     struct kefir_ast_identifier *id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_identifier));
     REQUIRE(id != NULL, NULL);
+    id->base.refcount = 1;
     id->base.klass = &AST_IDENTIFIER_CLASS;
     id->base.self = id;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);

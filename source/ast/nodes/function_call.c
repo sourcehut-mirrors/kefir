@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_function_call_visit, kefir_ast_function_call, function_call)
 
-struct kefir_ast_node_base *ast_function_call_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_function_call_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -37,10 +35,8 @@ kefir_result_t ast_function_call_free(struct kefir_mem *mem, struct kefir_ast_no
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_FUNCTION_CALL_CLASS = {.type = KEFIR_AST_FUNCTION_CALL,
-                                                             .visit = ast_function_call_visit,
-                                                             .clone = ast_function_call_clone,
-                                                             .free = ast_function_call_free};
+const struct kefir_ast_node_class AST_FUNCTION_CALL_CLASS = {
+    .type = KEFIR_AST_FUNCTION_CALL, .visit = ast_function_call_visit, .free = ast_function_call_free};
 
 static kefir_result_t function_call_argument_free(struct kefir_mem *mem, struct kefir_list *list,
                                                   struct kefir_list_entry *entry, void *payload) {
@@ -51,64 +47,13 @@ static kefir_result_t function_call_argument_free(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-struct kefir_ast_node_base *ast_function_call_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_function_call *, node, base->self);
-    struct kefir_ast_function_call *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_function_call));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_FUNCTION_CALL_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    res = kefir_list_init(&clone->arguments);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    res = kefir_list_on_remove(&clone->arguments, function_call_argument_free, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &clone->arguments);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->function = KEFIR_AST_NODE_CLONE(mem, node->function);
-    REQUIRE_ELSE(clone->function != NULL, {
-        kefir_list_free(mem, &clone->arguments);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    for (const struct kefir_list_entry *iter = kefir_list_head(&node->arguments); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg, iter->value);
-        struct kefir_ast_node_base *arg_clone = KEFIR_AST_NODE_CLONE(mem, arg);
-        REQUIRE_ELSE(arg_clone != NULL, {
-            KEFIR_AST_NODE_FREE(mem, clone->function);
-            kefir_list_free(mem, &clone->arguments);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-        res = kefir_list_insert_after(mem, &clone->arguments, kefir_list_tail(&clone->arguments), arg_clone);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_AST_NODE_FREE(mem, clone->function);
-            kefir_list_free(mem, &clone->arguments);
-            KEFIR_FREE(mem, clone);
-            return NULL;
-        });
-    }
-    return KEFIR_AST_NODE_BASE(clone);
-}
-
 struct kefir_ast_function_call *kefir_ast_new_function_call(struct kefir_mem *mem,
                                                             struct kefir_ast_node_base *function) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(function != NULL, NULL);
     struct kefir_ast_function_call *function_call = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_function_call));
     REQUIRE(function_call != NULL, NULL);
+    function_call->base.refcount = 1;
     function_call->base.klass = &AST_FUNCTION_CALL_CLASS;
     function_call->base.self = function_call;
     kefir_result_t res = kefir_ast_node_properties_init(&function_call->base.properties);

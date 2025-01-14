@@ -96,7 +96,7 @@ static kefir_result_t define_sum_function(struct kefir_mem *mem, struct function
     struct kefir_ast_node_base *adds = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
         mem, KEFIR_AST_OPERATION_ADD,
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_SIZEOF,
-                                                          KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)))),
+                                                          KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1)))),
         add1));
 
     struct kefir_ast_node_base *adda = KEFIR_AST_NODE_BASE(
@@ -184,8 +184,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &sum, &context_manager, &global_scope, &translator_context));
 

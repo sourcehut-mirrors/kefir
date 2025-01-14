@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_inline_assembly_visit, kefir_ast_inline_assembly, inline_assembly)
 
-struct kefir_ast_node_base *ast_inline_assembly_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_inline_assembly_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -40,10 +38,8 @@ kefir_result_t ast_inline_assembly_free(struct kefir_mem *mem, struct kefir_ast_
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_INLINE_ASSEMBLY_CLASS = {.type = KEFIR_AST_INLINE_ASSEMBLY,
-                                                               .visit = ast_inline_assembly_visit,
-                                                               .clone = ast_inline_assembly_clone,
-                                                               .free = ast_inline_assembly_free};
+const struct kefir_ast_node_class AST_INLINE_ASSEMBLY_CLASS = {
+    .type = KEFIR_AST_INLINE_ASSEMBLY, .visit = ast_inline_assembly_visit, .free = ast_inline_assembly_free};
 
 static kefir_result_t inline_asm_param_free(struct kefir_mem *mem, struct kefir_list *list,
                                             struct kefir_list_entry *entry, void *payload) {
@@ -60,77 +56,6 @@ static kefir_result_t inline_asm_param_free(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_asm_params_clone(struct kefir_mem *mem, struct kefir_list *dst,
-                                              const struct kefir_list *src) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(src); iter != NULL; kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly_parameter *, param, iter->value);
-        struct kefir_ast_inline_assembly_parameter *param_clone =
-            KEFIR_MALLOC(mem, sizeof(struct kefir_ast_inline_assembly_parameter));
-        REQUIRE(param_clone != NULL,
-                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to clone AST inline assembly parameter"));
-
-        param_clone->parameter_name = param->parameter_name;
-        param_clone->constraint = param->constraint;
-        param_clone->parameter = KEFIR_AST_NODE_CLONE(mem, param->parameter);
-        REQUIRE_ELSE(param_clone->parameter != NULL, {
-            KEFIR_FREE(mem, param_clone);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST inline assembly parameter");
-        });
-
-        kefir_result_t res = kefir_list_insert_after(mem, dst, kefir_list_tail(dst), (void *) param_clone);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, param_clone);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST inline assembly parameter");
-        });
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t inline_asm_strings_clone(struct kefir_mem *mem, struct kefir_list *dst,
-                                               const struct kefir_list *src) {
-    for (const struct kefir_list_entry *iter = kefir_list_head(src); iter != NULL; kefir_list_next(&iter)) {
-        REQUIRE_OK(kefir_list_insert_after(mem, dst, kefir_list_tail(dst), iter->value));
-    }
-    return KEFIR_OK;
-}
-
-struct kefir_ast_node_base *ast_inline_assembly_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_inline_assembly *, node, base->self);
-    struct kefir_ast_inline_assembly *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_inline_assembly));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_INLINE_ASSEMBLY_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-
-    clone->qualifiers = node->qualifiers;
-    clone->asm_template = node->asm_template;
-
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_CHAIN(&res, kefir_list_init(&clone->outputs));
-    REQUIRE_CHAIN(&res, kefir_list_on_remove(&clone->outputs, inline_asm_param_free, NULL));
-    REQUIRE_CHAIN(&res, kefir_list_init(&clone->inputs));
-    REQUIRE_CHAIN(&res, kefir_list_on_remove(&clone->inputs, inline_asm_param_free, NULL));
-    REQUIRE_CHAIN(&res, kefir_list_init(&clone->clobbers));
-    REQUIRE_CHAIN(&res, kefir_list_init(&clone->jump_labels));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    REQUIRE_CHAIN(&res, inline_asm_params_clone(mem, &clone->outputs, &node->outputs));
-    REQUIRE_CHAIN(&res, inline_asm_params_clone(mem, &clone->inputs, &node->inputs));
-    REQUIRE_CHAIN(&res, inline_asm_strings_clone(mem, &clone->clobbers, &node->clobbers));
-    REQUIRE_CHAIN(&res, inline_asm_strings_clone(mem, &clone->jump_labels, &node->jump_labels));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(clone));
-        return NULL;
-    });
-
-    return KEFIR_AST_NODE_BASE(clone);
-}
-
 struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem *mem,
                                                                 struct kefir_ast_inline_assembly_qualifiers qualifiers,
                                                                 const char *asm_template) {
@@ -139,6 +64,7 @@ struct kefir_ast_inline_assembly *kefir_ast_new_inline_assembly(struct kefir_mem
 
     struct kefir_ast_inline_assembly *inline_assembly = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_inline_assembly));
     REQUIRE(inline_assembly != NULL, NULL);
+    inline_assembly->base.refcount = 1;
     inline_assembly->base.klass = &AST_INLINE_ASSEMBLY_CLASS;
     inline_assembly->base.self = inline_assembly;
     kefir_result_t res = kefir_ast_node_properties_init(&inline_assembly->base.properties);

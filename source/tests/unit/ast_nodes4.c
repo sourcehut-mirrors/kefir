@@ -360,17 +360,8 @@ static kefir_result_t extension_free(struct kefir_mem *mem, struct kefir_ast_ext
     return KEFIR_OK;
 }
 
-static kefir_result_t extension_clone(struct kefir_mem *mem, struct kefir_ast_extension_node *dst,
-                                      const struct kefir_ast_extension_node *src) {
-    UNUSED(mem);
-    UNUSED(dst);
-    UNUSED(src);
-    return KEFIR_INTERNAL_ERROR;
-}
-
 DEFINE_CASE(ast_nodes_extension, "AST nodes - extensions") {
-    struct kefir_ast_extension_node_class ext_class = {
-        .free = extension_free, .clone = extension_clone, .payload = NULL};
+    struct kefir_ast_extension_node_class ext_class = {.free = extension_free, .payload = NULL};
 
     void *buf1 = KEFIR_MALLOC(&kft_mem, 1024);
     void *buf2 = KEFIR_MALLOC(&kft_mem, 2048);

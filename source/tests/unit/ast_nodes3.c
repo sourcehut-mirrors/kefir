@@ -581,7 +581,7 @@ DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
     ASSERT(stmt1 == NULL);
 
     struct kefir_ast_for_statement *stmt2 =
-        kefir_ast_new_for_statement(&kft_mem, NULL, NULL, KEFIR_AST_NODE_CLONE(&kft_mem, node3),
+        kefir_ast_new_for_statement(&kft_mem, NULL, NULL, KEFIR_AST_NODE_REF(&kft_mem, node3),
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt2 != NULL);
     ASSERT(stmt2->init == NULL);
@@ -595,7 +595,7 @@ DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
     ASSERT(((struct kefir_ast_expression_statement *) stmt2->body->self)->expression == NULL);
 
     struct kefir_ast_for_statement *stmt3 =
-        kefir_ast_new_for_statement(&kft_mem, NULL, KEFIR_AST_NODE_CLONE(&kft_mem, node2), NULL,
+        kefir_ast_new_for_statement(&kft_mem, NULL, KEFIR_AST_NODE_REF(&kft_mem, node2), NULL,
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt3 != NULL);
     ASSERT(stmt3->init == NULL);
@@ -609,7 +609,7 @@ DEFINE_CASE(ast_nodes_for_statements5, "AST nodes - for statements #5") {
     ASSERT(((struct kefir_ast_expression_statement *) stmt3->body->self)->expression == NULL);
 
     struct kefir_ast_for_statement *stmt4 =
-        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_CLONE(&kft_mem, node1), NULL, NULL,
+        kefir_ast_new_for_statement(&kft_mem, KEFIR_AST_NODE_REF(&kft_mem, node1), NULL, NULL,
                                     KEFIR_AST_NODE_BASE(kefir_ast_new_expression_statement(&kft_mem, NULL)));
     ASSERT(stmt4 != NULL);
     ASSERT(stmt4->init != NULL);

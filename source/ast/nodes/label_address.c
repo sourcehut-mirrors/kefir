@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_label_address_visit, kefir_ast_label_address, label_address)
 
-struct kefir_ast_node_base *ast_label_address_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_label_address_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -35,28 +33,8 @@ kefir_result_t ast_label_address_free(struct kefir_mem *mem, struct kefir_ast_no
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_LABEL_ADDRESS_CLASS = {.type = KEFIR_AST_LABEL_ADDRESS,
-                                                             .visit = ast_label_address_visit,
-                                                             .clone = ast_label_address_clone,
-                                                             .free = ast_label_address_free};
-
-struct kefir_ast_node_base *ast_label_address_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_label_address *, node, base->self);
-    struct kefir_ast_label_address *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_label_address));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_LABEL_ADDRESS_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->label = node->label;
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_LABEL_ADDRESS_CLASS = {
+    .type = KEFIR_AST_LABEL_ADDRESS, .visit = ast_label_address_visit, .free = ast_label_address_free};
 
 struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                             const char *label_address) {
@@ -67,6 +45,7 @@ struct kefir_ast_label_address *kefir_ast_new_label_address(struct kefir_mem *me
     REQUIRE(id_copy != NULL, NULL);
     struct kefir_ast_label_address *id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_label_address));
     REQUIRE(id != NULL, NULL);
+    id->base.refcount = 1;
     id->base.klass = &AST_LABEL_ADDRESS_CLASS;
     id->base.self = id;
     kefir_result_t res = kefir_ast_node_properties_init(&id->base.properties);

@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_cast_operator_visit, kefir_ast_cast_operator, cast_operator)
 
-struct kefir_ast_node_base *ast_cast_operator_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_cast_operator_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -37,41 +35,8 @@ kefir_result_t ast_cast_operator_free(struct kefir_mem *mem, struct kefir_ast_no
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_CAST_OPERATOR_CLASS = {.type = KEFIR_AST_CAST_OPERATOR,
-                                                             .visit = ast_cast_operator_visit,
-                                                             .clone = ast_cast_operator_clone,
-                                                             .free = ast_cast_operator_free};
-
-struct kefir_ast_node_base *ast_cast_operator_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_cast_operator *, node, base->self);
-    struct kefir_ast_cast_operator *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_cast_operator));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_CAST_OPERATOR_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    struct kefir_ast_node_base *clone_type_name = KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(node->type_name));
-    REQUIRE_ELSE(clone_type_name != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    clone->type_name = (struct kefir_ast_type_name *) clone_type_name->self;
-    clone->expr = KEFIR_AST_NODE_CLONE(mem, node->expr);
-    REQUIRE_ELSE(clone->expr != NULL, {
-        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(clone->type_name));
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_CAST_OPERATOR_CLASS = {
+    .type = KEFIR_AST_CAST_OPERATOR, .visit = ast_cast_operator_visit, .free = ast_cast_operator_free};
 
 struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *mem,
                                                             struct kefir_ast_type_name *type_name,
@@ -81,6 +46,7 @@ struct kefir_ast_cast_operator *kefir_ast_new_cast_operator(struct kefir_mem *me
     REQUIRE(expr != NULL, NULL);
     struct kefir_ast_cast_operator *cast = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_cast_operator));
     REQUIRE(cast != NULL, NULL);
+    cast->base.refcount = 1;
     cast->base.klass = &AST_CAST_OPERATOR_CLASS;
     cast->base.self = cast;
     kefir_result_t res = kefir_ast_node_properties_init(&cast->base.properties);

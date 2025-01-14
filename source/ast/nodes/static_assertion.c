@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_static_assertion_visit, kefir_ast_static_assertion, static_assertion)
 
-struct kefir_ast_node_base *ast_static_assertion_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_static_assertion_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -37,40 +35,8 @@ kefir_result_t ast_static_assertion_free(struct kefir_mem *mem, struct kefir_ast
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_STATIC_ASSERTION_CLASS = {.type = KEFIR_AST_STATIC_ASSERTION,
-                                                                .visit = ast_static_assertion_visit,
-                                                                .clone = ast_static_assertion_clone,
-                                                                .free = ast_static_assertion_free};
-
-struct kefir_ast_node_base *ast_static_assertion_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_static_assertion *, node, base->self);
-    struct kefir_ast_static_assertion *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_static_assertion));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_STATIC_ASSERTION_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    clone->condition = KEFIR_AST_NODE_CLONE(mem, node->condition);
-    REQUIRE_ELSE(clone->condition != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-
-    clone->string = kefir_ast_new_string_literal(mem, node->string->literal, node->string->length, node->string->type);
-    REQUIRE_ELSE(clone->string != NULL, {
-        KEFIR_AST_NODE_FREE(mem, clone->condition);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_STATIC_ASSERTION_CLASS = {
+    .type = KEFIR_AST_STATIC_ASSERTION, .visit = ast_static_assertion_visit, .free = ast_static_assertion_free};
 
 struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_mem *mem,
                                                                   struct kefir_ast_node_base *condition,
@@ -81,6 +47,7 @@ struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_m
 
     struct kefir_ast_static_assertion *static_assertion = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_static_assertion));
     REQUIRE(static_assertion != NULL, NULL);
+    static_assertion->base.refcount = 1;
     static_assertion->base.klass = &AST_STATIC_ASSERTION_CLASS;
     static_assertion->base.self = static_assertion;
     kefir_result_t res = kefir_ast_node_properties_init(&static_assertion->base.properties);

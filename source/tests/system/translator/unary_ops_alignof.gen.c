@@ -73,7 +73,7 @@ static kefir_result_t define_get_alignof_function(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_ast_context_manager_attach_local(&func->local_context, context_manager));
 
     struct kefir_ast_compound_literal *compound_literal = kefir_ast_new_compound_literal(
-        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name16))->self);
+        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name16))->self);
 #define APPEND(_type_name)                                                                           \
     REQUIRE_OK(kefir_ast_initializer_list_append(                                                    \
         mem, &compound_literal->initializer->list, NULL,                                             \
@@ -201,8 +201,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &get_alignof, &context_manager, &global_scope, &translator_context));
 

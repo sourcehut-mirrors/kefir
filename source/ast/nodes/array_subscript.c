@@ -25,8 +25,6 @@
 
 NODE_VISIT_IMPL(ast_array_subscript_visit, kefir_ast_array_subscript, array_subscript)
 
-struct kefir_ast_node_base *ast_array_subscript_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_array_subscript_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -37,38 +35,8 @@ kefir_result_t ast_array_subscript_free(struct kefir_mem *mem, struct kefir_ast_
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_ARRAY_SUBSCRIPT_CLASS = {.type = KEFIR_AST_ARRAY_SUBSCRIPT,
-                                                               .visit = ast_array_subscript_visit,
-                                                               .clone = ast_array_subscript_clone,
-                                                               .free = ast_array_subscript_free};
-
-struct kefir_ast_node_base *ast_array_subscript_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_array_subscript *, node, base->self);
-    struct kefir_ast_array_subscript *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_array_subscript));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = &AST_ARRAY_SUBSCRIPT_CLASS;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->array = KEFIR_AST_NODE_CLONE(mem, node->array);
-    REQUIRE_ELSE(clone->array != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->subscript = KEFIR_AST_NODE_CLONE(mem, node->subscript);
-    REQUIRE_ELSE(clone->subscript != NULL, {
-        KEFIR_AST_NODE_FREE(mem, clone->array);
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    return KEFIR_AST_NODE_BASE(clone);
-}
+const struct kefir_ast_node_class AST_ARRAY_SUBSCRIPT_CLASS = {
+    .type = KEFIR_AST_ARRAY_SUBSCRIPT, .visit = ast_array_subscript_visit, .free = ast_array_subscript_free};
 
 struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem *mem,
                                                                 struct kefir_ast_node_base *array,
@@ -78,6 +46,7 @@ struct kefir_ast_array_subscript *kefir_ast_new_array_subscript(struct kefir_mem
     REQUIRE(subscript != NULL, NULL);
     struct kefir_ast_array_subscript *array_subscript = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_array_subscript));
     REQUIRE(array_subscript != NULL, NULL);
+    array_subscript->base.refcount = 1;
     array_subscript->base.klass = &AST_ARRAY_SUBSCRIPT_CLASS;
     array_subscript->base.self = array_subscript;
     kefir_result_t res = kefir_ast_node_properties_init(&array_subscript->base.properties);

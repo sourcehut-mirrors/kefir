@@ -100,27 +100,27 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
                                                          kefir_ast_type_specifier_double(&kft_mem)));
 
     for (kefir_int_t j = -10; j < 10; j++) {
-#define ASSERT_ICAST(_idx, _type)                                                                              \
-    do {                                                                                                       \
-        struct kefir_ast_type_name *type_name =                                                                \
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[(_idx)])); \
-        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                  \
-        ASSERT_INTEGER_CONST_EXPR(                                                                             \
-            &kft_mem, context,                                                                                 \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                   \
-                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, j))),        \
-            (_type) j);                                                                                        \
+#define ASSERT_ICAST(_idx, _type)                                                                            \
+    do {                                                                                                     \
+        struct kefir_ast_type_name *type_name =                                                              \
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[(_idx)])); \
+        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                \
+        ASSERT_INTEGER_CONST_EXPR(                                                                           \
+            &kft_mem, context,                                                                               \
+            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                 \
+                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, j))),      \
+            (_type) j);                                                                                      \
     } while (0)
-#define ASSERT_UCAST(_idx, _type)                                                                              \
-    do {                                                                                                       \
-        struct kefir_ast_type_name *type_name =                                                                \
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[(_idx)])); \
-        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                  \
-        ASSERT_UINTEGER_CONST_EXPR(                                                                            \
-            &kft_mem, context,                                                                                 \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                   \
-                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, j))),        \
-            (_type) j);                                                                                        \
+#define ASSERT_UCAST(_idx, _type)                                                                            \
+    do {                                                                                                     \
+        struct kefir_ast_type_name *type_name =                                                              \
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[(_idx)])); \
+        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                \
+        ASSERT_UINTEGER_CONST_EXPR(                                                                          \
+            &kft_mem, context,                                                                               \
+            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                 \
+                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, j))),      \
+            (_type) j);                                                                                      \
     } while (0)
 
         ASSERT_ICAST(0, bool);
@@ -140,14 +140,14 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
 #undef ASSERT_UCAST
 
         struct kefir_ast_type_name *type_name =
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[12]));
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[12]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
                                 kefir_ast_new_cast_operator(
                                     &kft_mem, type_name, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, j))),
                                 (double) j);
 
-        type_name = (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[13]));
+        type_name = (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[13]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(&kft_mem, context,
                                 kefir_ast_new_cast_operator(
@@ -156,27 +156,27 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
     }
 
     for (kefir_float64_t f = -10.0f; f < 10.0f; f += 0.1f) {
-#define ASSERT_ICAST(_idx, _type)                                                                            \
-    do {                                                                                                     \
-        struct kefir_ast_type_name *type_name =                                                              \
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[_idx])); \
-        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                \
-        ASSERT_INTEGER_CONST_EXPR(                                                                           \
-            &kft_mem, context,                                                                               \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                 \
-                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, f))),    \
-            (_type) f);                                                                                      \
+#define ASSERT_ICAST(_idx, _type)                                                                          \
+    do {                                                                                                   \
+        struct kefir_ast_type_name *type_name =                                                            \
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[_idx])); \
+        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));              \
+        ASSERT_INTEGER_CONST_EXPR(                                                                         \
+            &kft_mem, context,                                                                             \
+            kefir_ast_new_cast_operator(&kft_mem, type_name,                                               \
+                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, f))),  \
+            (_type) f);                                                                                    \
     } while (0)
-#define ASSERT_UCAST(_idx, _type)                                                                            \
-    do {                                                                                                     \
-        struct kefir_ast_type_name *type_name =                                                              \
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[_idx])); \
-        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));                \
-        ASSERT_UINTEGER_CONST_EXPR(                                                                          \
-            &kft_mem, context,                                                                               \
-            kefir_ast_new_cast_operator(&kft_mem, type_name,                                                 \
-                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, f))),    \
-            (_type) f);                                                                                      \
+#define ASSERT_UCAST(_idx, _type)                                                                          \
+    do {                                                                                                   \
+        struct kefir_ast_type_name *type_name =                                                            \
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[_idx])); \
+        ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));              \
+        ASSERT_UINTEGER_CONST_EXPR(                                                                        \
+            &kft_mem, context,                                                                             \
+            kefir_ast_new_cast_operator(&kft_mem, type_name,                                               \
+                                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, f))),  \
+            (_type) f);                                                                                    \
     } while (0)
 
         ASSERT_ICAST(0, bool);
@@ -199,7 +199,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
 #undef ASSERT_UCAST
 
         struct kefir_ast_type_name *type_name =
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[12]));
+            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[12]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(
             &kft_mem, context,
@@ -207,7 +207,7 @@ DEFINE_CASE(ast_constant_expression_cast_operator1, "AST constant expressions - 
                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_double(&kft_mem, f))),
             f);
 
-        type_name = (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[13]));
+        type_name = (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[13]));
         ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(type_name)));
         ASSERT_FLOAT_CONST_EXPR(
             &kft_mem, context,
@@ -396,8 +396,7 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
         kefir_ast_new_conditional_operator(
             &kft_mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                &kft_mem,
-                (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)),
+                &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 5)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 7))),
@@ -408,8 +407,7 @@ DEFINE_CASE(ast_constant_expression_conditional_operator2, "AST constant express
         kefir_ast_new_conditional_operator(
             &kft_mem,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                &kft_mem,
-                (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)),
+                &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 6)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 9))),

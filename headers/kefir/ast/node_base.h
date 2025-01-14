@@ -36,7 +36,6 @@ typedef struct kefir_ast_visitor kefir_ast_visitor_t;
 typedef struct kefir_ast_node_class {
     kefir_ast_node_type_t type;
     kefir_result_t (*visit)(const struct kefir_ast_node_base *, const struct kefir_ast_visitor *, void *);
-    struct kefir_ast_node_base *(*clone)(struct kefir_mem *, struct kefir_ast_node_base *);
     kefir_result_t (*free)(struct kefir_mem *, struct kefir_ast_node_base *);
 } kefir_ast_node_class_t;
 
@@ -109,6 +108,7 @@ typedef struct kefir_ast_node_properties {
 } kefir_ast_node_properties_t;
 
 typedef struct kefir_ast_node_base {
+    kefir_uint64_t refcount;
     const struct kefir_ast_node_class *klass;
     void *self;
     struct kefir_ast_node_properties properties;
@@ -123,11 +123,14 @@ typedef struct kefir_ast_node_base {
 
 #define KEFIR_AST_NODE_BASE(node) (&(node)->base)
 #define KEFIR_AST_NODE_VISIT(visitor, base, payload) ((base)->klass->visit((base), (visitor), (payload)))
-#define KEFIR_AST_NODE_CLONE(mem, base) ((base) != NULL ? (base)->klass->clone((mem), (base)) : NULL)
-#define KEFIR_AST_NODE_FREE(mem, base) ((base)->klass->free((mem), (base)))
+#define KEFIR_AST_NODE_REF(mem, base) (kefir_ast_node_ref((base)))
+#define KEFIR_AST_NODE_FREE(mem, base) (kefir_ast_node_free((mem), (base)))
 
 #define KEFIR_AST_VISITOR_METHOD(id, type) \
     kefir_result_t (*id)(const struct kefir_ast_visitor *, const struct type *, void *)
+
+struct kefir_ast_node_base *kefir_ast_node_ref(struct kefir_ast_node_base *);
+kefir_result_t kefir_ast_node_free(struct kefir_mem *, struct kefir_ast_node_base *);
 
 kefir_result_t kefir_ast_visitor_init(struct kefir_ast_visitor *,
                                       KEFIR_AST_VISITOR_METHOD(method, kefir_ast_node_base));

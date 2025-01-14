@@ -26,8 +26,6 @@
 NODE_VISIT_IMPL(ast_struct_member_visit, kefir_ast_struct_member, struct_member)
 NODE_VISIT_IMPL(ast_struct_indirect_member_visit, kefir_ast_struct_member, struct_indirect_member)
 
-struct kefir_ast_node_base *ast_struct_member_clone(struct kefir_mem *, struct kefir_ast_node_base *);
-
 kefir_result_t ast_struct_member_free(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
@@ -37,38 +35,12 @@ kefir_result_t ast_struct_member_free(struct kefir_mem *mem, struct kefir_ast_no
     return KEFIR_OK;
 }
 
-const struct kefir_ast_node_class AST_STRUCT_MEMBER_CLASS = {.type = KEFIR_AST_STRUCTURE_MEMBER,
-                                                             .visit = ast_struct_member_visit,
-                                                             .clone = ast_struct_member_clone,
-                                                             .free = ast_struct_member_free};
+const struct kefir_ast_node_class AST_STRUCT_MEMBER_CLASS = {
+    .type = KEFIR_AST_STRUCTURE_MEMBER, .visit = ast_struct_member_visit, .free = ast_struct_member_free};
 
 const struct kefir_ast_node_class AST_STRUCT_INDIRECT_MEMBER_CLASS = {.type = KEFIR_AST_STRUCTURE_INDIRECT_MEMBER,
                                                                       .visit = ast_struct_indirect_member_visit,
-                                                                      .clone = ast_struct_member_clone,
                                                                       .free = ast_struct_member_free};
-
-struct kefir_ast_node_base *ast_struct_member_clone(struct kefir_mem *mem, struct kefir_ast_node_base *base) {
-    REQUIRE(mem != NULL, NULL);
-    REQUIRE(base != NULL, NULL);
-    ASSIGN_DECL_CAST(struct kefir_ast_struct_member *, node, base->self);
-    struct kefir_ast_struct_member *clone = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
-    REQUIRE(clone != NULL, NULL);
-    clone->base.klass = node->base.klass;
-    clone->base.self = clone;
-    clone->base.source_location = base->source_location;
-    kefir_result_t res = kefir_ast_node_properties_clone(&clone->base.properties, &node->base.properties);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->structure = KEFIR_AST_NODE_CLONE(mem, node->structure);
-    REQUIRE_ELSE(clone->structure != NULL, {
-        KEFIR_FREE(mem, clone);
-        return NULL;
-    });
-    clone->member = node->member;
-    return KEFIR_AST_NODE_BASE(clone);
-}
 
 struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                             struct kefir_ast_node_base *structure, const char *member) {
@@ -80,6 +52,7 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_member(struct kefir_mem *me
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
     REQUIRE(struct_member != NULL, NULL);
+    struct_member->base.refcount = 1;
     struct_member->base.klass = &AST_STRUCT_MEMBER_CLASS;
     struct_member->base.self = struct_member;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);
@@ -109,6 +82,7 @@ struct kefir_ast_struct_member *kefir_ast_new_struct_indirect_member(struct kefi
     REQUIRE(member != NULL, NULL);
     struct kefir_ast_struct_member *struct_member = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_struct_member));
     REQUIRE(struct_member != NULL, NULL);
+    struct_member->base.refcount = 1;
     struct_member->base.klass = &AST_STRUCT_INDIRECT_MEMBER_CLASS;
     struct_member->base.self = struct_member;
     kefir_result_t res = kefir_ast_node_properties_init(&struct_member->base.properties);

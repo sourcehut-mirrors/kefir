@@ -724,7 +724,7 @@ DEFINE_CASE(ast_node_analysis_compound_statements4, "AST node analysis - compoun
                                               &kft_mem, KEFIR_AST_OPERATION_EQUAL,
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
                                                   &kft_mem, KEFIR_AST_OPERATION_SIZEOF,
-                                                  KEFIR_AST_NODE_CLONE(&kft_mem, KEFIR_AST_NODE_BASE(type_name2)))),
+                                                  KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2)))),
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)))),
                                           KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "ERROR!")))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt3)));

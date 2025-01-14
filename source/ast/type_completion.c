@@ -143,8 +143,9 @@ kefir_result_t kefir_ast_type_completion(struct kefir_mem *mem, const struct kef
 
                 case KEFIR_AST_ARRAY_VLA:
                 case KEFIR_AST_ARRAY_VLA_STATIC: {
-                    struct kefir_ast_node_base *len = KEFIR_AST_NODE_CLONE(mem, type->array_type.vla_length);
-                    REQUIRE(type->array_type.vla_length == NULL || len != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST node"));
+                    struct kefir_ast_node_base *len = KEFIR_AST_NODE_REF(mem, type->array_type.vla_length);
+                    REQUIRE(type->array_type.vla_length == NULL || len != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to clone AST node"));
                     if (type->array_type.boundary == KEFIR_AST_ARRAY_VLA_STATIC) {
                         *dst = kefir_ast_type_vlen_array_static(mem, context->type_bundle, element_type, len,
                                                                 &type->array_type.qualifications);

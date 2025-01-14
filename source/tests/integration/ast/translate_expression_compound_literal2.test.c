@@ -52,7 +52,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_char(mem)));
 
     struct kefir_ast_compound_literal *literal1 = kefir_ast_new_compound_literal(
-        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)));
+        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal1->initializer->list, NULL,
         kefir_ast_new_expression_initializer(
@@ -60,7 +60,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal1)));
 
     struct kefir_ast_compound_literal *literal2 = kefir_ast_new_compound_literal(
-        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)));
+        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_initializer_list_append(
         mem, &literal2->initializer->list, NULL,
         kefir_ast_new_expression_initializer(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, 'H')))));
@@ -80,7 +80,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal2)));
 
     struct kefir_ast_compound_literal *literal3 = kefir_ast_new_compound_literal(
-        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_CLONE(mem, KEFIR_AST_NODE_BASE(type_name1)));
+        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1)));
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(literal3)));
 
     struct kefir_ast_compound_literal *literal4 = kefir_ast_new_compound_literal(mem, type_name1);
