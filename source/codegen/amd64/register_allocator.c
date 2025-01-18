@@ -52,7 +52,8 @@ kefir_result_t kefir_codegen_amd64_register_allocator_init(struct kefir_codegen_
     REQUIRE(allocator != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register allocator"));
 
-    REQUIRE_OK(kefir_graph_init(&allocator->internal.liveness_graph, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(
+        kefir_graph_init(&allocator->internal.liveness_graph, &kefir_hashtree_uint_ops, &kefir_bucketset_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->used_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&allocator->internal.instruction_linear_indices, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&allocator->internal.conflicts, &kefir_hashtree_uint_ops));

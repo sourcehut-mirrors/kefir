@@ -22,7 +22,7 @@
 #define KEFIR_CORE_GRAPH_H_
 
 #include "kefir/core/hashtree.h"
-#include "kefir/core/hashtreeset.h"
+#include "kefir/core/bucketset.h"
 
 typedef kefir_hashtree_key_t kefir_graph_node_id_t;
 typedef kefir_hashtree_value_t kefir_graph_node_value_t;
@@ -30,7 +30,7 @@ typedef kefir_hashtree_value_t kefir_graph_node_value_t;
 typedef struct kefir_graph_node {
     kefir_graph_node_id_t identifier;
     kefir_graph_node_value_t value;
-    struct kefir_hashtreeset edges;
+    struct kefir_bucketset edges;
 } kefir_graph_node_t;
 
 typedef struct kefir_graph kefir_graph_t;
@@ -40,6 +40,7 @@ typedef kefir_result_t (*kefir_graph_remove_callback_t)(struct kefir_mem *, stru
 
 typedef struct kefir_graph {
     struct kefir_hashtree nodes;
+    const struct kefir_bucketset_ops *bucketset_ops;
 
     struct {
         kefir_graph_remove_callback_t callback;
@@ -47,7 +48,8 @@ typedef struct kefir_graph {
     } on_removal;
 } kefir_graph_t;
 
-kefir_result_t kefir_graph_init(struct kefir_graph *, const struct kefir_hashtree_ops *);
+kefir_result_t kefir_graph_init(struct kefir_graph *, const struct kefir_hashtree_ops *,
+                                const struct kefir_bucketset_ops *);
 kefir_result_t kefir_graph_free(struct kefir_mem *, struct kefir_graph *);
 kefir_result_t kefir_graph_on_removal(struct kefir_graph *, kefir_graph_remove_callback_t, void *);
 
@@ -68,7 +70,7 @@ kefir_result_t kefir_graph_node_iter(const struct kefir_graph *, struct kefir_gr
 kefir_result_t kefir_graph_node_next(struct kefir_graph_node_iterator *, kefir_graph_node_id_t *);
 
 typedef struct kefir_graph_edge_iterator {
-    struct kefir_hashtreeset_iterator iter;
+    struct kefir_bucketset_iterator iter;
 } kefir_graph_edge_iterator_t;
 
 kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *, struct kefir_graph_edge_iterator *,

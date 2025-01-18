@@ -36,18 +36,21 @@ static kefir_result_t free_node(struct kefir_mem *mem, struct kefir_hashtree *tr
     if (graph->on_removal.callback != NULL) {
         REQUIRE_OK(graph->on_removal.callback(mem, graph, node->identifier, node->value, graph->on_removal.payload));
     }
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &node->edges));
+    REQUIRE_OK(kefir_bucketset_free(mem, &node->edges));
     memset(node, 0, sizeof(struct kefir_graph_node));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_graph_init(struct kefir_graph *graph, const struct kefir_hashtree_ops *ops) {
+kefir_result_t kefir_graph_init(struct kefir_graph *graph, const struct kefir_hashtree_ops *ops,
+                                const struct kefir_bucketset_ops *bucketset_ops) {
     REQUIRE(graph != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to graph"));
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtree operations"));
+    REQUIRE(bucketset_ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucketset operations"));
 
     graph->on_removal.callback = NULL;
     graph->on_removal.payload = NULL;
+    graph->bucketset_ops = bucketset_ops;
     REQUIRE_OK(kefir_hashtree_init(&graph->nodes, ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&graph->nodes, free_node, graph));
     return KEFIR_OK;
@@ -111,7 +114,7 @@ kefir_result_t kefir_graph_new_node(struct kefir_mem *mem, struct kefir_graph *g
 
     node->identifier = identifier;
     node->value = value;
-    kefir_result_t res = kefir_hashtreeset_init(&node->edges, graph->nodes.ops);
+    kefir_result_t res = kefir_bucketset_init(&node->edges, graph->bucketset_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, node);
         return res;
@@ -122,7 +125,7 @@ kefir_result_t kefir_graph_new_node(struct kefir_mem *mem, struct kefir_graph *g
         res = KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Graph node with the same identifier already exists");
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &node->edges);
+        kefir_bucketset_free(mem, &node->edges);
         KEFIR_FREE(mem, node);
         return res;
     });
@@ -137,7 +140,7 @@ kefir_result_t kefir_graph_new_edge(struct kefir_mem *mem, struct kefir_graph *g
 
     struct kefir_graph_node *node = NULL;
     REQUIRE_OK(kefir_graph_node(graph, source, &node));
-    REQUIRE_OK(kefir_hashtreeset_add(mem, &node->edges, (kefir_hashtreeset_entry_t) destination));
+    REQUIRE_OK(kefir_bucketset_add(mem, &node->edges, (kefir_bucketset_entry_t) destination));
     return KEFIR_OK;
 }
 
@@ -169,15 +172,17 @@ kefir_result_t kefir_graph_edge_iter(const struct kefir_graph *graph, struct kef
     struct kefir_graph_node *source = NULL;
     REQUIRE_OK(kefir_graph_node(graph, source_id, &source));
 
-    REQUIRE_OK(kefir_hashtreeset_iter(&source->edges, &iter->iter));
-    ASSIGN_PTR(dest_ptr, (kefir_graph_node_id_t) iter->iter.entry);
+    kefir_bucketset_entry_t entry;
+    REQUIRE_OK(kefir_bucketset_iter(&source->edges, &iter->iter, &entry));
+    ASSIGN_PTR(dest_ptr, (kefir_graph_node_id_t) entry);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_graph_edge_next(struct kefir_graph_edge_iterator *iter, kefir_graph_node_id_t *dest_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to graph edge iterator"));
 
-    REQUIRE_OK(kefir_hashtreeset_next(&iter->iter));
-    ASSIGN_PTR(dest_ptr, (kefir_graph_node_id_t) iter->iter.entry);
+    kefir_bucketset_entry_t entry;
+    REQUIRE_OK(kefir_bucketset_next(&iter->iter, &entry));
+    ASSIGN_PTR(dest_ptr, (kefir_graph_node_id_t) entry);
     return KEFIR_OK;
 }
