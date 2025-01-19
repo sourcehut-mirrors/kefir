@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_ZIG_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_ZIG_SOURCE_DIR)/z
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/zig-bootstrap.test.done: $(KEFIR_EXTERNAL_TEST_ZIG_DIR)/test.log
-	@diff "$(KEFIR_EXTERNAL_TEST_ZIG_DIR)/test.log" "$(SOURCE_DIR)/tests/external/zig-bootstrap/expected.log"
+	@"$(SOURCE_DIR)/tests/external/zig-bootstrap/validate.sh" "$(KEFIR_EXTERNAL_TEST_ZIG_DIR)/test.log"
 	@touch "$@"
 	@echo "Successfully validated Zig $(KEFIR_EXTERNAL_TEST_ZIG_VERSION) bootstrap"
 
