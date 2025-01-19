@@ -476,7 +476,6 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                     &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(argument_vreg, i * KEFIR_AMD64_ABI_QWORD,
                                                                         KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                                     NULL));
-                                break;
                             }
                             REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement,
                                                              (kefir_hashtree_key_t) subarg_count,
