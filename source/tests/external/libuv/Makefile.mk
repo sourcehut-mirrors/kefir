@@ -39,7 +39,7 @@ $(KEFIR_EXTERNAL_TEST_LIBUV_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBUV_SO
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libuv/include -D__unix__=1 -g -fPIC -O1" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libuv/include -g -fPIC -O1" \
 		./configure
 
 $(KEFIR_EXTERNAL_TEST_LIBUV_SOURCE_DIR)/.libs/libuv.so: $(KEFIR_EXTERNAL_TEST_LIBUV_SOURCE_DIR)/Makefile

@@ -142,10 +142,24 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(add_include_paths(mem, symbols, compiler_config, buffer));
     }
 
+    if (driver_config->flags.position_independent_executable) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__pie__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__PIE__", "1"));
+    }
+
+    if (driver_config->flags.position_independent_code) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__pic__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__PIC__", "1"));
+    }
+
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux__", "1"));
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__linux", "1"));
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "linux", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__ELF__", "1"));
 
         if (driver_config->flags.include_stdinc) {
             if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {
@@ -166,6 +180,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_FREEBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__FreeBSD__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__ELF__", "1"));
         if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->freebsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_FREEBSD_INCLUDE "
@@ -175,6 +193,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_OPENBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__OpenBSD__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__ELF__", "1"));
         if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->openbsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_OPENBSD_INCLUDE "
@@ -184,6 +206,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         }
     } else if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_NETBSD) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__NetBSD__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix__", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "unix", "1"));
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__ELF__", "1"));
         if (driver_config->flags.include_stdinc && target->variant == KEFIR_DRIVER_TARGET_VARIANT_SYSTEM) {
             REQUIRE(externals->netbsd.include_path != NULL,
                     KEFIR_SET_ERROR(KEFIR_UI_ERROR, "System include path shall be passed as KEFIR_NETBSD_INCLUDE "

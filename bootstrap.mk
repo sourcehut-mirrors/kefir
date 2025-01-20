@@ -16,7 +16,7 @@ BOOTSTRAP_CFLAGS += --target hostcpu-freebsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D
 else ifeq ($(PLATFORM),openbsd)
 BOOTSTRAP_CFLAGS += --target hostcpu-openbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/openbsd.h
 else ifeq ($(PLATFORM),netbsd)
-BOOTSTRAP_CFLAGS += --target hostcpu-netbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -D__ELF__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
+BOOTSTRAP_CFLAGS += --target hostcpu-netbsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1 -include $(HEADERS)/bootstrap_include/netbsd.h
 else
 BOOTSTRAP_CFLAGS += --target hostcpu-linux
 endif
