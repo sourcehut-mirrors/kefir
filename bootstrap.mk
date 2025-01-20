@@ -10,7 +10,7 @@ GENERATED_HELP_DIR=
 KEFIR_AS=$(AS)
 KEFIR_LD=ld
 
-BOOTSTRAP_CFLAGS=-I $(HEADERS) -g
+BOOTSTRAP_CFLAGS=-I $(HEADERS)
 ifeq ($(PLATFORM),freebsd)
 BOOTSTRAP_CFLAGS += --target hostcpu-freebsd -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1
 else ifeq ($(PLATFORM),openbsd)

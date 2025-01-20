@@ -39,7 +39,7 @@ tasks:
       export LIBRARY_PATH=$LIBRARY_PATH:/usr/pkg/lib
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath
-      LC_ALL=C.UTF-8 gmake bootstrap AS=gas BOOTSTRAP_EXTRA_CFLAGS="-O1"
+      LC_ALL=C.UTF-8 gmake bootstrap AS=gas BOOTSTRAP_EXTRA_CFLAGS="-O1 -g"
 triggers:
   - action: email
     condition: failure

@@ -301,7 +301,6 @@ kefir_result_t kefir_driver_run_assembler(struct kefir_mem *mem, const char *out
         case KEFIR_DRIVER_ASSEMBLER_YASM:
             REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-f"));
             REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "elf64"));
-            REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &argv, "-"));
             break;
     }
 
