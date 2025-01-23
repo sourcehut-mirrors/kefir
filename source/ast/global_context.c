@@ -845,11 +845,6 @@ kefir_result_t kefir_ast_global_context_define_static(struct kefir_mem *mem, str
         REQUIRE(attributes == NULL || attributes->alias == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Static identifier definition cannot have alias attribute"));
-        // if (initializer == NULL) {
-        //     REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
-        //             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-        //                                    "Tentative definition with internal linkage shall have complete type"));
-        // }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
@@ -933,11 +928,6 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
         REQUIRE(attributes == NULL || attributes->alias == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                        "Static identifier definition cannot have alias attribute"));
-        // if (initializer == NULL) {
-        //     REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type),
-        //             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-        //                                    "Tentative definition with internal linkage shall have complete type"));
-        // }
         ordinary_id = kefir_ast_context_allocate_scoped_object_identifier(
             mem, type, &context->object_identifiers, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, alignment,
             KEFIR_AST_SCOPED_IDENTIFIER_INTERNAL_LINKAGE, false, initializer, NULL, location);
