@@ -254,6 +254,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             kefir_uint_t level = strtoul(&arg[2], NULL, 10);
 
             config->flags.debug_info = level > 0;
+        } else if (STRNCMP("-funsigned-char", arg) == 0) {
+            config->compiler.char_signedness = KEFIR_DRIVER_CHAR_UNSIGNED;
+        } else if (STRNCMP("-fsigned-char", arg) == 0) {
+            config->compiler.char_signedness = KEFIR_DRIVER_CHAR_SIGNED;
         }
 
         // Preprocessor flags

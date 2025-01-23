@@ -98,6 +98,12 @@ Code optimization level (default is 0). All non-zero levels are equivalent to 1
 .It Fl fpreprocessed
 Skip preprocessing stage
 .\"
+.It Fl funsigned-char
+Let the type char be unsigned. By default, it is target-specific.
+.\"
+.It Fl fsigned-char
+Let the type char be signed. By default, it is target-specific.
+.\"
 .It Fl D Ar name[=value]
 Define preprocessor macro
 .\"
@@ -388,6 +394,12 @@ Declare support of atomics (requires explicit linking of software atomic library
 .\"
 .It Fl \-no-declare-atomic-support
 Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro. Default for musl target.
+.\"
+.It Fl \-unsigned-char
+Let the type char be unsigned. By default, it is target-specific.
+.\"
+.It Fl \-signed-char
+Let the type char be signed. By default, it is target-specific.
 .El
 .\"
 .Ss FEATURES

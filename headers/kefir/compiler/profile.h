@@ -30,7 +30,7 @@
 
 typedef struct kefir_compiler_profile {
     struct kefir_lexer_context lexer_context;
-    const struct kefir_ast_type_traits *type_traits;
+    const struct kefir_ast_type_traits type_traits;
     struct kefir_ir_target_platform ir_target_platform;
     const struct kefir_data_model_descriptor *data_model;
     kefir_bool_t optimizer_enabled;
@@ -41,6 +41,17 @@ typedef struct kefir_compiler_profile {
     kefir_result_t (*free_codegen)(struct kefir_mem *, struct kefir_codegen *);
 } kefir_compiler_profile_t;
 
-kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *, const char *);
+typedef enum kefir_compiler_profile_char_signedness {
+    KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT,
+    KEFIR_COMPILER_PROFILE_CHAR_SIGNED,
+    KEFIR_COMPILER_PROFILE_CHAR_UNSIGNED
+} kefir_compiler_profile_char_signedness_t;
+
+typedef struct kefir_compiler_profile_configuration {
+    kefir_compiler_profile_char_signedness_t char_signedness;
+} kefir_compiler_profile_configuration_t;
+
+kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *, const char *,
+                                      const struct kefir_compiler_profile_configuration *);
 
 #endif

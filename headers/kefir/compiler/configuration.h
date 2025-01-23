@@ -26,6 +26,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/compiler/profile.h"
 #include <time.h>
 
 typedef enum kefir_compiler_runner_action {
@@ -61,6 +62,8 @@ typedef struct kefir_compiler_runner_configuration {
     kefir_bool_t default_pp_timestamp;
     const char *optimizer_pipeline_spec;
     kefir_bool_t verbose;
+
+    struct kefir_compiler_profile_configuration target_profile_config;
 
     struct {
         const char *target_name;

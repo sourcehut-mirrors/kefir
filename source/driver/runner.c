@@ -143,7 +143,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
         source_locator = &dependencies_source_locator.locator;
     }
 
-    REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile));
+    REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile, &options->target_profile_config));
     REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, NULL));
 
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;

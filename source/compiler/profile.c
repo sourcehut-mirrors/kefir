@@ -53,7 +53,8 @@ static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_compiler_profile *profile) {
+static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_compiler_profile *profile,
+                                                            const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
 
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
@@ -108,40 +109,54 @@ static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_compile
                            .long_double_min = "3.3621031431120935063e-4932L"},
         .char_bit = 8};
 
-    static struct kefir_ast_type_traits TYPE_TRAITS;
-    static kefir_bool_t TYPE_TRAITS_INIT_DONE = false;
-    if (!TYPE_TRAITS_INIT_DONE) {
-        REQUIRE_OK(kefir_ast_type_traits_init(&DATA_MODEL_DESCRIPTOR, &TYPE_TRAITS));
-        TYPE_TRAITS_INIT_DONE = true;
+    struct kefir_ast_type_traits type_traits;
+    REQUIRE_OK(kefir_ast_type_traits_init(&DATA_MODEL_DESCRIPTOR, &type_traits));
+    if (config != NULL) {
+        switch (config->char_signedness) {
+            case KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT:
+                // Intentionally left blank
+                break;
+
+            case KEFIR_COMPILER_PROFILE_CHAR_SIGNED:
+                type_traits.character_type_signedness = true;
+                break;
+
+            case KEFIR_COMPILER_PROFILE_CHAR_UNSIGNED:
+                type_traits.character_type_signedness = false;
+                break;
+        }
     }
+    memcpy(profile,
+           &(struct kefir_compiler_profile) {.optimizer_enabled = true,
+                                             .data_model = &DATA_MODEL_DESCRIPTOR,
+                                             .type_traits = type_traits,
+                                             .new_codegen = amd64_new_codegen,
+                                             .free_codegen = amd64_sysv_free_codegen,
+                                             .runtime_include_dirname = NULL},
+           sizeof(struct kefir_compiler_profile));
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));
     REQUIRE_OK(kefir_lexer_context_integral_width_from_data_model(&profile->lexer_context, &DATA_MODEL_DESCRIPTOR));
     REQUIRE_OK(kefir_abi_amd64_target_platform(KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &profile->ir_target_platform));
-    profile->optimizer_enabled = true;
-    profile->data_model = &DATA_MODEL_DESCRIPTOR;
-    profile->type_traits = &TYPE_TRAITS;
-    profile->new_codegen = amd64_new_codegen;
-    profile->free_codegen = amd64_sysv_free_codegen;
-    profile->runtime_include_dirname = NULL;
     return KEFIR_OK;
 }
 
 const struct Profile {
     const char *identifier;
-    kefir_result_t (*init)(struct kefir_compiler_profile *);
+    kefir_result_t (*init)(struct kefir_compiler_profile *, const struct kefir_compiler_profile_configuration *);
 } Profiles[] = {{"amd64-sysv-gas", kefir_compiler_new_amd64_sysv_profile},
                 {NULL, kefir_compiler_new_amd64_sysv_profile}};
 const kefir_size_t ProfileCount = sizeof(Profiles) / sizeof(Profiles[0]);
 
-kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *profile, const char *identifier) {
+kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *profile, const char *identifier,
+                                      const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
 
     for (kefir_size_t i = 0; i < ProfileCount; i++) {
         const struct Profile *profileId = &Profiles[i];
         if ((identifier != NULL && profileId->identifier != NULL && strcmp(identifier, profileId->identifier) == 0) ||
             (identifier == NULL && profileId->identifier == NULL)) {
-            REQUIRE_OK(profileId->init(profile));
+            REQUIRE_OK(profileId->init(profile, config));
             return KEFIR_OK;
         }
     }

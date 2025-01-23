@@ -115,12 +115,12 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     REQUIRE_OK(kefir_ast_translator_environment_init(&context->translator_env, &profile->ir_target_platform));
     REQUIRE_OK(kefir_optimizer_configuration_init(&context->optimizer_configuration));
     context->translator_env.configuration = &context->translator_configuration;
-    REQUIRE_OK(kefir_ast_global_context_init(mem, profile->type_traits, &context->translator_env.target_env,
+    REQUIRE_OK(kefir_ast_global_context_init(mem, &profile->type_traits, &context->translator_env.target_env,
                                              &context->ast_global_context,
                                              extensions != NULL ? extensions->analyzer : NULL));
     REQUIRE_OK(kefir_token_allocator_init(&context->builtin_token_allocator));
     kefir_result_t res = kefir_preprocessor_ast_context_init(
-        mem, &context->preprocessor_ast_context, &context->ast_global_context.symbols, profile->type_traits,
+        mem, &context->preprocessor_ast_context, &context->ast_global_context.symbols, &profile->type_traits,
         &context->translator_env.target_env, extensions != NULL ? extensions->analyzer : NULL);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_global_context_free(mem, &context->ast_global_context);

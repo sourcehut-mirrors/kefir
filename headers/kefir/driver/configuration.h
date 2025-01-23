@@ -111,6 +111,12 @@ typedef enum kefir_driver_frame_pointer_omission {
     KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED
 } kefir_driver_frame_pointer_omission_t;
 
+typedef enum kefir_driver_char_signedness {
+    KEFIR_DRIVER_CHAR_SIGNEDNESS_DEFAULT,
+    KEFIR_DRIVER_CHAR_SIGNED,
+    KEFIR_DRIVER_CHAR_UNSIGNED
+} kefir_driver_char_signedness_t;
+
 typedef struct kefir_driver_configuration {
     kefir_driver_stage_t stage;
     const char *output_file;
@@ -128,6 +134,7 @@ typedef struct kefir_driver_configuration {
 
     struct {
         kefir_int_t optimization_level;
+        kefir_driver_char_signedness_t char_signedness;
     } compiler;
 
     struct {

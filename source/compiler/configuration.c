@@ -42,7 +42,7 @@ static kefir_result_t free_define_identifier(struct kefir_mem *mem, struct kefir
 kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_runner_configuration *options) {
     REQUIRE(options != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to cli options"));
 
-    *options = (struct kefir_compiler_runner_configuration){
+    *options = (struct kefir_compiler_runner_configuration) {
         .action = KEFIR_COMPILER_RUNNER_ACTION_DUMP_ASSEMBLY,
         .error_report_type = KEFIR_COMPILER_RUNNER_ERROR_REPORT_TABULAR,
         .skip_preprocessor = false,
@@ -57,8 +57,11 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .print_details = NULL,
                     .pipeline_spec = NULL},
         .optimizer_pipeline_spec = NULL,
-        .dependency_output = {
-            .target_name = NULL, .output_filename = NULL, .output_system_deps = true, .add_phony_targets = false}};
+        .dependency_output = {.target_name = NULL,
+                              .output_filename = NULL,
+                              .output_system_deps = true,
+                              .add_phony_targets = false},
+        .target_profile_config = {.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT}};
     REQUIRE_OK(kefir_list_init(&options->include_path));
     REQUIRE_OK(kefir_hashtreeset_init(&options->system_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&options->quote_include_directories, &kefir_hashtree_str_ops));

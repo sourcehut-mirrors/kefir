@@ -246,6 +246,11 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE(0, "dependency-target", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.target_name),
     SIMPLE(0, "dependency-output", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.output_filename),
 
+    SIMPLE(0, "unsigned-char", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_PROFILE_CHAR_UNSIGNED,
+           target_profile_config.char_signedness),
+    SIMPLE(0, "signed-char", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_PROFILE_CHAR_SIGNED,
+           target_profile_config.char_signedness),
+
     CUSTOM('D', "define", true, define_hook),
     CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),

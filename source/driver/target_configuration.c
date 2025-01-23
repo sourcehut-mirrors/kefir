@@ -116,6 +116,19 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
     REQUIRE(driver_config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
 
     REQUIRE_OK(kefir_driver_apply_target_profile_configuration(compiler_config, target));
+    switch (driver_config->compiler.char_signedness) {
+        case KEFIR_DRIVER_CHAR_SIGNEDNESS_DEFAULT:
+            compiler_config->target_profile_config.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT;
+            break;
+
+        case KEFIR_DRIVER_CHAR_SIGNED:
+            compiler_config->target_profile_config.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_SIGNED;
+            break;
+
+        case KEFIR_DRIVER_CHAR_UNSIGNED:
+            compiler_config->target_profile_config.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_UNSIGNED;
+            break;
+    }
 
     if (target->arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__x86_64__", "1"));
@@ -124,13 +137,17 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64", "1"));
     }
 
+    struct kefir_compiler_profile profile;
+    REQUIRE_OK(
+        kefir_compiler_profile(&profile, compiler_config->target_profile, &compiler_config->target_profile_config));
+    if (!profile.type_traits.character_type_signedness) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__CHAR_UNSIGNED__", "1"));
+    }
+
     if (driver_config->flags.include_rtinc && target->variant != KEFIR_DRIVER_TARGET_VARIANT_NONE) {
         REQUIRE(externals->runtime_include != NULL,
                 KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Runtime include path shall be passed as KEFIR_RTINC "
                                                 "environment variable"));
-
-        struct kefir_compiler_profile profile;
-        REQUIRE_OK(kefir_compiler_profile(&profile, compiler_config->target_profile));
 
         char buffer[PATH_MAX + 1];
         if (profile.runtime_include_dirname != NULL) {
