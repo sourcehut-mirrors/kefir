@@ -1,0 +1,10 @@
+--- ./lib/lib.h	2025-01-18 22:20:33.000000000 +0200
++++ ./lib/lib.h	2025-01-23 14:29:16.455638443 +0200
+@@ -438,5 +438,5 @@
+ // Wrapper that discards true/false "did it exit" value.
+ #define NOEXIT(x) WOULD_EXIT(_noexit_res, x)
+ 
+-#define minof(a, b) ({typeof(a) aa = (a); typeof(b) bb = (b); aa<bb ? aa : bb;})
+-#define maxof(a, b) ({typeof(a) aa = (a); typeof(b) bb = (b); aa>bb ? aa : bb;})
++#define minof(a, b) ({__typeof__(a) aa = (a); __typeof__(b) bb = (b); aa<bb ? aa : bb;})
++#define maxof(a, b) ({__typeof__(a) aa = (a); __typeof__(b) bb = (b); aa>bb ? aa : bb;})
