@@ -168,16 +168,16 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
                                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()));
+            ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
+                                       KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
+                                       kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()));
         } else {
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
-
-        ASSERT_COMPOUND_ASSIGNMENT_NOK(&kft_mem, context, KEFIR_AST_ASSIGNMENT_ADD,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
-                                       KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
 
         ASSERT_COMPOUND_ASSIGNMENT(
             &kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
@@ -196,16 +196,17 @@ DEFINE_CASE(ast_node_analysis_compound_assignment_operator1, "AST node analysis 
                                        KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                                        KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
                                        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char()));
+
+            ASSERT_COMPOUND_ASSIGNMENT(&kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
+                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
+                                       KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])),
+                                       kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()));
         } else {
             ASSERT_COMPOUND_ASSIGNMENT_NOK(
                 &kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "y")),
                 KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
         }
-
-        ASSERT_COMPOUND_ASSIGNMENT_NOK(&kft_mem, context, KEFIR_AST_ASSIGNMENT_SUBTRACT,
-                                       KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "z")),
-                                       KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
     }
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

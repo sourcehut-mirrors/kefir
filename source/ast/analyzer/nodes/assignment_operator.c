@@ -89,7 +89,10 @@ static kefir_result_t validate_compound_assignment(struct kefir_mem *mem, const 
         case KEFIR_AST_ASSIGNMENT_ADD:
         case KEFIR_AST_ASSIGNMENT_SUBTRACT:
             if (target_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-                REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(kefir_ast_unqualified_type(target_type->referenced_type)),
+                const struct kefir_ast_type *unqualified_referenced_type =
+                    kefir_ast_unqualified_type(target_type->referenced_type);
+                REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(unqualified_referenced_type) ||
+                            unqualified_referenced_type->tag == KEFIR_AST_TYPE_VOID,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->target->source_location,
                                                "Assignment target operand shall be a pointer to complete type"));
                 REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(value_type),

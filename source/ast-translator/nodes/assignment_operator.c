@@ -722,26 +722,33 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                 "Expected scalar pointer on the left side, and an integer on the right"));
 
-        struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(
-            params->mem, params->context->ast_context, params->context->environment, params->context->module,
-            params->target_normalized_type->referenced_type, 0, &translator_type, &params->node->base.source_location));
+        kefir_size_t referenced_object_size = 1;
+        const struct kefir_ast_type *unqualified_referenced_type =
+            kefir_ast_unqualified_type(params->target_normalized_type->referenced_type);
+        if (unqualified_referenced_type->tag != KEFIR_AST_TYPE_VOID) {
+            struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_type_new(
+                params->mem, params->context->ast_context, params->context->environment, params->context->module,
+                unqualified_referenced_type, 0, &translator_type, &params->node->base.source_location));
 
-        kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(
-            &res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
-                                               params->context->ast_context->type_traits, params->value_normalized_type,
-                                               params->context->ast_context->type_traits->size_type));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64,
-                                                            translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IADD64, 0));
+            kefir_result_t res = KEFIR_OK;
+            REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
+                                                             params->context->ast_context->type_traits,
+                                                             params->value_normalized_type,
+                                                             params->context->ast_context->type_traits->size_type));
+            if (res == KEFIR_OK) {
+                referenced_object_size = translator_type->object.layout->properties.size;
+            }
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_translator_type_free(params->mem, translator_type);
+                return res;
+            });
+            REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+        }
 
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(params->mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64, referenced_object_size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IADD64, 0));
     }
     return KEFIR_OK;
 }
@@ -814,26 +821,33 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
                 KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                 "Expected scalar pointer on the left side, and an integer on the right"));
 
-        struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(
-            params->mem, params->context->ast_context, params->context->environment, params->context->module,
-            params->target_normalized_type->referenced_type, 0, &translator_type, &params->node->base.source_location));
+        kefir_size_t referenced_object_size = 1;
+        const struct kefir_ast_type *unqualified_referenced_type =
+            kefir_ast_unqualified_type(params->target_normalized_type->referenced_type);
+        if (unqualified_referenced_type->tag != KEFIR_AST_TYPE_VOID) {
+            struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_type_new(
+                params->mem, params->context->ast_context, params->context->environment, params->context->module,
+                unqualified_referenced_type, 0, &translator_type, &params->node->base.source_location));
 
-        kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(
-            &res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
-                                               params->context->ast_context->type_traits, params->value_normalized_type,
-                                               params->context->ast_context->type_traits->size_type));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64,
-                                                            translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_ISUB64, 0));
+            kefir_result_t res = KEFIR_OK;
+            REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
+                                                             params->context->ast_context->type_traits,
+                                                             params->value_normalized_type,
+                                                             params->context->ast_context->type_traits->size_type));
+            if (res == KEFIR_OK) {
+                referenced_object_size = translator_type->object.layout->properties.size;
+            }
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_ast_translator_type_free(params->mem, translator_type);
+                return res;
+            });
+            REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+        }
 
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(params->mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_PUSHU64, referenced_object_size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_IMUL64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(params->builder, KEFIR_IROPCODE_ISUB64, 0));
     }
     return KEFIR_OK;
 }
