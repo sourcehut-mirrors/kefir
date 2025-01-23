@@ -140,6 +140,10 @@ static kefir_result_t format_char(FILE *out, char chr) {
             fprintf(out, "\\v");
             break;
 
+        case '\x1B':
+            fprintf(out, "\\e");
+            break;
+
         case '\0':
             fprintf(out, "\\0");
             break;
@@ -197,16 +201,16 @@ static kefir_result_t format_wchar(FILE *out, wchar_t chr) {
             fprintf(out, "\\v");
             break;
 
+        case L'\x1B':
+            fprintf(out, "\\e");
+            break;
+
         case L'\0':
             fprintf(out, "\\0");
             break;
 
         default:
-            if (iswprint(chr)) {
-                fprintf(out, "%lc", chr);
-            } else {
-                fprintf(out, "\\x%x", chr);
-            }
+            fprintf(out, "%lc", chr);
             break;
     }
     return KEFIR_OK;
@@ -295,7 +299,7 @@ static kefir_result_t format_string_literal(FILE *out, const struct kefir_token 
             kefir_char32_t chr = ((const kefir_char32_t *) token->string_literal.literal)[i];
             size_t rc = c32rtomb(mb, chr, &mbstate);
             if (rc == (size_t) -1) {
-                mbstate = (mbstate_t){0};
+                mbstate = (mbstate_t) {0};
                 fprintf(out, "%c", chr);
             } else if (rc != 0) {
                 fprintf(out, "%.*s", (int) rc, mb);
@@ -509,6 +513,10 @@ kefir_result_t kefir_preprocessor_escape_string(struct kefir_mem *mem, struct ke
 
                 case U'\v':
                     REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\v", 2));
+                    break;
+
+                case U'\x1B':
+                    REQUIRE_OK(kefir_string_buffer_append_string(mem, strbuf, U"\\e", 2));
                     break;
 
                 default:

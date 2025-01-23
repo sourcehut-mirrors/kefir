@@ -65,6 +65,11 @@ static kefir_result_t merge_literals(struct kefir_mem *mem, const struct kefir_l
                         j++;
                         break;
 
+                    case U'e':
+                        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, U'\x1B'));
+                        j++;
+                        break;
+
                     case U'x': {
                         REQUIRE(j + 1 < length && kefir_ishexdigit32(content[j + 1]),
                                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location,
