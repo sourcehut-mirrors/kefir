@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+x:
+    .quad __kefir_string_literal0
+    .long 0
+    .zero 4
+    .quad __kefir_string_literal1
+    .long 1
+    .zero 4
+    .quad __kefir_string_literal2
+    .long 2
+    .zero 4
+    .quad 0
+    .long 0
+    .zero 4
+
+.section .rodata
+__kefir_string_literal0:
+    .ascii "Hello\000"
+__kefir_string_literal1:
+    .ascii "world\000"
+__kefir_string_literal2:
+    .ascii "!\000"

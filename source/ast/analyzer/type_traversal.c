@@ -244,7 +244,8 @@ kefir_result_t kefir_ast_type_traversal_next_recursive2(struct kefir_mem *mem,
     const struct kefir_ast_type_traversal_layer *top_layer = NULL;
     REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &top_type, &top_layer));
     if (top_type != NULL) {
-        switch (top_type->tag) {
+        const struct kefir_ast_type *unqualified_top_type = kefir_ast_unqualified_type(top_type);
+        switch (unqualified_top_type->tag) {
             case KEFIR_AST_TYPE_STRUCTURE:
             case KEFIR_AST_TYPE_UNION:
             case KEFIR_AST_TYPE_ARRAY:
