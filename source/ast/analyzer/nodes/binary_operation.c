@@ -174,16 +174,10 @@ static kefir_result_t analyze_equality(struct kefir_mem *mem, const struct kefir
                                        const struct kefir_ast_node_base *node2, const struct kefir_ast_type *type2,
                                        struct kefir_ast_node_base *base) {
     UNUSED(mem);
+    UNUSED(context);
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type1) && KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type2)) {
         base->properties.type = kefir_ast_type_signed_int();
     } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        const struct kefir_ast_type *unqualified1 = kefir_ast_unqualified_type(type1->referenced_type);
-        const struct kefir_ast_type *unqualified2 = kefir_ast_unqualified_type(type2->referenced_type);
-        REQUIRE(
-            KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified1, unqualified2) ||
-                unqualified1->tag == KEFIR_AST_TYPE_VOID || unqualified2->tag == KEFIR_AST_TYPE_VOID,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node1->source_location,
-                                   "Both equality operator pointer operands shall point to compatible types or void"));
         base->properties.type = kefir_ast_type_signed_int();
     } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2) && node2->properties.expression_props.constant_expression,
