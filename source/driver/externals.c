@@ -149,7 +149,7 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     set_if_null(&externals->netbsd.dynamic_linker, KEFIR_CONFIG_HOST_NETBSD_SYSTEM_DYNAMIC_LINKER);
 #endif
 
-    static const char *SOURCE_FILE_SUFFIXES[] = {".c", NULL};
+    static const char *SOURCE_FILE_SUFFIXES[] = {".c", ".h", NULL};
     static const char *PREPROCESSED_FILE_SUFFIXES[] = {".i", NULL};
     static const char *ASSEMBLY_FILE_SUFFIXES[] = {".s", NULL};
     static const char *PREPROCESSED_ASSEMBLY_FILE_SUFFIXES[] = {".S", NULL};

@@ -99,7 +99,7 @@ static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_e
                detect_shared_object_file_type(externals, filename)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY;
     } else {
-        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT;
     }
 }
 
