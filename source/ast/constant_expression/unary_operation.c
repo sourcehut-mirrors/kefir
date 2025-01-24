@@ -20,6 +20,7 @@
 
 #include "kefir/ast/constant_expression_impl.h"
 #include "kefir/ast/type_completion.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -247,9 +248,17 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
             break;
 
-        case KEFIR_AST_OPERATION_INDIRECTION:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                          "Constant expression cannot contain indirection operator");
+        case KEFIR_AST_OPERATION_INDIRECTION: {
+            struct kefir_ast_unary_operation *indirect_op;
+            kefir_result_t res = kefir_ast_downcast_unary_operation(node->arg, &indirect_op, false);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, indirect_op->arg, value));
+            } else {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                              "Constant expression cannot contain indirection operator");
+            }
+        } break;
 
         case KEFIR_AST_OPERATION_SIZEOF: {
             const struct kefir_ast_type *type = node->arg->properties.type;

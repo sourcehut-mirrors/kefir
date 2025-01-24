@@ -18,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/ast/downcast.h"
 #include "kefir/ast/analyzer/nodes.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/type_conv.h"
@@ -139,6 +140,14 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                 base->properties.expression_props.lvalue = true;
             }
             base->properties.expression_props.addressable = true;
+
+            struct kefir_ast_unary_operation *indirect_op;
+            kefir_result_t res = kefir_ast_downcast_unary_operation(node->arg, &indirect_op, false);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                base->properties.expression_props.constant_expression =
+                    indirect_op->arg->properties.expression_props.constant_expression;
+            }
 
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
             if (base->properties.expression_props.atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||

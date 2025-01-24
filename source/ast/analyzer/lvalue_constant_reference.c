@@ -67,6 +67,17 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
     return KEFIR_OK;
 }
 
+static kefir_result_t visit_string_literal(const struct kefir_ast_visitor *visitor,
+                                           const struct kefir_ast_string_literal *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST identifier"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
+
+    *param->constant = true;
+    return KEFIR_OK;
+}
+
 static kefir_result_t visit_struct_member(const struct kefir_ast_visitor *visitor,
                                           const struct kefir_ast_struct_member *node, void *payload) {
     UNUSED(visitor);
@@ -137,6 +148,7 @@ kefir_result_t kefir_ast_node_is_lvalue_reference_constant(const struct kefir_as
     struct kefir_ast_visitor visitor;
     REQUIRE_OK(kefir_ast_visitor_init(&visitor, visit_non_const_ref));
     visitor.identifier = visit_identifier;
+    visitor.string_literal = visit_string_literal;
     visitor.struct_member = visit_struct_member;
     visitor.array_subscript = visit_array_subscript;
     visitor.struct_indirect_member = visit_struct_indirect_member;

@@ -61,6 +61,7 @@ kefir_result_t kefir_ast_analyze_string_literal_node(struct kefir_mem *mem, cons
     base->properties.type = kefir_ast_type_array(mem, context->type_bundle, elt_type,
                                                  kefir_ast_constant_expression_integer(mem, node->length), NULL);
     base->properties.expression_props.constant_expression = true;
+    base->properties.expression_props.addressable = true;
     base->properties.expression_props.string_literal.type = node->type;
     base->properties.expression_props.string_literal.content = node->literal;
     base->properties.expression_props.string_literal.length = node->length;

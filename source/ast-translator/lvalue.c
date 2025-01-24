@@ -20,6 +20,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast-translator/temporaries.h"
@@ -285,6 +286,16 @@ static kefir_result_t translate_identifier_node(const struct kefir_ast_visitor *
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Label is not an lvalue");
     }
     return KEFIR_OK;
+}
+
+static kefir_result_t translate_string_literal_node(const struct kefir_ast_visitor *visitor,
+                                                    const struct kefir_ast_string_literal *node, void *payload) {
+    REQUIRE(visitor != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST visitor"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct kefir_ast_translator_parameters *, param, payload);
+
+    REQUIRE_OK(kefir_ast_translate_string_literal_node(param->mem, param->context, param->builder, node));
     return KEFIR_OK;
 }
 
@@ -364,6 +375,7 @@ kefir_result_t kefir_ast_translate_lvalue(struct kefir_mem *mem, struct kefir_as
     struct kefir_ast_visitor visitor;
     REQUIRE_OK(kefir_ast_visitor_init(&visitor, translate_not_impl));
     visitor.identifier = translate_identifier_node;
+    visitor.string_literal = translate_string_literal_node;
     visitor.array_subscript = translate_array_subscript_node;
     visitor.struct_member = translate_struct_member_node;
     visitor.struct_indirect_member = translate_struct_member_node;
