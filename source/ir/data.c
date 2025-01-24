@@ -37,7 +37,7 @@ static kefir_result_t on_block_init(struct kefir_mem *mem, struct kefir_block_tr
 
     ASSIGN_DECL_CAST(struct kefir_ir_data_value *, value_block, block);
     for (kefir_size_t i = 0; i < BLOCK_CAPACITY; i++) {
-        value_block[i] = (struct kefir_ir_data_value){.type = KEFIR_IR_DATA_VALUE_UNDEFINED};
+        value_block[i] = (struct kefir_ir_data_value) {.type = KEFIR_IR_DATA_VALUE_UNDEFINED};
     }
     return KEFIR_OK;
 }
@@ -140,11 +140,12 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir
     struct kefir_ir_data_value *entry;
     REQUIRE_OK(value_entry_at(mem, data, index, &entry));
 
-    const kefir_size_t bit_container = offset / (sizeof(kefir_uint64_t) * CHAR_BIT);
-    const kefir_size_t bit_offset = offset % (sizeof(kefir_uint64_t) * CHAR_BIT);
+    const kefir_size_t tail_bit_offset = offset + width;
+    const kefir_size_t container_width = sizeof(kefir_uint64_t) * CHAR_BIT;
+    const kefir_size_t bit_num_of_containers = tail_bit_offset / container_width;
     if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
-        if (bit_container >= entry->value.bits.length) {
-            const kefir_size_t new_length = bit_container + 1;
+        if (bit_num_of_containers >= entry->value.bits.length) {
+            const kefir_size_t new_length = bit_num_of_containers + 1;
             kefir_uint64_t *const new_bits = KEFIR_MALLOC(mem, sizeof(kefir_uint64_t) * new_length);
             REQUIRE(new_bits != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate bitfield data"));
             memset(new_bits, 0, sizeof(kefir_uint64_t) * new_length);
@@ -157,7 +158,7 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir
         REQUIRE(entry->type == KEFIR_IR_DATA_VALUE_UNDEFINED,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "IR data cannot have non-integral type"));
         entry->type = KEFIR_IR_DATA_VALUE_BITS;
-        entry->value.bits.length = bit_container + 1;
+        entry->value.bits.length = bit_num_of_containers + 1;
         entry->value.bits.bits = KEFIR_MALLOC(mem, sizeof(kefir_uint64_t) * entry->value.bits.length);
         REQUIRE(entry->value.bits.bits != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate bitfield data"));
@@ -167,13 +168,22 @@ kefir_result_t kefir_ir_data_set_bitfield(struct kefir_mem *mem, struct kefir_ir
     }
 
     REQUIRE(width <= 64, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "IR data bitfield cannot be wider than 64 bits"));
-    kefir_uint64_t *container = &entry->value.bits.bits[bit_container];
-    if (width == 64) {
-        *container = value;
-    } else {
-        const kefir_uint64_t mask = (1ull << width) - 1;
-        *container = *container & (~(mask << bit_offset));
-        *container |= (value & mask) << bit_offset;
+    while (width > 0) {
+        const kefir_size_t bit_container = offset / container_width;
+        const kefir_size_t bit_offset = offset % container_width;
+        const kefir_size_t part_width = MIN(width, container_width - bit_offset);
+        kefir_uint64_t *container = &entry->value.bits.bits[bit_container];
+        if (part_width == 64) {
+            *container = value;
+        } else {
+            const kefir_uint64_t mask = (1ull << part_width) - 1;
+            *container = *container & (~(mask << bit_offset));
+            *container |= (value & mask) << bit_offset;
+            value >>= part_width;
+        }
+
+        width -= part_width;
+        offset += part_width;
     }
     return KEFIR_OK;
 }
