@@ -1,0 +1,11 @@
+--- ./decl.c	2024-04-28 01:34:27.000000000 +0300
++++ ./decl.c	2025-01-24 12:41:21.360965769 +0200
+@@ -698,7 +698,7 @@
+ 				if (e->kind == EXPRCONST) {
+ 					if (e->type->u.basic.issigned && e->u.constant.u >> 63)
+ 						error(&tok.loc, "array length must be non-negative");
+-					if (e->u.constant.u > ULLONG_MAX / base.type->size)
++					if (base.type->size > 0 && e->u.constant.u > ULLONG_MAX / base.type->size)
+ 						error(&tok.loc, "array length is too large");
+ 					t->size = base.type->size * e->u.constant.u;
+ 				} else {
