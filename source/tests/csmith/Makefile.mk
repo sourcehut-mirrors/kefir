@@ -1,4 +1,5 @@
-KEFIR_CSMITH_TEST_SEEDS=5730988164224951711
+KEFIR_CSMITH_TEST_SEEDS=5730988164224951711 \
+						9366056735358650314
 KEFIR_CSMITH_TESTS_DONE := $(KEFIR_CSMITH_TEST_SEEDS:%=$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done)
 
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_SEED=$(patsubst seed-%.test.done,%,$(notdir $@))
