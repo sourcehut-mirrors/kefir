@@ -22,6 +22,7 @@ endif
 .TEST_BINARIES: $(TEST_BINARIES)
 .TEST_RESULTS: $(TEST_RESULTS)
 .TESTS: $(TESTS)
+.CSMITH_TESTS: $(CSMITH_TESTS)
 .EXTERNAL_TESTS_BASE_SUITE: $(EXTERNAL_TESTS_BASE_SUITE)
 .EXTERNAL_TESTS_FAST_SUITE: $(EXTERNAL_TESTS_FAST_SUITE)
 .EXTERNAL_TESTS_SLOW_SUITE: $(EXTERNAL_TESTS_SLOW_SUITE)
@@ -38,6 +39,9 @@ generate_test_artifacts: .TEST_ARTIFACTS
 
 test: .TESTS
 	@echo "Tests succeeded"
+
+csmith_test: .CSMITH_TESTS
+	@echo "CSmith tests succeeded"
 
 bootstrap: .BOOTSTRAP
 	@echo "Bootstrap successfully finished"
