@@ -7,18 +7,19 @@ USE_GCOV=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
-CC=cc
-CCLD=$(CC)
-LD=ld
-AS=as
-AR=ar
-STRIP=strip
-EMCC=emcc
-GZIP=gzip
-REALPATH=realpath
-GCOVR=gcovr
+CC?=cc
+CCLD?=$(CC)
+LD?=ld
+AS?=as
+AR?=ar
+STRIP?=strip
+EMCC?=emcc
+GZIP?=gzip
+GCOVR?=gcovr
+CSMITH?=
 
 # Platform-dependent tools
+REALPATH=realpath
 MDOC_CONV=groff -mandoc
 ifeq ($(PLATFORM),freebsd)
 MDOC_CONV=mandoc -mdoc
