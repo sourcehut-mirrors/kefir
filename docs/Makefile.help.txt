@@ -6,8 +6,7 @@ web                         WASM build of the compiler
 webapp                      Playground web-application
 test                        Run all tests
 generate_test_artifacts     Rebuild test artifacts
-clean                       Clean all build files (except bootstrap)
-clean_bootstrap             Clean bootstrap build
+clean                       Clean all build files
 help                        Print this help text
 
 

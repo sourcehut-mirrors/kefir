@@ -16,7 +16,7 @@ tasks:
       gmake test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=clang
   - build: |
       cd kefir
-      gmake clean clean_bootstrap
+      gmake clean
       gmake all PROFILE=reldebug CC=clang
   - lua_tests: |
       cd kefir
@@ -32,7 +32,7 @@ tasks:
       gmake bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1" KEFIR_EXTERNAL_TEST_GCC_TORTURE_MAX_FAILED=539
   - bootstrap: |
       cd kefir
-      gmake clean clean_bootstrap
+      gmake clean
       export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:$HOME/kefir/bin/libs"
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       export REALPATH=grealpath

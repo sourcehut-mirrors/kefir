@@ -46,12 +46,12 @@ tasks:
       make bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie" KEFIR_EXTERNAL_TEST_GCC_TORTURE_MAX_FAILED=544
   - bootstrap: |
       cd kefir
-      make clean clean_bootstrap
+      make clean
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       LC_ALL=C.UTF-8 make bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" -j$(nproc)
   - bootstrap_yasm: |
       cd kefir
-      make clean_bootstrap
+      make clean
       export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
       LC_ALL=C.UTF-8 make bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1 -masm=x86_64-yasm" AS=yasm -j$(nproc)
 triggers:
