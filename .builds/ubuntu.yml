@@ -1,4 +1,4 @@
-image: ubuntu/jammy
+image: ubuntu/noble
 packages:
   - build-essential
   - gcc-12
@@ -6,16 +6,27 @@ packages:
   - valgrind
   - wget
   - yasm
+  - cmake
+  - m4
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
+  - https://github.com/csmith-project/csmith
 tasks:
+  - build_csmith: |
+      mkdir csmith/build
+      cd csmith/build
+      cmake -DCMAKE_INSTALL_PREFIX=$HOME/csmith-install ..
+      make -j$(nproc)
+      make install
   - test_gcc: |
       cd kefir
       make clean
+      export CSMITH=$HOME/csmith-install/bin/csmith
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug USE_SANITIZER=yes CC=gcc-12 -j$(nproc)
   - test_clang: |
       cd kefir
       make clean
+      export CSMITH=$HOME/csmith-install/bin/csmith
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug EXTRA_CFLAGS=-gdwarf-4 USE_SANITIZER=yes CC=clang-15 -j$(nproc)
   - build: |
       cd kefir
