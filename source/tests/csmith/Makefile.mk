@@ -19,7 +19,9 @@ $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_SEED=$(patsubst seed-%.te
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER)
 	@mkdir -p "$(shell dirname $@)"
 	@echo "Running csmith test seed $(CSMITH_SEED)..."
-	@"$(SOURCE_DIR)/tests/csmith/csmith_driver.py" --csmith "$(CSMITH)" \
+	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH \
+		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
+		"$(SOURCE_DIR)/tests/csmith/csmith_driver.py" --csmith "$(CSMITH)" \
 		--kefir "$(CSMITH_KEFIR_RUNNER)" \
 		--cc "$(CC)" \
 		--seed "$(CSMITH_SEED)" \

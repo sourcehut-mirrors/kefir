@@ -17,7 +17,6 @@ EMCC=emcc
 GZIP=gzip
 REALPATH=realpath
 GCOVR=gcovr
-CSMITH=
 
 # Platform-dependent tools
 MDOC_CONV=groff -mandoc
