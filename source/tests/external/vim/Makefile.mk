@@ -27,7 +27,7 @@ $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/auto/config.h: $(KEFIR_EXTERNAL_TEST_V
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		./configure
+		./configure --with-features=normal
 
 $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/vim: $(KEFIR_EXTERNAL_TEST_VIM_SOURCE_DIR)/src/auto/config.h
 	@echo "Building vim $(KEFIR_EXTERNAL_TEST_VIM_VERSION)..."
