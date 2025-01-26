@@ -1,0 +1,11 @@
+--- ./lib/decompress/huf_decompress_amd64.S       2024-03-21 22:05:51.000000000 +0000
++++ ./lib/decompress/huf_decompress_amd64.S  2025-01-26 10:00:17.159910945 +0000
+@@ -10,7 +10,7 @@
+ 
+ #include "../common/portability_macros.h"
+ 
+-#if defined(__ELF__) && defined(__GNUC__)
++#if defined(__ELF__) && (defined(__GNUC__) || defined(__KEFIRCC__))
+ /* Stack marking
+  * ref: https://wiki.gentoo.org/wiki/Hardened/GNU_stack_quickstart
+  */
