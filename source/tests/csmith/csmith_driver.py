@@ -234,6 +234,15 @@ if __name__ == '__main__':
         if args.tests > 1:
             print('Cannot have more than one test with predefined seed', file=sys.stderr)
             sys.exit(-1)
+    if not args.csmith:
+        print('Expected valid path to csmith executable')
+        sys.exit(-1)
+    if not args.kefir:
+        print('Expected valid path to kefir executable')
+        sys.exit(-1)
+    if not args.cc:
+        print('Expected valid reference C compiler')
+        sys.exit(-1)
     csmith = CSmith(args.csmith, args.seed)
     kefir = Kefir(args.kefir, csmith.include_path)
     cc = CC(args.cc, csmith.include_path)

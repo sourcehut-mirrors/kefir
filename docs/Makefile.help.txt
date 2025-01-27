@@ -4,7 +4,10 @@ all                         All binaries and manual pages
 bootstrap                   Compiler bootstrap
 web                         WASM build of the compiler
 webapp                      Playground web-application
-test                        Run all tests
+test                        Run own test suite
+torture_test                Run GCC Torture tests
+csmith_test                 Run CSmith seeded tests
+csmith_random_test          Run CSmith random tests
 generate_test_artifacts     Rebuild test artifacts
 clean                       Clean all build files
 help                        Print this help text
