@@ -47,7 +47,6 @@ kefir_result_t kefir_process_wait(struct kefir_process *);
 kefir_result_t kefir_process_kill(struct kefir_process *);
 
 kefir_result_t kefir_process_run(struct kefir_process *, int (*)(void *), void *);
-kefir_result_t kefir_process_self_execute(struct kefir_process *, const char *, char *const *);
 kefir_result_t kefir_process_execute(struct kefir_process *, const char *, char *const *);
 
 kefir_result_t kefir_process_pipe(struct kefir_process *, struct kefir_process *);

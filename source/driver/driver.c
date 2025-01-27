@@ -878,22 +878,46 @@ static kefir_result_t driver_run_impl(struct kefir_mem *mem, struct kefir_string
         struct kefir_process process;
         REQUIRE_OK(kefir_process_init(&process));
         kefir_result_t res = KEFIR_OK;
+        if (config->flags.verbose) {
+            fprintf(stderr, "+ %s", config->output_file);
+            for (kefir_size_t i = 1; i < argv.length; i++) {
+                fprintf(stderr, " %s", argv.array[i]);
+            }
+        }
         if (config->run.file_stdin != NULL) {
             REQUIRE_CHAIN(&res, kefir_process_redirect_stdin_from_file(&process, config->run.file_stdin));
+            if (config->flags.verbose) {
+                fprintf(stderr, " <%s", config->run.file_stdin);
+            }
         }
         if (config->run.file_stdout != NULL) {
             REQUIRE_CHAIN(&res, kefir_process_redirect_stdout_to_file(&process, config->run.file_stdout));
+            if (config->flags.verbose) {
+                fprintf(stderr, " >%s", config->run.file_stdout);
+            }
         }
         if (config->run.file_stderr != NULL) {
             REQUIRE_CHAIN(&res, kefir_process_redirect_stderr_to_file(&process, config->run.file_stderr));
+            if (config->flags.verbose) {
+                fprintf(stderr, " 2>%s", config->run.file_stderr);
+            }
         } else if (config->run.stderr_to_stdout) {
             REQUIRE_CHAIN(&res, kefir_process_redirect_stderr_to_stdout(&process));
+            if (config->flags.verbose) {
+                fprintf(stderr, " 2>&1");
+            }
         }
-        REQUIRE_CHAIN(&res, kefir_process_self_execute(&process, config->output_file, argv.array));
+
+        if (config->flags.verbose) {
+            fprintf(stderr, "\n");
+        }
+        REQUIRE_CHAIN(&res, kefir_process_execute(&process, config->output_file, argv.array));
+        REQUIRE_CHAIN(&res, kefir_process_wait(&process));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_process_close(&process);
             return res;
         });
+        exit(process.status.exit_code);
     }
 
     return KEFIR_OK;
