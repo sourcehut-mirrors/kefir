@@ -8,6 +8,8 @@ test                        Run own test suite
 torture_test                Run GCC Torture tests
 csmith_test                 Run CSmith seeded tests
 csmith_random_test          Run CSmith random tests
+external_test               Run external tests
+external_extra_test         Run extra external tests
 generate_test_artifacts     Rebuild test artifacts
 clean                       Clean all build files
 help                        Print this help text
@@ -33,6 +35,7 @@ AR                          Archiver                    *ar
 EMCC                        Emscripten compiler         *emcc
 GZIP                        Compressor                  *gzip
 REALPATH                    Realpath coreutil           *realpath | grealpath
+CSMITH                      Absolute path to csmith     
 MDOC_CONV                   mdoc-to-... conversion      *groff -mandoc | mandoc -mdoc
                             command
 ============================================================================================
