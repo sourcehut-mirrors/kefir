@@ -156,5 +156,6 @@ kefir_result_t kefir_ast_analyze_assignment_operator_node(struct kefir_mem *mem,
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->target->properties.type);
+    base->properties.expression_props.bitfield_props = node->target->properties.expression_props.bitfield_props;
     return KEFIR_OK;
 }
