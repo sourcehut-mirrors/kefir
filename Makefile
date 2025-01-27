@@ -43,6 +43,8 @@ test: .TESTS
 csmith_test: .CSMITH_TESTS
 	@echo "CSmith tests succeeded"
 
+torture_test: $(KEFIR_GCC_TORTURE_TEST)
+
 bootstrap: .BOOTSTRAP
 	@echo "Bootstrap successfully finished"
 

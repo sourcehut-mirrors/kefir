@@ -43,7 +43,7 @@ tasks:
   - gcc_torture: |
       cd kefir
       export LC_ALL=C.UTF-8
-      make bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie" KEFIR_EXTERNAL_TEST_GCC_TORTURE_MAX_FAILED=544
+      make bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie"
   - bootstrap: |
       cd kefir
       make clean
