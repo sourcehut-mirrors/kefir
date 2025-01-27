@@ -1,3 +1,5 @@
+KEFIR_CSMITH_TEST_VERSION=2.4.0
+KEFIR_CSMITH_TEST_GIT_VERSION=0ec6f1b
 KEFIR_CSMITH_TEST_SEEDS=$(shell cat $(SOURCE_DIR)/tests/csmith/seed.list)
 KEFIR_CSMITH_TESTS_DONE := $(KEFIR_CSMITH_TEST_SEEDS:%=$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done)
 
@@ -17,9 +19,17 @@ else
 CSMITH_KEFIR_RUNNER=$(KEFIR_EXE)
 endif
 
-.SECONDEXPANSION:
+$(KEFIR_BIN_DIR)/tests/csmith/version:
+	@mkdir -p "$(shell dirname $@)"
+	@echo "Checking csmith version..."
+	@$(CSMITH) -v > "$@.tmp"
+	@grep "csmith $(KEFIR_CSMITH_TEST_VERSION)" "$@.tmp" >/dev/null || (echo "Expected csmith version $(KEFIR_CSMITH_TEST_VERSION)" && exit 1)
+	@grep "Git version: $(KEFIR_CSMITH_TEST_GIT_VERSION)" "$@.tmp" >/dev/null || (echo "Expected csmith Git version $(KEFIR_CSMITH_TEST_GIT_VERSION)" && exit 1)
+	@mv "$@.tmp" "$@"
+
 $(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: CSMITH_SEED=$(patsubst seed-%.test.done,%,$(notdir $@))
-$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER)
+.SECONDEXPANSION:
+$(KEFIR_BIN_DIR)/tests/csmith/seed-%.test.done: $$(CSMITH_KEFIR_RUNNER) $(KEFIR_BIN_DIR)/tests/csmith/version
 	@mkdir -p "$(shell dirname $@)"
 	@echo "Running csmith test seed $(CSMITH_SEED)..."
 	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH \
