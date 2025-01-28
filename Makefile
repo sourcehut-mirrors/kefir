@@ -52,6 +52,12 @@ external_extra_test: .EXTERNAL_TESTS_EXTRA_SUITE
 bootstrap: .BOOTSTRAP
 	@echo "Bootstrap successfully finished"
 
+portable:
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=no all
+
+portable_bootstrap:
+	@$(MAKE) -f dist/portable/Makefile BOOTSTRAP=yes all
+
 web: .WEB
 
 webapp: .WEBAPP
@@ -67,7 +73,7 @@ help:
 
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap web webapp coverage clean help torture_test csmith_test external_test external_extra_test \
+.PHONY: all test generate_test_artifacts bootstrap web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap \
         .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES
 
 .DEFAULT_GOAL := all

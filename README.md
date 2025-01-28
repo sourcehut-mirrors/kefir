@@ -224,20 +224,19 @@ development environment.
 
 ## Portable Kefir
 Kefir provides scripts to build portable, standalone Kefir distribution package
-that incorporates statically-linked Kefir C compiler, musl libc, assembler and
-linker from GNU Binutils. The package targets modern x86_64-based Linux systems
-and provides a minimalistic C17 development toolchain independent of host system
-tooling.
+that incorporates statically-linked Kefir C compiler, musl libc, and tools from
+GNU Binutils. The package targets modern x86_64-based Linux systems and provides
+a minimalistic C17 development toolchain independent of host system tooling.
 
 Portable package can be obtained via:
 ```bash
-make -f dist/portable/Makefile all
+make portable
 # Build artifact is located in bin/portable/kefir-portable-0.3.1.tar.gz
 ```
 
 In addition, portable package can be fully bootstraped in 3-stage process:
 ```bash
-make -f dist/portable/Makefile BOOTSTRAP=yes all
+make portable_bootstrap
 ```
 
 ## Web playground

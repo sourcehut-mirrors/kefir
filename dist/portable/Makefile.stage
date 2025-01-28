@@ -12,11 +12,11 @@ MUSL_ARCHIVE_FILENAME := musl-$(MUSL_VERSION).tar.gz
 MUSL_ARCHIVE := $(WORK_DIR)/$(MUSL_ARCHIVE_FILENAME)
 MUSL_ARCHIVE_SHA256 := a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
 
-BINUTILS_VERSION := 2.42
+BINUTILS_VERSION := 2.43
 BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.xz
 BINUTILS_ARCHIVE := $(WORK_DIR)/$(BINUTILS_ARCHIVE_FILENAME)
 BINUTILS_URL := https://ftp.gnu.org/gnu/binutils/binutils-$(BINUTILS_VERSION).tar.xz
-BINUTILS_ARCHIVE_SHA256 := f6e4d41fd5fc778b06b7891457b3620da5ecea1006c6a4a41ae998109f85a800
+BINUTILS_ARCHIVE_SHA256 := b53606f443ac8f01d1d5fc9c39497f2af322d99e14cea5c0b4b124d630379365
 
 $(TARGET_DIR)/bin/kefir:
 	@mkdir -p "$(TARGET_DIR)"
@@ -58,6 +58,7 @@ $(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
 $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 	@cd "$(WORK_DIR)" && xz -d < "$(BINUTILS_ARCHIVE_FILENAME)" > "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
 	@cd "$(WORK_DIR)" && tar xvf "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
+	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/__attribute__/__attribute/g" {} \;
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
 		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
 		CFLAGS="-O1 -static" \
@@ -65,13 +66,19 @@ $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
 		KEFIR_LD="$(LD)" \
 		AS="$(AS)" \
 		KEFIR_AS="$(AS)" \
-		./configure --prefix=
+		./configure --enable-gprofng=no --prefix=
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
 		KEFIR_LD="$(LD)" \
 		KEFIR_AS="$(AS)" \
-		$(MAKE) CC="$(realpath $(TARGET_DIR)/bin/kefir)" CFLAGS="-O1 -DHAVE_STRSIGNAL -static" all-ld all-gas
-	@install $(WORK_DIR)/binutils-$(BINUTILS_VERSION)/ld/ld-new "$(TARGET_DIR)/bin/ld"
-	@install $(WORK_DIR)/binutils-$(BINUTILS_VERSION)/gas/as-new "$(TARGET_DIR)/bin/as"
+		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
+		CFLAGS="-O1 -static" \
+		$(MAKE)
+	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
+		KEFIR_LD="$(LD)" \
+		KEFIR_AS="$(AS)" \
+		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
+		CFLAGS="-O1 -static" \
+		$(MAKE) install DESTDIR="$(TARGET_DIR)"
 	@mkdir -p "$(TARGET_DIR)/share/licenses/binutils"
 	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING" "$(TARGET_DIR)/share/licenses/binutils"
 	@install "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)/COPYING3" "$(TARGET_DIR)/share/licenses/binutils"
