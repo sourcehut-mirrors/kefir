@@ -1,0 +1,11 @@
+--- ./cgit.c	2025-01-28 20:25:49.707832225 +0200
++++ ./cgit.c	2024-08-02 19:22:56.000000000 +0300
+@@ -21,7 +21,7 @@
+ 
+ const char *cgit_version = CGIT_VERSION;
+ 
+-__attribute__((constructor))
++__attribute((constructor))
+ static void constructor_environment()
+ {
+ 	/* Do not look in /etc/ for gitconfig and gitattributes. */
