@@ -134,13 +134,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         } break;
 
         case KEFIR_AST_BUILTIN_OFFSETOF: {
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, offset_base, iter->value);
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, field, iter->value);
-
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, 0));
-            REQUIRE_OK(
-                kefir_ast_translate_member_designator(mem, field, offset_base->properties.type, builder, context));
+            struct kefir_ast_constant_expression_value value;
+            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context->ast_context,
+                                                                    KEFIR_AST_NODE_BASE(node), &value));
+            REQUIRE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_INVALID_STATE, &node->base.source_location,
+                                           "Unexpected constant expression value"));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, value.integer));
         } break;
 
         case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {

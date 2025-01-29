@@ -22,31 +22,15 @@
 #define DEFINITIONS_H_
 
 struct S1 {
-    char a;
+    int a;
     long b;
-    float c;
-    int d : 4, e : 5, : 15, f : 2;
-    struct {
-        char g;
-        double h;
-        short i;
-    };
-    union {
-        int j;
-        unsigned long long k;
-        float l;
-    };
-    struct {
-        char a;
-        unsigned long b;
-        double c;
-    } m;
-    char n[45];
-    _Alignas(16) double o;
-    char p;
-    float q;
-} __attribute((packed));
+    char c[2];
+};
 
-extern const unsigned long descriptor[];
+struct S2 {
+    long offsets[4];
+};
+
+struct S2 get(void);
 
 #endif

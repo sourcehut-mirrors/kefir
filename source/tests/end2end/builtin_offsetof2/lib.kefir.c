@@ -18,35 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+#include "./definitions.h"
 
-struct S1 {
-    char a;
-    long b;
-    float c;
-    int d : 4, e : 5, : 15, f : 2;
-    struct {
-        char g;
-        double h;
-        short i;
-    };
-    union {
-        int j;
-        unsigned long long k;
-        float l;
-    };
-    struct {
-        char a;
-        unsigned long b;
-        double c;
-    } m;
-    char n[45];
-    _Alignas(16) double o;
-    char p;
-    float q;
-} __attribute((packed));
-
-extern const unsigned long descriptor[];
-
-#endif
+struct S2 get(void) {
+    return (struct S2) {.offsets = {__builtin_offsetof(struct S1, a), __builtin_offsetof(struct S1, b),
+                                    __builtin_offsetof(struct S1, c[0]), __builtin_offsetof(struct S1, c[1])}};
+}

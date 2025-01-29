@@ -18,35 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <stddef.h>
+#include "./definitions.h"
 
-struct S1 {
-    char a;
-    long b;
-    float c;
-    int d : 4, e : 5, : 15, f : 2;
-    struct {
-        char g;
-        double h;
-        short i;
-    };
-    union {
-        int j;
-        unsigned long long k;
-        float l;
-    };
-    struct {
-        char a;
-        unsigned long b;
-        double c;
-    } m;
-    char n[45];
-    _Alignas(16) double o;
-    char p;
-    float q;
-} __attribute((packed));
-
-extern const unsigned long descriptor[];
-
-#endif
+int main(void) {
+    struct S2 s2 = get();
+    assert(s2.offsets[0] == offsetof(struct S1, a));
+    assert(s2.offsets[1] == offsetof(struct S1, b));
+    assert(s2.offsets[2] == offsetof(struct S1, c[0]));
+    assert(s2.offsets[3] == offsetof(struct S1, c[1]));
+    return EXIT_SUCCESS;
+}
