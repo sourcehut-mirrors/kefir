@@ -1,34 +1,34 @@
 # Kefir C compiler
-This repository contains an implementation of C17 language compiler from
-scratch. No existing open source compiler infrastructure is being reused. The
-main priority is self-sufficiency of the project, compatibility with platform
-ABI and compliance with C17 language standard. Any omissions or
-incompatibilities between the language standard and Kefir behavior which are not
-explicitly documented (see `Implementation & Usage quirks` section below) shall
-be considered bugs.
+Kefir is an independent compiler for C programming language (C17 standard).
+Kefir does not rely on any existing compiler frameworks and implements the whole
+compiler in pure C language (C11 standard). The main priority is
+self-sufficiency of the project, compatibility with platform ABI and compliance
+with C17 language standard. Any omissions or incompatibilities between the
+language standard and Kefir behavior which are not explicitly documented (see
+`Implementation & Usage quirks` section below) shall be considered bugs.
 
 Kefir supports modern x86-64 Linux, FreeBSD, OpenBSD and NetBSD environments
 (see `Supported environments` section below). Compiler is also able to produce
-JSON streams containing program representation on various stages of compilation
+JSON streams containing program representation at various stages of compilation
 (tokens, AST, IR), as well as printing source code in preprocessed form. The
 compiler targets GNU As (Intel syntax with/without prefixes and ATT syntax are
-supported) and Yasm assemblers. Kefir is able to produce debug information in
-DWARF5 format for GNU As. Position-independent code generation is supported.
-Kefir features `cc`-compatible command line interface.
+supported) and also has limited support for Yasm assembler. Kefir is able to
+produce debug information in DWARF5 format for GNU As. Position-independent code
+generation is supported. Kefir features `cc`-compatible command line interface.
 
 [Kefir website](https://kefir.protopopov.lv) also provides some additional information.
 
-**Note to the users of Kefir:** if you encounter any behavior that does not comply
-with C language standard or significantly diverges from other compilers, please
-do no hestitate to reach me out via [email](mailto:jevgenij@protopopov.lv)
-directly or through the [mailing
+**Note to the users of Kefir:** if you encounter any behavior that does not
+comply with C17 language standard or significantly diverges from other
+compilers, please do no hestitate to reach me out via
+[email](mailto:jevgenij@protopopov.lv) directly or through the [mailing
 list](https://lists.sr.ht/~jprotopopov/public-inbox). Code snippets for easier
 reproduction are especially welcome.
 
 ### Project name
 Kefir compiler is named after [fermented milk
-drink](https://en.wikipedia.org/wiki/Kefir), no other connotations are meant or
-intended.
+drink](https://en.wikipedia.org/wiki/Kefir), **no other connotations are meant
+or intended**.
 
 ## Supported environments
 Kefir targets x86-64 ISA and System-V ABI. Supported systems include modern
@@ -36,13 +36,13 @@ Linux, FreeBSD, OpenBSD and NetBSD operating systems (full test suite is
 executed regularly in these environments). A platform is considered supported if
 full automated test suite (see `Test suite` section below) sucessfully executes
 there -- no other guarantees and claims are made. On Linux, `glibc` and `musl`
-standard libraries are supported; `musl` might be preferable because it's header
-files are more compilant with standard C language without extensions, however as
-of now Kefir supports enough GCC extensions to reasonably use include files from
-`glibc`, on BSDs system `libc` can be used (additional macro definitions, such
-as `__GNUC__`, `__GNUC_MINOR__`, could be necessary depending on used system
-libc features). Kefir supports selection of target platform via `--target`
-command line option.
+standard libraries are supported; `musl` might be preferable because its header
+files use significantly less non-standard extensions, however as of now Kefir
+supports enough GCC extensions to reasonably use include files from `glibc`; on
+BSDs system `libc` can be used (additional macro definitions, such as
+`__GNUC__`, `__GNUC_MINOR__`, could be necessary depending on used system libc
+features). Kefir supports selection of target platform via `--target` command
+line option.
 
 For each respective target, compiler expects a set of environment variables
 (e.g. `KEFIR_GNU_INCLUDE`, `KEFIR_GNU_LIB`, `KEFIR_GNU_DYNAMIC_LINKER`) to be
@@ -58,17 +58,17 @@ specifics of Kefir.
 The main motivation of the project is deeper understanding of C programming
 language, as well as practical experience in the broader scope of compiler
 implementation aspects. Based on this, following goals were set for the project:
-* Self-sufficiency - project shall use minimal number of external dependencies.
-Runtime dependencies should include only C standard library and operating system
-APIs.
+* Self-sufficiency - the project shall use minimal number of external
+dependencies. Runtime dependencies should include only C standard library and
+operating system APIs.
 * Compliance with C17 standard - resulting product should be reasonably
 compliant with language standard. All intentional deviations and exceptions
-shall be described and justified. 
+shall be documented and justified. 
 * Compatibility with platform ABI - produced code should adhere ABI of target
 platform. It should be possible to transparently link it with code produced by
 commonly used compilers of the target platform.
 * Manageable scope of the project - full-fledged implementation of C17 compiler
-is demanding task. Project scope shall be managed so that implementation as a
+is a demanding task. Project scope shall be managed so that implementation as a
 single-person pet-project is feasible. For instance, standard library
 implementation is currently out-of-scope. Instead, compiler supports some of
 widespread C extensions in order to re-use existing `libc` implementations.
@@ -83,9 +83,9 @@ goal, even though some improvements can be occasionally made. In fact,
 performance is deliberately sacrificed to facilitate implementation of other
 goals. 
 * Compatibility with other compiler extensions - C compilers are known to
-include different extensions that are not described by language standard.
-Considerable number of those are implemented, however it is not project goal per
-se, thus there are no guarantees of extension compatibility.
+include different extensions that are not described by the language standard.
+Considerable number of those are supported by Kefir, however it is not project
+goal per se, thus there are no guarantees of extension compatibility.
 
 Note on the language standard support: initially the compiler development was
 focused on C11 language standard support. The migration to C17 happened when the
@@ -98,27 +98,30 @@ See `CHANGELOG`.
 
 The initial implementation has been finished: at the momement the compiler
 features all necessary components, and with some known minor idiosyncrasies
-supports C17 language standard. Kefir is able to re-use standard library
-provided by target systems. Further effort is concentrated on improving and
-extending the compiler, including:
+supports C17 language standard. Kefir is able to reasonably re-use standard
+library provided by target systems. Significant effort has been spent to compose
+a test suite of third-party open source software to validate correctness of
+Kefir. Further effort is concentrated on improving and extending the compiler,
+including:
 * Implementing optimizing code generator -- initial basic implementation has
   been finished. Pending subtasks are:
   * Implementing actual optimization passes -- several basic optimizations have been implemented.
   * Implementing atomics natively instead of relying on software library.
-  * Producing debug information during code generation.
-  * Position-independent code generation, building position-independent
-    executables and shared libraries is supported.
-* Adding support for upcoming C23 standard.
-* Improving compatibility with mainstream compiler by implementing additional
+  * Improving debug information generator.
+* Adding support for upcoming C23 standard -- the compiler currently implements
+  several C23 features as extensions, however their completeness and compliance
+  with the actual language standard has not been determined.
+* Improving compatibility with mainstream compilers by implementing additional
   extensions and built-ins.
 * Bugfixes, improvements in error reporting.
 * Extending the number of supported platforms.
+* Dropping stack-based intermediate representation step.
 * Reimplementing parser, lexer and register allocator for better performance.
 * Refactoring and cleaning up analysis and translation stage implementation.
 
 ### Implementation quirks
 Some implementation details that user needs to take into account:
-* Kefir might provide own versions of some header files as well -- if
+* Kefir might provide own versions of some header files as well -- if the
   environment is configured correctly, they are added to include path
   automatically.
 * Atomic implementation fully relies on software atomic library (`libatomic` for
@@ -139,6 +142,10 @@ Some implementation details that user needs to take into account:
 * No `STDC` pragmas are implemented in preprocessor. Kefir does not perform
   respective optimizations and implements conservative behavior, thus these
   pragmas would be no-op.
+* Integration with `glibc` might exhibit problems with non-standard features
+  (e.g. attributes). For instance, `glibc` might suppress `__attribute__` by a
+  macro or omit `packed` attributes, thus breaking the ABI, so care needs to be
+  taken.
 
 ### Standard library
 Kefir can be used along with [musl libc](https://musl.libc.org) standard
@@ -172,7 +179,6 @@ guarantees are provided. Among the implemented extensions (non-exaustive list):
 * Full list of supported builtins and attributes can be obtained via
 ```bash
 echo '__KEFIRCC_SUPPORTED_BUILTINS__' | kefir -E -
-echo '__KEFIRCC_SUPPORTED_ATTRIBUTES__' | kefir -E -
 ```
 
 Kefir also defines a few non-standard macros by default, such as macros
@@ -187,24 +193,27 @@ compatibility with respective GCC/Clang functionality (implemented bits behave
 similarly, though, thus basic use cases shall be compatible). Additionally,
 `asm`-labels are supported for non-static non-local variables.
 
-Kefir supports `__attribute__(...)` syntax on parser level, however attributes
-are ignored in most cases except `aligned`/`__aligned__` and `__gnu_inline__`
-attributes. Presence of attribute in source code can be turned into a syntax
-error by CLI option.
+Kefir supports `__attribute__(...)` syntax, however only a few attributes are
+actually implemented. Presence of attribute in source code can be turned into a syntax error
+by CLI option. For the list of supported attributes see:
+```bash
+echo '__KEFIRCC_SUPPORTED_ATTRIBUTES__' | kefir -E -
+```
+
 
 ## Build & Usage
 **Disclaimer: Use at your own risk. This is experimental project which is not
 meant for production purposes. No guarantees are being made for correctness,
 completeness, stability and fitness for any particular purpose.**
 
-Kefir depends on a C11 compiler (tested with `gcc` and `clang`), GNU As
-assembler, GNU Makefile as well as basic UNIX utilities for build. Development
-and test dependencies include `valgrind` (for test execution) as well. After
-installing all dependencies, kefir can be built with a single command: `make all
-EXTRA_CFLAGS="-march=native" -j$(nproc)`. By default, kefir builds a shared
-library and links executables to it. Static linkage can be used by specifying
-`USE_SHARED=no` in make command line arguments. Sample `PKGBUILD` is provided in
-`dist/kefir` directory.
+Kefir depends on a C11 compiler (tested with `gcc` and `clang`), bash, GNU Make
+as well as basic UNIX utilities for build. Runtime dependencies include `libc`,
+an assembler (GNU As or Yasm) and a linker (GNU ld). Development and test
+dependencies include `valgrind` (for test execution) as well. After installing
+all dependencies, kefir can be built with a single command: `make -j$(nproc)`.
+By default, kefir builds a shared library and links executables to it. Static
+linkage can be enforced by specifying `USE_SHARED=no` in make command line
+arguments. Sample `PKGBUILD` is provided in `dist/kefir` directory.
 
 It is also advised to run basic test suite:
 ```bash
@@ -218,9 +227,10 @@ Optionally, Kefir can be installed via: `make install DESTDIR=...`. Short
 reference on compiler options can be obtained by running `kefir --help`, as well
 as in the manual which is supplied in the compiler distribution.
 
-At the moment, Kefir is automatically tested in Ubuntu 22.04, FreeBSD 13.2 and
-OpenBSD 7.3 and NetBSD 9.3 environments. Arch Linux is used as a primary
-development environment.
+At the moment, Kefir is automatically tested in Ubuntu 24.04, FreeBSD 14.x and
+OpenBSD 7.5 and NetBSD 10.x environments. Arch Linux is used as a primary
+development environment. Kefir also provides a Dockerfile (see `dist`) which
+defines necessary dependencies for running the whole test suite.
 
 ## Portable Kefir
 Kefir provides scripts to build portable, standalone Kefir distribution package
@@ -231,7 +241,7 @@ a minimalistic C17 development toolchain independent of host system tooling.
 Portable package can be obtained via:
 ```bash
 make portable
-# Build artifact is located in bin/portable/kefir-portable-0.3.1.tar.gz
+# Build artifact is located in bin/portable/kefir-portable-*.tar.gz
 ```
 
 In addition, portable package can be fully bootstraped in 3-stage process:
@@ -301,10 +311,11 @@ Kefir relies on following tests, most of which are executed as part of CI:
     on OpenBSD with clang. In Linux and FreeBSD environments `valgrind` is used
     to control test suite correctness at runtime.
 * Bootstrapping test -- kefir is used to compile itself using 2-stage bootstrap
-  technique as described above.
+  technique as described above. On Linux, both GNU As and Yasm targets are
+  tested.
 * GCC Torture Suite -- `compile` & `execute` parts of GCC torture test suite are
   executed with kefir compiler, with some permissive options enabled. At the
-  moment, out of 3445 tests, 537 fail and 29 are skipped due to being irrelevant
+  moment, out of 3445 tests, 477 fail and 29 are skipped due to being irrelevant
   (e.g. SIMD or profiling test cases; there is no exhaustive skip list yet). All
   failures happen on compilation stage, no abortions occur at runtime. The work
   with torture test suite will be continued in order to reduce the number of
@@ -315,13 +326,26 @@ Kefir relies on following tests, most of which are executed as part of CI:
       of [c-testsuite](https://github.com/c-testsuite/c-testsuite) is executed.
       Currently, the test suite reports 3 failures that happen due to C language
       extensions used in the tests. Failing test cases are skipped.
+    - Lua from the external test suite (see below).
       
 Furthermore, Kefir also provides an [external](source/tests/external) test suite
 comprised of open source software that is known to work with Kefir. This suite
-are not included in the CI, however, it is regularly executed manually.
-Currently, the external test suite includes: bash 5.2.21, binutils 2.42 (only as
-and ld), curl 8.9.1, git 2.44.0, libsir 2.2.4, musl 1.2.5, nano 7.2, oksh 7.5,
-sqlite 3.45.3, tcc 0.9.27, tcl 8.6.14, tin 2.6.3, yasm 1.3.0, zlib 1.3.1. The
+are not included in the CI, however, it is regularly executed manually. Kefir is
+used to build software from the external test suite, and where possible, run
+(most of) tests of the respective software projects. Software projects
+constituting the external test suite are compiled with little or no changes.
+Only acceptable changes are short patches that do not alter the project logic
+(e.g. patching `#ifdef`s, replacing a non-standard keyword or altering the build
+system is considered acceptable).
+
+Currently, the external test suite includes: GNU Binutils (except gprofng), GNU
+Coreutils, GCC 4.0.4 bootstrap, programming language interpreters (Lua, Perl,
+Python, Tcl, Guile, duktape, GNU Awk, pForth), text editors (Vim, nano),
+database engines (SQLite3, Postrges), assemblers (yasm, nasm), shells (Bash,
+oksh), compression libraries (zlib, zstd), cryptography (OpenSSL, OpenSSH),
+networking tools (nginx, curl, wget), build systems (GNU Make, muon), git (git
+itself and cgit), other small language compilers (tcc, slimcc, cproc), other
+libraries (libCello, libuv, libpng), as well as some lesser-known projects. The
 external test suite is used to verify Kefir compatbility with real world
 software. Source code for third-party projects has been archived and available
 at [Kefir website](https://kefir.protopopov.lv/archive/third-party/).
@@ -332,25 +356,30 @@ non-Unicode locale). For instance, some tests contain unicode characters and
 require the environment to have appropriate locale set. Also, issues with local
 standard library version might cause test failures.
 
-Currently, extension of the test suite is a major goal. It helps significantly
-in eliminating bugs, bringing kefir closer to C language standard support,
-improving compiler UX in general.
+Furthermore, at development stage,
+[CSmith](https://github.com/csmith-project/csmith) is used for randomized,
+differential testing against GCC. Problematic csmith seeds are added to the test
+suite.
+
+At the moment, extension of the test suite is a major goal. It helps
+significantly in eliminating bugs, bringing kefir closer to C language standard
+support and improving compiler UX in general.
 
 ## Design notes
 In order to simplify translation and facilitate portability, intermediate
 representation (IR) layer was introduced. It defines architecture-agnostic
 64-bit stack machine bytecode, providing generic calling convention and
-abstracting out type layout information. Compiler is structured into separate
-modules with respect to IR: code generation, AST analysis and translation. The
-IR code is then converted into optimizer SSA-like representation. IR layer
-provides several interfaces for AST analyzer to retrieve necessary target type
-layout information (for instance, for constant expression analysis). AST
-analysis and translation are separate stages to improve code structure and
-reusability. Parser uses recursive descent approach with unlitmited
-back-tracking. Lexer was implemented before preprocessor and can be used
-independently of it (preprocessing stage can be completely omitted), thus both
-lexer and preprocessor modules share the same lexing facilities. Driver links
-kefir as a library and uses `fork` syscalls in order to isolate each file
+abstracting out the type layout information. Compiler is structured into
+separate modules with respect to IR: code generation, AST analysis and
+translation. The IR code is then converted into optimizer SSA-like
+representation. IR layer provides several interfaces for AST analyzer to
+retrieve necessary target type layout information (for instance, for constant
+expression analysis). AST analysis and translation are separate stages to
+improve code structure and reusability. Parser uses recursive descent approach
+with unlitmited back-tracking. Lexer was implemented before preprocessor and can
+be used independently of it (preprocessing stage can be completely omitted),
+thus both lexer and preprocessor modules share the same lexing facilities.
+Driver links kefir as a library and forks in order to isolate each file
 processing.
 
 ## Source code hosting
