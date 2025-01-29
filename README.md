@@ -1,11 +1,11 @@
 # Kefir C compiler
 Kefir is an independent compiler for C programming language (C17 standard).
-Kefir does not rely on any existing compiler frameworks and implements the whole
-compiler in pure C language (C11 standard). The main priority is
-self-sufficiency of the project, compatibility with platform ABI and compliance
-with C17 language standard. Any omissions or incompatibilities between the
-language standard and Kefir behavior which are not explicitly documented (see
-`Implementation & Usage quirks` section below) shall be considered bugs.
+Kefir does not rely on any existing frameworks, and provides a complete compiler
+implementation written in C. The main priority is self-sufficiency of the
+project, compatibility with platform ABI and compliance with C17 language
+standard. Any omissions or incompatibilities between the language standard and
+Kefir behavior which are not explicitly documented (see `Implementation & Usage
+quirks` section below) shall be considered bugs.
 
 Kefir supports modern x86-64 Linux, FreeBSD, OpenBSD and NetBSD environments
 (see `Supported environments` section below). Compiler is also able to produce
@@ -208,12 +208,13 @@ completeness, stability and fitness for any particular purpose.**
 
 Kefir depends on a C11 compiler (tested with `gcc` and `clang`), bash, GNU Make
 as well as basic UNIX utilities for build. Runtime dependencies include `libc`,
-an assembler (GNU As or Yasm) and a linker (GNU ld). Development and test
-dependencies include `valgrind` (for test execution) as well. After installing
-all dependencies, kefir can be built with a single command: `make -j$(nproc)`.
-By default, kefir builds a shared library and links executables to it. Static
-linkage can be enforced by specifying `USE_SHARED=no` in make command line
-arguments. Sample `PKGBUILD` is provided in `dist/kefir` directory.
+an assembler (GNU As or Yasm) and a linker (GNU ld). Test dependencies
+optionally include `valgrind`, `python` and `csmith` (for test execution) as
+well. After installing all dependencies, kefir can be built with a single
+command: `make -j$(nproc)`. By default, kefir builds a shared library and links
+executables to it. Static linkage can be enforced by specifying `USE_SHARED=no`
+in make command line arguments. Sample `PKGBUILD` is provided in `dist/kefir`
+directory.
 
 It is also advised to run basic test suite:
 ```bash
@@ -331,6 +332,12 @@ Kefir relies on following tests, most of which are executed as part of CI:
       Currently, the test suite reports 3 failures that happen due to C language
       extensions used in the tests. Failing test cases are skipped.
     - Lua from the external test suite (see below).
+
+Own test suite is deterministic (that is, tests do not fail spuriously), however
+there might arise problems when executed in unusual environments (e.g. with
+non-Unicode locale). For instance, some tests contain unicode characters and
+require the environment to have appropriate locale set. Also, issues with local
+standard library version might cause test failures.
       
 Furthermore, Kefir also provides an [external](source/tests/external) test suite
 comprised of open source software that is known to work with Kefir. This suite
@@ -340,7 +347,8 @@ used to build software from the external test suite, and where possible, run
 constituting the external test suite are compiled with little or no changes.
 Only acceptable changes are short patches that do not alter the project logic
 (e.g. patching `#ifdef`s, replacing a non-standard keyword or altering the build
-system is considered acceptable).
+system is considered acceptable). Note that running the external test suite
+might require additional project-specific dependencies (see `dist/Dockerfile`).
 
 Currently, the external test suite includes: GNU Binutils (except gprofng), GNU
 Coreutils, GCC 4.0.4 bootstrap, programming language interpreters (Lua, Perl,
@@ -354,16 +362,11 @@ external test suite is used to verify Kefir compatbility with real world
 software. Source code for third-party projects has been archived and available
 at [Kefir website](https://kefir.protopopov.lv/archive/third-party/).
 
-Own test suite is deterministic (that is, tests do not fail spuriously), however
-there might arise problems when executed in unusual environments (e.g. with
-non-Unicode locale). For instance, some tests contain unicode characters and
-require the environment to have appropriate locale set. Also, issues with local
-standard library version might cause test failures.
-
 Furthermore, at development stage,
 [CSmith](https://github.com/csmith-project/csmith) is used for randomized,
 differential testing against GCC. Problematic csmith seeds are added to the test
-suite.
+suite (executed optionally by `make test` if `CSMITH` environment variable is
+defined; requires Python 3.12).
 
 At the moment, extension of the test suite is a major goal. It helps
 significantly in eliminating bugs, bringing kefir closer to C language standard
