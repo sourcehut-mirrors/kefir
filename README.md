@@ -217,7 +217,8 @@ arguments. Sample `PKGBUILD` is provided in `dist/kefir` directory.
 
 It is also advised to run basic test suite:
 ```bash
-LC_ALL=C.UTF-8 make test all   # Linux
+make test all                  # Linux glibc
+make test all USE_SHARED=no CC=musl-gcc KEFIR_TEST_USE_MUSL=yes   # Linux musl
 gmake test all CC=clang        # FreeBSD
 gmake test all CC=clang AS=gas # OpenBSD
 gmake test all CC=gcc AS=gas   # NetBSD
@@ -230,7 +231,10 @@ as in the manual which is supplied in the compiler distribution.
 At the moment, Kefir is automatically tested in Ubuntu 24.04, FreeBSD 14.x and
 OpenBSD 7.5 and NetBSD 10.x environments. Arch Linux is used as a primary
 development environment. Kefir also provides a Dockerfile (see `dist`) which
-defines necessary dependencies for running the whole test suite.
+defines necessary dependencies for running the whole test suite:
+```bash
+podman build -t kefir-dev-env -f dist/Dockerfile .
+````
 
 ## Portable Kefir
 Kefir provides scripts to build portable, standalone Kefir distribution package

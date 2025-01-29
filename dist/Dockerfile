@@ -3,8 +3,10 @@ FROM ubuntu:noble
 RUN apt update
 # Build dependencies
 RUN apt install -y build-essential gcc-14 clang-16 groff m4
+# For musl builds
+RUN apt install -y musl-dev musl-tools
 # Test dependencies
-RUN apt install -y valgrind wget cmake git yasm nasm yacc libncurses-dev zlib1g-dev gettext file openssl libssl-dev unzip libpcre3 libpcre3-dev tcl8.6 tcl8.6-dev gcc-multilib man-db unminimize autoconf autopoint bison gperf texinfo libgmp-dev inotify-tools strace libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev libgc-dev libglib2.0-dev-bin dejagnu
+RUN apt install -y valgrind wget cmake git yasm nasm yacc libncurses-dev zlib1g-dev gettext file openssl libssl-dev unzip libpcre3 libpcre3-dev tcl8.6 tcl8.6-dev gcc-multilib man-db unminimize autoconf autopoint bison gperf texinfo libgmp-dev inotify-tools strace libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev libgc-dev libglib2.0-dev-bin dejagnu locales
 
 # Prepare the system
 RUN yes | unminimize
@@ -31,7 +33,6 @@ RUN cd /tmp/csmith/build && make -j$(nproc)
 RUN cd /tmp/csmith/build && make install
 
 # Locales
-RUN apt install -y locales
 RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen
 RUN echo "fr_FR.UTF-8 UTF-8" >> /etc/locale.gen  
 RUN echo "ja_JP.UTF-8 UTF-8" >> /etc/locale.gen  
@@ -41,7 +42,4 @@ RUN locale-gen
 # Cleanup
 RUN rm -rf /tmp/*
 
-ENV PATH=/opt/make-4.4.1/bin:/opt/csmith/bin:$PATH
-ENV CSMITH=/opt/csmith/bin/csmith
-ENV LIBRARY_PATH=/usr/lib/x86_64-linux-gnu
-ENV LC_ALL=C.UTF-8
+ADD ./dist/kefir_dev_env.sh /opt/kefir_dev_env.sh
