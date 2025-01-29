@@ -160,6 +160,7 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
         } break;
 
         case KEFIR_AST_ARRAY_BOUNDED:
+        case KEFIR_AST_ARRAY_BOUNDED_STATIC:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_ARRAY, alignment,
                                                    kefir_ast_type_array_const_length(&type->array_type)));
             REQUIRE_OK(kefir_ast_translate_object_type(mem, context, type->array_type.element_type,
@@ -174,6 +175,7 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
             break;
 
         case KEFIR_AST_ARRAY_VLA:
+        case KEFIR_AST_ARRAY_VLA_STATIC:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_STRUCT, 0, 2));
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
@@ -185,11 +187,6 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
                 (*layout_ptr)->vl_array.array_size_field = type_index + 2;
             }
             break;
-
-        case KEFIR_AST_ARRAY_BOUNDED_STATIC:
-        case KEFIR_AST_ARRAY_VLA_STATIC:
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
-                                          "Static array type is not supported in that context");
     }
 
     if (layout_ptr != NULL && element_layout != NULL) {
