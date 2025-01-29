@@ -845,6 +845,7 @@ static kefir_result_t amd64_prologue(struct kefir_amd64_xasmgen *xasmgen) {
 
         case KEFIR_AMD64_XASMGEN_SYNTAX_YASM:
             fprintf(payload->output, "bits 64\n");
+            fprintf(payload->output, "%s\n\n", "section .note.GNU-stack");
             break;
     }
 
