@@ -58,7 +58,7 @@ $(KEFIR_EXTERNAL_TEST_LIBUV_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBUV_SOURCE_D
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		$(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 -j1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/libuv.test.done: $(KEFIR_EXTERNAL_TEST_LIBUV_DIR)/tests.log
