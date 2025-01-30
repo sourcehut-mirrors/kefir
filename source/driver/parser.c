@@ -522,6 +522,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("--no-soft-atomics", arg) == 0) {
             // Disable software atomics support
             config->flags.soft_atomics = false;
+        } else if (strcmp("-pthread", arg) == 0) {
+            // Enable pthreads
+            config->flags.pthread = true;
         }
 
         // Run options

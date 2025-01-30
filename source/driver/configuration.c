@@ -153,6 +153,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     config->flags.include_rtinc = true;
     config->flags.soft_atomics = true;
     config->flags.verbose = false;
+    config->flags.pthread = false;
 
     config->dependency_output.output_dependencies = false;
     config->dependency_output.output_system_deps = true;

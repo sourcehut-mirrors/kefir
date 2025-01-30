@@ -803,8 +803,8 @@ static kefir_result_t driver_run_linker(struct kefir_mem *mem, struct kefir_stri
                                         struct kefir_driver_configuration *config,
                                         const struct kefir_driver_external_resources *externals,
                                         struct kefir_driver_linker_configuration *linker_config) {
-    REQUIRE_OK(
-        kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, linker_config, &config->target));
+    REQUIRE_OK(kefir_driver_apply_target_linker_final_configuration(mem, symbols, externals, config, linker_config,
+                                                                    &config->target));
 
     struct kefir_process linker_process;
     REQUIRE_OK(kefir_process_init(&linker_process));

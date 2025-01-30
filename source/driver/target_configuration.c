@@ -137,6 +137,10 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__amd64", "1"));
     }
 
+    if (driver_config->flags.pthread) {
+        REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "_REENTRANT", "1"));
+    }
+
     struct kefir_compiler_profile profile;
     REQUIRE_OK(
         kefir_compiler_profile(&profile, compiler_config->target_profile, &compiler_config->target_profile_config));
@@ -426,15 +430,21 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(
 
 kefir_result_t kefir_driver_apply_target_linker_final_configuration(
     struct kefir_mem *mem, struct kefir_string_pool *symbols, const struct kefir_driver_external_resources *externals,
-    struct kefir_driver_linker_configuration *linker_config, const struct kefir_driver_target *target) {
+    const struct kefir_driver_configuration *driver_config, struct kefir_driver_linker_configuration *linker_config,
+    const struct kefir_driver_target *target) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid symbol table"));
     REQUIRE(externals != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver externals"));
-    REQUIRE(linker_config != NULL,
+    REQUIRE(driver_config != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver linker configuration"));
+    REQUIRE(linker_config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid linker configuration"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver target"));
 
     kefir_bool_t position_independent = linker_config->flags.shared_linking || linker_config->flags.pie_linking;
+
+    if (driver_config->flags.pthread) {
+        REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, "-lpthread"));
+    }
 
     if (target->platform == KEFIR_DRIVER_TARGET_PLATFORM_LINUX) {
         if (target->variant == KEFIR_DRIVER_TARGET_VARIANT_GNU) {

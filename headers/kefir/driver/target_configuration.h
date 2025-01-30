@@ -49,6 +49,7 @@ kefir_result_t kefir_driver_apply_target_linker_initial_configuration(struct kef
 
 kefir_result_t kefir_driver_apply_target_linker_final_configuration(struct kefir_mem *, struct kefir_string_pool *,
                                                                     const struct kefir_driver_external_resources *,
+                                                                    const struct kefir_driver_configuration *,
                                                                     struct kefir_driver_linker_configuration *,
                                                                     const struct kefir_driver_target *);
 
