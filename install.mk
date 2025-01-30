@@ -25,7 +25,7 @@ ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
 endif
 	@install "$(LIBKEFIR_A)" "$(DESTDIR)$(libdir)"
 	@echo "Installing headers..."
-	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
+	@cp -r -P -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
 	@ln -sfn toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
 	@echo "Installing binaries..."
 	@install "$(KEFIR_BIN_DIR)"/kefir "$(DESTDIR)$(bindir)"/kefir-cc
