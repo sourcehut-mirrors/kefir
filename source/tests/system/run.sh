@@ -24,7 +24,7 @@ ASM_OBJ="$TMPDIR/gen.o"
 TEST_EXE="$TMPDIR/test"
 VALGRIND_FILE="$TMPDIR/gen.log"
 VALGRIND="valgrind $VALGRIND_TEST_OPTIONS --log-file=$VALGRIND_FILE"
-COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $PROFILE_CFLAGS $EXTRA_CFLAGS -I$DIR/../../../headers $TEST_CFLAGS -o $TEST_EXE -lm -pthread"
+COMPILE="$CC -std=c11 -Wall -Wextra -pedantic -Wno-overlength-strings $PROFILE_CFLAGS $EXTRA_CFLAGS -I$DIR/../../../headers $TEST_CFLAGS -o $TEST_EXE -lm -pthread $EXTRA_LDFLAGS"
 
 if [[ "x$PLATFORM" == "xfreebsd" ]]; then
     COMPILE="$COMPILE -lstdthreads"
