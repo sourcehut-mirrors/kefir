@@ -23,6 +23,7 @@
 #include <assert.h>
 #include <math.h>
 #include <string.h>
+#include <stdarg.h>
 #include "./definitions.h"
 
 #define EPSILON_D 1e-6
