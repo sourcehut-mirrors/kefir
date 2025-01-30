@@ -40,17 +40,21 @@ double long _Complex n;
 #define EPSILON_D 1e-6
 #define EPSILON_LD 1e-8
 
-#ifndef CMPLXF
+#ifdef CMPLXF
+#undef CMPLXF
+#endif
+
 #define CMPLXF(_a, _b) ((float) (_a) + I * (float) (b))
-#endif
 
-#ifndef CMPLX
+#ifdef CMPLX
+#undef CMPLX
+#endif
 #define CMPLX(_a, _b) ((double) (_a) + I * (double) (b))
-#endif
 
-#ifndef CMPLXL
-#define CMPLXL(_a, _b) ((long double) (_a) + I * (long double) (b))
+#ifdef CMPLXL
+#undef CMPLXL
 #endif
+#define CMPLXL(_a, _b) ((long double) (_a) + I * (long double) (b))
 
 int main(void) {
     for (double real = -10.0; real < 10.0; real += 0.1) {
