@@ -221,6 +221,25 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IROPCODE_PUSHLD, INFINITY));
             break;
 
+        case KEFIR_AST_BUILTIN_NAN_FLOAT32: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(
+                builder, KEFIR_IROPCODE_PUSHF32, nan(arg1_node->properties.expression_props.string_literal.content),
+                0.0f));
+        } break;
+
+        case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(
+                builder, KEFIR_IROPCODE_PUSHF64, nan(arg1_node->properties.expression_props.string_literal.content)));
+        } break;
+
+        case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(
+                builder, KEFIR_IROPCODE_PUSHLD, nan(arg1_node->properties.expression_props.string_literal.content)));
+        } break;
+
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {

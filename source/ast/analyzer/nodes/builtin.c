@@ -309,6 +309,60 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             base->properties.expression_props.constant_expression = true;
         } break;
 
+        case KEFIR_AST_BUILTIN_NAN_FLOAT32: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nanf builtin invocation should have single string literal parameter"));
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            REQUIRE(
+                arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                    (arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal"));
+
+            base->properties.type = kefir_ast_type_float();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nanf builtin invocation should have single string literal parameter"));
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            REQUIRE(
+                arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                    (arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal"));
+
+            base->properties.type = kefir_ast_type_double();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
+        case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "nanf builtin invocation should have single string literal parameter"));
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, arg1_node));
+            REQUIRE(
+                arg1_node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                    (arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_MULTIBYTE ||
+                     arg1_node->properties.expression_props.string_literal.type == KEFIR_AST_STRING_LITERAL_UNICODE8),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
+                                       "Expected multibyte string literal"));
+
+            base->properties.type = kefir_ast_type_long_double();
+            base->properties.expression_props.constant_expression = true;
+        } break;
+
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {

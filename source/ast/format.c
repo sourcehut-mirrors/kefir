@@ -375,6 +375,18 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
             REQUIRE_OK(kefir_json_output_string(json, "inf_long_double"));
             break;
 
+        case KEFIR_AST_BUILTIN_NAN_FLOAT32:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_float32"));
+            break;
+
+        case KEFIR_AST_BUILTIN_NAN_FLOAT64:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_float64"));
+            break;
+
+        case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE:
+            REQUIRE_OK(kefir_json_output_string(json, "nan_long_double"));
+            break;
+
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
             REQUIRE_OK(kefir_json_output_string(json, "add_overflow"));
             break;

@@ -38,7 +38,8 @@ endif
 CFLAGS=-std=c11 -fno-common
 PROFILE_CFLAGS=
 EXTRA_CFLAGS=
-LDFLAGS=
+LDFLAGS=-lm
+EXTRA_LDFLAGS=
 SANITIZER_FLAGS=
 ifeq ($(USE_SHARED),yes)
 CFLAGS+=-fPIC
@@ -64,6 +65,7 @@ CFLAGS+=-fprofile-arcs -ftest-coverage
 LDFLAGS+=-lgcov --coverage
 endif
 CFLAGS+=$(PROFILE_CFLAGS) $(SANITIZER_FLAGS) $(EXTRA_CFLAGS)
+LDFLAGS+=$(EXTRA_LDFLAGS)
 
 # Host environment detection
 DETECT_HOST_ENV=yes
@@ -128,7 +130,7 @@ $(KEFIR_BIN_DIR)/%.deps:
 $(KEFIR_BIN_DIR)/%.d: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating $@"
-	@$(CC) -I$(HEADERS_DIR) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
+	@$(CC) -I$(HEADERS_DIR) $(EXTRA_CFLAGS) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .d,.deps,$@)) -MM -MT '$(@:.d=.o)' $< > $@
 
 $(KEFIR_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.d $(KEFIR_BIN_DIR)/%.deps $(KEFIR_HOST_ENV_CONFIG_HEADER)
 	@mkdir -p $(shell dirname "$@")

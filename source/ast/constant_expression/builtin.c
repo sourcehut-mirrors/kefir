@@ -231,6 +231,14 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             value->floating_point = INFINITY;
             break;
 
+        case KEFIR_AST_BUILTIN_NAN_FLOAT32:
+        case KEFIR_AST_BUILTIN_NAN_FLOAT64:
+        case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
+            value->floating_point = nanl(node->properties.expression_props.string_literal.content);
+        } break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:
