@@ -28,6 +28,15 @@ tasks:
       make clean
       export CSMITH=$HOME/csmith-install/bin/csmith
       LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug EXTRA_CFLAGS=-gdwarf-4 USE_SANITIZER=yes CC=clang-15 -j$(nproc)
+  - test_self:
+      cd kefir
+      make clean
+      make all CC=gcc-12 -j$(nproc)
+      make install prefix=$HOME/kefir-install
+      make clean
+      make all PROFILE=reldebug CC=$HOME/kefir-install/bin/kefir -j(nproc)
+      export CSMITH=$HOME/csmith-install/bin/csmith
+      LC_ALL=C.UTF-8 make test USE_VALGRIND=yes PROFILE=reldebug CC=$HOME/kefir-install/bin/kefir -j$(nproc)
   - build: |
       cd kefir
       make clean
