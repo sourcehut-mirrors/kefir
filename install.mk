@@ -20,10 +20,10 @@ install:
 	@install -d "$(DESTDIR)$(man1dir)"
 	@echo "Installing libraries.."
 ifneq ($(wildcard $(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)),)
-	@install -D "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" -t "$(DESTDIR)$(libdir)"
+	@install "$(LIBKEFIR_SO).$(LIBKEFIR_SO_VERSION)" "$(DESTDIR)$(libdir)"
 	@ln -sf libkefir.so.$(LIBKEFIR_SO_VERSION) "$(DESTDIR)$(libdir)"/libkefir.so
 endif
-	@install -D "$(LIBKEFIR_A)" -t "$(DESTDIR)$(libdir)"
+	@install "$(LIBKEFIR_A)" "$(DESTDIR)$(libdir)"
 	@echo "Installing headers..."
 	@cp -r --no-dereference -p "$(HEADERS_DIR)"/kefir "$(DESTDIR)$(includedir)"/kefir/toolchain
 	@ln -sfn toolchain/kefir/runtime "$(DESTDIR)$(includedir)"/kefir/runtime
@@ -38,9 +38,9 @@ endif
 	@chmod 755 "$(DESTDIR)$(bindir)"/kefir
 	@install "$(SCRIPTS_DIR)"/detect-host-env.sh "$(DESTDIR)$(bindir)"/kefir-detect-host-env
 	@echo "Installing man pages..."
-	@install "$(KEFIR_BIN_DIR)"/man/kefir.1.gz -t "$(DESTDIR)$(man1dir)"
-	@install "$(KEFIR_BIN_DIR)"/man/kefir-cc1.1.gz -t "$(DESTDIR)$(man1dir)"
-	@install "$(KEFIR_BIN_DIR)"/man/kefir-detect-host-env.1.gz -t "$(DESTDIR)$(man1dir)"
+	@install "$(KEFIR_BIN_DIR)"/man/kefir.1.gz "$(DESTDIR)$(man1dir)"
+	@install "$(KEFIR_BIN_DIR)"/man/kefir-cc1.1.gz "$(DESTDIR)$(man1dir)"
+	@install "$(KEFIR_BIN_DIR)"/man/kefir-detect-host-env.1.gz "$(DESTDIR)$(man1dir)"
 ifeq ($(INSTALL_LICENSES),yes)
 	@echo "Installing license files..."
 	@mkdir -p "$(DESTDIR)$(datarootdir)/licenses/kefir"
