@@ -20,9 +20,9 @@ $(KEFIR_CC1_EXE): $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_DEPENDENCY)
 	@mkdir -p $(shell dirname "$@")
 	@echo "Linking $@"
 ifeq ($(USE_SHARED),yes)
-	@$(CCLD) $(LDFLAGS) -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(KEFIR_STANDALONE_LIBS) -L $(LIB_DIR) -lkefir
+	@$(CCLD) -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(KEFIR_STANDALONE_LIBS) -L $(LIB_DIR) -lkefir $(LDFLAGS)
 else
-	@$(CCLD) $(LDFLAGS) -static -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_STANDALONE_LIBS)
+	@$(CCLD) -static -o $@ $(KEFIR_STANDALONE_OBJECT_FILES) $(LIBKEFIR_A) $(KEFIR_STANDALONE_LIBS) $(LDFLAGS)
 endif
 ifneq (,$(findstring release,$(PROFILE)))
 	@echo "Stripping $@"
