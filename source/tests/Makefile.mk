@@ -17,3 +17,4 @@ include source/tests/system/Makefile.mk
 include source/tests/end2end/Makefile.mk
 include source/tests/external/Makefile.mk
 include source/tests/csmith/Makefile.mk
+include source/tests/bootstrap/Makefile.mk

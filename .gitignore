@@ -58,7 +58,6 @@ vgcore.*
 compile_commands.json
 .vscode
 *.core
-bootstrap/
 callgrind.out.*
 
 # GCC Torture

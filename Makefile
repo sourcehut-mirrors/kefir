@@ -7,7 +7,6 @@ include source/driver/Makefile.mk
 include source/web/Makefile.mk
 include docs/man/Makefile.mk
 include install.mk
-include self.mk
 
 ifeq (,$(filter clean,$(MAKECMDGOALS)))
 include $(wildcard $(DEPENDENCIES))
@@ -28,7 +27,7 @@ endif
 .EXTERNAL_TESTS_SLOW_SUITE: $(EXTERNAL_TESTS_SLOW_SUITE)
 .EXTERNAL_TESTS_EXTRA_SUITE: $(EXTERNAL_TESTS_EXTRA_SUITE)
 .EXTERNAL_TESTS_SUITE: .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE
-.BOOTSTRAP: $(BOOTSTRAP)
+.BOOTSTRAP_TEST: $(BOOTSTRAP_TEST)
 .WEB: $(WEB)
 .WEBAPP: $(WEBAPP)
 .MAN_PAGES: $(MAN_PAGES)
@@ -49,7 +48,7 @@ external_test: .EXTERNAL_TESTS_SUITE
 
 external_extra_test: .EXTERNAL_TESTS_EXTRA_SUITE
 
-bootstrap: .BOOTSTRAP
+bootstrap_test: .BOOTSTRAP_TEST
 	@echo "Bootstrap successfully finished"
 
 portable:
@@ -73,7 +72,7 @@ help:
 
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap \
+.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap \
         .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES
 
 .DEFAULT_GOAL := all

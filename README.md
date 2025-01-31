@@ -289,7 +289,7 @@ Web page uses JavaScript and WebAssembly).
 Kefir is capable of bootstraping itself (that is, compiling it's own source
 code). It can be performed as follows:
 ```bash
-make bootstrap BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" -j$(nproc)
+make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" -j$(nproc)
 ```
 
 Furthermore, `kefir` can also be bootstrapped using normal build process:

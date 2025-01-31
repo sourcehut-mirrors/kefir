@@ -4,7 +4,7 @@ $(BOOTSTRAP_DIR)/stage1/kefir: $(KEFIR_BIN_DIR)/kefir
 	@echo "Bootstrapping $@"
 	@LD_LIBRARY_PATH=$(KEFIR_BIN_DIR)/libs:$$LD_LIBRARY_PATH \
 		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
-		$(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+		$(MAKE) -f $(SOURCE_DIR)/tests/bootstrap/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
@@ -19,7 +19,7 @@ $(BOOTSTRAP_DIR)/stage2/kefir: $(BOOTSTRAP_DIR)/stage1/kefir
 	@echo "Bootstrapping $@"
 	@LD_LIBRARY_PATH=$(BOOTSTRAP_DIR)/stage1:$$LD_LIBRARY_PATH \
 		KEFIR_RTINC=$(HEADERS_DIR)/kefir/runtime \
-		$(MAKE) -f $(ROOT)/bootstrap.mk bootstrap \
+		$(MAKE) -f $(SOURCE_DIR)/tests/bootstrap/bootstrap.mk bootstrap \
 		ROOT=$(ROOT) \
 		SOURCE=$(SOURCE_DIR) \
 		HEADERS=$(HEADERS_DIR) \
@@ -35,4 +35,4 @@ $(BOOTSTRAP_DIR)/stage2/comparison.done: $(BOOTSTRAP_DIR)/stage1/kefir $(BOOTSTR
 	@$(SCRIPTS_DIR)/bootstrap_compare.sh "$(BOOTSTRAP_DIR)/stage1" "$(BOOTSTRAP_DIR)/stage2"
 	@touch "$@"
 
-BOOTSTRAP += $(BOOTSTRAP_DIR)/stage2/comparison.done
+BOOTSTRAP_TEST += $(BOOTSTRAP_DIR)/stage2/comparison.done
