@@ -287,12 +287,14 @@ Web page uses JavaScript and WebAssembly).
 
 ## Bootstrap
 Kefir is capable of bootstraping itself (that is, compiling it's own source
-code). It can be performed as follows:
+code). This can be verified as follows:
 ```bash
 make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" -j$(nproc)
 ```
 
-Furthermore, `kefir` can also be bootstrapped using normal build process:
+For practical purposes, `kefir` can be bootstrapped using the normal build
+process (note that depending on the target platform, additional defines might be
+necessary. See `source/tests/bootstrap/bootstrap.mk`):
 ```bash
 make all CC=$PATH_TO_KEFIR -j$(nproc)
 ```
