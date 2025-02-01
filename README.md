@@ -209,12 +209,11 @@ completeness, stability and fitness for any particular purpose.**
 Kefir depends on a C11 compiler (tested with `gcc` and `clang`), bash, GNU Make
 as well as basic UNIX utilities for build. Runtime dependencies include `libc`,
 an assembler (GNU As or Yasm) and a linker (GNU ld). Test dependencies
-optionally include `valgrind`, `python` and `csmith` (for test execution) as
-well. After installing all dependencies, kefir can be built with a single
-command: `make -j$(nproc)`. By default, kefir builds a shared library and links
-executables to it. Static linkage can be enforced by specifying `USE_SHARED=no`
-in make command line arguments. Sample `PKGBUILD` is provided in `dist/kefir`
-directory.
+optionally include `valgrind`, `python` and `csmith` as well. After installing
+all dependencies, kefir can be built with a single command: `make -j$(nproc)`.
+By default, kefir builds a shared library and links executables to it. Static
+linkage can be enforced by specifying `USE_SHARED=no` in make command line
+arguments. Sample `PKGBUILD` is provided in `dist/kefir` directory.
 
 It is also advised to run basic test suite:
 ```bash
@@ -225,9 +224,9 @@ gmake test all CC=clang AS=gas # OpenBSD
 gmake test all CC=gcc AS=gas   # NetBSD
 ```
 
-Optionally, Kefir can be installed via: `make install DESTDIR=...`. Short
-reference on compiler options can be obtained by running `kefir --help`, as well
-as in the manual which is supplied in the compiler distribution.
+Optionally, Kefir can be installed via: `make install DESTDIR=... prefix=...`.
+Short reference on compiler options can be obtained by running `kefir --help`,
+as well as in the manual which is supplied in the compiler distribution.
 
 At the moment, Kefir is automatically tested in Ubuntu 24.04, FreeBSD 14.x and
 OpenBSD 7.5 and NetBSD 10.x environments. Arch Linux is used as a primary
@@ -235,7 +234,7 @@ development environment. Kefir also provides a Dockerfile (see `dist`) which
 defines necessary dependencies for running the whole test suite:
 ```bash
 podman build -t kefir-dev-env -f dist/Dockerfile .
-````
+```
 
 ## Portable Kefir
 Kefir provides scripts to build portable, standalone Kefir distribution package
