@@ -2,6 +2,15 @@
 
 This file documents notable changes to the project.
 
+## [0.4.1] - 2025-02-01
+Project release:
+* Major improvements in compatibility and correctness for building real-world
+  software.
+* Additional builtins and compiler extensions have been implemented.
+* Minor optimizations of compile-time memory usage.
+* Removal of runtime library. All runtime routines are inlined into generated
+  code.
+
 ## [0.4.0] - 2024-09-10
 Project release:
 * Implemented complex number support.
