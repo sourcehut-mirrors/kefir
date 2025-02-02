@@ -1,6 +1,6 @@
 # Maintainer: Jevgenijs Protopopovs <jevgenij@protopopov.lv>
 pkgname='kefir-git'
-pkgver=0.4.0.dev
+pkgver=0.4.1.dev
 pkgrel=1
 pkgdesc='C17 language compiler for x86_64 systems (upstream version)'
 provides=('kefir' 'kefir-debug')
