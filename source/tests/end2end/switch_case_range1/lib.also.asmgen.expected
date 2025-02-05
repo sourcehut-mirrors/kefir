@@ -227,26 +227,68 @@ _kefir_func_clamp_int_label24:
     test %al, %al
     sete %cl
     test %cl, %cl
-    jz _kefir_func_clamp_int_label26
-    jmp _kefir_func_clamp_int_label27
-_kefir_func_clamp_int_label25:
+    jz _kefir_func_clamp_int_label12
+_kefir_func_clamp_int_label10:
+_kefir_func_clamp_int_label11:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label12:
+_kefir_func_clamp_int_label13:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label14:
+_kefir_func_clamp_int_label15:
     mov $1, %rax
     neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_int_label16:
+_kefir_func_clamp_int_label17:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label18:
+_kefir_func_clamp_int_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label20:
+_kefir_func_clamp_int_label21:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label22:
+_kefir_func_clamp_int_label23:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_int_label24:
+_kefir_func_clamp_int_label25:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 _kefir_func_clamp_int_label26:
-    jmp _kefir_func_clamp_int_label28
 _kefir_func_clamp_int_label27:
-    jmp _kefir_func_clamp_int_label29
-_kefir_func_clamp_int_label28:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_int_label28:
 _kefir_func_clamp_int_label29:
     mov $100, %rax
-    neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -468,26 +510,68 @@ _kefir_func_clamp_char_label24:
     test %al, %al
     sete %cl
     test %cl, %cl
-    jz _kefir_func_clamp_char_label26
-    jmp _kefir_func_clamp_char_label27
-_kefir_func_clamp_char_label25:
+    jz _kefir_func_clamp_char_label12
+_kefir_func_clamp_char_label10:
+_kefir_func_clamp_char_label11:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label12:
+_kefir_func_clamp_char_label13:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label14:
+_kefir_func_clamp_char_label15:
     mov $1, %rax
     neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_char_label16:
+_kefir_func_clamp_char_label17:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label18:
+_kefir_func_clamp_char_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label20:
+_kefir_func_clamp_char_label21:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label22:
+_kefir_func_clamp_char_label23:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_char_label24:
+_kefir_func_clamp_char_label25:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 _kefir_func_clamp_char_label26:
-    jmp _kefir_func_clamp_char_label28
 _kefir_func_clamp_char_label27:
-    jmp _kefir_func_clamp_char_label29
-_kefir_func_clamp_char_label28:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_char_label28:
 _kefir_func_clamp_char_label29:
     mov $100, %rax
-    neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -715,28 +799,77 @@ _kefir_func_clamp_long_label24:
     test %al, %al
     sete %cl
     test %cl, %cl
-    jz _kefir_func_clamp_long_label26
-    jmp _kefir_func_clamp_long_label27
-_kefir_func_clamp_long_label25:
+    jz _kefir_func_clamp_long_label12
+_kefir_func_clamp_long_label10:
+_kefir_func_clamp_long_label11:
+    mov $100, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label12:
+_kefir_func_clamp_long_label13:
+    mov $0, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label14:
+_kefir_func_clamp_long_label15:
     mov $1, %rax
     neg %eax
     movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_long_label16:
+_kefir_func_clamp_long_label17:
+    mov $2, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label18:
+_kefir_func_clamp_long_label19:
+    mov $3, %rax
+    neg %eax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label20:
+_kefir_func_clamp_long_label21:
+    mov $3, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label22:
+_kefir_func_clamp_long_label23:
+    mov $2, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_long_label24:
+_kefir_func_clamp_long_label25:
+    mov $1, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 _kefir_func_clamp_long_label26:
-    jmp _kefir_func_clamp_long_label28
 _kefir_func_clamp_long_label27:
-    jmp _kefir_func_clamp_long_label29
-_kefir_func_clamp_long_label28:
     mov $0, %rax
     movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_long_label28:
 _kefir_func_clamp_long_label29:
     mov $100, %rax
-    neg %eax
     movsx %eax, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -959,26 +1092,68 @@ _kefir_func_clamp_short_label24:
     test %al, %al
     sete %cl
     test %cl, %cl
-    jz _kefir_func_clamp_short_label26
-    jmp _kefir_func_clamp_short_label27
-_kefir_func_clamp_short_label25:
+    jz _kefir_func_clamp_short_label12
+_kefir_func_clamp_short_label10:
+_kefir_func_clamp_short_label11:
+    mov $100, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label12:
+_kefir_func_clamp_short_label13:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label14:
+_kefir_func_clamp_short_label15:
     mov $1, %rax
     neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_short_label16:
+_kefir_func_clamp_short_label17:
+    mov $2, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label18:
+_kefir_func_clamp_short_label19:
+    mov $3, %rax
+    neg %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label20:
+_kefir_func_clamp_short_label21:
+    mov $3, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label22:
+_kefir_func_clamp_short_label23:
+    mov $2, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_clamp_short_label24:
+_kefir_func_clamp_short_label25:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
 _kefir_func_clamp_short_label26:
-    jmp _kefir_func_clamp_short_label28
 _kefir_func_clamp_short_label27:
-    jmp _kefir_func_clamp_short_label29
-_kefir_func_clamp_short_label28:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_clamp_short_label28:
 _kefir_func_clamp_short_label29:
     mov $100, %rax
-    neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

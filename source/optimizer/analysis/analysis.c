@@ -24,202 +24,6 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-static kefir_result_t block_schedule_bfs_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
-                                              kefir_result_t (*callback)(kefir_opt_block_id_t, void *), void *payload,
-                                              struct kefir_list *work_queue, kefir_bool_t *marks) {
-    REQUIRE_OK(kefir_list_insert_after(mem, work_queue, kefir_list_tail(work_queue),
-                                       (void *) (kefir_uptr_t) code->entry_point));
-
-    kefir_result_t res = KEFIR_OK;
-    for (struct kefir_list_entry *head_entry = kefir_list_head(work_queue); res == KEFIR_OK && head_entry != NULL;
-         res = kefir_list_pop(mem, work_queue, head_entry), head_entry = kefir_list_head(work_queue)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) head_entry->value);
-
-        if (marks[block_id]) {
-            continue;
-        }
-        REQUIRE_OK(callback(block_id, payload));
-        marks[block_id] = true;
-
-        const struct kefir_opt_code_block *block = NULL;
-        REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
-
-        kefir_opt_instruction_ref_t instr_ref;
-        const struct kefir_opt_instruction *instr = NULL;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &instr_ref));
-        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-
-        switch (instr->operation.opcode) {
-            case KEFIR_OPT_OPCODE_JUMP:
-                REQUIRE_OK(
-                    kefir_list_insert_after(mem, work_queue, kefir_list_tail(work_queue),
-                                            (void *) (kefir_uptr_t) instr->operation.parameters.branch.target_block));
-                break;
-
-            case KEFIR_OPT_OPCODE_BRANCH:
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, work_queue, kefir_list_tail(work_queue),
-                    (void *) (kefir_uptr_t) instr->operation.parameters.branch.alternative_block));
-                REQUIRE_OK(
-                    kefir_list_insert_after(mem, work_queue, kefir_list_tail(work_queue),
-                                            (void *) (kefir_uptr_t) instr->operation.parameters.branch.target_block));
-                break;
-
-            case KEFIR_OPT_OPCODE_IJUMP:
-            case KEFIR_OPT_OPCODE_RETURN:
-                // Intentionally left blank
-                break;
-
-            case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-                const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly(code, instr->operation.parameters.inline_asm_ref,
-                                                                    &inline_asm));
-                if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
-                    struct kefir_hashtree_node_iterator iter;
-                    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
-                         node != NULL; node = kefir_hashtree_next(&iter)) {
-                        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-                        REQUIRE_OK(
-                            kefir_list_insert_after(mem, work_queue, NULL, (void *) (kefir_uptr_t) target_block));
-                    }
-
-                    REQUIRE_OK(kefir_list_insert_after(mem, work_queue, NULL,
-                                                       (void *) (kefir_uptr_t) inline_asm->default_jump_target));
-                }
-            } break;
-
-            default:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                       "Unexpected terminating instruction in optimizer block control flow");
-        }
-    }
-
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
-    for (kefir_opt_block_id_t i = 0; i < num_of_blocks; i++) {
-        if (!marks[i]) {
-            REQUIRE_OK(callback(i, payload));
-        }
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t block_schedule_bfs(struct kefir_mem *mem,
-                                         const struct kefir_opt_code_analyze_block_scheduler *scheduler,
-                                         const struct kefir_opt_code_container *code,
-                                         kefir_result_t (*callback)(kefir_opt_block_id_t, void *), void *payload) {
-    UNUSED(scheduler);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(callback != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer analysis block schedule callback"));
-
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
-
-    struct kefir_list work_queue;
-    REQUIRE_OK(kefir_list_init(&work_queue));
-
-    kefir_bool_t *scheduled_marks = KEFIR_MALLOC(mem, sizeof(kefir_bool_t) * num_of_blocks);
-    REQUIRE(scheduled_marks != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer DFS scheduler data"));
-    memset(scheduled_marks, 0, sizeof(kefir_bool_t) * num_of_blocks);
-
-    kefir_result_t res = block_schedule_bfs_impl(mem, code, callback, payload, &work_queue, scheduled_marks);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_FREE(mem, scheduled_marks);
-        kefir_list_free(mem, &work_queue);
-        return res;
-    });
-
-    KEFIR_FREE(mem, scheduled_marks);
-    REQUIRE_OK(kefir_list_free(mem, &work_queue));
-    return KEFIR_OK;
-}
-
-const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_bfs_block_scheduler = {
-    .schedule = block_schedule_bfs, .payload = NULL};
-
-static kefir_result_t find_successors(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
-    struct kefir_opt_code_container_iterator iter;
-    for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(analysis->code, &iter); block != NULL;
-         block = kefir_opt_code_container_next(&iter)) {
-        struct kefir_list *successors = &analysis->blocks[block->id].successors;
-
-        kefir_opt_instruction_ref_t tail_instr_ref;
-        const struct kefir_opt_instruction *tail_instr = NULL;
-        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(analysis->code, block, &tail_instr_ref));
-        REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, tail_instr_ref, &tail_instr));
-        switch (tail_instr->operation.opcode) {
-            case KEFIR_OPT_OPCODE_JUMP:
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, successors, kefir_list_tail(successors),
-                    (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));
-                break;
-
-            case KEFIR_OPT_OPCODE_BRANCH:
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, successors, kefir_list_tail(successors),
-                    (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));
-                REQUIRE_OK(kefir_list_insert_after(
-                    mem, successors, kefir_list_tail(successors),
-                    (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.alternative_block));
-                break;
-
-            case KEFIR_OPT_OPCODE_IJUMP:
-                for (const struct kefir_list_entry *indirect_iter =
-                         kefir_list_head(&analysis->indirect_jump_target_blocks);
-                     indirect_iter != NULL; kefir_list_next(&indirect_iter)) {
-                    REQUIRE_OK(
-                        kefir_list_insert_after(mem, successors, kefir_list_tail(successors), indirect_iter->value));
-                }
-                break;
-
-            case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
-                const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
-                REQUIRE_OK(kefir_opt_code_container_inline_assembly(
-                    analysis->code, tail_instr->operation.parameters.inline_asm_ref, &inline_asm));
-                if (!kefir_hashtree_empty(&inline_asm->jump_targets)) {
-                    REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                                       (void *) (kefir_uptr_t) inline_asm->default_jump_target));
-
-                    struct kefir_hashtree_node_iterator iter;
-                    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
-                         node != NULL; node = kefir_hashtree_next(&iter)) {
-                        ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-                        REQUIRE_OK(kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
-                                                           (void *) (kefir_uptr_t) target_block));
-                    }
-                }
-            } break;
-
-            case KEFIR_OPT_OPCODE_RETURN:
-                // Intentionally left blank
-                break;
-
-            default:
-                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                                       "Unexpected terminating instruction of optimizer code block");
-        }
-
-        for (const struct kefir_list_entry *iter = kefir_list_head(successors); iter != NULL; kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block, (kefir_uptr_t) iter->value);
-
-            REQUIRE_OK(kefir_list_insert_after(mem, &analysis->blocks[successor_block].predecessors,
-                                               kefir_list_tail(&analysis->blocks[successor_block].predecessors),
-                                               (void *) (kefir_uptr_t) block->id));
-        }
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
-    REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
-    REQUIRE_OK(find_successors(mem, analysis));
-    REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis, &kefir_opt_code_analyze_bfs_block_scheduler));
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                       struct kefir_opt_code_analysis *analysis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -230,14 +34,13 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
 
-    REQUIRE_OK(kefir_list_init(&analysis->indirect_jump_target_blocks));
+    REQUIRE_OK(kefir_hashtreeset_init(&analysis->indirect_jump_target_blocks, &kefir_hashtree_uint_ops));
 
     analysis->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_analysis_block_properties) * num_of_blocks);
     REQUIRE(analysis->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis code block"));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties) {
-            .block_id = i, .reachable = false, .linear_position = ~(kefir_size_t) 0ull};
+        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties) {.block_id = i};
         kefir_result_t res = kefir_list_init(&analysis->blocks[i].successors);
         REQUIRE_CHAIN(&res, kefir_list_init(&analysis->blocks[i].predecessors));
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -246,25 +49,22 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
                 kefir_list_free(mem, &analysis->blocks[j].predecessors);
             }
             KEFIR_FREE(mem, analysis->blocks);
-            kefir_list_free(mem, &analysis->indirect_jump_target_blocks);
+            kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
             analysis->blocks = NULL;
             return res;
         });
     }
 
     analysis->code = code;
-    analysis->block_linearization_length = 0;
-    analysis->block_linearization = NULL;
 
-    kefir_result_t res = analyze_code(mem, analysis);
+    kefir_result_t res = kefir_opt_code_container_trace(mem, analysis);
     REQUIRE_ELSE(res == KEFIR_OK, {
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {
             REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
             REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
         }
-        KEFIR_FREE(mem, analysis->block_linearization);
         KEFIR_FREE(mem, analysis->blocks);
-        kefir_list_free(mem, &analysis->indirect_jump_target_blocks);
+        kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
         memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
         return res;
     });
@@ -282,9 +82,8 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
     }
 
-    REQUIRE_OK(kefir_list_free(mem, &analysis->indirect_jump_target_blocks));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks));
 
-    KEFIR_FREE(mem, analysis->block_linearization);
     KEFIR_FREE(mem, analysis->blocks);
     memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
     return KEFIR_OK;

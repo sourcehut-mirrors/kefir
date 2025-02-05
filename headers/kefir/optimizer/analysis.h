@@ -28,8 +28,6 @@
 
 typedef struct kefir_opt_code_analysis_block_properties {
     kefir_opt_block_id_t block_id;
-    kefir_bool_t reachable;
-    kefir_size_t linear_position;
     struct kefir_list predecessors;
     struct kefir_list successors;
 } kefir_opt_code_analysis_block_properties_t;
@@ -39,10 +37,7 @@ typedef struct kefir_opt_code_analysis {
 
     struct kefir_opt_code_analysis_block_properties *blocks;
 
-    struct kefir_list indirect_jump_target_blocks;
-
-    kefir_size_t block_linearization_length;
-    struct kefir_opt_code_analysis_block_properties **block_linearization;
+    struct kefir_hashtreeset indirect_jump_target_blocks;
 } kefir_opt_code_analysis_t;
 
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *, const struct kefir_opt_code_container *,
@@ -62,9 +57,7 @@ typedef struct kefir_opt_code_analyze_block_scheduler {
 extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_bfs_block_scheduler;
 
 #ifdef KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
-kefir_result_t kefir_opt_code_analyze_reachability(struct kefir_mem *, struct kefir_opt_code_analysis *);
-kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *, struct kefir_opt_code_analysis *,
-                                                const struct kefir_opt_code_analyze_block_scheduler *);
+kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *, struct kefir_opt_code_analysis *);
 #endif
 
 typedef struct kefir_opt_module_analysis {

@@ -28,15 +28,14 @@ _kefir_func_dnot_label1:
     test %eax, %eax
     sete %cl
     test %cl, %cl
-    jz _kefir_func_dnot_label2
-    jmp _kefir_func_dnot_label3
+    jz _kefir_func_dnot_label3
 _kefir_func_dnot_label2:
-    mov $1, %rax
+    mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_dnot_label3:
-    mov $0, %rax
+    mov $1, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -54,17 +53,16 @@ _kefir_func_dnotd_label1:
     movq -16(%rbp), %rax
     movq %rax, %xmm0
     ucomisd _kefir_func_dnotd_label4(%rip), %xmm0
-    jp _kefir_func_dnotd_label2
-    jne _kefir_func_dnotd_label2
-    jmp _kefir_func_dnotd_label3
+    jp _kefir_func_dnotd_label3
+    jne _kefir_func_dnotd_label3
 _kefir_func_dnotd_label2:
-    mov $1, %rax
+    mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_dnotd_label3:
-    mov $0, %rax
+    mov $1, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -88,17 +86,16 @@ _kefir_func_dnotf_label1:
     movl -12(%rbp), %eax
     movd %eax, %xmm0
     ucomiss _kefir_func_dnotf_label4(%rip), %xmm0
-    jp _kefir_func_dnotf_label2
-    jne _kefir_func_dnotf_label2
-    jmp _kefir_func_dnotf_label3
+    jp _kefir_func_dnotf_label3
+    jne _kefir_func_dnotf_label3
 _kefir_func_dnotf_label2:
-    mov $1, %rax
+    mov $0, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_dnotf_label3:
-    mov $0, %rax
+    mov $1, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -135,16 +132,15 @@ _kefir_func_dnotld_label1:
     setnp %al
     cmovne %rcx, %rax
     test %al, %al
-    jz _kefir_func_dnotld_label2
-    jmp _kefir_func_dnotld_label3
+    jz _kefir_func_dnotld_label3
 _kefir_func_dnotld_label2:
-    mov $1, %rax
+    mov $0, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_dnotld_label3:
-    mov $0, %rax
+    mov $1, %rax
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

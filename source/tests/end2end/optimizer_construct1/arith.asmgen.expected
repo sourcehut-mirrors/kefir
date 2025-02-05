@@ -23,8 +23,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -89,8 +87,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [],
                             "predecessors": [
                                 0
@@ -126,8 +122,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -185,8 +179,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 2,
                                 3
@@ -264,8 +256,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [
                                 5,
                                 6
@@ -316,12 +306,33 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [],
                             "predecessors": [
                                 1
                             ]
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "control_flow": 10,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 10,
+                                "opcode": "jump",
+                                "target_block": 5,
+                                "control_next": null,
+                                "ir_instruction": 9
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                5
+                            ],
+                            "predecessors": []
                         }
                     },
                     {
@@ -399,8 +410,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 6,
                             "successors": [],
                             "predecessors": [
                                 2,
@@ -466,12 +475,31 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 5,
                             "successors": [],
                             "predecessors": [
                                 2
                             ]
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "control_flow": 32,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 32,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],
@@ -503,8 +531,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -579,8 +605,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 2,
                                 3
@@ -608,8 +632,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [],
                             "predecessors": [
                                 1
@@ -678,12 +700,33 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [],
                             "predecessors": [
                                 1
                             ]
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "control_flow": 15,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 15,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "ir_instruction": 14
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": []
                         }
                     }
                 ],

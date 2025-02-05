@@ -44,8 +44,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -570,12 +568,31 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [],
                             "predecessors": [
                                 0
                             ]
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "control_flow": 78,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 78,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],

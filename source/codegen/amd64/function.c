@@ -85,7 +85,7 @@ static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruc
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr_ref, &instr));
 
-    if (param->func->function_analysis->blocks[instr->block_id].reachable) {
+    if (kefir_opt_code_schedule_has_block(&param->func->schedule, instr->block_id)) {
         REQUIRE_OK(kefir_list_insert_after(param->mem, param->queue, kefir_list_tail(param->queue), (void *) instr));
     }
     return KEFIR_OK;
@@ -94,12 +94,12 @@ static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruc
 static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem,
                                                            struct kefir_codegen_amd64_function *func,
                                                            struct kefir_list *queue) {
-    for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
-        const struct kefir_opt_code_analysis_block_properties *block_props =
-            func->function_analysis->block_linearization[block_idx];
-
+    for (kefir_size_t block_linear_index = 0;
+         block_linear_index < kefir_opt_code_schedule_num_of_blocks(&func->schedule); block_linear_index++) {
+        kefir_opt_block_id_t block_id;
         const struct kefir_opt_code_block *block;
-        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_props->block_id, &block));
+        REQUIRE_OK(kefir_opt_code_schedule_block_by_index(&func->schedule, block_linear_index, &block_id));
+        REQUIRE_OK(kefir_opt_code_container_block(&func->function->code, block_id, &block));
 
         kefir_opt_instruction_ref_t instr_ref;
         const struct kefir_opt_instruction *instr;
@@ -174,20 +174,26 @@ static kefir_result_t try_schedule_instruction(
 }
 
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
+    // Schedule code
+    struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = try_schedule_instruction,
+                                                             .payload = (void *) &func->function->code};
+    REQUIRE_OK(
+        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, func->function_analysis, &scheduler));
+
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels
-    for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
-        const struct kefir_opt_code_analysis_block_properties *block_props =
-            func->function_analysis->block_linearization[block_idx];
+    kefir_result_t res;
+    for (kefir_size_t block_linear_index = 0;
+         block_linear_index < kefir_opt_code_schedule_num_of_blocks(&func->schedule); block_linear_index++) {
+        kefir_opt_block_id_t block_id;
         kefir_asmcmp_label_index_t asmlabel;
+        REQUIRE_OK(kefir_opt_code_schedule_block_by_index(&func->schedule, block_linear_index, &block_id));
         REQUIRE_OK(kefir_asmcmp_context_new_label(mem, &func->code.context, KEFIR_ASMCMP_INDEX_NONE, &asmlabel));
-        REQUIRE_OK(kefir_hashtree_insert(mem, &func->labels, (kefir_hashtree_key_t) block_props->block_id,
+        REQUIRE_OK(kefir_hashtree_insert(mem, &func->labels, (kefir_hashtree_key_t) block_id,
                                          (kefir_hashtree_value_t) asmlabel));
 
-        kefir_result_t res;
         struct kefir_opt_code_block_public_label_iterator iter;
-        for (res =
-                 kefir_opt_code_container_block_public_labels_iter(&func->function->code, block_props->block_id, &iter);
+        for (res = kefir_opt_code_container_block_public_labels_iter(&func->function->code, block_id, &iter);
              res == KEFIR_OK; res = kefir_opt_code_container_block_public_labels_next(&iter)) {
             REQUIRE_OK(
                 kefir_asmcmp_context_label_add_public_name(mem, &func->code.context, asmlabel, iter.public_label));
@@ -217,25 +223,20 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         func->return_address_vreg = implicit_param_vreg;
     }
 
-    // Schedule instructions
-    struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = try_schedule_instruction,
-                                                             .payload = (void *) &func->function->code};
-    REQUIRE_OK(
-        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, func->function_analysis, &scheduler));
-
     // Translate blocks
-    for (kefir_size_t block_idx = 0; block_idx < func->function_analysis->block_linearization_length; block_idx++) {
-        const struct kefir_opt_code_analysis_block_properties *block_props =
-            func->function_analysis->block_linearization[block_idx];
+    for (kefir_size_t block_linear_index = 0;
+         block_linear_index < kefir_opt_code_schedule_num_of_blocks(&func->schedule); block_linear_index++) {
+        kefir_opt_block_id_t block_id;
+        REQUIRE_OK(kefir_opt_code_schedule_block_by_index(&func->schedule, block_linear_index, &block_id));
 
         struct kefir_hashtree_node *asmlabel_node;
-        REQUIRE_OK(kefir_hashtree_at(&func->labels, (kefir_hashtree_key_t) block_props->block_id, &asmlabel_node));
+        REQUIRE_OK(kefir_hashtree_at(&func->labels, (kefir_hashtree_key_t) block_id, &asmlabel_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, asmlabel, asmlabel_node->value);
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, asmlabel));
 
         struct kefir_opt_code_block_schedule_iterator iter;
         kefir_result_t res;
-        for (res = kefir_opt_code_block_schedule_iter(&func->schedule, block_props->block_id, &iter); res == KEFIR_OK;
+        for (res = kefir_opt_code_block_schedule_iter(&func->schedule, block_id, &iter); res == KEFIR_OK;
              res = kefir_opt_code_block_schedule_next(&iter)) {
             const struct kefir_opt_instruction *instr = NULL;
             REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, iter.instr_ref, &instr));
@@ -253,10 +254,10 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
         }
 
-        REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_begin(mem, &func->code, block_begin_idx, block_props->block_id,
+        REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_begin(mem, &func->code, block_begin_idx, block_id,
                                                                             &block_begin_idx));
         REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_end(
-                            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), block_props->block_id, NULL));
+                            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), block_id, NULL));
     }
 
     if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {

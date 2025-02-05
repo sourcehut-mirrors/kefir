@@ -33,10 +33,10 @@
     } while (0)
 
 static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                   kefir_opt_block_id_t block_id, struct kefir_list *queue) {
-    REQUIRE(!analysis->blocks[block_id].reachable, KEFIR_OK);
-    analysis->blocks[block_id].reachable = true;
-    analysis->block_linearization_length++;
+                                                   kefir_opt_block_id_t block_id, struct kefir_list *queue,
+                                                   struct kefir_hashtreeset *processed_blocks) {
+    REQUIRE(!kefir_hashtreeset_has(processed_blocks, (kefir_hashtreeset_entry_t) block_id), KEFIR_OK);
+    REQUIRE_OK(kefir_hashtreeset_add(mem, processed_blocks, (kefir_hashtreeset_entry_t) block_id));
 
     const struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
@@ -52,64 +52,71 @@ static kefir_result_t mark_reachable_code_in_block(struct kefir_mem *mem, struct
 }
 
 static kefir_result_t find_reachable_code_store_mem(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                    struct kefir_list *queue,
+                                                    struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_load_mem(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                   struct kefir_list *queue,
+                                                   struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_stack_alloc(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                      struct kefir_list *queue,
+                                                      struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                       const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_ALIGNMENT_REF]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_STACK_ALLOCATION_SIZE_REF]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_bitfield(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                   struct kefir_list *queue,
+                                                   struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_BASE_REF]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[KEFIR_OPT_BITFIELD_VALUE_REF]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_branch(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                 struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                                 struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.branch.condition_ref);
-    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.target_block, queue));
+    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.target_block, queue, processed_blocks));
     if (instr->operation.parameters.branch.alternative_block != KEFIR_ID_NONE) {
         REQUIRE_OK(
-            mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.alternative_block, queue));
+            mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.branch.alternative_block, queue, processed_blocks));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_typed_ref1(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                     struct kefir_list *queue,
+                                                     struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                      const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_typed_ref2(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                     struct kefir_list *queue,
+                                                     struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                      const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
     return KEFIR_OK;
@@ -117,9 +124,10 @@ static kefir_result_t find_reachable_code_typed_ref2(struct kefir_mem *mem, stru
 
 static kefir_result_t find_reachable_code_overflow_arith(struct kefir_mem *mem,
                                                          struct kefir_opt_code_analysis *analysis,
-                                                         struct kefir_list *queue,
+                                                         struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                          const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[2]);
@@ -127,24 +135,27 @@ static kefir_result_t find_reachable_code_overflow_arith(struct kefir_mem *mem,
 }
 
 static kefir_result_t find_reachable_code_ref1(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                               struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_ref2(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                               struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_atomic_op(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                    struct kefir_list *queue,
+                                                    struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                     const struct kefir_opt_instruction *instr) {
     UNUSED(analysis);
+    UNUSED(processed_blocks);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[0]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[1]);
     INSERT_INTO_QUEUE(mem, queue, instr->operation.parameters.refs[2]);
@@ -152,48 +163,51 @@ static kefir_result_t find_reachable_code_atomic_op(struct kefir_mem *mem, struc
 }
 
 static kefir_result_t find_reachable_code_immediate(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                    struct kefir_list *queue,
+                                                    struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                     const struct kefir_opt_instruction *instr) {
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_BLOCK_LABEL) {
-        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.imm.block_ref, queue));
-        REQUIRE_OK(kefir_list_insert_after(mem, &analysis->indirect_jump_target_blocks,
-                                           kefir_list_tail(&analysis->indirect_jump_target_blocks),
-                                           (void *) (kefir_uptr_t) instr->operation.parameters.imm.block_ref));
+        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, instr->operation.parameters.imm.block_ref, queue, processed_blocks));
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &analysis->indirect_jump_target_blocks,
+                                           (kefir_hashtreeset_entry_t) instr->operation.parameters.imm.block_ref));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_index(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                                struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
     UNUSED(mem);
     UNUSED(analysis);
     UNUSED(queue);
+    UNUSED(processed_blocks);
     UNUSED(instr);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_variable(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                   struct kefir_list *queue,
+                                                   struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                    const struct kefir_opt_instruction *instr) {
     UNUSED(mem);
     UNUSED(analysis);
     UNUSED(queue);
+    UNUSED(processed_blocks);
     UNUSED(instr);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_none(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                               struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                               struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
     UNUSED(mem);
     UNUSED(analysis);
     UNUSED(queue);
+    UNUSED(processed_blocks);
     UNUSED(instr);
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_call_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                   struct kefir_list *queue,
+                                                   struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                    const struct kefir_opt_instruction *instr) {
+    UNUSED(processed_blocks);
     const struct kefir_opt_call_node *call = NULL;
     REQUIRE_OK(
         kefir_opt_code_container_call(analysis->code, instr->operation.parameters.function_call.call_ref, &call));
@@ -205,7 +219,8 @@ static kefir_result_t find_reachable_code_call_ref(struct kefir_mem *mem, struct
 }
 
 static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                  struct kefir_list *queue, const struct kefir_opt_instruction *instr) {
+                                                  struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks, const struct kefir_opt_instruction *instr) {
+    UNUSED(processed_blocks);
     const struct kefir_opt_phi_node *phi = NULL;
     REQUIRE_OK(kefir_opt_code_container_phi(analysis->code, instr->operation.parameters.phi_ref, &phi));
 
@@ -215,7 +230,7 @@ static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct 
     kefir_opt_instruction_ref_t instr_ref;
     for (res = kefir_opt_phi_node_link_iter(phi, &iter, &block_id, &instr_ref); res == KEFIR_OK;
          res = kefir_opt_phi_node_link_next(&iter, &block_id, &instr_ref)) {
-        if (analysis->blocks[block_id].reachable) {
+        if (kefir_hashtreeset_has(processed_blocks, (kefir_hashtreeset_entry_t) block_id)) {
             INSERT_INTO_QUEUE(mem, queue, instr_ref);
         }
     }
@@ -226,7 +241,7 @@ static kefir_result_t find_reachable_code_phi_ref(struct kefir_mem *mem, struct 
 }
 
 static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
-                                                     struct kefir_list *queue,
+                                                     struct kefir_list *queue, struct kefir_hashtreeset *processed_blocks,
                                                      const struct kefir_opt_instruction *instr) {
     const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
     REQUIRE_OK(kefir_opt_code_container_inline_assembly(analysis->code, instr->operation.parameters.inline_asm_ref,
@@ -240,17 +255,17 @@ static kefir_result_t find_reachable_code_inline_asm(struct kefir_mem *mem, stru
         for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter);
              node != NULL; node = kefir_hashtree_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, target_block, node->value);
-            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, target_block, queue));
+            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, target_block, queue, processed_blocks));
         }
 
-        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, inline_asm->default_jump_target, queue));
+        REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, inline_asm->default_jump_target, queue, processed_blocks));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                struct kefir_list *queue, struct kefir_list *phi_queue,
-                                               struct kefir_hashtreeset *processed_instr) {
+                                               struct kefir_hashtreeset *processed_instr, struct kefir_hashtreeset *processed_blocks) {
     kefir_result_t res = KEFIR_OK;
     for (struct kefir_list_entry *queue_head = kefir_list_head(queue); res == KEFIR_OK && queue_head != NULL;
          res = kefir_list_pop(mem, queue, queue_head), queue_head = kefir_list_head(queue)) {
@@ -272,7 +287,7 @@ static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kef
         switch (instr->operation.opcode) {
 #define OPCODE_DEF(_id, _symbolic, _class)                                     \
     case KEFIR_OPT_OPCODE_##_id:                                               \
-        REQUIRE_OK(find_reachable_code_##_class(mem, analysis, queue, instr)); \
+        REQUIRE_OK(find_reachable_code_##_class(mem, analysis, queue, processed_blocks, instr)); \
         break;
 
             KEFIR_OPTIMIZER_OPCODE_DEFS(OPCODE_DEF, )
@@ -287,30 +302,42 @@ static kefir_result_t find_reachable_code_loop(struct kefir_mem *mem, struct kef
 
 static kefir_result_t find_reachable_code_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                struct kefir_list *queue, struct kefir_list *phi_queue,
-                                               struct kefir_hashtreeset *processed_instr) {
-    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, analysis->code->entry_point, queue));
+                                               struct kefir_hashtreeset *processed_instr, struct kefir_hashtreeset *processed_blocks) {
+    REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, analysis->code->entry_point, queue, processed_blocks));
     kefir_size_t total_block_count;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &total_block_count));
     for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
         const struct kefir_opt_code_block *block;
         REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
         if (!kefir_hashtreeset_empty(&block->public_labels)) {
-            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, block_id, queue));
+            REQUIRE_OK(mark_reachable_code_in_block(mem, analysis, block_id, queue, processed_blocks));
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &analysis->indirect_jump_target_blocks,
+                                            (kefir_hashtreeset_entry_t) block_id));
         }
     }
-    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, phi_queue, processed_instr));
+    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, phi_queue, processed_instr, processed_blocks));
     REQUIRE_OK(kefir_list_move_all(queue, phi_queue));
-    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, NULL, processed_instr));
+    REQUIRE_OK(find_reachable_code_loop(mem, analysis, queue, NULL, processed_instr, processed_blocks));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_analyze_reachability(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
     struct kefir_list instr_queue, phi_queue;
     struct kefir_hashtreeset processed_instr;
+    struct kefir_hashtreeset processed_blocks;
     REQUIRE_OK(kefir_list_init(&instr_queue));
     REQUIRE_OK(kefir_list_init(&phi_queue));
     REQUIRE_OK(kefir_hashtreeset_init(&processed_instr, &kefir_hashtree_uint_ops));
-    kefir_result_t res = find_reachable_code_impl(mem, analysis, &instr_queue, &phi_queue, &processed_instr);
+    REQUIRE_OK(kefir_hashtreeset_init(&processed_blocks, &kefir_hashtree_uint_ops));
+    kefir_result_t res = find_reachable_code_impl(mem, analysis, &instr_queue, &phi_queue, &processed_instr, &processed_blocks);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &processed_blocks);
+        kefir_hashtreeset_free(mem, &processed_instr);
+        kefir_list_free(mem, &instr_queue);
+        kefir_list_free(mem, &phi_queue);
+        return res;
+    });
+    res = kefir_hashtreeset_free(mem, &processed_blocks);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &processed_instr);
         kefir_list_free(mem, &instr_queue);

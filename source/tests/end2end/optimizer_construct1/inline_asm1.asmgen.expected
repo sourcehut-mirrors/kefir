@@ -23,8 +23,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -110,8 +108,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 2,
                                 3
@@ -167,8 +163,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [
                                 4,
                                 5
@@ -228,8 +222,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [
                                 2
                             ],
@@ -272,8 +264,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 6,
                             "successors": [
                                 8,
                                 6,
@@ -375,8 +365,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 5,
                             "successors": [
                                 4
                             ],
@@ -402,8 +390,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 9,
                             "successors": [
                                 9
                             ],
@@ -429,8 +415,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 8,
                             "successors": [
                                 1
                             ],
@@ -456,8 +440,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 7,
                             "successors": [
                                 9
                             ],
@@ -483,13 +465,32 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 10,
                             "successors": [],
                             "predecessors": [
                                 6,
                                 8
                             ]
+                        }
+                    },
+                    {
+                        "id": 10,
+                        "control_flow": 26,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 26,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],

@@ -30,8 +30,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -182,8 +180,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [],
                             "predecessors": [
                                 0
@@ -219,8 +215,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -293,8 +287,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [],
                             "predecessors": [
                                 0

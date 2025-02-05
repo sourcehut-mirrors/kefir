@@ -23,8 +23,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -177,8 +175,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 2,
                                 3
@@ -206,8 +202,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [],
                             "predecessors": [
                                 1
@@ -265,8 +259,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [
                                 4,
                                 5
@@ -399,8 +391,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 6,
                             "successors": [
                                 3,
                                 6
@@ -441,8 +431,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 5,
                             "successors": [],
                             "predecessors": [
                                 3
@@ -466,8 +454,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 7,
                             "successors": [
                                 1
                             ],

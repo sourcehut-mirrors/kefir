@@ -85,7 +85,9 @@ kefir_result_t kefir_opt_code_schedule_init(struct kefir_opt_code_schedule *sche
     REQUIRE_OK(kefir_hashtree_on_removal(&schedule->instructions, free_instruction_schedule, NULL));
     REQUIRE_OK(kefir_hashtree_init(&schedule->blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&schedule->blocks, free_block_schedule, NULL));
-    schedule->next_linear_index = 0;
+    REQUIRE_OK(kefir_hashtree_init(&schedule->blocks_by_index, &kefir_hashtree_uint_ops));
+    schedule->next_block_index = 0;
+    schedule->next_instruction_index = 0;
     return KEFIR_OK;
 }
 
@@ -93,6 +95,7 @@ kefir_result_t kefir_opt_code_schedule_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
 
+    REQUIRE_OK(kefir_hashtree_free(mem, &schedule->blocks_by_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &schedule->blocks));
     REQUIRE_OK(kefir_hashtree_free(mem, &schedule->instructions));
     return KEFIR_OK;
@@ -309,7 +312,7 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
         } else {
             const struct kefir_opt_instruction *instr;
             REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
-            const kefir_size_t linear_index = param->schedule->next_linear_index++;
+            const kefir_size_t linear_index = param->schedule->next_instruction_index++;
             REQUIRE_OK(kefir_opt_instruction_extract_inputs(
                 param->code, instr, true, update_liveness,
                 &(struct update_liveness_param) {.param = param, .linear_index = linear_index}));
@@ -349,6 +352,7 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, struct kefir_opt_cod
         KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_block_schedule));
     REQUIRE(block_schedule != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate block schedule"));
 
+    block_schedule->linear_index = schedule->next_block_index++;
     kefir_result_t res = kefir_list_init(&block_schedule->instructions);
     REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &schedule->blocks, (kefir_hashtree_key_t) block_id,
                                               (kefir_hashtree_value_t) block_schedule));
@@ -356,6 +360,9 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, struct kefir_opt_cod
         KEFIR_FREE(mem, block_schedule);
         return res;
     });
+    REQUIRE_OK(kefir_hashtree_insert(mem, &schedule->blocks_by_index,
+                                     (kefir_hashtree_key_t) block_schedule->linear_index,
+                                     (kefir_hashtree_value_t) block_id));
 
     struct schedule_instruction_param param = {
         .mem = mem, .schedule = schedule, .code = code, .block_schedule = block_schedule, .scheduler = scheduler};
@@ -393,11 +400,35 @@ kefir_result_t kefir_opt_code_schedule_run(struct kefir_mem *mem, struct kefir_o
     REQUIRE(code_analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
     REQUIRE(scheduler != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code scheduler"));
 
-    for (kefir_size_t block_idx = 0; block_idx < code_analysis->block_linearization_length; block_idx++) {
-        const struct kefir_opt_code_analysis_block_properties *block_props =
-            code_analysis->block_linearization[block_idx];
-        REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, block_props->block_id, scheduler));
+    REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, code->entry_point, scheduler));
+    kefir_result_t res;
+    struct kefir_hashtreeset_iterator iter;
+    for (res = kefir_hashtreeset_iter(&code_analysis->indirect_jump_target_blocks, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, iter.entry);
+        REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, block_id, scheduler));
     }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_schedule_of_block(const struct kefir_opt_code_schedule *schedule,
+                                                kefir_opt_block_id_t block_id,
+                                                const struct kefir_opt_code_block_schedule **block_schedule) {
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
+    REQUIRE(block_schedule != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer block schedule"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&schedule->blocks, (kefir_hashtree_key_t) block_id, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer block schedule");
+    }
+    REQUIRE_OK(res);
+
+    *block_schedule = (const struct kefir_opt_code_block_schedule *) node->value;
     return KEFIR_OK;
 }
 
@@ -423,6 +454,32 @@ kefir_bool_t kefir_opt_code_schedule_has(const struct kefir_opt_code_schedule *s
                                          kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(schedule != NULL, false);
     return kefir_hashtree_has(&schedule->instructions, (kefir_hashtree_key_t) instr_ref);
+}
+
+kefir_bool_t kefir_opt_code_schedule_has_block(const struct kefir_opt_code_schedule *schedule,
+                                               kefir_opt_block_id_t block_id) {
+    REQUIRE(schedule != NULL, false);
+    return kefir_hashtree_has(&schedule->blocks, (kefir_hashtree_key_t) block_id);
+}
+
+kefir_size_t kefir_opt_code_schedule_num_of_blocks(const struct kefir_opt_code_schedule *schedule) {
+    REQUIRE(schedule != NULL, 0);
+    return schedule->next_block_index;
+}
+
+kefir_result_t kefir_opt_code_schedule_block_by_index(const struct kefir_opt_code_schedule *schedule,
+                                                      kefir_size_t index, kefir_opt_block_id_t *block_id_ptr) {
+    REQUIRE(schedule != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code schedule"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&schedule->blocks_by_index, (kefir_hashtree_key_t) index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer schedule block");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_PTR(block_id_ptr, (kefir_opt_block_id_t) node->value);
+    return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_block_schedule_iter(const struct kefir_opt_code_schedule *schedule,

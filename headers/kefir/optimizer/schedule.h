@@ -36,6 +36,7 @@ typedef struct kefir_opt_code_instruction_schedule {
 } kefir_opt_code_instruction_schedule_t;
 
 typedef struct kefir_opt_code_block_schedule {
+    kefir_size_t linear_index;
     struct kefir_list instructions;
 } kefir_opt_code_block_schedule_t;
 
@@ -52,7 +53,9 @@ typedef struct kefir_opt_code_instruction_scheduler {
 typedef struct kefir_opt_code_schedule {
     struct kefir_hashtree instructions;
     struct kefir_hashtree blocks;
-    kefir_size_t next_linear_index;
+    struct kefir_hashtree blocks_by_index;
+    kefir_size_t next_block_index;
+    kefir_size_t next_instruction_index;
 } kefir_opt_code_schedule_t;
 
 kefir_result_t kefir_opt_code_schedule_init(struct kefir_opt_code_schedule *);
@@ -63,9 +66,16 @@ kefir_result_t kefir_opt_code_schedule_run(struct kefir_mem *, struct kefir_opt_
                                            const struct kefir_opt_code_analysis *,
                                            const struct kefir_opt_code_instruction_scheduler *);
 
+kefir_result_t kefir_opt_code_schedule_of_block(const struct kefir_opt_code_schedule *, kefir_opt_block_id_t,
+                                                const struct kefir_opt_code_block_schedule **);
 kefir_result_t kefir_opt_code_schedule_of(const struct kefir_opt_code_schedule *, kefir_opt_instruction_ref_t,
                                           const struct kefir_opt_code_instruction_schedule **);
 kefir_bool_t kefir_opt_code_schedule_has(const struct kefir_opt_code_schedule *, kefir_opt_instruction_ref_t);
+kefir_bool_t kefir_opt_code_schedule_has_block(const struct kefir_opt_code_schedule *, kefir_opt_block_id_t);
+
+kefir_size_t kefir_opt_code_schedule_num_of_blocks(const struct kefir_opt_code_schedule *);
+kefir_result_t kefir_opt_code_schedule_block_by_index(const struct kefir_opt_code_schedule *, kefir_size_t,
+                                                      kefir_opt_block_id_t *);
 
 typedef struct kefir_opt_code_block_schedule_iterator {
     const struct kefir_list_entry *iter;

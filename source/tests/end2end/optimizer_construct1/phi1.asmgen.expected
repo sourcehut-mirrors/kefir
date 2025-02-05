@@ -51,8 +51,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -252,8 +250,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 2,
                                 3
@@ -311,8 +307,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [
                                 4,
                                 5
@@ -385,8 +379,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [
                                 2
                             ],
@@ -440,8 +432,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 6,
                             "successors": [],
                             "predecessors": [
                                 2,
@@ -518,8 +508,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 5,
                             "successors": [
                                 6,
                                 7
@@ -597,8 +585,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 8,
                             "successors": [
                                 4
                             ],
@@ -686,14 +672,33 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 7,
                             "successors": [
                                 6
                             ],
                             "predecessors": [
                                 5
                             ]
+                        }
+                    },
+                    {
+                        "id": 8,
+                        "control_flow": 47,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 47,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],
@@ -732,8 +737,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 1,
                             "successors": [
                                 1
                             ],
@@ -880,8 +883,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 2,
                             "successors": [
                                 4,
                                 5
@@ -917,8 +918,6 @@
                             "_kefir_local_public_label_test2_label1"
                         ],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 7,
                             "successors": [],
                             "predecessors": [
                                 6,
@@ -953,8 +952,6 @@
                             "_kefir_local_public_label_test2_label2"
                         ],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 8,
                             "successors": [],
                             "predecessors": [
                                 6,
@@ -1010,8 +1007,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 4,
                             "successors": [
                                 6,
                                 7
@@ -1073,8 +1068,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 3,
                             "successors": [
                                 4
                             ],
@@ -1118,8 +1111,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 6,
                             "successors": [
                                 2,
                                 3
@@ -1164,8 +1155,6 @@
                         ],
                         "public_labels": [],
                         "properties": {
-                            "reachable": true,
-                            "linear_position": 5,
                             "successors": [
                                 2,
                                 3
@@ -1173,6 +1162,50 @@
                             "predecessors": [
                                 4
                             ]
+                        }
+                    },
+                    {
+                        "id": 8,
+                        "control_flow": 26,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 26,
+                                "opcode": "jump",
+                                "target_block": 2,
+                                "control_next": null,
+                                "ir_instruction": 26
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                2
+                            ],
+                            "predecessors": []
+                        }
+                    },
+                    {
+                        "id": 9,
+                        "control_flow": 34,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 34,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "ir_instruction": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": []
                         }
                     }
                 ],

@@ -113,6 +113,18 @@ _kefir_func_f32_predec_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f32_predec_label4:
+    fnclex
+    mov %rax, %r10
+    movq -80(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -104(%rbp)
+    jmp _kefir_func_f32_predec_label2
 __kefir_text_func_f32_predec_end:
 .section .rodata
     .align 4
@@ -216,6 +228,18 @@ _kefir_func_f32_preinc_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f32_preinc_label4:
+    fnclex
+    mov %rax, %r10
+    movq -80(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -104(%rbp)
+    jmp _kefir_func_f32_preinc_label2
 __kefir_text_func_f32_preinc_end:
 .section .rodata
     .align 4
@@ -320,6 +344,18 @@ _kefir_func_f64_predec_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f64_predec_label4:
+    fnclex
+    mov %rax, %r10
+    movq -80(%rbp), %rax
+    movq %rax, -144(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -120(%rbp)
+    jmp _kefir_func_f64_predec_label2
 __kefir_text_func_f64_predec_end:
 .section .rodata
     .align 8
@@ -424,6 +460,18 @@ _kefir_func_f64_preinc_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f64_preinc_label4:
+    fnclex
+    mov %rax, %r10
+    movq -80(%rbp), %rax
+    movq %rax, -144(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -120(%rbp)
+    jmp _kefir_func_f64_preinc_label2
 __kefir_text_func_f64_preinc_end:
 .section .rodata
     .align 8
@@ -527,6 +575,18 @@ _kefir_func_f32_postdec_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f32_postdec_label4:
+    fnclex
+    mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
+    jmp _kefir_func_f32_postdec_label2
 __kefir_text_func_f32_postdec_end:
 .section .rodata
     .align 4
@@ -630,6 +690,18 @@ _kefir_func_f32_postinc_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f32_postinc_label4:
+    fnclex
+    mov %rax, %r10
+    movq -88(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -104(%rbp)
+    jmp _kefir_func_f32_postinc_label2
 __kefir_text_func_f32_postinc_end:
 .section .rodata
     .align 4
@@ -734,6 +806,18 @@ _kefir_func_f64_postdec_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f64_postdec_label4:
+    fnclex
+    mov %rax, %r10
+    movq -96(%rbp), %rax
+    movq %rax, -144(%rbp)
+    movq -88(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    jmp _kefir_func_f64_postdec_label2
 __kefir_text_func_f64_postdec_end:
 .section .rodata
     .align 8
@@ -838,6 +922,18 @@ _kefir_func_f64_postinc_label4:
     lea (%rbp), %rsp
     pop %rbp
     ret
+_kefir_func_f64_postinc_label4:
+    fnclex
+    mov %rax, %r10
+    movq -96(%rbp), %rax
+    movq %rax, -144(%rbp)
+    movq -88(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -120(%rbp)
+    jmp _kefir_func_f64_postinc_label2
 __kefir_text_func_f64_postinc_end:
 .section .rodata
     .align 8

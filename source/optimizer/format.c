@@ -492,8 +492,6 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
                                         const struct kefir_opt_code_block *block,
                                         const struct kefir_opt_code_analysis *code_analysis,
                                         const struct kefir_opt_code_debug_info *debug_info) {
-    REQUIRE(code_analysis == NULL || code_analysis->blocks[block->id].reachable, KEFIR_OK);
-
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, block->id));
@@ -575,14 +573,6 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_opt_code_analysis_block_properties(code_analysis, block->id, &block_props));
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "reachable"));
-        REQUIRE_OK(kefir_json_output_boolean(json, block_props->reachable));
-        REQUIRE_OK(kefir_json_output_object_key(json, "linear_position"));
-        if (block_props->reachable) {
-            REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_position));
-        } else {
-            REQUIRE_OK(kefir_json_output_null(json));
-        }
 
         REQUIRE_OK(kefir_json_output_object_key(json, "successors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
