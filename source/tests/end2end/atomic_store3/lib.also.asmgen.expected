@@ -37,8 +37,8 @@ __kefir_text_func_set_a1_begin:
     movdqu %xmm0, 32(%rcx)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, 48(%rcx)
-    lea -128(%rbp), %rax
     add $32, %rdi
+    lea -128(%rbp), %rax
     mov %rdi, %rsi
     mov %rax, %rdx
     mov $64, %rdi
@@ -78,8 +78,8 @@ __kefir_text_func_set_f64_end:
 
 set_i16:
 __kefir_text_func_set_i16_begin:
-    movsx %si, %rax
     add $2, %rdi
+    movsx %si, %rax
     mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_2@PLT
@@ -88,8 +88,8 @@ __kefir_text_func_set_i16_end:
 
 set_i32:
 __kefir_text_func_set_i32_begin:
-    movsx %esi, %rax
     add $4, %rdi
+    movsx %esi, %rax
     mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
@@ -132,12 +132,12 @@ __kefir_text_func_set_arr2_el_begin:
     movdqu %xmm0, 32(%rcx)
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, 48(%rcx)
-    lea -128(%rbp), %rax
     add $160, %rdi
-    movsx %esi, %rcx
-    movsx %ecx, %rcx
-    imul $64, %rcx, %rcx
-    add %rcx, %rdi
+    movsx %esi, %rax
+    movsx %eax, %rax
+    imul $64, %rax, %rax
+    add %rax, %rdi
+    lea -128(%rbp), %rax
     mov %rdi, %rsi
     mov %rax, %rdx
     mov $64, %rdi

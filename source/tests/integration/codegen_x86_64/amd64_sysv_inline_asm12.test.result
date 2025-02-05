@@ -15,9 +15,9 @@ _kefir_func_fn1_label0:
 _kefir_func_fn1_label1:
     mov %rdx, 0
     mov %rax, 0
-    mov QWORD PTR [%rbp - 16], %rax
-    mov QWORD PTR [%rbp - 8], %rdx
-    mov %rcx, [%rdx]
+    mov QWORD PTR [%rbp - 16], %rdx
+    mov QWORD PTR [%rbp - 8], %rax
+    mov %rcx, [%rax]
 mov %rax, 1234
 add %rcx, -39219
     mov %rdx, QWORD PTR [%rbp - 16]

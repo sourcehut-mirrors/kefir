@@ -28,6 +28,8 @@ kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *, struct
                                                       kefir_bool_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_add_control(struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                                   kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_builder_add_control_side_effect_free(struct kefir_opt_code_container *,
+                                                                   kefir_opt_block_id_t, kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
                                                    kefir_bool_t *);

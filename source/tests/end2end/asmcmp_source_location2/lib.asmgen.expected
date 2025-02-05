@@ -1322,7 +1322,7 @@ __kefir_debug_loclists_section_begin:
 __kefir_debug_loclist_section_entry_1:
     .byte 7
     .quad _kefir_func_factorial_label9
-    .quad _kefir_func_factorial_label11
+    .quad _kefir_func_factorial_label10
     .byte 2
     .byte 144
     .byte 5
@@ -1330,7 +1330,7 @@ __kefir_debug_loclist_section_entry_1:
 __kefir_debug_loclist_section_entry_2:
     .byte 7
     .quad _kefir_func_factorial_label12
-    .quad _kefir_func_factorial_label34
+    .quad _kefir_func_factorial_label25
     .byte 2
     .byte 145
     .byte 120
@@ -1338,7 +1338,7 @@ __kefir_debug_loclist_section_entry_2:
 __kefir_debug_loclist_section_entry_3:
     .byte 7
     .quad _kefir_func_factorial_label12
-    .quad _kefir_func_factorial_label34
+    .quad _kefir_func_factorial_label25
     .byte 2
     .byte 145
     .byte 124

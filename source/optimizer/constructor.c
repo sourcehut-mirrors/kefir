@@ -895,17 +895,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-#define LOAD_OP(_id, _opcode)                                                                                \
-    case _opcode: {                                                                                          \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \
-        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                \
-        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
-            mem, code, current_block_id, instr_ref2,                                                         \
-            &(const struct kefir_opt_memory_access_flags){.volatile_access = volatile_access}, &instr_ref)); \
-        if (volatile_access) {                                                                               \
-            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));               \
-        }                                                                                                    \
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                 \
+#define LOAD_OP(_id, _opcode)                                                                                   \
+    case _opcode: {                                                                                             \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                   \
+        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                   \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                                \
+            mem, code, current_block_id, instr_ref2,                                                            \
+            &(const struct kefir_opt_memory_access_flags) {.volatile_access = volatile_access}, &instr_ref));   \
+        if (volatile_access) {                                                                                  \
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                  \
+        } else {                                                                                                \
+            REQUIRE_OK(kefir_opt_code_builder_add_control_side_effect_free(code, current_block_id, instr_ref)); \
+        }                                                                                                       \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                    \
     } break;
 
             LOAD_OP(int8_load_signed, KEFIR_IROPCODE_LOAD8I)
@@ -922,15 +924,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef LOAD_OP
 
-#define STORE_OP(_id, _opcode)                                                                               \
-    case _opcode: {                                                                                          \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \
-        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                \
-        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
-            mem, code, current_block_id, instr_ref2, instr_ref3,                                             \
-            &(const struct kefir_opt_memory_access_flags){.volatile_access = volatile_access}, &instr_ref)); \
-        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
+#define STORE_OP(_id, _opcode)                                                                                \
+    case _opcode: {                                                                                           \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                 \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                 \
+        kefir_bool_t volatile_access = (instr->arg.u64 & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                 \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                              \
+            mem, code, current_block_id, instr_ref2, instr_ref3,                                              \
+            &(const struct kefir_opt_memory_access_flags) {.volatile_access = volatile_access}, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                    \
     } break;
 
             STORE_OP(int8_store, KEFIR_IROPCODE_STORE8)
@@ -954,7 +956,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                                            instr_ref4, instr->arg.u32[0], instr->arg.u32[1],    \
                                                            instr->arg.u32[2], &instr_ref));                     \
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                    \
-        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                      \
     } break
 
             OVERFLOW_ARITH(KEFIR_IROPCODE_ADD_OVERFLOW, add);

@@ -22,46 +22,27 @@
 #define KEFIR_OPTIMIZER_ANALYSIS_H_
 
 #include "kefir/optimizer/module.h"
-#include "kefir/optimizer/liveness.h"
 #include "kefir/core/hashtree.h"
 
 #define KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED (~(kefir_size_t) 0ull)
-
-typedef struct kefir_opt_code_analysis_linear_range {
-    kefir_size_t begin_index;
-    kefir_size_t end_index;
-} kefir_opt_code_analysis_linear_range_t;
 
 typedef struct kefir_opt_code_analysis_block_properties {
     kefir_opt_block_id_t block_id;
     kefir_bool_t reachable;
     kefir_size_t linear_position;
-    struct kefir_opt_code_analysis_linear_range linear_range;
     struct kefir_list predecessors;
     struct kefir_list successors;
 } kefir_opt_code_analysis_block_properties_t;
-
-typedef struct kefir_opt_code_analysis_instruction_properties {
-    kefir_opt_instruction_ref_t instr_ref;
-    kefir_bool_t reachable;
-    kefir_size_t linear_position;
-} kefir_opt_code_analysis_instruction_properties_t;
 
 typedef struct kefir_opt_code_analysis {
     const struct kefir_opt_code_container *code;
 
     struct kefir_opt_code_analysis_block_properties *blocks;
-    struct kefir_opt_code_analysis_instruction_properties *instructions;
 
     struct kefir_list indirect_jump_target_blocks;
 
     kefir_size_t block_linearization_length;
     struct kefir_opt_code_analysis_block_properties **block_linearization;
-
-    kefir_size_t linearization_length;
-    struct kefir_opt_code_analysis_instruction_properties **linearization;
-
-    struct kefir_opt_code_liveness_intervals liveness;
 } kefir_opt_code_analysis_t;
 
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *, const struct kefir_opt_code_container *,
@@ -70,9 +51,6 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *, struct kefir_opt
 
 kefir_result_t kefir_opt_code_analysis_block_properties(const struct kefir_opt_code_analysis *, kefir_opt_block_id_t,
                                                         const struct kefir_opt_code_analysis_block_properties **);
-kefir_result_t kefir_opt_code_analysis_instruction_properties(
-    const struct kefir_opt_code_analysis *, kefir_opt_instruction_ref_t,
-    const struct kefir_opt_code_analysis_instruction_properties **);
 
 typedef struct kefir_opt_code_analyze_block_scheduler {
     kefir_result_t (*schedule)(struct kefir_mem *, const struct kefir_opt_code_analyze_block_scheduler *,

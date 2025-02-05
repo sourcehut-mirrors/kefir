@@ -18,15 +18,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 1
-                                    }
-                                },
                                 "ir_instruction": null
                             }
                         ],
@@ -34,10 +25,6 @@
                         "properties": {
                             "reachable": true,
                             "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 1
-                            },
                             "successors": [
                                 1
                             ],
@@ -52,19 +39,45 @@
                         "inline_assembly": [],
                         "code": [
                             {
+                                "id": 1,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null,
+                                "ir_instruction": 0
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "int64_to_bool",
+                                "arg": 1,
+                                "control_next": null,
+                                "ir_instruction": 1
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null,
+                                "ir_instruction": 3
+                            },
+                            {
+                                "id": 4,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null,
+                                "ir_instruction": 5
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "uint_const",
+                                "value": 1,
+                                "control_next": null,
+                                "ir_instruction": 7
+                            },
+                            {
                                 "id": 6,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 1,
-                                        "end": 2
-                                    }
-                                },
                                 "ir_instruction": null
                             }
                         ],
@@ -72,10 +85,6 @@
                         "properties": {
                             "reachable": true,
                             "linear_position": 2,
-                            "linear_interval": {
-                                "begin": 1,
-                                "end": 2
-                            },
                             "successors": [],
                             "predecessors": [
                                 0
@@ -83,9 +92,6 @@
                         }
                     }
                 ],
-                "properties": {
-                    "linear_length": 2
-                },
                 "debug": {
                     "local_variables": []
                 }

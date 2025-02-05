@@ -360,6 +360,7 @@ kefir_result_t kefir_opt_code_container_new_instruction(struct kefir_mem *mem, s
     instr->control_flow.next = KEFIR_ID_NONE;
     instr->siblings.prev = block->content.tail;
     instr->siblings.next = KEFIR_ID_NONE;
+    instr->control_side_effect_free = false;
 
     struct instruction_use_entry *use_entry = KEFIR_MALLOC(mem, sizeof(struct instruction_use_entry));
     REQUIRE(use_entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate instruction use entry"));
@@ -523,20 +524,22 @@ kefir_result_t kefir_opt_code_container_instruction_move_after(const struct kefi
 }
 
 kefir_result_t kefir_opt_code_container_add_control(const struct kefir_opt_code_container *code,
-                                                    kefir_opt_block_id_t block_id,
-                                                    kefir_opt_instruction_ref_t instr_id) {
+                                                    kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t instr_id,
+                                                    kefir_bool_t side_effect_free) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     struct kefir_opt_code_block *block = NULL;
     REQUIRE_OK(code_container_block_mutable(code, block_id, &block));
-    REQUIRE_OK(kefir_opt_code_container_insert_control(code, block_id, block->control_flow.tail, instr_id));
+    REQUIRE_OK(
+        kefir_opt_code_container_insert_control(code, block_id, block->control_flow.tail, instr_id, side_effect_free));
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_container_insert_control(const struct kefir_opt_code_container *code,
                                                        kefir_opt_block_id_t block_id,
                                                        kefir_opt_instruction_ref_t after_instr_id,
-                                                       kefir_opt_instruction_ref_t instr_id) {
+                                                       kefir_opt_instruction_ref_t instr_id,
+                                                       kefir_bool_t side_effect_free) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     struct kefir_opt_code_block *block = NULL;
@@ -587,6 +590,7 @@ kefir_result_t kefir_opt_code_container_insert_control(const struct kefir_opt_co
             block->control_flow.tail = instr->id;
         }
     }
+    instr->control_side_effect_free = side_effect_free;
     return KEFIR_OK;
 }
 

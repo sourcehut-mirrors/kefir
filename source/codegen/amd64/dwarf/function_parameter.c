@@ -337,12 +337,12 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_function_parameter(
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
         if (has_type && has_name && has_location) {
             REQUIRE_OK(generate_parameter_with_location_info(mem, codegen_function, context, entry_id, dwarf_entry_id));
-        } else if (!has_type && has_name && has_location) {
+        } else if (has_type && !has_name && has_location) {
             REQUIRE_OK(generate_anonymous_parameter_with_location_info(mem, codegen_function, context, entry_id,
                                                                        dwarf_entry_id));
         } else if (has_type && has_name && !has_location) {
             REQUIRE_OK(generate_parameter_info(mem, codegen_function, context, entry_id, dwarf_entry_id));
-        } else if (!has_type && has_name && !has_location) {
+        } else if (has_type && !has_name && !has_location) {
             REQUIRE_OK(generate_anonymous_parameter_info(mem, codegen_function, context, entry_id, dwarf_entry_id));
         }
     }

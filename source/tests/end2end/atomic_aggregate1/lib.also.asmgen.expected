@@ -15,8 +15,8 @@ __kefir_text_func_load_buffer_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-    movq buf@GOTPCREL(%rip), %rax
     lea -64(%rbp), %r8
+    movq buf@GOTPCREL(%rip), %rax
     movq %r8, -72(%rbp)
     mov %r8, %rdx
     mov %rax, %rsi

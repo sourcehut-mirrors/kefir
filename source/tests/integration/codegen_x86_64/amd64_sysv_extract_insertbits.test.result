@@ -18,202 +18,202 @@ _kefir_func_insert_label0:
 _kefir_func_insert_label1:
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551615
-    and %rdx, %rax
-    shl %rcx, 64
-    shr %rcx, 64
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551614
-    and %rdx, %rax
-    shl %rcx, 63
-    shr %rcx, 63
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551615
+    and %rsi, %rcx
+    shl %rdx, 64
+    shr %rdx, 64
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551612
-    and %rdx, %rax
-    shl %rcx, 62
-    shr %rcx, 62
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551608
-    and %rdx, %rax
-    shl %rcx, 61
-    shr %rcx, 61
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551614
+    and %rsi, %rcx
+    shl %rdx, 63
+    shr %rdx, 63
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551600
-    and %rdx, %rax
-    shl %rcx, 60
-    shr %rcx, 60
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551584
-    and %rdx, %rax
-    shl %rcx, 59
-    shr %rcx, 59
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551612
+    and %rsi, %rcx
+    shl %rdx, 62
+    shr %rdx, 62
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551552
-    and %rdx, %rax
-    shl %rcx, 58
-    shr %rcx, 58
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551488
-    and %rdx, %rax
-    shl %rcx, 57
-    shr %rcx, 57
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551608
+    and %rsi, %rcx
+    shl %rdx, 61
+    shr %rdx, 61
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551360
-    and %rdx, %rax
-    shl %rcx, 56
-    shr %rcx, 56
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551104
-    and %rdx, %rax
-    shl %rcx, 55
-    shr %rcx, 55
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551600
+    and %rsi, %rcx
+    shl %rdx, 60
+    shr %rdx, 60
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709550592
-    and %rdx, %rax
-    shl %rcx, 54
-    shr %rcx, 54
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551615
-    and %rdx, %rax
-    shl %rcx, 64
-    shr %rcx, 63
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551584
+    and %rsi, %rcx
+    shl %rdx, 59
+    shr %rdx, 59
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551611
-    and %rdx, %rax
-    shl %rcx, 63
-    shr %rcx, 61
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551567
-    and %rdx, %rax
-    shl %rcx, 62
-    shr %rcx, 58
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551552
+    and %rsi, %rcx
+    shl %rdx, 58
+    shr %rdx, 58
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709549823
-    and %rdx, %rax
-    shl %rcx, 61
-    shr %rcx, 53
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073708568575
-    and %rdx, %rax
-    shl %rcx, 60
-    shr %rcx, 44
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551488
+    and %rsi, %rcx
+    shl %rdx, 57
+    shr %rdx, 57
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446743940565565439
-    and %rdx, %rax
-    shl %rcx, 59
-    shr %rcx, 27
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709551489
-    and %rdx, %rax
-    shl %rcx, 58
-    shr %rcx, 57
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551360
+    and %rsi, %rcx
+    shl %rdx, 56
+    shr %rdx, 56
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709551107
-    and %rdx, %rax
-    shl %rcx, 57
-    shr %rcx, 55
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
-    mov %rax, 0
-    mov %rcx, 0
-    movabs %rdx, 18446744073709547535
-    and %rdx, %rax
-    shl %rcx, 56
-    shr %rcx, 52
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551104
+    and %rsi, %rcx
+    shl %rdx, 55
+    shr %rdx, 55
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073709420799
-    and %rdx, %rax
-    shl %rcx, 55
-    shr %rcx, 47
-    or %rcx, %rdx
-    mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709550592
+    and %rsi, %rcx
+    shl %rdx, 54
+    shr %rdx, 54
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
     mov %rcx, 0
-    movabs %rdx, 18446744073642508287
-    and %rdx, %rax
-    shl %rcx, 54
-    shr %rcx, 38
-    or %rcx, %rdx
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551615
+    and %rsi, %rcx
+    shl %rdx, 64
+    shr %rdx, 63
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     mov %rax, 0
-    mov QWORD PTR [%rax], %rcx
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551611
+    and %rsi, %rcx
+    shl %rdx, 63
+    shr %rdx, 61
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551567
+    and %rsi, %rcx
+    shl %rdx, 62
+    shr %rdx, 58
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709549823
+    and %rsi, %rcx
+    shl %rdx, 61
+    shr %rdx, 53
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073708568575
+    and %rsi, %rcx
+    shl %rdx, 60
+    shr %rdx, 44
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446743940565565439
+    and %rsi, %rcx
+    shl %rdx, 59
+    shr %rdx, 27
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551489
+    and %rsi, %rcx
+    shl %rdx, 58
+    shr %rdx, 57
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709551107
+    and %rsi, %rcx
+    shl %rdx, 57
+    shr %rdx, 55
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709547535
+    and %rsi, %rcx
+    shl %rdx, 56
+    shr %rdx, 52
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073709420799
+    and %rsi, %rcx
+    shl %rdx, 55
+    shr %rdx, 47
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
+    mov %rax, 0
+    mov %rcx, 0
+    mov %rdx, 0
+    movabs %rsi, 18446744073642508287
+    and %rsi, %rcx
+    shl %rdx, 54
+    shr %rdx, 38
+    or %rdx, %rsi
+    mov QWORD PTR [%rax], %rdx
     pop %rbp
     ret
 __kefir_text_func_insert_end:
@@ -225,115 +225,115 @@ __kefir_text_func_extracts_begin:
 _kefir_func_extracts_label0:
 _kefir_func_extracts_label1:
     mov %rax, 0
-    shl %rax, 64
-    sar %rax, 64
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 64
+    sar %rcx, 64
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 63
-    sar %rax, 63
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 63
+    sar %rcx, 63
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 62
-    sar %rax, 62
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 62
+    sar %rcx, 62
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 61
-    sar %rax, 61
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 61
+    sar %rcx, 61
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 60
-    sar %rax, 60
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 60
+    sar %rcx, 60
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 59
-    sar %rax, 59
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 59
+    sar %rcx, 59
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 58
-    sar %rax, 58
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 58
+    sar %rcx, 58
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 57
-    sar %rax, 57
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 57
+    sar %rcx, 57
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 56
-    sar %rax, 56
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 56
+    sar %rcx, 56
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 55
-    sar %rax, 55
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 55
+    sar %rcx, 55
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 54
-    sar %rax, 54
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 54
+    sar %rcx, 54
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 63
-    sar %rax, 64
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 63
+    sar %rcx, 64
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 61
-    sar %rax, 63
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 61
+    sar %rcx, 63
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 58
-    sar %rax, 62
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 58
+    sar %rcx, 62
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 53
-    sar %rax, 61
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 53
+    sar %rcx, 61
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 44
-    sar %rax, 60
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 44
+    sar %rcx, 60
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 27
-    sar %rax, 59
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 27
+    sar %rcx, 59
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 57
-    sar %rax, 58
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 57
+    sar %rcx, 58
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 55
-    sar %rax, 57
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 55
+    sar %rcx, 57
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 52
-    sar %rax, 56
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 52
+    sar %rcx, 56
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 47
-    sar %rax, 55
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 47
+    sar %rcx, 55
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 38
-    sar %rax, 54
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 38
+    sar %rcx, 54
+    mov QWORD PTR [%rax], %rcx
     pop %rbp
     ret
 __kefir_text_func_extracts_end:
@@ -345,115 +345,115 @@ __kefir_text_func_extractu_begin:
 _kefir_func_extractu_label0:
 _kefir_func_extractu_label1:
     mov %rax, 0
-    shl %rax, 64
-    shr %rax, 64
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 64
+    shr %rcx, 64
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 63
-    shr %rax, 63
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 63
+    shr %rcx, 63
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 62
-    shr %rax, 62
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 62
+    shr %rcx, 62
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 61
-    shr %rax, 61
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 61
+    shr %rcx, 61
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 60
-    shr %rax, 60
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 60
+    shr %rcx, 60
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 59
-    shr %rax, 59
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 59
+    shr %rcx, 59
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 58
-    shr %rax, 58
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 58
+    shr %rcx, 58
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 57
-    shr %rax, 57
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 57
+    shr %rcx, 57
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 56
-    shr %rax, 56
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 56
+    shr %rcx, 56
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 55
-    shr %rax, 55
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 55
+    shr %rcx, 55
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 54
-    shr %rax, 54
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 54
+    shr %rcx, 54
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 63
-    shr %rax, 64
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 63
+    shr %rcx, 64
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 61
-    shr %rax, 63
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 61
+    shr %rcx, 63
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 58
-    shr %rax, 62
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 58
+    shr %rcx, 62
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 53
-    shr %rax, 61
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 53
+    shr %rcx, 61
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 44
-    shr %rax, 60
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 44
+    shr %rcx, 60
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 27
-    shr %rax, 59
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 27
+    shr %rcx, 59
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 57
-    shr %rax, 58
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 57
+    shr %rcx, 58
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 55
-    shr %rax, 57
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 55
+    shr %rcx, 57
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 52
-    shr %rax, 56
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 52
+    shr %rcx, 56
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 47
-    shr %rax, 55
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 47
+    shr %rcx, 55
+    mov QWORD PTR [%rax], %rcx
     mov %rax, 0
-    shl %rax, 38
-    shr %rax, 54
     mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    shl %rcx, 38
+    shr %rcx, 54
+    mov QWORD PTR [%rax], %rcx
     pop %rbp
     ret
 __kefir_text_func_extractu_end:

@@ -88,10 +88,10 @@ _kefir_func_test5_label0:
 _kefir_func_test5_label1:
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
+    movq X@GOTPCREL(%rip), %rcx
     movq %rax, %xmm0
     addsd %xmm1, %xmm0
-    movq X@GOTPCREL(%rip), %rax
-    movq %xmm0, (%rax)
+    movq %xmm0, (%rcx)
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -27,7 +27,6 @@
 static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                      struct kefir_list *queue) {
     kefir_size_t block_index = 0;
-    kefir_size_t linear_index = 0;
     kefir_result_t res = KEFIR_OK;
     for (struct kefir_list_entry *head_entry = kefir_list_head(queue); res == KEFIR_OK && head_entry != NULL;
          res = kefir_list_pop(mem, queue, head_entry), head_entry = kefir_list_head(queue)) {
@@ -39,25 +38,6 @@ static kefir_result_t linearize_impl(struct kefir_mem *mem, struct kefir_opt_cod
 
         analysis->block_linearization[block_index] = &analysis->blocks[block_id];
         analysis->blocks[block_id].linear_position = ++block_index;
-        analysis->blocks[block_id].linear_range.begin_index = linear_index;
-
-        const struct kefir_opt_code_block *block = NULL;
-        REQUIRE_OK(kefir_opt_code_container_block(analysis->code, block_id, &block));
-        
-        kefir_opt_instruction_ref_t instr_ref;
-        for (res = kefir_opt_code_block_instr_head(analysis->code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
-             res = kefir_opt_instruction_next_sibling(analysis->code, instr_ref, &instr_ref)) {
-
-            if (!analysis->instructions[instr_ref].reachable) {
-                continue;
-            }
-
-            analysis->linearization[linear_index] = &analysis->instructions[instr_ref];
-            analysis->instructions[instr_ref].linear_position = linear_index++;
-        }
-        REQUIRE_OK(res);
-
-        analysis->blocks[block_id].linear_range.end_index = linear_index;
     }
     REQUIRE_OK(res);
 
@@ -86,11 +66,6 @@ kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *mem, struct ke
     REQUIRE(block_scheduler != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer analysis block scheduler"));
 
-    analysis->linearization = KEFIR_MALLOC(
-        mem, sizeof(struct kefir_opt_code_analysis_instruction_properties *) * analysis->linearization_length);
-    REQUIRE(analysis->linearization != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis linearization"));
-
     analysis->block_linearization = KEFIR_MALLOC(
         mem, sizeof(struct kefir_opt_code_analysis_block_properties *) * analysis->block_linearization_length);
     REQUIRE(analysis->block_linearization != NULL,
@@ -99,7 +74,7 @@ kefir_result_t kefir_opt_code_analyze_linearize(struct kefir_mem *mem, struct ke
     struct kefir_list queue;
     REQUIRE_OK(kefir_list_init(&queue));
     kefir_result_t res = block_scheduler->schedule(mem, block_scheduler, analysis->code, scheduler_callback,
-                                                   &(struct scheduler_callback_payload){.mem = mem, .queue = &queue});
+                                                   &(struct scheduler_callback_payload) {.mem = mem, .queue = &queue});
     REQUIRE_CHAIN(&res, linearize_impl(mem, analysis, &queue));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &queue);

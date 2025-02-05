@@ -120,13 +120,13 @@ set_a:
 __kefir_text_func_set_a_begin:
     movq s@GOTPCREL(%rip), %rax
     movzxb (%rax), %rax
-    movabs $18446744073709551488, %rcx
-    and %rax, %rcx
+    movq s@GOTPCREL(%rip), %rcx
+    movabs $18446744073709551488, %rdx
+    and %rax, %rdx
     shl $57, %rdi
     shr $57, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    movb %dil, (%rax)
+    or %rdx, %rdi
+    movb %dil, (%rcx)
     ret
 __kefir_text_func_set_a_end:
 
@@ -135,14 +135,14 @@ __kefir_text_func_set_b_begin:
     movq s@GOTPCREL(%rip), %rax
     add $1, %rax
     movzxw (%rax), %rax
-    movabs $18446744073709518848, %rcx
-    and %rax, %rcx
+    movq s@GOTPCREL(%rip), %rcx
+    add $1, %rcx
+    movabs $18446744073709518848, %rdx
+    and %rax, %rdx
     shl $49, %rdi
     shr $49, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $1, %rax
-    movw %di, (%rax)
+    or %rdx, %rdi
+    movw %di, (%rcx)
     ret
 __kefir_text_func_set_b_end:
 
@@ -151,18 +151,18 @@ __kefir_text_func_set_c_begin:
     movq s@GOTPCREL(%rip), %rax
     add $3, %rax
     movl (%rax), %eax
-    movabs $18446744073701163008, %rcx
-    and %rax, %rcx
-    shl $41, %rdi
-    shr $41, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $3, %rax
     movq s@GOTPCREL(%rip), %rcx
     add $5, %rcx
-    mov %rdi, %rdx
-    shr $16, %rdx
-    movb %dl, (%rcx)
+    movabs $18446744073701163008, %rdx
+    and %rax, %rdx
+    shl $41, %rdi
+    shr $41, %rdi
+    or %rdx, %rdi
+    mov %rdi, %rax
+    shr $16, %rax
+    movb %al, (%rcx)
+    movq s@GOTPCREL(%rip), %rax
+    add $3, %rax
     movw %di, (%rax)
     ret
 __kefir_text_func_set_c_end:
@@ -172,14 +172,14 @@ __kefir_text_func_set_d_begin:
     movq s@GOTPCREL(%rip), %rax
     add $8, %rax
     movl (%rax), %eax
-    movabs $18446744071562067968, %rcx
-    and %rax, %rcx
+    movq s@GOTPCREL(%rip), %rcx
+    add $8, %rcx
+    movabs $18446744071562067968, %rdx
+    and %rax, %rdx
     shl $33, %rdi
     shr $33, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $8, %rax
-    movl %edi, (%rax)
+    or %rdx, %rdi
+    movl %edi, (%rcx)
     ret
 __kefir_text_func_set_d_end:
 
@@ -188,18 +188,18 @@ __kefir_text_func_set_e_begin:
     movq s@GOTPCREL(%rip), %rax
     add $16, %rax
     movq (%rax), %rax
-    movabs $18446743523953737728, %rcx
-    and %rax, %rcx
-    shl $25, %rdi
-    shr $25, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $16, %rax
     movq s@GOTPCREL(%rip), %rcx
     add $20, %rcx
-    mov %rdi, %rdx
-    shr $32, %rdx
-    movb %dl, (%rcx)
+    movabs $18446743523953737728, %rdx
+    and %rax, %rdx
+    shl $25, %rdi
+    shr $25, %rdi
+    or %rdx, %rdi
+    mov %rdi, %rax
+    shr $32, %rax
+    movb %al, (%rcx)
+    movq s@GOTPCREL(%rip), %rax
+    add $16, %rax
     movl %edi, (%rax)
     ret
 __kefir_text_func_set_e_end:
@@ -209,18 +209,18 @@ __kefir_text_func_set_f_begin:
     movq s@GOTPCREL(%rip), %rax
     add $24, %rax
     movq (%rax), %rax
-    movabs $18446603336221196288, %rcx
-    and %rax, %rcx
-    shl $17, %rdi
-    shr $17, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $24, %rax
     movq s@GOTPCREL(%rip), %rcx
     add $28, %rcx
-    mov %rdi, %rdx
-    shr $32, %rdx
-    movw %dx, (%rcx)
+    movabs $18446603336221196288, %rdx
+    and %rax, %rdx
+    shl $17, %rdi
+    shr $17, %rdi
+    or %rdx, %rdi
+    mov %rdi, %rax
+    shr $32, %rax
+    movw %ax, (%rcx)
+    movq s@GOTPCREL(%rip), %rax
+    add $24, %rax
     movl %edi, (%rax)
     ret
 __kefir_text_func_set_f_end:
@@ -230,23 +230,23 @@ __kefir_text_func_set_g_begin:
     movq s@GOTPCREL(%rip), %rax
     add $32, %rax
     movq (%rax), %rax
-    movabs $18410715276690587648, %rcx
-    and %rax, %rcx
-    shl $9, %rdi
-    shr $9, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $32, %rax
     movq s@GOTPCREL(%rip), %rcx
     add $38, %rcx
-    mov %rdi, %rdx
-    shr $48, %rdx
-    movb %dl, (%rcx)
-    movq s@GOTPCREL(%rip), %rcx
-    add $36, %rcx
-    mov %rdi, %rdx
-    shr $32, %rdx
-    movw %dx, (%rcx)
+    movabs $18410715276690587648, %rdx
+    and %rax, %rdx
+    shl $9, %rdi
+    shr $9, %rdi
+    or %rdx, %rdi
+    mov %rdi, %rax
+    shr $48, %rax
+    movb %al, (%rcx)
+    movq s@GOTPCREL(%rip), %rax
+    add $36, %rax
+    mov %rdi, %rcx
+    shr $32, %rcx
+    movw %cx, (%rax)
+    movq s@GOTPCREL(%rip), %rax
+    add $32, %rax
     movl %edi, (%rax)
     ret
 __kefir_text_func_set_g_end:
@@ -256,14 +256,14 @@ __kefir_text_func_set_h_begin:
     movq s@GOTPCREL(%rip), %rax
     add $40, %rax
     movq (%rax), %rax
-    movabs $9223372036854775808, %rcx
-    and %rax, %rcx
+    movq s@GOTPCREL(%rip), %rcx
+    add $40, %rcx
+    movabs $9223372036854775808, %rdx
+    and %rax, %rdx
     shl $1, %rdi
     shr $1, %rdi
-    or %rcx, %rdi
-    movq s@GOTPCREL(%rip), %rax
-    add $40, %rax
-    movq %rdi, (%rax)
+    or %rdx, %rdi
+    movq %rdi, (%rcx)
     ret
 __kefir_text_func_set_h_end:
 

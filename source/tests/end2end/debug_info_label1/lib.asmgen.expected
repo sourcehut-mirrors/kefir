@@ -250,7 +250,7 @@ __kefir_debug_info_section_entry_5:
 __kefir_debug_info_section_entry_6:
     .byte 6
     .quad _kefir_func_test1_label8
-    .quad _kefir_func_test1_label12 - _kefir_func_test1_label8
+    .quad _kefir_func_test1_label10 - _kefir_func_test1_label8
 __kefir_debug_info_section_entry_7:
     .byte 6
     .quad _kefir_func_test1_label8

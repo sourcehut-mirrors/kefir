@@ -18,15 +18,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 0,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 0,
-                                        "end": 1
-                                    }
-                                },
                                 "ir_instruction": null
                             }
                         ],
@@ -34,10 +25,6 @@
                         "properties": {
                             "reachable": true,
                             "linear_position": 1,
-                            "linear_interval": {
-                                "begin": 0,
-                                "end": 1
-                            },
                             "successors": [
                                 1
                             ],
@@ -148,15 +135,6 @@
                                 "call_ref": 0,
                                 "indirect_ref": null,
                                 "control_next": 3,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 1,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 1,
-                                        "end": 2
-                                    }
-                                },
                                 "ir_instruction": 0
                             },
                             {
@@ -164,15 +142,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 2,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 2,
-                                        "end": 4
-                                    }
-                                },
                                 "ir_instruction": 1
                             },
                             {
@@ -181,15 +150,6 @@
                                 "call_ref": 1,
                                 "indirect_ref": null,
                                 "control_next": 10,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 3,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 3,
-                                        "end": 4
-                                    }
-                                },
                                 "ir_instruction": 2
                             },
                             {
@@ -197,15 +157,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 4,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 4,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 3
                             },
                             {
@@ -213,15 +164,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 5,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 5,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 4
                             },
                             {
@@ -229,15 +171,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 6,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 6,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 5
                             },
                             {
@@ -245,15 +178,6 @@
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 7,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 7,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 6
                             },
                             {
@@ -261,15 +185,6 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 8,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 8,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 7
                             },
                             {
@@ -277,15 +192,6 @@
                                 "opcode": "int_const",
                                 "value": 7,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 9,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 9,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 8
                             },
                             {
@@ -294,15 +200,6 @@
                                 "call_ref": 2,
                                 "indirect_ref": null,
                                 "control_next": 11,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 10,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 10,
-                                        "end": 11
-                                    }
-                                },
                                 "ir_instruction": 9
                             },
                             {
@@ -311,15 +208,6 @@
                                 "call_ref": 3,
                                 "indirect_ref": null,
                                 "control_next": 18,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 11,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 11,
-                                        "end": 12
-                                    }
-                                },
                                 "ir_instruction": 10
                             },
                             {
@@ -327,15 +215,6 @@
                                 "opcode": "string_ref",
                                 "value": 0,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 12,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 12,
-                                        "end": 19
-                                    }
-                                },
                                 "ir_instruction": 12
                             },
                             {
@@ -343,15 +222,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 13,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 13,
-                                        "end": 18
-                                    }
-                                },
                                 "ir_instruction": 13
                             },
                             {
@@ -359,15 +229,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 14,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 14,
-                                        "end": 17
-                                    }
-                                },
                                 "ir_instruction": 14
                             },
                             {
@@ -375,15 +236,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 15,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 15,
-                                        "end": 17
-                                    }
-                                },
                                 "ir_instruction": 15
                             },
                             {
@@ -394,15 +246,6 @@
                                     15
                                 ],
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 16,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 16,
-                                        "end": 18
-                                    }
-                                },
                                 "ir_instruction": 16
                             },
                             {
@@ -413,15 +256,6 @@
                                     16
                                 ],
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 17,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 17,
-                                        "end": 19
-                                    }
-                                },
                                 "ir_instruction": 17
                             },
                             {
@@ -430,15 +264,6 @@
                                 "call_ref": 4,
                                 "indirect_ref": null,
                                 "control_next": 20,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 18,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 18,
-                                        "end": 19
-                                    }
-                                },
                                 "ir_instruction": 18
                             },
                             {
@@ -446,15 +271,6 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 19,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 19,
-                                        "end": 31
-                                    }
-                                },
                                 "ir_instruction": 20
                             },
                             {
@@ -463,15 +279,6 @@
                                 "call_ref": 5,
                                 "indirect_ref": null,
                                 "control_next": 24,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 20,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 20,
-                                        "end": 31
-                                    }
-                                },
                                 "ir_instruction": 21
                             },
                             {
@@ -479,15 +286,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 21,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 21,
-                                        "end": 25
-                                    }
-                                },
                                 "ir_instruction": 22
                             },
                             {
@@ -495,15 +293,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 22,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 22,
-                                        "end": 25
-                                    }
-                                },
                                 "ir_instruction": 23
                             },
                             {
@@ -511,15 +300,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 23,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 23,
-                                        "end": 25
-                                    }
-                                },
                                 "ir_instruction": 24
                             },
                             {
@@ -528,15 +308,6 @@
                                 "call_ref": 6,
                                 "indirect_ref": null,
                                 "control_next": 27,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 24,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 24,
-                                        "end": 25
-                                    }
-                                },
                                 "ir_instruction": 25
                             },
                             {
@@ -544,15 +315,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 25,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 25,
-                                        "end": 28
-                                    }
-                                },
                                 "ir_instruction": 26
                             },
                             {
@@ -560,15 +322,6 @@
                                 "opcode": "string_ref",
                                 "value": 1,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 26,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 26,
-                                        "end": 28
-                                    }
-                                },
                                 "ir_instruction": 27
                             },
                             {
@@ -577,15 +330,6 @@
                                 "call_ref": 7,
                                 "indirect_ref": null,
                                 "control_next": 28,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 27,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 27,
-                                        "end": 31
-                                    }
-                                },
                                 "ir_instruction": 28
                             },
                             {
@@ -594,15 +338,6 @@
                                 "call_ref": 8,
                                 "indirect_ref": null,
                                 "control_next": 30,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 28,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 28,
-                                        "end": 30
-                                    }
-                                },
                                 "ir_instruction": 29
                             },
                             {
@@ -610,15 +345,6 @@
                                 "opcode": "float32_to_float64",
                                 "arg": 28,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 29,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 29,
-                                        "end": 31
-                                    }
-                                },
                                 "ir_instruction": 30
                             },
                             {
@@ -627,15 +353,6 @@
                                 "call_ref": 9,
                                 "indirect_ref": null,
                                 "control_next": 33,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 30,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 30,
-                                        "end": 31
-                                    }
-                                },
                                 "ir_instruction": 31
                             },
                             {
@@ -644,15 +361,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 31,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 31,
-                                        "end": 34
-                                    }
-                                },
                                 "ir_instruction": 33
                             },
                             {
@@ -660,15 +368,6 @@
                                 "opcode": "string_ref",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 32,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 32,
-                                        "end": 34
-                                    }
-                                },
                                 "ir_instruction": 34
                             },
                             {
@@ -677,15 +376,6 @@
                                 "call_ref": 10,
                                 "indirect_ref": 31,
                                 "control_next": 38,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 33,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 33,
-                                        "end": 34
-                                    }
-                                },
                                 "ir_instruction": 35
                             },
                             {
@@ -694,15 +384,6 @@
                                 "global_ref": 4,
                                 "offset": 0,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 34,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 34,
-                                        "end": 39
-                                    }
-                                },
                                 "ir_instruction": 36
                             },
                             {
@@ -710,15 +391,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 35,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 35,
-                                        "end": 39
-                                    }
-                                },
                                 "ir_instruction": 37
                             },
                             {
@@ -726,15 +398,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 36,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 36,
-                                        "end": 39
-                                    }
-                                },
                                 "ir_instruction": 38
                             },
                             {
@@ -742,15 +405,6 @@
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 37,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 37,
-                                        "end": 39
-                                    }
-                                },
                                 "ir_instruction": 39
                             },
                             {
@@ -759,15 +413,6 @@
                                 "call_ref": 11,
                                 "indirect_ref": 34,
                                 "control_next": 39,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 38,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 38,
-                                        "end": 39
-                                    }
-                                },
                                 "ir_instruction": 40
                             },
                             {
@@ -775,15 +420,6 @@
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
-                                "properties": {
-                                    "reachable": true,
-                                    "linear_index": 39,
-                                    "linear_liveness": {
-                                        "alias": null,
-                                        "begin": 39,
-                                        "end": 40
-                                    }
-                                },
                                 "ir_instruction": null
                             }
                         ],
@@ -791,10 +427,6 @@
                         "properties": {
                             "reachable": true,
                             "linear_position": 2,
-                            "linear_interval": {
-                                "begin": 1,
-                                "end": 40
-                            },
                             "successors": [],
                             "predecessors": [
                                 0
@@ -802,9 +434,6 @@
                         }
                     }
                 ],
-                "properties": {
-                    "linear_length": 40
-                },
                 "debug": {
                     "local_variables": []
                 }

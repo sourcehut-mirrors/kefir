@@ -365,10 +365,7 @@ static kefir_result_t format_operation_none(struct kefir_json_output *json, cons
 }
 
 static kefir_result_t instr_format(struct kefir_json_output *json, const struct kefir_opt_instruction *instr,
-                                   const struct kefir_opt_code_analysis *code_analysis,
                                    const struct kefir_opt_code_debug_info *debug_info) {
-    REQUIRE(code_analysis == NULL || code_analysis->instructions[instr->id].reachable, KEFIR_OK);
-
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->id));
@@ -388,40 +385,6 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     REQUIRE_OK(kefir_json_output_object_key(json, "control_next"));
     REQUIRE_OK(id_format(json, instr->control_flow.next));
 
-    REQUIRE_OK(kefir_json_output_object_key(json, "properties"));
-    if (code_analysis != NULL) {
-        const struct kefir_opt_code_analysis_instruction_properties *instr_props = NULL;
-        REQUIRE_OK(kefir_opt_code_analysis_instruction_properties(code_analysis, instr->id, &instr_props));
-
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "reachable"));
-        REQUIRE_OK(kefir_json_output_boolean(json, instr_props->reachable));
-        REQUIRE_OK(kefir_json_output_object_key(json, "linear_index"));
-        if (instr_props->linear_position != KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED) {
-            REQUIRE_OK(kefir_json_output_uinteger(json, instr_props->linear_position));
-        } else {
-            REQUIRE_OK(kefir_json_output_null(json));
-        }
-        REQUIRE_OK(kefir_json_output_object_key(json, "linear_liveness"));
-        if (instr_props->reachable) {
-            const struct kefir_opt_instruction_liveness_interval *instr_liveness =
-                &code_analysis->liveness.intervals[instr_props->linear_position];
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "alias"));
-            REQUIRE_OK(id_format(json, instr_liveness->alias_ref));
-            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, instr_liveness->range.begin));
-            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, instr_liveness->range.end));
-            REQUIRE_OK(kefir_json_output_object_end(json));
-        } else {
-            REQUIRE_OK(kefir_json_output_null(json));
-        }
-        REQUIRE_OK(kefir_json_output_object_end(json));
-    } else {
-        REQUIRE_OK(kefir_json_output_null(json));
-    }
-
     if (debug_info != NULL) {
         REQUIRE_OK(kefir_json_output_object_key(json, "ir_instruction"));
         kefir_size_t instruction_location;
@@ -437,10 +400,7 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t phi_format(struct kefir_json_output *json, const struct kefir_opt_phi_node *phi,
-                                 const struct kefir_opt_code_analysis *code_analysis) {
-    REQUIRE(code_analysis == NULL || code_analysis->instructions[phi->output_ref].reachable, KEFIR_OK);
-
+static kefir_result_t phi_format(struct kefir_json_output *json, const struct kefir_opt_phi_node *phi) {
     REQUIRE_OK(kefir_json_output_object_begin(json));
     REQUIRE_OK(kefir_json_output_object_key(json, "id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, phi->node_id));
@@ -549,7 +509,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
          res = kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi));
-        REQUIRE_OK(phi_format(json, phi, code_analysis));
+        REQUIRE_OK(phi_format(json, phi));
     }
     REQUIRE_OK(res);
     REQUIRE_OK(kefir_json_output_array_end(json));
@@ -591,7 +551,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
          res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-        REQUIRE_OK(instr_format(json, instr, code_analysis, debug_info));
+        REQUIRE_OK(instr_format(json, instr, debug_info));
     }
     REQUIRE_OK(res);
     REQUIRE_OK(kefir_json_output_array_end(json));
@@ -620,17 +580,6 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_json_output_object_key(json, "linear_position"));
         if (block_props->reachable) {
             REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_position));
-        } else {
-            REQUIRE_OK(kefir_json_output_null(json));
-        }
-        REQUIRE_OK(kefir_json_output_object_key(json, "linear_interval"));
-        if (block_props->linear_range.begin_index != KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED) {
-            REQUIRE_OK(kefir_json_output_object_begin(json));
-            REQUIRE_OK(kefir_json_output_object_key(json, "begin"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_range.begin_index));
-            REQUIRE_OK(kefir_json_output_object_key(json, "end"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, block_props->linear_range.end_index));
-            REQUIRE_OK(kefir_json_output_object_end(json));
         } else {
             REQUIRE_OK(kefir_json_output_null(json));
         }
@@ -679,16 +628,6 @@ kefir_result_t kefir_opt_code_format(struct kefir_json_output *json, const struc
         REQUIRE_OK(code_block_format(json, code, block, code_analysis, debug_info));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
-
-    REQUIRE_OK(kefir_json_output_object_key(json, "properties"));
-    if (code_analysis != NULL) {
-        REQUIRE_OK(kefir_json_output_object_begin(json));
-        REQUIRE_OK(kefir_json_output_object_key(json, "linear_length"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, code_analysis->linearization_length));
-        REQUIRE_OK(kefir_json_output_object_end(json));
-    } else {
-        REQUIRE_OK(kefir_json_output_null(json));
-    }
 
     if (debug_info != NULL) {
         REQUIRE_OK(kefir_json_output_object_key(json, "debug"));

@@ -14,14 +14,14 @@ __kefir_text_func_func1_begin:
 _kefir_func_func1_label0:
     mov QWORD PTR [%rbp - 16], %rsi
 _kefir_func_func1_label1:
-    lea %rcx, QWORD PTR [%rbp - 16]
-    mov %rax, %rcx
-    add %rax, 8
-    mov %rcx, 8
-    imul %rcx, %rcx, 5
-    add %rax, %rcx
-    mov %rcx, 0
-    mov QWORD PTR [%rcx], %rax
+    mov %rax, 0
+    lea %rdx, QWORD PTR [%rbp - 16]
+    mov %rcx, %rdx
+    add %rcx, 8
+    mov %rdx, 8
+    imul %rdx, %rdx, 5
+    add %rcx, %rdx
+    mov QWORD PTR [%rax], %rcx
     lea %rsp, [%rbp]
     pop %rbp
     ret

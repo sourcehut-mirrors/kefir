@@ -26,16 +26,16 @@ __kefir_text_func_test_atomic_compare_exchange8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movb %dl, -1(%rbp)
     mov $1, %rdx
     lea -1(%rbp), %r8
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -50,8 +50,8 @@ __kefir_text_func_test2_atomic_compare_exchange16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movsx %dx, %rdx
     movw %dx, -2(%rbp)
     mov $2, %rdx
@@ -59,8 +59,8 @@ __kefir_text_func_test2_atomic_compare_exchange16_begin:
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -75,8 +75,8 @@ __kefir_text_func_test2_atomic_compare_exchange32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movsx %edx, %rdx
     movl %edx, -4(%rbp)
     mov $4, %rdx
@@ -84,8 +84,8 @@ __kefir_text_func_test2_atomic_compare_exchange32_begin:
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -100,16 +100,16 @@ __kefir_text_func_test2_atomic_compare_exchange64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movq %rdx, -8(%rbp)
     mov $8, %rdx
     lea -8(%rbp), %r8
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -124,8 +124,8 @@ __kefir_text_func_test2_atomic_compare_exchange8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movsx %dl, %rdx
     movb %dl, -1(%rbp)
     mov $1, %rdx
@@ -133,8 +133,8 @@ __kefir_text_func_test2_atomic_compare_exchange8_begin:
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -149,16 +149,16 @@ __kefir_text_func_test_atomic_compare_exchange16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movw %dx, -2(%rbp)
     mov $2, %rdx
     lea -2(%rbp), %r8
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -173,16 +173,16 @@ __kefir_text_func_test_atomic_compare_exchange32_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movl %edx, -4(%rbp)
     mov $4, %rdx
     lea -4(%rbp), %r8
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9
@@ -197,16 +197,16 @@ __kefir_text_func_test_atomic_compare_exchange64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    mov %rsi, %rcx
+    mov %rsi, %rax
+    mov %rdi, %rcx
     movq %rdx, -8(%rbp)
     mov $8, %rdx
     lea -8(%rbp), %r8
     mov $5, %r9
     mov $5, %r10
     mov %rdx, %rdi
-    mov %rax, %rsi
-    mov %rcx, %rdx
+    mov %rcx, %rsi
+    mov %rax, %rdx
     mov %r8, %rcx
     mov %r9, %r8
     mov %r10, %r9

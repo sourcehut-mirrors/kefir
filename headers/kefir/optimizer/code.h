@@ -143,6 +143,7 @@ typedef struct kefir_opt_instruction {
     struct kefir_opt_operation operation;
     struct kefir_opt_instruction_link siblings;
     struct kefir_opt_instruction_link control_flow;
+    kefir_bool_t control_side_effect_free;
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
@@ -291,9 +292,10 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *, c
                                                            kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_add_control(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
-                                                    kefir_opt_instruction_ref_t);
+                                                    kefir_opt_instruction_ref_t, kefir_bool_t);
 kefir_result_t kefir_opt_code_container_insert_control(const struct kefir_opt_code_container *, kefir_opt_block_id_t,
-                                                       kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+                                                       kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
+                                                       kefir_bool_t);
 kefir_result_t kefir_opt_code_container_drop_control(const struct kefir_opt_code_container *,
                                                      kefir_opt_instruction_ref_t);
 

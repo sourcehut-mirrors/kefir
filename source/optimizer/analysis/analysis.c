@@ -217,7 +217,6 @@ static kefir_result_t analyze_code(struct kefir_mem *mem, struct kefir_opt_code_
     REQUIRE_OK(kefir_opt_code_analyze_reachability(mem, analysis));
     REQUIRE_OK(find_successors(mem, analysis));
     REQUIRE_OK(kefir_opt_code_analyze_linearize(mem, analysis, &kefir_opt_code_analyze_bfs_block_scheduler));
-    REQUIRE_OK(kefir_opt_code_liveness_intervals_build(mem, analysis, &analysis->liveness));
     return KEFIR_OK;
 }
 
@@ -237,12 +236,8 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     REQUIRE(analysis->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis code block"));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties){
-            .block_id = i,
-            .reachable = false,
-            .linear_position = ~(kefir_size_t) 0ull,
-            .linear_range = {.begin_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED,
-                             .end_index = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED}};
+        analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties) {
+            .block_id = i, .reachable = false, .linear_position = ~(kefir_size_t) 0ull};
         kefir_result_t res = kefir_list_init(&analysis->blocks[i].successors);
         REQUIRE_CHAIN(&res, kefir_list_init(&analysis->blocks[i].predecessors));
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -257,29 +252,9 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
         });
     }
 
-    analysis->instructions = KEFIR_MALLOC(
-        mem, sizeof(kefir_opt_code_analysis_instruction_properties_t) * kefir_opt_code_container_length(code));
-    REQUIRE_ELSE(analysis->instructions != NULL, {
-        for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-            kefir_list_free(mem, &analysis->blocks[i].successors);
-            kefir_list_free(mem, &analysis->blocks[i].predecessors);
-        }
-        KEFIR_FREE(mem, analysis->blocks);
-        analysis->blocks = NULL;
-        kefir_list_free(mem, &analysis->indirect_jump_target_blocks);
-        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis code block");
-    });
-
-    for (kefir_size_t i = 0; i < kefir_opt_code_container_length(code); i++) {
-        analysis->instructions[i] = (struct kefir_opt_code_analysis_instruction_properties){
-            .instr_ref = i, .reachable = false, .linear_position = KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED};
-    }
-
     analysis->code = code;
     analysis->block_linearization_length = 0;
     analysis->block_linearization = NULL;
-    analysis->linearization_length = 0;
-    analysis->linearization = NULL;
 
     kefir_result_t res = analyze_code(mem, analysis);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -287,9 +262,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
             REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
             REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
         }
-        KEFIR_FREE(mem, analysis->linearization);
         KEFIR_FREE(mem, analysis->block_linearization);
-        KEFIR_FREE(mem, analysis->instructions);
         KEFIR_FREE(mem, analysis->blocks);
         kefir_list_free(mem, &analysis->indirect_jump_target_blocks);
         memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
@@ -302,8 +275,6 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
-    REQUIRE_OK(kefir_opt_code_liveness_intervals_free(mem, &analysis->liveness));
-
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
@@ -313,9 +284,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_list_free(mem, &analysis->indirect_jump_target_blocks));
 
-    KEFIR_FREE(mem, analysis->linearization);
     KEFIR_FREE(mem, analysis->block_linearization);
-    KEFIR_FREE(mem, analysis->instructions);
     KEFIR_FREE(mem, analysis->blocks);
     memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
     return KEFIR_OK;
@@ -334,19 +303,6 @@ kefir_result_t kefir_opt_code_analysis_block_properties(
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer block analysis properties"));
 
     *props_ptr = &analysis->blocks[block_id];
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_analysis_instruction_properties(
-    const struct kefir_opt_code_analysis *analysis, kefir_opt_instruction_ref_t instr_ref,
-    const struct kefir_opt_code_analysis_instruction_properties **props_ptr) {
-    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
-    REQUIRE(props_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                                               "Expected valid pointer to optimizer code analysis block properties"));
-    REQUIRE(instr_ref < kefir_opt_code_container_length(analysis->code),
-            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer instruction analysis properties"));
-
-    *props_ptr = &analysis->instructions[instr_ref];
     return KEFIR_OK;
 }
 

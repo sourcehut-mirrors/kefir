@@ -1572,8 +1572,8 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
                     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, replacement_ref, &replacement_instr));
                     if (replacement_instr->control_flow.prev == KEFIR_ID_NONE &&
                         replacement_instr->control_flow.next == KEFIR_ID_NONE) {
-                        REQUIRE_OK(
-                            kefir_opt_code_container_insert_control(&func->code, block->id, instr_id, replacement_ref));
+                        REQUIRE_OK(kefir_opt_code_container_insert_control(
+                            &func->code, block->id, instr_id, replacement_ref, instr->control_side_effect_free));
                     }
                     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
                 }

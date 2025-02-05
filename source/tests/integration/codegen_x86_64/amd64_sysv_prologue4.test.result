@@ -12,20 +12,20 @@ __kefir_text_func_func1_begin:
     mov %rbp, %rsp
     sub %rsp, 32
 _kefir_func_func1_label0:
-    mov QWORD PTR [%rbp - 32], %rdi
-    mov QWORD PTR [%rbp - 24], %rsi
-    movq [%rbp - 16], %xmm1
     lea %rax, [%rbp + 16]
+    movq [%rbp - 32], %xmm1
+    mov QWORD PTR [%rbp - 24], %rdi
+    mov QWORD PTR [%rbp - 16], %rsi
 _kefir_func_func1_label1:
     mov %rcx, 0
     mov QWORD PTR [%rcx], %rax
     mov %rax, 0
-    lea %rcx, QWORD PTR [%rbp - 16]
+    lea %rcx, QWORD PTR [%rbp - 32]
     mov QWORD PTR [%rax], %rcx
     mov %rax, 0
     movq [%rax], %xmm0
     mov %rax, 0
-    lea %rcx, QWORD PTR [%rbp - 32]
+    lea %rcx, QWORD PTR [%rbp - 24]
     mov QWORD PTR [%rax], %rcx
     lea %rsp, [%rbp]
     pop %rbp

@@ -70,12 +70,13 @@ _kefir_func_get_T2_label3:
     jz _kefir_func_get_T2_label4
     jmp _kefir_func_get_T2_label5
 _kefir_func_get_T2_label4:
-    lea T1(%rip), %rax
-    add $8, %rax
-    movsxl -4(%rbp), %rcx
-    movsx %ecx, %rcx
-    imul $8, %rcx, %rcx
-    add %rcx, %rax
+    movsxl -4(%rbp), %rax
+    lea T1(%rip), %rcx
+    add $8, %rcx
+    movsx %eax, %rax
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

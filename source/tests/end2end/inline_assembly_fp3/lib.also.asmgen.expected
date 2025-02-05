@@ -12,85 +12,84 @@ __kefir_text_func_sumall_begin:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    push %r13
-    sub $40, %rsp
+    sub $48, %rsp
 _kefir_func_sumall_label0:
 _kefir_func_sumall_label1:
-    movq %rdi, -40(%rbp)
-    movq %xmm0, -32(%rbp)
-    lea -32(%rbp), %r12
-    movq _kefir_func_sumall_label2(%rip), %xmm0
-    movq -40(%rbp), %rax
+    movq %rdi, -32(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -32(%rbp), %rax
     mov $0, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %r13
-    movq -40(%rbp), %rax
+    movq (%rax), %r12
+    movq -32(%rbp), %rax
     mov $1, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %r8
-    movq -40(%rbp), %rax
+    movq (%rax), %rdi
+    movq -32(%rbp), %rax
     mov $2, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %r9
-    movq -40(%rbp), %rax
+    movq (%rax), %r8
+    movq -32(%rbp), %rax
     mov $3, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %r10
-    movq -40(%rbp), %rax
+    movq (%rax), %r9
+    movq -32(%rbp), %rax
     mov $4, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %r11
-    movq -40(%rbp), %rax
+    movq (%rax), %r10
+    movq -32(%rbp), %rax
     mov $5, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
-    movq (%rax), %rbx
-    movq -40(%rbp), %rax
+    movq (%rax), %r11
+    movq -32(%rbp), %rax
     mov $6, %rcx
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
+    movq (%rax), %rbx
+    movq -32(%rbp), %rax
+    mov $7, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
     movq (%rax), %rax
-    movq -40(%rbp), %rcx
-    mov $7, %rdx
+    movq -32(%rbp), %rcx
+    mov $8, %rdx
     movsx %edx, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
     movq (%rcx), %rcx
-    movq -40(%rbp), %rdx
-    mov $8, %rsi
+    movq -32(%rbp), %rdx
+    mov $9, %rsi
     movsx %esi, %rsi
     imul $8, %rsi, %rsi
     add %rsi, %rdx
     movq (%rdx), %rdx
-    movq -40(%rbp), %rsi
-    mov $9, %rdi
-    movsx %edi, %rdi
-    imul $8, %rdi, %rdi
-    add %rdi, %rsi
-    movq (%rsi), %rsi
-    movq %r12, -64(%rbp)
-    movq %r13, %xmm1
-    movq %r8, %xmm2
-    movq %r9, %xmm6
-    movq %r10, %xmm7
-    movq %r11, %xmm8
-    movq %rbx, %xmm10
-    movq %rax, %xmm12
-    movq %rcx, %xmm13
-    mov %rdx, -56(%rbp)
-    mov %rsi, -48(%rbp)
+    movq _kefir_func_sumall_label2(%rip), %xmm0
+    lea -24(%rbp), %rsi
+    movq %rsi, -64(%rbp)
+    movq %r12, %xmm1
+    movq %rdi, %xmm2
+    movq %r8, %xmm6
+    movq %r9, %xmm7
+    movq %r10, %xmm8
+    movq %r11, %xmm10
+    movq %rbx, %xmm12
+    movq %rax, %xmm13
+    mov %rcx, -56(%rbp)
+    mov %rdx, -48(%rbp)
 addsd %xmm1, %xmm0
 addsd %xmm2, %xmm0
 addsd %xmm6, %xmm0
@@ -104,10 +103,9 @@ addsd -48(%rbp), %xmm0
 
     movq -64(%rbp), %rax
     movq %xmm0, (%rax)
-    movq -32(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, %xmm0
-    lea -24(%rbp), %rsp
-    pop %r13
+    lea -16(%rbp), %rsp
     pop %r12
     pop %rbx
     pop %rbp

@@ -25,6 +25,7 @@
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/optimizer/schedule.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
 
@@ -52,6 +53,8 @@ typedef struct kefir_codegen_amd64_function {
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;
     kefir_asmcmp_virtual_register_index_t dynamic_scope_vreg;
+
+    struct kefir_opt_code_schedule schedule;
 
     struct {
         struct kefir_hashtree opt_instruction_location_labels;

@@ -213,7 +213,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
@@ -237,7 +237,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
@@ -352,7 +352,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }
@@ -431,7 +431,7 @@ static kefir_result_t has_phi_outputs(struct kefir_codegen_amd64_function *funct
          res = kefir_opt_phi_next_sibling(&function->function->code, phi_ref, &phi_ref)) {
 
         REQUIRE_OK(kefir_opt_code_container_phi(&function->function->code, phi_ref, &phi));
-        if (!function->function_analysis->instructions[phi->output_ref].reachable ||
+        if (!kefir_opt_code_schedule_has(&function->schedule, phi->output_ref) ||
             !kefir_hashtreeset_has(&function->translated_instructions, (kefir_hashtreeset_entry_t) phi->output_ref)) {
             continue;
         }

@@ -17,14 +17,14 @@ _kefir_func_custom_discriminant_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -32(%rbp)
     movq %xmm0, -8(%rbp)
-    lea -8(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -32(%rbp), %rdx
-    movq -16(%rbp), %rsi
-    movq %rax, -48(%rbp)
-    movq %rcx, %xmm1
-    movq %rdx, %xmm2
-    movq %rsi, %xmm3
+    movq -24(%rbp), %rax
+    movq -32(%rbp), %rcx
+    movq -16(%rbp), %rdx
+    lea -8(%rbp), %rsi
+    movq %rsi, -48(%rbp)
+    movq %rax, %xmm1
+    movq %rcx, %xmm2
+    movq %rdx, %xmm3
 mulsd %xmm1, %xmm1
 movq %xmm2, %xmm0
 mulsd %xmm3, %xmm0
