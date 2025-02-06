@@ -27,9 +27,7 @@
                                 1
                             ],
                             "predecessors": [],
-                            "dominators": [
-                                0
-                            ]
+                            "immediate_dominator": null
                         }
                     },
                     {
@@ -88,10 +86,7 @@
                             "predecessors": [
                                 0
                             ],
-                            "dominators": [
-                                0,
-                                1
-                            ]
+                            "immediate_dominator": 0
                         }
                     }
                 ],

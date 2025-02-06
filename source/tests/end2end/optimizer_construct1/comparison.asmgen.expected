@@ -27,9 +27,7 @@
                                 1
                             ],
                             "predecessors": [],
-                            "dominators": [
-                                0
-                            ]
+                            "immediate_dominator": null
                         }
                     },
                     {
@@ -186,10 +184,7 @@
                                 0,
                                 6
                             ],
-                            "dominators": [
-                                0,
-                                1
-                            ]
+                            "immediate_dominator": 0
                         }
                     },
                     {
@@ -213,11 +208,7 @@
                             "predecessors": [
                                 1
                             ],
-                            "dominators": [
-                                0,
-                                1,
-                                2
-                            ]
+                            "immediate_dominator": 1
                         }
                     },
                     {
@@ -279,11 +270,7 @@
                                 1,
                                 4
                             ],
-                            "dominators": [
-                                0,
-                                1,
-                                3
-                            ]
+                            "immediate_dominator": 1
                         }
                     },
                     {
@@ -415,12 +402,7 @@
                             "predecessors": [
                                 3
                             ],
-                            "dominators": [
-                                0,
-                                1,
-                                3,
-                                4
-                            ]
+                            "immediate_dominator": 3
                         }
                     },
                     {
@@ -458,12 +440,7 @@
                             "predecessors": [
                                 3
                             ],
-                            "dominators": [
-                                0,
-                                1,
-                                3,
-                                5
-                            ]
+                            "immediate_dominator": 3
                         }
                     },
                     {
@@ -489,13 +466,7 @@
                             "predecessors": [
                                 4
                             ],
-                            "dominators": [
-                                0,
-                                1,
-                                3,
-                                4,
-                                6
-                            ]
+                            "immediate_dominator": 4
                         }
                     }
                 ],
