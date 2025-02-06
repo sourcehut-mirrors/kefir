@@ -522,3 +522,24 @@ kefir_result_t kefir_opt_code_block_schedule_next(struct kefir_opt_code_block_sc
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_opt_code_instruction_scheduler_default_schedule(
+    kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_code_instruction_scheduler_dependency_callback_t dependency_callback, void *dependency_callback_payload,
+    kefir_bool_t *schedule_instruction, void *payload) {
+    REQUIRE(
+        dependency_callback != NULL,
+        KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction dependency scheduler callback"));
+    REQUIRE(schedule_instruction != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction scheduler flag"));
+    ASSIGN_DECL_CAST(const struct kefir_opt_code_container *, code, payload);
+    REQUIRE(code != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+    REQUIRE_OK(
+        kefir_opt_instruction_extract_inputs(code, instr, true, dependency_callback, dependency_callback_payload));
+    *schedule_instruction = true;
+    return KEFIR_OK;
+}

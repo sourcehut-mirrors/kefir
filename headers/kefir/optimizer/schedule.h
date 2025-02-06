@@ -87,4 +87,11 @@ kefir_result_t kefir_opt_code_block_schedule_iter(const struct kefir_opt_code_sc
                                                   struct kefir_opt_code_block_schedule_iterator *);
 kefir_result_t kefir_opt_code_block_schedule_next(struct kefir_opt_code_block_schedule_iterator *);
 
+kefir_result_t kefir_opt_code_instruction_scheduler_default_schedule(
+    kefir_opt_instruction_ref_t, kefir_opt_code_instruction_scheduler_dependency_callback_t, void *, kefir_bool_t *,
+    void *);
+
+#define KEFIR_OPT_CODE_INSTRUCTION_DEFAULT_SCHEDULE_INIT(_code) \
+    {.try_schedule = kefir_opt_code_instruction_scheduler_default_schedule, .payload = (void *) (_code)}
+
 #endif

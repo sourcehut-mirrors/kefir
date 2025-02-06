@@ -14,17 +14,11 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
+                                "id": 3,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 3,
                                 "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -32,13 +26,23 @@
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 3,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 3,
+                                "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -46,6 +50,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -108,6 +113,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -115,6 +121,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -126,6 +133,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -134,6 +142,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -141,6 +150,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -152,6 +162,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 13,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -160,6 +171,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -167,6 +179,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 7
                             },
                             {
@@ -178,6 +191,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 16,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -186,6 +200,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 9
                             },
                             {
@@ -193,6 +208,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 3,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -204,6 +220,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 18,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
@@ -212,6 +229,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -222,6 +240,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 21,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 13
                             },
                             {
@@ -229,6 +248,7 @@
                                 "opcode": "int32_to_bool",
                                 "arg": 18,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -236,6 +256,7 @@
                                 "opcode": "int8_bool_not",
                                 "arg": 19,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 16
                             },
                             {
@@ -246,6 +267,7 @@
                                 "condition": 20,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             }
                         ],
@@ -287,6 +309,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 5,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -294,6 +317,7 @@
                                 "opcode": "int32_to_bool",
                                 "arg": 27,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -304,6 +328,7 @@
                                 "condition": 28,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             }
                         ],
@@ -316,77 +341,6 @@
                             "predecessors": [
                                 1,
                                 3
-                            ],
-                            "immediate_dominator": 1
-                        }
-                    },
-                    {
-                        "id": 3,
-                        "control_flow": 23,
-                        "phi": [
-                            {
-                                "id": 4,
-                                "links": [
-                                    {
-                                        "block_id": 1,
-                                        "instr_ref": 19
-                                    }
-                                ]
-                            }
-                        ],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 22,
-                                "opcode": "get_local",
-                                "local_index": 2,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 18
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "int32_load_signed",
-                                "location": 22,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 26,
-                                "ir_instruction": 19
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "phi",
-                                "phi_ref": 4,
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "int32_bool_and",
-                                "args": [
-                                    24,
-                                    23
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "jump",
-                                "target_block": 2,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                2
-                            ],
-                            "predecessors": [
-                                1
                             ],
                             "immediate_dominator": 1
                         }
@@ -417,6 +371,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 9,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 34
                             },
                             {
@@ -424,6 +379,7 @@
                                 "opcode": "int32_to_bool",
                                 "arg": 44,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 34
                             },
                             {
@@ -431,6 +387,7 @@
                                 "opcode": "return",
                                 "arg": 45,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 35
                             }
                         ],
@@ -467,6 +424,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
@@ -477,6 +435,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 34,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 25
                             },
                             {
@@ -484,13 +443,23 @@
                                 "opcode": "int32_to_bool",
                                 "arg": 31,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 26
+                            },
+                            {
+                                "id": 48,
+                                "opcode": "phi",
+                                "phi_ref": 10,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
                             },
                             {
                                 "id": 33,
                                 "opcode": "int8_bool_not",
                                 "arg": 32,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 28
                             },
                             {
@@ -501,14 +470,8 @@
                                 "condition": 33,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 29
-                            },
-                            {
-                                "id": 48,
-                                "opcode": "phi",
-                                "phi_ref": 10,
-                                "control_next": null,
-                                "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
@@ -558,17 +521,19 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 40,
-                                "opcode": "phi",
-                                "phi_ref": 7,
-                                "control_next": null,
-                                "ir_instruction": 33
-                            },
-                            {
                                 "id": 41,
                                 "opcode": "phi",
                                 "phi_ref": 8,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 33
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "phi",
+                                "phi_ref": 7,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 33
                             },
                             {
@@ -579,6 +544,7 @@
                                     40
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 33
                             },
                             {
@@ -586,6 +552,7 @@
                                 "opcode": "jump",
                                 "target_block": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -633,6 +600,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 30
                             },
                             {
@@ -643,6 +611,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 39,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 31
                             },
                             {
@@ -650,6 +619,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 6,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 32
                             },
                             {
@@ -660,20 +630,23 @@
                                     36
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 32
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "jump",
-                                "target_block": 6,
-                                "control_next": null,
-                                "ir_instruction": null
                             },
                             {
                                 "id": 49,
                                 "opcode": "phi",
                                 "phi_ref": 11,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "jump",
+                                "target_block": 6,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -689,25 +662,79 @@
                         }
                     },
                     {
-                        "id": 8,
-                        "control_flow": 47,
-                        "phi": [],
+                        "id": 3,
+                        "control_flow": 23,
+                        "phi": [
+                            {
+                                "id": 4,
+                                "links": [
+                                    {
+                                        "block_id": 1,
+                                        "instr_ref": 19
+                                    }
+                                ]
+                            }
+                        ],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 47,
-                                "opcode": "return",
-                                "arg": null,
+                                "id": 22,
+                                "opcode": "get_local",
+                                "local_index": 2,
+                                "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 18
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "int32_load_signed",
+                                "location": 22,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 26,
+                                "control_side_effect_free": true,
+                                "ir_instruction": 19
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "phi",
+                                "phi_ref": 4,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 20
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "int32_bool_and",
+                                "args": [
+                                    24,
+                                    23
+                                ],
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 20
+                            },
+                            {
+                                "id": 26,
+                                "opcode": "jump",
+                                "target_block": 2,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null
+                            "successors": [
+                                2
+                            ],
+                            "predecessors": [
+                                1
+                            ],
+                            "immediate_dominator": 1
                         }
                     }
                 ],
@@ -734,6 +761,7 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -741,6 +769,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -776,6 +805,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -783,6 +813,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -794,6 +825,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 7,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -802,6 +834,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -809,6 +842,7 @@
                                 "opcode": "block_label",
                                 "value": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -820,6 +854,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -828,6 +863,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -835,6 +871,7 @@
                                 "opcode": "block_label",
                                 "value": 3,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -846,6 +883,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 12,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
@@ -854,6 +892,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 13
                             },
                             {
@@ -864,6 +903,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 15,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 14
                             },
                             {
@@ -871,6 +911,7 @@
                                 "opcode": "int32_to_bool",
                                 "arg": 12,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 15
                             },
                             {
@@ -878,6 +919,7 @@
                                 "opcode": "int8_bool_not",
                                 "arg": 13,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             },
                             {
@@ -888,6 +930,7 @@
                                 "condition": 14,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             }
                         ],
@@ -901,75 +944,6 @@
                                 0
                             ],
                             "immediate_dominator": 0
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "control_flow": 31,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 30,
-                                "opcode": "int_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 30
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "return",
-                                "arg": 30,
-                                "control_next": null,
-                                "ir_instruction": 31
-                            }
-                        ],
-                        "public_labels": [
-                            "_kefir_local_public_label_test2_label1"
-                        ],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [
-                                6,
-                                7,
-                                8
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 3,
-                        "control_flow": 33,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 32,
-                                "opcode": "int_const",
-                                "value": 2,
-                                "control_next": null,
-                                "ir_instruction": 32
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "return",
-                                "arg": 32,
-                                "control_next": null,
-                                "ir_instruction": 33
-                            }
-                        ],
-                        "public_labels": [
-                            "_kefir_local_public_label_test2_label2"
-                        ],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [
-                                6,
-                                7
-                            ],
-                            "immediate_dominator": 4
                         }
                     },
                     {
@@ -998,6 +972,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -1005,6 +980,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 20,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -1015,6 +991,7 @@
                                 "condition": 21,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 22
                             }
                         ],
@@ -1029,6 +1006,175 @@
                                 5
                             ],
                             "immediate_dominator": 1
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "control_flow": 28,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 27,
+                                "opcode": "get_local",
+                                "local_index": 2,
+                                "offset": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 27
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "int64_load",
+                                "location": 27,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 29,
+                                "control_side_effect_free": true,
+                                "ir_instruction": 28
+                            },
+                            {
+                                "id": 29,
+                                "opcode": "indirect_jump",
+                                "arg": 28,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 29
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                2,
+                                3
+                            ],
+                            "predecessors": [
+                                4
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "control_flow": 31,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 30,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 30
+                            },
+                            {
+                                "id": 31,
+                                "opcode": "return",
+                                "arg": 30,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 31
+                            }
+                        ],
+                        "public_labels": [
+                            "_kefir_local_public_label_test2_label1"
+                        ],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [
+                                6,
+                                7,
+                                8
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "control_flow": 33,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 32,
+                                "opcode": "int_const",
+                                "value": 2,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 32
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "return",
+                                "arg": 32,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 33
+                            }
+                        ],
+                        "public_labels": [
+                            "_kefir_local_public_label_test2_label2"
+                        ],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [
+                                6,
+                                7
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "control_flow": 24,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 23,
+                                "opcode": "get_local",
+                                "local_index": 1,
+                                "offset": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 23
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "int64_load",
+                                "location": 23,
+                                "flags": {
+                                    "volatile": false
+                                },
+                                "control_next": 25,
+                                "control_side_effect_free": true,
+                                "ir_instruction": 24
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "indirect_jump",
+                                "arg": 24,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 25
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                2,
+                                3
+                            ],
+                            "predecessors": [
+                                4
+                            ],
+                            "immediate_dominator": 4
                         }
                     },
                     {
@@ -1049,18 +1195,20 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 16,
-                                "opcode": "int_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 19
-                            },
-                            {
                                 "id": 17,
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 20
+                            },
+                            {
+                                "id": 16,
+                                "opcode": "int_const",
+                                "value": 1,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 19
                             },
                             {
                                 "id": 18,
@@ -1070,6 +1218,7 @@
                                     16
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 20
                             },
                             {
@@ -1077,6 +1226,7 @@
                                 "opcode": "jump",
                                 "target_block": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -1089,142 +1239,6 @@
                                 1
                             ],
                             "immediate_dominator": 1
-                        }
-                    },
-                    {
-                        "id": 6,
-                        "control_flow": 28,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 27,
-                                "opcode": "get_local",
-                                "local_index": 2,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 27
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "int64_load",
-                                "location": 27,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 29,
-                                "ir_instruction": 28
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "indirect_jump",
-                                "arg": 28,
-                                "control_next": null,
-                                "ir_instruction": 29
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                2,
-                                3
-                            ],
-                            "predecessors": [
-                                4
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 7,
-                        "control_flow": 24,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 23,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 23
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "int64_load",
-                                "location": 23,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 25,
-                                "ir_instruction": 24
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "indirect_jump",
-                                "arg": 24,
-                                "control_next": null,
-                                "ir_instruction": 25
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                2,
-                                3
-                            ],
-                            "predecessors": [
-                                4
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 8,
-                        "control_flow": 26,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 26,
-                                "opcode": "jump",
-                                "target_block": 2,
-                                "control_next": null,
-                                "ir_instruction": 26
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                2
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null
-                        }
-                    },
-                    {
-                        "id": 9,
-                        "control_flow": 34,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 34,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null
                         }
                     }
                 ],

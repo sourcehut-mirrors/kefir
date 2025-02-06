@@ -18,6 +18,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -42,6 +43,7 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -49,6 +51,7 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -59,6 +62,7 @@
                                     2
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -66,6 +70,7 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -76,6 +81,7 @@
                                     4
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -83,6 +89,7 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -90,6 +97,7 @@
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -100,6 +108,7 @@
                                     7
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 9
                             },
                             {
@@ -110,6 +119,7 @@
                                     6
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
@@ -120,6 +130,7 @@
                                     9
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -127,6 +138,7 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 13
                             },
                             {
@@ -137,6 +149,7 @@
                                     11
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -144,6 +157,7 @@
                                 "opcode": "int8_bool_not",
                                 "arg": 12,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 15
                             },
                             {
@@ -154,6 +168,7 @@
                                     13
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 16
                             },
                             {
@@ -161,6 +176,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 14,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             },
                             {
@@ -171,6 +187,7 @@
                                 "condition": 15,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             }
                         ],
@@ -199,6 +216,7 @@
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -223,6 +241,7 @@
                                 "opcode": "int_const",
                                 "value": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 19
                             },
                             {
@@ -230,6 +249,7 @@
                                 "opcode": "int_const",
                                 "value": 10,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 20
                             },
                             {
@@ -240,6 +260,7 @@
                                     18
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -247,6 +268,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 19,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 22
                             },
                             {
@@ -257,6 +279,7 @@
                                 "condition": 20,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             }
                         ],
@@ -285,6 +308,7 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 27
                             },
                             {
@@ -292,6 +316,7 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 28
                             },
                             {
@@ -299,6 +324,7 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 29
                             },
                             {
@@ -309,6 +335,7 @@
                                     27
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 30
                             },
                             {
@@ -319,6 +346,7 @@
                                     28
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 31
                             },
                             {
@@ -326,6 +354,7 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 32
                             },
                             {
@@ -336,6 +365,7 @@
                                     30
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 35
                             },
                             {
@@ -346,6 +376,7 @@
                                     29
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 37
                             },
                             {
@@ -356,6 +387,7 @@
                                     32
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 38
                             },
                             {
@@ -363,6 +395,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 33,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 39
                             },
                             {
@@ -370,6 +403,7 @@
                                 "opcode": "int_const",
                                 "value": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 40
                             },
                             {
@@ -380,6 +414,7 @@
                                     35
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 41
                             },
                             {
@@ -390,6 +425,7 @@
                                 "condition": 36,
                                 "condition_variant": "32bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 42
                             }
                         ],
@@ -399,44 +435,6 @@
                                 3,
                                 6
                             ],
-                            "predecessors": [
-                                3
-                            ],
-                            "immediate_dominator": 3
-                        }
-                    },
-                    {
-                        "id": 5,
-                        "control_flow": 24,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 22,
-                                "opcode": "float64_const",
-                                "value": 3.000000,
-                                "control_next": null,
-                                "ir_instruction": 24
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float64_to_float32",
-                                "arg": 22,
-                                "control_next": null,
-                                "ir_instruction": 25
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "return",
-                                "arg": 23,
-                                "control_next": null,
-                                "ir_instruction": 26
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
                             "predecessors": [
                                 3
                             ],
@@ -455,6 +453,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 43
                             }
                         ],
@@ -467,6 +466,47 @@
                                 4
                             ],
                             "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 5,
+                        "control_flow": 24,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 22,
+                                "opcode": "float64_const",
+                                "value": 3.000000,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 24
+                            },
+                            {
+                                "id": 23,
+                                "opcode": "float64_to_float32",
+                                "arg": 22,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 25
+                            },
+                            {
+                                "id": 24,
+                                "opcode": "return",
+                                "arg": 23,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 26
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [
+                                3
+                            ],
+                            "immediate_dominator": 3
                         }
                     }
                 ],

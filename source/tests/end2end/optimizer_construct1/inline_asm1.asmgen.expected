@@ -18,6 +18,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -62,6 +63,7 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 0,
                                 "control_next": 2,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -69,6 +71,7 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 1,
                                 "control_next": 4,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -77,6 +80,7 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -87,6 +91,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 6,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 3
                             },
                             {
@@ -94,6 +99,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -104,6 +110,7 @@
                                 "condition": 5,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             }
                         ],
@@ -133,6 +140,7 @@
                                 "global_ref": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -143,6 +151,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 13,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 9
                             },
                             {
@@ -150,6 +159,7 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 11,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -160,6 +170,7 @@
                                 "condition": 12,
                                 "condition_variant": "8bit",
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             }
                         ],
@@ -172,64 +183,6 @@
                             "predecessors": [
                                 1,
                                 3
-                            ],
-                            "immediate_dominator": 1
-                        }
-                    },
-                    {
-                        "id": 3,
-                        "control_flow": 8,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [
-                            {
-                                "id": 2,
-                                "inline_asm_id": 2,
-                                "parameters": [
-                                    {
-                                        "load_store": 7,
-                                        "read": null
-                                    },
-                                    {
-                                        "load_store": null,
-                                        "read": null
-                                    }
-                                ],
-                                "default_jump_target": null,
-                                "jump_targets": []
-                            }
-                        ],
-                        "code": [
-                            {
-                                "id": 7,
-                                "opcode": "get_global",
-                                "global_ref": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "inline_assembly",
-                                "inline_asm_ref": 2,
-                                "control_next": 9,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "jump",
-                                "target_block": 2,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                2
-                            ],
-                            "predecessors": [
-                                1
                             ],
                             "immediate_dominator": 1
                         }
@@ -263,6 +216,7 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             }
                         ],
@@ -278,6 +232,113 @@
                                 5
                             ],
                             "immediate_dominator": 2
+                        }
+                    },
+                    {
+                        "id": 8,
+                        "control_flow": 22,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 22,
+                                "opcode": "jump",
+                                "target_block": 9,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 19
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                9
+                            ],
+                            "predecessors": [
+                                4
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 9,
+                        "control_flow": 25,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 25,
+                                "opcode": "return",
+                                "arg": null,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 22
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [
+                                6,
+                                8
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "control_flow": 23,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 23,
+                                "opcode": "jump",
+                                "target_block": 9,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 20
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                9
+                            ],
+                            "predecessors": [
+                                4
+                            ],
+                            "immediate_dominator": 4
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "control_flow": 24,
+                        "phi": [],
+                        "calls": [],
+                        "inline_assembly": [],
+                        "code": [
+                            {
+                                "id": 24,
+                                "opcode": "jump",
+                                "target_block": 1,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 21
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [
+                                1
+                            ],
+                            "predecessors": [
+                                4
+                            ],
+                            "immediate_dominator": 4
                         }
                     },
                     {
@@ -313,27 +374,12 @@
                         ],
                         "code": [
                             {
-                                "id": 14,
-                                "opcode": "get_global",
-                                "global_ref": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 12
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "get_global",
-                                "global_ref": 3,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 13
-                            },
-                            {
                                 "id": 16,
                                 "opcode": "get_global",
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -344,20 +390,41 @@
                                     "volatile": false
                                 },
                                 "control_next": 19,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 15
+                            },
+                            {
+                                "id": 14,
+                                "opcode": "get_global",
+                                "global_ref": 1,
+                                "offset": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 12
                             },
                             {
                                 "id": 18,
                                 "opcode": "int_const",
                                 "value": 314,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 16
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "get_global",
+                                "global_ref": 3,
+                                "offset": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 13
                             },
                             {
                                 "id": 19,
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 3,
                                 "control_next": 20,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             },
                             {
@@ -365,6 +432,7 @@
                                 "opcode": "jump",
                                 "target_block": 4,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -380,128 +448,64 @@
                         }
                     },
                     {
-                        "id": 6,
-                        "control_flow": 23,
+                        "id": 3,
+                        "control_flow": 8,
                         "phi": [],
                         "calls": [],
-                        "inline_assembly": [],
+                        "inline_assembly": [
+                            {
+                                "id": 2,
+                                "inline_asm_id": 2,
+                                "parameters": [
+                                    {
+                                        "load_store": 7,
+                                        "read": null
+                                    },
+                                    {
+                                        "load_store": null,
+                                        "read": null
+                                    }
+                                ],
+                                "default_jump_target": null,
+                                "jump_targets": []
+                            }
+                        ],
                         "code": [
                             {
-                                "id": 23,
+                                "id": 7,
+                                "opcode": "get_global",
+                                "global_ref": 1,
+                                "offset": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 6
+                            },
+                            {
+                                "id": 8,
+                                "opcode": "inline_assembly",
+                                "inline_asm_ref": 2,
+                                "control_next": 9,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 7
+                            },
+                            {
+                                "id": 9,
                                 "opcode": "jump",
-                                "target_block": 9,
+                                "target_block": 2,
                                 "control_next": null,
-                                "ir_instruction": 20
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                9
-                            ],
-                            "predecessors": [
-                                4
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 7,
-                        "control_flow": 24,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 24,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": 21
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [
-                                4
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 8,
-                        "control_flow": 22,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 22,
-                                "opcode": "jump",
-                                "target_block": 9,
-                                "control_next": null,
-                                "ir_instruction": 19
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                9
-                            ],
-                            "predecessors": [
-                                4
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 9,
-                        "control_flow": 25,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 25,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": 22
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [
-                                6,
-                                8
-                            ],
-                            "immediate_dominator": 4
-                        }
-                    },
-                    {
-                        "id": 10,
-                        "control_flow": 26,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 26,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
                         "public_labels": [],
                         "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null
+                            "successors": [
+                                2
+                            ],
+                            "predecessors": [
+                                1
+                            ],
+                            "immediate_dominator": 1
                         }
                     }
                 ],

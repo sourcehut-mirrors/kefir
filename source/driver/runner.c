@@ -483,7 +483,7 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     if (output != NULL) {
         struct kefir_json_output json;
         REQUIRE_OK(kefir_json_output_init(&json, output, 4));
-        REQUIRE_OK(kefir_opt_module_format(&json, &opt_module, &opt_analysis, options->debug_info));
+        REQUIRE_OK(kefir_opt_module_format(mem, &json, &opt_module, &opt_analysis, options->debug_info));
         REQUIRE_OK(kefir_json_output_finalize(&json));
     }
 

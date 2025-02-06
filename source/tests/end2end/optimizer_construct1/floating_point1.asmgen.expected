@@ -14,17 +14,11 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
+                                "id": 3,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 3,
                                 "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -32,13 +26,23 @@
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 3,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 3,
+                                "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -46,6 +50,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -108,6 +113,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -115,6 +121,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -126,6 +133,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -134,6 +142,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -141,6 +150,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -152,6 +162,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 13,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -160,6 +171,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -167,6 +179,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 7
                             },
                             {
@@ -178,6 +191,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 16,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -186,6 +200,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 9
                             },
                             {
@@ -193,6 +208,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 3,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -204,6 +220,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 18,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
@@ -212,6 +229,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -222,6 +240,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 20,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 13
                             },
                             {
@@ -230,6 +249,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -240,24 +260,8 @@
                                     "volatile": false
                                 },
                                 "control_next": 24,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 15
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "float32_add",
-                                "args": [
-                                    18,
-                                    20
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 16
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "float32_neg",
-                                "arg": 21,
-                                "control_next": null,
-                                "ir_instruction": 17
                             },
                             {
                                 "id": 23,
@@ -265,6 +269,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             },
                             {
@@ -275,17 +280,8 @@
                                     "volatile": false
                                 },
                                 "control_next": 27,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 19
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float32_mul",
-                                "args": [
-                                    22,
-                                    24
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 20
                             },
                             {
                                 "id": 26,
@@ -293,6 +289,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -303,13 +300,45 @@
                                     "volatile": false
                                 },
                                 "control_next": 31,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 22
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "float32_add",
+                                "args": [
+                                    18,
+                                    20
+                                ],
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 16
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "float32_neg",
+                                "arg": 21,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 17
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "float32_mul",
+                                "args": [
+                                    22,
+                                    24
+                                ],
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 20
                             },
                             {
                                 "id": 28,
                                 "opcode": "float32_const",
                                 "value": 10.000000,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             },
                             {
@@ -320,6 +349,7 @@
                                     28
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
@@ -330,6 +360,7 @@
                                     29
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 25
                             },
                             {
@@ -337,6 +368,7 @@
                                 "opcode": "return",
                                 "arg": 30,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 26
                             }
                         ],
@@ -347,28 +379,6 @@
                                 0
                             ],
                             "immediate_dominator": 0
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "control_flow": 32,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 32,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null
                         }
                     }
                 ],
@@ -391,17 +401,11 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
+                                "id": 3,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 3,
                                 "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
-                                "id": 1,
-                                "opcode": "get_argument",
-                                "index": 1,
-                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -409,13 +413,23 @@
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 3,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 3,
+                                "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -423,6 +437,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -485,6 +500,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -492,6 +508,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -503,6 +520,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -511,6 +529,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -518,6 +537,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -529,6 +549,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 13,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -537,6 +558,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -544,6 +566,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 2,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 7
                             },
                             {
@@ -555,6 +578,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 16,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -563,6 +587,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 9
                             },
                             {
@@ -570,6 +595,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 3,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -581,6 +607,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 18,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
@@ -589,6 +616,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -599,6 +627,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 20,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 13
                             },
                             {
@@ -607,6 +636,7 @@
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -617,24 +647,8 @@
                                     "volatile": false
                                 },
                                 "control_next": 24,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 15
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "float64_add",
-                                "args": [
-                                    18,
-                                    20
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 16
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "float64_neg",
-                                "arg": 21,
-                                "control_next": null,
-                                "ir_instruction": 17
                             },
                             {
                                 "id": 23,
@@ -642,6 +656,7 @@
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             },
                             {
@@ -652,17 +667,8 @@
                                     "volatile": false
                                 },
                                 "control_next": 27,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 19
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "float64_mul",
-                                "args": [
-                                    22,
-                                    24
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 20
                             },
                             {
                                 "id": 26,
@@ -670,6 +676,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -680,13 +687,45 @@
                                     "volatile": false
                                 },
                                 "control_next": 31,
+                                "control_side_effect_free": true,
                                 "ir_instruction": 22
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "float64_add",
+                                "args": [
+                                    18,
+                                    20
+                                ],
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 16
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "float64_neg",
+                                "arg": 21,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 17
+                            },
+                            {
+                                "id": 25,
+                                "opcode": "float64_mul",
+                                "args": [
+                                    22,
+                                    24
+                                ],
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 20
                             },
                             {
                                 "id": 28,
                                 "opcode": "float64_const",
                                 "value": 10.000000,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             },
                             {
@@ -697,6 +736,7 @@
                                     28
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
@@ -707,6 +747,7 @@
                                     29
                                 ],
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 25
                             },
                             {
@@ -714,6 +755,7 @@
                                 "opcode": "return",
                                 "arg": 30,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 26
                             }
                         ],
@@ -724,28 +766,6 @@
                                 0
                             ],
                             "immediate_dominator": 0
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "control_flow": 32,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 32,
-                                "opcode": "return",
-                                "arg": null,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [],
-                            "predecessors": [],
-                            "immediate_dominator": null
                         }
                     }
                 ],
@@ -768,17 +788,19 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
                                 "id": 1,
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -786,6 +808,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -830,6 +853,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -837,6 +861,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -848,6 +873,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 8,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -856,6 +882,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -863,6 +890,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -874,336 +902,15 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "int32_load_unsigned",
-                                "location": 9,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 12,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 8
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "int32_load_unsigned",
-                                "location": 11,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 15,
-                                "ir_instruction": 9
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    10,
-                                    12
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 12
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "int32_load_unsigned",
-                                "location": 14,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 17,
-                                "ir_instruction": 13
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 14
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "int32_load_unsigned",
-                                "location": 16,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 20,
-                                "ir_instruction": 15
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "float32_greater",
-                                "args": [
-                                    15,
-                                    17
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 16
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 18
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "int32_load_unsigned",
-                                "location": 19,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 22,
-                                "ir_instruction": 19
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int32_load_unsigned",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 25,
-                                "ir_instruction": 21
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float32_lesser",
-                                "args": [
-                                    20,
-                                    22
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 22
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 24
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "int32_load_unsigned",
-                                "location": 24,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 27,
-                                "ir_instruction": 25
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 26
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "int32_load_unsigned",
-                                "location": 26,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 31,
-                                "ir_instruction": 27
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    25,
-                                    27
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 28
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "int8_bool_not",
-                                "arg": 28,
-                                "control_next": null,
-                                "ir_instruction": 29
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 31
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "int32_load_unsigned",
-                                "location": 30,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 33,
-                                "ir_instruction": 32
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 33
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "int32_load_unsigned",
-                                "location": 32,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 38,
-                                "ir_instruction": 34
-                            },
-                            {
-                                "id": 34,
-                                "opcode": "float32_greater",
-                                "args": [
-                                    31,
-                                    33
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 37
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    33,
-                                    31
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 39
-                            },
-                            {
-                                "id": 36,
-                                "opcode": "int64_bool_or",
-                                "args": [
-                                    34,
-                                    35
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 40
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 42
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "int32_load_unsigned",
-                                "location": 37,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 40,
-                                "ir_instruction": 43
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 44
-                            },
-                            {
-                                "id": 40,
-                                "opcode": "int32_load_unsigned",
-                                "location": 39,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 44,
-                                "ir_instruction": 45
-                            },
-                            {
-                                "id": 41,
-                                "opcode": "float32_lesser",
-                                "args": [
-                                    38,
-                                    40
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 48
-                            },
-                            {
-                                "id": 42,
-                                "opcode": "float32_equals",
-                                "args": [
-                                    40,
-                                    38
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 50
-                            },
-                            {
-                                "id": 43,
-                                "opcode": "int64_bool_or",
-                                "args": [
-                                    41,
-                                    42
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 51
                             },
                             {
                                 "id": 44,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -1236,17 +943,19 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
                                 "id": 1,
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -1254,6 +963,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -1298,6 +1008,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -1305,6 +1016,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -1316,6 +1028,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 8,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -1324,6 +1037,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -1331,6 +1045,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -1342,336 +1057,15 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "int64_load",
-                                "location": 9,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 12,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 8
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "int64_load",
-                                "location": 11,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 15,
-                                "ir_instruction": 9
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    10,
-                                    12
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 12
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "int64_load",
-                                "location": 14,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 17,
-                                "ir_instruction": 13
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 14
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "int64_load",
-                                "location": 16,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 20,
-                                "ir_instruction": 15
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "float64_greater",
-                                "args": [
-                                    15,
-                                    17
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 16
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 18
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "int64_load",
-                                "location": 19,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 22,
-                                "ir_instruction": 19
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int64_load",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 25,
-                                "ir_instruction": 21
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float64_lesser",
-                                "args": [
-                                    20,
-                                    22
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 22
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 24
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "int64_load",
-                                "location": 24,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 27,
-                                "ir_instruction": 25
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 26
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "int64_load",
-                                "location": 26,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 31,
-                                "ir_instruction": 27
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    25,
-                                    27
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 28
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "int8_bool_not",
-                                "arg": 28,
-                                "control_next": null,
-                                "ir_instruction": 29
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 31
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "int64_load",
-                                "location": 30,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 33,
-                                "ir_instruction": 32
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 33
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "int64_load",
-                                "location": 32,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 38,
-                                "ir_instruction": 34
-                            },
-                            {
-                                "id": 34,
-                                "opcode": "float64_greater",
-                                "args": [
-                                    31,
-                                    33
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 37
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    33,
-                                    31
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 39
-                            },
-                            {
-                                "id": 36,
-                                "opcode": "int64_bool_or",
-                                "args": [
-                                    34,
-                                    35
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 40
-                            },
-                            {
-                                "id": 37,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 42
-                            },
-                            {
-                                "id": 38,
-                                "opcode": "int64_load",
-                                "location": 37,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 40,
-                                "ir_instruction": 43
-                            },
-                            {
-                                "id": 39,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 44
-                            },
-                            {
-                                "id": 40,
-                                "opcode": "int64_load",
-                                "location": 39,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 44,
-                                "ir_instruction": 45
-                            },
-                            {
-                                "id": 41,
-                                "opcode": "float64_lesser",
-                                "args": [
-                                    38,
-                                    40
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 48
-                            },
-                            {
-                                "id": 42,
-                                "opcode": "float64_equals",
-                                "args": [
-                                    40,
-                                    38
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 50
-                            },
-                            {
-                                "id": 43,
-                                "opcode": "int64_bool_or",
-                                "args": [
-                                    41,
-                                    42
-                                ],
-                                "control_next": null,
-                                "ir_instruction": 51
                             },
                             {
                                 "id": 44,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -1704,17 +1098,19 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "get_argument",
-                                "index": 0,
-                                "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
                                 "id": 1,
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 0,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -1722,6 +1118,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -1766,6 +1163,7 @@
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -1773,6 +1171,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -1784,6 +1183,7 @@
                                     "volatile": false
                                 },
                                 "control_next": 8,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -1792,6 +1192,7 @@
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -1799,6 +1200,7 @@
                                 "opcode": "phi",
                                 "phi_ref": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -1810,241 +1212,15 @@
                                     "volatile": false
                                 },
                                 "control_next": 10,
+                                "control_side_effect_free": false,
                                 "ir_instruction": 5
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 6
-                            },
-                            {
-                                "id": 10,
-                                "opcode": "int32_load_unsigned",
-                                "location": 9,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 13,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 11,
-                                "opcode": "float32_to_float64",
-                                "arg": 10,
-                                "control_next": null,
-                                "ir_instruction": 8
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 13,
-                                "opcode": "int64_load",
-                                "location": 12,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 16,
-                                "ir_instruction": 11
-                            },
-                            {
-                                "id": 14,
-                                "opcode": "float64_to_float32",
-                                "arg": 13,
-                                "control_next": null,
-                                "ir_instruction": 12
-                            },
-                            {
-                                "id": 15,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 14
-                            },
-                            {
-                                "id": 16,
-                                "opcode": "int32_load_unsigned",
-                                "location": 15,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 19,
-                                "ir_instruction": 15
-                            },
-                            {
-                                "id": 17,
-                                "opcode": "float32_to_int",
-                                "arg": 16,
-                                "control_next": null,
-                                "ir_instruction": 16
-                            },
-                            {
-                                "id": 18,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 18
-                            },
-                            {
-                                "id": 19,
-                                "opcode": "int64_load",
-                                "location": 18,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 22,
-                                "ir_instruction": 19
-                            },
-                            {
-                                "id": 20,
-                                "opcode": "float64_to_int",
-                                "arg": 19,
-                                "control_next": null,
-                                "ir_instruction": 20
-                            },
-                            {
-                                "id": 21,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 22
-                            },
-                            {
-                                "id": 22,
-                                "opcode": "int64_load",
-                                "location": 21,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 26,
-                                "ir_instruction": 23
-                            },
-                            {
-                                "id": 23,
-                                "opcode": "float64_to_int",
-                                "arg": 22,
-                                "control_next": null,
-                                "ir_instruction": 24
-                            },
-                            {
-                                "id": 24,
-                                "opcode": "int_to_float32",
-                                "arg": 23,
-                                "control_next": null,
-                                "ir_instruction": 25
-                            },
-                            {
-                                "id": 25,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 27
-                            },
-                            {
-                                "id": 26,
-                                "opcode": "int64_load",
-                                "location": 25,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 30,
-                                "ir_instruction": 28
-                            },
-                            {
-                                "id": 27,
-                                "opcode": "float64_to_uint",
-                                "arg": 26,
-                                "control_next": null,
-                                "ir_instruction": 29
-                            },
-                            {
-                                "id": 28,
-                                "opcode": "uint_to_float32",
-                                "arg": 27,
-                                "control_next": null,
-                                "ir_instruction": 30
-                            },
-                            {
-                                "id": 29,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 32
-                            },
-                            {
-                                "id": 30,
-                                "opcode": "int32_load_unsigned",
-                                "location": 29,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 34,
-                                "ir_instruction": 33
-                            },
-                            {
-                                "id": 31,
-                                "opcode": "float32_to_int",
-                                "arg": 30,
-                                "control_next": null,
-                                "ir_instruction": 34
-                            },
-                            {
-                                "id": 32,
-                                "opcode": "int_to_float64",
-                                "arg": 31,
-                                "control_next": null,
-                                "ir_instruction": 35
-                            },
-                            {
-                                "id": 33,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 37
-                            },
-                            {
-                                "id": 34,
-                                "opcode": "int32_load_unsigned",
-                                "location": 33,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 37,
-                                "ir_instruction": 38
-                            },
-                            {
-                                "id": 35,
-                                "opcode": "float32_to_uint",
-                                "arg": 34,
-                                "control_next": null,
-                                "ir_instruction": 39
-                            },
-                            {
-                                "id": 36,
-                                "opcode": "uint_to_float64",
-                                "arg": 35,
-                                "control_next": null,
-                                "ir_instruction": 40
                             },
                             {
                                 "id": 37,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],

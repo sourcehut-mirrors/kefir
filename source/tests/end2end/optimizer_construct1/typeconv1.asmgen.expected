@@ -18,6 +18,7 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -38,45 +39,11 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 1,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 0
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "int64_to_bool",
-                                "arg": 1,
-                                "control_next": null,
-                                "ir_instruction": 1
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 3
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 5
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "uint_const",
-                                "value": 1,
-                                "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
                                 "id": 6,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
+                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
