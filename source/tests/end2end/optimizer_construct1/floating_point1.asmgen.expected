@@ -102,25 +102,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 15,
-                                "opcode": "phi",
-                                "phi_ref": 3,
+                                "id": 5,
+                                "opcode": "get_local",
+                                "local_index": 0,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "phi",
-                                "phi_ref": 2,
-                                "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "phi",
-                                "phi_ref": 1,
-                                "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 6,
@@ -128,14 +115,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 7,
@@ -157,6 +136,13 @@
                                 "ir_instruction": 3
                             },
                             {
+                                "id": 9,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
+                            },
+                            {
                                 "id": 10,
                                 "opcode": "int32_store",
                                 "location": 8,
@@ -176,6 +162,13 @@
                                 "ir_instruction": 6
                             },
                             {
+                                "id": 12,
+                                "opcode": "phi",
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "ir_instruction": 7
+                            },
+                            {
                                 "id": 13,
                                 "opcode": "int32_store",
                                 "location": 11,
@@ -193,6 +186,13 @@
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "phi",
+                                "phi_ref": 3,
+                                "control_next": null,
+                                "ir_instruction": 10
                             },
                             {
                                 "id": 16,
@@ -476,25 +476,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 15,
-                                "opcode": "phi",
-                                "phi_ref": 3,
+                                "id": 5,
+                                "opcode": "get_local",
+                                "local_index": 0,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 12,
-                                "opcode": "phi",
-                                "phi_ref": 2,
-                                "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "phi",
-                                "phi_ref": 1,
-                                "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 6,
@@ -502,14 +489,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 5,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 7,
@@ -531,6 +510,13 @@
                                 "ir_instruction": 3
                             },
                             {
+                                "id": 9,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
+                            },
+                            {
                                 "id": 10,
                                 "opcode": "int64_store",
                                 "location": 8,
@@ -550,6 +536,13 @@
                                 "ir_instruction": 6
                             },
                             {
+                                "id": 12,
+                                "opcode": "phi",
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "ir_instruction": 7
+                            },
+                            {
                                 "id": 13,
                                 "opcode": "int64_store",
                                 "location": 11,
@@ -567,6 +560,13 @@
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 9
+                            },
+                            {
+                                "id": 15,
+                                "opcode": "phi",
+                                "phi_ref": 3,
+                                "control_next": null,
+                                "ir_instruction": 10
                             },
                             {
                                 "id": 16,
@@ -818,11 +818,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 7,
-                                "opcode": "phi",
-                                "phi_ref": 1,
+                                "id": 3,
+                                "opcode": "get_local",
+                                "local_index": 1,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 4,
@@ -830,14 +831,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 5,
@@ -857,6 +850,13 @@
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 3
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 8,
@@ -1284,11 +1284,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 7,
-                                "opcode": "phi",
-                                "phi_ref": 1,
+                                "id": 3,
+                                "opcode": "get_local",
+                                "local_index": 1,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 4,
@@ -1296,14 +1297,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 5,
@@ -1323,6 +1316,13 @@
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 3
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 8,
@@ -1750,11 +1750,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 7,
-                                "opcode": "phi",
-                                "phi_ref": 1,
+                                "id": 3,
+                                "opcode": "get_local",
+                                "local_index": 1,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 4,
@@ -1762,14 +1763,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 3,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 5,
@@ -1789,6 +1782,13 @@
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 3
+                            },
+                            {
+                                "id": 7,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 8,

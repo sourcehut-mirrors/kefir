@@ -86,18 +86,12 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 11,
-                                "opcode": "phi",
-                                "phi_ref": 2,
+                                "id": 4,
+                                "opcode": "get_local",
+                                "local_index": 2,
+                                "offset": 0,
                                 "control_next": null,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 8,
-                                "opcode": "phi",
-                                "phi_ref": 1,
-                                "control_next": null,
-                                "ir_instruction": 4
+                                "ir_instruction": 0
                             },
                             {
                                 "id": 5,
@@ -105,14 +99,6 @@
                                 "phi_ref": 0,
                                 "control_next": null,
                                 "ir_instruction": 1
-                            },
-                            {
-                                "id": 4,
-                                "opcode": "get_local",
-                                "local_index": 2,
-                                "offset": 0,
-                                "control_next": null,
-                                "ir_instruction": 0
                             },
                             {
                                 "id": 7,
@@ -123,12 +109,26 @@
                                 "ir_instruction": 3
                             },
                             {
+                                "id": 8,
+                                "opcode": "phi",
+                                "phi_ref": 1,
+                                "control_next": null,
+                                "ir_instruction": 4
+                            },
+                            {
                                 "id": 10,
                                 "opcode": "get_local",
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 6
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "phi",
+                                "phi_ref": 2,
+                                "control_next": null,
+                                "ir_instruction": 7
                             },
                             {
                                 "id": 13,
@@ -147,26 +147,12 @@
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 79,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
-                                "control_next": null,
-                                "ir_instruction": 12
-                            },
-                            {
                                 "id": 16,
                                 "opcode": "get_local",
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 13
-                            },
-                            {
-                                "id": 80,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 8,
-                                "control_next": null,
-                                "ir_instruction": 14
                             },
                             {
                                 "id": 18,
@@ -195,26 +181,12 @@
                                 "ir_instruction": 20
                             },
                             {
-                                "id": 81,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 18,
-                                "control_next": null,
-                                "ir_instruction": 21
-                            },
-                            {
                                 "id": 23,
                                 "opcode": "get_local",
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 22
-                            },
-                            {
-                                "id": 82,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 5,
-                                "control_next": null,
-                                "ir_instruction": 23
                             },
                             {
                                 "id": 25,
@@ -243,26 +215,12 @@
                                 "ir_instruction": 29
                             },
                             {
-                                "id": 83,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 25,
-                                "control_next": null,
-                                "ir_instruction": 30
-                            },
-                            {
                                 "id": 30,
                                 "opcode": "get_local",
                                 "local_index": 0,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 31
-                            },
-                            {
-                                "id": 84,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
-                                "control_next": null,
-                                "ir_instruction": 32
                             },
                             {
                                 "id": 32,
@@ -291,26 +249,12 @@
                                 "ir_instruction": 38
                             },
                             {
-                                "id": 85,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 32,
-                                "control_next": null,
-                                "ir_instruction": 39
-                            },
-                            {
                                 "id": 37,
                                 "opcode": "get_local",
                                 "local_index": 1,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 40
-                            },
-                            {
-                                "id": 86,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 8,
-                                "control_next": null,
-                                "ir_instruction": 41
                             },
                             {
                                 "id": 39,
@@ -339,26 +283,12 @@
                                 "ir_instruction": 47
                             },
                             {
-                                "id": 87,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 39,
-                                "control_next": null,
-                                "ir_instruction": 48
-                            },
-                            {
                                 "id": 44,
                                 "opcode": "get_local",
                                 "local_index": 2,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 49
-                            },
-                            {
-                                "id": 88,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 5,
-                                "control_next": null,
-                                "ir_instruction": 50
                             },
                             {
                                 "id": 46,
@@ -387,13 +317,6 @@
                                 "ir_instruction": 56
                             },
                             {
-                                "id": 89,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 46,
-                                "control_next": null,
-                                "ir_instruction": 57
-                            },
-                            {
                                 "id": 51,
                                 "opcode": "int32_not",
                                 "arg": 89,
@@ -409,26 +332,12 @@
                                 "ir_instruction": 61
                             },
                             {
-                                "id": 90,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 51,
-                                "control_next": null,
-                                "ir_instruction": 62
-                            },
-                            {
                                 "id": 55,
                                 "opcode": "get_local",
                                 "local_index": 3,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 63
-                            },
-                            {
-                                "id": 91,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 18,
-                                "control_next": null,
-                                "ir_instruction": 65
                             },
                             {
                                 "id": 57,
@@ -449,26 +358,12 @@
                                 "ir_instruction": 73
                             },
                             {
-                                "id": 92,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 57,
-                                "control_next": null,
-                                "ir_instruction": 74
-                            },
-                            {
                                 "id": 61,
                                 "opcode": "get_local",
                                 "local_index": 4,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 75
-                            },
-                            {
-                                "id": 93,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 25,
-                                "control_next": null,
-                                "ir_instruction": 77
                             },
                             {
                                 "id": 63,
@@ -489,26 +384,12 @@
                                 "ir_instruction": 85
                             },
                             {
-                                "id": 94,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 63,
-                                "control_next": null,
-                                "ir_instruction": 86
-                            },
-                            {
                                 "id": 67,
                                 "opcode": "get_local",
                                 "local_index": 5,
                                 "offset": 0,
                                 "control_next": null,
                                 "ir_instruction": 87
-                            },
-                            {
-                                "id": 95,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 32,
-                                "control_next": null,
-                                "ir_instruction": 89
                             },
                             {
                                 "id": 69,
@@ -529,13 +410,6 @@
                                 "ir_instruction": 97
                             },
                             {
-                                "id": 96,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 69,
-                                "control_next": null,
-                                "ir_instruction": 98
-                            },
-                            {
                                 "id": 73,
                                 "opcode": "get_local",
                                 "local_index": 8,
@@ -552,18 +426,144 @@
                                 "ir_instruction": 105
                             },
                             {
-                                "id": 97,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 96,
-                                "control_next": null,
-                                "ir_instruction": 106
-                            },
-                            {
                                 "id": 77,
                                 "opcode": "return",
                                 "arg": 97,
                                 "control_next": null,
                                 "ir_instruction": 107
+                            },
+                            {
+                                "id": 79,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 11,
+                                "control_next": null,
+                                "ir_instruction": 12
+                            },
+                            {
+                                "id": 80,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 8,
+                                "control_next": null,
+                                "ir_instruction": 14
+                            },
+                            {
+                                "id": 81,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 18,
+                                "control_next": null,
+                                "ir_instruction": 21
+                            },
+                            {
+                                "id": 82,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 5,
+                                "control_next": null,
+                                "ir_instruction": 23
+                            },
+                            {
+                                "id": 83,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 25,
+                                "control_next": null,
+                                "ir_instruction": 30
+                            },
+                            {
+                                "id": 84,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 11,
+                                "control_next": null,
+                                "ir_instruction": 32
+                            },
+                            {
+                                "id": 85,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 32,
+                                "control_next": null,
+                                "ir_instruction": 39
+                            },
+                            {
+                                "id": 86,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 8,
+                                "control_next": null,
+                                "ir_instruction": 41
+                            },
+                            {
+                                "id": 87,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 39,
+                                "control_next": null,
+                                "ir_instruction": 48
+                            },
+                            {
+                                "id": 88,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 5,
+                                "control_next": null,
+                                "ir_instruction": 50
+                            },
+                            {
+                                "id": 89,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 46,
+                                "control_next": null,
+                                "ir_instruction": 57
+                            },
+                            {
+                                "id": 90,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 51,
+                                "control_next": null,
+                                "ir_instruction": 62
+                            },
+                            {
+                                "id": 91,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 18,
+                                "control_next": null,
+                                "ir_instruction": 65
+                            },
+                            {
+                                "id": 92,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 57,
+                                "control_next": null,
+                                "ir_instruction": 74
+                            },
+                            {
+                                "id": 93,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 25,
+                                "control_next": null,
+                                "ir_instruction": 77
+                            },
+                            {
+                                "id": 94,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 63,
+                                "control_next": null,
+                                "ir_instruction": 86
+                            },
+                            {
+                                "id": 95,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 32,
+                                "control_next": null,
+                                "ir_instruction": 89
+                            },
+                            {
+                                "id": 96,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 69,
+                                "control_next": null,
+                                "ir_instruction": 98
+                            },
+                            {
+                                "id": 97,
+                                "opcode": "int64_sign_extend_32bits",
+                                "arg": 96,
+                                "control_next": null,
+                                "ir_instruction": 106
                             }
                         ],
                         "public_labels": [],

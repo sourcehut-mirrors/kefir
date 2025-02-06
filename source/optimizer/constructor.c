@@ -1106,7 +1106,6 @@ static kefir_result_t link_blocks_equalize_stack(struct kefir_mem *mem, struct k
         kefir_opt_instruction_ref_t instr_ref;
         REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref));
         REQUIRE_OK(kefir_opt_code_builder_phi(mem, &state->function->code, target_block_id, phi_ref, &instr_ref));
-        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->function->code, KEFIR_ID_NONE, instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
     }

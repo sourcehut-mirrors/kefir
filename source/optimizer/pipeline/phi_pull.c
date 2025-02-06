@@ -195,8 +195,6 @@ static kefir_result_t phi_pull_impl(struct phi_pull_state *state) {
                 const struct kefir_opt_operation op = instr->operation;
                 REQUIRE_OK(kefir_opt_code_container_new_instruction(state->mem, &state->func->code, block_id, &op,
                                                                     &replacement_ref));
-                REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, phi_node->output_ref,
-                                                                           replacement_ref));
                 REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code, replacement_ref,
                                                                        phi_node->output_ref));
                 REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, phi_node->output_ref));

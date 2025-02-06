@@ -333,19 +333,16 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, kefir_size
         case KEFIR_IR_TYPE_INT64:
             REQUIRE_OK(
                 kefir_opt_code_builder_int_constant(state->mem, &state->func->code, source_block_ref, 0, instr_ref));
-            REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, KEFIR_ID_NONE, *instr_ref));
             break;
 
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(kefir_opt_code_builder_float32_constant(state->mem, &state->func->code, source_block_ref, 0.0f,
                                                                instr_ref));
-            REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, KEFIR_ID_NONE, *instr_ref));
             break;
 
         case KEFIR_IR_TYPE_FLOAT64:
             REQUIRE_OK(kefir_opt_code_builder_float64_constant(state->mem, &state->func->code, source_block_ref, 0.0,
                                                                instr_ref));
-            REQUIRE_OK(kefir_opt_code_container_instruction_move_after(&state->func->code, KEFIR_ID_NONE, *instr_ref));
             break;
 
         case KEFIR_IR_TYPE_STRUCT:
@@ -414,8 +411,6 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                                                             &phi_ref));
                                 REQUIRE_OK(kefir_opt_code_builder_phi(state->mem, &state->func->code, block_id, phi_ref,
                                                                       &replacement_ref));
-                                REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                    &state->func->code, KEFIR_ID_NONE, replacement_ref));
                                 REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
                                                                  (kefir_hashtree_key_t) block_id,
                                                                  (kefir_hashtree_value_t) phi_ref));
@@ -448,48 +443,36 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                         REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_8bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED:
                                         REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_8bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED:
                                         REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_16bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED:
                                         REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_16bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED:
                                         REQUIRE_OK(kefir_opt_code_builder_int64_sign_extend_32bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED:
                                         REQUIRE_OK(kefir_opt_code_builder_int64_zero_extend_32bits(
                                             state->mem, &state->func->code, block_id, replacement_ref,
                                             &replacement_ref));
-                                        REQUIRE_OK(kefir_opt_code_container_instruction_move_after(
-                                            &state->func->code, instr_id, replacement_ref));
                                         break;
 
                                     case KEFIR_OPT_OPCODE_INT64_LOAD:
@@ -582,8 +565,6 @@ static kefir_result_t mem2reg_link_blocks(struct mem2reg_state *state, kefir_siz
                 kefir_opt_code_container_new_phi(state->mem, &state->func->code, source_block_ref, &source_phi_ref));
             REQUIRE_OK(kefir_opt_code_builder_phi(state->mem, &state->func->code, source_block_ref, source_phi_ref,
                                                   &source_instr_ref));
-            REQUIRE_OK(
-                kefir_opt_code_container_instruction_move_after(&state->func->code, KEFIR_ID_NONE, source_instr_ref));
             REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
                                              (kefir_hashtree_key_t) source_block_ref,
                                              (kefir_hashtree_value_t) source_phi_ref));
