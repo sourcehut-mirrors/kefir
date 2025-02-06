@@ -26,7 +26,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -166,6 +169,10 @@
                             "successors": [],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     }
@@ -201,7 +208,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -250,6 +260,10 @@
                             "successors": [],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     }
@@ -285,7 +299,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -352,6 +369,10 @@
                             ],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     },
@@ -418,6 +439,11 @@
                             "predecessors": [
                                 1,
                                 1
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2
                             ]
                         }
                     }
@@ -453,7 +479,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -532,6 +561,10 @@
                             "successors": [],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     }

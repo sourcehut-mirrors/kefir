@@ -591,6 +591,20 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
+
+        REQUIRE_OK(kefir_json_output_object_key(json, "dominators"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        struct kefir_bucketset_iterator iter;
+        kefir_bucketset_entry_t entry;
+        for (res = kefir_bucketset_iter(&block_props->dominators, &iter, &entry); res == KEFIR_OK;
+             res = kefir_bucketset_next(&iter, &entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, entry);
+            REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));

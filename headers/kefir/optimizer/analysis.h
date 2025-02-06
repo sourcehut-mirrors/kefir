@@ -23,6 +23,7 @@
 
 #include "kefir/optimizer/module.h"
 #include "kefir/core/hashtree.h"
+#include "kefir/core/bucketset.h"
 
 #define KEFIR_OPT_CODE_ANALYSIS_LINEAR_INDEX_UNDEFINED (~(kefir_size_t) 0ull)
 
@@ -30,6 +31,7 @@ typedef struct kefir_opt_code_analysis_block_properties {
     kefir_opt_block_id_t block_id;
     struct kefir_list predecessors;
     struct kefir_list successors;
+    struct kefir_bucketset dominators;
 } kefir_opt_code_analysis_block_properties_t;
 
 typedef struct kefir_opt_code_analysis {
@@ -58,6 +60,7 @@ extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyz
 
 #ifdef KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
 kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *, struct kefir_opt_code_analysis *);
+kefir_result_t kefir_opt_code_container_find_dominators(struct kefir_mem *, struct kefir_opt_code_analysis *);
 #endif
 
 typedef struct kefir_opt_module_analysis {

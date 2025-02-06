@@ -43,10 +43,12 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
         analysis->blocks[i] = (struct kefir_opt_code_analysis_block_properties) {.block_id = i};
         kefir_result_t res = kefir_list_init(&analysis->blocks[i].successors);
         REQUIRE_CHAIN(&res, kefir_list_init(&analysis->blocks[i].predecessors));
+        REQUIRE_CHAIN(&res, kefir_bucketset_init(&analysis->blocks[i].dominators, &kefir_bucketset_uint_ops));
         REQUIRE_ELSE(res == KEFIR_OK, {
             for (kefir_size_t j = 0; j < i; j++) {
                 kefir_list_free(mem, &analysis->blocks[j].successors);
                 kefir_list_free(mem, &analysis->blocks[j].predecessors);
+                kefir_bucketset_free(mem, &analysis->blocks[j].dominators);
             }
             KEFIR_FREE(mem, analysis->blocks);
             kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
@@ -58,10 +60,12 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     analysis->code = code;
 
     kefir_result_t res = kefir_opt_code_container_trace(mem, analysis);
+    REQUIRE_CHAIN(&res, kefir_opt_code_container_find_dominators(mem, analysis));
     REQUIRE_ELSE(res == KEFIR_OK, {
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-            REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
-            REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
+            kefir_list_free(mem, &analysis->blocks[i].successors);
+            kefir_list_free(mem, &analysis->blocks[i].predecessors);
+            kefir_bucketset_free(mem, &analysis->blocks[i].dominators);
         }
         KEFIR_FREE(mem, analysis->blocks);
         kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
@@ -80,6 +84,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
         REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
         REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
+        REQUIRE_OK(kefir_bucketset_free(mem, &analysis->blocks[i].dominators));
     }
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks));

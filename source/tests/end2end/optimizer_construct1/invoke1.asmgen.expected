@@ -26,7 +26,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -426,6 +429,10 @@
                             "successors": [],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     }

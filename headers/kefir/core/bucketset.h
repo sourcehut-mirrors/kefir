@@ -29,6 +29,8 @@ typedef kefir_hashtree_key_t kefir_bucketset_entry_t;
 typedef struct kefir_bucketset_ops {
     kefir_bucketset_hash_t (*hash)(kefir_bucketset_entry_t, void *);
     kefir_bool_t (*contains)(const kefir_bucketset_entry_t *, kefir_size_t, kefir_bucketset_entry_t, void *);
+    kefir_result_t (*find)(const kefir_bucketset_entry_t *, kefir_size_t, kefir_bucketset_entry_t, kefir_size_t *,
+                           void *);
     kefir_result_t (*insert_position)(const kefir_bucketset_entry_t *, kefir_size_t, kefir_bucketset_entry_t,
                                       kefir_size_t *, void *);
     void *payload;
@@ -52,6 +54,12 @@ kefir_result_t kefir_bucketset_free(struct kefir_mem *, struct kefir_bucketset *
 
 kefir_result_t kefir_bucketset_add(struct kefir_mem *, struct kefir_bucketset *, kefir_bucketset_entry_t);
 kefir_bool_t kefir_bucketset_has(const struct kefir_bucketset *, kefir_bucketset_entry_t);
+kefir_result_t kefir_bucketset_delete(struct kefir_mem *, struct kefir_bucketset *, kefir_bucketset_entry_t);
+kefir_result_t kefir_bucketset_clean(struct kefir_mem *, struct kefir_bucketset *);
+kefir_result_t kefir_bucketset_clean_nofree(struct kefir_mem *, struct kefir_bucketset *);
+
+kefir_result_t kefir_bucketset_merge(struct kefir_mem *, struct kefir_bucketset *, const struct kefir_bucketset *);
+kefir_result_t kefir_bucketset_intersect(struct kefir_mem *, struct kefir_bucketset *, const struct kefir_bucketset *);
 
 typedef struct kefir_bucketset_iterator {
     const struct kefir_bucketset *bucketset;

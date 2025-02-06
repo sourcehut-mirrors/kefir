@@ -47,7 +47,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -571,6 +574,10 @@
                             "successors": [],
                             "predecessors": [
                                 0
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     },
@@ -592,7 +599,10 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                2
+                            ]
                         }
                     }
                 ],

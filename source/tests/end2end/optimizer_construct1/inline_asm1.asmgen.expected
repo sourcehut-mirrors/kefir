@@ -26,7 +26,10 @@
                             "successors": [
                                 1
                             ],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -115,6 +118,10 @@
                             "predecessors": [
                                 0,
                                 7
+                            ],
+                            "dominators": [
+                                0,
+                                1
                             ]
                         }
                     },
@@ -170,6 +177,11 @@
                             "predecessors": [
                                 1,
                                 3
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2
                             ]
                         }
                     },
@@ -227,6 +239,11 @@
                             ],
                             "predecessors": [
                                 1
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                3
                             ]
                         }
                     },
@@ -272,6 +289,12 @@
                             "predecessors": [
                                 2,
                                 5
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                4
                             ]
                         }
                     },
@@ -370,6 +393,12 @@
                             ],
                             "predecessors": [
                                 2
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                5
                             ]
                         }
                     },
@@ -395,6 +424,13 @@
                             ],
                             "predecessors": [
                                 4
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                4,
+                                6
                             ]
                         }
                     },
@@ -420,6 +456,13 @@
                             ],
                             "predecessors": [
                                 4
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                4,
+                                7
                             ]
                         }
                     },
@@ -445,6 +488,13 @@
                             ],
                             "predecessors": [
                                 4
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                4,
+                                8
                             ]
                         }
                     },
@@ -469,6 +519,13 @@
                             "predecessors": [
                                 6,
                                 8
+                            ],
+                            "dominators": [
+                                0,
+                                1,
+                                2,
+                                4,
+                                9
                             ]
                         }
                     },
@@ -490,7 +547,10 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": []
+                            "predecessors": [],
+                            "dominators": [
+                                10
+                            ]
                         }
                     }
                 ],
