@@ -36,7 +36,11 @@
                                 1
                             ],
                             "predecessors": [],
-                            "immediate_dominator": null
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0,
+                                1
+                            ]
                         }
                     },
                     {
@@ -161,7 +165,19 @@
                             "predecessors": [
                                 0
                             ],
-                            "immediate_dominator": 0
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11
+                            ]
                         }
                     }
                 ],
@@ -206,7 +222,11 @@
                                 1
                             ],
                             "predecessors": [],
-                            "immediate_dominator": null
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0,
+                                1
+                            ]
                         }
                     },
                     {
@@ -331,7 +351,19 @@
                             "predecessors": [
                                 0
                             ],
-                            "immediate_dominator": 0
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11
+                            ]
                         }
                     }
                 ],
@@ -376,7 +408,11 @@
                                 1
                             ],
                             "predecessors": [],
-                            "immediate_dominator": null
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0,
+                                1
+                            ]
                         }
                     },
                     {
@@ -575,7 +611,26 @@
                             "predecessors": [
                                 0
                             ],
-                            "immediate_dominator": 0
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11,
+                                12,
+                                13,
+                                14,
+                                15,
+                                16,
+                                17,
+                                18
+                            ]
                         }
                     }
                 ],

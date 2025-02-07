@@ -52,7 +52,13 @@
                                 1
                             ],
                             "predecessors": [],
-                            "immediate_dominator": null
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0,
+                                1,
+                                2,
+                                3
+                            ]
                         }
                     },
                     {
@@ -377,7 +383,41 @@
                             "predecessors": [
                                 0
                             ],
-                            "immediate_dominator": 0
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                5,
+                                8,
+                                11,
+                                18,
+                                25,
+                                32,
+                                39,
+                                46,
+                                51,
+                                57,
+                                63,
+                                69,
+                                77,
+                                79,
+                                80,
+                                81,
+                                82,
+                                83,
+                                84,
+                                85,
+                                86,
+                                87,
+                                88,
+                                89,
+                                90,
+                                91,
+                                92,
+                                93,
+                                94,
+                                95,
+                                96,
+                                97
+                            ]
                         }
                     }
                 ],

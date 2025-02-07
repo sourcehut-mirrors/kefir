@@ -141,6 +141,24 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
     return KEFIR_OK;
 }
 
+static kefir_result_t trace_blocks(struct kefir_mem *mem, const struct kefir_opt_code_analysis *analysis, kefir_opt_block_id_t block_id, kefir_opt_block_id_t target_block_id, kefir_opt_instruction_ref_t instr_ref, struct kefir_hashtreeset *trace) {
+    REQUIRE(!kefir_hashtreeset_has(trace, (kefir_hashtreeset_entry_t) block_id), KEFIR_OK);
+    REQUIRE_OK(kefir_hashtreeset_add(mem, trace, (kefir_hashtreeset_entry_t) block_id));
+    REQUIRE_OK(kefir_bucketset_add(mem, &analysis->blocks[block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref));
+
+    if (block_id != target_block_id) {
+        for (const struct kefir_list_entry *iter = kefir_list_head(&analysis->blocks[block_id].successors);
+            iter != NULL;
+            kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id,
+                (kefir_uptr_t) iter->value);
+            REQUIRE_OK(trace_blocks(mem, analysis, succ_block_id, target_block_id, instr_ref, trace));
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void *payload) {
     ASSIGN_DECL_CAST(struct verify_use_def_payload *, param, payload);
     REQUIRE(param != NULL,
@@ -149,12 +167,39 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(param->analysis->code, instr_ref, &instr));
 
+    REQUIRE_OK(kefir_bucketset_add(param->mem, &param->analysis->blocks[instr->block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref));
+
     param->instr_ref = instr_ref;
     REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->analysis->code, instr, true, verify_use_def_impl, payload));
+
+    struct kefir_opt_instruction_use_iterator use_iter;
+    kefir_result_t res;
+    for (res = kefir_opt_code_container_instruction_use_iter(param->analysis->code, instr_ref, &use_iter);
+        res == KEFIR_OK;
+        res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        const struct kefir_opt_instruction *use_instr;
+        res = kefir_opt_code_container_instr(param->analysis->code, use_iter.use_instr_ref, &use_instr);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        struct kefir_hashtreeset trace;
+        REQUIRE_OK(kefir_hashtreeset_init(&trace, &kefir_hashtree_uint_ops));
+        res = trace_blocks(param->mem, param->analysis, instr->block_id, use_instr->block_id, instr_ref, &trace);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_hashtreeset_free(param->mem, &trace);
+            return res;
+        });
+        REQUIRE_OK(kefir_hashtreeset_free(param->mem, &trace));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_verify_use_def(struct kefir_mem *mem,
+kefir_result_t kefir_opt_code_container_trace_use_def(struct kefir_mem *mem,
                                                        struct kefir_opt_code_analysis *analysis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));

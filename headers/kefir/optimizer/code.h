@@ -406,4 +406,12 @@ kefir_result_t kefir_opt_phi_node_link_iter(const struct kefir_opt_phi_node *,
 kefir_result_t kefir_opt_phi_node_link_next(struct kefir_opt_phi_node_link_iterator *, kefir_opt_block_id_t *,
                                             kefir_opt_instruction_ref_t *);
 
+typedef struct kefir_opt_instruction_use_iterator {
+    struct kefir_hashtreeset_iterator iter;
+    kefir_opt_instruction_ref_t use_instr_ref;
+} kefir_opt_instruction_use_iterator_t;
+
+kefir_result_t kefir_opt_code_container_instruction_use_iter(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t, struct kefir_opt_instruction_use_iterator *);
+kefir_result_t kefir_opt_code_container_instruction_use_next(struct kefir_opt_instruction_use_iterator *);
+
 #endif

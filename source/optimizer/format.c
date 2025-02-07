@@ -615,6 +615,21 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
         REQUIRE_OK(kefir_json_output_object_key(json, "immediate_dominator"));
         REQUIRE_OK(id_format(json, block_props->immediate_dominator));
+
+        REQUIRE_OK(kefir_json_output_object_key(json, "alive_instructions"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        struct kefir_bucketset_iterator iter;
+        kefir_bucketset_entry_t entry;
+        for (res = kefir_bucketset_iter(&code_analysis->blocks[block->id].alive_instr, &iter, &entry);
+            res == KEFIR_OK;
+            res = kefir_bucketset_next(&iter, &entry)) {
+            REQUIRE_OK(id_format(json, (kefir_id_t) entry));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+
         REQUIRE_OK(kefir_json_output_object_end(json));
     } else {
         REQUIRE_OK(kefir_json_output_null(json));

@@ -28,7 +28,10 @@
                                 1
                             ],
                             "predecessors": [],
-                            "immediate_dominator": null
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0
+                            ]
                         }
                     },
                     {
@@ -201,7 +204,25 @@
                                 0,
                                 6
                             ],
-                            "immediate_dominator": 0
+                            "immediate_dominator": 0,
+                            "alive_instructions": [
+                                1,
+                                2,
+                                3,
+                                4,
+                                5,
+                                6,
+                                7,
+                                8,
+                                9,
+                                10,
+                                11,
+                                12,
+                                13,
+                                14,
+                                15,
+                                16
+                            ]
                         }
                     },
                     {
@@ -226,7 +247,10 @@
                             "predecessors": [
                                 1
                             ],
-                            "immediate_dominator": 1
+                            "immediate_dominator": 1,
+                            "alive_instructions": [
+                                39
+                            ]
                         }
                     },
                     {
@@ -293,7 +317,14 @@
                                 1,
                                 4
                             ],
-                            "immediate_dominator": 1
+                            "immediate_dominator": 1,
+                            "alive_instructions": [
+                                17,
+                                18,
+                                19,
+                                20,
+                                21
+                            ]
                         }
                     },
                     {
@@ -438,7 +469,22 @@
                             "predecessors": [
                                 3
                             ],
-                            "immediate_dominator": 3
+                            "immediate_dominator": 3,
+                            "alive_instructions": [
+                                25,
+                                26,
+                                27,
+                                28,
+                                29,
+                                30,
+                                31,
+                                32,
+                                33,
+                                34,
+                                35,
+                                36,
+                                37
+                            ]
                         }
                     },
                     {
@@ -465,7 +511,10 @@
                             "predecessors": [
                                 4
                             ],
-                            "immediate_dominator": 4
+                            "immediate_dominator": 4,
+                            "alive_instructions": [
+                                38
+                            ]
                         }
                     },
                     {
@@ -506,7 +555,12 @@
                             "predecessors": [
                                 3
                             ],
-                            "immediate_dominator": 3
+                            "immediate_dominator": 3,
+                            "alive_instructions": [
+                                22,
+                                23,
+                                24
+                            ]
                         }
                     }
                 ],
