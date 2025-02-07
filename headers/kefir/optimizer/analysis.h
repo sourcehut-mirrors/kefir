@@ -65,8 +65,20 @@ typedef struct kefir_opt_code_container_tracer {
 kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *, const struct kefir_opt_code_container *,
                                               const struct kefir_opt_code_container_tracer *);
 
+kefir_result_t kefir_opt_code_block_is_dominator(const struct kefir_opt_code_analysis *, kefir_opt_block_id_t,
+                                                 kefir_opt_block_id_t, kefir_bool_t *);
+kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt_code_container *,
+                                                          kefir_opt_instruction_ref_t, kefir_bool_t *);
+kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(const struct kefir_opt_code_analysis *,
+                                                                      kefir_opt_instruction_ref_t,
+                                                                      kefir_opt_instruction_ref_t, kefir_bool_t *);
+kefir_result_t kefir_opt_code_instruction_is_sequenced_before(const struct kefir_opt_code_analysis *,
+                                                              kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
+                                                              kefir_bool_t *);
+
 kefir_result_t kefir_opt_code_container_link_blocks(struct kefir_mem *, struct kefir_opt_code_analysis *);
 kefir_result_t kefir_opt_code_container_find_dominators(struct kefir_mem *, struct kefir_opt_code_analysis *);
+kefir_result_t kefir_opt_code_container_verify_use_def(struct kefir_mem *, struct kefir_opt_code_analysis *);
 #endif
 
 typedef struct kefir_opt_module_analysis {
