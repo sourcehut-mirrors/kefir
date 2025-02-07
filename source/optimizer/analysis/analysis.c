@@ -58,7 +58,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
 
     analysis->code = code;
 
-    kefir_result_t res = kefir_opt_code_container_trace(mem, analysis);
+    kefir_result_t res = kefir_opt_code_container_link_blocks(mem, analysis);
     REQUIRE_CHAIN(&res, kefir_opt_code_container_find_dominators(mem, analysis));
     REQUIRE_ELSE(res == KEFIR_OK, {
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {

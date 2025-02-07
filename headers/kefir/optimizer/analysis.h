@@ -58,7 +58,14 @@ typedef struct kefir_opt_code_analyze_block_scheduler {
 extern const struct kefir_opt_code_analyze_block_scheduler kefir_opt_code_analyze_bfs_block_scheduler;
 
 #ifdef KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
-kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *, struct kefir_opt_code_analysis *);
+typedef struct kefir_opt_code_container_tracer {
+    kefir_result_t (*trace_instruction)(kefir_opt_instruction_ref_t, void *);
+    void *payload;
+} kefir_opt_code_container_tracer_t;
+kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *, const struct kefir_opt_code_container *,
+                                              const struct kefir_opt_code_container_tracer *);
+
+kefir_result_t kefir_opt_code_container_link_blocks(struct kefir_mem *, struct kefir_opt_code_analysis *);
 kefir_result_t kefir_opt_code_container_find_dominators(struct kefir_mem *, struct kefir_opt_code_analysis *);
 #endif
 
