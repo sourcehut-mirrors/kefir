@@ -31,12 +31,11 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 0
 #                    }
 #                ],
 #                "labels": [],
@@ -77,36 +76,17 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 2,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 1
 #                    }
 #                ],
 #                "labels": [],
@@ -210,36 +190,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 1,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 2,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 3
 #                    }
 #                ],
 #                "labels": [],
@@ -328,24 +289,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 5,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 2
 #                    }
 #                ],
 #                "labels": [],
@@ -429,24 +383,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 5,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 5
 #                    }
 #                ],
 #                "labels": [],
@@ -537,24 +484,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 6,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 8,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 4
 #                    }
 #                ],
 #                "labels": [],
@@ -608,26 +548,19 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 8,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [
 #                    22
 #                ],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 8
 #                    }
 #                ],
 #                "labels": [],
@@ -711,72 +644,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 9,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_begin",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 12,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 14,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 7
 #                    }
 #                ],
 #                "labels": [],
@@ -1008,72 +886,17 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 10,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
+#                "opcode": "virtual_block_begin",
 #                "args": [
 #                    {
-#                        "type": "virtual_register",
-#                        "index": 11,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 12,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 14,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
-#                "opcode": "vreg_lifetime_range_begin",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 15,
-#                        "variant": "default"
+#                        "type": "uinteger",
+#                        "value": 6
 #                    }
 #                ],
 #                "labels": [],
@@ -1164,14 +987,8 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "vreg_lifetime_range_end",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 15,
-#                        "variant": "default"
-#                    }
-#                ],
+#                "opcode": "virtual_block_end",
+#                "args": [],
 #                "labels": [],
 #                "source_location": null
 #            },

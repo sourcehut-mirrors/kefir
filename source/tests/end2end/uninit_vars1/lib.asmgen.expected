@@ -35,8 +35,6 @@ _kefir_func_get_global_tlocal_uninit_static_label1:
     data16     lea STRUCT2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_get_global_tlocal_uninit_static_end:
@@ -51,8 +49,6 @@ _kefir_func_get_local_tlocal_uninit_static_label1:
     data16     lea __kefir_function_get_local_tlocal_uninit_static_static_STRUCT2_7@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_get_local_tlocal_uninit_static_end:

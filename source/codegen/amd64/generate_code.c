@@ -19,7 +19,7 @@
 */
 
 #include "kefir/codegen/amd64/asmcmp.h"
-#include "kefir/codegen/amd64/register_allocator.h"
+#include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
@@ -518,8 +518,8 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             break;
 
         case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
-        case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_begin):
-        case KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_end):
+        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin):
+        case KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end):
         case KEFIR_ASMCMP_AMD64_OPCODE(noop):
             // Intentionally left blank
             break;

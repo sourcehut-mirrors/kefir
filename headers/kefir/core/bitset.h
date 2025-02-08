@@ -45,6 +45,7 @@ kefir_result_t kefir_bitset_clear(const struct kefir_bitset *);
 
 kefir_result_t kefir_bitset_length(const struct kefir_bitset *, kefir_size_t *);
 kefir_result_t kefir_bitset_resize(struct kefir_mem *, struct kefir_bitset *, kefir_size_t);
+kefir_result_t kefir_bitset_ensure(struct kefir_mem *, struct kefir_bitset *, kefir_size_t);
 
 #define KEFIR_BITSET_STATIC_CONTENT_CAPACITY(_bits) \
     (((_bits) + (sizeof(kefir_uint64_t) * CHAR_BIT - 1)) / (sizeof(kefir_uint64_t) * CHAR_BIT))

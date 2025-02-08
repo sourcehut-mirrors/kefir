@@ -68,8 +68,8 @@ typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, noop) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_activate) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, stash_deactivate) _separator \
-    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, vreg_lifetime_range_begin) _separator \
-    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, vreg_lifetime_range_end) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_block_begin) _separator \
+    KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, virtual_block_end) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, inline_assembly) _separator \
     KEFIR_ASMCMP_AMD64_VIRTUAL_OPCODE_HELPER(_instr0, data_word)
 // clang-format on
@@ -190,14 +190,14 @@ kefir_result_t kefir_asmcmp_amd64_inline_assembly(struct kefir_mem *, struct kef
                                                   kefir_asmcmp_inline_assembly_index_t,
                                                   kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_vreg_lifetime_range_begin(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+kefir_result_t kefir_asmcmp_amd64_virtual_block_begin(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                             kefir_asmcmp_instruction_index_t,
-                                                            kefir_asmcmp_virtual_register_index_t,
+                                                            kefir_uint64_t,
                                                             kefir_asmcmp_instruction_index_t *);
 
-kefir_result_t kefir_asmcmp_amd64_vreg_lifetime_range_end(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
+kefir_result_t kefir_asmcmp_amd64_virtual_block_end(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
                                                           kefir_asmcmp_instruction_index_t,
-                                                          kefir_asmcmp_virtual_register_index_t,
+                                                          kefir_uint64_t,
                                                           kefir_asmcmp_instruction_index_t *);
 
 kefir_result_t kefir_asmcmp_amd64_noop(struct kefir_mem *, struct kefir_asmcmp_amd64 *,

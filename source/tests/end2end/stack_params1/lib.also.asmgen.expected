@@ -27,10 +27,10 @@ _kefir_func_test1_label2:
     mov %rdx, %rsi
     jmp _kefir_func_test1_label4
 _kefir_func_test1_label5:
-    mov %rdx, %rsi
-    mov %rax, %rdi
-    mov %rdi, %rcx
-    mov %rsi, %rdx
+    mov %rdx, %rdi
+    mov %rax, %r8
+    mov %r8, %rcx
+    mov %rdi, %rdx
     jmp _kefir_func_test1_label2
 _kefir_func_test1_label4:
     add %rsi, %rax

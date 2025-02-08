@@ -23,7 +23,7 @@
 
 #include "kefir/codegen/amd64/codegen.h"
 #include "kefir/codegen/amd64/asmcmp.h"
-#include "kefir/codegen/amd64/register_allocator.h"
+#include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
@@ -38,7 +38,8 @@ typedef struct kefir_codegen_amd64_function {
     const struct kefir_opt_code_analysis *function_analysis;
     struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
-    struct kefir_codegen_amd64_register_allocator register_allocator;
+    // struct kefir_codegen_amd64_register_allocator register_allocator;
+    struct kefir_codegen_amd64_xregalloc xregalloc;
     struct kefir_abi_amd64_type_layout locals_layout;
     struct kefir_codegen_amd64_stack_frame stack_frame;
 

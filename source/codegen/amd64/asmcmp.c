@@ -19,7 +19,7 @@
 */
 
 #include "kefir/codegen/amd64/asmcmp.h"
-#include "kefir/codegen/amd64/register_allocator.h"
+#include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -418,36 +418,35 @@ kefir_result_t kefir_asmcmp_amd64_inline_assembly(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_amd64_vreg_lifetime_range_begin(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
+kefir_result_t kefir_asmcmp_amd64_virtual_block_begin(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                             kefir_asmcmp_instruction_index_t after_index,
-                                                            kefir_asmcmp_virtual_register_index_t vreg,
+                                                            kefir_uint64_t block_id,
                                                             kefir_asmcmp_instruction_index_t *idx_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
         mem, &target->context, after_index,
         &(const struct kefir_asmcmp_instruction){
-            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_begin),
-            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
+            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_begin),
+            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER,
+                        .uint_immediate = block_id},
             .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_amd64_vreg_lifetime_range_end(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
+kefir_result_t kefir_asmcmp_amd64_virtual_block_end(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                           kefir_asmcmp_instruction_index_t after_index,
-                                                          kefir_asmcmp_virtual_register_index_t vreg,
+                                                            kefir_uint64_t block_id,
                                                           kefir_asmcmp_instruction_index_t *idx_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen amd64 target"));
     REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(
         mem, &target->context, after_index,
         &(const struct kefir_asmcmp_instruction){
-            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(vreg_lifetime_range_end),
-            .args[0] = {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
-                        .vreg = {.index = vreg, .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}},
+            .opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_block_end),
+            .args[0] = {.uint_immediate = block_id},
             .args[1].type = KEFIR_ASMCMP_VALUE_TYPE_NONE,
             .args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE},
         idx_ptr));

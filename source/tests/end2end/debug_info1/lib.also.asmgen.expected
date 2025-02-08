@@ -46,18 +46,18 @@ _kefir_func_factorial64_label18:
     mov %rax, %rcx
     jmp _kefir_func_factorial64_label8
 _kefir_func_factorial64_label20:
-    mov %rdi, %rcx
-    mov %rax, %rdx
+    mov %rdi, %rdx
+    mov %rax, %rsi
 .loc 0 31 13
 _kefir_func_factorial64_label21:
-    imul %rcx, %rdx
+    imul %rdx, %rsi
 .loc 0 30 23
 _kefir_func_factorial64_label22:
-    add $-1, %rcx
+    add $-1, %rdx
 .loc 0 30 9
 _kefir_func_factorial64_label23:
-    mov %rcx, %rdi
-    mov %rdx, %rax
+    mov %rdx, %rdi
+    mov %rsi, %rax
     jmp _kefir_func_factorial64_label6
 .loc 0 33 9
 _kefir_func_factorial64_label8:
@@ -347,7 +347,7 @@ __kefir_debug_loclist_section_entry_2:
     .quad _kefir_func_factorial64_label24
     .byte 2
     .byte 144
-    .byte 1
+    .byte 4
     .byte 7
     .quad _kefir_func_factorial64_label24
     .quad _kefir_func_factorial64_label24
@@ -359,7 +359,7 @@ __kefir_debug_loclist_section_entry_2:
     .quad _kefir_func_factorial64_label22
     .byte 2
     .byte 144
-    .byte 1
+    .byte 4
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 7
@@ -373,7 +373,7 @@ __kefir_debug_loclist_section_entry_3:
     .quad _kefir_func_factorial64_label24
     .byte 2
     .byte 144
-    .byte 2
+    .byte 1
     .byte 7
     .quad _kefir_func_factorial64_label14
     .quad _kefir_func_factorial64_label16
@@ -391,7 +391,7 @@ __kefir_debug_loclist_section_entry_3:
     .quad _kefir_func_factorial64_label23
     .byte 2
     .byte 144
-    .byte 2
+    .byte 1
     .byte 7
     .quad _kefir_func_factorial64_label19
     .quad _kefir_func_factorial64_label21

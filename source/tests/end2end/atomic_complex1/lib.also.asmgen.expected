@@ -41,32 +41,32 @@ add_ld:
 __kefir_text_func_add_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $160, %rsp
+    sub $144, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
     movq ld_1@GOTPCREL(%rip), %rcx
-    movq %rax, -128(%rbp)
+    movq %rax, -112(%rbp)
     mov %rcx, %rsi
-    lea -160(%rbp), %rdx
+    lea -144(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -128(%rbp), %rax
+    movq -112(%rbp), %rax
     mov %rax, %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     fldt -112(%rbp)
-    fldt -160(%rbp)
+    fldt -144(%rbp)
     faddp
     fldt -96(%rbp)
-    fldt -144(%rbp)
+    fldt -128(%rbp)
     faddp
+    fstpt -128(%rbp)
     fstpt -144(%rbp)
-    fstpt -160(%rbp)
+    fldt -128(%rbp)
     fldt -144(%rbp)
-    fldt -160(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -77,24 +77,24 @@ div_ld:
 __kefir_text_func_div_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $160, %rsp
+    sub $144, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
     movq ld_1@GOTPCREL(%rip), %rcx
-    movq %rax, -128(%rbp)
+    movq %rax, -112(%rbp)
     mov %rcx, %rsi
-    lea -160(%rbp), %rdx
+    lea -144(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -128(%rbp), %rax
+    movq -112(%rbp), %rax
     mov %rax, %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -160(%rbp)
     fldt -144(%rbp)
+    fldt -128(%rbp)
     fldt -112(%rbp)
     fld %st(0)
     fabs
@@ -148,10 +148,10 @@ _kefir_func_div_ld_label4:
     fmulp %st(0), %st(1)
     jmp _kefir_func_div_ld_label3
 _kefir_func_div_ld_label5:
-    fstpt -160(%rbp)
     fstpt -144(%rbp)
+    fstpt -128(%rbp)
+    fldt -128(%rbp)
     fldt -144(%rbp)
-    fldt -160(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -162,40 +162,40 @@ mul_ld:
 __kefir_text_func_mul_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $160, %rsp
+    sub $144, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
     movq ld_1@GOTPCREL(%rip), %rcx
-    movq %rax, -128(%rbp)
+    movq %rax, -112(%rbp)
     mov %rcx, %rsi
-    lea -160(%rbp), %rdx
+    lea -144(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -128(%rbp), %rax
+    movq -112(%rbp), %rax
     mov %rax, %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -144(%rbp)
+    fldt -128(%rbp)
     fld %st(0)
     fldt -112(%rbp)
     fldt -96(%rbp)
     fmul %st(0), %st(2)
-    fldt -160(%rbp)
+    fldt -144(%rbp)
     fmul %st(2)
     fsubp %st(3)
     fxch %st(2)
     fxch %st(3)
     fmulp %st(1)
-    fldt -160(%rbp)
+    fldt -144(%rbp)
     fmulp %st(2)
     faddp %st(1)
+    fstpt -128(%rbp)
     fstpt -144(%rbp)
-    fstpt -160(%rbp)
+    fldt -128(%rbp)
     fldt -144(%rbp)
-    fldt -160(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -232,32 +232,32 @@ sub_ld:
 __kefir_text_func_sub_ld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $160, %rsp
+    sub $144, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
     movq ld_1@GOTPCREL(%rip), %rcx
-    movq %rax, -128(%rbp)
+    movq %rax, -112(%rbp)
     mov %rcx, %rsi
-    lea -160(%rbp), %rdx
+    lea -144(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -128(%rbp), %rax
+    movq -112(%rbp), %rax
     mov %rax, %rsi
     lea -112(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     fldt -112(%rbp)
-    fldt -160(%rbp)
+    fldt -144(%rbp)
     fsubp
     fldt -96(%rbp)
-    fldt -144(%rbp)
+    fldt -128(%rbp)
     fsubp
+    fstpt -128(%rbp)
     fstpt -144(%rbp)
-    fstpt -160(%rbp)
+    fldt -128(%rbp)
     fldt -144(%rbp)
-    fldt -160(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -301,30 +301,30 @@ add_f64:
 __kefir_text_func_add_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
     movq f64_1@GOTPCREL(%rip), %rcx
-    movq %rax, -80(%rbp)
+    movq %rax, -64(%rbp)
     mov %rcx, %rsi
-    lea -96(%rbp), %rdx
+    lea -80(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %rax
+    movq -64(%rbp), %rax
     mov %rax, %rsi
-    lea -72(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    addsd -72(%rbp), %xmm0
-    addsd -64(%rbp), %xmm1
-    movq %xmm0, -96(%rbp)
-    movq %xmm1, -88(%rbp)
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
+    addsd -64(%rbp), %xmm0
+    addsd -56(%rbp), %xmm1
+    movq %xmm0, -80(%rbp)
+    movq %xmm1, -72(%rbp)
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -382,52 +382,52 @@ div_f64:
 __kefir_text_func_div_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
     movq f64_1@GOTPCREL(%rip), %rcx
-    movq %rax, -80(%rbp)
+    movq %rax, -64(%rbp)
     mov %rcx, %rsi
-    lea -96(%rbp), %rdx
+    lea -80(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %rax
+    movq -64(%rbp), %rax
     mov %rax, %rsi
-    lea -72(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
     fld1
-    fldl -72(%rbp)
+    fldl -64(%rbp)
     fld %st(0)
     fmul %st(1)
-    fldl -64(%rbp)
+    fldl -56(%rbp)
     fld %st(0)
     fmul %st(1)
     faddp %st(2)
     fxch %st(1)
     fdivrp %st(3)
-    fldl -96(%rbp)
+    fldl -80(%rbp)
     fld %st(0)
     fmul %st(3)
     fxch %st(1)
     fmul %st(2)
-    fldl -88(%rbp)
+    fldl -72(%rbp)
     fld %st(0)
     fmulp %st(4)
     fxch %st(3)
     faddp %st(2)
     fxch %st(1)
     fmul %st(4)
-    fstpl -96(%rbp)
+    fstpl -80(%rbp)
     fxch %st(2)
     fmulp %st(1)
     fsubp
     fmulp
-    fstpl -88(%rbp)
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    fstpl -72(%rbp)
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -476,26 +476,26 @@ mul_f64:
 __kefir_text_func_mul_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
     movq f64_1@GOTPCREL(%rip), %rcx
-    movq %rax, -80(%rbp)
+    movq %rax, -64(%rbp)
     mov %rcx, %rsi
-    lea -96(%rbp), %rdx
+    lea -80(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %rax
+    movq -64(%rbp), %rax
     mov %rax, %rsi
-    lea -72(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    movq -72(%rbp), %xmm2
-    movq -64(%rbp), %xmm3
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
+    movq -64(%rbp), %xmm2
+    movq -56(%rbp), %xmm3
     unpcklpd %xmm1, %xmm0
     movaps %xmm0, %xmm1
     xorps __kefir_constant_complex_float64_mul(%rip), %xmm1
@@ -508,10 +508,10 @@ __kefir_text_func_mul_f64_begin:
     movaps %xmm3, %xmm0
     movaps %xmm3, %xmm1
     unpckhpd %xmm3, %xmm0
-    movq %xmm1, -96(%rbp)
-    movq %xmm0, -88(%rbp)
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    movq %xmm1, -80(%rbp)
+    movq %xmm0, -72(%rbp)
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -603,30 +603,30 @@ sub_f64:
 __kefir_text_func_sub_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
     movq f64_1@GOTPCREL(%rip), %rcx
-    movq %rax, -80(%rbp)
+    movq %rax, -64(%rbp)
     mov %rcx, %rsi
-    lea -96(%rbp), %rdx
+    lea -80(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %rax
+    movq -64(%rbp), %rax
     mov %rax, %rsi
-    lea -72(%rbp), %rdx
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
-    subsd -72(%rbp), %xmm0
-    subsd -64(%rbp), %xmm1
-    movq %xmm0, -96(%rbp)
-    movq %xmm1, -88(%rbp)
-    movq -96(%rbp), %xmm0
-    movq -88(%rbp), %xmm1
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
+    subsd -64(%rbp), %xmm0
+    subsd -56(%rbp), %xmm1
+    movq %xmm0, -80(%rbp)
+    movq %xmm1, -72(%rbp)
+    movq -80(%rbp), %xmm0
+    movq -72(%rbp), %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

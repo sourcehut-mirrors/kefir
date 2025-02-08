@@ -48,8 +48,6 @@ _kefir_func_tget_label1:
     data16     lea tsomearray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_tget_end:
@@ -64,8 +62,6 @@ _kefir_func_tget2_label1:
     data16     lea tsomeotherarray@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_tget2_end:

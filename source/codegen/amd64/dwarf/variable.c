@@ -341,7 +341,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
 
     const struct kefir_codegen_amd64_register_allocation *reg_allocation;
     REQUIRE_OK(
-        kefir_codegen_amd64_register_allocation_of(&codegen_function->register_allocator, vreg, &reg_allocation));
+        kefir_codegen_amd64_xregalloc_allocation_of(&codegen_function->xregalloc, vreg, &reg_allocation));
 
     switch (reg_allocation->type) {
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:

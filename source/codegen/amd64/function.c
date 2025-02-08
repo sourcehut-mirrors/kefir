@@ -222,49 +222,10 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
         }
 
-        struct kefir_hashtreeset lifetime_vregs;
-        REQUIRE_OK(kefir_hashtreeset_init(&lifetime_vregs, &kefir_hashtree_uint_ops));
-
-        kefir_result_t res = KEFIR_OK;
-        for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
-             res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
-            kefir_asmcmp_virtual_register_index_t vreg = 0;
-            res = kefir_codegen_amd64_function_vreg_of(
-                func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
-            if (res == KEFIR_NOT_FOUND) {
-                res = KEFIR_OK;
-                continue;
-            }
-            if (kefir_hashtreeset_has(&lifetime_vregs, (kefir_hashtreeset_entry_t) vreg)) {
-                continue;
-            }
-            REQUIRE_CHAIN(&res, kefir_asmcmp_amd64_vreg_lifetime_range_begin(mem, &func->code, block_begin_idx, vreg,
-                                                                             &block_begin_idx));
-            REQUIRE_CHAIN(&res, kefir_hashtreeset_add(mem, &lifetime_vregs, (kefir_hashtreeset_entry_t) vreg));
-        }
-
-        for (kefir_size_t instr_idx = block_props->linear_range.begin_index;
-             res == KEFIR_OK && instr_idx < block_props->linear_range.end_index; instr_idx++) {
-            kefir_asmcmp_virtual_register_index_t vreg = 0;
-            kefir_result_t res = kefir_codegen_amd64_function_vreg_of(
-                func, func->function_analysis->linearization[instr_idx]->instr_ref, &vreg);
-            if (res == KEFIR_NOT_FOUND) {
-                res = KEFIR_OK;
-                continue;
-            }
-            if (!kefir_hashtreeset_has(&lifetime_vregs, (kefir_hashtreeset_entry_t) vreg)) {
-                continue;
-            }
-            REQUIRE_CHAIN(&res,
-                          kefir_asmcmp_amd64_vreg_lifetime_range_end(
-                              mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
-            REQUIRE_CHAIN(&res, kefir_hashtreeset_delete(mem, &lifetime_vregs, (kefir_hashtreeset_entry_t) vreg));
-        }
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_hashtreeset_free(mem, &lifetime_vregs);
-            return res;
-        });
-        REQUIRE_OK(kefir_hashtreeset_free(mem, &lifetime_vregs));
+        REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_begin(mem, &func->code, block_begin_idx, block_props->block_id,
+                                                                            &block_begin_idx));
+        REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_end(
+                            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), block_props->block_id, NULL));
     }
 
     if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {
@@ -368,8 +329,8 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
     if (reg_alloc) {
         REQUIRE_OK(kefir_json_output_object_key(&json, "register_allocation"));
         REQUIRE_OK(kefir_json_output_array_begin(&json));
-        for (kefir_size_t i = 0; i < func->register_allocator.num_of_vregs; i++) {
-            const struct kefir_codegen_amd64_register_allocation *ra = &func->register_allocator.allocations[i];
+        for (kefir_size_t i = 0; i < func->xregalloc.virtual_register_length; i++) {
+            const struct kefir_codegen_amd64_register_allocation *ra = &func->xregalloc.virtual_registers[i].allocation;
             REQUIRE_OK(kefir_json_output_object_begin(&json));
             REQUIRE_OK(kefir_json_output_object_key(&json, "id"));
             REQUIRE_OK(kefir_json_output_uinteger(&json, i));
@@ -448,13 +409,15 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(output_asm(codegen, func, false, codegen->config->debug_info));
     }
 
+    // REQUIRE_OK(
+    //     kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
     REQUIRE_OK(
-        kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
+        kefir_codegen_amd64_xregalloc_run(mem, &func->code, &func->stack_frame, &func->xregalloc));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
         REQUIRE_OK(output_asm(codegen, func, true, codegen->config->debug_info));
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->register_allocator, &func->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_devirtualize(mem, &func->code, &func->xregalloc, &func->stack_frame));
     REQUIRE_OK(kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_DEVIRTUAL,
                                            &func->code.context));
 
@@ -509,16 +472,17 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
-    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant, function->ir_func->declaration,
-                                                   &func->abi_function_declaration));
+    // REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
+    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
+                                                   function->ir_func->declaration, &func->abi_function_declaration));
     if (function->locals.type != NULL) {
         kefir_result_t res =
             kefir_abi_amd64_type_layout(mem, codegen_module->codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK,
                                         function->locals.type, &func->locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
-            kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
+            // kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
             kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
             kefir_hashtree_free(mem, &func->debug.function_parameters);
             kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels);
@@ -543,7 +507,8 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &func->locals_layout));
     }
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
-    REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
+    // REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));

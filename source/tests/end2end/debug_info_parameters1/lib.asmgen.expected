@@ -15,16 +15,18 @@ test:
 .loc 0 21 1
 __kefir_text_func_test_begin:
 .loc 0 22 12
+_kefir_func_test_label3:
 _kefir_func_test_label2:
     xor %eax, %eax
 .loc 0 22 5
-_kefir_func_test_label3:
+_kefir_func_test_label4:
     ret
 __kefir_text_func_test_end:
 
 test2:
 .loc 0 25 1
 __kefir_text_func_test2_begin:
+_kefir_func_test2_label3:
 _kefir_func_test2_label2:
     ret
 __kefir_text_func_test2_end:
@@ -32,6 +34,7 @@ __kefir_text_func_test2_end:
 test3:
 .loc 0 27 1
 __kefir_text_func_test3_begin:
+_kefir_func_test3_label3:
 _kefir_func_test3_label2:
     ret
 __kefir_text_func_test3_end:

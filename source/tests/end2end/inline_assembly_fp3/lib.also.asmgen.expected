@@ -18,79 +18,79 @@ _kefir_func_sumall_label0:
 _kefir_func_sumall_label1:
     movq %rdi, -40(%rbp)
     movq %xmm0, -32(%rbp)
-    lea -32(%rbp), %rax
+    lea -32(%rbp), %r12
     movq _kefir_func_sumall_label2(%rip), %xmm0
+    movq -40(%rbp), %rax
+    mov $0, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %r13
+    movq -40(%rbp), %rax
+    mov $1, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %r8
+    movq -40(%rbp), %rax
+    mov $2, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %r9
+    movq -40(%rbp), %rax
+    mov $3, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %r10
+    movq -40(%rbp), %rax
+    mov $4, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %r11
+    movq -40(%rbp), %rax
+    mov $5, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %rbx
+    movq -40(%rbp), %rax
+    mov $6, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
+    movq (%rax), %rax
     movq -40(%rbp), %rcx
-    mov $0, %rdx
+    mov $7, %rdx
     movsx %edx, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
     movq (%rcx), %rcx
     movq -40(%rbp), %rdx
-    mov $1, %rsi
+    mov $8, %rsi
     movsx %esi, %rsi
     imul $8, %rsi, %rsi
     add %rsi, %rdx
     movq (%rdx), %rdx
     movq -40(%rbp), %rsi
-    mov $2, %rdi
+    mov $9, %rdi
     movsx %edi, %rdi
     imul $8, %rdi, %rdi
     add %rdi, %rsi
     movq (%rsi), %rsi
-    movq -40(%rbp), %rdi
-    mov $3, %r8
-    movsx %r8d, %r8
-    imul $8, %r8, %r8
-    add %r8, %rdi
-    movq (%rdi), %rdi
-    movq -40(%rbp), %r8
-    mov $4, %r9
-    movsx %r9d, %r9
-    imul $8, %r9, %r9
-    add %r9, %r8
-    movq (%r8), %r8
-    movq -40(%rbp), %r9
-    mov $5, %r10
-    movsx %r10d, %r10
-    imul $8, %r10, %r10
-    add %r10, %r9
-    movq (%r9), %r9
-    movq -40(%rbp), %r10
-    mov $6, %r11
-    movsx %r11d, %r11
-    imul $8, %r11, %r11
-    add %r11, %r10
-    movq (%r10), %r10
-    movq -40(%rbp), %r11
-    mov $7, %rbx
-    movsx %ebx, %rbx
-    imul $8, %rbx, %rbx
-    add %rbx, %r11
-    movq (%r11), %r11
-    movq -40(%rbp), %rbx
-    mov $8, %r12
-    movsx %r12d, %r12
-    imul $8, %r12, %r12
-    add %r12, %rbx
-    movq (%rbx), %rbx
-    movq -40(%rbp), %r12
-    mov $9, %r13
-    movsx %r13d, %r13
-    imul $8, %r13, %r13
-    add %r13, %r12
-    movq (%r12), %r12
-    movq %rax, -64(%rbp)
-    movq %rcx, %xmm1
-    movq %rdx, %xmm2
-    movq %rsi, %xmm6
-    movq %rdi, %xmm7
-    movq %r8, %xmm8
-    movq %r9, %xmm10
-    movq %r10, %xmm12
-    movq %r11, %xmm13
-    mov %rbx, -56(%rbp)
-    mov %r12, -48(%rbp)
+    movq %r12, -64(%rbp)
+    movq %r13, %xmm1
+    movq %r8, %xmm2
+    movq %r9, %xmm6
+    movq %r10, %xmm7
+    movq %r11, %xmm8
+    movq %rbx, %xmm10
+    movq %rax, %xmm12
+    movq %rcx, %xmm13
+    mov %rdx, -56(%rbp)
+    mov %rsi, -48(%rbp)
 addsd %xmm1, %xmm0
 addsd %xmm2, %xmm0
 addsd %xmm6, %xmm0

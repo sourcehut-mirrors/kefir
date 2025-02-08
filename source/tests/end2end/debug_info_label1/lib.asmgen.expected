@@ -14,17 +14,21 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
 .loc 0 25 5
+_kefir_func_test1_label6:
 _kefir_func_test1_label5:
     call test2@PLT
 .loc 0 28 9
-_kefir_func_test1_label6:
 _kefir_func_test1_label2:
-    call test2@PLT
-.loc 0 31 13
+_kefir_func_test1_label8:
 _kefir_func_test1_label7:
     call test2@PLT
+.loc 0 31 13
+_kefir_func_test1_label10:
+_kefir_func_test1_label9:
+    call test2@PLT
 .loc 0 26 5
-_kefir_func_test1_label8:
+_kefir_func_test1_label12:
+_kefir_func_test1_label11:
     jmp _kefir_func_test1_label2
 __kefir_text_func_test1_end:
 
@@ -239,37 +243,37 @@ __kefir_debug_info_section_entry_4:
 __kefir_debug_info_section_entry_5:
     .byte 5
     .ascii "label1\000"
-    .quad _kefir_func_test1_label5
+    .quad _kefir_func_test1_label6
     .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
     .quad 24
     .quad 1
 __kefir_debug_info_section_entry_6:
     .byte 6
-    .quad _kefir_func_test1_label6
-    .quad _kefir_func_test1_label8 - _kefir_func_test1_label6
+    .quad _kefir_func_test1_label8
+    .quad _kefir_func_test1_label12 - _kefir_func_test1_label8
 __kefir_debug_info_section_entry_7:
     .byte 6
-    .quad _kefir_func_test1_label6
-    .quad _kefir_func_test1_label8 - _kefir_func_test1_label6
+    .quad _kefir_func_test1_label8
+    .quad _kefir_func_test1_label11 - _kefir_func_test1_label8
 __kefir_debug_info_section_entry_8:
     .byte 5
     .ascii "label2\000"
-    .quad _kefir_func_test1_label6
+    .quad _kefir_func_test1_label8
     .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
     .quad 27
     .quad 5
 __kefir_debug_info_section_entry_9:
     .byte 6
-    .quad _kefir_func_test1_label7
-    .quad _kefir_func_test1_label8 - _kefir_func_test1_label7
+    .quad _kefir_func_test1_label9
+    .quad _kefir_func_test1_label11 - _kefir_func_test1_label9
 __kefir_debug_info_section_entry_10:
     .byte 6
-    .quad _kefir_func_test1_label7
-    .quad _kefir_func_test1_label8 - _kefir_func_test1_label7
+    .quad _kefir_func_test1_label10
+    .quad _kefir_func_test1_label11 - _kefir_func_test1_label10
 __kefir_debug_info_section_entry_11:
     .byte 5
     .ascii "label3\000"
-    .quad _kefir_func_test1_label7
+    .quad _kefir_func_test1_label10
     .ascii "source/tests/end2end/debug_info_label1/lib.kefir.asmgen.c\000"
     .quad 30
     .quad 9

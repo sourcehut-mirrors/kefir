@@ -199,3 +199,14 @@ kefir_result_t kefir_bitset_resize(struct kefir_mem *mem, struct kefir_bitset *b
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bitset_ensure(struct kefir_mem *mem, struct kefir_bitset *bitset, kefir_size_t new_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bitset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bitset"));
+    REQUIRE(!bitset->static_content, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot resize static bitset"));
+
+    if (new_length > bitset->length) {
+        REQUIRE_OK(kefir_bitset_resize(mem, bitset, new_length));
+    }
+    return KEFIR_OK;
+}

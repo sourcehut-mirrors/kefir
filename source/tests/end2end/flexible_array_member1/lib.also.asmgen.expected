@@ -49,18 +49,18 @@ _kefir_func_get_T2_label1:
     jmp _kefir_func_get_T2_label3
 _kefir_func_get_T2_label6:
 _kefir_func_get_T2_label2:
-    movsxl -4(%rbp), %rcx
-    lea T1(%rip), %rdx
-    movsxl (%rdx), %rdx
-    mov $0, %rsi
-    cmp %edx, %ecx
-    setl %sil
+    movsxl -4(%rbp), %rdx
+    lea T1(%rip), %rsi
+    movsxl (%rsi), %rsi
+    mov $0, %rdi
+    cmp %esi, %edx
+    setl %dil
     test %eax, %eax
     setne %al
-    test %esi, %esi
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
+    test %edi, %edi
+    setne %dl
+    and %al, %dl
+    movzx %dl, %rax
     mov %rax, %rcx
 _kefir_func_get_T2_label3:
     mov $0, %rax

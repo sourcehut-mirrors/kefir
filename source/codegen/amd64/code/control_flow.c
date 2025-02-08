@@ -329,8 +329,6 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE ||
             (source_block_ref != target_block_ref && source_vreg_idx != target_vreg_idx &&
              !kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx))) {
-            REQUIRE_OK(kefir_asmcmp_amd64_vreg_lifetime_range_begin(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx));
         }
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
@@ -347,9 +345,6 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                                              deferred_target_vreg, temporary_target_vreg, NULL));
-        REQUIRE_OK(kefir_asmcmp_amd64_vreg_lifetime_range_end(mem, &function->code,
-                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                              temporary_target_vreg, NULL));
     }
 
     for (res = kefir_opt_code_block_phi_head(&function->function->code, target_block, &phi_ref);
@@ -369,10 +364,6 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
 
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
-        if (kefir_hashtreeset_has(used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx)) {
-            REQUIRE_OK(kefir_asmcmp_amd64_vreg_lifetime_range_end(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), target_vreg_idx, NULL));
-        }
     }
     REQUIRE_OK(res);
 

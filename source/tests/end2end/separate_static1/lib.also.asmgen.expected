@@ -43,8 +43,6 @@ _kefir_func_gety_label1:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_gety_end:
@@ -81,8 +79,6 @@ _kefir_func_getx3_label1:
     data16     lea __kefir_function_getx3_static_x_8@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_getx3_end:
@@ -108,8 +104,6 @@ _kefir_func_gety1_label1:
     data16     lea __kefir_function_gety1_static_y_14@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-    mov %rax, %rcx
-    mov %rcx, %rax
     pop %rbp
     ret
 __kefir_text_func_gety1_end:
