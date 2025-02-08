@@ -110,15 +110,13 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
 
 static kefir_result_t instr_exists(const struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
                                    kefir_opt_instruction_ref_t instr_id, kefir_bool_t permit_none) {
+    UNUSED(block_id);
     REQUIRE(permit_none || instr_id != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Optimized code instruction with requested identifier is not found"));
 
     if (!permit_none) {
         const struct kefir_opt_instruction *instr = NULL;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr_id, &instr));
-        REQUIRE(
-            instr->block_id == block_id || block_id == KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimized code instruction does not belong to specified block"));
     }
     return KEFIR_OK;
 }

@@ -233,6 +233,34 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
         }
 
+        struct kefir_bucketset_iterator alive_instr_iter;
+        kefir_bucketset_entry_t alive_instr_entry;
+        for (res = kefir_bucketset_iter(&func->function_analysis->blocks[block_id].alive_instr, &alive_instr_iter, &alive_instr_entry);
+            res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+            kefir_asmcmp_virtual_register_index_t vreg = 0;
+            res = kefir_codegen_amd64_function_vreg_of(func, (kefir_opt_instruction_ref_t) alive_instr_entry, &vreg);
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_OK;
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            kefir_bool_t preserve_vreg = false;
+            for (const struct kefir_list_entry *iter = kefir_list_head(&func->function_analysis->blocks[block_id].successors);
+                !preserve_vreg && iter != NULL; kefir_list_next(&iter)) {
+                ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id,
+                    (kefir_uptr_t) iter->value);
+                if (kefir_bucketset_has(&func->function_analysis->blocks[succ_block_id].alive_instr, alive_instr_entry)) {
+                    preserve_vreg = true;
+                }
+            }
+            if (preserve_vreg) {
+                REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                                mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg,
+                                NULL));
+            }
+        }
+
         REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_begin(mem, &func->code, block_begin_idx, block_id,
                                                                             &block_begin_idx));
         REQUIRE_OK(kefir_asmcmp_amd64_virtual_block_end(

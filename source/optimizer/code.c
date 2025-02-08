@@ -1693,12 +1693,6 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
     REQUIRE_OK(code_container_instr_mutable(code, to_ref, &to_instr));
     REQUIRE_OK(code_container_instr_mutable(code, from_ref, &from_instr));
 
-    REQUIRE(to_instr->block_id == from_instr->block_id,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Both instructions shall be located within the same block"));
-
-    struct kefir_opt_code_block *block = NULL;
-    REQUIRE_OK(code_container_block_mutable(code, to_instr->block_id, &block));
-
     struct kefir_hashtree_node *node;
     REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) from_ref, &node));
     ASSIGN_DECL_CAST(struct instruction_use_entry *, use_entry, node->value);
