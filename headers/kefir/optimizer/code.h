@@ -408,10 +408,27 @@ kefir_result_t kefir_opt_phi_node_link_next(struct kefir_opt_phi_node_link_itera
 
 typedef struct kefir_opt_instruction_use_iterator {
     struct kefir_hashtreeset_iterator iter;
-    kefir_opt_instruction_ref_t use_instr_ref;
+    union {
+        kefir_hashtreeset_entry_t use_entry;
+        kefir_opt_instruction_ref_t use_instr_ref;
+        kefir_opt_phi_id_t use_phi_ref;
+        kefir_opt_call_id_t use_call_ref;
+        kefir_opt_inline_assembly_id_t use_inline_asm_ref;
+    };
 } kefir_opt_instruction_use_iterator_t;
 
-kefir_result_t kefir_opt_code_container_instruction_use_iter(const struct kefir_opt_code_container *, kefir_opt_instruction_ref_t, struct kefir_opt_instruction_use_iterator *);
+kefir_result_t kefir_opt_code_container_instruction_use_instr_iter(const struct kefir_opt_code_container *,
+                                                                   kefir_opt_instruction_ref_t,
+                                                                   struct kefir_opt_instruction_use_iterator *);
+kefir_result_t kefir_opt_code_container_instruction_use_call_iter(const struct kefir_opt_code_container *,
+                                                                  kefir_opt_instruction_ref_t,
+                                                                  struct kefir_opt_instruction_use_iterator *);
+kefir_result_t kefir_opt_code_container_instruction_use_phi_iter(const struct kefir_opt_code_container *,
+                                                                 kefir_opt_instruction_ref_t,
+                                                                 struct kefir_opt_instruction_use_iterator *);
+kefir_result_t kefir_opt_code_container_instruction_use_inline_asm_iter(const struct kefir_opt_code_container *,
+                                                                        kefir_opt_instruction_ref_t,
+                                                                        struct kefir_opt_instruction_use_iterator *);
 kefir_result_t kefir_opt_code_container_instruction_use_next(struct kefir_opt_instruction_use_iterator *);
 
 #endif

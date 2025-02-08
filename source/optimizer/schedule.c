@@ -140,6 +140,7 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 }
 
 static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_container *code,
+                                                 const struct kefir_opt_code_analysis *code_analysis,
                                                  const struct kefir_opt_code_block *block,
                                                  const struct kefir_opt_code_analysis_block_properties *block_props,
                                                  struct schedule_instruction_param *param) {
@@ -173,6 +174,21 @@ static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_con
                                                (void *) (kefir_uptr_t) instr_ref2));
         }
         REQUIRE_OK(res);
+
+        struct kefir_bucketset_iterator alive_instr_iter;
+        kefir_bucketset_entry_t alive_instr_entry;
+        for (res = kefir_bucketset_iter(&code_analysis->blocks[successor_block_id].alive_instr, &alive_instr_iter,
+                                        &alive_instr_entry);
+             res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
+            const struct kefir_opt_instruction *alive_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(code, alive_instr_ref, &alive_instr));
+            if (alive_instr->block_id != block->id) {
+                continue;
+            }
+            REQUIRE_OK(kefir_list_insert_after(param->mem, &param->instr_queue, kefir_list_tail(&param->instr_queue),
+                                               (void *) (kefir_uptr_t) alive_instr_ref));
+        }
     }
 
     return KEFIR_OK;
@@ -228,6 +244,7 @@ static kefir_result_t schedule_stack_push(struct schedule_instruction_param *par
 
 static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedule *schedule,
                                                     const struct kefir_opt_code_container *code,
+                                                    const struct kefir_opt_code_analysis *code_analysis,
                                                     const struct kefir_opt_code_block *block,
                                                     const struct kefir_opt_code_analysis_block_properties *block_props,
                                                     struct schedule_instruction_param *param) {
@@ -262,6 +279,20 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
                     REQUIRE_OK(schedule_stack_push(param, instr_ref2, true, kefir_list_tail(&param->instr_queue)));
                 }
                 REQUIRE_OK(res);
+
+                struct kefir_bucketset_iterator alive_instr_iter;
+                kefir_bucketset_entry_t alive_instr_entry;
+                for (res = kefir_bucketset_iter(&code_analysis->blocks[successor_block_id].alive_instr,
+                                                &alive_instr_iter, &alive_instr_entry);
+                     res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+                    ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
+                    const struct kefir_opt_instruction *alive_instr;
+                    REQUIRE_OK(kefir_opt_code_container_instr(code, alive_instr_ref, &alive_instr));
+                    if (alive_instr->block_id != block->id) {
+                        continue;
+                    }
+                    REQUIRE_OK(schedule_stack_push(param, alive_instr_ref, true, kefir_list_tail(&param->instr_queue)));
+                }
             }
         }
         REQUIRE_OK(schedule_stack_push(param, instr_ref, true, kefir_list_tail(&param->instr_queue)));
@@ -285,7 +316,7 @@ static kefir_result_t push_instruction_input(kefir_opt_instruction_ref_t instr_r
     return KEFIR_OK;
 }
 
-static kefir_result_t schedule_instructions(struct schedule_instruction_param *param) {
+static kefir_result_t schedule_instructions(struct schedule_instruction_param *param, kefir_opt_block_id_t block_id) {
     kefir_opt_instruction_ref_t instr_ref;
     for (struct kefir_list_entry *iter = kefir_list_head(&param->instr_queue); iter != NULL;
          iter = kefir_list_head(&param->instr_queue)) {
@@ -300,6 +331,11 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
         if (instruction_schedule->linear_index != UNSCHEDULED_INDEX) {
             continue;
         }
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
+        if (instr->block_id != block_id) {
+            continue;
+        }
 
         if (dependencies_pending) {
             struct push_instruction_input_param push_param = {.param = param, .insert_position = NULL};
@@ -310,8 +346,6 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
                 REQUIRE_OK(schedule_stack_push(param, instr_ref, false, push_param.insert_position));
             }
         } else {
-            const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
             const kefir_size_t linear_index = param->schedule->next_instruction_index++;
             REQUIRE_OK(kefir_opt_instruction_extract_inputs(
                 param->code, instr, true, update_liveness,
@@ -376,11 +410,11 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, struct kefir_opt_cod
     REQUIRE_OK(kefir_list_init(&param.instr_queue));
 
     res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, block_collect_control_flow(code, block, block_props, &param));
+    REQUIRE_CHAIN(&res, block_collect_control_flow(code, code_analysis, block, block_props, &param));
     REQUIRE_CHAIN(&res, trace_block(&param));
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&param.instr_queue, free_schedule_stack_entry, NULL));
-    REQUIRE_CHAIN(&res, schedule_collect_control_flow(schedule, code, block, block_props, &param));
-    REQUIRE_CHAIN(&res, schedule_instructions(&param));
+    REQUIRE_CHAIN(&res, schedule_collect_control_flow(schedule, code, code_analysis, block, block_props, &param));
+    REQUIRE_CHAIN(&res, schedule_instructions(&param, block_id));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &param.instr_queue);
         return res;

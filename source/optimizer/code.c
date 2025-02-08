@@ -579,7 +579,7 @@ static kefir_result_t code_container_phi_mutable(const struct kefir_opt_code_con
 
     *phi_ptr = &code->phi_nodes[phi_ref];
     REQUIRE((*phi_ptr)->block_id != KEFIR_ID_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Phi node has been previously dropped from block"));
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Phi node has been previously dropped from block"));
     return KEFIR_OK;
 }
 
@@ -1450,9 +1450,12 @@ kefir_result_t kefir_opt_phi_node_link_next(struct kefir_opt_phi_node_link_itera
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_container_instruction_use_iter(const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref, struct kefir_opt_instruction_use_iterator *iter) {
+kefir_result_t kefir_opt_code_container_instruction_use_instr_iter(const struct kefir_opt_code_container *code,
+                                                                   kefir_opt_instruction_ref_t instr_ref,
+                                                                   struct kefir_opt_instruction_use_iterator *iter) {
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
 
     struct kefir_hashtree_node *node;
     REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) instr_ref, &node));
@@ -1460,16 +1463,68 @@ kefir_result_t kefir_opt_code_container_instruction_use_iter(const struct kefir_
 
     kefir_result_t res = kefir_hashtreeset_iter(&use_entry->instruction, &iter->iter);
     REQUIRE_OK(res);
-    iter->use_instr_ref = (kefir_opt_instruction_ref_t) iter->iter.entry;
+    iter->use_entry = iter->iter.entry;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_instruction_use_call_iter(const struct kefir_opt_code_container *code,
+                                                                  kefir_opt_instruction_ref_t instr_ref,
+                                                                  struct kefir_opt_instruction_use_iterator *iter) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
+
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) instr_ref, &node));
+    ASSIGN_DECL_CAST(struct instruction_use_entry *, use_entry, node->value);
+
+    kefir_result_t res = kefir_hashtreeset_iter(&use_entry->call, &iter->iter);
+    REQUIRE_OK(res);
+    iter->use_entry = iter->iter.entry;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_instruction_use_phi_iter(const struct kefir_opt_code_container *code,
+                                                                 kefir_opt_instruction_ref_t instr_ref,
+                                                                 struct kefir_opt_instruction_use_iterator *iter) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
+
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) instr_ref, &node));
+    ASSIGN_DECL_CAST(struct instruction_use_entry *, use_entry, node->value);
+
+    kefir_result_t res = kefir_hashtreeset_iter(&use_entry->phi, &iter->iter);
+    REQUIRE_OK(res);
+    iter->use_entry = iter->iter.entry;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_instruction_use_inline_asm_iter(
+    const struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref,
+    struct kefir_opt_instruction_use_iterator *iter) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
+
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) instr_ref, &node));
+    ASSIGN_DECL_CAST(struct instruction_use_entry *, use_entry, node->value);
+
+    kefir_result_t res = kefir_hashtreeset_iter(&use_entry->inline_assembly, &iter->iter);
+    REQUIRE_OK(res);
+    iter->use_entry = iter->iter.entry;
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_opt_code_container_instruction_use_next(struct kefir_opt_instruction_use_iterator *iter) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction use iterator"));
 
     kefir_result_t res = kefir_hashtreeset_next(&iter->iter);
     REQUIRE_OK(res);
-    iter->use_instr_ref = (kefir_opt_instruction_ref_t) iter->iter.entry;
+    iter->use_entry = iter->iter.entry;
     return KEFIR_OK;
 }
 
@@ -1719,13 +1774,13 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
             continue;
         }
 
-        struct kefir_hashtree_node *node = NULL;
-        res = kefir_hashtree_at(&phi->links, (kefir_hashtree_key_t) block->id, &node);
-        if (res == KEFIR_OK && node->value == (kefir_hashtree_value_t) from_ref) {
-            node->value = (kefir_hashtree_value_t) to_ref;
-            REQUIRE_OK(phi_update_used_instructions(mem, code, phi_ref, to_ref));
-        } else if (res != KEFIR_NOT_FOUND) {
-            REQUIRE_OK(res);
+        struct kefir_hashtree_node *node;
+        REQUIRE_OK(kefir_hashtree_min(&phi->links, &node));
+        for (; node != NULL; node = kefir_hashtree_next_node(&phi->links, node)) {
+            if (node->value == (kefir_hashtree_value_t) from_ref) {
+                node->value = (kefir_hashtree_value_t) to_ref;
+                REQUIRE_OK(phi_update_used_instructions(mem, code, phi_ref, to_ref));
+            }
         }
     }
     if (res != KEFIR_ITERATOR_END) {
