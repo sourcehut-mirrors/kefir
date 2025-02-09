@@ -47,7 +47,7 @@ $(KEFIR_EXTERNAL_TEST_PYTHON_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PYTHON_SOURCE
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		bash -c "ulimit -s unlimited && ./python -m test -x test_gdb test_epoll test_external_inspection test_perf_profiler test_selectors test_ssl test_poplib test_socketserver" | tee "../tests.log.tmp"
+		bash -c "ulimit -s unlimited && ./python -m test -x test_gdb test_epoll test_external_inspection test_perf_profiler test_selectors test_ssl test_poplib test_socket test_socketserver" | tee "../tests.log.tmp"
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/python.test.done: $(KEFIR_EXTERNAL_TEST_PYTHON_DIR)/tests.log
