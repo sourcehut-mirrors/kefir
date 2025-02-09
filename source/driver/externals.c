@@ -28,6 +28,14 @@ static void set_if_null(const char **target, const char *value) {
     }
 }
 
+static const char *getenv_nonzero(const char *envvar) {
+    const char *value = getenv(envvar);
+    if (value != NULL && *value == '\0') {
+        value = NULL;
+    }
+    return value;
+}
+
 kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *mem,
                                                              struct kefir_driver_external_resources *externals,
                                                              struct kefir_tempfile_manager *tmpmgr) {
@@ -41,9 +49,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->default_target = getenv("KEFIR_TARGET");
 
     externals->assembler_path_explicit = false;
-    externals->assembler_path = getenv("KEFIR_AS");
+    externals->assembler_path = getenv_nonzero("KEFIR_AS");
     if (externals->assembler_path == NULL) {
-        externals->assembler_path = getenv("AS");
+        externals->assembler_path = getenv_nonzero("AS");
     }
     if (externals->assembler_path != NULL) {
         externals->assembler_path_explicit = true;
@@ -55,9 +63,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
         externals->assembler_path = "as";
     }
 
-    externals->linker_path = getenv("KEFIR_LD");
+    externals->linker_path = getenv_nonzero("KEFIR_LD");
     if (externals->linker_path == NULL) {
-        externals->linker_path = getenv("LD");
+        externals->linker_path = getenv_nonzero("LD");
     }
 #ifdef KEFIR_CONFIG_HOST_LD
     set_if_null(&externals->linker_path, KEFIR_CONFIG_HOST_LD);
@@ -66,22 +74,22 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
         externals->linker_path = "ld";
     }
 
-    externals->runtime_include = getenv("KEFIR_RTINC");
-    externals->musl.include_path = getenv("KEFIR_MUSL_INCLUDE");
-    externals->musl.library_path = getenv("KEFIR_MUSL_LIB");
-    externals->musl.dynamic_linker = getenv("KEFIR_MUSL_DYNAMIC_LINKER");
-    externals->gnu.include_path = getenv("KEFIR_GNU_INCLUDE");
-    externals->gnu.library_path = getenv("KEFIR_GNU_LIB");
-    externals->gnu.dynamic_linker = getenv("KEFIR_GNU_DYNAMIC_LINKER");
-    externals->freebsd.include_path = getenv("KEFIR_FREEBSD_INCLUDE");
-    externals->freebsd.library_path = getenv("KEFIR_FREEBSD_LIB");
-    externals->freebsd.dynamic_linker = getenv("KEFIR_FREEBSD_DYNAMIC_LINKER");
-    externals->openbsd.include_path = getenv("KEFIR_OPENBSD_INCLUDE");
-    externals->openbsd.library_path = getenv("KEFIR_OPENBSD_LIB");
-    externals->openbsd.dynamic_linker = getenv("KEFIR_OPENBSD_DYNAMIC_LINKER");
-    externals->netbsd.include_path = getenv("KEFIR_NETBSD_INCLUDE");
-    externals->netbsd.library_path = getenv("KEFIR_NETBSD_LIB");
-    externals->netbsd.dynamic_linker = getenv("KEFIR_NETBSD_DYNAMIC_LINKER");
+    externals->runtime_include = getenv_nonzero("KEFIR_RTINC");
+    externals->musl.include_path = getenv_nonzero("KEFIR_MUSL_INCLUDE");
+    externals->musl.library_path = getenv_nonzero("KEFIR_MUSL_LIB");
+    externals->musl.dynamic_linker = getenv_nonzero("KEFIR_MUSL_DYNAMIC_LINKER");
+    externals->gnu.include_path = getenv_nonzero("KEFIR_GNU_INCLUDE");
+    externals->gnu.library_path = getenv_nonzero("KEFIR_GNU_LIB");
+    externals->gnu.dynamic_linker = getenv_nonzero("KEFIR_GNU_DYNAMIC_LINKER");
+    externals->freebsd.include_path = getenv_nonzero("KEFIR_FREEBSD_INCLUDE");
+    externals->freebsd.library_path = getenv_nonzero("KEFIR_FREEBSD_LIB");
+    externals->freebsd.dynamic_linker = getenv_nonzero("KEFIR_FREEBSD_DYNAMIC_LINKER");
+    externals->openbsd.include_path = getenv_nonzero("KEFIR_OPENBSD_INCLUDE");
+    externals->openbsd.library_path = getenv_nonzero("KEFIR_OPENBSD_LIB");
+    externals->openbsd.dynamic_linker = getenv_nonzero("KEFIR_OPENBSD_DYNAMIC_LINKER");
+    externals->netbsd.include_path = getenv_nonzero("KEFIR_NETBSD_INCLUDE");
+    externals->netbsd.library_path = getenv_nonzero("KEFIR_NETBSD_LIB");
+    externals->netbsd.dynamic_linker = getenv_nonzero("KEFIR_NETBSD_DYNAMIC_LINKER");
 
     UNUSED(set_if_null);
 

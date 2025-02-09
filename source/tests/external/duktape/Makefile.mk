@@ -24,7 +24,7 @@ $(KEFIR_EXTERAL_TEST_DUKTAPE_EXE): $(KEFIR_EXTERNAL_TEST_DUKTAPE_DIR)/$(KEFIR_EX
 	@sed "s/^CCOPTS[ ]*=.*$$/CCOPTS = -O1 -fPIC -pie/g" "$(KEFIR_EXTERNAL_TEST_DUKTAPE_SOURCE_DIR)/Makefile.cmdline" > "$(KEFIR_EXTERNAL_TEST_DUKTAPE_SOURCE_DIR)/Makefile.kefir"
 	@cd "$(KEFIR_EXTERNAL_TEST_DUKTAPE_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(shell $(REALPATH) $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/runtime)" \
+		KEFIR_RTINC="$(shell $(REALPATH) $(HEADERS_DIR)/kefir/runtime)" \
 			$(MAKE) -f Makefile.kefir \
 			CC="$(shell $(REALPATH) $(KEFIR_EXE))"
 

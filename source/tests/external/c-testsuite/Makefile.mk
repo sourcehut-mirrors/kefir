@@ -28,7 +28,7 @@ $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_DIR)/c-tests.log: $(KEFIR_EXTERAL_TEST_C_TESTS
 	@echo "Running c-testsuite $(KEFIR_EXTERNAL_TEST_C_TESTSUITE_ARCHIVE_SHA256)..."
 	@KEFIRCC="$(realpath $(KEFIR_EXE))" \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/runtime)" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/kefir/runtime)" \
 		CFLAGS="$(KEFIR_EXTERNAL_TEST_C_TESTSUITE_CFLAGS)" \
 		bash -c "set -o pipefail; cd $(KEFIR_EXTERAL_TEST_C_TESTSUITE); ./single-exec kefir 2>&1" | tee "$@.tmp"
 	@mv "$@.tmp" "$@"

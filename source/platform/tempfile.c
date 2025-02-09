@@ -93,10 +93,10 @@ kefir_result_t kefir_tempfile_manager_free(struct kefir_mem *mem, struct kefir_t
 
 static const char *get_tmp_directory(void) {
     const char *tmp_directory = getenv("KEFIR_TMPDIR");
-    if (tmp_directory == NULL) {
+    if (tmp_directory == NULL || *tmp_directory == '\0') {
         tmp_directory = getenv("TMPDIR");
     }
-    if (tmp_directory == NULL) {
+    if (tmp_directory == NULL || *tmp_directory == '\0') {
 #ifdef P_tmpdir
         tmp_directory = P_tmpdir;
 #else

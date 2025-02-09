@@ -32,7 +32,7 @@ $(KEFIR_EXTERNAL_TEST_GCC_TORTURE_DIR)/torture.log: $(KEFIR_EXTERNAL_TEST_GCC_DI
 	@TORTURE="$(KEFIR_EXTERNAL_TEST_GCC_DIR)/gcc/testsuite/gcc.c-torture" \
 		KEFIRCC="$(realpath $(KEFIR_EXE))" \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
-		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/runtime)" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR)/kefir/runtime)" \
 		KEFIR_EXTRAFLAGS="$(KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS)" \
 		"$(SOURCE_DIR)/tests/external/gcc-torture/run_gcc_torture_suite.sh" 2>&1 | tee "$@.tmp"
 	@mv "$@.tmp" "$@"
