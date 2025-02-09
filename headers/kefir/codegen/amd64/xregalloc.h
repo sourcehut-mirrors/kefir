@@ -23,8 +23,6 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/stack_frame.h"
-#include "kefir/codegen/asmcmp/liveness.h"
-#include "kefir/core/graph.h"
 #include "kefir/core/bitset.h"
 #include "kefir/core/bucketset.h"
 

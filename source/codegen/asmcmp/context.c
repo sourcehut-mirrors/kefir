@@ -123,7 +123,6 @@ kefir_result_t kefir_asmcmp_context_init(const struct kefir_asmcmp_context_class
     REQUIRE_OK(kefir_hashtree_on_removal(&context->stashes, free_stash, NULL));
     REQUIRE_OK(kefir_hashtree_init(&context->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->inline_assembly, free_inline_asm, NULL));
-    REQUIRE_OK(kefir_asmcmp_lifetime_map_init(&context->vreg_liveness));
     REQUIRE_OK(kefir_hashtree_init(&context->vreg_type_dependents, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&context->vreg_type_dependents, vreg_type_dependents_free, NULL));
     REQUIRE_OK(kefir_asmcmp_debug_info_init(&context->debug_info));
@@ -151,7 +150,6 @@ kefir_result_t kefir_asmcmp_context_free(struct kefir_mem *mem, struct kefir_asm
 
     REQUIRE_OK(kefir_asmcmp_debug_info_free(mem, &context->debug_info));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->vreg_type_dependents));
-    REQUIRE_OK(kefir_asmcmp_lifetime_map_free(mem, &context->vreg_liveness));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->stashes));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->strings));
@@ -771,8 +769,6 @@ static kefir_result_t new_virtual_register(struct kefir_mem *mem, struct kefir_a
 
     *reg_alloc_idx = reg_alloc->index;
     context->virtual_register_length++;
-
-    REQUIRE_OK(kefir_asmcmp_lifetime_map_resize(mem, &context->vreg_liveness, context->virtual_register_length));
     return KEFIR_OK;
 }
 

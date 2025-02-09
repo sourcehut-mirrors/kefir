@@ -409,8 +409,6 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(output_asm(codegen, func, false, codegen->config->debug_info));
     }
 
-    // REQUIRE_OK(
-    //     kefir_codegen_amd64_register_allocator_run(mem, &func->code, &func->stack_frame, &func->register_allocator));
     REQUIRE_OK(
         kefir_codegen_amd64_xregalloc_run(mem, &func->code, &func->stack_frame, &func->xregalloc));
     if (codegen->config->print_details != NULL && strcmp(codegen->config->print_details, "vasm+regs") == 0) {
@@ -472,7 +470,6 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
-    // REQUIRE_OK(kefir_codegen_amd64_register_allocator_init(&func->register_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
                                                    function->ir_func->declaration, &func->abi_function_declaration));
@@ -482,7 +479,6 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
                                         function->locals.type, &func->locals_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
-            // kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator);
             kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
             kefir_hashtree_free(mem, &func->debug.function_parameters);
             kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels);
@@ -507,7 +503,6 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
         REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &func->locals_layout));
     }
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
-    // REQUIRE_OK(kefir_codegen_amd64_register_allocator_free(mem, &func->register_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));

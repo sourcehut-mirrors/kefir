@@ -25,7 +25,6 @@
 #include "kefir/core/basic-types.h"
 #include "kefir/core/string_pool.h"
 #include "kefir/codegen/asmcmp/type_defs.h"
-#include "kefir/codegen/asmcmp/liveness.h"
 #include "kefir/codegen/asmcmp/debug.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/list.h"
@@ -335,8 +334,6 @@ typedef struct kefir_asmcmp_context {
     struct kefir_asmcmp_virtual_register *virtual_registers;
     kefir_size_t virtual_register_length;
     kefir_size_t virtual_register_capacity;
-
-    struct kefir_asmcmp_lifetime_map vreg_liveness;
 
     struct kefir_hashtree vreg_type_dependents;
 
