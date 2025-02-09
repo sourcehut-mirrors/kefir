@@ -38,31 +38,54 @@ _kefir_func_get_T2_label1:
     cmp $0, %eax
     setge %cl
     test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
-    mov $0, %rcx
+    setne %sil
+    movzx %sil, %rsi
+    mov $0, %rax
+    test %sil, %sil
+    sete %al
     test %al, %al
-    sete %cl
-    test %cl, %cl
     jz _kefir_func_get_T2_label6
-    mov %rax, %rcx
+    mov %rsi, %rdi
     jmp _kefir_func_get_T2_label2
 _kefir_func_get_T2_label6:
     jmp _kefir_func_get_T2_label5
 _kefir_func_get_T2_label2:
-    movsxl -4(%rbp), %rdx
-    lea T1(%rip), %rsi
-    movsxl (%rsi), %rsi
-    mov $0, %rdi
-    cmp %esi, %edx
-    setl %dil
-    test %eax, %eax
-    setne %al
+    mov $0, %rax
     test %edi, %edi
-    setne %dl
-    and %al, %dl
-    movzx %dl, %rax
-    mov %rax, %rcx
+    sete %al
+    test %al, %al
+    jz _kefir_func_get_T2_label4
+_kefir_func_get_T2_label3:
+    mov $0, %rax
+    movsx %eax, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_get_T2_label4:
+    movsxl -4(%rbp), %rax
+    lea T1(%rip), %rcx
+    add $8, %rcx
+    movsx %eax, %rax
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_get_T2_label5:
+    movsxl -4(%rbp), %rax
+    lea T1(%rip), %rcx
+    movsxl (%rcx), %rcx
+    mov $0, %rdx
+    cmp %ecx, %eax
+    setl %dl
+    test %esi, %esi
+    setne %al
+    test %edx, %edx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov %rax, %rdi
     jmp _kefir_func_get_T2_label2
 __kefir_text_func_get_T2_end:
 
