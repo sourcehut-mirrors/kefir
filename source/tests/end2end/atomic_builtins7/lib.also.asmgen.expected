@@ -65,7 +65,6 @@ __kefir_text_func_test_is_lock_free_begin:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label19
     mov %rdx, %r8
-    jmp _kefir_func_test_is_lock_free_label2
 _kefir_func_test_is_lock_free_label2:
     test %r8d, %r8d
     setne %dl
@@ -76,7 +75,6 @@ _kefir_func_test_is_lock_free_label2:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label18
     mov %rdx, %r9
-    jmp _kefir_func_test_is_lock_free_label3
 _kefir_func_test_is_lock_free_label3:
     test %r9d, %r9d
     setne %dl
@@ -87,7 +85,6 @@ _kefir_func_test_is_lock_free_label3:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label17
     mov %rdx, %r8
-    jmp _kefir_func_test_is_lock_free_label4
 _kefir_func_test_is_lock_free_label4:
     test %r8d, %r8d
     setne %dl
@@ -98,7 +95,6 @@ _kefir_func_test_is_lock_free_label4:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label16
     mov %rdx, %r9
-    jmp _kefir_func_test_is_lock_free_label5
 _kefir_func_test_is_lock_free_label5:
     test %r9d, %r9d
     setne %dl
@@ -109,7 +105,6 @@ _kefir_func_test_is_lock_free_label5:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label15
     mov %rdx, %r8
-    jmp _kefir_func_test_is_lock_free_label6
 _kefir_func_test_is_lock_free_label6:
     test %r8d, %r8d
     setne %dl
@@ -120,7 +115,6 @@ _kefir_func_test_is_lock_free_label6:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label14
     mov %rdx, %r9
-    jmp _kefir_func_test_is_lock_free_label7
 _kefir_func_test_is_lock_free_label7:
     test %r9d, %r9d
     setne %dl
@@ -131,7 +125,6 @@ _kefir_func_test_is_lock_free_label7:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label13
     mov %rdx, %r8
-    jmp _kefir_func_test_is_lock_free_label8
 _kefir_func_test_is_lock_free_label8:
     test %r8d, %r8d
     setne %dl
@@ -142,7 +135,6 @@ _kefir_func_test_is_lock_free_label8:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label12
     mov %rdx, %r9
-    jmp _kefir_func_test_is_lock_free_label9
 _kefir_func_test_is_lock_free_label9:
     test %r9d, %r9d
     setne %dl
@@ -153,7 +145,6 @@ _kefir_func_test_is_lock_free_label9:
     test %al, %al
     jz _kefir_func_test_is_lock_free_label11
     mov %rdx, %r8
-    jmp _kefir_func_test_is_lock_free_label10
 _kefir_func_test_is_lock_free_label10:
     test %r8d, %r8d
     setne %al

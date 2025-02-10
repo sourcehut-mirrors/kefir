@@ -11,14 +11,14 @@ __kefir_text_func_testfn_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rsi, %rax
-    mov %rdi, %rcx
+    mov %rdi, %rax
+    mov %rsi, %rcx
     movq %rsi, -8(%rbp)
     lea -8(%rbp), %rsi
     movq %rsi, -16(%rbp)
     mov %rdx, %rdi
-    mov %rcx, %rsi
-    mov %rax, %rdx
+    mov %rax, %rsi
+    mov %rcx, %rdx
 call somefn
     movq -16(%rbp), %rcx
     mov %rax, (%rcx)

@@ -40,7 +40,6 @@ static kefir_result_t phi_propagate_impl(struct kefir_mem *mem, struct kefir_opt
         struct kefir_hashtree_node_iterator iter;
         struct kefir_hashtree_node *node = kefir_hashtree_iter(&phi_node->links, &iter);
         if (node == NULL ||
-
             kefir_hashtree_next_node(&phi_node->links, node) != NULL) {
             continue;
         }

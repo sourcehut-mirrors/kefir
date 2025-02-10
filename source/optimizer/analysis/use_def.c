@@ -1,6 +1,7 @@
 #define KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
 #include "kefir/optimizer/analysis.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/core/bitset.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -142,21 +143,39 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
 }
 
 static kefir_result_t trace_blocks(struct kefir_mem *mem, const struct kefir_opt_code_analysis *analysis,
-                                   kefir_opt_block_id_t block_id, kefir_opt_block_id_t target_block_id,
-                                   kefir_opt_instruction_ref_t instr_ref, struct kefir_hashtreeset *trace) {
-    REQUIRE(!kefir_hashtreeset_has(trace, (kefir_hashtreeset_entry_t) block_id), KEFIR_OK);
-    REQUIRE_OK(kefir_hashtreeset_add(mem, trace, (kefir_hashtreeset_entry_t) block_id));
-    REQUIRE_OK(
-        kefir_bucketset_add(mem, &analysis->blocks[block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref));
+                                   kefir_opt_block_id_t def_block_id, kefir_opt_block_id_t use_block_id,
+                                   kefir_opt_instruction_ref_t instr_ref, struct kefir_bitset *trace,
+                                    struct kefir_list *queue) {
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
+    REQUIRE_OK(kefir_bitset_ensure(mem, trace, num_of_blocks));
+    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) use_block_id));
 
-    if (block_id != target_block_id) {
-        for (const struct kefir_list_entry *iter = kefir_list_head(&analysis->blocks[block_id].successors);
-             iter != NULL; kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id, (kefir_uptr_t) iter->value);
-            REQUIRE_OK(trace_blocks(mem, analysis, succ_block_id, target_block_id, instr_ref, trace));
+    for (struct kefir_list_entry *iter = kefir_list_head(queue);
+        iter != NULL;
+        iter = kefir_list_head(queue)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id,
+            (kefir_uptr_t) iter->value);   
+        REQUIRE_OK(kefir_list_pop(mem, queue, iter));
+
+        kefir_bool_t visited;
+        REQUIRE_OK(kefir_bitset_get(trace, current_block_id, &visited));
+        if (visited || kefir_bucketset_has(&analysis->blocks[current_block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref)) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_bitset_set(trace, current_block_id, true));
+        REQUIRE_OK(
+            kefir_bucketset_add(mem, &analysis->blocks[current_block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref));
+
+        if (current_block_id != def_block_id) {
+            for (const struct kefir_list_entry *iter2 = kefir_list_head(&analysis->blocks[current_block_id].predecessors);
+                iter2 != NULL; kefir_list_next(&iter2)) {
+                ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);
+                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) pred_block_id));
+            }
         }
     }
-
     return KEFIR_OK;
 }
 
@@ -178,14 +197,22 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     kefir_result_t res;
 #define RUN_TRACE(_block_id)                                                                              \
     do {                                                                                                  \
-        struct kefir_hashtreeset trace;                                                                   \
-        REQUIRE_OK(kefir_hashtreeset_init(&trace, &kefir_hashtree_uint_ops));                             \
-        res = trace_blocks(param->mem, param->analysis, instr->block_id, (_block_id), instr_ref, &trace); \
+        struct kefir_bitset trace;                                                                   \
+        struct kefir_list queue; \
+        REQUIRE_OK(kefir_bitset_init(&trace));                             \
+        REQUIRE_OK(kefir_list_init(&queue)); \
+        res = trace_blocks(param->mem, param->analysis, instr->block_id, (_block_id), instr_ref, &trace, &queue); \
         REQUIRE_ELSE(res == KEFIR_OK, {                                                                   \
-            kefir_hashtreeset_free(param->mem, &trace);                                                   \
+            kefir_list_free(param->mem, &queue); \
+            kefir_bitset_free(param->mem, &trace);                                                   \
             return res;                                                                                   \
         });                                                                                               \
-        REQUIRE_OK(kefir_hashtreeset_free(param->mem, &trace));                                           \
+        res = kefir_list_free(param->mem, &queue); \
+        REQUIRE_ELSE(res == KEFIR_OK, {                                                                   \
+            kefir_bitset_free(param->mem, &trace);                                                   \
+            return res;                                                                                   \
+        });                                                                                               \
+        REQUIRE_OK(kefir_bitset_free(param->mem, &trace));                                           \
     } while (0)
     for (res = kefir_opt_code_container_instruction_use_instr_iter(param->analysis->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {

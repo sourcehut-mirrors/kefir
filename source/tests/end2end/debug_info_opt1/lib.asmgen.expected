@@ -14,9 +14,9 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 2,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 2,
+                                "index": 0,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": null
@@ -30,9 +30,9 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 2,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 2,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": null
@@ -64,66 +64,22 @@
                     {
                         "id": 1,
                         "control_flow": 77,
-                        "phi": [
-                            {
-                                "id": 0,
-                                "links": [
-                                    {
-                                        "block_id": 0,
-                                        "instr_ref": 2
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 1,
-                                "links": [
-                                    {
-                                        "block_id": 0,
-                                        "instr_ref": 1
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 2,
-                                "links": [
-                                    {
-                                        "block_id": 0,
-                                        "instr_ref": 0
-                                    }
-                                ]
-                            }
-                        ],
+                        "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 11,
-                                "opcode": "phi",
-                                "phi_ref": 2,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 7
-                            },
-                            {
                                 "id": 79,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
+                                "arg": 0,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 8,
-                                "opcode": "phi",
-                                "phi_ref": 1,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 4
-                            },
-                            {
                                 "id": 80,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 8,
+                                "arg": 1,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 14
@@ -148,17 +104,9 @@
                                 "ir_instruction": 21
                             },
                             {
-                                "id": 5,
-                                "opcode": "phi",
-                                "phi_ref": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 1
-                            },
-                            {
                                 "id": 82,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 5,
+                                "arg": 2,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 23
@@ -185,7 +133,7 @@
                             {
                                 "id": 84,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 11,
+                                "arg": 0,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 32
@@ -236,7 +184,7 @@
                             {
                                 "id": 86,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 8,
+                                "arg": 1,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 41
@@ -263,7 +211,7 @@
                             {
                                 "id": 88,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 5,
+                                "arg": 2,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 50
@@ -385,9 +333,9 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                5,
-                                8,
-                                11,
+                                0,
+                                1,
+                                2,
                                 18,
                                 25,
                                 32,
@@ -426,19 +374,19 @@
                         {
                             "variable": 0,
                             "refs": [
-                                11
+                                0
                             ]
                         },
                         {
                             "variable": 1,
                             "refs": [
-                                8
+                                1
                             ]
                         },
                         {
                             "variable": 2,
                             "refs": [
-                                5
+                                2
                             ]
                         },
                         {
