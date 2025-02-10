@@ -54,61 +54,53 @@ __kefir_text_func_test_fetch_add_short_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movw %cx, -44(%rbp)
+    movw %cx, -36(%rbp)
     mov $2, %rcx
-    lea -44(%rbp), %rdx
+    lea -36(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxw -44(%rbp), %rcx
-    movw %cx, -46(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxw -36(%rbp), %rcx
+    movw %cx, -38(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_add_short_label2:
-    movsxw -46(%rbp), %rbx
-    movsx %r10w, %r12
-    movsx %r12w, %r13
-    mov %rbx, %r14
-    add %r13d, %r14d
-    movsx %r14w, %r15
-    movw %r15w, -42(%rbp)
-    movq $2, -112(%rbp)
-    lea -46(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -42(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxw -38(%rbp), %rcx
+    movsx %r12w, %rdx
+    movsx %dx, %rdx
+    mov %rcx, %r14
+    add %edx, %r14d
+    movsx %r14w, %rdx
+    movw %dx, -34(%rbp)
+    mov $2, %rdx
+    lea -38(%rbp), %r9
+    lea -34(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_add_short_label2
 _kefir_func_test_fetch_add_short_label3:
     movsx %r14w, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -125,61 +117,53 @@ __kefir_text_func_test_fetch_and_short_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movw %cx, -44(%rbp)
+    movw %cx, -36(%rbp)
     mov $2, %rcx
-    lea -44(%rbp), %rdx
+    lea -36(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxw -44(%rbp), %rcx
-    movw %cx, -46(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxw -36(%rbp), %rcx
+    movw %cx, -38(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_and_short_label2:
-    movsxw -46(%rbp), %rbx
-    movsx %r10w, %r12
-    movsx %r12w, %r13
-    mov %rbx, %r14
-    and %r13d, %r14d
-    movsx %r14w, %r15
-    movw %r15w, -42(%rbp)
-    movq $2, -112(%rbp)
-    lea -46(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -42(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxw -38(%rbp), %rcx
+    movsx %r12w, %rdx
+    movsx %dx, %rdx
+    mov %rcx, %r14
+    and %edx, %r14d
+    movsx %r14w, %rdx
+    movw %dx, -34(%rbp)
+    mov $2, %rdx
+    lea -38(%rbp), %r9
+    lea -34(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_and_short_label2
 _kefir_func_test_fetch_and_short_label3:
     movsx %r14w, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -196,61 +180,53 @@ __kefir_text_func_test_fetch_sub_short_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movw %cx, -44(%rbp)
+    movw %cx, -36(%rbp)
     mov $2, %rcx
-    lea -44(%rbp), %rdx
+    lea -36(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxw -44(%rbp), %rcx
-    movw %cx, -46(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxw -36(%rbp), %rcx
+    movw %cx, -38(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_sub_short_label2:
-    movsxw -46(%rbp), %rbx
-    movsx %r10w, %r12
-    movsx %r12w, %r13
-    mov %rbx, %r14
-    sub %r13d, %r14d
-    movsx %r14w, %r15
-    movw %r15w, -42(%rbp)
-    movq $2, -112(%rbp)
-    lea -46(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -42(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxw -38(%rbp), %rcx
+    movsx %r12w, %rdx
+    movsx %dx, %rdx
+    mov %rcx, %r14
+    sub %edx, %r14d
+    movsx %r14w, %rdx
+    movw %dx, -34(%rbp)
+    mov $2, %rdx
+    lea -38(%rbp), %r9
+    lea -34(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_sub_short_label2
 _kefir_func_test_fetch_sub_short_label3:
     movsx %r14w, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -267,61 +243,53 @@ __kefir_text_func_test_fetch_xor_short_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movw %cx, -44(%rbp)
+    movw %cx, -36(%rbp)
     mov $2, %rcx
-    lea -44(%rbp), %rdx
+    lea -36(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxw -44(%rbp), %rcx
-    movw %cx, -46(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxw -36(%rbp), %rcx
+    movw %cx, -38(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_xor_short_label2:
-    movsxw -46(%rbp), %rbx
-    movsx %r10w, %r12
-    movsx %r12w, %r13
-    mov %rbx, %r14
-    xor %r13d, %r14d
-    movsx %r14w, %r15
-    movw %r15w, -42(%rbp)
-    movq $2, -112(%rbp)
-    lea -46(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -42(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxw -38(%rbp), %rcx
+    movsx %r12w, %rdx
+    movsx %dx, %rdx
+    mov %rcx, %r14
+    xor %edx, %r14d
+    movsx %r14w, %rdx
+    movw %dx, -34(%rbp)
+    mov $2, %rdx
+    lea -38(%rbp), %r9
+    lea -34(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_xor_short_label2
 _kefir_func_test_fetch_xor_short_label3:
     movsx %r14w, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -338,60 +306,52 @@ __kefir_text_func_test_fetch_or_int_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     mov $4, %rcx
-    lea -48(%rbp), %rdx
+    lea -40(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxl -48(%rbp), %rcx
-    movl %ecx, -52(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxl -40(%rbp), %rcx
+    movl %ecx, -44(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_or_int_label2:
-    movsxl -52(%rbp), %rbx
-    movsx %r10d, %r12
-    mov %rbx, %r13
-    or %r12d, %r13d
-    movsx %r13d, %r14
-    movl %r14d, -44(%rbp)
-    mov $4, %r15
-    lea -52(%rbp), %rax
-    movq %rax, -112(%rbp)
-    lea -44(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r15, %rdi
-    mov %r11, %rsi
-    mov -112(%rbp), %rdx
-    mov -104(%rbp), %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movsxl -44(%rbp), %rcx
+    movsx %r12d, %rdx
+    mov %rcx, %r14
+    or %edx, %r14d
+    movsx %r14d, %rdx
+    movl %edx, -36(%rbp)
+    mov $4, %rdx
+    lea -44(%rbp), %r9
+    lea -36(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_or_int_label2
 _kefir_func_test_fetch_or_int_label3:
-    movsx %r13d, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    movsx %r14d, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -408,61 +368,53 @@ __kefir_text_func_test_fetch_add_char_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movb %cl, -42(%rbp)
+    movb %cl, -34(%rbp)
     mov $1, %rcx
-    lea -42(%rbp), %rdx
+    lea -34(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxb -42(%rbp), %rcx
-    movb %cl, -43(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxb -34(%rbp), %rcx
+    movb %cl, -35(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_add_char_label2:
-    movsxb -43(%rbp), %rbx
-    movsx %r10b, %r12
-    movsx %r12b, %r13
-    mov %rbx, %r14
-    add %r13d, %r14d
-    movsx %r14b, %r15
-    movb %r15b, -41(%rbp)
-    movq $1, -112(%rbp)
-    lea -43(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -41(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxb -35(%rbp), %rcx
+    movsx %r12b, %rdx
+    movsx %dl, %rdx
+    mov %rcx, %r14
+    add %edx, %r14d
+    movsx %r14b, %rdx
+    movb %dl, -33(%rbp)
+    mov $1, %rdx
+    lea -35(%rbp), %r9
+    lea -33(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_add_char_label2
 _kefir_func_test_fetch_add_char_label3:
     movsx %r14b, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -479,56 +431,50 @@ __kefir_text_func_test_fetch_add_long_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $56, %rsp
+    sub $48, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movq %rcx, -56(%rbp)
+    movq %rcx, -48(%rbp)
     mov $8, %rcx
-    lea -56(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %rax, -80(%rbp)
+    movq %r8, -72(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %r8
-    movq -56(%rbp), %rcx
-    movq %rcx, -64(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %r8
+    movq -48(%rbp), %rcx
+    movq %rcx, -56(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_add_long_label2:
-    movq -64(%rbp), %rbx
-    mov %rbx, %r12
-    add %r10, %r12
-    movq %r12, -48(%rbp)
-    mov $8, %r13
-    lea -64(%rbp), %r14
-    lea -48(%rbp), %r15
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r13, %rdi
-    mov %r11, %rsi
-    mov %r14, %rdx
-    mov %r15, %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movq -56(%rbp), %rcx
+    mov %rcx, %r14
+    add %r12, %r14
+    movq %r14, -40(%rbp)
+    mov $8, %rdx
+    lea -56(%rbp), %r9
+    lea -40(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_add_long_label2
 _kefir_func_test_fetch_add_long_label3:
-    mov %r12, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r14, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -545,61 +491,53 @@ __kefir_text_func_test_fetch_and_char_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movb %cl, -42(%rbp)
+    movb %cl, -34(%rbp)
     mov $1, %rcx
-    lea -42(%rbp), %rdx
+    lea -34(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxb -42(%rbp), %rcx
-    movb %cl, -43(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxb -34(%rbp), %rcx
+    movb %cl, -35(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_and_char_label2:
-    movsxb -43(%rbp), %rbx
-    movsx %r10b, %r12
-    movsx %r12b, %r13
-    mov %rbx, %r14
-    and %r13d, %r14d
-    movsx %r14b, %r15
-    movb %r15b, -41(%rbp)
-    movq $1, -112(%rbp)
-    lea -43(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -41(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxb -35(%rbp), %rcx
+    movsx %r12b, %rdx
+    movsx %dl, %rdx
+    mov %rcx, %r14
+    and %edx, %r14d
+    movsx %r14b, %rdx
+    movb %dl, -33(%rbp)
+    mov $1, %rdx
+    lea -35(%rbp), %r9
+    lea -33(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_and_char_label2
 _kefir_func_test_fetch_and_char_label3:
     movsx %r14b, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -616,56 +554,50 @@ __kefir_text_func_test_fetch_and_long_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $56, %rsp
+    sub $48, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movq %rcx, -56(%rbp)
+    movq %rcx, -48(%rbp)
     mov $8, %rcx
-    lea -56(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %rax, -80(%rbp)
+    movq %r8, -72(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %r8
-    movq -56(%rbp), %rcx
-    movq %rcx, -64(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %r8
+    movq -48(%rbp), %rcx
+    movq %rcx, -56(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_and_long_label2:
-    movq -64(%rbp), %rbx
-    mov %rbx, %r12
-    and %r10, %r12
-    movq %r12, -48(%rbp)
-    mov $8, %r13
-    lea -64(%rbp), %r14
-    lea -48(%rbp), %r15
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r13, %rdi
-    mov %r11, %rsi
-    mov %r14, %rdx
-    mov %r15, %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movq -56(%rbp), %rcx
+    mov %rcx, %r14
+    and %r12, %r14
+    movq %r14, -40(%rbp)
+    mov $8, %rdx
+    lea -56(%rbp), %r9
+    lea -40(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_and_long_label2
 _kefir_func_test_fetch_and_long_label3:
-    mov %r12, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r14, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -682,61 +614,53 @@ __kefir_text_func_test_fetch_or_short_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movw %cx, -44(%rbp)
+    movw %cx, -36(%rbp)
     mov $2, %rcx
-    lea -44(%rbp), %rdx
+    lea -36(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxw -44(%rbp), %rcx
-    movw %cx, -46(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxw -36(%rbp), %rcx
+    movw %cx, -38(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_or_short_label2:
-    movsxw -46(%rbp), %rbx
-    movsx %r10w, %r12
-    movsx %r12w, %r13
-    mov %rbx, %r14
-    or %r13d, %r14d
-    movsx %r14w, %r15
-    movw %r15w, -42(%rbp)
-    movq $2, -112(%rbp)
-    lea -46(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -42(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxw -38(%rbp), %rcx
+    movsx %r12w, %rdx
+    movsx %dx, %rdx
+    mov %rcx, %r14
+    or %edx, %r14d
+    movsx %r14w, %rdx
+    movw %dx, -34(%rbp)
+    mov $2, %rdx
+    lea -38(%rbp), %r9
+    lea -34(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_or_short_label2
 _kefir_func_test_fetch_or_short_label3:
     movsx %r14w, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -753,61 +677,53 @@ __kefir_text_func_test_fetch_sub_char_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movb %cl, -42(%rbp)
+    movb %cl, -34(%rbp)
     mov $1, %rcx
-    lea -42(%rbp), %rdx
+    lea -34(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxb -42(%rbp), %rcx
-    movb %cl, -43(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxb -34(%rbp), %rcx
+    movb %cl, -35(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_sub_char_label2:
-    movsxb -43(%rbp), %rbx
-    movsx %r10b, %r12
-    movsx %r12b, %r13
-    mov %rbx, %r14
-    sub %r13d, %r14d
-    movsx %r14b, %r15
-    movb %r15b, -41(%rbp)
-    movq $1, -112(%rbp)
-    lea -43(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -41(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxb -35(%rbp), %rcx
+    movsx %r12b, %rdx
+    movsx %dl, %rdx
+    mov %rcx, %r14
+    sub %edx, %r14d
+    movsx %r14b, %rdx
+    movb %dl, -33(%rbp)
+    mov $1, %rdx
+    lea -35(%rbp), %r9
+    lea -33(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_sub_char_label2
 _kefir_func_test_fetch_sub_char_label3:
     movsx %r14b, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -824,56 +740,50 @@ __kefir_text_func_test_fetch_sub_long_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $56, %rsp
+    sub $48, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movq %rcx, -56(%rbp)
+    movq %rcx, -48(%rbp)
     mov $8, %rcx
-    lea -56(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %rax, -80(%rbp)
+    movq %r8, -72(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %r8
-    movq -56(%rbp), %rcx
-    movq %rcx, -64(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %r8
+    movq -48(%rbp), %rcx
+    movq %rcx, -56(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_sub_long_label2:
-    movq -64(%rbp), %rbx
-    mov %rbx, %r12
-    sub %r10, %r12
-    movq %r12, -48(%rbp)
-    mov $8, %r13
-    lea -64(%rbp), %r14
-    lea -48(%rbp), %r15
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r13, %rdi
-    mov %r11, %rsi
-    mov %r14, %rdx
-    mov %r15, %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movq -56(%rbp), %rcx
+    mov %rcx, %r14
+    sub %r12, %r14
+    movq %r14, -40(%rbp)
+    mov $8, %rdx
+    lea -56(%rbp), %r9
+    lea -40(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_sub_long_label2
 _kefir_func_test_fetch_sub_long_label3:
-    mov %r12, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r14, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -890,61 +800,53 @@ __kefir_text_func_test_fetch_xor_char_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movb %cl, -42(%rbp)
+    movb %cl, -34(%rbp)
     mov $1, %rcx
-    lea -42(%rbp), %rdx
+    lea -34(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxb -42(%rbp), %rcx
-    movb %cl, -43(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxb -34(%rbp), %rcx
+    movb %cl, -35(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_xor_char_label2:
-    movsxb -43(%rbp), %rbx
-    movsx %r10b, %r12
-    movsx %r12b, %r13
-    mov %rbx, %r14
-    xor %r13d, %r14d
-    movsx %r14b, %r15
-    movb %r15b, -41(%rbp)
-    movq $1, -112(%rbp)
-    lea -43(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -41(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxb -35(%rbp), %rcx
+    movsx %r12b, %rdx
+    movsx %dl, %rdx
+    mov %rcx, %r14
+    xor %edx, %r14d
+    movsx %r14b, %rdx
+    movb %dl, -33(%rbp)
+    mov $1, %rdx
+    lea -35(%rbp), %r9
+    lea -33(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_xor_char_label2
 _kefir_func_test_fetch_xor_char_label3:
     movsx %r14b, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -961,56 +863,50 @@ __kefir_text_func_test_fetch_xor_long_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $56, %rsp
+    sub $48, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movq %rcx, -56(%rbp)
+    movq %rcx, -48(%rbp)
     mov $8, %rcx
-    lea -56(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %rax, -80(%rbp)
+    movq %r8, -72(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %r8
-    movq -56(%rbp), %rcx
-    movq %rcx, -64(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %r8
+    movq -48(%rbp), %rcx
+    movq %rcx, -56(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_xor_long_label2:
-    movq -64(%rbp), %rbx
-    mov %rbx, %r12
-    xor %r10, %r12
-    movq %r12, -48(%rbp)
-    mov $8, %r13
-    lea -64(%rbp), %r14
-    lea -48(%rbp), %r15
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r13, %rdi
-    mov %r11, %rsi
-    mov %r14, %rdx
-    mov %r15, %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movq -56(%rbp), %rcx
+    mov %rcx, %r14
+    xor %r12, %r14
+    movq %r14, -40(%rbp)
+    mov $8, %rdx
+    lea -56(%rbp), %r9
+    lea -40(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_xor_long_label2
 _kefir_func_test_fetch_xor_long_label3:
-    mov %r12, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r14, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1027,60 +923,52 @@ __kefir_text_func_test_fetch_add_int_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     mov $4, %rcx
-    lea -48(%rbp), %rdx
+    lea -40(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxl -48(%rbp), %rcx
-    movl %ecx, -52(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxl -40(%rbp), %rcx
+    movl %ecx, -44(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_add_int_label2:
-    movsxl -52(%rbp), %rbx
-    movsx %r10d, %r12
-    mov %rbx, %r13
-    add %r12d, %r13d
-    movsx %r13d, %r14
-    movl %r14d, -44(%rbp)
-    mov $4, %r15
-    lea -52(%rbp), %rax
-    movq %rax, -112(%rbp)
-    lea -44(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r15, %rdi
-    mov %r11, %rsi
-    mov -112(%rbp), %rdx
-    mov -104(%rbp), %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movsxl -44(%rbp), %rcx
+    movsx %r12d, %rdx
+    mov %rcx, %r14
+    add %edx, %r14d
+    movsx %r14d, %rdx
+    movl %edx, -36(%rbp)
+    mov $4, %rdx
+    lea -44(%rbp), %r9
+    lea -36(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_add_int_label2
 _kefir_func_test_fetch_add_int_label3:
-    movsx %r13d, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    movsx %r14d, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1097,60 +985,52 @@ __kefir_text_func_test_fetch_and_int_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     mov $4, %rcx
-    lea -48(%rbp), %rdx
+    lea -40(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxl -48(%rbp), %rcx
-    movl %ecx, -52(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxl -40(%rbp), %rcx
+    movl %ecx, -44(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_and_int_label2:
-    movsxl -52(%rbp), %rbx
-    movsx %r10d, %r12
-    mov %rbx, %r13
-    and %r12d, %r13d
-    movsx %r13d, %r14
-    movl %r14d, -44(%rbp)
-    mov $4, %r15
-    lea -52(%rbp), %rax
-    movq %rax, -112(%rbp)
-    lea -44(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r15, %rdi
-    mov %r11, %rsi
-    mov -112(%rbp), %rdx
-    mov -104(%rbp), %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movsxl -44(%rbp), %rcx
+    movsx %r12d, %rdx
+    mov %rcx, %r14
+    and %edx, %r14d
+    movsx %r14d, %rdx
+    movl %edx, -36(%rbp)
+    mov $4, %rdx
+    lea -44(%rbp), %r9
+    lea -36(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_and_int_label2
 _kefir_func_test_fetch_and_int_label3:
-    movsx %r13d, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    movsx %r14d, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1167,61 +1047,53 @@ __kefir_text_func_test_fetch_or_char_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movb %cl, -42(%rbp)
+    movb %cl, -34(%rbp)
     mov $1, %rcx
-    lea -42(%rbp), %rdx
+    lea -34(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxb -42(%rbp), %rcx
-    movb %cl, -43(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxb -34(%rbp), %rcx
+    movb %cl, -35(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_or_char_label2:
-    movsxb -43(%rbp), %rbx
-    movsx %r10b, %r12
-    movsx %r12b, %r13
-    mov %rbx, %r14
-    or %r13d, %r14d
-    movsx %r14b, %r15
-    movb %r15b, -41(%rbp)
-    movq $1, -112(%rbp)
-    lea -43(%rbp), %rax
-    movq %rax, -104(%rbp)
-    lea -41(%rbp), %rax
-    movq %rax, -96(%rbp)
-    movq $5, -88(%rbp)
-    movq $2, -80(%rbp)
-    movq %r10, -72(%rbp)
-    movq %r11, -64(%rbp)
-    mov -112(%rbp), %rdi
-    mov %r11, %rsi
-    mov -104(%rbp), %rdx
-    mov -96(%rbp), %rcx
-    mov -88(%rbp), %r8
-    mov -80(%rbp), %r9
+    movsxb -35(%rbp), %rcx
+    movsx %r12b, %rdx
+    movsx %dl, %rdx
+    mov %rcx, %r14
+    or %edx, %r14d
+    movsx %r14b, %rdx
+    movb %dl, -33(%rbp)
+    mov $1, %rdx
+    lea -35(%rbp), %r9
+    lea -33(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -72(%rbp), %r10
-    movq -64(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_or_char_label2
 _kefir_func_test_fetch_or_char_label3:
     movsx %r14b, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1238,56 +1110,50 @@ __kefir_text_func_test_fetch_or_long_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $56, %rsp
+    sub $48, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movq %rcx, -56(%rbp)
+    movq %rcx, -48(%rbp)
     mov $8, %rcx
-    lea -56(%rbp), %rdx
+    lea -48(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %rax, -80(%rbp)
+    movq %r8, -72(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -96(%rbp), %rax
-    movq -88(%rbp), %r8
-    movq -56(%rbp), %rcx
-    movq %rcx, -64(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %r8
+    movq -48(%rbp), %rcx
+    movq %rcx, -56(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_or_long_label2:
-    movq -64(%rbp), %rbx
-    mov %rbx, %r12
-    or %r10, %r12
-    movq %r12, -48(%rbp)
-    mov $8, %r13
-    lea -64(%rbp), %r14
-    lea -48(%rbp), %r15
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r13, %rdi
-    mov %r11, %rsi
-    mov %r14, %rdx
-    mov %r15, %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movq -56(%rbp), %rcx
+    mov %rcx, %r14
+    or %r12, %r14
+    movq %r14, -40(%rbp)
+    mov $8, %rdx
+    lea -56(%rbp), %r9
+    lea -40(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_or_long_label2
 _kefir_func_test_fetch_or_long_label3:
-    mov %r12, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    mov %r14, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1304,60 +1170,52 @@ __kefir_text_func_test_fetch_sub_int_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     mov $4, %rcx
-    lea -48(%rbp), %rdx
+    lea -40(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxl -48(%rbp), %rcx
-    movl %ecx, -52(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxl -40(%rbp), %rcx
+    movl %ecx, -44(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_sub_int_label2:
-    movsxl -52(%rbp), %rbx
-    movsx %r10d, %r12
-    mov %rbx, %r13
-    sub %r12d, %r13d
-    movsx %r13d, %r14
-    movl %r14d, -44(%rbp)
-    mov $4, %r15
-    lea -52(%rbp), %rax
-    movq %rax, -112(%rbp)
-    lea -44(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r15, %rdi
-    mov %r11, %rsi
-    mov -112(%rbp), %rdx
-    mov -104(%rbp), %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movsxl -44(%rbp), %rcx
+    movsx %r12d, %rdx
+    mov %rcx, %r14
+    sub %edx, %r14d
+    movsx %r14d, %rdx
+    movl %edx, -36(%rbp)
+    mov $4, %rdx
+    lea -44(%rbp), %r9
+    lea -36(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_sub_int_label2
 _kefir_func_test_fetch_sub_int_label3:
-    movsx %r13d, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    movsx %r14d, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
@@ -1374,60 +1232,52 @@ __kefir_text_func_test_fetch_xor_int_begin:
     push %r12
     push %r13
     push %r14
-    push %r15
-    sub $72, %rsp
+    sub $32, %rsp
     mov %rdi, %rax
     mov %rsi, %r8
-    movl %ecx, -48(%rbp)
+    movl %ecx, -40(%rbp)
     mov $4, %rcx
-    lea -48(%rbp), %rdx
+    lea -40(%rbp), %rdx
     mov $2, %r9
-    movq %rax, -112(%rbp)
-    movq %r8, -104(%rbp)
+    movq %rax, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
     mov %rax, %rsi
     mov %r9, %rcx
     call __atomic_load@PLT
-    movq -112(%rbp), %rax
-    movq -104(%rbp), %r8
-    movsxl -48(%rbp), %rcx
-    movl %ecx, -52(%rbp)
-    mov %r8, %r10
-    mov %rax, %r11
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %r8
+    movsxl -40(%rbp), %rcx
+    movl %ecx, -44(%rbp)
+    mov %r8, %r12
+    mov %rax, %r13
 _kefir_func_test_fetch_xor_int_label2:
-    movsxl -52(%rbp), %rbx
-    movsx %r10d, %r12
-    mov %rbx, %r13
-    xor %r12d, %r13d
-    movsx %r13d, %r14
-    movl %r14d, -44(%rbp)
-    mov $4, %r15
-    lea -52(%rbp), %rax
-    movq %rax, -112(%rbp)
-    lea -44(%rbp), %rax
-    movq %rax, -104(%rbp)
-    movq $5, -96(%rbp)
-    movq $2, -88(%rbp)
-    movq %r10, -80(%rbp)
-    movq %r11, -72(%rbp)
-    mov %r15, %rdi
-    mov %r11, %rsi
-    mov -112(%rbp), %rdx
-    mov -104(%rbp), %rcx
-    mov -96(%rbp), %r8
-    mov -88(%rbp), %r9
+    movsxl -44(%rbp), %rcx
+    movsx %r12d, %rdx
+    mov %rcx, %r14
+    xor %edx, %r14d
+    movsx %r14d, %rdx
+    movl %edx, -36(%rbp)
+    mov $4, %rdx
+    lea -44(%rbp), %r9
+    lea -36(%rbp), %r10
+    mov $5, %r11
+    mov $2, %rbx
+    mov %rdx, %rdi
+    mov %r13, %rsi
+    mov %r9, %rdx
+    mov %r10, %rcx
+    mov %r11, %r8
+    mov %rbx, %r9
     call __atomic_compare_exchange@PLT
-    movq -80(%rbp), %r10
-    movq -72(%rbp), %r11
-    xor %ecx, %ecx
+    xor %edx, %edx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
+    sete %dl
+    test %edx, %edx
     jnz _kefir_func_test_fetch_xor_int_label2
 _kefir_func_test_fetch_xor_int_label3:
-    movsx %r13d, %rax
-    lea -40(%rbp), %rsp
-    pop %r15
+    movsx %r14d, %rax
+    lea -32(%rbp), %rsp
     pop %r14
     pop %r13
     pop %r12
