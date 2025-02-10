@@ -142,43 +142,6 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
     return KEFIR_OK;
 }
 
-static kefir_result_t trace_blocks(struct kefir_mem *mem, const struct kefir_opt_code_analysis *analysis,
-                                   kefir_opt_block_id_t def_block_id, kefir_opt_block_id_t use_block_id,
-                                   kefir_opt_instruction_ref_t instr_ref, struct kefir_bitset *trace,
-                                    struct kefir_list *queue) {
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
-    REQUIRE_OK(kefir_bitset_ensure(mem, trace, num_of_blocks));
-    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) use_block_id));
-
-    for (struct kefir_list_entry *iter = kefir_list_head(queue);
-        iter != NULL;
-        iter = kefir_list_head(queue)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id,
-            (kefir_uptr_t) iter->value);   
-        REQUIRE_OK(kefir_list_pop(mem, queue, iter));
-
-        kefir_bool_t visited;
-        REQUIRE_OK(kefir_bitset_get(trace, current_block_id, &visited));
-        if (visited || kefir_bucketset_has(&analysis->blocks[current_block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref)) {
-            continue;
-        }
-
-        REQUIRE_OK(kefir_bitset_set(trace, current_block_id, true));
-        REQUIRE_OK(
-            kefir_bucketset_add(mem, &analysis->blocks[current_block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref));
-
-        if (current_block_id != def_block_id) {
-            for (const struct kefir_list_entry *iter2 = kefir_list_head(&analysis->blocks[current_block_id].predecessors);
-                iter2 != NULL; kefir_list_next(&iter2)) {
-                ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);
-                REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) pred_block_id));
-            }
-        }
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void *payload) {
     ASSIGN_DECL_CAST(struct verify_use_def_payload *, param, payload);
     REQUIRE(param != NULL,
@@ -195,25 +158,6 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
 
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
-#define RUN_TRACE(_block_id)                                                                              \
-    do {                                                                                                  \
-        struct kefir_bitset trace;                                                                   \
-        struct kefir_list queue; \
-        REQUIRE_OK(kefir_bitset_init(&trace));                             \
-        REQUIRE_OK(kefir_list_init(&queue)); \
-        res = trace_blocks(param->mem, param->analysis, instr->block_id, (_block_id), instr_ref, &trace, &queue); \
-        REQUIRE_ELSE(res == KEFIR_OK, {                                                                   \
-            kefir_list_free(param->mem, &queue); \
-            kefir_bitset_free(param->mem, &trace);                                                   \
-            return res;                                                                                   \
-        });                                                                                               \
-        res = kefir_list_free(param->mem, &queue); \
-        REQUIRE_ELSE(res == KEFIR_OK, {                                                                   \
-            kefir_bitset_free(param->mem, &trace);                                                   \
-            return res;                                                                                   \
-        });                                                                                               \
-        REQUIRE_OK(kefir_bitset_free(param->mem, &trace));                                           \
-    } while (0)
     for (res = kefir_opt_code_container_instruction_use_instr_iter(param->analysis->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
@@ -223,7 +167,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
         }
         REQUIRE_OK(res);
 
-        RUN_TRACE(use_instr->block_id);
+        REQUIRE_OK(kefir_bucketset_add(param->mem, &param->analysis->blocks[use_instr->block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -244,7 +188,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, src_block_id, node->key);
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, src_instr_ref, node->value);
             if (src_instr_ref == instr_ref) {
-                RUN_TRACE(src_block_id);
+                REQUIRE_OK(kefir_bucketset_add(param->mem, &param->analysis->blocks[src_block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref));
             }
         }
     }
@@ -261,7 +205,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
         }
         REQUIRE_OK(res);
 
-        RUN_TRACE(use_call->block_id);
+        REQUIRE_OK(kefir_bucketset_add(param->mem, &param->analysis->blocks[use_call->block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -277,11 +221,92 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
         }
         REQUIRE_OK(res);
 
-        RUN_TRACE(use_inline_asm->block_id);
+        REQUIRE_OK(kefir_bucketset_add(param->mem, &param->analysis->blocks[use_inline_asm->block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis, kefir_opt_block_id_t block_id, struct kefir_bitset *visited_blocks, struct kefir_list *queue) {
+    kefir_result_t res;
+    struct kefir_bucketset_iterator iter;
+    kefir_bucketset_entry_t entry;
+
+    for (res = kefir_bucketset_iter(&analysis->blocks[block_id].alive_instr, &iter, &entry);
+        res == KEFIR_OK;
+        res = kefir_bucketset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref,
+            entry);
+
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, instr_ref, &instr));
+        if (instr->block_id == block_id) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_bitset_clear(visited_blocks));
+        REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) block_id));
+
+        for (struct kefir_list_entry *iter = kefir_list_head(queue);
+            iter != NULL;
+            iter = kefir_list_head(queue)) {
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id,
+                (kefir_uptr_t) iter->value);   
+            REQUIRE_OK(kefir_list_pop(mem, queue, iter));
+
+            kefir_bool_t visited;
+            REQUIRE_OK(kefir_bitset_get(visited_blocks, current_block_id, &visited));
+            if (visited || (block_id != current_block_id && kefir_bucketset_has(&analysis->blocks[current_block_id].alive_instr, (kefir_hashtreeset_entry_t) instr_ref))) {
+                continue;
+            }
+
+            REQUIRE_OK(kefir_bitset_set(visited_blocks, current_block_id, true));
+            REQUIRE_OK(
+                kefir_bucketset_add(mem, &analysis->blocks[current_block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref));
+
+            if (current_block_id != instr->block_id) {
+                for (const struct kefir_list_entry *iter2 = kefir_list_head(&analysis->blocks[current_block_id].predecessors);
+                    iter2 != NULL; kefir_list_next(&iter2)) {
+                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);
+                    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) pred_block_id));
+                }
+            }
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
+
+    struct kefir_bitset visited_blocks;
+    struct kefir_list queue;
+    REQUIRE_OK(kefir_bitset_init(&visited_blocks));
+    REQUIRE_OK(kefir_list_init(&queue));
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_bitset_ensure(mem, &visited_blocks, num_of_blocks));
+    for (kefir_opt_block_id_t block_id = 0; res == KEFIR_OK && block_id < num_of_blocks; block_id++) {
+        res = propagate_alive_instructions_impl(mem, analysis, block_id, &visited_blocks, &queue);
+    }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bitset_free(mem, &visited_blocks);
+        kefir_list_free(mem, &queue);
+        return res;
+    });
+    res = kefir_bitset_free(mem, &visited_blocks);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &queue);
+        return res;
+    });
+    REQUIRE_OK(kefir_list_free(mem, &queue));
     return KEFIR_OK;
 }
 
@@ -292,5 +317,9 @@ kefir_result_t kefir_opt_code_container_trace_use_def(struct kefir_mem *mem, str
     struct verify_use_def_payload payload = {.mem = mem, .analysis = analysis, .instr_ref = KEFIR_ID_NONE};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = verify_use_def, .payload = &payload};
     REQUIRE_OK(kefir_opt_code_container_trace(mem, analysis->code, &tracer));
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
+    REQUIRE_OK(propagate_alive_instructions(mem, analysis));
     return KEFIR_OK;
 }
