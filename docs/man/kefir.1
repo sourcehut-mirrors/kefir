@@ -523,8 +523,8 @@ Optimizer pipeline specification consists of comma separated names of pipeline p
 .It Ar noop
 No-operation pass
 .\"
-.It Ar phi-pull
-Substitue phi nodes of SSA representation that unambiguously point to constant values
+.It Ar phi-propagate
+Wherever possible, substitue phi nodes of SSA representation by actual references
 .\"
 .It Ar mem2reg
 Pull function local variables into registers
