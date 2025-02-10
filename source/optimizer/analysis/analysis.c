@@ -35,6 +35,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
 
     REQUIRE_OK(kefir_hashtreeset_init(&analysis->indirect_jump_target_blocks, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_bucketset_init(&analysis->sequenced_before, &kefir_bucketset_uint_ops));
 
     analysis->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_analysis_block_properties) * num_of_blocks);
     REQUIRE(analysis->blocks != NULL,
@@ -89,6 +90,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
         REQUIRE_OK(kefir_bucketset_free(mem, &analysis->blocks[i].alive_instr));
     }
 
+    REQUIRE_OK(kefir_bucketset_free(mem, &analysis->sequenced_before));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks));
 
     KEFIR_FREE(mem, analysis->blocks);

@@ -40,7 +40,8 @@ kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt
 }
 
 struct is_locally_sequenced_before_param {
-    const struct kefir_opt_code_analysis *analysis;
+    struct kefir_mem *mem;
+    struct kefir_opt_code_analysis *analysis;
     kefir_opt_instruction_ref_t instr_ref;
     kefir_bool_t *result;
 };
@@ -53,16 +54,17 @@ static kefir_result_t is_locally_sequenced_before_impl(kefir_opt_instruction_ref
     if (*param->result) {
         kefir_bool_t result = false;
         REQUIRE_OK(
-            kefir_opt_code_instruction_is_sequenced_before(param->analysis, instr_ref, param->instr_ref, &result));
+            kefir_opt_code_instruction_is_sequenced_before(param->mem, param->analysis, instr_ref, param->instr_ref, &result));
         *param->result = *param->result && result;
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(const struct kefir_opt_code_analysis *analysis,
+kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                                       kefir_opt_instruction_ref_t instr_ref1,
                                                                       kefir_opt_instruction_ref_t instr_ref2,
                                                                       kefir_bool_t *result_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
@@ -96,19 +98,26 @@ kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(const stru
         REQUIRE_OK(kefir_opt_instruction_extract_inputs(
             analysis->code, instr1, true, is_locally_sequenced_before_impl,
             &(struct is_locally_sequenced_before_param) {
-                .analysis = analysis, .instr_ref = instr_ref2, .result = &result}));
+                .mem = mem, .analysis = analysis, .instr_ref = instr_ref2, .result = &result}));
     }
     *result_ptr = result;
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_instruction_is_sequenced_before(const struct kefir_opt_code_analysis *analysis,
+kefir_result_t kefir_opt_code_instruction_is_sequenced_before(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis,
                                                               kefir_opt_instruction_ref_t instr_ref1,
                                                               kefir_opt_instruction_ref_t instr_ref2,
                                                               kefir_bool_t *result_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    kefir_bucketset_entry_t entry = (((kefir_uint64_t) instr_ref1) << 32) | (((kefir_uint64_t) instr_ref2) & ((1ull << 32) - 1));
+    if (kefir_bucketset_has(&analysis->sequenced_before, entry)) {
+        *result_ptr = true;
+        return KEFIR_OK;
+    }
 
     const struct kefir_opt_instruction *instr1, *instr2;
     REQUIRE_OK(kefir_opt_code_container_instr(analysis->code, instr_ref1, &instr1));
@@ -116,9 +125,13 @@ kefir_result_t kefir_opt_code_instruction_is_sequenced_before(const struct kefir
 
     if (instr1->block_id == instr2->block_id) {
         REQUIRE_OK(
-            kefir_opt_code_instruction_is_locally_sequenced_before(analysis, instr_ref1, instr_ref2, result_ptr));
+            kefir_opt_code_instruction_is_locally_sequenced_before(mem, analysis, instr_ref1, instr_ref2, result_ptr));
     } else {
         REQUIRE_OK(kefir_opt_code_block_is_dominator(analysis, instr2->block_id, instr1->block_id, result_ptr));
+    }
+
+    if (*result_ptr) {
+        REQUIRE_OK(kefir_bucketset_add(mem, &analysis->sequenced_before, entry));
     }
     return KEFIR_OK;
 }
@@ -135,7 +148,7 @@ static kefir_result_t verify_use_def_impl(kefir_opt_instruction_ref_t instr_ref,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code use-def verified parameters"));
 
     kefir_bool_t sequenced_before;
-    REQUIRE_OK(kefir_opt_code_instruction_is_sequenced_before(param->analysis, instr_ref, param->instr_ref,
+    REQUIRE_OK(kefir_opt_code_instruction_is_sequenced_before(param->mem, param->analysis, instr_ref, param->instr_ref,
                                                               &sequenced_before));
     REQUIRE(sequenced_before, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Reversed use-define chain in optimizer code"));
 
@@ -317,6 +330,7 @@ kefir_result_t kefir_opt_code_container_trace_use_def(struct kefir_mem *mem, str
     struct verify_use_def_payload payload = {.mem = mem, .analysis = analysis, .instr_ref = KEFIR_ID_NONE};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = verify_use_def, .payload = &payload};
     REQUIRE_OK(kefir_opt_code_container_trace(mem, analysis->code, &tracer));
+    REQUIRE_OK(kefir_bucketset_clean(mem, &analysis->sequenced_before));
 
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));

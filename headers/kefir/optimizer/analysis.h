@@ -40,6 +40,8 @@ typedef struct kefir_opt_code_analysis {
 
     struct kefir_opt_code_analysis_block_properties *blocks;
 
+    struct kefir_bucketset sequenced_before;
+
     struct kefir_hashtreeset indirect_jump_target_blocks;
 } kefir_opt_code_analysis_t;
 
@@ -71,10 +73,10 @@ kefir_result_t kefir_opt_code_block_is_dominator(const struct kefir_opt_code_ana
                                                  kefir_opt_block_id_t, kefir_bool_t *);
 kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt_code_container *,
                                                           kefir_opt_instruction_ref_t, kefir_bool_t *);
-kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(const struct kefir_opt_code_analysis *,
+kefir_result_t kefir_opt_code_instruction_is_locally_sequenced_before(struct kefir_mem *, struct kefir_opt_code_analysis *,
                                                                       kefir_opt_instruction_ref_t,
                                                                       kefir_opt_instruction_ref_t, kefir_bool_t *);
-kefir_result_t kefir_opt_code_instruction_is_sequenced_before(const struct kefir_opt_code_analysis *,
+kefir_result_t kefir_opt_code_instruction_is_sequenced_before(struct kefir_mem *, struct kefir_opt_code_analysis *,
                                                               kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
                                                               kefir_bool_t *);
 
