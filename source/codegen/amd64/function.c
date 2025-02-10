@@ -246,12 +246,15 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             }
             REQUIRE_OK(res);
 
+            const struct kefir_opt_instruction *instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
+
             kefir_bool_t preserve_vreg = false;
             for (const struct kefir_list_entry *iter =
                      kefir_list_head(&func->function_analysis->blocks[block_id].successors);
                  !preserve_vreg && iter != NULL; kefir_list_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id, (kefir_uptr_t) iter->value);
-                if (succ_block_id != block_id &&
+                if (instr->block_id != succ_block_id &&
                     kefir_bucketset_has(&func->function_analysis->blocks[succ_block_id].alive_instr,
                                         alive_instr_entry)) {
                     preserve_vreg = true;
