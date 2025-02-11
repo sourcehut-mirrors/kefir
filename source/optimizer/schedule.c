@@ -129,6 +129,8 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
     REQUIRE_ELSE(instruction_schedule != NULL,
                  KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate instruction schedule"));
     instruction_schedule->linear_index = UNSCHEDULED_INDEX;
+    instruction_schedule->liveness_range.begin_index = UNSCHEDULED_INDEX;
+    instruction_schedule->liveness_range.end_index = UNSCHEDULED_INDEX;
     kefir_result_t res =
         kefir_hashtree_insert(param->mem, &param->schedule->instructions, (kefir_hashtree_key_t) instr_ref,
                               (kefir_hashtree_value_t) instruction_schedule);
@@ -170,7 +172,8 @@ static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_con
              res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
             const struct kefir_opt_phi_node *phi_node;
             REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
-            if (!kefir_bucketset_has(&code_analysis->blocks[successor_block_id].alive_instr, (kefir_bucketset_entry_t) phi_node->output_ref)) {
+            if (!kefir_bucketset_has(&code_analysis->blocks[successor_block_id].alive_instr,
+                                     (kefir_bucketset_entry_t) phi_node->output_ref)) {
                 continue;
             }
             kefir_opt_instruction_ref_t instr_ref2;
@@ -223,10 +226,18 @@ static kefir_result_t update_liveness(kefir_opt_instruction_ref_t instr_ref, voi
     REQUIRE_OK(res);
     ASSIGN_DECL_CAST(struct kefir_opt_code_instruction_schedule *, instruction_schedule, node->value);
 
-    instruction_schedule->liveness_range.begin_index =
-        MIN(param->linear_index, instruction_schedule->liveness_range.begin_index);
-    instruction_schedule->liveness_range.end_index =
-        MAX(param->linear_index + 1, instruction_schedule->liveness_range.end_index);
+    if (instruction_schedule->liveness_range.begin_index != UNSCHEDULED_INDEX) {
+        instruction_schedule->liveness_range.begin_index =
+            MIN(param->linear_index, instruction_schedule->liveness_range.begin_index);
+    } else {
+        instruction_schedule->liveness_range.begin_index = param->linear_index;
+    }
+    if (instruction_schedule->liveness_range.end_index != UNSCHEDULED_INDEX) {
+        instruction_schedule->liveness_range.end_index =
+            MAX(param->linear_index + 1, instruction_schedule->liveness_range.end_index);
+    } else {
+        instruction_schedule->liveness_range.end_index = param->linear_index + 1;
+    }
     return KEFIR_OK;
 }
 
@@ -280,7 +291,8 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
                      res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
                     const struct kefir_opt_phi_node *phi_node;
                     REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
-                    if (!kefir_bucketset_has(&code_analysis->blocks[successor_block_id].alive_instr, (kefir_bucketset_entry_t) phi_node->output_ref)) {
+                    if (!kefir_bucketset_has(&code_analysis->blocks[successor_block_id].alive_instr,
+                                             (kefir_bucketset_entry_t) phi_node->output_ref)) {
                         continue;
                     }
                     kefir_opt_instruction_ref_t instr_ref2;
@@ -362,8 +374,18 @@ static kefir_result_t schedule_instructions(struct schedule_instruction_param *p
                 &(struct update_liveness_param) {.param = param, .linear_index = linear_index}));
 
             instruction_schedule->linear_index = linear_index;
-            instruction_schedule->liveness_range.begin_index = linear_index;
-            instruction_schedule->liveness_range.end_index = linear_index + 1;
+            if (instruction_schedule->liveness_range.begin_index != UNSCHEDULED_INDEX) {
+                instruction_schedule->liveness_range.begin_index =
+                    MIN(instruction_schedule->liveness_range.begin_index, linear_index);
+            } else {
+                instruction_schedule->liveness_range.begin_index = linear_index;
+            }
+            if (instruction_schedule->liveness_range.end_index != UNSCHEDULED_INDEX) {
+                instruction_schedule->liveness_range.end_index =
+                    MAX(instruction_schedule->liveness_range.end_index, linear_index + 1);
+            } else {
+                instruction_schedule->liveness_range.end_index = linear_index + 1;
+            }
             REQUIRE_OK(kefir_list_insert_after(param->mem, &param->block_schedule->instructions,
                                                kefir_list_tail(&param->block_schedule->instructions),
                                                (void *) (kefir_uptr_t) instr_ref));
