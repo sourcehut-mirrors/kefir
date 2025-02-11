@@ -82,6 +82,7 @@ typedef struct kefir_asmcmp_stash {
     kefir_asmcmp_virtual_register_index_t stash_area_vreg;
     kefir_asmcmp_instruction_index_t liveness_instr_index;
     struct kefir_hashtreeset stashed_physical_regs;
+    struct kefir_hashtreeset excluded_virtual_regs;
 } kefir_asmcmp_stash_t;
 
 typedef enum kefir_asmcmp_inline_assembly_fragment_type {
@@ -169,95 +170,95 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
     };
 } kefir_asmcmp_inline_assembly_fragment_t;
 
-#define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value){.type = KEFI_ASMCMP_VALUE_NONE})
+#define KEFIR_ASMCMP_MAKE_NONE ((struct kefir_asmcmp_value) {.type = KEFI_ASMCMP_VALUE_NONE})
 #define KEFIR_ASMCMP_MAKE_INT(_value) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .int_immediate = (_value)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INTEGER, .int_immediate = (_value)})
 #define KEFIR_ASMCMP_MAKE_UINT(_value) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = (_value)})
-#define KEFIR_ASMCMP_MAKE_VREG8(_vreg)                                             \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT}})
-#define KEFIR_ASMCMP_MAKE_VREG16(_vreg)                                            \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_16BIT}})
-#define KEFIR_ASMCMP_MAKE_VREG32(_vreg)                                            \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_32BIT}})
-#define KEFIR_ASMCMP_MAKE_VREG64(_vreg)                                            \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT}})
-#define KEFIR_ASMCMP_MAKE_VREG128(_vreg)                                           \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_128BIT}})
-#define KEFIR_ASMCMP_MAKE_VREG(_vreg)                                              \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
-                                 .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_UINTEGER, .uint_immediate = (_value)})
+#define KEFIR_ASMCMP_MAKE_VREG8(_vreg)                                              \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_8BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG16(_vreg)                                             \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_16BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG32(_vreg)                                             \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_32BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG64(_vreg)                                             \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG128(_vreg)                                            \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_128BIT}})
+#define KEFIR_ASMCMP_MAKE_VREG(_vreg)                                               \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER, \
+                                  .vreg = {.index = (_vreg), .variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT}})
 #define KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(_label) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL, .internal_label = (_label)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INTERNAL_LABEL, .internal_label = (_label)})
 #define KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(_position, _label, _offset) \
-    ((struct kefir_asmcmp_value){                                    \
+    ((struct kefir_asmcmp_value) {                                   \
         .type = KEFIR_ASMCMP_VALUE_TYPE_EXTERNAL_LABEL,              \
         .external_label = {.position = (_position), .symbolic = (_label), .offset = (_offset)}})
 #define KEFIR_ASMCMP_MAKE_PHREG(_reg) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = (_reg)})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                       \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                 \
-                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS, \
-                                              .base.vreg = (_vreg),                        \
-                                              .offset = (_offset),                         \
-                                              .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(_reg, _offset, _variant)                        \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                  \
-                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS, \
-                                              .base.phreg = (_reg),                         \
-                                              .offset = (_offset),                          \
-                                              .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(_label, _variant)                               \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                        \
-                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS, \
-                                              .base.internal_label = (_label),                    \
-                                              .offset = 0,                                        \
-                                              .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(_type, _label, _offset, _variant)               \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                        \
-                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS, \
-                                              .base.external_type = (_type),                      \
-                                              .base.external_label = (_label),                    \
-                                              .offset = (_offset),                                \
-                                              .variant = (_variant)}})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER, .phreg = (_reg)})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(_vreg, _offset, _variant)                        \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                 \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS, \
+                                               .base.vreg = (_vreg),                        \
+                                               .offset = (_offset),                         \
+                                               .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(_reg, _offset, _variant)                         \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                  \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS, \
+                                               .base.phreg = (_reg),                         \
+                                               .offset = (_offset),                          \
+                                               .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(_label, _variant)                                \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                        \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS, \
+                                               .base.internal_label = (_label),                    \
+                                               .offset = 0,                                        \
+                                               .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_EXTERNAL_LABEL(_type, _label, _offset, _variant)                \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                        \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS, \
+                                               .base.external_type = (_type),                      \
+                                               .base.external_label = (_label),                    \
+                                               .offset = (_offset),                                \
+                                               .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_VAR(_offset, _variant) \
-    ((struct kefir_asmcmp_value){                               \
+    ((struct kefir_asmcmp_value) {                              \
         .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,               \
         .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS, .offset = (_offset), .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(_index, _offset, _variant)                           \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                    \
-                                 .indirect = {.type = KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS, \
-                                              .base.spill_index = (_index),                   \
-                                              .offset = (_offset),                            \
-                                              .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(_index, _offset, _variant)                            \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                    \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS, \
+                                               .base.spill_index = (_index),                   \
+                                               .offset = (_offset),                            \
+                                               .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_TEMPORARY(_offset, _variant) \
-    ((struct kefir_asmcmp_value){                               \
+    ((struct kefir_asmcmp_value) {                              \
         .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,               \
         .indirect = {.type = KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS, .offset = (_offset), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_VARARG(_offset, _variant) \
-    ((struct kefir_asmcmp_value){                            \
+    ((struct kefir_asmcmp_value) {                           \
         .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,            \
         .indirect = {                                        \
             .type = KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS, .offset = (_offset), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(_base, _variant) \
-    ((struct kefir_asmcmp_value){                                \
+    ((struct kefir_asmcmp_value) {                               \
         .type = KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL,   \
         .rip_indirection = {                                     \
             .position = KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE, .internal = (_base), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_RIP_INDIRECT_EXTERNAL(_position, _base, _variant) \
-    ((struct kefir_asmcmp_value){                                           \
+    ((struct kefir_asmcmp_value) {                                          \
         .type = KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_EXTERNAL,              \
         .rip_indirection = {.position = (_position), .external = (_base), .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_X87(_idx) ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_X87, .x87 = (_idx)})
+#define KEFIR_ASMCMP_MAKE_X87(_idx) ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_X87, .x87 = (_idx)})
 #define KEFIR_ASMCMP_MAKE_STASH_INDEX(_idx) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX, .stash_idx = (_idx)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_STASH_INDEX, .stash_idx = (_idx)})
 #define KEFIR_ASMCMP_MAKE_INLINE_ASSEMBLY(_idx) \
-    ((struct kefir_asmcmp_value){.type = KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX, .inline_asm_idx = (_idx)})
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX, .inline_asm_idx = (_idx)})
 
 #define KEFIR_ASMCMP_SET_SEGMENT(_value, _reg) \
     do {                                       \
@@ -423,8 +424,8 @@ kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem
                                                                 kefir_asmcmp_physical_register_index_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_specify_type_dependent(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                                          kefir_asmcmp_virtual_register_index_t,
-                                                          kefir_asmcmp_virtual_register_index_t);
+                                                                    kefir_asmcmp_virtual_register_index_t,
+                                                                    kefir_asmcmp_virtual_register_index_t);
 kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmcmp_context *,
                                                          kefir_asmcmp_virtual_register_index_t, kefir_size_t,
                                                          kefir_size_t);
@@ -433,11 +434,15 @@ kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *, struct kefir_
                                                kefir_asmcmp_stash_index_t *);
 kefir_result_t kefir_asmcmp_register_stash_add(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                kefir_asmcmp_stash_index_t, kefir_asmcmp_physical_register_index_t);
+kefir_result_t kefir_asmcmp_register_stash_exclude(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                   kefir_asmcmp_stash_index_t, kefir_asmcmp_virtual_register_index_t);
 kefir_result_t kefir_asmcmp_register_stash_set_liveness_index(const struct kefir_asmcmp_context *,
                                                               kefir_asmcmp_stash_index_t,
                                                               kefir_asmcmp_instruction_index_t);
 kefir_result_t kefir_asmcmp_register_stash_has(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
                                                kefir_asmcmp_physical_register_index_t, kefir_bool_t *);
+kefir_result_t kefir_asmcmp_register_stash_has_virtual(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
+                                                       kefir_asmcmp_virtual_register_index_t, kefir_bool_t *);
 kefir_result_t kefir_asmcmp_register_stash_vreg(const struct kefir_asmcmp_context *, kefir_asmcmp_stash_index_t,
                                                 kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_register_stash_liveness_index(const struct kefir_asmcmp_context *,

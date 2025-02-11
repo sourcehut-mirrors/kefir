@@ -57,21 +57,22 @@ struct virtual_block_data {
     struct kefir_bucketset virtual_registers;
 };
 
-static kefir_result_t virtual_block_free(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t virtual_block_free(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                         kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct virtual_block_data *, data,
-        value);
-        
+    ASSIGN_DECL_CAST(struct virtual_block_data *, data, value);
+
     REQUIRE_OK(kefir_bucketset_free(mem, &data->virtual_registers));
     KEFIR_FREE(mem, data);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xregalloc *xregalloc) {
-    REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register allocator"));
+    REQUIRE(xregalloc != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register allocator"));
 
     xregalloc->linearized_code = NULL;
     xregalloc->linear_code_length = 0;
@@ -89,7 +90,8 @@ kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xre
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc) {
+kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *mem,
+                                                  struct kefir_codegen_amd64_xregalloc *xregalloc) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
 
@@ -114,24 +116,26 @@ struct do_allocation_state {
     struct kefir_bitset active_spill_area;
     struct kefir_bitset active_spill_area_hints;
     struct kefir_hashtree stashes;
-    struct kefir_hashtree preserved_vregs;
+    struct kefir_hashtree preserve_vreg_locations;
     struct virtual_block_data *base_virtual_block;
     struct virtual_block_data *current_virtual_block;
 };
 
-static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, struct virtual_block_data *block_data, kefir_asmcmp_virtual_register_index_t vreg_idx, struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
+static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, struct virtual_block_data *block_data,
+                                                    kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                                    struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
     REQUIRE_OK(kefir_bucketset_add(mem, &block_data->virtual_registers, (kefir_bucketset_entry_t) vreg_idx));
     for (; block_data != NULL; block_data = block_data->parent) {
-        REQUIRE_OK(kefir_bucketset_add(mem, &vreg->virtual_blocks, (kefir_bucketset_entry_t) block_data->virtual_block_id));
+        REQUIRE_OK(
+            kefir_bucketset_add(mem, &vreg->virtual_blocks, (kefir_bucketset_entry_t) block_data->virtual_block_id));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
-                                                       struct kefir_codegen_amd64_xregalloc *xregalloc,
-                                                       const struct kefir_asmcmp_value *value,
-                                                       kefir_size_t linear_index,
-                                                       struct virtual_block_data *block_data) {
+                                            struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                            const struct kefir_asmcmp_value *value, kefir_size_t linear_index,
+                                            struct virtual_block_data *block_data) {
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
         case KEFIR_ASMCMP_VALUE_TYPE_INTEGER:
@@ -147,7 +151,8 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER: {
-            struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[value->vreg.index];
+            struct kefir_codegen_amd64_xregalloc_virtual_register *vreg =
+                &xregalloc->virtual_registers[value->vreg.index];
             if (vreg->lifetime.begin == KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED) {
                 vreg->lifetime.begin = linear_index;
                 vreg->lifetime.end = linear_index;
@@ -161,7 +166,8 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
             switch (value->indirect.type) {
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS: {
-                    struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[value->indirect.base.vreg];
+                    struct kefir_codegen_amd64_xregalloc_virtual_register *vreg =
+                        &xregalloc->virtual_registers[value->indirect.base.vreg];
                     if (vreg->lifetime.begin == KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED) {
                         vreg->lifetime.begin = linear_index;
                         vreg->lifetime.end = linear_index;
@@ -201,16 +207,19 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t push_virtual_block(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state, kefir_codegen_amd64_xregalloc_virtual_block_id_t virtual_block_id) {
+static kefir_result_t push_virtual_block(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                         struct do_allocation_state *state,
+                                         kefir_codegen_amd64_xregalloc_virtual_block_id_t virtual_block_id) {
     REQUIRE(!kefir_hashtree_has(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id),
-        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Duplicate virtual block identifier"));
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Duplicate virtual block identifier"));
 
     struct virtual_block_data *data = KEFIR_MALLOC(mem, sizeof(struct virtual_block_data));
     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate virtual block data"));
     data->parent = state->current_virtual_block;
     data->virtual_block_id = virtual_block_id;
     kefir_result_t res = kefir_bucketset_init(&data->virtual_registers, &kefir_bucketset_uint_ops);
-    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id, (kefir_hashtree_value_t) data));
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id,
+                                              (kefir_hashtree_value_t) data));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, data);
         return res;
@@ -222,16 +231,16 @@ static kefir_result_t push_virtual_block(struct kefir_mem *mem, struct kefir_cod
     return KEFIR_OK;
 }
 
-
 static kefir_result_t pop_virtual_block(struct do_allocation_state *state) {
     REQUIRE(state->current_virtual_block != NULL && state->current_virtual_block->parent != NULL,
-        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "No virtual block can be popped"));
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "No virtual block can be popped"));
 
     state->current_virtual_block = state->current_virtual_block->parent;
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state) {
+static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state) {
     kefir_size_t linear_index = 0;
     REQUIRE_OK(push_virtual_block(mem, xregalloc, state, KEFIR_CODEGEN_AMD64_XREGALLOC_VIRTUAL_BLOCK_DEFAULT_ID));
     for (kefir_asmcmp_instruction_index_t instr_index = kefir_asmcmp_context_instr_head(&code->context);
@@ -252,71 +261,71 @@ static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64
                 REQUIRE_OK(pop_virtual_block(state));
                 break;
 
-            case KEFIR_ASMCMP_AMD64_OPCODE(preserve_virtual_register): {
-                struct kefir_hashtree_node *node;
-                kefir_result_t res = kefir_hashtree_at(&state->preserved_vregs,
-                                        (kefir_hashtree_key_t) instr->args[0].vreg.index, &node);
-                if (res == KEFIR_NOT_FOUND) {
-                    REQUIRE_OK(kefir_hashtree_insert(mem, &state->preserved_vregs,
-                                                     (kefir_hashtree_key_t) instr->args[0].vreg.index,
-                                                     (kefir_hashtree_value_t) linear_index));
-                } else {
-                    node->value = MIN(node->value, linear_index);
-                }
-            } break;
+            case KEFIR_ASMCMP_AMD64_OPCODE(preserve_active_virtual_registers):
+                REQUIRE_OK(
+                    kefir_hashtree_insert(mem, &state->preserve_vreg_locations, (kefir_hashtree_key_t) linear_index,
+                                          (kefir_hashtree_value_t) state->current_virtual_block->virtual_block_id));
+                break;
 
             case KEFIR_ASMCMP_AMD64_OPCODE(stash_activate): {
                 kefir_asmcmp_virtual_register_index_t vreg_idx;
                 REQUIRE_OK(kefir_asmcmp_register_stash_vreg(&code->context, instr->args[0].stash_idx, &vreg_idx));
-                REQUIRE_OK(kefir_hashtree_insert(mem, &state->stashes, (kefir_hashtree_key_t) vreg_idx, (kefir_hashtree_value_t) instr_index));
+                REQUIRE_OK(kefir_hashtree_insert(mem, &state->stashes, (kefir_hashtree_key_t) vreg_idx,
+                                                 (kefir_hashtree_value_t) instr_index));
             }
                 // Fallthrough
 
             default:
-                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[0], linear_index, state->current_virtual_block));
-                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[1], linear_index, state->current_virtual_block));
-                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[2], linear_index, state->current_virtual_block));
+                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[0], linear_index,
+                                                 state->current_virtual_block));
+                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[1], linear_index,
+                                                 state->current_virtual_block));
+                REQUIRE_OK(scan_virtual_register(mem, code, xregalloc, &instr->args[2], linear_index,
+                                                 state->current_virtual_block));
                 break;
         }
     }
 
     struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->preserved_vregs, &iter);
-        node != NULL;
-        node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx,
-            node->key);
-        ASSIGN_DECL_CAST(kefir_size_t, linear_index,
-            node->value);
-        
-        struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[vreg_idx];
-        if (vreg->lifetime.begin <= linear_index && linear_index <= vreg->lifetime.end) {
-            vreg->lifetime.begin = 0;
-            vreg->lifetime.end = xregalloc->linear_code_length;
-            REQUIRE_OK(add_virtual_register_to_block(mem, state->base_virtual_block, vreg_idx, vreg));
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->preserve_vreg_locations, &iter);
+         node != NULL; node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_size_t, linear_index, node->key);
+        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, block_id, node->value);
+
+        struct kefir_codegen_amd64_xregalloc_virtual_block_iterator iter2;
+        kefir_asmcmp_virtual_register_index_t vreg_idx;
+        kefir_result_t res;
+        for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, block_id, &iter2, &vreg_idx); res == KEFIR_OK;
+             res = kefir_codegen_amd64_xregalloc_block_next(&iter2, &vreg_idx)) {
+            struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[vreg_idx];
+            if (vreg->lifetime.begin <= linear_index && linear_index <= vreg->lifetime.end) {
+                vreg->lifetime.begin = 0;
+                vreg->lifetime.end = xregalloc->linear_code_length;
+                REQUIRE_OK(add_virtual_register_to_block(mem, state->base_virtual_block, vreg_idx, vreg));
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
         }
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc) {
+static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
+                                                          struct kefir_codegen_amd64_xregalloc *xregalloc) {
     struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&xregalloc->virtual_blocks, &iter);
-        node != NULL;
-        node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id,
-            node->key);
-        
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&xregalloc->virtual_blocks, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, node->key);
+
         struct kefir_codegen_amd64_xregalloc_virtual_block_iterator vreg_iter1, vreg_iter2;
         kefir_asmcmp_virtual_register_index_t vreg1_idx, vreg2_idx;
         kefir_result_t res;
         for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter1, &vreg1_idx);
-            res == KEFIR_OK;
-            res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter1, &vreg1_idx)) {
+             res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter1, &vreg1_idx)) {
             struct kefir_codegen_amd64_xregalloc_virtual_register *vreg1 = &xregalloc->virtual_registers[vreg1_idx];
             for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter2, &vreg2_idx);
-                res == KEFIR_OK;
-                res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter2, &vreg2_idx)) {
+                 res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter2, &vreg2_idx)) {
                 if (vreg1_idx == vreg2_idx) {
                     continue;
                 }
@@ -337,7 +346,9 @@ static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t build_virtual_register_allocation_order(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state) {
+static kefir_result_t build_virtual_register_allocation_order(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                              struct do_allocation_state *state) {
     for (kefir_size_t i = 0; i < xregalloc->virtual_register_length; i++) {
         struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[i];
         if (vreg->lifetime.begin == KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED) {
@@ -349,12 +360,18 @@ static kefir_result_t build_virtual_register_allocation_order(struct kefir_mem *
         // Group virtual registers by lifetime (5 bits are rounded down).
         // Inside these groups, prioritize virtual registers appearing earlier to
         // take into account allocation hints.
-        const kefir_uint64_t lifetime_priotity_portion = 32;
-        const kefir_uint64_t lifetime_mask = (1ull << lifetime_priotity_portion) - 1;
+        // Virtual registers whose lifetime encompasses the whole function,
+        // are deprioritized.
+        const kefir_bool_t whole_function_lifetime =
+            vreg->lifetime.begin == 0 && vreg->lifetime.end == xregalloc->linear_code_length &&
+            kefir_bucketset_has(&state->base_virtual_block->virtual_registers, (kefir_bucketset_entry_t) i);
         const kefir_uint64_t lifetime_duration = vreg->lifetime.end - vreg->lifetime.begin;
         const kefir_uint64_t lifetime_round_bits = 5;
-        const kefir_size_t priority = ((lifetime_duration << (lifetime_priotity_portion - lifetime_round_bits)) & ~lifetime_mask) |
-            (vreg->lifetime.begin & lifetime_mask);
+        const kefir_uint64_t mask = (1ull << 32) - 1;
+        const kefir_uint32_t upper_half =
+            whole_function_lifetime ? mask : (lifetime_duration >> lifetime_round_bits) & mask;
+        const kefir_uint32_t lower_half = vreg->lifetime.begin & mask;
+        const kefir_size_t priority = (((kefir_uint64_t) upper_half) << 32) | lower_half;
 
         struct virtual_register_allocation_order_entry *entry;
         struct kefir_hashtree_node *node;
@@ -364,9 +381,11 @@ static kefir_result_t build_virtual_register_allocation_order(struct kefir_mem *
             entry = (struct virtual_register_allocation_order_entry *) node->value;
         } else {
             entry = KEFIR_MALLOC(mem, sizeof(struct virtual_register_allocation_order_entry));
-            REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator order entry"));
+            REQUIRE(entry != NULL,
+                    KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator order entry"));
             res = kefir_hashtreeset_init(&entry->virtual_registers, &kefir_hashtree_uint_ops);
-            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &state->allocation_order, (kefir_hashtree_key_t) priority, (kefir_hashtree_value_t) entry));
+            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &state->allocation_order, (kefir_hashtree_key_t) priority,
+                                                      (kefir_hashtree_value_t) entry));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, entry);
                 return res;
@@ -377,7 +396,10 @@ static kefir_result_t build_virtual_register_allocation_order(struct kefir_mem *
     return KEFIR_OK;
 }
 
-static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state, struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
+static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                                     struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                     struct do_allocation_state *state,
+                                                     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &state->active_registers));
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &state->active_hints));
     REQUIRE_OK(kefir_bitset_clear(&state->active_spill_area));
@@ -386,12 +408,11 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
     struct kefir_bucketset_iterator iter;
     kefir_bucketset_entry_t entry;
     kefir_result_t res;
-    for (res = kefir_bucketset_iter(&vreg->interference, &iter, &entry);
-        res == KEFIR_OK;
-        res = kefir_bucketset_next(&iter, &entry)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, interfere_vreg_idx,
-            entry);
-        const struct kefir_codegen_amd64_xregalloc_virtual_register *interfere_vreg = &xregalloc->virtual_registers[interfere_vreg_idx];
+    for (res = kefir_bucketset_iter(&vreg->interference, &iter, &entry); res == KEFIR_OK;
+         res = kefir_bucketset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, interfere_vreg_idx, entry);
+        const struct kefir_codegen_amd64_xregalloc_virtual_register *interfere_vreg =
+            &xregalloc->virtual_registers[interfere_vreg_idx];
         const struct kefir_asmcmp_virtual_register *asmcmp_interfere_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, interfere_vreg_idx, &asmcmp_interfere_vreg));
 
@@ -402,27 +423,37 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
                 if (preallocation != NULL) {
                     switch (preallocation->type) {
                         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT: {
-                            ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg,
-                                preallocation->reg);
+                            ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
-                            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                            REQUIRE_OK(
+                                kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
                         } break;
 
                         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT: {
-                            ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg,
-                                preallocation->reg);
+                            ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
                             REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
-                            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_hints, (kefir_hashtreeset_entry_t) reg));
+                            REQUIRE_OK(
+                                kefir_hashtreeset_add(mem, &state->active_hints, (kefir_hashtreeset_entry_t) reg));
                         } break;
 
                         case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS: {
-                            const struct kefir_codegen_amd64_xregalloc_virtual_register *other_vreg = &xregalloc->virtual_registers[preallocation->vreg];
-                            if (other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
-                                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_hints, (kefir_hashtreeset_entry_t) other_vreg->allocation.direct_reg));
-                            } else if (other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT ||
-                                other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT) {
-                                REQUIRE_OK(kefir_bitset_ensure(mem, &state->active_spill_area_hints, other_vreg->allocation.spill_area.index + other_vreg->allocation.spill_area.length));
-                                REQUIRE_OK(kefir_bitset_set_consecutive(&state->active_spill_area_hints, other_vreg->allocation.spill_area.index, other_vreg->allocation.spill_area.length, true));
+                            const struct kefir_codegen_amd64_xregalloc_virtual_register *other_vreg =
+                                &xregalloc->virtual_registers[preallocation->vreg];
+                            if (other_vreg->allocation.type ==
+                                KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
+                                REQUIRE_OK(kefir_hashtreeset_add(
+                                    mem, &state->active_hints,
+                                    (kefir_hashtreeset_entry_t) other_vreg->allocation.direct_reg));
+                            } else if (other_vreg->allocation.type ==
+                                           KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT ||
+                                       other_vreg->allocation.type ==
+                                           KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT) {
+                                REQUIRE_OK(kefir_bitset_ensure(mem, &state->active_spill_area_hints,
+                                                               other_vreg->allocation.spill_area.index +
+                                                                   other_vreg->allocation.spill_area.length));
+                                REQUIRE_OK(kefir_bitset_set_consecutive(
+                                    &state->active_spill_area_hints, other_vreg->allocation.spill_area.index,
+                                    other_vreg->allocation.spill_area.length, true));
                             }
                         } break;
                     }
@@ -430,13 +461,18 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
             } break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) interfere_vreg->allocation.direct_reg));
+                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers,
+                                                 (kefir_hashtreeset_entry_t) interfere_vreg->allocation.direct_reg));
                 break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT: {
-                REQUIRE_OK(kefir_bitset_ensure(mem, &state->active_spill_area, interfere_vreg->allocation.spill_area.index + interfere_vreg->allocation.spill_area.length));
-                REQUIRE_OK(kefir_bitset_set_consecutive(&state->active_spill_area, interfere_vreg->allocation.spill_area.index, interfere_vreg->allocation.spill_area.length, true));
+                REQUIRE_OK(kefir_bitset_ensure(
+                    mem, &state->active_spill_area,
+                    interfere_vreg->allocation.spill_area.index + interfere_vreg->allocation.spill_area.length));
+                REQUIRE_OK(kefir_bitset_set_consecutive(&state->active_spill_area,
+                                                        interfere_vreg->allocation.spill_area.index,
+                                                        interfere_vreg->allocation.spill_area.length, true));
             } break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
@@ -449,7 +485,9 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
     return KEFIR_OK;
 }
 
-static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct do_allocation_state *state, struct kefir_codegen_amd64_xregalloc_virtual_register *vreg, kefir_size_t length, kefir_size_t alignment) {
+static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct do_allocation_state *state,
+                                          struct kefir_codegen_amd64_xregalloc_virtual_register *vreg,
+                                          kefir_size_t length, kefir_size_t alignment) {
     if (length == 0) {
         vreg->allocation.spill_area.index = 0;
         vreg->allocation.spill_area.length = 0;
@@ -509,16 +547,21 @@ static kefir_result_t allocate_spill_area(struct kefir_mem *mem, struct do_alloc
     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to allocate spill space");
 }
 
-static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_xregalloc *xregalloc, struct do_allocation_state *state, kefir_asmcmp_virtual_register_index_t vreg_idx, struct kefir_codegen_amd64_xregalloc_virtual_register *vreg, const kefir_asm_amd64_xasmgen_register_t *available_registers, kefir_size_t available_registers_length, kefir_size_t spill_area_size) {
+static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                           struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                           struct do_allocation_state *state,
+                                           kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                           struct kefir_codegen_amd64_xregalloc_virtual_register *vreg,
+                                           const kefir_asm_amd64_xasmgen_register_t *available_registers,
+                                           kefir_size_t available_registers_length, kefir_size_t spill_area_size) {
     const struct kefir_asmcmp_amd64_register_preallocation *preallocation;
     REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(code, vreg_idx, &preallocation));
 
     if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT) {
-        ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg,
-            preallocation->reg);
+        ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
         REQUIRE(!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg),
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy register allocation requirements"));
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy register allocation requirements"));
         vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
         vreg->allocation.direct_reg = reg;
         REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
@@ -526,8 +569,7 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
     }
 
     if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT) {
-        ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg,
-            preallocation->reg);
+        ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
         if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
@@ -537,8 +579,10 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
         }
     }
 
-    if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS && !kefir_bucketset_has(&vreg->interference, preallocation->vreg)) {
-        const struct kefir_codegen_amd64_xregalloc_virtual_register *other_vreg = &xregalloc->virtual_registers[preallocation->vreg];
+    if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS &&
+        !kefir_bucketset_has(&vreg->interference, preallocation->vreg)) {
+        const struct kefir_codegen_amd64_xregalloc_virtual_register *other_vreg =
+            &xregalloc->virtual_registers[preallocation->vreg];
 
         const struct kefir_asmcmp_virtual_register *asmcmp_vreg, *asmcmp_other_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg_idx, &asmcmp_vreg));
@@ -552,15 +596,19 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
                     REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
                     return KEFIR_OK;
                 }
-            } else if (other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
+            } else if (other_vreg->allocation.type ==
+                       KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
                 kefir_bool_t occupied = false;
                 for (kefir_size_t i = 0; !occupied && i < other_vreg->allocation.spill_area.length; i++) {
                     kefir_bool_t slot_occupied;
-                    REQUIRE_OK(kefir_bitset_get(&state->active_spill_area, i + other_vreg->allocation.spill_area.index, &slot_occupied));
+                    REQUIRE_OK(kefir_bitset_get(&state->active_spill_area, i + other_vreg->allocation.spill_area.index,
+                                                &slot_occupied));
                     occupied = occupied || slot_occupied;
                 }
                 if (!occupied) {
-                    REQUIRE_OK(kefir_bitset_set_consecutive(&state->active_spill_area, other_vreg->allocation.spill_area.index, other_vreg->allocation.spill_area.length, true));
+                    REQUIRE_OK(kefir_bitset_set_consecutive(&state->active_spill_area,
+                                                            other_vreg->allocation.spill_area.index,
+                                                            other_vreg->allocation.spill_area.length, true));
                     vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT;
                     vreg->allocation.spill_area.index = other_vreg->allocation.spill_area.index;
                     vreg->allocation.spill_area.length = other_vreg->allocation.spill_area.length;
@@ -570,12 +618,12 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
         }
     }
 
-#define ALLOC_REG(_reg) \
-    do { \
-        vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER; \
-        vreg->allocation.direct_reg = (_reg); \
+#define ALLOC_REG(_reg)                                                                                       \
+    do {                                                                                                      \
+        vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;                     \
+        vreg->allocation.direct_reg = (_reg);                                                                 \
         REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) (_reg))); \
-        return KEFIR_OK; \
+        return KEFIR_OK;                                                                                      \
     } while (0)
     for (kefir_size_t i = 0; i < available_registers_length; i++) {
         const kefir_asm_amd64_xasmgen_register_t reg = available_registers[i];
@@ -599,10 +647,11 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
     return KEFIR_OK;
 }
 
-static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_stack_frame *stack_frame,
-                                                          struct kefir_codegen_amd64_xregalloc *xregalloc,
-                                                          struct do_allocation_state *state,
-                                                          kefir_asmcmp_virtual_register_index_t vreg_idx) {
+static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                         struct kefir_codegen_amd64_stack_frame *stack_frame,
+                                         struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                         struct do_allocation_state *state,
+                                         kefir_asmcmp_virtual_register_index_t vreg_idx) {
     UNUSED(stack_frame);
     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[vreg_idx];
     REQUIRE(vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED, KEFIR_OK);
@@ -616,26 +665,32 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE:
             REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
-            REQUIRE_OK(do_allocate_register(mem, code, xregalloc, state, vreg_idx, vreg, xregalloc->available_registers.general_purpose_registers, xregalloc->available_registers.num_of_general_purpose_registers, 1));
+            REQUIRE_OK(do_allocate_register(mem, code, xregalloc, state, vreg_idx, vreg,
+                                            xregalloc->available_registers.general_purpose_registers,
+                                            xregalloc->available_registers.num_of_general_purpose_registers, 1));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT:
             REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
-            REQUIRE_OK(do_allocate_register(mem, code, xregalloc, state, vreg_idx, vreg, xregalloc->available_registers.floating_point_registers, xregalloc->available_registers.num_of_floating_point_registers, 2));
+            REQUIRE_OK(do_allocate_register(mem, code, xregalloc, state, vreg_idx, vreg,
+                                            xregalloc->available_registers.floating_point_registers,
+                                            xregalloc->available_registers.num_of_floating_point_registers, 2));
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE:
             REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
-            REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length, asmcmp_vreg->parameters.spill_space_allocation.alignment));
+            REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length,
+                                           asmcmp_vreg->parameters.spill_space_allocation.alignment));
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT;
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
             REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
-            REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length, asmcmp_vreg->parameters.spill_space_allocation.alignment));
+            REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length,
+                                           asmcmp_vreg->parameters.spill_space_allocation.alignment));
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT;
             break;
-        
+
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER;
             break;
@@ -645,11 +700,12 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
     return KEFIR_OK;
 }
 
-static kefir_result_t do_stash_allocation(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_stack_frame *stack_frame,
-                                                          struct kefir_codegen_amd64_xregalloc *xregalloc,
-                                                          struct do_allocation_state *state,
-                                                          kefir_asmcmp_virtual_register_index_t vreg_idx,
-                                                          kefir_asmcmp_instruction_index_t activate_instr_idx) {
+static kefir_result_t do_stash_allocation(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                          struct kefir_codegen_amd64_stack_frame *stack_frame,
+                                          struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                          struct do_allocation_state *state,
+                                          kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                          kefir_asmcmp_instruction_index_t activate_instr_idx) {
     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[vreg_idx];
     REQUIRE(vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED, KEFIR_OK);
 
@@ -664,42 +720,46 @@ static kefir_result_t do_stash_allocation(struct kefir_mem *mem, struct kefir_as
     }
     const kefir_size_t activation_linear_idx = xregalloc->linearized_code[activate_instr_idx];
     const kefir_size_t liveness_linear_idx = xregalloc->linearized_code[liveness_instr_idx];
-    
+
     REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
     kefir_result_t res;
     struct kefir_bucketset_iterator iter;
     kefir_bucketset_entry_t entry;
     kefir_size_t qwords = 0;
-    for (res = kefir_bucketset_iter(&vreg->interference, &iter, &entry);
-        res == KEFIR_OK;
-        res = kefir_bucketset_next(&iter, &entry)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, interfere_vreg_idx,
-            entry);
-        const struct kefir_codegen_amd64_xregalloc_virtual_register *interfere_vreg = &xregalloc->virtual_registers[interfere_vreg_idx];
+    for (res = kefir_bucketset_iter(&vreg->interference, &iter, &entry); res == KEFIR_OK;
+         res = kefir_bucketset_next(&iter, &entry)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, interfere_vreg_idx, entry);
+        const struct kefir_codegen_amd64_xregalloc_virtual_register *interfere_vreg =
+            &xregalloc->virtual_registers[interfere_vreg_idx];
         if (interfere_vreg->allocation.type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
             continue;
         }
 
-        kefir_bool_t contains_phreg;
-        kefir_result_t res =
-            kefir_asmcmp_register_stash_has(&code->context, stash_idx, interfere_vreg->allocation.direct_reg, &contains_phreg);
+        kefir_bool_t contains_phreg, contains_vreg;
+        kefir_result_t res = kefir_asmcmp_register_stash_has(&code->context, stash_idx,
+                                                             interfere_vreg->allocation.direct_reg, &contains_phreg);
+        REQUIRE_CHAIN(&res, kefir_asmcmp_register_stash_has_virtual(&code->context, stash_idx, interfere_vreg_idx,
+                                                                    &contains_vreg));
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
         REQUIRE_OK(res);
-        if (!contains_phreg) {
+        if (!contains_phreg || !contains_vreg) {
             continue;
         }
 
-        if (interfere_vreg->lifetime.begin > liveness_linear_idx || interfere_vreg->lifetime.end <= liveness_linear_idx || interfere_vreg->lifetime.begin > activation_linear_idx || interfere_vreg->lifetime.end <= activation_linear_idx) {
+        if (interfere_vreg->lifetime.begin > liveness_linear_idx ||
+            interfere_vreg->lifetime.end <= liveness_linear_idx ||
+            interfere_vreg->lifetime.begin > activation_linear_idx ||
+            interfere_vreg->lifetime.end <= activation_linear_idx) {
             continue;
         }
-     
+
         if (!kefir_asm_amd64_xasmgen_register_is_floating_point(interfere_vreg->allocation.direct_reg)) {
             qwords++;
         } else {
             qwords += 2;
-        }   
+        }
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -712,24 +772,22 @@ static kefir_result_t do_stash_allocation(struct kefir_mem *mem, struct kefir_as
     return KEFIR_OK;
 }
 
-static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code, struct kefir_codegen_amd64_stack_frame *stack_frame,
-                                                          struct kefir_codegen_amd64_xregalloc *xregalloc,
-                                                          struct do_allocation_state *state) {
+static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
+                                         struct kefir_codegen_amd64_stack_frame *stack_frame,
+                                         struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                         struct do_allocation_state *state) {
     REQUIRE_OK(build_virtual_register_allocation_order(mem, xregalloc, state));
-    
+
     struct kefir_hashtree_node *node;
     REQUIRE_OK(kefir_hashtree_min(&state->allocation_order, &node));
     for (; node != NULL; node = kefir_hashtree_next_node(&state->allocation_order, node)) {
-        ASSIGN_DECL_CAST(struct virtual_register_allocation_order_entry *, entry,
-            node->value);
-        
+        ASSIGN_DECL_CAST(struct virtual_register_allocation_order_entry *, entry, node->value);
+
         kefir_result_t res;
         struct kefir_hashtreeset_iterator iter;
-        for (res = kefir_hashtreeset_iter(&entry->virtual_registers, &iter);
-            res == KEFIR_OK;
-            res = kefir_hashtreeset_next(&iter)) {
-            ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx,
-                iter.entry);
+        for (res = kefir_hashtreeset_iter(&entry->virtual_registers, &iter); res == KEFIR_OK;
+             res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, iter.entry);
             if (!kefir_hashtree_has(&state->stashes, (kefir_hashtree_key_t) vreg_idx)) {
                 REQUIRE_OK(do_vreg_allocation(mem, code, stack_frame, xregalloc, state, vreg_idx));
             }
@@ -740,13 +798,10 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asm
     }
 
     struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->stashes, &iter);
-        node != NULL;
-        node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx,
-            node->key);
-        ASSIGN_DECL_CAST(kefir_asmcmp_instruction_index_t, instr_idx,
-            node->value);
+    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&state->stashes, &iter); node != NULL;
+         node = kefir_hashtree_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, node->key);
+        ASSIGN_DECL_CAST(kefir_asmcmp_instruction_index_t, instr_idx, node->value);
         REQUIRE_OK(do_stash_allocation(mem, code, stack_frame, xregalloc, state, vreg_idx, instr_idx));
     }
 
@@ -757,10 +812,10 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asm
 
     kefir_result_t res;
     struct kefir_hashtreeset_iterator used_reg_iter;
-    for (res = kefir_hashtreeset_iter(&xregalloc->used_registers, &used_reg_iter);
-        res == KEFIR_OK;
-        res = kefir_hashtreeset_next(&used_reg_iter)) {
-        REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, stack_frame, (kefir_asm_amd64_xasmgen_register_t) used_reg_iter.entry));
+    for (res = kefir_hashtreeset_iter(&xregalloc->used_registers, &used_reg_iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&used_reg_iter)) {
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(
+            mem, stack_frame, (kefir_asm_amd64_xasmgen_register_t) used_reg_iter.entry));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -769,13 +824,14 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asm
     return KEFIR_OK;
 }
 
-static kefir_result_t virtual_register_allocation_order_entry_free(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
+static kefir_result_t virtual_register_allocation_order_entry_free(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                                   kefir_hashtree_key_t key,
+                                                                   kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct virtual_register_allocation_order_entry *, entry,
-        value);
+    ASSIGN_DECL_CAST(struct virtual_register_allocation_order_entry *, entry, value);
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Expected valid register allocator lifetime entry"));
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &entry->virtual_registers));
@@ -828,21 +884,24 @@ static kefir_result_t abi_register_comparator(void *ptr1, void *ptr2, kefir_int_
 }
 
 kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
-                                                          struct kefir_codegen_amd64_stack_frame *stack_frame,
-                                                          struct kefir_codegen_amd64_xregalloc *xregalloc) {
+                                                 struct kefir_codegen_amd64_stack_frame *stack_frame,
+                                                 struct kefir_codegen_amd64_xregalloc *xregalloc) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 code"));
     REQUIRE(stack_frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
 
     REQUIRE(xregalloc->linearized_code == NULL && xregalloc->virtual_registers == NULL,
-        KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Register allocator has already been executed"));
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Register allocator has already been executed"));
     xregalloc->linear_code_length = code->context.code_length;
     xregalloc->virtual_register_length = code->context.virtual_register_length;
     xregalloc->linearized_code = KEFIR_MALLOC(mem, sizeof(kefir_size_t) * xregalloc->linear_code_length);
-    xregalloc->virtual_registers = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64_xregalloc_virtual_register) * xregalloc->virtual_register_length);
-    REQUIRE(xregalloc->linearized_code != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
-    REQUIRE(xregalloc->virtual_registers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
+    xregalloc->virtual_registers = KEFIR_MALLOC(
+        mem, sizeof(struct kefir_codegen_amd64_xregalloc_virtual_register) * xregalloc->virtual_register_length);
+    REQUIRE(xregalloc->linearized_code != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
+    REQUIRE(xregalloc->virtual_registers != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
     for (kefir_size_t i = 0; i < xregalloc->virtual_register_length; i++) {
         xregalloc->virtual_registers[i].allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED;
         xregalloc->virtual_registers[i].lifetime.begin = KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED;
@@ -853,27 +912,34 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
 
     xregalloc->available_registers.num_of_general_purpose_registers = NUM_OF_AMD64_GENERAL_PURPOSE_REGS;
     xregalloc->available_registers.num_of_floating_point_registers = NUM_OF_AMD64_FLOATING_POINT_REGS;
-    xregalloc->available_registers.general_purpose_registers = KEFIR_MALLOC(mem, sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_general_purpose_registers);
-    xregalloc->available_registers.floating_point_registers = KEFIR_MALLOC(mem, sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_floating_point_registers);
-    REQUIRE(xregalloc->available_registers.general_purpose_registers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
-    REQUIRE(xregalloc->available_registers.floating_point_registers != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
-    memcpy(xregalloc->available_registers.general_purpose_registers, AMD64_GENERAL_PURPOSE_REGS, sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_general_purpose_registers);
-    memcpy(xregalloc->available_registers.floating_point_registers, AMD64_FLOATING_POINT_REGS, sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_floating_point_registers);
+    xregalloc->available_registers.general_purpose_registers =
+        KEFIR_MALLOC(mem, sizeof(kefir_asm_amd64_xasmgen_register_t) *
+                              xregalloc->available_registers.num_of_general_purpose_registers);
+    xregalloc->available_registers.floating_point_registers =
+        KEFIR_MALLOC(mem, sizeof(kefir_asm_amd64_xasmgen_register_t) *
+                              xregalloc->available_registers.num_of_floating_point_registers);
+    REQUIRE(xregalloc->available_registers.general_purpose_registers != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
+    REQUIRE(xregalloc->available_registers.floating_point_registers != NULL,
+            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 register allocator state"));
+    memcpy(
+        xregalloc->available_registers.general_purpose_registers, AMD64_GENERAL_PURPOSE_REGS,
+        sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_general_purpose_registers);
+    memcpy(xregalloc->available_registers.floating_point_registers, AMD64_FLOATING_POINT_REGS,
+           sizeof(kefir_asm_amd64_xasmgen_register_t) * xregalloc->available_registers.num_of_floating_point_registers);
 
-    REQUIRE_OK(kefir_mergesort(mem, xregalloc->available_registers.general_purpose_registers,
-                               sizeof(kefir_asm_amd64_xasmgen_register_t), xregalloc->available_registers.num_of_general_purpose_registers,
-                               abi_register_comparator, code));
-    REQUIRE_OK(kefir_mergesort(mem, xregalloc->available_registers.floating_point_registers,
-                               sizeof(kefir_asm_amd64_xasmgen_register_t), xregalloc->available_registers.num_of_floating_point_registers,
-                               abi_register_comparator, code));
+    REQUIRE_OK(kefir_mergesort(
+        mem, xregalloc->available_registers.general_purpose_registers, sizeof(kefir_asm_amd64_xasmgen_register_t),
+        xregalloc->available_registers.num_of_general_purpose_registers, abi_register_comparator, code));
+    REQUIRE_OK(kefir_mergesort(
+        mem, xregalloc->available_registers.floating_point_registers, sizeof(kefir_asm_amd64_xasmgen_register_t),
+        xregalloc->available_registers.num_of_floating_point_registers, abi_register_comparator, code));
 
-    struct do_allocation_state state = {
-        .current_virtual_block = NULL
-    };
+    struct do_allocation_state state = {.current_virtual_block = NULL};
     REQUIRE_OK(kefir_hashtree_init(&state.allocation_order, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&state.allocation_order, virtual_register_allocation_order_entry_free, NULL));
     REQUIRE_OK(kefir_hashtree_init(&state.stashes, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&state.preserved_vregs, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&state.preserve_vreg_locations, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state.active_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state.active_hints, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_bitset_init(&state.active_spill_area));
@@ -883,10 +949,10 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
     REQUIRE_CHAIN(&res, scan_code(mem, code, xregalloc, &state));
     REQUIRE_CHAIN(&res, build_virtual_register_interference(mem, xregalloc));
     REQUIRE_CHAIN(&res, do_allocation_impl(mem, code, stack_frame, xregalloc, &state));
-    
+
     kefir_hashtree_free(mem, &state.allocation_order);
     kefir_hashtree_free(mem, &state.stashes);
-    kefir_hashtree_free(mem, &state.preserved_vregs);
+    kefir_hashtree_free(mem, &state.preserve_vreg_locations);
     kefir_hashtreeset_free(mem, &state.active_registers);
     kefir_hashtreeset_free(mem, &state.active_hints);
     kefir_bitset_free(mem, &state.active_spill_area);
@@ -894,51 +960,60 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
     return res;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_allocation_of(const struct kefir_codegen_amd64_xregalloc *xregalloc,
-                                                          kefir_asmcmp_virtual_register_index_t vreg_idx,
-                                                          const struct kefir_codegen_amd64_register_allocation **vreg_ptr) {
+kefir_result_t kefir_codegen_amd64_xregalloc_allocation_of(
+    const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_asmcmp_virtual_register_index_t vreg_idx,
+    const struct kefir_codegen_amd64_register_allocation **vreg_ptr) {
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
-    REQUIRE(vreg_idx < xregalloc->virtual_register_length, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find register allocation"));
-    REQUIRE(vreg_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 pointer to register allocation"));
+    REQUIRE(vreg_idx < xregalloc->virtual_register_length,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find register allocation"));
+    REQUIRE(vreg_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 pointer to register allocation"));
 
     *vreg_ptr = &xregalloc->virtual_registers[vreg_idx].allocation;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(
-    const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_asmcmp_instruction_index_t instr_idx, kefir_size_t *linear_position_ptr) {
+kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(const struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                                kefir_asmcmp_instruction_index_t instr_idx,
+                                                                kefir_size_t *linear_position_ptr) {
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
-    REQUIRE(instr_idx < xregalloc->linear_code_length, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find instruction linear position"));
-    REQUIRE(linear_position_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 pointer to linear position"));
+    REQUIRE(instr_idx < xregalloc->linear_code_length,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find instruction linear position"));
+    REQUIRE(linear_position_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 pointer to linear position"));
 
     *linear_position_ptr = xregalloc->linearized_code[instr_idx];
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(
-    const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_size_t *begin_ptr, kefir_size_t *end_ptr) {
+kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(const struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                         kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                                         kefir_size_t *begin_ptr, kefir_size_t *end_ptr) {
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
-    REQUIRE(vreg_idx < xregalloc->virtual_register_length, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
-    
+    REQUIRE(vreg_idx < xregalloc->virtual_register_length,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
+
     ASSIGN_PTR(begin_ptr, xregalloc->virtual_registers[vreg_idx].lifetime.begin);
     ASSIGN_PTR(end_ptr, xregalloc->virtual_registers[vreg_idx].lifetime.end);
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(
-    const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_asmcmp_virtual_register_index_t vreg_idx, kefir_codegen_amd64_xregalloc_virtual_block_id_t block_id, kefir_bool_t *exists_flag) {
+kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(const struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                             kefir_asmcmp_virtual_register_index_t vreg_idx,
+                                                             kefir_codegen_amd64_xregalloc_virtual_block_id_t block_id,
+                                                             kefir_bool_t *exists_flag) {
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
-    REQUIRE(vreg_idx < xregalloc->virtual_register_length, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
+    REQUIRE(vreg_idx < xregalloc->virtual_register_length,
+            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
     REQUIRE(exists_flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
-    
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) block_id, &node);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual block");
     }
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block,
-        node->value);
+    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, node->value);
     kefir_bool_t exists = false;
     for (; !exists && virtual_block != NULL; virtual_block = virtual_block->parent) {
         if (kefir_bucketset_has(&virtual_block->virtual_registers, (kefir_bucketset_entry_t) vreg_idx)) {
@@ -949,14 +1024,19 @@ kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_asm_amd64_xasmgen_register_t reg) {
+kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_codegen_amd64_xregalloc *xregalloc,
+                                                             kefir_asm_amd64_xasmgen_register_t reg) {
     REQUIRE(xregalloc != NULL, false);
     return kefir_hashtreeset_has(&xregalloc->used_registers, reg);
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_codegen_amd64_xregalloc_virtual_block_id_t block_id, struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *iter, kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
+kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(
+    const struct kefir_codegen_amd64_xregalloc *xregalloc, kefir_codegen_amd64_xregalloc_virtual_block_id_t block_id,
+    struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *iter,
+    kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
     REQUIRE(xregalloc != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 register allocator virtual block iterator"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                          "Expected valid pointer to amd64 register allocator virtual block iterator"));
 
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) block_id, &node);
@@ -964,9 +1044,8 @@ kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codeg
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual block");
     }
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block,
-        node->value);
-    
+    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, node->value);
+
     iter->virtual_block = virtual_block;
     kefir_bucketset_entry_t entry;
     while (iter->virtual_block != NULL) {
@@ -983,8 +1062,11 @@ kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codeg
     return KEFIR_ITERATOR_END;
 }
 
-kefir_result_t kefir_codegen_amd64_xregalloc_block_next(struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *iter, kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator virtual block iterator"));
+kefir_result_t kefir_codegen_amd64_xregalloc_block_next(
+    struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *iter,
+    kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
+    REQUIRE(iter != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator virtual block iterator"));
 
     kefir_bucketset_entry_t entry;
     kefir_result_t res = kefir_bucketset_next(&iter->iter, &entry);

@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS --target host-none -O1"
