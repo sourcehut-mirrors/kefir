@@ -402,6 +402,7 @@ Author: [Jevgenijs Protopopovs](https://www.protopopov.lv)
 The code base also includes patches from:
 * Brian Robert Callahan - [initial OpenBSD
   port](https://briancallahan.net/blog/20220629.html)
+* remph - [Treat zero-length environment variables as unset](https://lists.sr.ht/~jprotopopov/public-inbox/patches/57368)
 
 License:
 * Main body of the compiler - GNU GPLv3
