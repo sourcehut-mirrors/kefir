@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
-#include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/structure.h"
 #include "kefir/optimizer/format.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -37,19 +36,19 @@ struct semi_nca_data {
     kefir_opt_block_id_t *immediate_dominators;
 };
 
-static kefir_result_t semi_nca_dfs(struct kefir_opt_code_analysis *analysis, struct semi_nca_data *data,
+static kefir_result_t semi_nca_dfs(struct kefir_opt_code_structure *structure, struct semi_nca_data *data,
                                    kefir_opt_block_id_t block_id) {
     REQUIRE(data->dfs_trace[block_id] == -1, KEFIR_OK);
     data->dfs_trace[block_id] = data->counter;
     data->reverse_dfs_trace[data->counter] = block_id;
     data->counter++;
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&analysis->blocks[block_id].successors); iter != NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block_id].successors); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
         if (data->dfs_trace[successor_block_id] == -1) {
             data->dfs_parents[successor_block_id] = block_id;
-            REQUIRE_OK(semi_nca_dfs(analysis, data, successor_block_id));
+            REQUIRE_OK(semi_nca_dfs(structure, data, successor_block_id));
         }
     }
     return KEFIR_OK;
@@ -70,7 +69,7 @@ static kefir_opt_block_id_t semi_nca_evaluate(struct semi_nca_data *data, kefir_
     return result;
 }
 
-static kefir_result_t semi_nca_impl(struct kefir_opt_code_analysis *analysis, struct semi_nca_data *data) {
+static kefir_result_t semi_nca_impl(struct kefir_opt_code_structure *structure, struct semi_nca_data *data) {
     for (kefir_size_t i = 0; i < data->num_of_blocks; i++) {
         data->dfs_trace[i] = -1;
         data->reverse_dfs_trace[i] = KEFIR_ID_NONE;
@@ -80,14 +79,14 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_analysis *analysis, st
         data->immediate_dominators[i] = KEFIR_ID_NONE;
     }
 
-    REQUIRE_OK(semi_nca_dfs(analysis, data, analysis->code->entry_point));
+    REQUIRE_OK(semi_nca_dfs(structure, data, structure->code->entry_point));
 
     for (kefir_int64_t i = data->counter; i > 0;) {
         i--;
         kefir_opt_block_id_t block_id = data->reverse_dfs_trace[i];
         data->semi_dominators[block_id] = block_id;
 
-        for (const struct kefir_list_entry *iter = kefir_list_head(&analysis->blocks[block_id].predecessors);
+        for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block_id].predecessors);
              iter != NULL; kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
             if (data->dfs_trace[predecessor_block_id] != -1) {
@@ -112,15 +111,15 @@ static kefir_result_t semi_nca_impl(struct kefir_opt_code_analysis *analysis, st
     }
 
     for (kefir_opt_block_id_t block_id = 0; block_id < data->num_of_blocks; block_id++) {
-        analysis->blocks[block_id].immediate_dominator = data->immediate_dominators[block_id];
+        structure->blocks[block_id].immediate_dominator = data->immediate_dominators[block_id];
     }
 
     return KEFIR_OK;
 }
 
-static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
+static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_structure *structure) {
     struct semi_nca_data data = {0};
-    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &data.num_of_blocks));
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &data.num_of_blocks));
     data.dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_int64_t) * data.num_of_blocks);
     data.reverse_dfs_trace = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);
     data.dfs_parents = KEFIR_MALLOC(mem, sizeof(kefir_opt_block_id_t) * data.num_of_blocks);
@@ -133,7 +132,7 @@ static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_anal
         data.semi_dominators == NULL || data.best_candidates == NULL || data.immediate_dominators == NULL) {
         res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate semi-nca dominator algorithm data");
     }
-    REQUIRE_CHAIN(&res, semi_nca_impl(analysis, &data));
+    REQUIRE_CHAIN(&res, semi_nca_impl(structure, &data));
 
     KEFIR_FREE(mem, data.dfs_trace);
     KEFIR_FREE(mem, data.reverse_dfs_trace);
@@ -147,7 +146,7 @@ static kefir_result_t semi_nca(struct kefir_mem *mem, struct kefir_opt_code_anal
 
 #ifndef NDEBUG
 struct find_dominators_check_data {
-    struct kefir_opt_code_analysis *analysis;
+    struct kefir_opt_code_structure *structure;
     struct kefir_bucketset tmp_bucketset;
     struct kefir_bucketset *block_dominators;
 };
@@ -158,11 +157,11 @@ static kefir_result_t find_dominators_check_step(struct kefir_mem *mem, kefir_op
     struct kefir_bucketset_iterator iter2;
     kefir_bucketset_entry_t entry;
     kefir_bool_t first = true;
-    for (const struct kefir_list_entry *iter = kefir_list_head(&data->analysis->blocks[block_id].predecessors);
+    for (const struct kefir_list_entry *iter = kefir_list_head(&data->structure->blocks[block_id].predecessors);
          iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter->value);
         if (!kefir_bucketset_has(&data->block_dominators[pred_block_id],
-                                 (kefir_bucketset_entry_t) data->analysis->code->entry_point)) {
+                                 (kefir_bucketset_entry_t) data->structure->code->entry_point)) {
             continue;
         }
         if (first) {
@@ -201,17 +200,17 @@ static kefir_result_t find_dominators_check_step(struct kefir_mem *mem, kefir_op
 
 static kefir_result_t find_dominators_check_impl(struct kefir_mem *mem, struct find_dominators_check_data *data) {
     kefir_size_t total_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(data->analysis->code, &total_blocks));
+    REQUIRE_OK(kefir_opt_code_container_block_count(data->structure->code, &total_blocks));
 
-    REQUIRE_OK(kefir_bucketset_add(mem, &data->block_dominators[data->analysis->code->entry_point],
-                                   (kefir_bucketset_entry_t) data->analysis->code->entry_point));
+    REQUIRE_OK(kefir_bucketset_add(mem, &data->block_dominators[data->structure->code->entry_point],
+                                   (kefir_bucketset_entry_t) data->structure->code->entry_point));
 
     kefir_result_t res = KEFIR_OK;
     kefir_bool_t has_changes = true;
     while (has_changes && res == KEFIR_OK) {
         has_changes = false;
         for (kefir_opt_block_id_t i = 0; res == KEFIR_OK && i < total_blocks; i++) {
-            if (i != data->analysis->code->entry_point) {
+            if (i != data->structure->code->entry_point) {
                 res = find_dominators_check_step(mem, i, data, &has_changes);
                 REQUIRE_CHAIN(&res, kefir_bucketset_clean_nofree(mem, &data->tmp_bucketset));
             }
@@ -223,7 +222,7 @@ static kefir_result_t find_dominators_check_impl(struct kefir_mem *mem, struct f
         kefir_opt_block_id_t imm_dominator = block_id;
         while (imm_dominator != KEFIR_ID_NONE) {
             REQUIRE_OK(kefir_bucketset_add(mem, &data->tmp_bucketset, imm_dominator));
-            imm_dominator = data->analysis->blocks[imm_dominator].immediate_dominator;
+            imm_dominator = data->structure->blocks[imm_dominator].immediate_dominator;
         }
 
         kefir_result_t res;
@@ -251,11 +250,11 @@ static kefir_result_t find_dominators_check_impl(struct kefir_mem *mem, struct f
     return KEFIR_OK;
 }
 
-static kefir_result_t find_dominators_check(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
+static kefir_result_t find_dominators_check(struct kefir_mem *mem, struct kefir_opt_code_structure *structure) {
     kefir_size_t total_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &total_blocks));
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &total_blocks));
 
-    struct find_dominators_check_data data = {.analysis = analysis};
+    struct find_dominators_check_data data = {.structure = structure};
     REQUIRE_OK(kefir_bucketset_init(&data.tmp_bucketset, &kefir_bucketset_uint_ops));
 
     data.block_dominators = KEFIR_MALLOC(mem, sizeof(struct kefir_bucketset) * total_blocks);
@@ -278,14 +277,14 @@ static kefir_result_t find_dominators_check(struct kefir_mem *mem, struct kefir_
 }
 #endif
 
-kefir_result_t kefir_opt_code_container_find_dominators(struct kefir_mem *mem,
-                                                        struct kefir_opt_code_analysis *analysis) {
+kefir_result_t kefir_opt_code_structure_find_dominators(struct kefir_mem *mem,
+                                                        struct kefir_opt_code_structure *structure) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
 
-    REQUIRE_OK(semi_nca(mem, analysis));
+    REQUIRE_OK(semi_nca(mem, structure));
 #ifndef NDEBUG
-    REQUIRE_OK(find_dominators_check(mem, analysis));  // TODO Remove the check once more confidence is gained
+    REQUIRE_OK(find_dominators_check(mem, structure));  // TODO Remove the check once more confidence is gained
 #endif
 
     return KEFIR_OK;

@@ -24,8 +24,10 @@
 #include "kefir/optimizer/code.h"
 
 kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_container *,
-                                                    const struct kefir_opt_instruction *,
-                                                    kefir_bool_t,
+                                                    const struct kefir_opt_instruction *, kefir_bool_t,
                                                     kefir_result_t (*)(kefir_opt_instruction_ref_t, void *), void *);
+
+kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt_code_container *,
+                                                          kefir_opt_instruction_ref_t, kefir_bool_t *);
 
 #endif

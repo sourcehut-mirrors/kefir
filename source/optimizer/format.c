@@ -590,14 +590,13 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
     REQUIRE_OK(kefir_json_output_object_key(json, "properties"));
     if (code_analysis != NULL) {
-        const struct kefir_opt_code_analysis_block_properties *block_props = NULL;
-        REQUIRE_OK(kefir_opt_code_analysis_block_properties(code_analysis, block->id, &block_props));
+        const struct kefir_opt_code_structure_block *structure_block = &code_analysis->structure.blocks[block->id];
 
         REQUIRE_OK(kefir_json_output_object_begin(json));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "successors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->successors); iter != NULL;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&structure_block->successors); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
@@ -606,7 +605,7 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
         REQUIRE_OK(kefir_json_output_object_key(json, "predecessors"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->predecessors); iter != NULL;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&structure_block->predecessors); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
             REQUIRE_OK(kefir_json_output_uinteger(json, block_id));
@@ -614,15 +613,14 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
         REQUIRE_OK(kefir_json_output_array_end(json));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "immediate_dominator"));
-        REQUIRE_OK(id_format(json, block_props->immediate_dominator));
+        REQUIRE_OK(id_format(json, structure_block->immediate_dominator));
 
         REQUIRE_OK(kefir_json_output_object_key(json, "alive_instructions"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
         struct kefir_bucketset_iterator iter;
         kefir_bucketset_entry_t entry;
-        for (res = kefir_bucketset_iter(&code_analysis->blocks[block->id].alive_instr, &iter, &entry);
-            res == KEFIR_OK;
-            res = kefir_bucketset_next(&iter, &entry)) {
+        for (res = kefir_bucketset_iter(&code_analysis->liveness.blocks[block->id].alive_instr, &iter, &entry);
+             res == KEFIR_OK; res = kefir_bucketset_next(&iter, &entry)) {
             REQUIRE_OK(id_format(json, (kefir_id_t) entry));
         }
         if (res != KEFIR_ITERATOR_END) {

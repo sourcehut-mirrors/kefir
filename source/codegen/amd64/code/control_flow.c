@@ -328,7 +328,8 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
 
         if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE ||
             (source_block_ref != target_block_ref && source_vreg_idx != target_vreg_idx &&
-             !kefir_bucketset_has(&function->function_analysis->blocks[source_block_ref].alive_instr, (kefir_bucketset_entry_t) target_ref) &&
+             !kefir_bucketset_has(&function->function_analysis->liveness.blocks[source_block_ref].alive_instr,
+                                  (kefir_bucketset_entry_t) target_ref) &&
              !kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx))) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx));
         }

@@ -18,8 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
-#include "kefir/optimizer/analysis.h"
+#include "kefir/optimizer/structure.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"

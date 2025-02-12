@@ -269,3 +269,20 @@ kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_
 
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt_code_container *code,
+                                                          kefir_opt_instruction_ref_t instr_ref,
+                                                          kefir_bool_t *result_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+
+    const struct kefir_opt_code_block *block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, instr->block_id, &block));
+
+    *result_ptr = block->control_flow.head == instr_ref || instr->control_flow.prev != KEFIR_ID_NONE ||
+                  instr->control_flow.next != KEFIR_ID_NONE;
+    return KEFIR_OK;
+}

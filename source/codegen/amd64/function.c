@@ -235,8 +235,8 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
         struct kefir_bucketset_iterator alive_instr_iter;
         kefir_bucketset_entry_t alive_instr_entry;
-        for (res = kefir_bucketset_iter(&func->function_analysis->blocks[block_id].alive_instr, &alive_instr_iter,
-                                        &alive_instr_entry);
+        for (res = kefir_bucketset_iter(&func->function_analysis->liveness.blocks[block_id].alive_instr,
+                                        &alive_instr_iter, &alive_instr_entry);
              res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
             kefir_asmcmp_virtual_register_index_t vreg = 0;
             res = kefir_codegen_amd64_function_vreg_of(func, (kefir_opt_instruction_ref_t) alive_instr_entry, &vreg);
@@ -247,15 +247,16 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             REQUIRE_OK(res);
 
             const struct kefir_opt_instruction *instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code,
+                                                      (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
 
             kefir_bool_t preserve_vreg = false;
             for (const struct kefir_list_entry *iter =
-                     kefir_list_head(&func->function_analysis->blocks[block_id].successors);
+                     kefir_list_head(&func->function_analysis->structure.blocks[block_id].successors);
                  !preserve_vreg && iter != NULL; kefir_list_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id, (kefir_uptr_t) iter->value);
                 if (instr->block_id != succ_block_id &&
-                    kefir_bucketset_has(&func->function_analysis->blocks[succ_block_id].alive_instr,
+                    kefir_bucketset_has(&func->function_analysis->liveness.blocks[succ_block_id].alive_instr,
                                         alive_instr_entry)) {
                     preserve_vreg = true;
                 }

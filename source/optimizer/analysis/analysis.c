@@ -18,7 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define KEFIR_OPTIMIZER_ANALYSIS_INTERNAL
 #include "kefir/optimizer/analysis.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -34,45 +33,15 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
 
-    REQUIRE_OK(kefir_hashtreeset_init(&analysis->indirect_jump_target_blocks, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_bucketset_init(&analysis->sequenced_before, &kefir_bucketset_uint_ops));
+    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
 
-    analysis->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_analysis_block_properties) * num_of_blocks);
-    REQUIRE(analysis->blocks != NULL,
-            KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer analysis code block"));
-    for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        analysis->blocks[i] =
-            (struct kefir_opt_code_analysis_block_properties) {.block_id = i, .immediate_dominator = KEFIR_ID_NONE};
-        kefir_result_t res = kefir_list_init(&analysis->blocks[i].successors);
-        REQUIRE_CHAIN(&res, kefir_list_init(&analysis->blocks[i].predecessors));
-        REQUIRE_CHAIN(&res, kefir_bucketset_init(&analysis->blocks[i].alive_instr, &kefir_bucketset_uint_ops));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            for (kefir_size_t j = 0; j < i; j++) {
-                kefir_list_free(mem, &analysis->blocks[j].successors);
-                kefir_list_free(mem, &analysis->blocks[j].predecessors);
-                kefir_bucketset_free(mem, &analysis->blocks[j].alive_instr);
-            }
-            KEFIR_FREE(mem, analysis->blocks);
-            kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
-            analysis->blocks = NULL;
-            return res;
-        });
-    }
-
-    analysis->code = code;
-
-    kefir_result_t res = kefir_opt_code_container_link_blocks(mem, analysis);
-    REQUIRE_CHAIN(&res, kefir_opt_code_container_find_dominators(mem, analysis));
-    REQUIRE_CHAIN(&res, kefir_opt_code_container_trace_use_def(mem, analysis));
+    kefir_result_t res = kefir_opt_code_structure_build(mem, &analysis->structure, code);
+    REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->structure));
+    REQUIRE_CHAIN(&res, kefir_opt_code_structure_drop_sequencing_cache(mem, &analysis->structure));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-            kefir_list_free(mem, &analysis->blocks[i].successors);
-            kefir_list_free(mem, &analysis->blocks[i].predecessors);
-            kefir_bucketset_free(mem, &analysis->blocks[i].alive_instr);
-        }
-        KEFIR_FREE(mem, analysis->blocks);
-        kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks);
-        memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
+        kefir_opt_code_liveness_free(mem, &analysis->liveness);
+        kefir_opt_code_structure_free(mem, &analysis->structure);
         return res;
     });
     return KEFIR_OK;
@@ -82,35 +51,8 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
-    for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].successors));
-        REQUIRE_OK(kefir_list_free(mem, &analysis->blocks[i].predecessors));
-        REQUIRE_OK(kefir_bucketset_free(mem, &analysis->blocks[i].alive_instr));
-    }
-
-    REQUIRE_OK(kefir_bucketset_free(mem, &analysis->sequenced_before));
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &analysis->indirect_jump_target_blocks));
-
-    KEFIR_FREE(mem, analysis->blocks);
-    memset(analysis, 0, sizeof(struct kefir_opt_code_analysis));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_analysis_block_properties(
-    const struct kefir_opt_code_analysis *analysis, kefir_opt_block_id_t block_id,
-    const struct kefir_opt_code_analysis_block_properties **props_ptr) {
-    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
-    REQUIRE(props_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
-                                               "Expected valid pointer to optimizer code analysis block properties"));
-
-    kefir_size_t num_of_blocks;
-    REQUIRE_OK(kefir_opt_code_container_block_count(analysis->code, &num_of_blocks));
-    REQUIRE(block_id < num_of_blocks,
-            KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested optimizer block analysis properties"));
-
-    *props_ptr = &analysis->blocks[block_id];
+    REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
+    REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
     return KEFIR_OK;
 }
 
