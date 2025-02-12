@@ -156,6 +156,16 @@ static kefir_result_t format_operation_typed_ref2(struct kefir_json_output *json
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_ref_offset(struct kefir_json_output *json,
+                                                  const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+    REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.offset));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_overflow_arith(struct kefir_json_output *json,
                                                       const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "args"));
@@ -215,16 +225,20 @@ static kefir_result_t format_operation_variable(struct kefir_json_output *json,
             REQUIRE_OK(id_format(json, oper->parameters.variable.global_ref));
             break;
 
-        case KEFIR_OPT_OPCODE_GET_LOCAL:
-            REQUIRE_OK(kefir_json_output_object_key(json, "local_index"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.variable.local_index));
-            break;
-
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
     REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.variable.offset));
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_type(struct kefir_json_output *json,
+                                                const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
+    REQUIRE_OK(id_format(json, oper->parameters.type.type_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.type.type_index));
     return KEFIR_OK;
 }
 

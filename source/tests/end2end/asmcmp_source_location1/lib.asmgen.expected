@@ -1217,21 +1217,21 @@ __kefir_debug_info_section_entry_4:
 __kefir_debug_info_section_entry_5:
     .byte 5
     .quad _kefir_func_factorial_label12
-    .quad _kefir_func_factorial_label15 - _kefir_func_factorial_label12
+    .quad _kefir_func_factorial_label11 - _kefir_func_factorial_label12
     .byte 0
 __kefir_debug_info_section_entry_6:
     .byte 5
     .quad _kefir_func_factorial_label14
-    .quad _kefir_func_factorial_label18 - _kefir_func_factorial_label14
+    .quad _kefir_func_factorial_label10 - _kefir_func_factorial_label14
     .byte 0
 __kefir_debug_info_section_entry_7:
     .byte 5
     .quad _kefir_func_factorial_label19
-    .quad _kefir_func_factorial_label22 - _kefir_func_factorial_label19
+    .quad _kefir_func_factorial_label19 - _kefir_func_factorial_label19
 __kefir_debug_info_section_entry_8:
     .byte 5
     .quad _kefir_func_factorial_label23
-    .quad _kefir_func_factorial_label30 - _kefir_func_factorial_label23
+    .quad _kefir_func_factorial_label27 - _kefir_func_factorial_label23
     .byte 0
     .byte 0
 __kefir_debug_info_section_entry_9:

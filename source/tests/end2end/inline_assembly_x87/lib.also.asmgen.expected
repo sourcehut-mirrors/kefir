@@ -19,15 +19,17 @@ __kefir_text_func_discriminant_begin:
 _kefir_func_discriminant_label0:
     movq %xmm2, %xmm3
 _kefir_func_discriminant_label1:
-    movq %xmm3, -24(%rbp)
+    movq %xmm3, -40(%rbp)
     movq %xmm1, -32(%rbp)
-    movq %xmm0, -40(%rbp)
+    movq %xmm0, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -40(%rbp), %rax
+    movq -24(%rbp), %rax
     movq -32(%rbp), %rcx
-    movq -24(%rbp), %rdx
-    lea -16(%rbp), %rsi
-    movq %rsi, -64(%rbp)
+    movq -40(%rbp), %rdx
+    movq %rax, -56(%rbp)
+    lea -16(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -56(%rbp), %rax
     movq %rdx, %xmm0
     movq %xmm0, -56(%rbp)
     fldl -56(%rbp)
@@ -65,15 +67,17 @@ __kefir_text_func_discriminantf_begin:
 _kefir_func_discriminantf_label0:
     movq %xmm2, %xmm3
 _kefir_func_discriminantf_label1:
-    movd %xmm3, -16(%rbp)
+    movd %xmm3, -24(%rbp)
     movd %xmm1, -20(%rbp)
-    movd %xmm0, -24(%rbp)
+    movd %xmm0, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -24(%rbp), %eax
+    movl -16(%rbp), %eax
     movl -20(%rbp), %ecx
-    movl -16(%rbp), %edx
-    lea -12(%rbp), %rsi
-    movq %rsi, -48(%rbp)
+    movl -24(%rbp), %edx
+    movq %rax, -40(%rbp)
+    lea -12(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -40(%rbp), %rax
     movd %edx, %xmm0
     movd %xmm0, -40(%rbp)
     flds -40(%rbp)
@@ -106,7 +110,7 @@ discriminantl:
 __kefir_text_func_discriminantl_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $176, %rsp
+    sub $144, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminantl_label0:
     lea 48(%rbp), %rax
@@ -116,23 +120,23 @@ _kefir_func_discriminantl_label1:
     movq $0, -72(%rbp)
     fldt (%rax)
     fstpt -80(%rbp)
-    movq $0, -88(%rbp)
+    movq $0, -56(%rbp)
     fldt (%rcx)
-    fstpt -96(%rbp)
-    movq $0, -104(%rbp)
+    fstpt -64(%rbp)
+    movq $0, -40(%rbp)
     fldt (%rdx)
-    fstpt -112(%rbp)
-    fldt -112(%rbp)
-    fstpt -176(%rbp)
-    fldt -96(%rbp)
-    fstpt -160(%rbp)
-    fldt -80(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
     fstpt -144(%rbp)
-    lea -64(%rbp), %rax
-    movq %rax, -128(%rbp)
+    fldt -64(%rbp)
+    fstpt -128(%rbp)
+    fldt -80(%rbp)
+    fstpt -112(%rbp)
+    lea -32(%rbp), %rax
+    movq %rax, -96(%rbp)
+    fldt -112(%rbp)
+    fldt -128(%rbp)
     fldt -144(%rbp)
-    fldt -160(%rbp)
-    fldt -176(%rbp)
 fxch %st(1)
 fmul %st(0)
 fstp %st(3)
@@ -142,11 +146,11 @@ fildq -8(%rsp)
 fmulp
 fxch %st(1)
 fsubp
-    movq -128(%rbp), %rax
+    movq -96(%rbp), %rax
     fstpt (%rax)
-    fldt -64(%rbp)
-    fstpt -176(%rbp)
-    fldt -176(%rbp)
+    fldt -32(%rbp)
+    fstpt -144(%rbp)
+    fldt -144(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

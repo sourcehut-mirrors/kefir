@@ -28,22 +28,19 @@ __kefir_text_func_get_a1_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-    lea -64(%rbp), %r8
     add $32, %rsi
-    movq %r8, -72(%rbp)
-    mov %r8, %rdx
+    leaq -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -72(%rbp), %r8
     movq -80(%rbp), %rax
-    movdqu (%r8), %xmm0
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu 16(%r8), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu 32(%r8), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    movdqu 48(%r8), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
@@ -120,26 +117,23 @@ __kefir_text_func_get_arr2_el_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     movq %rdi, -80(%rbp)
-    lea -64(%rbp), %r8
     add $160, %rsi
     movsx %edx, %rax
     movsx %eax, %rax
     imul $64, %rax, %rax
     add %rax, %rsi
-    movq %r8, -72(%rbp)
-    mov %r8, %rdx
+    leaq -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -72(%rbp), %r8
     movq -80(%rbp), %rax
-    movdqu (%r8), %xmm0
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu 16(%r8), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu 32(%r8), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
-    movdqu 48(%r8), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp

@@ -585,27 +585,36 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL && arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
-        REQUIRE_OK(kefir_opt_code_builder_get_local(
-            mem, &func->code, block_id, arg1->operation.parameters.variable.local_index,
-            arg1->operation.parameters.variable.offset + arg2->operation.parameters.imm.integer, replacement_ref));
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
+    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL && arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg1->id, arg2->operation.parameters.imm.integer, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
-        REQUIRE_OK(kefir_opt_code_builder_get_local(
-            mem, &func->code, block_id, arg1->operation.parameters.variable.local_index,
-            arg1->operation.parameters.variable.offset + (kefir_int64_t) arg2->operation.parameters.imm.uinteger,
-            replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg1->id, arg2->operation.parameters.imm.uinteger, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL) {
-        REQUIRE_OK(kefir_opt_code_builder_get_local(
-            mem, &func->code, block_id, arg2->operation.parameters.variable.local_index,
-            arg2->operation.parameters.variable.offset + arg1->operation.parameters.imm.integer, replacement_ref));
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->id, arg1->operation.parameters.imm.integer, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL) {
-        REQUIRE_OK(kefir_opt_code_builder_get_local(
-            mem, &func->code, block_id, arg2->operation.parameters.variable.local_index,
-            arg2->operation.parameters.variable.offset + (kefir_int64_t) arg1->operation.parameters.imm.uinteger,
-            replacement_ref));
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->id, arg1->operation.parameters.imm.uinteger, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL && arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.offset + arg2->operation.parameters.imm.integer, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg1->operation.parameters.refs[0], arg1->operation.parameters.offset + arg2->operation.parameters.imm.uinteger, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->operation.parameters.refs[0], arg2->operation.parameters.offset + arg1->operation.parameters.imm.integer, replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+        REQUIRE_OK(kefir_opt_code_builder_ref_local(
+            mem, &func->code, block_id, arg2->operation.parameters.refs[0], arg2->operation.parameters.offset + arg1->operation.parameters.imm.uinteger, replacement_ref));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_GET_GLOBAL &&
                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST) {
         REQUIRE_OK(kefir_opt_code_builder_get_global(

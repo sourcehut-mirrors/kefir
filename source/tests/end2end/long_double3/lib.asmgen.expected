@@ -11,203 +11,202 @@ sum_progression:
 __kefir_text_func_sum_progression_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $448, %rsp
+    sub $416, %rsp
     fstcw -8(%rbp)
 _kefir_func_sum_progression_label0:
     lea 32(%rbp), %rax
     lea 16(%rbp), %rcx
 _kefir_func_sum_progression_label1:
-    movq $0, -72(%rbp)
+    movq $0, -56(%rbp)
     fldt (%rax)
-    fstpt -80(%rbp)
-    movq $0, -88(%rbp)
+    fstpt -64(%rbp)
+    movq $0, -40(%rbp)
     fldt (%rcx)
-    fstpt -96(%rbp)
-    fldt -96(%rbp)
-    fstpt -112(%rbp)
-    fldt -96(%rbp)
-    fstpt -432(%rbp)
-    fldt -80(%rbp)
-    fstpt -416(%rbp)
-    fldt -96(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
+    fstpt -80(%rbp)
+    fldt -48(%rbp)
     fstpt -400(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fstpt -384(%rbp)
-    fldt -96(%rbp)
+    fldt -48(%rbp)
     fstpt -368(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fstpt -352(%rbp)
-    fldt -96(%rbp)
-    fstpt -320(%rbp)
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fstpt -336(%rbp)
-    fldt -96(%rbp)
-    fstpt -304(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
+    fstpt -320(%rbp)
+    fldt -48(%rbp)
     fstpt -288(%rbp)
-    fldt -96(%rbp)
+    fldt -64(%rbp)
+    fstpt -304(%rbp)
+    fldt -48(%rbp)
     fstpt -272(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fstpt -256(%rbp)
-    fldt -96(%rbp)
-    fstpt -224(%rbp)
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fstpt -240(%rbp)
-    fldt -96(%rbp)
-    fstpt -208(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
+    fstpt -224(%rbp)
+    fldt -48(%rbp)
     fstpt -192(%rbp)
-    fldt -96(%rbp)
+    fldt -64(%rbp)
+    fstpt -208(%rbp)
+    fldt -48(%rbp)
     fstpt -176(%rbp)
-    fldt -80(%rbp)
+    fldt -64(%rbp)
     fstpt -160(%rbp)
-    fldt -416(%rbp)
-    fldt -432(%rbp)
-    faddp
+    fldt -48(%rbp)
     fstpt -144(%rbp)
+    fldt -64(%rbp)
+    fstpt -128(%rbp)
+    fldt -384(%rbp)
+    fldt -400(%rbp)
+    faddp
+    fstpt -112(%rbp)
     mov $2, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -384(%rbp)
-    fldt -432(%rbp)
-    fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -352(%rbp)
     fldt -400(%rbp)
+    fmulp
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -368(%rbp)
     faddp
-    fstpt -128(%rbp)
+    fstpt -96(%rbp)
     mov $3, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -352(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -320(%rbp)
+    fldt -400(%rbp)
     fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -368(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -336(%rbp)
     faddp
-    fstpt -368(%rbp)
+    fstpt -336(%rbp)
     mov $4, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -336(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -304(%rbp)
+    fldt -400(%rbp)
     fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -320(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -288(%rbp)
     faddp
-    fstpt -352(%rbp)
+    fstpt -320(%rbp)
     mov $5, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -288(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -256(%rbp)
+    fldt -400(%rbp)
     fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -304(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -272(%rbp)
     faddp
-    fstpt -336(%rbp)
+    fstpt -304(%rbp)
     mov $6, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -256(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -224(%rbp)
+    fldt -400(%rbp)
     fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -272(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -240(%rbp)
     faddp
-    fstpt -416(%rbp)
+    fstpt -384(%rbp)
     mov $7, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -240(%rbp)
-    fldt -432(%rbp)
-    fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -224(%rbp)
-    faddp
     fstpt -400(%rbp)
+    fldt -208(%rbp)
+    fldt -400(%rbp)
+    fmulp
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -192(%rbp)
+    faddp
+    fstpt -368(%rbp)
     mov $8, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -192(%rbp)
-    fldt -432(%rbp)
+    fstpt -400(%rbp)
+    fldt -160(%rbp)
+    fldt -400(%rbp)
     fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -208(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -176(%rbp)
     faddp
-    fstpt -384(%rbp)
+    fstpt -352(%rbp)
     mov $9, %rax
     movsx %eax, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -432(%rbp)
-    fldt -160(%rbp)
-    fldt -432(%rbp)
-    fmulp
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
-    fldt -176(%rbp)
-    faddp
-    fstpt -432(%rbp)
-    sub $160, %rsp
-    fldt -112(%rbp)
-    fstpt (%rsp)
-    fldt -144(%rbp)
-    fstpt 16(%rsp)
+    fstpt -400(%rbp)
     fldt -128(%rbp)
-    fstpt 32(%rsp)
-    fldt -368(%rbp)
-    fstpt 48(%rsp)
-    fldt -352(%rbp)
-    fstpt 64(%rsp)
-    fldt -336(%rbp)
-    fstpt 80(%rsp)
-    fldt -416(%rbp)
-    fstpt 96(%rsp)
     fldt -400(%rbp)
-    fstpt 112(%rsp)
+    fmulp
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
+    fldt -144(%rbp)
+    faddp
+    fstpt -400(%rbp)
+    sub $160, %rsp
+    fldt -80(%rbp)
+    fstpt (%rsp)
+    fldt -112(%rbp)
+    fstpt 16(%rsp)
+    fldt -96(%rbp)
+    fstpt 32(%rsp)
+    fldt -336(%rbp)
+    fstpt 48(%rsp)
+    fldt -320(%rbp)
+    fstpt 64(%rsp)
+    fldt -304(%rbp)
+    fstpt 80(%rsp)
     fldt -384(%rbp)
+    fstpt 96(%rsp)
+    fldt -368(%rbp)
+    fstpt 112(%rsp)
+    fldt -352(%rbp)
     fstpt 128(%rsp)
-    fldt -432(%rbp)
+    fldt -400(%rbp)
     fstpt 144(%rsp)
     call sum10@PLT
-    fstpt -448(%rbp)
-    lea -448(%rbp), %rax
+    fstpt -416(%rbp)
+    lea -416(%rbp), %rax
     add $160, %rsp
-    lea -48(%rbp), %rcx
     movdqu (%rax), %xmm0
-    movdqu %xmm0, (%rcx)
-    fldt -48(%rbp)
-    fstpt -432(%rbp)
-    fldt -432(%rbp)
+    movdqu %xmm0, -32(%rbp)
+    fldt -32(%rbp)
+    fstpt -400(%rbp)
+    fldt -400(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

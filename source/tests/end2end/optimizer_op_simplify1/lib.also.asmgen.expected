@@ -111,20 +111,20 @@ dnotld:
 __kefir_text_func_dnotld_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $64, %rsp
     fstcw -8(%rbp)
 _kefir_func_dnotld_label0:
     lea 16(%rbp), %rax
 _kefir_func_dnotld_label1:
-    movq $0, -40(%rbp)
+    movq $0, -24(%rbp)
     fldt (%rax)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fstpt -64(%rbp)
+    fldt _kefir_func_dnotld_label4(%rip)
     fstpt -48(%rbp)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt _kefir_func_dnotld_label4(%rip)
-    fstpt -64(%rbp)
     fldt -64(%rbp)
-    fldt -80(%rbp)
     mov $0, %rax
     mov $0, %rcx
     fucomip %st(1)

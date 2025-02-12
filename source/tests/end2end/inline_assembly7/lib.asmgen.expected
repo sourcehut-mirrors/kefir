@@ -21,13 +21,12 @@ _kefir_func_make_s1_label0:
 _kefir_func_make_s1_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
-    lea -4(%rbp), %rcx
-    movq %rcx, -16(%rbp)
+    lea -4(%rbp), %rdi
+    movq %rdi, -16(%rbp)
 
-    movq -16(%rbp), %rcx
-    mov %eax, (%rcx)
-    lea -4(%rbp), %rax
-    movq (%rax), %rax
+    movq -16(%rbp), %rdi
+    mov %eax, (%rdi)
+    movq -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -43,11 +42,11 @@ _kefir_func_cast_int_label1:
     movq %rdi, -16(%rbp)
     movl %eax, -8(%rbp)
     movq -16(%rbp), %rax
-    lea -8(%rbp), %rcx
-    movq %rcx, -32(%rbp)
+    lea -8(%rbp), %rdi
+    movq %rdi, -32(%rbp)
 
-    movq -32(%rbp), %rcx
-    mov %eax, (%rcx)
+    movq -32(%rbp), %rdi
+    mov %eax, (%rdi)
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -61,18 +60,18 @@ __kefir_text_func_sum3_one_begin:
     sub $48, %rsp
 _kefir_func_sum3_one_label0:
 _kefir_func_sum3_one_label1:
-    movq %rdx, -16(%rbp)
+    movq %rdx, -32(%rbp)
     movq %rsi, -24(%rbp)
-    movq %rdi, -32(%rbp)
+    movq %rdi, -16(%rbp)
     movq %rax, -8(%rbp)
-    movq -32(%rbp), %rax
+    movq -16(%rbp), %rax
     movq -24(%rbp), %rdi
-    movq -16(%rbp), %rdx
+    movq -32(%rbp), %rdx
     mov $1, %rcx
     lea -8(%rbp), %rsi
-    lea -16(%rbp), %r8
     movq %rsi, -48(%rbp)
-    movq %r8, -40(%rbp)
+    lea -32(%rbp), %rsi
+    movq %rsi, -40(%rbp)
     mov %rax, %rsi
 add %rsi, %rcx
 add %rdi, %rdx
@@ -95,18 +94,16 @@ __kefir_text_func_unwrap_s1_begin:
 _kefir_func_unwrap_s1_label0:
     movq %rdi, -16(%rbp)
 _kefir_func_unwrap_s1_label1:
-    lea -8(%rbp), %rax
-    movl -16(%rbp), %ecx
-    movl %ecx, (%rax)
+    movl -16(%rbp), %eax
     movl %eax, -4(%rbp)
+    movl %eax, -8(%rbp)
     lea -8(%rbp), %rax
-    lea -4(%rbp), %rcx
-    movq %rcx, -16(%rbp)
-    mov (%rax), %eax
+    movq %rax, -16(%rbp)
+    mov -4(%rbp), %eax
 
-    movq -16(%rbp), %rcx
-    mov %eax, (%rcx)
-    movl -4(%rbp), %eax
+    movq -16(%rbp), %rdi
+    mov %eax, (%rdi)
+    movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -54,12 +54,12 @@ static kefir_result_t mark_local_addressed(struct mem2reg_state *state, struct k
                                            kefir_opt_instruction_ref_t instr_ref) {
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
-    if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL) {
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
         REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->addressed_locals,
-                                         (kefir_hashtreeset_entry_t) instr->operation.parameters.variable.local_index));
+                                         (kefir_hashtreeset_entry_t) instr->operation.parameters.type.type_index));
         REQUIRE_OK(
             kefir_hashtreeset_delete(state->mem, &state->scalar_local_candidates,
-                                     (kefir_hashtreeset_entry_t) instr->operation.parameters.variable.local_index));
+                                     (kefir_hashtreeset_entry_t) instr->operation.parameters.type.type_index));
         return KEFIR_OK;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
         kefir_result_t res;
@@ -206,11 +206,11 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
                     if (!instr->operation.parameters.memory_access.flags.volatile_access &&
-                        addr_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
+                        addr_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                         !kefir_hashtreeset_has(&state->addressed_locals,
-                                               addr_instr->operation.parameters.variable.local_index) &&
+                            addr_instr->operation.parameters.type.type_index) &&
                         addr_instr->operation.parameters.variable.offset == 0) {
-                        REQUIRE_OK(mark_scalar_candidate(state, addr_instr->operation.parameters.variable.local_index));
+                        REQUIRE_OK(mark_scalar_candidate(state, addr_instr->operation.parameters.type.type_index));
                     } else if (instr->operation.parameters.memory_access.flags.volatile_access) {
                         REQUIRE_OK(mark_local_addressed(
                             state, NULL, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
@@ -225,11 +225,11 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
                     if (!instr->operation.parameters.memory_access.flags.volatile_access &&
-                        addr_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
+                        addr_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                         !kefir_hashtreeset_has(&state->addressed_locals,
-                                               addr_instr->operation.parameters.variable.local_index) &&
+                            addr_instr->operation.parameters.type.type_index) &&
                         addr_instr->operation.parameters.variable.offset == 0) {
-                        REQUIRE_OK(mark_scalar_candidate(state, addr_instr->operation.parameters.variable.local_index));
+                        REQUIRE_OK(mark_scalar_candidate(state, addr_instr->operation.parameters.type.type_index));
                     } else if (instr->operation.parameters.memory_access.flags.volatile_access) {
                         REQUIRE_OK(mark_local_addressed(
                             state, NULL, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
@@ -385,14 +385,16 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
-                    if (addr_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
+                    if (addr_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                         kefir_hashtreeset_has(
                             &state->scalar_local_candidates,
-                            (kefir_hashtreeset_entry_t) addr_instr->operation.parameters.variable.local_index)) {
-                        kefir_size_t local_id = addr_instr->operation.parameters.variable.local_index;
+                            (kefir_hashtreeset_entry_t) addr_instr->operation.parameters.type.type_index)) {
+                        kefir_size_t local_id = addr_instr->operation.parameters.type.type_index;
                         struct mem2reg_reg_state *reg_state;
                         REQUIRE_OK(reg_state_for(state, local_id, &reg_state));
 
+                        REQUIRE(state->func->ir_func->locals_type_id == addr_instr->operation.parameters.type.type_id,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Mismatch between function locals type and instruction parameters"));
                         const struct kefir_ir_typeentry *local_typeentry =
                             kefir_ir_type_at(state->func->locals.type, local_id);
                         REQUIRE(local_typeentry != NULL,
@@ -509,11 +511,11 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
-                    if (addr_instr->operation.opcode == KEFIR_OPT_OPCODE_GET_LOCAL &&
+                    if (addr_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL &&
                         kefir_hashtreeset_has(
                             &state->scalar_local_candidates,
-                            (kefir_hashtreeset_entry_t) addr_instr->operation.parameters.variable.local_index)) {
-                        kefir_size_t local_id = addr_instr->operation.parameters.variable.local_index;
+                            (kefir_hashtreeset_entry_t) addr_instr->operation.parameters.type.type_index)) {
+                        kefir_size_t local_id = addr_instr->operation.parameters.type.type_index;
                         struct mem2reg_reg_state *reg_state;
                         REQUIRE_OK(reg_state_for(state, local_id, &reg_state));
 

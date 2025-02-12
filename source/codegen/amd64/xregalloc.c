@@ -475,7 +475,9 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
                                                         interfere_vreg->allocation.spill_area.length, true));
             } break;
 
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_STACK_FRAME_POINTER:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+                // Intentionally left blank
                 break;
         }
     }
@@ -689,6 +691,10 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
             REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length,
                                            asmcmp_vreg->parameters.spill_space_allocation.alignment));
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT;
+            break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER:
+            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_STACK_FRAME_POINTER;
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:

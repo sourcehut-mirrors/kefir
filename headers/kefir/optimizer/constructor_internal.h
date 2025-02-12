@@ -41,6 +41,8 @@ typedef struct kefir_opt_constructor_state {
     struct kefir_opt_function *function;
     struct kefir_hashtree code_blocks;
     struct kefir_hashtree code_block_index;
+    struct kefir_hashtree locals;
+    struct kefir_opt_constructor_code_block_state *entry_block;
     struct kefir_opt_constructor_code_block_state *current_block;
     struct kefir_hashtreeset indirect_jump_targets;
     kefir_size_t ir_location;
@@ -67,5 +69,8 @@ kefir_result_t kefir_opt_constructor_stack_at(struct kefir_mem *, struct kefir_o
                                               kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *, struct kefir_opt_constructor_state *,
                                                     kefir_size_t);
+
+kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *, struct kefir_opt_constructor_state *,
+    kefir_id_t, kefir_size_t, kefir_opt_instruction_ref_t *);
 
 #endif

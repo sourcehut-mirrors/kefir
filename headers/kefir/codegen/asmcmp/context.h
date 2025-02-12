@@ -45,12 +45,17 @@ typedef enum kefir_asmcmp_value_type {
     KEFIR_ASMCMP_VALUE_TYPE_INLINE_ASSEMBLY_INDEX
 } kefir_asmcmp_value_type_t;
 
+typedef enum kefir_asmcmp_stack_frame_pointer_base {
+    KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA
+} kefir_asmcmp_stack_frame_pointer_base_t;
+
 typedef enum kefir_asmcmp_virtual_register_type {
     KEFIR_ASMCMP_VIRTUAL_REGISTER_UNSPECIFIED,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY
 } kefir_asmcmp_virtual_register_type_t;
 
@@ -308,6 +313,10 @@ typedef struct kefir_asmcmp_virtual_register {
             kefir_asmcmp_physical_register_index_t base_reg;
             kefir_int64_t offset;
         } memory;
+        struct {
+            kefir_asmcmp_stack_frame_pointer_base_t base;
+            kefir_int64_t offset;
+        } stack_frame;
     } parameters;
 } kefir_asmcmp_virtual_register_t;
 
@@ -420,6 +429,9 @@ kefir_result_t kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(s
 kefir_result_t kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
     struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t, kefir_size_t,
     kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_new_stack_frame_pointer(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                                    kefir_asmcmp_stack_frame_pointer_base_t, kefir_int64_t,
+                                                                    kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                                 kefir_asmcmp_physical_register_index_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);

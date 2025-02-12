@@ -66,6 +66,9 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_hashtree_insert(mem, &state->code_block_index, (kefir_hashtree_key_t) code_block_id,
                                      (kefir_hashtree_value_t) block_state));
+    if (ir_location == (kefir_size_t) -1ll) {
+        state->entry_block = block_state;
+    }
     return KEFIR_OK;
 }
 
@@ -148,6 +151,7 @@ kefir_result_t kefir_opt_constructor_init(struct kefir_opt_function *function,
     REQUIRE_OK(kefir_hashtree_on_removal(&state->code_blocks, free_kefir_opt_constructor_code_block_state, NULL));
     REQUIRE_OK(kefir_hashtree_init(&state->code_block_index, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state->indirect_jump_targets, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&state->locals, &kefir_hashtree_uint_ops));
 
     state->function = function;
     state->current_block = NULL;
@@ -162,6 +166,7 @@ kefir_result_t kefir_opt_constructor_free(struct kefir_mem *mem, struct kefir_op
     REQUIRE_OK(kefir_hashtreeset_free(mem, &state->indirect_jump_targets));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_block_index));
     REQUIRE_OK(kefir_hashtree_free(mem, &state->code_blocks));
+    REQUIRE_OK(kefir_hashtree_free(mem, &state->locals));
     state->function = NULL;
     state->current_block = NULL;
     state->ir_location = 0;
@@ -251,5 +256,30 @@ kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *mem, struc
     void *tail_value = tail->value;
     tail->value = entry->value;
     entry->value = tail_value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
+    kefir_id_t type_id, kefir_size_t type_index, kefir_opt_instruction_ref_t *instr_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
+    REQUIRE(state->entry_block != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
+    REQUIRE(instr_ref, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to instruction reference"));
+
+    const kefir_hashtree_key_t key = (((kefir_uint64_t) type_id) << 32) | (type_index & ((1ull << 32) - 1));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&state->locals, key, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *instr_ref = (kefir_opt_instruction_ref_t) node->value;
+    } else {
+        kefir_opt_instruction_ref_t local_ref;
+        REQUIRE_OK(kefir_opt_code_builder_alloc_local(mem, &state->function->code, state->entry_block->block_id, type_id, type_index, &local_ref));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &state->locals, key, (kefir_hashtree_value_t) local_ref));
+        *instr_ref = local_ref;
+    }
+    
     return KEFIR_OK;
 }

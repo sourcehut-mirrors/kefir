@@ -72,12 +72,10 @@ typedef struct kefir_opt_operation_parameters {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_inline_assembly_id_t inline_asm_ref;
         kefir_size_t index;
+        kefir_int64_t offset;
         kefir_id_t ir_ref;
         struct {
-            union {
-                kefir_id_t global_ref;
-                kefir_size_t local_index;
-            };
+            kefir_id_t global_ref;
             kefir_int64_t offset;
         } variable;
 

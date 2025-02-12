@@ -30,15 +30,12 @@ __kefir_text_func_test_atomic_compare_exchange8_begin:
     mov %rsi, %rcx
     movb %dl, -1(%rbp)
     mov $1, %rdx
-    lea -1(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -1(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -55,15 +52,12 @@ __kefir_text_func_test2_atomic_compare_exchange16_begin:
     movsx %dx, %rdx
     movw %dx, -2(%rbp)
     mov $2, %rdx
-    lea -2(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -2(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -80,15 +74,12 @@ __kefir_text_func_test2_atomic_compare_exchange32_begin:
     movsx %edx, %rdx
     movl %edx, -4(%rbp)
     mov $4, %rdx
-    lea -4(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -4(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -104,15 +95,12 @@ __kefir_text_func_test2_atomic_compare_exchange64_begin:
     mov %rsi, %rcx
     movq %rdx, -8(%rbp)
     mov $8, %rdx
-    lea -8(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -8(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -129,15 +117,12 @@ __kefir_text_func_test2_atomic_compare_exchange8_begin:
     movsx %dl, %rdx
     movb %dl, -1(%rbp)
     mov $1, %rdx
-    lea -1(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -1(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -153,15 +138,12 @@ __kefir_text_func_test_atomic_compare_exchange16_begin:
     mov %rsi, %rcx
     movw %dx, -2(%rbp)
     mov $2, %rdx
-    lea -2(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -2(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -177,15 +159,12 @@ __kefir_text_func_test_atomic_compare_exchange32_begin:
     mov %rsi, %rcx
     movl %edx, -4(%rbp)
     mov $4, %rdx
-    lea -4(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -4(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -201,15 +180,12 @@ __kefir_text_func_test_atomic_compare_exchange64_begin:
     mov %rsi, %rcx
     movq %rdx, -8(%rbp)
     mov $8, %rdx
-    lea -8(%rbp), %r8
+    mov $5, %r8
     mov $5, %r9
-    mov $5, %r10
     mov %rdx, %rdi
     mov %rax, %rsi
     mov %rcx, %rdx
-    mov %r8, %rcx
-    mov %r9, %r8
-    mov %r10, %r9
+    leaq -8(%rbp), %rcx
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp

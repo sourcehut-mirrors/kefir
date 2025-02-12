@@ -22,6 +22,33 @@
                                 "ir_instruction": null
                             },
                             {
+                                "id": 2,
+                                "opcode": "alloc_local",
+                                "type_id": 56,
+                                "type_index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 0
+                            },
+                            {
+                                "id": 5,
+                                "opcode": "alloc_local",
+                                "type_id": 56,
+                                "type_index": 1,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 3
+                            },
+                            {
+                                "id": 6,
+                                "opcode": "alloc_local",
+                                "type_id": 56,
+                                "type_index": 2,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 5
+                            },
+                            {
                                 "id": 1,
                                 "opcode": "jump",
                                 "target_block": 1,
@@ -39,7 +66,10 @@
                             "immediate_dominator": null,
                             "alive_instructions": [
                                 0,
-                                1
+                                1,
+                                2,
+                                5,
+                                6
                             ]
                         }
                     },
@@ -61,15 +91,6 @@
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 2,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 0
-                            },
-                            {
                                 "id": 3,
                                 "opcode": "phi",
                                 "phi_ref": 0,
@@ -85,96 +106,51 @@
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 8,
+                                "control_next": 7,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
                                 "id": 7,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 7
-                            },
-                            {
-                                "id": 8,
                                 "opcode": "vararg_start",
-                                "arg": 7,
-                                "control_next": 11,
+                                "arg": 5,
+                                "control_next": 8,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
-                                "id": 10,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 10
-                            },
-                            {
-                                "id": 9,
-                                "opcode": "get_local",
-                                "local_index": 2,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 9
-                            },
-                            {
-                                "id": 11,
+                                "id": 8,
                                 "opcode": "vararg_copy",
                                 "args": [
-                                    10,
-                                    9
+                                    5,
+                                    6
                                 ],
-                                "control_next": 13,
+                                "control_next": 9,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 12,
-                                "opcode": "get_local",
-                                "local_index": 2,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 12
-                            },
-                            {
-                                "id": 13,
+                                "id": 9,
                                 "opcode": "vararg_get",
-                                "ref": 12,
+                                "ref": 6,
                                 "type": {
                                     "id": 58,
                                     "index": 0
                                 },
-                                "control_next": 15,
+                                "control_next": 10,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 13
                             },
                             {
-                                "id": 14,
-                                "opcode": "get_local",
-                                "local_index": 1,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 15
-                            },
-                            {
-                                "id": 15,
+                                "id": 10,
                                 "opcode": "vararg_end",
-                                "arg": 14,
-                                "control_next": 16,
+                                "arg": 5,
+                                "control_next": 11,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 16
                             },
                             {
-                                "id": 16,
+                                "id": 11,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -193,16 +169,13 @@
                                 2,
                                 3,
                                 4,
+                                5,
+                                6,
                                 7,
                                 8,
                                 9,
                                 10,
-                                11,
-                                12,
-                                13,
-                                14,
-                                15,
-                                16
+                                11
                             ]
                         }
                     }
@@ -226,6 +199,15 @@
                         "inline_assembly": [],
                         "code": [
                             {
+                                "id": 1,
+                                "opcode": "alloc_local",
+                                "type_id": 58,
+                                "type_index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 0
+                            },
+                            {
                                 "id": 0,
                                 "opcode": "jump",
                                 "target_block": 1,
@@ -242,7 +224,8 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0
+                                0,
+                                1
                             ]
                         }
                     },
@@ -253,15 +236,6 @@
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
-                            {
-                                "id": 1,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 0
-                            },
                             {
                                 "id": 4,
                                 "opcode": "int_const",

@@ -39,7 +39,6 @@ typedef struct kefir_codegen_amd64_function {
     const struct kefir_opt_code_analysis *function_analysis;
     struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
-    // struct kefir_codegen_amd64_register_allocator register_allocator;
     struct kefir_codegen_amd64_xregalloc xregalloc;
     struct kefir_abi_amd64_type_layout locals_layout;
     struct kefir_codegen_amd64_stack_frame stack_frame;
@@ -49,6 +48,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
+    struct kefir_hashtree locals;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;
@@ -91,6 +91,9 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_asmcmp_label_index_t *,
                                                                    kefir_asmcmp_label_index_t *);
 
+kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+    kefir_size_t, kefir_bool_t, kefir_int64_t *);
+
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
     _def(get_argument, KEFIR_OPT_OPCODE_GET_ARGUMENT) _separator \
@@ -105,7 +108,8 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
     _def(int_placeholder, KEFIR_OPT_OPCODE_INT_PLACEHOLDER) _separator \
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER) _separator \
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER) _separator \
-    _def(get_local, KEFIR_OPT_OPCODE_GET_LOCAL) _separator \
+    _def(alloc_local, KEFIR_OPT_OPCODE_ALLOC_LOCAL) _separator \
+    _def(ref_local, KEFIR_OPT_OPCODE_REF_LOCAL) _separator \
     _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \
     _def(thread_local, KEFIR_OPT_OPCODE_GET_THREAD_LOCAL) _separator \
     _def(phi, KEFIR_OPT_OPCODE_PHI) _separator \

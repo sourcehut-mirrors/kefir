@@ -880,9 +880,6 @@ kefir_result_t kefir_opt_code_container_call_set_argument(struct kefir_mem *mem,
     struct kefir_opt_instruction *instr = NULL;
     REQUIRE_OK(code_container_instr_mutable(code, argument_ref, &instr));
 
-    REQUIRE(call_node->block_id == instr->block_id,
-            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
-                            "Optimizer call node and argument instruction shall be located within the same block"));
     REQUIRE(argument_index < call_node->argument_count,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided argument index exceeds optimizer call node argument count"));
 
@@ -1579,6 +1576,15 @@ static kefir_result_t replace_references_bitfield(struct kefir_opt_instruction *
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_type(struct kefir_opt_instruction *instr,
+                                                    kefir_opt_instruction_ref_t to_ref,
+                                                    kefir_opt_instruction_ref_t from_ref) {
+    UNUSED(instr);
+    UNUSED(to_ref);
+    UNUSED(from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_typed_ref1(struct kefir_opt_instruction *instr,
                                                     kefir_opt_instruction_ref_t to_ref,
                                                     kefir_opt_instruction_ref_t from_ref) {
@@ -1591,6 +1597,13 @@ static kefir_result_t replace_references_typed_ref2(struct kefir_opt_instruction
                                                     kefir_opt_instruction_ref_t from_ref) {
     REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
     REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    return KEFIR_OK;
+}
+
+static kefir_result_t replace_references_ref_offset(struct kefir_opt_instruction *instr,
+                                                    kefir_opt_instruction_ref_t to_ref,
+                                                    kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
     return KEFIR_OK;
 }
 

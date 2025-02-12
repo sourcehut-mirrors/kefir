@@ -63,13 +63,13 @@
                     },
                     {
                         "id": 1,
-                        "control_flow": 77,
+                        "control_flow": 57,
                         "phi": [],
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
                             {
-                                "id": 79,
+                                "id": 59,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 0,
                                 "control_next": null,
@@ -77,7 +77,7 @@
                                 "ir_instruction": 12
                             },
                             {
-                                "id": 80,
+                                "id": 60,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 1,
                                 "control_next": null,
@@ -85,26 +85,26 @@
                                 "ir_instruction": 14
                             },
                             {
-                                "id": 18,
+                                "id": 16,
                                 "opcode": "int32_add",
                                 "args": [
-                                    79,
-                                    80
+                                    59,
+                                    60
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 15
                             },
                             {
-                                "id": 81,
+                                "id": 61,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 18,
+                                "arg": 16,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
-                                "id": 82,
+                                "id": 62,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 2,
                                 "control_next": null,
@@ -112,26 +112,26 @@
                                 "ir_instruction": 23
                             },
                             {
-                                "id": 25,
+                                "id": 21,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    81,
-                                    82
+                                    61,
+                                    62
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 83,
+                                "id": 63,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 25,
+                                "arg": 21,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 30
                             },
                             {
-                                "id": 84,
+                                "id": 64,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 0,
                                 "control_next": null,
@@ -139,50 +139,50 @@
                                 "ir_instruction": 32
                             },
                             {
-                                "id": 32,
+                                "id": 26,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    83,
-                                    84
+                                    63,
+                                    64
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 33
                             },
                             {
-                                "id": 95,
+                                "id": 75,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 32,
+                                "arg": 26,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 89
                             },
                             {
-                                "id": 93,
+                                "id": 73,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 25,
+                                "arg": 21,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 77
                             },
                             {
-                                "id": 91,
+                                "id": 71,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 18,
+                                "arg": 16,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 65
                             },
                             {
-                                "id": 85,
+                                "id": 65,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 32,
+                                "arg": 26,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 39
                             },
                             {
-                                "id": 86,
+                                "id": 66,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 1,
                                 "control_next": null,
@@ -190,26 +190,26 @@
                                 "ir_instruction": 41
                             },
                             {
-                                "id": 39,
+                                "id": 31,
                                 "opcode": "int32_xor",
                                 "args": [
-                                    85,
-                                    86
+                                    65,
+                                    66
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 42
                             },
                             {
-                                "id": 87,
+                                "id": 67,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 39,
+                                "arg": 31,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 48
                             },
                             {
-                                "id": 88,
+                                "id": 68,
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 2,
                                 "control_next": null,
@@ -217,109 +217,109 @@
                                 "ir_instruction": 50
                             },
                             {
-                                "id": 46,
+                                "id": 36,
                                 "opcode": "int32_or",
                                 "args": [
-                                    87,
-                                    88
+                                    67,
+                                    68
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 51
                             },
                             {
-                                "id": 89,
+                                "id": 69,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 46,
+                                "arg": 36,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 57
                             },
                             {
-                                "id": 51,
+                                "id": 40,
                                 "opcode": "int32_not",
-                                "arg": 89,
+                                "arg": 69,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 58
                             },
                             {
-                                "id": 90,
+                                "id": 70,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 51,
+                                "arg": 40,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 62
                             },
                             {
-                                "id": 57,
+                                "id": 44,
                                 "opcode": "int32_add",
                                 "args": [
-                                    91,
-                                    90
+                                    71,
+                                    70
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 68
                             },
                             {
-                                "id": 92,
+                                "id": 72,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 57,
+                                "arg": 44,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 74
                             },
                             {
-                                "id": 63,
+                                "id": 48,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    93,
-                                    92
+                                    73,
+                                    72
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 80
                             },
                             {
-                                "id": 94,
+                                "id": 74,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 63,
+                                "arg": 48,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 86
                             },
                             {
-                                "id": 69,
+                                "id": 52,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    95,
-                                    94
+                                    75,
+                                    74
                                 ],
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 92
                             },
                             {
-                                "id": 96,
+                                "id": 76,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 69,
+                                "arg": 52,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 98
                             },
                             {
-                                "id": 97,
+                                "id": 77,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 96,
+                                "arg": 76,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 106
                             },
                             {
-                                "id": 77,
+                                "id": 57,
                                 "opcode": "return",
-                                "arg": 97,
+                                "arg": 77,
                                 "control_next": null,
                                 "control_side_effect_free": false,
                                 "ir_instruction": 107
@@ -336,35 +336,35 @@
                                 0,
                                 1,
                                 2,
-                                18,
-                                25,
-                                32,
-                                39,
-                                46,
-                                51,
+                                16,
+                                21,
+                                26,
+                                31,
+                                36,
+                                40,
+                                44,
+                                48,
+                                52,
                                 57,
+                                59,
+                                60,
+                                61,
+                                62,
                                 63,
+                                64,
+                                65,
+                                66,
+                                67,
+                                68,
                                 69,
-                                77,
-                                79,
-                                80,
-                                81,
-                                82,
-                                83,
-                                84,
-                                85,
-                                86,
-                                87,
-                                88,
-                                89,
-                                90,
-                                91,
-                                92,
-                                93,
-                                94,
-                                95,
-                                96,
-                                97
+                                70,
+                                71,
+                                72,
+                                73,
+                                74,
+                                75,
+                                76,
+                                77
                             ]
                         }
                     }
@@ -392,41 +392,41 @@
                         {
                             "variable": 3,
                             "refs": [
-                                18,
-                                57
+                                16,
+                                44
                             ]
                         },
                         {
                             "variable": 4,
                             "refs": [
-                                25,
-                                63
+                                21,
+                                48
                             ]
                         },
                         {
                             "variable": 5,
                             "refs": [
-                                32,
-                                69
+                                26,
+                                52
                             ]
                         },
                         {
                             "variable": 6,
                             "refs": [
-                                39
+                                31
                             ]
                         },
                         {
                             "variable": 7,
                             "refs": [
-                                46
+                                36
                             ]
                         },
                         {
                             "variable": 8,
                             "refs": [
-                                51,
-                                96
+                                40,
+                                76
                             ]
                         }
                     ]

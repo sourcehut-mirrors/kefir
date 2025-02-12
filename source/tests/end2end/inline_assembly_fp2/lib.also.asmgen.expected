@@ -13,15 +13,17 @@ __kefir_text_func_custom_discriminant_begin:
     sub $48, %rsp
 _kefir_func_custom_discriminant_label0:
 _kefir_func_custom_discriminant_label1:
-    movq %xmm2, -16(%rbp)
+    movq %xmm2, -32(%rbp)
     movq %xmm1, -24(%rbp)
-    movq %xmm0, -32(%rbp)
+    movq %xmm0, -16(%rbp)
     movq %xmm0, -8(%rbp)
     movq -24(%rbp), %rax
-    movq -32(%rbp), %rcx
-    movq -16(%rbp), %rdx
-    lea -8(%rbp), %rsi
-    movq %rsi, -48(%rbp)
+    movq -16(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    movq %rax, -40(%rbp)
+    lea -8(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -40(%rbp), %rax
     movq %rax, %xmm1
     movq %rcx, %xmm2
     movq %rdx, %xmm3

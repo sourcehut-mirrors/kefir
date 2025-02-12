@@ -302,6 +302,11 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                         source_vreg->parameters.spill_space_allocation.alignment, &target_vreg_idx));
                     break;
 
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                                &target_vreg_idx));
+                    break;
+
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
                         mem, &function->code.context, source_vreg->parameters.memory.base_reg,

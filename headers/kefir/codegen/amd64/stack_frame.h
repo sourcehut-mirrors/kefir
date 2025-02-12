@@ -57,6 +57,8 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t num_of_used_registers;
         kefir_size_t temporary_area_size;
         kefir_size_t temporary_area_alignment;
+        kefir_size_t local_area_size;
+        kefir_size_t local_area_alignment;
         kefir_bool_t reset_stack_pointer;
         kefir_bool_t vararg;
         kefir_bool_t x87_control_word_save;
@@ -80,9 +82,9 @@ kefir_result_t kefir_codegen_amd64_stack_frame_vararg(struct kefir_codegen_amd64
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_x87_control_word(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_mxcsr(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_codegen_amd64_stack_frame *, kefir_size_t, kefir_size_t, kefir_int64_t *);
 
-kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t, const struct kefir_ir_type *,
-                                                         const struct kefir_abi_amd64_type_layout *,
+kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
                                                          struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_prologue(struct kefir_amd64_xasmgen *, kefir_abi_amd64_variant_t,

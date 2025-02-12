@@ -156,7 +156,8 @@
     /* Data access */ \
     OPCODE(GET_GLOBAL, "get_global", variable) SEPARATOR \
     OPCODE(GET_THREAD_LOCAL, "get_thread_local", variable) SEPARATOR \
-    OPCODE(GET_LOCAL, "get_local", variable) SEPARATOR \
+    OPCODE(ALLOC_LOCAL, "alloc_local", type) SEPARATOR \
+    OPCODE(REF_LOCAL, "ref_local", ref_offset) SEPARATOR \
     OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
     OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
     OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \

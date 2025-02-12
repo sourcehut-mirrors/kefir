@@ -82,6 +82,15 @@
                         "inline_assembly": [],
                         "code": [
                             {
+                                "id": 1,
+                                "opcode": "alloc_local",
+                                "type_id": 64,
+                                "type_index": 0,
+                                "control_next": null,
+                                "control_side_effect_free": false,
+                                "ir_instruction": 0
+                            },
+                            {
                                 "id": 0,
                                 "opcode": "jump",
                                 "target_block": 1,
@@ -98,7 +107,8 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0
+                                0,
+                                1
                             ]
                         }
                     },
@@ -109,15 +119,6 @@
                         "calls": [],
                         "inline_assembly": [],
                         "code": [
-                            {
-                                "id": 1,
-                                "opcode": "get_local",
-                                "local_index": 0,
-                                "offset": 0,
-                                "control_next": null,
-                                "control_side_effect_free": false,
-                                "ir_instruction": 0
-                            },
                             {
                                 "id": 2,
                                 "opcode": "long_double_const",

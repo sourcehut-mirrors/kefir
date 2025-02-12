@@ -21,10 +21,10 @@ __kefir_text_func_clear_begin:
     xor %ecx, %ecx
     movl %ecx, -4(%rbp)
     mov $1, %rcx
-    lea -4(%rbp), %rdx
     mov $3, %r8
     mov %rcx, %rdi
     mov %rax, %rsi
+    leaq -4(%rbp), %rdx
     mov %r8, %rcx
     call __atomic_store@PLT
     lea (%rbp), %rsp
@@ -39,18 +39,16 @@ __kefir_text_func_test_and_set_begin:
     sub $16, %rsp
     mov %rdi, %rax
     mov $1, %rcx
-    movl %ecx, -4(%rbp)
-    movb %cl, -8(%rbp)
+    movl %ecx, -8(%rbp)
+    movb %cl, -4(%rbp)
     mov $1, %rcx
-    lea -4(%rbp), %rdx
-    lea -8(%rbp), %r8
-    mov $2, %r9
+    mov $2, %r8
     mov %rcx, %rdi
     mov %rax, %rsi
-    mov %r8, %rcx
-    mov %r9, %r8
+    leaq -8(%rbp), %rdx
+    leaq -4(%rbp), %rcx
     call __atomic_exchange@PLT
-    movzxb -8(%rbp), %rax
+    movzxb -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

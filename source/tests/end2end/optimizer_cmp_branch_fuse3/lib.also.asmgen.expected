@@ -24,10 +24,10 @@ __kefir_text_func_lessd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_lessd_label0:
 _kefir_func_lessd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -56,10 +56,10 @@ __kefir_text_func_equalsd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_equalsd_label0:
 _kefir_func_equalsd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -88,10 +88,10 @@ __kefir_text_func_greaterd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_greaterd_label0:
 _kefir_func_greaterd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -120,10 +120,10 @@ __kefir_text_func_not_equalsd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_not_equalsd_label0:
 _kefir_func_not_equalsd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -151,10 +151,10 @@ __kefir_text_func_greater_or_equalsd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_greater_or_equalsd_label0:
 _kefir_func_greater_or_equalsd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0
@@ -183,10 +183,10 @@ __kefir_text_func_less_or_equalsd_begin:
     stmxcsr -8(%rbp)
 _kefir_func_less_or_equalsd_label0:
 _kefir_func_less_or_equalsd_label1:
-    movq %xmm1, -16(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq -24(%rbp), %rax
-    movq -16(%rbp), %rcx
+    movq %xmm1, -24(%rbp)
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -24(%rbp), %rcx
     movq %rax, %xmm0
     movq %rcx, %xmm1
     ucomisd %xmm1, %xmm0

@@ -111,8 +111,20 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, const struct kefir_ir_type *locals_type,
-                                      const struct kefir_abi_amd64_type_layout *locals_type_layout,
+kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_codegen_amd64_stack_frame *frame, kefir_size_t size, kefir_size_t alignment, kefir_int64_t *offset) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+    REQUIRE(offset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
+    
+    if (alignment > 1) {
+        frame->requirements.local_area_size = kefir_target_abi_pad_aligned(frame->requirements.local_area_size, alignment);
+    }
+    *offset = frame->requirements.local_area_size;
+    frame->requirements.local_area_size += size;
+    frame->requirements.local_area_alignment = MAX(frame->requirements.local_area_alignment, alignment);
+    return KEFIR_OK;
+}
+
+static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant,
                                       struct kefir_codegen_amd64_stack_frame *frame) {
     frame->sizes.preserved_regs = 0;
     for (kefir_size_t i = 0; i < kefir_abi_amd64_num_of_callee_preserved_general_purpose_registers(abi_variant); i++) {
@@ -124,14 +136,8 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant, con
         }
     }
 
-    if (locals_type != NULL) {
-        REQUIRE_OK(kefir_abi_amd64_calculate_type_properties(locals_type, locals_type_layout, &frame->sizes.local_area,
-                                                             &frame->sizes.local_area_alignment));
-    } else {
-        frame->sizes.local_area = 0;
-        frame->sizes.local_area_alignment = 0;
-    }
-
+    frame->sizes.local_area = frame->requirements.local_area_size;
+    frame->sizes.local_area_alignment = frame->requirements.local_area_alignment;
     frame->sizes.spill_area = frame->requirements.spill_area_slots * KEFIR_AMD64_ABI_QWORD;
     frame->sizes.temporary_area = frame->requirements.temporary_area_size;
     frame->sizes.temporary_area_alignment = frame->requirements.temporary_area_alignment;
@@ -172,14 +178,10 @@ static kefir_result_t calculate_offsets(struct kefir_codegen_amd64_stack_frame *
 }
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t abi_variant,
-                                                         const struct kefir_ir_type *locals_type,
-                                                         const struct kefir_abi_amd64_type_layout *locals_type_layout,
                                                          struct kefir_codegen_amd64_stack_frame *frame) {
-    REQUIRE(locals_type_layout != NULL || locals_type == NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid function locals type layout"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    REQUIRE_OK(calculate_sizes(abi_variant, locals_type, locals_type_layout, frame));
+    REQUIRE_OK(calculate_sizes(abi_variant, frame));
     REQUIRE_OK(calculate_offsets(frame));
     return KEFIR_OK;
 }

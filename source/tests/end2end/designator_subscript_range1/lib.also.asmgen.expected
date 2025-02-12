@@ -16,214 +16,213 @@ __kefir_text_func_getb_begin:
     movq %rdi, -224(%rbp)
 _kefir_func_getb_label0:
 _kefir_func_getb_label1:
-    lea -204(%rbp), %rdx
-    mov %rdx, %rdi
+    leaq -200(%rbp), %rdi
     mov $0, %rax
     mov $200, %rcx
     rep stosb
     mov $1243, %rax
     neg %eax
-    movl %eax, -4(%rbp)
     movl %eax, -204(%rbp)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movl %eax, -200(%rbp)
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $40, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $80, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $120, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $160, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $4, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $44, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $84, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $124, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $164, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $8, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $48, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $88, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $128, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $168, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $12, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $52, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $92, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $132, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $172, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $16, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $56, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $96, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $136, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $176, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $20, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $60, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $100, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $140, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $180, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $24, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $64, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $104, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $144, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $184, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $28, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $68, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $108, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $148, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $188, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $32, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $72, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $112, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $152, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $192, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $36, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $76, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $116, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $156, %rcx
     movl %eax, (%rcx)
-    movsxl -4(%rbp), %rax
-    mov %rdx, %rcx
+    movsxl -204(%rbp), %rax
+    leaq -200(%rbp), %rcx
     add $196, %rcx
     movl %eax, (%rcx)
     movq -224(%rbp), %rax
     mov %rax, %rdi
-    mov %rdx, %rsi
+    leaq -200(%rbp), %rsi
     cld
     mov $25, %rcx
     rep movsq

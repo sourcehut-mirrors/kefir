@@ -43,7 +43,7 @@ __kefir_text_func_geta_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    lea -16(%rbp), %rax
+    leaq -1(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -53,8 +53,8 @@ getb:
 __kefir_text_func_getb_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    lea -17(%rbp), %rax
+    sub $16, %rsp
+    leaq -2(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -64,8 +64,8 @@ getc:
 __kefir_text_func_getc_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    lea -19(%rbp), %rax
+    sub $16, %rsp
+    leaq -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -75,8 +75,8 @@ getd:
 __kefir_text_func_getd_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    lea -23(%rbp), %rax
+    sub $16, %rsp
+    leaq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -86,8 +86,8 @@ gete:
 __kefir_text_func_gete_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    lea -30(%rbp), %rax
+    sub $16, %rsp
+    leaq -15(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -97,8 +97,8 @@ getf:
 __kefir_text_func_getf_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    lea -32(%rbp), %rax
+    sub $16, %rsp
+    leaq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -109,7 +109,7 @@ __kefir_text_func_getg_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea -32(%rbp), %rax
+    leaq -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -119,8 +119,8 @@ geth:
 __kefir_text_func_geth_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    lea -48(%rbp), %rax
+    sub $32, %rsp
+    leaq -32(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
