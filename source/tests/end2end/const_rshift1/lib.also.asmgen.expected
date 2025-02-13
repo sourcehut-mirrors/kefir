@@ -202,8 +202,6 @@ __kefir_text_func_schar_shr4_end:
 
 schar_shr8:
 __kefir_text_func_schar_shr8_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shr8_end:
@@ -217,14 +215,12 @@ __kefir_text_func_sint_shr16_end:
 
 sint_shr32:
 __kefir_text_func_sint_shr32_begin:
-    movsx %edi, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shr32_end:
 
 sint_shr64:
 __kefir_text_func_sint_shr64_begin:
-    movsx %edi, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shr64_end:
@@ -283,8 +279,6 @@ __kefir_text_func_uchar_shr4_end:
 
 uchar_shr8:
 __kefir_text_func_uchar_shr8_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shr8_end:
@@ -298,14 +292,12 @@ __kefir_text_func_uint_shr16_end:
 
 uint_shr32:
 __kefir_text_func_uint_shr32_begin:
-    mov %edi, %eax
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shr32_end:
 
 uint_shr64:
 __kefir_text_func_uint_shr64_begin:
-    mov %edi, %eax
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shr64_end:
@@ -347,24 +339,18 @@ __kefir_text_func_int_sar31_1_end:
 
 schar_shr16:
 __kefir_text_func_schar_shr16_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shr16_end:
 
 schar_shr32:
 __kefir_text_func_schar_shr32_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shr32_end:
 
 schar_shr64:
 __kefir_text_func_schar_shr64_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shr64_end:
@@ -423,24 +409,18 @@ __kefir_text_func_sshort_shr8_end:
 
 uchar_shr16:
 __kefir_text_func_uchar_shr16_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shr16_end:
 
 uchar_shr32:
 __kefir_text_func_uchar_shr32_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shr32_end:
 
 uchar_shr64:
 __kefir_text_func_uchar_shr64_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shr64_end:
@@ -506,48 +486,36 @@ __kefir_text_func_long_sar63_1_end:
 
 sshort_shr16:
 __kefir_text_func_sshort_shr16_begin:
-    movsx %di, %rax
-    movsx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shr16_end:
 
 sshort_shr32:
 __kefir_text_func_sshort_shr32_begin:
-    movsx %di, %rax
-    movsx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shr32_end:
 
 sshort_shr64:
 __kefir_text_func_sshort_shr64_begin:
-    movsx %di, %rax
-    movsx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shr64_end:
 
 ushort_shr16:
 __kefir_text_func_ushort_shr16_begin:
-    movzx %di, %rax
-    movzx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shr16_end:
 
 ushort_shr32:
 __kefir_text_func_ushort_shr32_begin:
-    movzx %di, %rax
-    movzx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shr32_end:
 
 ushort_shr64:
 __kefir_text_func_ushort_shr64_begin:
-    movzx %di, %rax
-    movzx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shr64_end:

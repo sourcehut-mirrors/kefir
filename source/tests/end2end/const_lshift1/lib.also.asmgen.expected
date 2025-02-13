@@ -213,14 +213,12 @@ __kefir_text_func_sint_shl16_end:
 
 sint_shl32:
 __kefir_text_func_sint_shl32_begin:
-    movsx %edi, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shl32_end:
 
 sint_shl64:
 __kefir_text_func_sint_shl64_begin:
-    movsx %edi, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sint_shl64_end:
@@ -294,14 +292,12 @@ __kefir_text_func_uint_shl16_end:
 
 uint_shl32:
 __kefir_text_func_uint_shl32_begin:
-    mov %edi, %eax
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shl32_end:
 
 uint_shl64:
 __kefir_text_func_uint_shl64_begin:
-    mov %edi, %eax
     xor %eax, %eax
     ret
 __kefir_text_func_uint_shl64_end:
@@ -344,16 +340,12 @@ __kefir_text_func_schar_shl16_end:
 
 schar_shl32:
 __kefir_text_func_schar_shl32_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shl32_end:
 
 schar_shl64:
 __kefir_text_func_schar_shl64_begin:
-    movsx %dil, %rax
-    movsx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_schar_shl64_end:
@@ -420,16 +412,12 @@ __kefir_text_func_uchar_shl16_end:
 
 uchar_shl32:
 __kefir_text_func_uchar_shl32_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shl32_end:
 
 uchar_shl64:
 __kefir_text_func_uchar_shl64_begin:
-    movzx %dil, %rax
-    movzx %al, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_uchar_shl64_end:
@@ -496,16 +484,12 @@ __kefir_text_func_sshort_shl16_end:
 
 sshort_shl32:
 __kefir_text_func_sshort_shl32_begin:
-    movsx %di, %rax
-    movsx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shl32_end:
 
 sshort_shl64:
 __kefir_text_func_sshort_shl64_begin:
-    movsx %di, %rax
-    movsx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_sshort_shl64_end:
@@ -520,16 +504,12 @@ __kefir_text_func_ushort_shl16_end:
 
 ushort_shl32:
 __kefir_text_func_ushort_shl32_begin:
-    movzx %di, %rax
-    movzx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shl32_end:
 
 ushort_shl64:
 __kefir_text_func_ushort_shl64_begin:
-    movzx %di, %rax
-    movzx %ax, %rax
     xor %eax, %eax
     ret
 __kefir_text_func_ushort_shl64_end:
