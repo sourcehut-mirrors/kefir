@@ -141,11 +141,11 @@ __kefir_text_func_vla1_begin:
     movsx %edi, %rax
     movsx %eax, %rax
     movq %rax, -8(%rbp)
-    mov $1, %rcx
     sub %rax, %rsp
     mov $16, %rax
-    cmp %rcx, %rax
-    cmovl %rcx, %rax
+    cmp $1, %rax
+    mov $1, %rdi
+    cmovl %rdi, %rax
     neg %rax
     and %rax, %rsp
     mov %rsp, %rax

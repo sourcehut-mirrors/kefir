@@ -26,7 +26,7 @@
 #include "kefir/core/bitset.h"
 #include "kefir/core/bucketset.h"
 
-#define KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED ((kefir_size_t) -1ll)
+#define KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED ((kefir_size_t) - 1ll)
 #define KEFIR_CODEGEN_AMD64_XREGALLOC_VIRTUAL_BLOCK_DEFAULT_ID ((kefir_uint64_t) ~0ull)
 
 typedef kefir_uint64_t kefir_codegen_amd64_xregalloc_virtual_block_id_t;
@@ -37,6 +37,7 @@ typedef enum kefir_codegen_amd64_register_allocation_type {
     KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT,
     KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT,
     KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_STACK_FRAME_POINTER,
+    KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE,
     KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER
 } kefir_codegen_amd64_register_allocation_type_t;
 
@@ -84,30 +85,38 @@ kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xre
 kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *, struct kefir_codegen_amd64_xregalloc *);
 
 kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *, struct kefir_asmcmp_amd64 *,
-                                                          struct kefir_codegen_amd64_stack_frame *,
-                                                          struct kefir_codegen_amd64_xregalloc *);
+                                                 struct kefir_codegen_amd64_stack_frame *,
+                                                 struct kefir_codegen_amd64_xregalloc *);
 
 kefir_result_t kefir_codegen_amd64_xregalloc_allocation_of(const struct kefir_codegen_amd64_xregalloc *,
-                                                          kefir_asmcmp_virtual_register_index_t,
-                                                          const struct kefir_codegen_amd64_register_allocation **);
+                                                           kefir_asmcmp_virtual_register_index_t,
+                                                           const struct kefir_codegen_amd64_register_allocation **);
 
-kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(
-    const struct kefir_codegen_amd64_xregalloc *, kefir_asmcmp_instruction_index_t, kefir_size_t *);
+kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(const struct kefir_codegen_amd64_xregalloc *,
+                                                                kefir_asmcmp_instruction_index_t, kefir_size_t *);
 
-kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(
-    const struct kefir_codegen_amd64_xregalloc *, kefir_asmcmp_virtual_register_index_t, kefir_size_t *, kefir_size_t *);
+kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(const struct kefir_codegen_amd64_xregalloc *,
+                                                         kefir_asmcmp_virtual_register_index_t, kefir_size_t *,
+                                                         kefir_size_t *);
 
-kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(
-    const struct kefir_codegen_amd64_xregalloc *, kefir_asmcmp_virtual_register_index_t, kefir_codegen_amd64_xregalloc_virtual_block_id_t, kefir_bool_t *);
+kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(const struct kefir_codegen_amd64_xregalloc *,
+                                                             kefir_asmcmp_virtual_register_index_t,
+                                                             kefir_codegen_amd64_xregalloc_virtual_block_id_t,
+                                                             kefir_bool_t *);
 
-kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_codegen_amd64_xregalloc *, kefir_asm_amd64_xasmgen_register_t);
+kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_codegen_amd64_xregalloc *,
+                                                             kefir_asm_amd64_xasmgen_register_t);
 
 typedef struct kefir_codegen_amd64_xregalloc_virtual_block_iterator {
     struct virtual_block_data *virtual_block;
     struct kefir_bucketset_iterator iter;
 } kefir_codegen_amd64_xregalloc_virtual_block_iterator_t;
 
-kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codegen_amd64_xregalloc *, kefir_codegen_amd64_xregalloc_virtual_block_id_t, struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *, kefir_asmcmp_virtual_register_index_t *);
-kefir_result_t kefir_codegen_amd64_xregalloc_block_next(struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *, kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codegen_amd64_xregalloc *,
+                                                        kefir_codegen_amd64_xregalloc_virtual_block_id_t,
+                                                        struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *,
+                                                        kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_codegen_amd64_xregalloc_block_next(struct kefir_codegen_amd64_xregalloc_virtual_block_iterator *,
+                                                        kefir_asmcmp_virtual_register_index_t *);
 
 #endif

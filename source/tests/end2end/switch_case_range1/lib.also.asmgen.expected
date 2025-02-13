@@ -620,8 +620,8 @@ _kefir_func_clamp_long_label11:
     ret
 _kefir_func_clamp_long_label12:
 _kefir_func_clamp_long_label13:
-    mov $0, %rax
-    movsx %eax, %rax
+    mov $0, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -651,36 +651,36 @@ _kefir_func_clamp_long_label19:
     ret
 _kefir_func_clamp_long_label20:
 _kefir_func_clamp_long_label21:
-    mov $3, %rax
-    movsx %eax, %rax
+    mov $3, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_clamp_long_label22:
 _kefir_func_clamp_long_label23:
-    mov $2, %rax
-    movsx %eax, %rax
+    mov $2, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_clamp_long_label24:
 _kefir_func_clamp_long_label25:
-    mov $1, %rax
-    movsx %eax, %rax
+    mov $1, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_clamp_long_label26:
 _kefir_func_clamp_long_label27:
-    mov $0, %rax
-    movsx %eax, %rax
+    mov $0, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_clamp_long_label28:
 _kefir_func_clamp_long_label29:
-    mov $100, %rax
-    movsx %eax, %rax
+    mov $100, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

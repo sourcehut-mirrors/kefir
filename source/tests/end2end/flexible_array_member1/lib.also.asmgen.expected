@@ -56,8 +56,8 @@ _kefir_func_get_T2_label2:
     test %al, %al
     jz _kefir_func_get_T2_label4
 _kefir_func_get_T2_label3:
-    mov $0, %rax
-    movsx %eax, %rax
+    mov $0, %rcx
+    movsx %ecx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

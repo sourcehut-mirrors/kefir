@@ -46,6 +46,7 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
 
         switch (instr->opcode) {
             case KEFIR_ASMCMP_AMD64_OPCODE(mov):
+            case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
                 if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
                     (IS_INT(&instr->args[1], 0) || IS_UINT(&instr->args[1], 0)) && !instr->args[1].segment.present) {
                     instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(xor);

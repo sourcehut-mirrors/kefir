@@ -61,20 +61,16 @@ _kefir_func_test1_label11:
 _kefir_func_test1_label12:
     cvtsi2ss %rcx, %xmm0
 _kefir_func_test1_label13:
-    movdqu %xmm1, -48(%rbp)
     movd %esi, %xmm1
 .loc 0 26 12
     addss %xmm1, %xmm0
-    movdqu -48(%rbp), %xmm1
 .loc 0 26 12
 _kefir_func_test1_label14:
     cvtss2sd %xmm0, %xmm0
 _kefir_func_test1_label15:
-    movdqu %xmm1, -48(%rbp)
     movq %rax, %xmm1
 .loc 0 26 12
     addsd %xmm1, %xmm0
-    movdqu -48(%rbp), %xmm1
 .loc 0 26 5
 _kefir_func_test1_label16:
     ldmxcsr -8(%rbp)

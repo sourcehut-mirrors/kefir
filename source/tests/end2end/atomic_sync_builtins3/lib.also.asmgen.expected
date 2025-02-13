@@ -31,13 +31,12 @@ __kefir_text_func_test_sync_bool_compare_and_swap16_begin:
     movw %cx, -4(%rbp)
     movsx %dx, %rcx
     movw %cx, -2(%rbp)
-    mov $2, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $2, %rdi
     mov %rax, %rsi
     leaq -4(%rbp), %rdx
     leaq -2(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -54,13 +53,12 @@ __kefir_text_func_test_sync_bool_compare_and_swap32_begin:
     movl %ecx, -8(%rbp)
     movsx %edx, %rcx
     movl %ecx, -4(%rbp)
-    mov $4, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $4, %rdi
     mov %rax, %rsi
     leaq -8(%rbp), %rdx
     leaq -4(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -75,13 +73,12 @@ __kefir_text_func_test_sync_bool_compare_and_swap64_begin:
     mov %rdi, %rax
     movq %rsi, -16(%rbp)
     movq %rdx, -8(%rbp)
-    mov $8, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $8, %rdi
     mov %rax, %rsi
     leaq -16(%rbp), %rdx
     leaq -8(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -98,13 +95,12 @@ __kefir_text_func_test_sync_bool_compare_and_swap8_begin:
     movb %cl, -2(%rbp)
     movsx %dl, %rcx
     movb %cl, -1(%rbp)
-    mov $1, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $1, %rdi
     mov %rax, %rsi
     leaq -2(%rbp), %rdx
     leaq -1(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     lea (%rbp), %rsp
     pop %rbp
@@ -121,13 +117,12 @@ __kefir_text_func_test_sync_val_compare_and_swap8_begin:
     movb %cl, -2(%rbp)
     movsx %dl, %rcx
     movb %cl, -1(%rbp)
-    mov $1, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $1, %rdi
     mov %rax, %rsi
     leaq -2(%rbp), %rdx
     leaq -1(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     movsxb -2(%rbp), %rax
     lea (%rbp), %rsp
@@ -145,13 +140,12 @@ __kefir_text_func_test_sync_val_compare_and_swap16_begin:
     movw %cx, -4(%rbp)
     movsx %dx, %rcx
     movw %cx, -2(%rbp)
-    mov $2, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $2, %rdi
     mov %rax, %rsi
     leaq -4(%rbp), %rdx
     leaq -2(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     movsxw -4(%rbp), %rax
     lea (%rbp), %rsp
@@ -169,13 +163,12 @@ __kefir_text_func_test_sync_val_compare_and_swap32_begin:
     movl %ecx, -8(%rbp)
     movsx %edx, %rcx
     movl %ecx, -4(%rbp)
-    mov $4, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $4, %rdi
     mov %rax, %rsi
     leaq -8(%rbp), %rdx
     leaq -4(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     movsxl -8(%rbp), %rax
     lea (%rbp), %rsp
@@ -191,13 +184,12 @@ __kefir_text_func_test_sync_val_compare_and_swap64_begin:
     mov %rdi, %rax
     movq %rsi, -16(%rbp)
     movq %rdx, -8(%rbp)
-    mov $8, %rcx
-    mov $5, %r8
-    mov $5, %r9
-    mov %rcx, %rdi
+    mov $8, %rdi
     mov %rax, %rsi
     leaq -16(%rbp), %rdx
     leaq -8(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
     call __atomic_compare_exchange@PLT
     movq -16(%rbp), %rax
     lea (%rbp), %rsp

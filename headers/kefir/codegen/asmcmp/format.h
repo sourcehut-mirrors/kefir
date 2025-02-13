@@ -24,6 +24,9 @@
 #include "kefir/codegen/asmcmp/context.h"
 #include "kefir/util/json.h"
 
-kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *, const struct kefir_asmcmp_context *, kefir_bool_t);
+kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context,
+                                         const struct kefir_asmcmp_value *);
+kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *, const struct kefir_asmcmp_context *,
+                                           kefir_bool_t);
 
 #endif

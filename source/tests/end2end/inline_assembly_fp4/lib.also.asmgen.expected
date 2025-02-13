@@ -10,7 +10,7 @@ circle_area:
 __kefir_text_func_circle_area_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_circle_area_label0:
 _kefir_func_circle_area_label1:
     movd %xmm0, -8(%rbp)
@@ -18,16 +18,14 @@ _kefir_func_circle_area_label1:
     movd %xmm0, -4(%rbp)
     movl -8(%rbp), %eax
     movd _kefir_func_circle_area_label3(%rip), %xmm2
-    movq %rax, -24(%rbp)
-    lea -4(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq -24(%rbp), %rax
+    lea -4(%rbp), %rcx
+    movq %rcx, -16(%rbp)
     movd -4(%rbp), %xmm0
     movq %rax, %xmm1
 movdqu %xmm1, %xmm0
 mulss %xmm2, %xmm0
 addss %xmm0, %xmm0
-    movq -32(%rbp), %rax
+    movq -16(%rbp), %rax
     movd %xmm0, (%rax)
     movl -4(%rbp), %eax
     movq %rax, %xmm0

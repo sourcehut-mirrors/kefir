@@ -26,10 +26,8 @@ _kefir_func_discriminant_label1:
     movq -24(%rbp), %rax
     movq -32(%rbp), %rcx
     movq -40(%rbp), %rdx
-    movq %rax, -56(%rbp)
-    lea -16(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -56(%rbp), %rax
+    lea -16(%rbp), %rsi
+    movq %rsi, -64(%rbp)
     movq %rdx, %xmm0
     movq %xmm0, -56(%rbp)
     fldl -56(%rbp)
@@ -74,10 +72,8 @@ _kefir_func_discriminantf_label1:
     movl -16(%rbp), %eax
     movl -20(%rbp), %ecx
     movl -24(%rbp), %edx
-    movq %rax, -40(%rbp)
-    lea -12(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq -40(%rbp), %rax
+    lea -12(%rbp), %rsi
+    movq %rsi, -48(%rbp)
     movd %edx, %xmm0
     movd %xmm0, -40(%rbp)
     flds -40(%rbp)

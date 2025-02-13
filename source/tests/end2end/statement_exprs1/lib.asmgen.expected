@@ -59,10 +59,10 @@ _kefir_func_eval2_label1:
     imul $8, %rax, %rax
     movq %rax, (%rcx)
     leaq -16(%rbp), %rcx
-    mov $8, %rdx
     sub %rax, %rsp
     mov $16, %rax
-    cmp %rdx, %rax
+    cmp $8, %rax
+    mov $8, %rdx
     cmovl %rdx, %rax
     neg %rax
     and %rax, %rsp

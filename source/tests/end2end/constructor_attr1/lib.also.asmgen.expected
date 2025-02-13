@@ -17,8 +17,7 @@ __kefir_text_func_init_begin:
 _kefir_func_init_label0:
 _kefir_func_init_label1:
     movq flag@GOTPCREL(%rip), %rax
-    mov $1, %rcx
-    movl %ecx, (%rax)
+    movl $1, (%rax)
     pop %rbp
     ret
 __kefir_text_func_init_end:
@@ -30,8 +29,7 @@ __kefir_text_func_init2_begin:
 _kefir_func_init2_label0:
 _kefir_func_init2_label1:
     movq flag2@GOTPCREL(%rip), %rax
-    mov $1, %rcx
-    movl %ecx, (%rax)
+    movl $1, (%rax)
     pop %rbp
     ret
 __kefir_text_func_init2_end:

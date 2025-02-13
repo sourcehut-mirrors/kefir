@@ -138,9 +138,10 @@ static kefir_result_t generate_varaiable_info(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_local_variable_simple_location(
-    struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function, kefir_ir_debug_entry_id_t variable_entry_id,
-    kefir_size_t local_variable_id) {
+static kefir_result_t generate_local_variable_simple_location(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_function *codegen_function,
+                                                              kefir_ir_debug_entry_id_t variable_entry_id,
+                                                              kefir_size_t local_variable_id) {
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
@@ -176,11 +177,12 @@ static kefir_result_t generate_local_variable_simple_location(
         REQUIRE_OK(kefir_abi_amd64_type_layout_at(&codegen_function->locals_layout, local_variable_id, &entry));
 
         kefir_int64_t offset;
-        kefir_result_t res = kefir_codegen_amd64_function_local_variable_offset(mem, codegen_function, local_variable_id, false, &offset);
+        kefir_result_t res = kefir_codegen_amd64_function_local_variable_offset(mem, codegen_function,
+                                                                                local_variable_id, false, &offset);
         if (res != KEFIR_NOT_FOUND) {
             offset += codegen_function->stack_frame.offsets.local_area;
             REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                1 + kefir_amd64_dwarf_sleb128_length(offset)));
+                                                 1 + kefir_amd64_dwarf_sleb128_length(offset)));
             REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
             REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
         }
@@ -344,11 +346,12 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
     REQUIRE_OK(res);
 
     const struct kefir_codegen_amd64_register_allocation *reg_allocation;
-    REQUIRE_OK(
-        kefir_codegen_amd64_xregalloc_allocation_of(&codegen_function->xregalloc, vreg, &reg_allocation));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(&codegen_function->xregalloc, vreg, &reg_allocation));
 
     switch (reg_allocation->type) {
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+            // Intentionally left blank
             break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER: {
@@ -450,7 +453,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
             kefir_int64_t offset;
             switch (virtual_reg->parameters.stack_frame.base) {
                 case KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA:
-                    offset = virtual_reg->parameters.stack_frame.offset + codegen_function->stack_frame.offsets.local_area;
+                    offset =
+                        virtual_reg->parameters.stack_frame.offset + codegen_function->stack_frame.offsets.local_area;
                     break;
 
                 default:
@@ -521,7 +525,8 @@ static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
     REQUIRE_OK(kefir_opt_code_debug_info_local_variable_has_refs(&codegen_function->function->debug_info,
                                                                  attr->local_variable, &has_refs));
     if (!has_refs) {
-        REQUIRE_OK(generate_local_variable_simple_location(mem, codegen_function, variable_entry_id, attr->local_variable));
+        REQUIRE_OK(
+            generate_local_variable_simple_location(mem, codegen_function, variable_entry_id, attr->local_variable));
     } else {
         kefir_result_t res;
         kefir_opt_instruction_ref_t instr_ref;

@@ -10,7 +10,7 @@ discriminant:
 __kefir_text_func_discriminant_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
+    sub $64, %rsp
 _kefir_func_discriminant_label0:
 _kefir_func_discriminant_label1:
     movq %xmm2, -56(%rbp)
@@ -26,10 +26,8 @@ _kefir_func_discriminant_label1:
     movq -48(%rbp), %rax
     movq -32(%rbp), %rcx
     movq -16(%rbp), %rdx
-    movq %rax, -72(%rbp)
-    lea -8(%rbp), %rax
-    movq %rax, -80(%rbp)
-    movq -72(%rbp), %rax
+    lea -8(%rbp), %rsi
+    movq %rsi, -64(%rbp)
     movq %rax, %xmm11
     movq %rcx, %xmm1
     movq %rdx, %xmm7
@@ -39,7 +37,7 @@ mulsd %xmm7, %xmm0
 addsd %xmm0, %xmm0
 addsd %xmm0, %xmm0
 subsd %xmm0, %xmm11
-    movq -80(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %xmm11, (%rax)
     movq -8(%rbp), %rax
     movq %rax, %xmm0

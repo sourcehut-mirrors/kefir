@@ -38,7 +38,7 @@ _kefir_func_test1_label1:
     movq %rbx, -96(%rbp)
     movq -56(%rbp), %rbx
     movq %rbx, -88(%rbp)
-    mov -88(%rbp), %rbx
+    movq -88(%rbp), %rbx
     add $1, %rbx
     movq %rbx, -56(%rbp)
     movq -64(%rbp), %rbx
@@ -47,11 +47,15 @@ _kefir_func_test1_label1:
     movq -80(%rbp), %xmm1
     addsd %xmm0, %xmm1
     movq %xmm1, -64(%rbp)
-    mov $1, %rbx
-    movsx %ebx, %rbx
+    movq %rax, -72(%rbp)
+    mov $1, %rax
+    movsx %eax, %rbx
+    movq -72(%rbp), %rax
     add %rbx, %rax
-    mov $1, %rbx
-    movsx %ebx, %rbx
+    movq %rax, -72(%rbp)
+    mov $1, %rax
+    movsx %eax, %rbx
+    movq -72(%rbp), %rax
     cvtsi2sd %rbx, %xmm0
     movq %rcx, %xmm1
     addsd %xmm0, %xmm1

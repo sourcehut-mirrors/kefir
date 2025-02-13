@@ -12,11 +12,10 @@ __kefir_text_func_func1_begin:
     mov %rbp, %rsp
 _kefir_func_func1_label0:
 _kefir_func_func1_label1:
-    mov %rax, 0
-    mov %rdx, 0
     pushfq
     sub %rsp, 8
-    mov %rcx, %rax
+    mov %rcx, 0
+    mov %rdx, 0
 lea %rax, [%rcx]
 mov [%rax], %rdx
 add %rdx, 1

@@ -432,6 +432,14 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
                     REQUIRE_OK(kefir_json_output_uinteger(&json, vreg->parameters.stack_frame.offset));
                     break;
 
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "immediate"));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "value"));
+                    REQUIRE_OK(
+                        kefir_asmcmp_value_format(&json, &func->code.context, &vreg->parameters.immediate_value));
+                    break;
+
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                     REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
                     REQUIRE_OK(kefir_json_output_string(&json, "memory_pointer"));
@@ -774,12 +782,15 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-    kefir_size_t local_index, kefir_bool_t allocate, kefir_int64_t *offset_ptr) {
+kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *mem,
+                                                                  struct kefir_codegen_amd64_function *function,
+                                                                  kefir_size_t local_index, kefir_bool_t allocate,
+                                                                  kefir_int64_t *offset_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
-    REQUIRE(offset_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
-    
+    REQUIRE(offset_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
+
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&function->locals, (kefir_hashtree_key_t) local_index, &node);
     if (res != KEFIR_NOT_FOUND) {
@@ -789,10 +800,12 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
         REQUIRE(allocate, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested local variable offset"));
 
         kefir_int64_t offset;
-        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;                                           
-        REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout, local_index, &entry));             
-        REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(&function->stack_frame, entry->size, entry->alignment, &offset));
-        REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) local_index, (kefir_hashtree_value_t) offset));
+        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+        REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout, local_index, &entry));
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(&function->stack_frame, entry->size, entry->alignment,
+                                                                  &offset));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) local_index,
+                                         (kefir_hashtree_value_t) offset));
         *offset_ptr = offset;
     }
     return KEFIR_OK;

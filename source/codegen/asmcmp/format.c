@@ -92,8 +92,12 @@ static kefir_result_t label_type_format(struct kefir_json_output *json, kefir_as
     return KEFIR_OK;
 }
 
-static kefir_result_t value_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context,
-                                   const struct kefir_asmcmp_value *value) {
+kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const struct kefir_asmcmp_context *context,
+                                         const struct kefir_asmcmp_value *value) {
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid JSON output"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp context"));
+    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmcmp value"));
+
     switch (value->type) {
         case KEFIR_ASMCMP_VALUE_TYPE_NONE:
             REQUIRE_OK(kefir_json_output_null(json));
@@ -309,14 +313,14 @@ kefir_result_t kefir_asmcmp_context_format(struct kefir_json_output *json, const
         if (instr->args[0].type != KEFIR_ASMCMP_VALUE_TYPE_NONE ||
             instr->args[1].type != KEFIR_ASMCMP_VALUE_TYPE_NONE ||
             instr->args[2].type != KEFIR_ASMCMP_VALUE_TYPE_NONE) {
-            REQUIRE_OK(value_format(json, context, &instr->args[0]));
+            REQUIRE_OK(kefir_asmcmp_value_format(json, context, &instr->args[0]));
         }
         if (instr->args[1].type != KEFIR_ASMCMP_VALUE_TYPE_NONE ||
             instr->args[2].type != KEFIR_ASMCMP_VALUE_TYPE_NONE) {
-            REQUIRE_OK(value_format(json, context, &instr->args[1]));
+            REQUIRE_OK(kefir_asmcmp_value_format(json, context, &instr->args[1]));
         }
         if (instr->args[2].type != KEFIR_ASMCMP_VALUE_TYPE_NONE) {
-            REQUIRE_OK(value_format(json, context, &instr->args[2]));
+            REQUIRE_OK(kefir_asmcmp_value_format(json, context, &instr->args[2]));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
 

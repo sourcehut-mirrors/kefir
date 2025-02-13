@@ -470,8 +470,7 @@ __kefir_text_func_int_less_or_equals2_begin:
 _kefir_func_int_less_or_equals2_label0:
 _kefir_func_int_less_or_equals2_label1:
     mov $0, %rax
-    mov $0, %rcx
-    or %rcx, %rax
+    or $0, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -485,8 +484,7 @@ __kefir_text_func_int_greater_or_equals2_begin:
 _kefir_func_int_greater_or_equals2_label0:
 _kefir_func_int_greater_or_equals2_label1:
     mov $0, %rax
-    mov $0, %rcx
-    or %rcx, %rax
+    or $0, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -555,8 +553,7 @@ __kefir_text_func_int_below_or_equals_begin:
 _kefir_func_int_below_or_equals_label0:
 _kefir_func_int_below_or_equals_label1:
     mov $0, %rax
-    mov $1, %rcx
-    or %rcx, %rax
+    or $1, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -570,8 +567,7 @@ __kefir_text_func_int_less_or_equals_begin:
 _kefir_func_int_less_or_equals_label0:
 _kefir_func_int_less_or_equals_label1:
     mov $0, %rax
-    mov $1, %rcx
-    or %rcx, %rax
+    or $1, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -585,8 +581,7 @@ __kefir_text_func_int_greater_or_equals_begin:
 _kefir_func_int_greater_or_equals_label0:
 _kefir_func_int_greater_or_equals_label1:
     mov $0, %rax
-    mov $1, %rcx
-    or %rcx, %rax
+    or $1, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -622,8 +617,7 @@ __kefir_text_func_int_above_or_equals_begin:
 _kefir_func_int_above_or_equals_label0:
 _kefir_func_int_above_or_equals_label1:
     mov $0, %rax
-    mov $1, %rcx
-    or %rcx, %rax
+    or $1, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -637,8 +631,7 @@ __kefir_text_func_int_below_or_equals2_begin:
 _kefir_func_int_below_or_equals2_label0:
 _kefir_func_int_below_or_equals2_label1:
     mov $0, %rax
-    mov $0, %rcx
-    or %rcx, %rax
+    or $0, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -652,8 +645,7 @@ __kefir_text_func_int_above_or_equals2_begin:
 _kefir_func_int_above_or_equals2_label0:
 _kefir_func_int_above_or_equals2_label1:
     mov $0, %rax
-    mov $0, %rcx
-    or %rcx, %rax
+    or $0, %rax
     setne %al
     movzx %al, %rax
     pop %rbp
