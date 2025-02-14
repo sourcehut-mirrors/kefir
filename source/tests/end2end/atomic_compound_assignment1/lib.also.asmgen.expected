@@ -279,8 +279,8 @@ _kefir_func_shl_i8_label2:
     movq -32(%rbp), %r11
     movsx %al, %rax
     movsx %al, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     shl %cl, %r9d
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -322,8 +322,8 @@ _kefir_func_shr_i8_label2:
     movq -32(%rbp), %r11
     movsx %al, %rax
     movsx %al, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     sar %cl, %r9b
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -841,8 +841,8 @@ _kefir_func_shl_i16_label2:
     movq -32(%rbp), %r11
     movsx %ax, %rax
     movsx %ax, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     shl %cl, %r9d
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -882,8 +882,8 @@ _kefir_func_shl_i32_label2:
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
     movsx %eax, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     shl %cl, %r9d
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -922,8 +922,8 @@ _kefir_func_shl_i64_label2:
     call __atomic_load_8@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     shl %cl, %r9
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -965,8 +965,8 @@ _kefir_func_shr_i16_label2:
     movq -32(%rbp), %r11
     movsx %ax, %rax
     movsx %ax, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     sar %cl, %r9w
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -1006,8 +1006,8 @@ _kefir_func_shr_i32_label2:
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
     movsx %eax, %rax
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     sar %cl, %r9d
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)
@@ -1046,8 +1046,8 @@ _kefir_func_shr_i64_label2:
     call __atomic_load_8@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    mov %r11, %rcx
     mov %rax, %r9
+    mov %r11, %rcx
     sar %cl, %r9
     movq %r10, -24(%rbp)
     movq %r11, -16(%rbp)

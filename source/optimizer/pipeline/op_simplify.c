@@ -1249,6 +1249,9 @@ static kefir_result_t simplify_int_shl(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_shl(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
+    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
@@ -1342,6 +1345,9 @@ static kefir_result_t simplify_int_shr(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_shr(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
+    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+                (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_RSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
@@ -1461,6 +1467,9 @@ static kefir_result_t simplify_int_sar(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_sar(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
+    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ARSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
