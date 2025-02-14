@@ -211,18 +211,22 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_OPT_OPCODE_INT8_MUL:
+        case KEFIR_OPT_OPCODE_UINT8_MUL:
             result.uinteger = ((kefir_uint8_t) left.uinteger) * ((kefir_uint8_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT16_MUL:
+        case KEFIR_OPT_OPCODE_UINT16_MUL:
             result.uinteger = ((kefir_uint16_t) left.uinteger) * ((kefir_uint16_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT32_MUL:
+        case KEFIR_OPT_OPCODE_UINT32_MUL:
             result.uinteger = ((kefir_uint32_t) left.uinteger) * ((kefir_uint32_t) right.uinteger);
             break;
 
         case KEFIR_OPT_OPCODE_INT64_MUL:
+        case KEFIR_OPT_OPCODE_UINT64_MUL:
             result.uinteger = ((kefir_uint64_t) left.uinteger) * ((kefir_uint64_t) right.uinteger);
             break;
 
@@ -536,6 +540,10 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_MUL:
                 case KEFIR_OPT_OPCODE_INT32_MUL:
                 case KEFIR_OPT_OPCODE_INT64_MUL:
+                case KEFIR_OPT_OPCODE_UINT8_MUL:
+                case KEFIR_OPT_OPCODE_UINT16_MUL:
+                case KEFIR_OPT_OPCODE_UINT32_MUL:
+                case KEFIR_OPT_OPCODE_UINT64_MUL:
                 case KEFIR_OPT_OPCODE_INT8_DIV:
                 case KEFIR_OPT_OPCODE_INT16_DIV:
                 case KEFIR_OPT_OPCODE_INT32_DIV:

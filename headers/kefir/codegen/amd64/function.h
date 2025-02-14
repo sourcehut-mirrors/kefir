@@ -91,8 +91,9 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_asmcmp_label_index_t *,
                                                                    kefir_asmcmp_label_index_t *);
 
-kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-    kefir_size_t, kefir_bool_t, kefir_int64_t *);
+kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *,
+                                                                  struct kefir_codegen_amd64_function *, kefir_size_t,
+                                                                  kefir_bool_t, kefir_int64_t *);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
@@ -193,6 +194,10 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_MUL) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_MUL) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_MUL) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_UINT8_MUL) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_UINT16_MUL) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_UINT32_MUL) _separator                                                   \
+    _def(int_arithmetics, KEFIR_OPT_OPCODE_UINT64_MUL) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_AND) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_AND) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_AND) _separator                                                   \

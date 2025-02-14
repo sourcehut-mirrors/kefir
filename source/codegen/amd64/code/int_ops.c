@@ -732,18 +732,22 @@ static kefir_result_t match_int_arithmetics(struct kefir_codegen_amd64_function 
             break;
 
         case KEFIR_OPT_OPCODE_INT8_MUL:
+        case KEFIR_OPT_OPCODE_UINT8_MUL:
             OP(INT_ARITHMETICS_MUL8, INT_ARITHMETICS_MUL8_CONST, true, true, KEFIR_INT8_MIN, KEFIR_INT8_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT16_MUL:
+        case KEFIR_OPT_OPCODE_UINT16_MUL:
             OP(INT_ARITHMETICS_MUL16, INT_ARITHMETICS_MUL16_CONST, true, true, KEFIR_INT16_MIN, KEFIR_INT16_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT32_MUL:
+        case KEFIR_OPT_OPCODE_UINT32_MUL:
             OP(INT_ARITHMETICS_MUL32, INT_ARITHMETICS_MUL32_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 
         case KEFIR_OPT_OPCODE_INT64_MUL:
+        case KEFIR_OPT_OPCODE_UINT64_MUL:
             OP(INT_ARITHMETICS_MUL64, INT_ARITHMETICS_MUL64_CONST, true, true, KEFIR_INT32_MIN, KEFIR_INT32_MAX);
             break;
 

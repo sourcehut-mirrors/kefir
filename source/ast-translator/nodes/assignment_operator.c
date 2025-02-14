@@ -122,27 +122,46 @@ static kefir_result_t generate_multiplication_op(const struct generate_op_parame
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_IMUL8, 0));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_UMUL8, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+            if (parameters->context->ast_context->type_traits->character_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_IMUL8, 0));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_UMUL8, 0));
+            }
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_IMUL16, 0));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_UMUL16, 0));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_IMUL32, 0));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_UMUL32, 0));
+            break;
+
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_IMUL64, 0));
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IROPCODE_UMUL64, 0));
             break;
 
         default:

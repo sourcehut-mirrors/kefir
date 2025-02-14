@@ -1058,6 +1058,22 @@ static kefir_result_t builder_int_mul(struct kefir_mem *mem, struct kefir_opt_co
             REQUIRE_OK(kefir_opt_code_builder_int64_mul(mem, code, block_id, ref1, ref2, result_ref));
             break;
 
+        case KEFIR_OPT_OPCODE_UINT8_MUL:
+            REQUIRE_OK(kefir_opt_code_builder_uint8_mul(mem, code, block_id, ref1, ref2, result_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_UINT16_MUL:
+            REQUIRE_OK(kefir_opt_code_builder_uint16_mul(mem, code, block_id, ref1, ref2, result_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_UINT32_MUL:
+            REQUIRE_OK(kefir_opt_code_builder_uint32_mul(mem, code, block_id, ref1, ref2, result_ref));
+            break;
+
+        case KEFIR_OPT_OPCODE_UINT64_MUL:
+            REQUIRE_OK(kefir_opt_code_builder_uint64_mul(mem, code, block_id, ref1, ref2, result_ref));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected original instruction opcode");
     }
@@ -1576,6 +1592,10 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
                 case KEFIR_OPT_OPCODE_INT16_MUL:
                 case KEFIR_OPT_OPCODE_INT32_MUL:
                 case KEFIR_OPT_OPCODE_INT64_MUL:
+                case KEFIR_OPT_OPCODE_UINT8_MUL:
+                case KEFIR_OPT_OPCODE_UINT16_MUL:
+                case KEFIR_OPT_OPCODE_UINT32_MUL:
+                case KEFIR_OPT_OPCODE_UINT64_MUL:
                     REQUIRE_OK(simplify_int_mul(mem, func, instr, &replacement_ref));
                     break;
 

@@ -366,7 +366,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE(instr->arg.u32[0] == state->function->locals.type_id,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                     "Expected IR operation type reference to correspond to IR function local type"));
-            REQUIRE_OK(kefir_opt_constructor_get_local_allocation(mem, state, instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_get_local_allocation(mem, state, instr->arg.u32[0], instr->arg.u32[1],
+                                                                  &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
@@ -619,6 +620,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int16_mul, KEFIR_IROPCODE_IMUL16)
             BINARY_OP(int32_mul, KEFIR_IROPCODE_IMUL32)
             BINARY_OP(int64_mul, KEFIR_IROPCODE_IMUL64)
+            BINARY_OP(uint8_mul, KEFIR_IROPCODE_UMUL8)
+            BINARY_OP(uint16_mul, KEFIR_IROPCODE_UMUL16)
+            BINARY_OP(uint32_mul, KEFIR_IROPCODE_UMUL32)
+            BINARY_OP(uint64_mul, KEFIR_IROPCODE_UMUL64)
             BINARY_OP(int8_div, KEFIR_IROPCODE_IDIV8)
             BINARY_OP(int16_div, KEFIR_IROPCODE_IDIV16)
             BINARY_OP(int32_div, KEFIR_IROPCODE_IDIV32)

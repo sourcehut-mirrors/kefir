@@ -670,7 +670,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "umul64"
                 },
                 {
                     "opcode": "xchg",

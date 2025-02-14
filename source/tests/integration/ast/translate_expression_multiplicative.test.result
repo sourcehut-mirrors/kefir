@@ -309,7 +309,7 @@
                     "arg": 239
                 },
                 {
-                    "opcode": "imul32"
+                    "opcode": "umul32"
                 },
                 {
                     "opcode": "pushi",
@@ -323,7 +323,7 @@
                     "arg": 1000
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "umul64"
                 },
                 {
                     "opcode": "pushi",
