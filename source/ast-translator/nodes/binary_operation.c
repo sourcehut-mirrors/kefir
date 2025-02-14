@@ -143,13 +143,13 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     node->arg2->properties.type,
-                                                    context->ast_context->type_traits->size_type));
+                                                    context->ast_context->type_traits->ptrdiff_type));
         } else {
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
             REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     node->arg1->properties.type,
-                                                    context->ast_context->type_traits->size_type));
+                                                    context->ast_context->type_traits->ptrdiff_type));
         }
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
@@ -266,9 +266,9 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
                                                  referenced_type, 0, &translator_type, &node->base.source_location));
 
         kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(&res,
-                      kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                   arg2_normalized_type, context->ast_context->type_traits->size_type));
+        REQUIRE_CHAIN(
+            &res, kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                               arg2_normalized_type, context->ast_context->type_traits->ptrdiff_type));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                             translator_type->object.layout->properties.size));
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));

@@ -60,7 +60,8 @@ kefir_result_t kefir_ast_translate_sizeof(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(kefir_ast_translate_sizeof(mem, context, builder, type->array_type.element_type, source_location));
         REQUIRE_OK(kefir_ast_translate_expression(mem, vlen, builder, context));
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                vlen->properties.type, context->ast_context->type_traits->size_type));
+                                                vlen->properties.type,
+                                                context->ast_context->type_traits->ptrdiff_type));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
     } else {
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &type, type));

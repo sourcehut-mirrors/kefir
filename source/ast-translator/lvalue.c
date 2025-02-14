@@ -170,13 +170,13 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
                                 mem, context->module, builder, context->ast_context->type_traits,
-                                node->subscript->properties.type, context->ast_context->type_traits->size_type));
+                                node->subscript->properties.type, context->ast_context->type_traits->ptrdiff_type));
     } else {
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
                                 mem, context->module, builder, context->ast_context->type_traits,
-                                node->array->properties.type, context->ast_context->type_traits->size_type));
+                                node->array->properties.type, context->ast_context->type_traits->ptrdiff_type));
     }
     REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
                                                         translator_type->object.layout->properties.size));
