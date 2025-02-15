@@ -61,6 +61,12 @@ static kefir_result_t collect_live_vregs(struct kefir_mem *mem, struct devirtual
                                                         &vreg_idx);
          res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&iter2, &vreg_idx)) {
         kefir_size_t lifetime_begin, lifetime_end;
+        const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, vreg_idx, &asmcmp_vreg));
+        if (asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER ||
+            asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
+            continue;
+        }
         REQUIRE_OK(
             kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, &lifetime_begin, &lifetime_end));
         if (linear_position >= lifetime_begin && linear_position <= lifetime_end) {

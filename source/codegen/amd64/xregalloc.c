@@ -311,7 +311,7 @@ static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64
     return KEFIR_OK;
 }
 
-static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
+static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
                                                           struct kefir_codegen_amd64_xregalloc *xregalloc) {
     struct kefir_hashtree_node_iterator iter;
     for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&xregalloc->virtual_blocks, &iter); node != NULL;
@@ -319,14 +319,25 @@ static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, node->key);
 
         struct kefir_codegen_amd64_xregalloc_virtual_block_iterator vreg_iter1, vreg_iter2;
+        const struct kefir_asmcmp_virtual_register *asmcmp_vreg1, *asmcmp_vreg2;
         kefir_asmcmp_virtual_register_index_t vreg1_idx, vreg2_idx;
         kefir_result_t res;
         for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter1, &vreg1_idx);
              res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter1, &vreg1_idx)) {
             struct kefir_codegen_amd64_xregalloc_virtual_register *vreg1 = &xregalloc->virtual_registers[vreg1_idx];
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg1_idx, &asmcmp_vreg1));
+            if (asmcmp_vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER ||
+                asmcmp_vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
+                continue;
+            }
             for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter2, &vreg2_idx);
                  res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter2, &vreg2_idx)) {
                 if (vreg1_idx == vreg2_idx) {
+                    continue;
+                }
+                REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg2_idx, &asmcmp_vreg2));
+                if (asmcmp_vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER ||
+                    asmcmp_vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
                     continue;
                 }
                 struct kefir_codegen_amd64_xregalloc_virtual_register *vreg2 = &xregalloc->virtual_registers[vreg2_idx];
@@ -958,7 +969,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
 
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, scan_code(mem, code, xregalloc, &state));
-    REQUIRE_CHAIN(&res, build_virtual_register_interference(mem, xregalloc));
+    REQUIRE_CHAIN(&res, build_virtual_register_interference(mem, code, xregalloc));
     REQUIRE_CHAIN(&res, do_allocation_impl(mem, code, stack_frame, xregalloc, &state));
 
     kefir_hashtree_free(mem, &state.allocation_order);
