@@ -33,6 +33,7 @@
     OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \
     OPCODE(BRANCH, "branch", branch) SEPARATOR \
+    OPCODE(BRANCH_COMPARE, "branch_compare", branch_compare) SEPARATOR \
     OPCODE(RETURN, "return", ref1) SEPARATOR \
     OPCODE(INVOKE, "invoke", call_ref) SEPARATOR \
     OPCODE(INVOKE_VIRTUAL, "invoke_virtual", call_ref) SEPARATOR \
@@ -114,26 +115,7 @@
     OPCODE(INT32_NEG, "int32_neg", ref1) SEPARATOR \
     OPCODE(INT64_NEG, "int64_neg", ref1) SEPARATOR \
     /* Logical & comparison operations */ \
-    OPCODE(INT8_EQUALS, "int8_equals", ref2) SEPARATOR \
-    OPCODE(INT16_EQUALS, "int16_equals", ref2) SEPARATOR \
-    OPCODE(INT32_EQUALS, "int32_equals", ref2) SEPARATOR \
-    OPCODE(INT64_EQUALS, "int64_equals", ref2) SEPARATOR \
-    OPCODE(INT8_GREATER, "int8_greater", ref2) SEPARATOR \
-    OPCODE(INT16_GREATER, "int16_greater", ref2) SEPARATOR \
-    OPCODE(INT32_GREATER, "int32_greater", ref2) SEPARATOR \
-    OPCODE(INT64_GREATER, "int64_greater", ref2) SEPARATOR \
-    OPCODE(INT8_LESSER, "int8_lesser", ref2) SEPARATOR \
-    OPCODE(INT16_LESSER, "int16_lesser", ref2) SEPARATOR \
-    OPCODE(INT32_LESSER, "int32_lesser", ref2) SEPARATOR \
-    OPCODE(INT64_LESSER, "int64_lesser", ref2) SEPARATOR \
-    OPCODE(INT8_ABOVE, "int8_above", ref2) SEPARATOR \
-    OPCODE(INT16_ABOVE, "int16_above", ref2) SEPARATOR \
-    OPCODE(INT32_ABOVE, "int32_above", ref2) SEPARATOR \
-    OPCODE(INT64_ABOVE, "int64_above", ref2) SEPARATOR \
-    OPCODE(INT8_BELOW, "int8_below", ref2) SEPARATOR \
-    OPCODE(INT16_BELOW, "int16_below", ref2) SEPARATOR \
-    OPCODE(INT32_BELOW, "int32_below", ref2) SEPARATOR \
-    OPCODE(INT64_BELOW, "int64_below", ref2) SEPARATOR \
+    OPCODE(INT_COMPARE, "int_compare", compare_ref2) SEPARATOR \
     OPCODE(INT8_BOOL_NOT, "int8_bool_not", ref1) SEPARATOR \
     OPCODE(INT16_BOOL_NOT, "int16_bool_not", ref1) SEPARATOR \
     OPCODE(INT32_BOOL_NOT, "int32_bool_not", ref1) SEPARATOR \

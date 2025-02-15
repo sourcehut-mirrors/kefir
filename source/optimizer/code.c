@@ -1540,6 +1540,14 @@ static kefir_result_t replace_references_branch(struct kefir_opt_instruction *in
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_branch_compare(struct kefir_opt_instruction *instr,
+                                                        kefir_opt_instruction_ref_t to_ref,
+                                                        kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_ref1(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
                                               kefir_opt_instruction_ref_t from_ref) {
     REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
@@ -1576,12 +1584,19 @@ static kefir_result_t replace_references_bitfield(struct kefir_opt_instruction *
     return KEFIR_OK;
 }
 
-static kefir_result_t replace_references_type(struct kefir_opt_instruction *instr,
-                                                    kefir_opt_instruction_ref_t to_ref,
-                                                    kefir_opt_instruction_ref_t from_ref) {
+static kefir_result_t replace_references_type(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
+                                              kefir_opt_instruction_ref_t from_ref) {
     UNUSED(instr);
     UNUSED(to_ref);
     UNUSED(from_ref);
+    return KEFIR_OK;
+}
+
+static kefir_result_t replace_references_compare_ref2(struct kefir_opt_instruction *instr,
+                                                      kefir_opt_instruction_ref_t to_ref,
+                                                      kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
     return KEFIR_OK;
 }
 

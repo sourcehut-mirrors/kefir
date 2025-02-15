@@ -116,6 +116,7 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(phi, KEFIR_OPT_OPCODE_PHI) _separator \
     _def(jump, KEFIR_OPT_OPCODE_JUMP) _separator \
     _def(branch, KEFIR_OPT_OPCODE_BRANCH) _separator \
+    _def(branch_compare, KEFIR_OPT_OPCODE_BRANCH_COMPARE) _separator \
     _def(ijump, KEFIR_OPT_OPCODE_IJUMP) _separator \
     _def(int8_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
     _def(int16_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
@@ -246,6 +247,7 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NEG) _separator                                                   \
+    _def(int_comparison, KEFIR_OPT_OPCODE_INT_COMPARE) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT8_BOOL_NOT) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT16_BOOL_NOT) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT32_BOOL_NOT) _separator                                                   \
@@ -258,26 +260,6 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT16_BOOL_AND) _separator                                                   \
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT32_BOOL_AND) _separator                                                   \
     _def(int_bool_and, KEFIR_OPT_OPCODE_INT64_BOOL_AND) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_EQUALS) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_EQUALS) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_EQUALS) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_EQUALS) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_GREATER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_GREATER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_GREATER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_GREATER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_LESSER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_LESSER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_LESSER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_LESSER) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_ABOVE) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_ABOVE) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_ABOVE) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_ABOVE) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_BELOW) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_BELOW) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_BELOW) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_BELOW) _separator                                                   \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT8_TO_BOOL) _separator                          \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT16_TO_BOOL) _separator                          \
     _def(int_to_bool, KEFIR_OPT_OPCODE_INT32_TO_BOOL) _separator                          \
@@ -365,26 +347,6 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT16_BOOL_OR) _separator \
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT32_BOOL_OR) _separator \
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT64_BOOL_OR) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_EQUALS) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_EQUALS) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_EQUALS) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_EQUALS) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_GREATER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_GREATER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_GREATER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_GREATER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_LESSER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_LESSER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_LESSER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_LESSER) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_ABOVE) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_ABOVE) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_ABOVE) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_ABOVE) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT8_BELOW) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT16_BELOW) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT32_BELOW) _separator \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT64_BELOW) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
     _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
@@ -416,86 +378,6 @@ kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_
 
 typedef enum kefir_codegen_amd64_comparison_match_op_type {
     KEFIR_CODEGEN_AMD64_COMPARISON_NONE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_ABOVE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_ABOVE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_ABOVE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_ABOVE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_ABOVE_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_ABOVE_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_ABOVE_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_ABOVE_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_ABOVE_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_ABOVE_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_ABOVE_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_ABOVE_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_ABOVE_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_ABOVE_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_ABOVE_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_ABOVE_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_BELOW,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_BELOW,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_BELOW,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_BELOW,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_BELOW_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_BELOW_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_BELOW_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_BELOW_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_BELOW_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_BELOW_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_BELOW_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_BELOW_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT8_BELOW_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT16_BELOW_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT32_BELOW_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_INT64_BELOW_OR_EQUAL_CONST,
     KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL,
     KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST,
     KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL,

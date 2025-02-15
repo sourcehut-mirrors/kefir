@@ -46,6 +46,49 @@ typedef struct kefir_opt_memory_access_flags {
 
 typedef enum kefir_opt_memory_order { KEFIR_OPT_MEMORY_ORDER_SEQ_CST } kefir_opt_memory_order_t;
 
+typedef enum kefir_opt_comparison_operation {
+    KEFIR_OPT_COMPARISON_INT8_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_EQUALS,
+    KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS,
+    KEFIR_OPT_COMPARISON_INT8_GREATER,
+    KEFIR_OPT_COMPARISON_INT16_GREATER,
+    KEFIR_OPT_COMPARISON_INT32_GREATER,
+    KEFIR_OPT_COMPARISON_INT64_GREATER,
+    KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT8_LESSER,
+    KEFIR_OPT_COMPARISON_INT16_LESSER,
+    KEFIR_OPT_COMPARISON_INT32_LESSER,
+    KEFIR_OPT_COMPARISON_INT64_LESSER,
+    KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT8_ABOVE,
+    KEFIR_OPT_COMPARISON_INT16_ABOVE,
+    KEFIR_OPT_COMPARISON_INT32_ABOVE,
+    KEFIR_OPT_COMPARISON_INT64_ABOVE,
+    KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT8_BELOW,
+    KEFIR_OPT_COMPARISON_INT16_BELOW,
+    KEFIR_OPT_COMPARISON_INT32_BELOW,
+    KEFIR_OPT_COMPARISON_INT64_BELOW,
+    KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS,
+    KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS
+} kefir_opt_comparison_operation_t;
+
 typedef enum kefir_opt_operation_reference_index {
     KEFIR_OPT_BITFIELD_BASE_REF = 0,
     KEFIR_OPT_BITFIELD_VALUE_REF = 1,
@@ -74,6 +117,7 @@ typedef struct kefir_opt_operation_parameters {
         kefir_size_t index;
         kefir_int64_t offset;
         kefir_id_t ir_ref;
+        kefir_opt_comparison_operation_t comparison;
         struct {
             kefir_id_t global_ref;
             kefir_int64_t offset;
@@ -82,8 +126,16 @@ typedef struct kefir_opt_operation_parameters {
         struct {
             kefir_opt_block_id_t target_block;
             kefir_opt_block_id_t alternative_block;
-            kefir_opt_branch_condition_variant_t condition_variant;
-            kefir_opt_instruction_ref_t condition_ref;
+            union {
+                struct {
+                    kefir_opt_branch_condition_variant_t condition_variant;
+                    kefir_opt_instruction_ref_t condition_ref;
+                };
+
+                struct {
+                    kefir_opt_comparison_operation_t operation;
+                } comparison;
+            };
         } branch;
 
         union {

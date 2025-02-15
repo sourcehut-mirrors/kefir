@@ -41,6 +41,7 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_st
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
             REQUIRE_OK(
                 kefir_list_insert_after(mem, successors, kefir_list_tail(successors),
                                         (void *) (kefir_uptr_t) tail_instr->operation.parameters.branch.target_block));

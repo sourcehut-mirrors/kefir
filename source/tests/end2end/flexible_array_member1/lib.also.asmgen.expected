@@ -16,68 +16,47 @@
 __kefir_text_section_begin:
 t3:
 __kefir_text_func_t3_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_t3_label0:
-_kefir_func_t3_label1:
     lea __kefir_function_t3_static_t3_8(%rip), %rax
-    pop %rbp
     ret
 __kefir_text_func_t3_end:
 
 get_T2:
 __kefir_text_func_get_T2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-_kefir_func_get_T2_label0:
-_kefir_func_get_T2_label1:
-    movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rax
-    mov $0, %rcx
+    movsx %edi, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
     setge %cl
     test %ecx, %ecx
     setne %sil
     movzx %sil, %rsi
-    mov $0, %rax
+    xor %eax, %eax
     test %sil, %sil
     sete %al
     test %al, %al
-    jz _kefir_func_get_T2_label6
-    mov %rsi, %rdi
-    jmp _kefir_func_get_T2_label2
-_kefir_func_get_T2_label6:
-    jmp _kefir_func_get_T2_label5
+    jz _kefir_func_get_T2_label5
+    mov %rsi, %r8
 _kefir_func_get_T2_label2:
-    mov $0, %rax
-    test %edi, %edi
+    xor %eax, %eax
+    test %r8d, %r8d
     sete %al
     test %al, %al
     jz _kefir_func_get_T2_label4
-_kefir_func_get_T2_label3:
-    mov $0, %rcx
-    movsx %ecx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    xor %eax, %eax
     ret
 _kefir_func_get_T2_label4:
-    movsxl -4(%rbp), %rax
-    lea T1(%rip), %rcx
-    add $8, %rcx
-    movsx %eax, %rax
-    imul $8, %rax, %rax
-    add %rax, %rcx
-    mov %rcx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    lea T1(%rip), %rax
+    add $8, %rax
+    movsx %edi, %rcx
+    movsx %ecx, %rcx
+    imul $8, %rcx, %rcx
+    add %rcx, %rax
     ret
 _kefir_func_get_T2_label5:
-    movsxl -4(%rbp), %rax
-    lea T1(%rip), %rcx
-    movsxl (%rcx), %rcx
-    mov $0, %rdx
-    cmp %ecx, %eax
+    lea T1(%rip), %rax
+    movsxl (%rax), %rax
+    movsx %edi, %rcx
+    xor %edx, %edx
+    cmp %eax, %ecx
     setl %dl
     test %esi, %esi
     setne %al
@@ -85,7 +64,7 @@ _kefir_func_get_T2_label5:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
-    mov %rax, %rdi
+    mov %rax, %r8
     jmp _kefir_func_get_T2_label2
 __kefir_text_func_get_T2_end:
 

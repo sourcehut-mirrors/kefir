@@ -162,12 +162,12 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "cmp",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "32bit"
+#                        "index": 6,
+#                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "integer",
@@ -180,11 +180,130 @@ factorial:
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 22,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 5,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "setl",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    14
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
 #                    "column": 5
 #                }
 #            },
 #            {
-#                "opcode": "jl",
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "sete",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "8bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [
+#                    15
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 22,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jz",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
@@ -244,7 +363,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 8,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -256,7 +375,29 @@ factorial:
 #                ],
 #                "labels": [
 #                    2,
-#                    14
+#                    16
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    17
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -269,16 +410,193 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 5,
+#                        "index": 8,
 #                        "variant": "32bit"
 #                    },
 #                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "setl",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "64bit"
+#                    },
+#                    {
 #                        "type": "integer",
-#                        "value": 2
+#                        "value": 0
 #                    }
 #                ],
 #                "labels": [
-#                    15
+#                    18
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "sete",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    19
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "or",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "setne",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "movzx",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 9
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    20
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -287,7 +605,67 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "jle",
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "sete",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "8bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [
+#                    21
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 24,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jz",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
@@ -353,13 +731,13 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 6,
+#                        "index": 14,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": [
 #                    3,
-#                    16
+#                    22
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -377,7 +755,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    17
+#                    23
 #                ],
 #                "source_location": null
 #            },
@@ -415,7 +793,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 15,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -427,7 +805,29 @@ factorial:
 #                ],
 #                "labels": [
 #                    4,
-#                    18
+#                    24
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": [
+#                    25
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -440,16 +840,53 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 7,
+#                        "index": 15,
 #                        "variant": "32bit"
 #                    },
 #                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "setg",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 12
+#                }
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "64bit"
+#                    },
+#                    {
 #                        "type": "integer",
-#                        "value": 1
+#                        "value": 0
 #                    }
 #                ],
 #                "labels": [
-#                    19
+#                    26
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -458,7 +895,67 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "jg",
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "32bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "sete",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "test",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "8bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": [
+#                    27
+#                ],
+#                "source_location": {
+#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
+#                    "line": 28,
+#                    "column": 5
+#                }
+#            },
+#            {
+#                "opcode": "jz",
 #                "args": [
 #                    {
 #                        "type": "internal_label",
@@ -518,7 +1015,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 19,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -530,7 +1027,7 @@ factorial:
 #                ],
 #                "labels": [
 #                    5,
-#                    20
+#                    28
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -543,17 +1040,17 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 20,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 8,
+#                        "index": 19,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
-#                    21
+#                    29
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -586,7 +1083,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 9,
+#                        "index": 20,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -619,7 +1116,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 21,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -631,7 +1128,7 @@ factorial:
 #                ],
 #                "labels": [
 #                    6,
-#                    22
+#                    30
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -644,7 +1141,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 22,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -655,7 +1152,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    23
+#                    31
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -668,17 +1165,17 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 23,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 11,
+#                        "index": 22,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
-#                    24
+#                    32
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -691,12 +1188,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 23,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 10,
+#                        "index": 21,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -718,12 +1215,12 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 12,
+#                        "index": 23,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": [
-#                    25
+#                    33
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -736,7 +1233,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 24,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -747,7 +1244,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    26
+#                    34
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -760,17 +1257,17 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 26,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 24,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
-#                    27
+#                    35
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -783,12 +1280,12 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 26,
 #                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 14,
+#                        "index": 25,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -810,12 +1307,12 @@ factorial:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 15,
+#                        "index": 26,
 #                        "variant": "32bit"
 #                    }
 #                ],
 #                "labels": [
-#                    28
+#                    36
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -832,7 +1329,7 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    29
+#                    37
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -886,7 +1383,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 27,
 #                        "variant": "64bit"
 #                    },
 #                    {
@@ -898,7 +1395,7 @@ factorial:
 #                ],
 #                "labels": [
 #                    7,
-#                    30
+#                    38
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -911,17 +1408,17 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 28,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 16,
+#                        "index": 27,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
-#                    31
+#                    39
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -954,7 +1451,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 17,
+#                        "index": 28,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -987,18 +1484,18 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 30,
 #                        "variant": "default"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 29,
 #                        "variant": "default"
 #                    }
 #                ],
 #                "labels": [
 #                    8,
-#                    32
+#                    40
 #                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
@@ -1031,7 +1528,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 30,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1070,77 +1567,119 @@ _kefir_func_factorial_label11:
 .loc 0 22 9
 _kefir_func_factorial_label12:
     movsxl -8(%rbp), %rax
-.loc 0 22 5
+.loc 0 22 9
 _kefir_func_factorial_label13:
+    mov $0, %rcx
     cmp $0, %eax
-    jl _kefir_func_factorial_label8
+    setl %cl
+.loc 0 22 5
+_kefir_func_factorial_label14:
+    mov $0, %rax
+    test %ecx, %ecx
+    sete %al
+.loc 0 22 5
+_kefir_func_factorial_label15:
+    test %al, %al
+    jz _kefir_func_factorial_label8
 .loc 0 24 9
 _kefir_func_factorial_label2:
-_kefir_func_factorial_label14:
+_kefir_func_factorial_label16:
     movsxl -8(%rbp), %rax
-.loc 0 24 5
-_kefir_func_factorial_label15:
+.loc 0 24 9
+_kefir_func_factorial_label17:
+    mov $0, %rcx
     cmp $2, %eax
-    jle _kefir_func_factorial_label7
+    setl %cl
+.loc 0 24 9
+_kefir_func_factorial_label18:
+    mov $0, %rdx
+    mov $2, %rdi
+.loc 0 24 9
+    cmp %eax, %edi
+    sete %dl
+.loc 0 24 9
+_kefir_func_factorial_label19:
+    or %rdx, %rcx
+    setne %cl
+    movzx %cl, %rcx
+.loc 0 24 5
+_kefir_func_factorial_label20:
+    mov $0, %rax
+    test %ecx, %ecx
+    sete %al
+.loc 0 24 5
+_kefir_func_factorial_label21:
+    test %al, %al
+    jz _kefir_func_factorial_label7
 .loc 0 27 5
 _kefir_func_factorial_label3:
-_kefir_func_factorial_label16:
+_kefir_func_factorial_label22:
     movl $1, -4(%rbp)
-_kefir_func_factorial_label17:
+_kefir_func_factorial_label23:
 .loc 0 28 12
 _kefir_func_factorial_label4:
-_kefir_func_factorial_label18:
+_kefir_func_factorial_label24:
     movsxl -8(%rbp), %rax
-.loc 0 28 5
-_kefir_func_factorial_label19:
+.loc 0 28 12
+_kefir_func_factorial_label25:
+    mov $0, %rcx
     cmp $1, %eax
-    jg _kefir_func_factorial_label6
+    setg %cl
+.loc 0 28 5
+_kefir_func_factorial_label26:
+    mov $0, %rax
+    test %ecx, %ecx
+    sete %al
+.loc 0 28 5
+_kefir_func_factorial_label27:
+    test %al, %al
+    jz _kefir_func_factorial_label6
 .loc 0 31 12
 _kefir_func_factorial_label5:
-_kefir_func_factorial_label20:
+_kefir_func_factorial_label28:
     movsxl -4(%rbp), %rax
 .loc 0 31 5
-_kefir_func_factorial_label21:
+_kefir_func_factorial_label29:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 29 19
 _kefir_func_factorial_label6:
-_kefir_func_factorial_label22:
+_kefir_func_factorial_label30:
     movsxl -8(%rbp), %rax
 .loc 0 29 9
-_kefir_func_factorial_label23:
+_kefir_func_factorial_label31:
     movsxl -4(%rbp), %rcx
 .loc 0 29 9
-_kefir_func_factorial_label24:
+_kefir_func_factorial_label32:
     imul %eax, %ecx
 .loc 0 29 9
-_kefir_func_factorial_label25:
+_kefir_func_factorial_label33:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
-_kefir_func_factorial_label26:
+_kefir_func_factorial_label34:
     movsxl -8(%rbp), %rax
 .loc 0 28 19
-_kefir_func_factorial_label27:
+_kefir_func_factorial_label35:
     add $-1, %eax
 .loc 0 28 19
-_kefir_func_factorial_label28:
+_kefir_func_factorial_label36:
     movl %eax, -8(%rbp)
 .loc 0 28 5
-_kefir_func_factorial_label29:
+_kefir_func_factorial_label37:
     jmp _kefir_func_factorial_label4
 .loc 0 25 16
 _kefir_func_factorial_label7:
-_kefir_func_factorial_label30:
+_kefir_func_factorial_label38:
     movsxl -8(%rbp), %rax
 .loc 0 25 9
-_kefir_func_factorial_label31:
+_kefir_func_factorial_label39:
     lea (%rbp), %rsp
     pop %rbp
     ret
 .loc 0 23 9
 _kefir_func_factorial_label8:
-_kefir_func_factorial_label32:
+_kefir_func_factorial_label40:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -1317,17 +1856,17 @@ __kefir_debug_info_section_entry_5:
     .byte 0
 __kefir_debug_info_section_entry_6:
     .byte 5
-    .quad _kefir_func_factorial_label14
-    .quad _kefir_func_factorial_label10 - _kefir_func_factorial_label14
+    .quad _kefir_func_factorial_label16
+    .quad _kefir_func_factorial_label10 - _kefir_func_factorial_label16
     .byte 0
 __kefir_debug_info_section_entry_7:
     .byte 5
-    .quad _kefir_func_factorial_label18
-    .quad _kefir_func_factorial_label18 - _kefir_func_factorial_label18
+    .quad _kefir_func_factorial_label24
+    .quad _kefir_func_factorial_label24 - _kefir_func_factorial_label24
 __kefir_debug_info_section_entry_8:
     .byte 5
-    .quad _kefir_func_factorial_label22
-    .quad _kefir_func_factorial_label26 - _kefir_func_factorial_label22
+    .quad _kefir_func_factorial_label30
+    .quad _kefir_func_factorial_label34 - _kefir_func_factorial_label30
     .byte 0
     .byte 0
 __kefir_debug_info_section_entry_9:
@@ -1410,7 +1949,7 @@ __kefir_debug_loclist_section_entry_1:
 __kefir_debug_loclist_section_entry_2:
     .byte 7
     .quad _kefir_func_factorial_label12
-    .quad _kefir_func_factorial_label22
+    .quad _kefir_func_factorial_label30
     .byte 2
     .byte 145
     .byte 120
@@ -1418,7 +1957,7 @@ __kefir_debug_loclist_section_entry_2:
 __kefir_debug_loclist_section_entry_3:
     .byte 7
     .quad _kefir_func_factorial_label12
-    .quad _kefir_func_factorial_label22
+    .quad _kefir_func_factorial_label30
     .byte 2
     .byte 145
     .byte 124

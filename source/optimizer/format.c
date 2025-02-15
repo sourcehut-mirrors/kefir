@@ -72,6 +72,191 @@ static kefir_result_t format_operation_branch(struct kefir_json_output *json, co
     return KEFIR_OK;
 }
 
+static kefir_result_t format_comparison(struct kefir_json_output *json, kefir_opt_comparison_operation_t comparison) {
+    switch (comparison) {
+        case KEFIR_OPT_COMPARISON_INT8_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_not_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_greater_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_lesser_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_above"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_above_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_below"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_below_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_not_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_greater_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_lesser_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_above"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_above_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_below"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_below_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_not_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_greater_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_lesser_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_above"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_above_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_below"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_below_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_not_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_greater_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_lesser_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_above"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_above_or_equals"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_below"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_below_or_equals"));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison operator");
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t format_operation_branch_compare(struct kefir_json_output *json,
+                                                      const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "comparison"));
+    REQUIRE_OK(format_comparison(json, oper->parameters.branch.comparison.operation));
+    REQUIRE_OK(kefir_json_output_object_key(json, "args"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "target_block"));
+    REQUIRE_OK(id_format(json, oper->parameters.branch.target_block));
+    REQUIRE_OK(kefir_json_output_object_key(json, "alternative_block"));
+    REQUIRE_OK(id_format(json, oper->parameters.branch.alternative_block));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_ref1(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
     REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
@@ -156,6 +341,18 @@ static kefir_result_t format_operation_typed_ref2(struct kefir_json_output *json
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_compare_ref2(struct kefir_json_output *json,
+                                                    const struct kefir_opt_operation *oper) {
+    REQUIRE_OK(kefir_json_output_object_key(json, "comparison"));
+    REQUIRE_OK(format_comparison(json, oper->parameters.comparison));
+    REQUIRE_OK(kefir_json_output_object_key(json, "args"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_ref_offset(struct kefir_json_output *json,
                                                   const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "ref"));
@@ -233,8 +430,7 @@ static kefir_result_t format_operation_variable(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_type(struct kefir_json_output *json,
-                                                const struct kefir_opt_operation *oper) {
+static kefir_result_t format_operation_type(struct kefir_json_output *json, const struct kefir_opt_operation *oper) {
     REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
     REQUIRE_OK(id_format(json, oper->parameters.type.type_id));
     REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));

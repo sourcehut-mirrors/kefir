@@ -197,6 +197,30 @@ kefir_result_t kefir_opt_code_builder_finalize_branch(struct kefir_mem *mem, str
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_finalize_branch_compare(
+    struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
+    kefir_opt_comparison_operation_t comparison_op, kefir_opt_instruction_ref_t ref1, kefir_opt_instruction_ref_t ref2,
+    kefir_opt_block_id_t target_block, kefir_opt_block_id_t alternative_block,
+    kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
+    REQUIRE_OK(instr_exists(code, block_id, ref2, false));
+    REQUIRE_OK(block_exists(code, target_block));
+    REQUIRE_OK(block_exists(code, alternative_block));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_BRANCH_COMPARE,
+                                       .parameters = {.branch = {.target_block = target_block,
+                                                                 .alternative_block = alternative_block,
+                                                                 .comparison.operation = comparison_op},
+                                                      .refs = {ref1, ref2, KEFIR_ID_NONE}}},
+        true, instr_id_ptr));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                       kefir_opt_block_id_t block_id,
                                                       kefir_opt_instruction_ref_t arg_instr_id,
@@ -643,6 +667,25 @@ kefir_result_t kefir_opt_code_builder_fenv_update(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_int_comparison(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                     kefir_opt_block_id_t block_id,
+                                                     kefir_opt_comparison_operation_t comparison_op,
+                                                     kefir_opt_instruction_ref_t ref1, kefir_opt_instruction_ref_t ref2,
+                                                     kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
+    REQUIRE_OK(instr_exists(code, block_id, ref2, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {
+            .opcode = KEFIR_OPT_OPCODE_INT_COMPARE,
+            .parameters = {.comparison = comparison_op, .refs = {ref1, ref2, KEFIR_ID_NONE}}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_bits_extract_signed(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                           kefir_opt_block_id_t block_id,
                                                           kefir_opt_instruction_ref_t base_ref, kefir_size_t offset,
@@ -902,26 +945,6 @@ BINARY_OP(int8_arshift, KEFIR_OPT_OPCODE_INT8_ARSHIFT)
 BINARY_OP(int16_arshift, KEFIR_OPT_OPCODE_INT16_ARSHIFT)
 BINARY_OP(int32_arshift, KEFIR_OPT_OPCODE_INT32_ARSHIFT)
 BINARY_OP(int64_arshift, KEFIR_OPT_OPCODE_INT64_ARSHIFT)
-BINARY_OP(int8_equals, KEFIR_OPT_OPCODE_INT8_EQUALS)
-BINARY_OP(int16_equals, KEFIR_OPT_OPCODE_INT16_EQUALS)
-BINARY_OP(int32_equals, KEFIR_OPT_OPCODE_INT32_EQUALS)
-BINARY_OP(int64_equals, KEFIR_OPT_OPCODE_INT64_EQUALS)
-BINARY_OP(int8_greater, KEFIR_OPT_OPCODE_INT8_GREATER)
-BINARY_OP(int16_greater, KEFIR_OPT_OPCODE_INT16_GREATER)
-BINARY_OP(int32_greater, KEFIR_OPT_OPCODE_INT32_GREATER)
-BINARY_OP(int64_greater, KEFIR_OPT_OPCODE_INT64_GREATER)
-BINARY_OP(int8_lesser, KEFIR_OPT_OPCODE_INT8_LESSER)
-BINARY_OP(int16_lesser, KEFIR_OPT_OPCODE_INT16_LESSER)
-BINARY_OP(int32_lesser, KEFIR_OPT_OPCODE_INT32_LESSER)
-BINARY_OP(int64_lesser, KEFIR_OPT_OPCODE_INT64_LESSER)
-BINARY_OP(int8_above, KEFIR_OPT_OPCODE_INT8_ABOVE)
-BINARY_OP(int16_above, KEFIR_OPT_OPCODE_INT16_ABOVE)
-BINARY_OP(int32_above, KEFIR_OPT_OPCODE_INT32_ABOVE)
-BINARY_OP(int64_above, KEFIR_OPT_OPCODE_INT64_ABOVE)
-BINARY_OP(int8_below, KEFIR_OPT_OPCODE_INT8_BELOW)
-BINARY_OP(int16_below, KEFIR_OPT_OPCODE_INT16_BELOW)
-BINARY_OP(int32_below, KEFIR_OPT_OPCODE_INT32_BELOW)
-BINARY_OP(int64_below, KEFIR_OPT_OPCODE_INT64_BELOW)
 BINARY_OP(int8_bool_and, KEFIR_OPT_OPCODE_INT8_BOOL_AND)
 BINARY_OP(int16_bool_and, KEFIR_OPT_OPCODE_INT16_BOOL_AND)
 BINARY_OP(int32_bool_and, KEFIR_OPT_OPCODE_INT32_BOOL_AND)

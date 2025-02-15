@@ -600,6 +600,38 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef UNARY_OP
 
+#define COMPARE_OP(_opcode, _cmp)                                                                                     \
+    case _opcode:                                                                                                     \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                         \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                         \
+        REQUIRE_OK(kefir_opt_code_builder_int_comparison(mem, code, current_block_id, (_cmp), instr_ref2, instr_ref3, \
+                                                         &instr_ref));                                                \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                          \
+        break;
+
+            COMPARE_OP(KEFIR_IROPCODE_IEQUALS8, KEFIR_OPT_COMPARISON_INT8_EQUALS)
+            COMPARE_OP(KEFIR_IROPCODE_IGREATER8, KEFIR_OPT_COMPARISON_INT8_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_ILESSER8, KEFIR_OPT_COMPARISON_INT8_LESSER)
+            COMPARE_OP(KEFIR_IROPCODE_IABOVE8, KEFIR_OPT_COMPARISON_INT8_ABOVE)
+            COMPARE_OP(KEFIR_IROPCODE_IBELOW8, KEFIR_OPT_COMPARISON_INT8_BELOW)
+            COMPARE_OP(KEFIR_IROPCODE_IEQUALS16, KEFIR_OPT_COMPARISON_INT16_EQUALS)
+            COMPARE_OP(KEFIR_IROPCODE_IGREATER16, KEFIR_OPT_COMPARISON_INT16_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_ILESSER16, KEFIR_OPT_COMPARISON_INT16_LESSER)
+            COMPARE_OP(KEFIR_IROPCODE_IABOVE16, KEFIR_OPT_COMPARISON_INT16_ABOVE)
+            COMPARE_OP(KEFIR_IROPCODE_IBELOW16, KEFIR_OPT_COMPARISON_INT16_BELOW)
+            COMPARE_OP(KEFIR_IROPCODE_IEQUALS32, KEFIR_OPT_COMPARISON_INT32_EQUALS)
+            COMPARE_OP(KEFIR_IROPCODE_IGREATER32, KEFIR_OPT_COMPARISON_INT32_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_ILESSER32, KEFIR_OPT_COMPARISON_INT32_LESSER)
+            COMPARE_OP(KEFIR_IROPCODE_IABOVE32, KEFIR_OPT_COMPARISON_INT32_ABOVE)
+            COMPARE_OP(KEFIR_IROPCODE_IBELOW32, KEFIR_OPT_COMPARISON_INT32_BELOW)
+            COMPARE_OP(KEFIR_IROPCODE_IEQUALS64, KEFIR_OPT_COMPARISON_INT64_EQUALS)
+            COMPARE_OP(KEFIR_IROPCODE_IGREATER64, KEFIR_OPT_COMPARISON_INT64_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_ILESSER64, KEFIR_OPT_COMPARISON_INT64_LESSER)
+            COMPARE_OP(KEFIR_IROPCODE_IABOVE64, KEFIR_OPT_COMPARISON_INT64_ABOVE)
+            COMPARE_OP(KEFIR_IROPCODE_IBELOW64, KEFIR_OPT_COMPARISON_INT64_BELOW)
+
+#undef COMPARE_OP
+
 #define BINARY_OP(_id, _opcode)                                                                                    \
     case _opcode:                                                                                                  \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                      \
@@ -664,26 +696,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(int16_arshift, KEFIR_IROPCODE_IARSHIFT16)
             BINARY_OP(int32_arshift, KEFIR_IROPCODE_IARSHIFT32)
             BINARY_OP(int64_arshift, KEFIR_IROPCODE_IARSHIFT64)
-            BINARY_OP(int8_equals, KEFIR_IROPCODE_IEQUALS8)
-            BINARY_OP(int8_greater, KEFIR_IROPCODE_IGREATER8)
-            BINARY_OP(int8_lesser, KEFIR_IROPCODE_ILESSER8)
-            BINARY_OP(int8_above, KEFIR_IROPCODE_IABOVE8)
-            BINARY_OP(int8_below, KEFIR_IROPCODE_IBELOW8)
-            BINARY_OP(int16_equals, KEFIR_IROPCODE_IEQUALS16)
-            BINARY_OP(int16_greater, KEFIR_IROPCODE_IGREATER16)
-            BINARY_OP(int16_lesser, KEFIR_IROPCODE_ILESSER16)
-            BINARY_OP(int16_above, KEFIR_IROPCODE_IABOVE16)
-            BINARY_OP(int16_below, KEFIR_IROPCODE_IBELOW16)
-            BINARY_OP(int32_equals, KEFIR_IROPCODE_IEQUALS32)
-            BINARY_OP(int32_greater, KEFIR_IROPCODE_IGREATER32)
-            BINARY_OP(int32_lesser, KEFIR_IROPCODE_ILESSER32)
-            BINARY_OP(int32_above, KEFIR_IROPCODE_IABOVE32)
-            BINARY_OP(int32_below, KEFIR_IROPCODE_IBELOW32)
-            BINARY_OP(int64_equals, KEFIR_IROPCODE_IEQUALS64)
-            BINARY_OP(int64_greater, KEFIR_IROPCODE_IGREATER64)
-            BINARY_OP(int64_lesser, KEFIR_IROPCODE_ILESSER64)
-            BINARY_OP(int64_above, KEFIR_IROPCODE_IABOVE64)
-            BINARY_OP(int64_below, KEFIR_IROPCODE_IBELOW64)
             BINARY_OP(int8_bool_and, KEFIR_IROPCODE_BAND8)
             BINARY_OP(int16_bool_and, KEFIR_IROPCODE_BAND16)
             BINARY_OP(int32_bool_and, KEFIR_IROPCODE_BAND32)
@@ -1050,6 +1062,7 @@ static kefir_result_t link_blocks_match(struct kefir_mem *mem, struct kefir_opt_
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
             REQUIRE_OK(link_blocks_impl(mem, state, block->id, instr->operation.parameters.branch.target_block));
             REQUIRE_OK(link_blocks_impl(mem, state, block->id, instr->operation.parameters.branch.alternative_block));
             break;
@@ -1140,7 +1153,8 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
             REQUIRE_OK(link_blocks_traverse(mem, state, target_block));
         } break;
 
-        case KEFIR_OPT_OPCODE_BRANCH: {
+        case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_BRANCH_COMPARE: {
             kefir_opt_block_id_t target_block = instr->operation.parameters.branch.target_block;
             kefir_opt_block_id_t alternative_block = instr->operation.parameters.branch.alternative_block;
 

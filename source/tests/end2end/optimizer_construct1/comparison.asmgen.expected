@@ -59,7 +59,8 @@
                             },
                             {
                                 "id": 3,
-                                "opcode": "int32_greater",
+                                "opcode": "int_compare",
+                                "comparison": "int32_greater",
                                 "args": [
                                     1,
                                     2
@@ -105,7 +106,8 @@
                             },
                             {
                                 "id": 8,
-                                "opcode": "int32_lesser",
+                                "opcode": "int_compare",
+                                "comparison": "int32_lesser",
                                 "args": [
                                     6,
                                     7
@@ -116,7 +118,8 @@
                             },
                             {
                                 "id": 9,
-                                "opcode": "int32_equals",
+                                "opcode": "int_compare",
+                                "comparison": "int32_equals",
                                 "args": [
                                     7,
                                     6
@@ -146,7 +149,8 @@
                             },
                             {
                                 "id": 12,
-                                "opcode": "int32_equals",
+                                "opcode": "int_compare",
+                                "comparison": "int32_equals",
                                 "args": [
                                     10,
                                     11
@@ -278,7 +282,8 @@
                             },
                             {
                                 "id": 19,
-                                "opcode": "int32_lesser",
+                                "opcode": "int_compare",
+                                "comparison": "int32_lesser",
                                 "args": [
                                     17,
                                     18
@@ -390,7 +395,8 @@
                             },
                             {
                                 "id": 31,
-                                "opcode": "int32_greater",
+                                "opcode": "int_compare",
+                                "comparison": "int32_greater",
                                 "args": [
                                     29,
                                     30
@@ -401,7 +407,8 @@
                             },
                             {
                                 "id": 32,
-                                "opcode": "int32_equals",
+                                "opcode": "int_compare",
+                                "comparison": "int32_equals",
                                 "args": [
                                     30,
                                     29
@@ -439,7 +446,8 @@
                             },
                             {
                                 "id": 36,
-                                "opcode": "int32_equals",
+                                "opcode": "int_compare",
+                                "comparison": "int32_equals",
                                 "args": [
                                     34,
                                     35

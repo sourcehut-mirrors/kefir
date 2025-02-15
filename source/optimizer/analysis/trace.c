@@ -114,6 +114,7 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
             REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.branch.alternative_block, instr_queue,
                                    traced_blocks, pending_instr));
             REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.branch.target_block, instr_queue,

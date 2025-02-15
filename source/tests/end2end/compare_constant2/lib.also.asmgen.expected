@@ -15,30 +15,33 @@ __kefir_text_section_begin:
 compare1:
 __kefir_text_func_compare1_begin:
     xor %eax, %eax
-    cmp $1, %rdi
+    mov $1, %rcx
+    cmp %rdi, %rcx
     sete %al
     xor %ecx, %ecx
-    cmp $10, %rdi
-    sete %cl
-    xor %edx, %edx
-    test %cl, %cl
-    sete %dl
-    add %edx, %eax
-    xor %ecx, %ecx
-    cmp $2, %rdi
-    setl %cl
+    mov $10, %rdx
+    cmp %rdi, %rdx
+    setne %cl
     add %ecx, %eax
     xor %ecx, %ecx
-    cmp $3, %rdi
-    setle %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    cmp $4, %rdi
+    mov $2, %rdx
+    cmp %rdi, %rdx
     setg %cl
     add %ecx, %eax
     xor %ecx, %ecx
-    cmp $5, %rdi
+    mov $3, %rdx
+    cmp %rdi, %rdx
     setge %cl
+    add %ecx, %eax
+    xor %ecx, %ecx
+    mov $4, %rdx
+    cmp %rdi, %rdx
+    setl %cl
+    add %ecx, %eax
+    xor %ecx, %ecx
+    mov $5, %rdx
+    cmp %rdi, %rdx
+    setle %cl
     add %ecx, %eax
     ret
 __kefir_text_func_compare1_end:
@@ -46,105 +49,104 @@ __kefir_text_func_compare1_end:
 compare2:
 __kefir_text_func_compare2_begin:
     xor %eax, %eax
-    cmp $1, %rdi
+    mov $1, %rcx
+    cmp %rdi, %rcx
     sete %al
     xor %ecx, %ecx
-    cmp $10, %rdi
-    sete %cl
-    xor %edx, %edx
-    test %cl, %cl
-    sete %dl
-    add %edx, %eax
-    xor %ecx, %ecx
-    cmp $2, %rdi
-    setb %cl
+    mov $10, %rdx
+    cmp %rdi, %rdx
+    setne %cl
     add %ecx, %eax
     xor %ecx, %ecx
-    cmp $3, %rdi
-    setbe %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    cmp $4, %rdi
+    mov $2, %rdx
+    cmp %rdi, %rdx
     seta %cl
     add %ecx, %eax
     xor %ecx, %ecx
-    cmp $5, %rdi
+    mov $3, %rdx
+    cmp %rdi, %rdx
     setae %cl
+    add %ecx, %eax
+    xor %ecx, %ecx
+    mov $4, %rdx
+    cmp %rdi, %rdx
+    setb %cl
+    add %ecx, %eax
+    xor %ecx, %ecx
+    mov $5, %rdx
+    cmp %rdi, %rdx
+    setbe %cl
     add %ecx, %eax
     ret
 __kefir_text_func_compare2_end:
 
 compare3:
 __kefir_text_func_compare3_begin:
-    xor %eax, %eax
-    movabs $72057594037927935, %rcx
-    cmp %rcx, %rdi
-    sete %al
+    movabs $72057594037927935, %rax
     xor %ecx, %ecx
-    movabs $72057594037927930, %rdx
-    cmp %rdx, %rdi
+    cmp %rdi, %rax
     sete %cl
+    movabs $72057594037927930, %rax
     xor %edx, %edx
-    test %cl, %cl
-    sete %dl
-    add %edx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927934, %rdx
-    cmp %rdx, %rdi
-    setl %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927933, %rdx
-    cmp %rdx, %rdi
-    setle %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927932, %rdx
-    cmp %rdx, %rdi
-    setg %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927931, %rdx
-    cmp %rdx, %rdi
-    setge %cl
-    add %ecx, %eax
+    cmp %rdi, %rax
+    setne %dl
+    add %edx, %ecx
+    movabs $72057594037927934, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setg %dl
+    add %edx, %ecx
+    movabs $72057594037927933, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setge %dl
+    add %edx, %ecx
+    movabs $72057594037927932, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setl %dl
+    add %edx, %ecx
+    movabs $72057594037927931, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setle %dl
+    add %edx, %ecx
+    mov %rcx, %rax
     ret
 __kefir_text_func_compare3_end:
 
 compare4:
 __kefir_text_func_compare4_begin:
-    xor %eax, %eax
-    movabs $72057594037927935, %rcx
-    cmp %rcx, %rdi
-    sete %al
+    movabs $72057594037927935, %rax
     xor %ecx, %ecx
-    movabs $72057594037927930, %rdx
-    cmp %rdx, %rdi
+    cmp %rdi, %rax
     sete %cl
+    movabs $72057594037927930, %rax
     xor %edx, %edx
-    test %cl, %cl
-    sete %dl
-    add %edx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927934, %rdx
-    cmp %rdx, %rdi
-    setb %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927933, %rdx
-    cmp %rdx, %rdi
-    setbe %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927932, %rdx
-    cmp %rdx, %rdi
-    seta %cl
-    add %ecx, %eax
-    xor %ecx, %ecx
-    movabs $72057594037927931, %rdx
-    cmp %rdx, %rdi
-    setae %cl
-    add %ecx, %eax
+    cmp %rdi, %rax
+    setne %dl
+    add %edx, %ecx
+    movabs $72057594037927934, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    seta %dl
+    add %edx, %ecx
+    movabs $72057594037927933, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setae %dl
+    add %edx, %ecx
+    movabs $72057594037927932, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setb %dl
+    add %edx, %ecx
+    movabs $72057594037927931, %rax
+    xor %edx, %edx
+    cmp %rdi, %rax
+    setbe %dl
+    add %edx, %ecx
+    mov %rcx, %rax
     ret
 __kefir_text_func_compare4_end:
 
