@@ -234,6 +234,86 @@ static kefir_result_t format_comparison(struct kefir_json_output *json, kefir_op
             REQUIRE_OK(kefir_json_output_string(json, "int64_below_or_equals"));
             break;
 
+        case KEFIR_OPT_COMPARISON_FLOAT32_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_not_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_greater_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_lesser_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_not_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_not_greater_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_not_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_not_lesser_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_not_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_greater_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_lesser_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_not_greater"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_not_greater_or_equal"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_not_lesser"));
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_not_lesser_or_equal"));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison operator");
     }

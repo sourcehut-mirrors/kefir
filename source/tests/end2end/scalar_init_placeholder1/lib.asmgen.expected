@@ -44,8 +44,7 @@ __kefir_text_func_test3_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd _kefir_func_test3_label4(%rip), %xmm2
-    ucomiss %xmm2, %xmm0
+    ucomiss _kefir_func_test3_label4(%rip), %xmm0
     jp _kefir_func_test3_label5
     ja _kefir_func_test3_label3
 _kefir_func_test3_label2:
@@ -71,8 +70,7 @@ __kefir_text_func_test4_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq _kefir_func_test4_label4(%rip), %xmm2
-    ucomisd %xmm2, %xmm0
+    ucomisd _kefir_func_test4_label4(%rip), %xmm0
     jp _kefir_func_test4_label5
     ja _kefir_func_test4_label3
 _kefir_func_test4_label2:

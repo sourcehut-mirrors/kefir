@@ -18,27 +18,23 @@ __kefir_text_func_compare1_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movd _kefir_func_compare1_label2(%rip), %xmm1
     xor %eax, %eax
     xor %ecx, %ecx
-    ucomiss %xmm1, %xmm0
+    ucomiss _kefir_func_compare1_label2(%rip), %xmm0
     setnp %cl
     cmovne %rax, %rcx
-    movd _kefir_func_compare1_label3(%rip), %xmm1
     mov $1, %rax
     xor %edx, %edx
-    ucomiss %xmm1, %xmm0
+    ucomiss _kefir_func_compare1_label3(%rip), %xmm0
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
-    movd _kefir_func_compare1_label4(%rip), %xmm1
     xor %eax, %eax
-    comiss %xmm1, %xmm0
+    comiss _kefir_func_compare1_label4(%rip), %xmm0
     seta %al
     add %eax, %ecx
-    movd _kefir_func_compare1_label5(%rip), %xmm1
     xor %eax, %eax
-    comiss %xmm1, %xmm0
+    comiss _kefir_func_compare1_label5(%rip), %xmm0
     setae %al
     add %eax, %ecx
     movd _kefir_func_compare1_label6(%rip), %xmm1
@@ -107,15 +103,13 @@ __kefir_text_func_compare2_begin:
     comiss %xmm0, %xmm1
     setae %al
     add %eax, %ecx
-    movd _kefir_func_compare2_label6(%rip), %xmm1
     xor %eax, %eax
-    comiss %xmm1, %xmm0
+    comiss _kefir_func_compare2_label6(%rip), %xmm0
     seta %al
     add %eax, %ecx
-    movq _kefir_func_compare2_label7(%rip), %xmm1
     cvtss2sd %xmm0, %xmm0
     xor %eax, %eax
-    comisd %xmm1, %xmm0
+    comisd _kefir_func_compare2_label7(%rip), %xmm0
     setae %al
     add %eax, %ecx
     mov %rcx, %rax
@@ -151,27 +145,23 @@ __kefir_text_func_compare3_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq _kefir_func_compare3_label2(%rip), %xmm1
     xor %eax, %eax
     xor %ecx, %ecx
-    ucomisd %xmm1, %xmm0
+    ucomisd _kefir_func_compare3_label2(%rip), %xmm0
     setnp %cl
     cmovne %rax, %rcx
-    movq _kefir_func_compare3_label3(%rip), %xmm1
     mov $1, %rax
     xor %edx, %edx
-    ucomisd %xmm1, %xmm0
+    ucomisd _kefir_func_compare3_label3(%rip), %xmm0
     setp %dl
     cmovne %rax, %rdx
     add %edx, %ecx
-    movq _kefir_func_compare3_label4(%rip), %xmm1
     xor %eax, %eax
-    comisd %xmm1, %xmm0
+    comisd _kefir_func_compare3_label4(%rip), %xmm0
     seta %al
     add %eax, %ecx
-    movq _kefir_func_compare3_label5(%rip), %xmm1
     xor %eax, %eax
-    comisd %xmm1, %xmm0
+    comisd _kefir_func_compare3_label5(%rip), %xmm0
     setae %al
     add %eax, %ecx
     movq _kefir_func_compare3_label6(%rip), %xmm1
@@ -240,14 +230,12 @@ __kefir_text_func_compare4_begin:
     comisd %xmm0, %xmm1
     setae %al
     add %eax, %ecx
-    movq _kefir_func_compare4_label6(%rip), %xmm1
     xor %eax, %eax
-    comisd %xmm1, %xmm0
+    comisd _kefir_func_compare4_label6(%rip), %xmm0
     seta %al
     add %eax, %ecx
-    movq _kefir_func_compare4_label7(%rip), %xmm1
     xor %eax, %eax
-    comisd %xmm1, %xmm0
+    comisd _kefir_func_compare4_label7(%rip), %xmm0
     setae %al
     add %eax, %ecx
     mov %rcx, %rax
