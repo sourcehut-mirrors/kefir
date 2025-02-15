@@ -119,21 +119,8 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         if (!kefir_hashtreeset_has(&func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id)) {
             REQUIRE_OK(
                 kefir_hashtreeset_add(mem, &func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id));
-
-            switch (instr->operation.opcode) {
-#define CASE_INSTR(_id, _opcode)                                                  \
-    case _opcode:                                                                 \
-        REQUIRE_OK(KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id)(              \
-            mem, func, instr, translate_instruction_collector_callback, &param)); \
-        break
-                KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(CASE_INSTR, ;);
-#undef CASE_INSTR
-
-                default:
-                    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&func->function->code, instr, false,
-                                                                    translate_instruction_collector_callback, &param));
-                    break;
-            }
+            REQUIRE_OK(kefir_opt_instruction_extract_inputs(&func->function->code, instr, false,
+                                                            translate_instruction_collector_callback, &param));
         }
     }
     return KEFIR_OK;

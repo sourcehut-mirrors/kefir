@@ -604,7 +604,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     case _opcode:                                                                                                     \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                         \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                         \
-        REQUIRE_OK(kefir_opt_code_builder_int_comparison(mem, code, current_block_id, (_cmp), instr_ref2, instr_ref3, \
+        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, code, current_block_id, (_cmp), instr_ref2, instr_ref3, \
                                                          &instr_ref));                                                \
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                          \
         break;
@@ -629,6 +629,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             COMPARE_OP(KEFIR_IROPCODE_ILESSER64, KEFIR_OPT_COMPARISON_INT64_LESSER)
             COMPARE_OP(KEFIR_IROPCODE_IABOVE64, KEFIR_OPT_COMPARISON_INT64_ABOVE)
             COMPARE_OP(KEFIR_IROPCODE_IBELOW64, KEFIR_OPT_COMPARISON_INT64_BELOW)
+
+            COMPARE_OP(KEFIR_IROPCODE_F32EQUALS, KEFIR_OPT_COMPARISON_FLOAT32_EQUAL)
+            COMPARE_OP(KEFIR_IROPCODE_F32GREATER, KEFIR_OPT_COMPARISON_FLOAT32_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_F32LESSER, KEFIR_OPT_COMPARISON_FLOAT32_LESSER)
+            COMPARE_OP(KEFIR_IROPCODE_F64EQUALS, KEFIR_OPT_COMPARISON_FLOAT64_EQUAL)
+            COMPARE_OP(KEFIR_IROPCODE_F64GREATER, KEFIR_OPT_COMPARISON_FLOAT64_GREATER)
+            COMPARE_OP(KEFIR_IROPCODE_F64LESSER, KEFIR_OPT_COMPARISON_FLOAT64_LESSER)
 
 #undef COMPARE_OP
 
@@ -714,12 +721,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BINARY_OP(float64_mul, KEFIR_IROPCODE_F64MUL)
             BINARY_OP(float64_div, KEFIR_IROPCODE_F64DIV)
 
-            BINARY_OP(float32_equals, KEFIR_IROPCODE_F32EQUALS)
-            BINARY_OP(float32_greater, KEFIR_IROPCODE_F32GREATER)
-            BINARY_OP(float32_lesser, KEFIR_IROPCODE_F32LESSER)
-            BINARY_OP(float64_equals, KEFIR_IROPCODE_F64EQUALS)
-            BINARY_OP(float64_greater, KEFIR_IROPCODE_F64GREATER)
-            BINARY_OP(float64_lesser, KEFIR_IROPCODE_F64LESSER)
             BINARY_OP(long_double_equals, KEFIR_IROPCODE_LDEQUALS)
             BINARY_OP(long_double_greater, KEFIR_IROPCODE_LDGREATER)
             BINARY_OP(long_double_lesser, KEFIR_IROPCODE_LDLESSER)

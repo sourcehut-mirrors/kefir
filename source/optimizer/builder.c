@@ -667,7 +667,7 @@ kefir_result_t kefir_opt_code_builder_fenv_update(struct kefir_mem *mem, struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_builder_int_comparison(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+kefir_result_t kefir_opt_code_builder_scalar_compare(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                      kefir_opt_block_id_t block_id,
                                                      kefir_opt_comparison_operation_t comparison_op,
                                                      kefir_opt_instruction_ref_t ref1, kefir_opt_instruction_ref_t ref2,
@@ -680,7 +680,7 @@ kefir_result_t kefir_opt_code_builder_int_comparison(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation) {
-            .opcode = KEFIR_OPT_OPCODE_INT_COMPARE,
+            .opcode = KEFIR_OPT_OPCODE_SCALAR_COMPARE,
             .parameters = {.comparison = comparison_op, .refs = {ref1, ref2, KEFIR_ID_NONE}}},
         false, instr_id_ptr));
     return KEFIR_OK;
@@ -965,12 +965,6 @@ BINARY_OP(float64_sub, KEFIR_OPT_OPCODE_FLOAT64_SUB)
 BINARY_OP(float64_mul, KEFIR_OPT_OPCODE_FLOAT64_MUL)
 BINARY_OP(float64_div, KEFIR_OPT_OPCODE_FLOAT64_DIV)
 
-BINARY_OP(float32_equals, KEFIR_OPT_OPCODE_FLOAT32_EQUALS)
-BINARY_OP(float32_greater, KEFIR_OPT_OPCODE_FLOAT32_GREATER)
-BINARY_OP(float32_lesser, KEFIR_OPT_OPCODE_FLOAT32_LESSER)
-BINARY_OP(float64_equals, KEFIR_OPT_OPCODE_FLOAT64_EQUALS)
-BINARY_OP(float64_greater, KEFIR_OPT_OPCODE_FLOAT64_GREATER)
-BINARY_OP(float64_lesser, KEFIR_OPT_OPCODE_FLOAT64_LESSER)
 BINARY_OP(long_double_equals, KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS)
 BINARY_OP(long_double_greater, KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER)
 BINARY_OP(long_double_lesser, KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER)

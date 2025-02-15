@@ -31,11 +31,11 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
     const struct kefir_opt_instruction *arg0, *arg;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg0));
 
-    if (arg0->operation.opcode == KEFIR_OPT_OPCODE_INT_COMPARE) {
+    if (arg0->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         switch (arg0->operation.parameters.comparison) {
 #define FLIP(_opcode, _new_opcode)                                                                              \
     case (_opcode):                                                                                             \
-        REQUIRE_OK(kefir_opt_code_builder_int_comparison(mem, &func->code, block_id, (_new_opcode),             \
+        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, (_new_opcode),             \
                                                          arg0->operation.parameters.refs[0],                    \
                                                          arg0->operation.parameters.refs[1], replacement_ref)); \
         break
@@ -79,6 +79,27 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
             FLIP(KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS, KEFIR_OPT_COMPARISON_INT16_ABOVE);
             FLIP(KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS, KEFIR_OPT_COMPARISON_INT32_ABOVE);
             FLIP(KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS, KEFIR_OPT_COMPARISON_INT64_ABOVE);
+
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_GREATER, KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER, KEFIR_OPT_COMPARISON_FLOAT32_GREATER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_LESSER, KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER, KEFIR_OPT_COMPARISON_FLOAT32_LESSER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_GREATER, KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER, KEFIR_OPT_COMPARISON_FLOAT64_GREATER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_LESSER, KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER, KEFIR_OPT_COMPARISON_FLOAT64_LESSER);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL);
+            FLIP(KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL, KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL);
 #undef FLIP
 
             default:
@@ -108,13 +129,7 @@ static kefir_result_t simplify_boot_not(struct kefir_mem *mem, struct kefir_opt_
         case KEFIR_OPT_OPCODE_INT16_BOOL_OR:
         case KEFIR_OPT_OPCODE_INT32_BOOL_OR:
         case KEFIR_OPT_OPCODE_INT64_BOOL_OR:
-        case KEFIR_OPT_OPCODE_INT_COMPARE:
-        case KEFIR_OPT_OPCODE_FLOAT32_EQUALS:
-        case KEFIR_OPT_OPCODE_FLOAT32_GREATER:
-        case KEFIR_OPT_OPCODE_FLOAT32_LESSER:
-        case KEFIR_OPT_OPCODE_FLOAT64_EQUALS:
-        case KEFIR_OPT_OPCODE_FLOAT64_GREATER:
-        case KEFIR_OPT_OPCODE_FLOAT64_LESSER:
+        case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_EQUALS:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_GREATER:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_LESSER:
@@ -182,8 +197,8 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
     const struct kefir_opt_instruction *arg1, *arg2;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
-    REQUIRE(arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_COMPARE &&
-                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_COMPARE,
+    REQUIRE(arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE &&
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE,
             KEFIR_OK);
 
 #define FUSE(_opcode1, _opcode2, _opcode3, _asymetric)                                                                \
@@ -192,7 +207,7 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
           arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||                                \
          ((_asymetric) && arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&                 \
           arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]))) {                               \
-        REQUIRE_OK(kefir_opt_code_builder_int_comparison(mem, &func->code, block_id, (_opcode3),                      \
+        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, (_opcode3),                      \
                                                          arg1->operation.parameters.refs[0],                          \
                                                          arg1->operation.parameters.refs[1], replacement_ref));       \
         return KEFIR_OK;                                                                                              \
@@ -202,7 +217,7 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
           arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[1]) ||                                \
          ((_asymetric) && arg1->operation.parameters.refs[0] == arg2->operation.parameters.refs[1] &&                 \
           arg1->operation.parameters.refs[1] == arg2->operation.parameters.refs[0]))) {                               \
-        REQUIRE_OK(kefir_opt_code_builder_int_comparison(mem, &func->code, block_id, (_opcode3),                      \
+        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, (_opcode3),                      \
                                                          arg2->operation.parameters.refs[0],                          \
                                                          arg2->operation.parameters.refs[1], replacement_ref));       \
         return KEFIR_OK;                                                                                              \
@@ -240,6 +255,15 @@ static kefir_result_t simplify_boot_or(struct kefir_mem *mem, struct kefir_opt_f
          KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS, true)
     FUSE(KEFIR_OPT_COMPARISON_INT64_BELOW, KEFIR_OPT_COMPARISON_INT64_EQUALS,
          KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS, true)
+
+    FUSE(KEFIR_OPT_COMPARISON_FLOAT32_GREATER, KEFIR_OPT_COMPARISON_FLOAT32_EQUAL,
+         KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL, true)
+    FUSE(KEFIR_OPT_COMPARISON_FLOAT32_LESSER, KEFIR_OPT_COMPARISON_FLOAT32_EQUAL,
+         KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL, true)
+    FUSE(KEFIR_OPT_COMPARISON_FLOAT64_GREATER, KEFIR_OPT_COMPARISON_FLOAT64_EQUAL,
+         KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL, true)
+    FUSE(KEFIR_OPT_COMPARISON_FLOAT64_LESSER, KEFIR_OPT_COMPARISON_FLOAT64_EQUAL,
+         KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL, true)
 
 #undef FUSE
 
@@ -1653,7 +1677,7 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                       kefir_opt_instruction_ref_t *replacement_ref) {
     const struct kefir_opt_instruction *arg1;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
-    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_COMPARE) {
+    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         const kefir_opt_comparison_operation_t comparison = arg1->operation.parameters.comparison;
         const kefir_opt_instruction_ref_t ref1 = arg1->operation.parameters.refs[0],
                                           ref2 = arg1->operation.parameters.refs[1];

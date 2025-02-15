@@ -151,12 +151,6 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(float64_arith_op, KEFIR_OPT_OPCODE_FLOAT64_DIV) _separator \
     _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT32_NEG) _separator \
     _def(float_unary_op, KEFIR_OPT_OPCODE_FLOAT64_NEG) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
-    _def(float_compare, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_ADD) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_SUB) _separator \
     _def(long_double_binary_op, KEFIR_OPT_OPCODE_LONG_DOUBLE_MUL) _separator \
@@ -247,7 +241,7 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_NEG) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT64_NEG) _separator                                                   \
-    _def(int_comparison, KEFIR_OPT_OPCODE_INT_COMPARE) _separator                                                   \
+    _def(int_comparison, KEFIR_OPT_OPCODE_SCALAR_COMPARE) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT8_BOOL_NOT) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT16_BOOL_NOT) _separator                                                   \
     _def(int_bool_not, KEFIR_OPT_OPCODE_INT32_BOOL_NOT) _separator                                                   \
@@ -341,23 +335,7 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
-// clang-format off
-#define KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(_def, _separator)                                               \
-    _def(int_bool_or, KEFIR_OPT_OPCODE_INT8_BOOL_OR) _separator \
-    _def(int_bool_or, KEFIR_OPT_OPCODE_INT16_BOOL_OR) _separator \
-    _def(int_bool_or, KEFIR_OPT_OPCODE_INT32_BOOL_OR) _separator \
-    _def(int_bool_or, KEFIR_OPT_OPCODE_INT64_BOOL_OR) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_EQUALS) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_GREATER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT32_LESSER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_EQUALS) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_GREATER) _separator \
-    _def(float_comparison, KEFIR_OPT_OPCODE_FLOAT64_LESSER) _separator \
-    _def(branch, KEFIR_OPT_OPCODE_BRANCH)
-// clang-format on
-
 #define KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id) kefir_codegen_amd64_translate_##_id
-#define KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id) kefir_codegen_amd64_fusion_##_id
 
 #define DECL_INSTR(_id, _opcode)                              \
     kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(_id)( \
@@ -365,78 +343,9 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
 KEFIR_CODEGEN_AMD64_INSTRUCTIONS(DECL_INSTR, ;);
 #undef DECL_INSTR
 
-#define DECL_INSTR(_id, _opcode)                                                                         \
-    kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION_IMPL(_id)(                                     \
-        struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *, \
-        kefir_result_t (*)(kefir_opt_instruction_ref_t, void *), void *)
-KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(DECL_INSTR, ;);
-#undef DECL_INSTR
-
 kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                kefir_asmcmp_virtual_register_index_t,
                                                kefir_asmcmp_virtual_register_index_t, kefir_size_t);
-
-typedef enum kefir_codegen_amd64_comparison_match_op_type {
-    KEFIR_CODEGEN_AMD64_COMPARISON_NONE,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_LESSER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_GREATER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_GREATER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_LESSER,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_LESSER_CONST,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL,
-    KEFIR_CODEGEN_AMD64_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL_CONST
-} kefir_codegen_amd64_comparison_match_op_type_t;
-
-typedef struct kefir_codegen_amd64_comparison_match_op {
-    kefir_codegen_amd64_comparison_match_op_type_t type;
-    kefir_opt_instruction_ref_t refs[2];
-    union {
-        kefir_int64_t int_value;
-        kefir_float32_t float32_value;
-        kefir_float64_t float64_value;
-    };
-} kefir_codegen_amd64_comparison_match_op_t;
-
-kefir_result_t kefir_codegen_amd64_match_comparison_op(const struct kefir_opt_code_container *,
-                                                       kefir_opt_instruction_ref_t,
-                                                       struct kefir_codegen_amd64_comparison_match_op *);
-
-kefir_result_t kefir_codegen_amd64_util_translate_float_comparison(
-    struct kefir_mem *, struct kefir_codegen_amd64_function *, const struct kefir_opt_instruction *,
-    const struct kefir_codegen_amd64_comparison_match_op *);
 
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                      const struct kefir_opt_instruction *, kefir_bool_t *);

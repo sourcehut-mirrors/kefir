@@ -155,7 +155,7 @@ kefir_result_t kefir_opt_code_builder_fenv_update(struct kefir_mem *, struct kef
                                                   kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                   kefir_opt_instruction_ref_t *);
 
-kefir_result_t kefir_opt_code_builder_int_comparison(struct kefir_mem *, struct kefir_opt_code_container *,
+kefir_result_t kefir_opt_code_builder_scalar_compare(struct kefir_mem *, struct kefir_opt_code_container *,
                                                      kefir_opt_block_id_t, kefir_opt_comparison_operation_t,
                                                      kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
                                                      kefir_opt_instruction_ref_t *);
@@ -316,12 +316,6 @@ BINARY_OP(float64_sub);
 BINARY_OP(float64_mul);
 BINARY_OP(float64_div);
 
-BINARY_OP(float32_equals);
-BINARY_OP(float32_greater);
-BINARY_OP(float32_lesser);
-BINARY_OP(float64_equals);
-BINARY_OP(float64_greater);
-BINARY_OP(float64_lesser);
 BINARY_OP(long_double_equals);
 BINARY_OP(long_double_greater);
 BINARY_OP(long_double_lesser);

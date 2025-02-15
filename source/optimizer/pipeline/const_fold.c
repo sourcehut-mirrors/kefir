@@ -382,7 +382,7 @@ static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_
             result.integer = ((kefir_int64_t) left.integer) >> right.integer;
             break;
 
-        case KEFIR_OPT_OPCODE_INT_COMPARE:
+        case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
             switch (instr->operation.parameters.comparison) {
                 case KEFIR_OPT_COMPARISON_INT8_EQUALS:
                     result.integer = ((kefir_uint8_t) left.integer) == ((kefir_uint8_t) right.integer);
@@ -671,7 +671,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
                 case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
-                case KEFIR_OPT_OPCODE_INT_COMPARE:
+                case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
                     REQUIRE_OK(int_binary_const_fold(mem, func, instr, &replacement_ref));
                     break;
 

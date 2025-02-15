@@ -59,7 +59,7 @@
                             },
                             {
                                 "id": 3,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_greater",
                                 "args": [
                                     1,
@@ -106,7 +106,7 @@
                             },
                             {
                                 "id": 8,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_lesser",
                                 "args": [
                                     6,
@@ -118,7 +118,7 @@
                             },
                             {
                                 "id": 9,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_equals",
                                 "args": [
                                     7,
@@ -149,7 +149,7 @@
                             },
                             {
                                 "id": 12,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_equals",
                                 "args": [
                                     10,
@@ -282,7 +282,7 @@
                             },
                             {
                                 "id": 19,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_lesser",
                                 "args": [
                                     17,
@@ -395,7 +395,7 @@
                             },
                             {
                                 "id": 31,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_greater",
                                 "args": [
                                     29,
@@ -407,7 +407,7 @@
                             },
                             {
                                 "id": 32,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_equals",
                                 "args": [
                                     30,
@@ -446,7 +446,7 @@
                             },
                             {
                                 "id": 36,
-                                "opcode": "int_compare",
+                                "opcode": "scalar_compare",
                                 "comparison": "int32_equals",
                                 "args": [
                                     34,

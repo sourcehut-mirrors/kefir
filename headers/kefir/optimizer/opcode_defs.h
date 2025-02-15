@@ -115,7 +115,7 @@
     OPCODE(INT32_NEG, "int32_neg", ref1) SEPARATOR \
     OPCODE(INT64_NEG, "int64_neg", ref1) SEPARATOR \
     /* Logical & comparison operations */ \
-    OPCODE(INT_COMPARE, "int_compare", compare_ref2) SEPARATOR \
+    OPCODE(SCALAR_COMPARE, "scalar_compare", compare_ref2) SEPARATOR \
     OPCODE(INT8_BOOL_NOT, "int8_bool_not", ref1) SEPARATOR \
     OPCODE(INT16_BOOL_NOT, "int16_bool_not", ref1) SEPARATOR \
     OPCODE(INT32_BOOL_NOT, "int32_bool_not", ref1) SEPARATOR \
@@ -187,12 +187,6 @@
     OPCODE(LONG_DOUBLE_DIV, "long_double_div", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_NEG, "long_double_neg", ref1) SEPARATOR \
     /* Floating-point comparison */ \
-    OPCODE(FLOAT32_EQUALS, "float32_equals", ref2) SEPARATOR \
-    OPCODE(FLOAT32_GREATER, "float32_greater", ref2) SEPARATOR \
-    OPCODE(FLOAT32_LESSER, "float32_lesser", ref2) SEPARATOR \
-    OPCODE(FLOAT64_EQUALS, "float64_equals", ref2) SEPARATOR \
-    OPCODE(FLOAT64_GREATER, "float64_greater", ref2) SEPARATOR \
-    OPCODE(FLOAT64_LESSER, "float64_lesser", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_EQUALS, "long_double_equals", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_GREATER, "long_double_greater", ref2) SEPARATOR \
     OPCODE(LONG_DOUBLE_LESSER, "long_double_lesser", ref2) SEPARATOR \
