@@ -95,15 +95,15 @@ _kefir_func_unwrap_s1_label0:
     movq %rdi, -16(%rbp)
 _kefir_func_unwrap_s1_label1:
     movl -16(%rbp), %eax
-    movl %eax, -4(%rbp)
-    movl $0, -8(%rbp)
-    lea -8(%rbp), %rax
+    movl %eax, -8(%rbp)
+    movl $0, -4(%rbp)
+    lea -4(%rbp), %rax
     movq %rax, -16(%rbp)
-    mov -4(%rbp), %eax
+    mov -8(%rbp), %eax
 
     movq -16(%rbp), %rdi
     mov %eax, (%rdi)
-    movl -8(%rbp), %eax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

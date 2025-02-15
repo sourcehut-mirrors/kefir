@@ -361,19 +361,6 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTION_FUSION(_def, _separator)                                               \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT8_STORE) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT16_STORE) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
-    _def(scalar_load_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) _separator \
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT8_BOOL_OR) _separator \
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT16_BOOL_OR) _separator \
     _def(int_bool_or, KEFIR_OPT_OPCODE_INT32_BOOL_OR) _separator \
