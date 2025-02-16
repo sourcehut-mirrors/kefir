@@ -36,9 +36,24 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *, const struct kefir_opt
                                       struct kefir_opt_code_analysis *);
 kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *, struct kefir_opt_code_analysis *);
 
+typedef struct kefir_opt_module_liveness {
+    struct kefir_hashtreeset symbols;
+    struct kefir_hashtreeset string_literals;
+} kefir_opt_module_liveness_t;
+
+kefir_result_t kefir_opt_module_liveness_init(struct kefir_opt_module_liveness *);
+kefir_result_t kefir_opt_module_liveness_free(struct kefir_mem *, struct kefir_opt_module_liveness *);
+
+kefir_result_t kefir_opt_module_liveness_trace(struct kefir_mem *, struct kefir_opt_module_liveness *,
+                                               const struct kefir_opt_module *);
+
+kefir_bool_t kefir_opt_module_is_symbol_alive(const struct kefir_opt_module_liveness *, const char *);
+kefir_bool_t kefir_opt_module_is_string_literal_alive(const struct kefir_opt_module_liveness *, kefir_id_t);
+
 typedef struct kefir_opt_module_analysis {
     struct kefir_opt_module *module;
     struct kefir_hashtree functions;
+    struct kefir_opt_module_liveness liveness;
 } kefir_opt_module_analysis_t;
 
 kefir_result_t kefir_opt_module_analyze(struct kefir_mem *, struct kefir_opt_module *,

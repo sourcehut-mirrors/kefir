@@ -19,6 +19,7 @@
 */
 
 #include "kefir/optimizer/module.h"
+#include "kefir/optimizer/structure.h"
 #include "kefir/optimizer/constructor.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"

@@ -1065,7 +1065,10 @@ kefir_result_t kefir_opt_module_format(struct kefir_mem *mem, struct kefir_json_
         }
 
         ASSIGN_DECL_CAST(const struct kefir_opt_function *, function, node->value);
-        REQUIRE_OK(format_function(mem, json, function, code_analysis, debug_info));
+        if (analysis == NULL ||
+            kefir_opt_module_is_symbol_alive(&analysis->liveness, function->ir_func->declaration->name)) {
+            REQUIRE_OK(format_function(mem, json, function, code_analysis, debug_info));
+        }
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
 

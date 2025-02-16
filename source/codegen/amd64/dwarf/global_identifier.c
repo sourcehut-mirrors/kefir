@@ -440,10 +440,11 @@ static kefir_result_t kefir_codegen_amd64_dwarf_generate_function_info(
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(
     struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, const struct kefir_ir_module *ir_module,
-    struct kefir_codegen_amd64_dwarf_context *context) {
+    const struct kefir_opt_module_analysis *opt_analysis, struct kefir_codegen_amd64_dwarf_context *context) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(opt_analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
 
     struct kefir_hashtree_node_iterator iter;
@@ -451,7 +452,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(
     for (const char *identifier_name = kefir_ir_module_identifiers_iter(ir_module, &iter, &identifier);
          identifier_name != NULL; identifier_name = kefir_ir_module_identifiers_next(&iter, &identifier)) {
 
-        if (identifier->debug_info.entry == KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
+        if (identifier->debug_info.entry == KEFIR_IR_DEBUG_ENTRY_ID_NONE ||
+            !kefir_opt_module_is_symbol_alive(&opt_analysis->liveness, identifier_name) ||
+            (identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_EXPORT &&
+             identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK)) {
             continue;
         }
 

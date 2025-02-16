@@ -196,6 +196,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *me
              kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
          function != NULL; function = kefir_ir_module_function_next(&iter)) {
 
+        if (!kefir_opt_module_is_symbol_alive(&codegen_module->analysis->liveness, (const char *) iter.node->value)) {
+            continue;
+        }
+
         if (function->debug_info.subprogram_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
             struct kefir_codegen_amd64_function *codegen_function;
             REQUIRE_OK(kefir_codegen_amd64_module_function(codegen_module, function->name, &codegen_function));

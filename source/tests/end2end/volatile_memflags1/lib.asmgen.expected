@@ -104,6 +104,258 @@
             "scope": "export",
             "visibility": "default",
             "alias": null
+        },
+        {
+            "symbol": "__kefir_function_setC_static___func___13",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clrsb",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clzll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ctzll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ffsll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_getB_static___func___5",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_setB_static___func___11",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_flt_rounds",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_popcountll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_popcountl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_return_address",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clz",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ctz",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ffs",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_getA_static___func___4",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_parityll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_popcount",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_vla_test_static___func___23",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_getD_static___func___7",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_bswap16",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_bswap32",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_bswap64",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clrsbll",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_parityl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_setS_static___func___18",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clrsbl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_parity",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_frame_address",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_getC_static___func___6",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_clzl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ctzl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_ffsl",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_sumS_static___func___20",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_setA_static___func___9",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "__kefir_function_setD_static___func___15",
+            "type": "global_data",
+            "scope": "local",
+            "visibility": "default",
+            "alias": null
         }
     ],
     "types": [
@@ -140,6 +392,18 @@
             "type": [
                 {
                     "type": "long"
+                }
+            ]
+        },
+        {
+            "identifier": 103,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 5,
+                    "element_type": {
+                        "type": "char"
+                    }
                 }
             ]
         },
@@ -187,9 +451,198 @@
                     ]
                 }
             ]
+        },
+        {
+            "identifier": 137,
+            "type": [
+                {
+                    "type": "array",
+                    "length": 9,
+                    "element_type": {
+                        "type": "char"
+                    }
+                }
+            ]
         }
     ],
-    "data": [],
+    "data": [
+        {
+            "identifier": "__kefir_function_setC_static___func___13",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "setC\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_getB_static___func___5",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "getB\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_setB_static___func___11",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "setB\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_getA_static___func___4",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "getA\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_vla_test_static___func___23",
+            "storage": "global",
+            "type": 137,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "vla_test\u0000",
+                    "length": 9
+                },
+                {
+                    "class": "undefined",
+                    "count": 9
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_getD_static___func___7",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "getD\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_setS_static___func___18",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "setS\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_getC_static___func___6",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "getC\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_sumS_static___func___20",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "sumS\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_setA_static___func___9",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "setA\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        },
+        {
+            "identifier": "__kefir_function_setD_static___func___15",
+            "storage": "global",
+            "type": 103,
+            "value": [
+                {
+                    "class": "string",
+                    "content": "setD\u0000",
+                    "length": 5
+                },
+                {
+                    "class": "undefined",
+                    "count": 5
+                }
+            ]
+        }
+    ],
     "string_literals": [
         {
             "id": 0,
@@ -270,6 +723,294 @@
         }
     ],
     "function_declarations": [
+        {
+            "identifier": 0,
+            "name": "getA",
+            "parameters": 4,
+            "vararg": false,
+            "returns": 5,
+            "returns_twice": false
+        },
+        {
+            "identifier": 1,
+            "name": "getB",
+            "parameters": 6,
+            "vararg": false,
+            "returns": 7,
+            "returns_twice": false
+        },
+        {
+            "identifier": 2,
+            "name": "getC",
+            "parameters": 8,
+            "vararg": false,
+            "returns": 9,
+            "returns_twice": false
+        },
+        {
+            "identifier": 3,
+            "name": "getD",
+            "parameters": 10,
+            "vararg": false,
+            "returns": 11,
+            "returns_twice": false
+        },
+        {
+            "identifier": 4,
+            "name": "setA",
+            "parameters": 12,
+            "vararg": false,
+            "returns": 13,
+            "returns_twice": false
+        },
+        {
+            "identifier": 5,
+            "name": "setB",
+            "parameters": 14,
+            "vararg": false,
+            "returns": 15,
+            "returns_twice": false
+        },
+        {
+            "identifier": 6,
+            "name": "setC",
+            "parameters": 16,
+            "vararg": false,
+            "returns": 17,
+            "returns_twice": false
+        },
+        {
+            "identifier": 7,
+            "name": "setD",
+            "parameters": 18,
+            "vararg": false,
+            "returns": 19,
+            "returns_twice": false
+        },
+        {
+            "identifier": 8,
+            "name": "setS",
+            "parameters": 20,
+            "vararg": false,
+            "returns": 21,
+            "returns_twice": false
+        },
+        {
+            "identifier": 9,
+            "name": "sumS",
+            "parameters": 22,
+            "vararg": false,
+            "returns": 23,
+            "returns_twice": false
+        },
+        {
+            "identifier": 10,
+            "name": "vla_test",
+            "parameters": 24,
+            "vararg": false,
+            "returns": 25,
+            "returns_twice": false
+        },
+        {
+            "identifier": 11,
+            "name": "__kefir_builtin_clrsb",
+            "parameters": 26,
+            "vararg": false,
+            "returns": 27,
+            "returns_twice": false
+        },
+        {
+            "identifier": 12,
+            "name": "__kefir_builtin_clzll",
+            "parameters": 28,
+            "vararg": false,
+            "returns": 29,
+            "returns_twice": false
+        },
+        {
+            "identifier": 13,
+            "name": "__kefir_builtin_ctzll",
+            "parameters": 30,
+            "vararg": false,
+            "returns": 31,
+            "returns_twice": false
+        },
+        {
+            "identifier": 14,
+            "name": "__kefir_builtin_ffsll",
+            "parameters": 32,
+            "vararg": false,
+            "returns": 33,
+            "returns_twice": false
+        },
+        {
+            "identifier": 15,
+            "name": "__kefir_builtin_flt_rounds",
+            "parameters": 34,
+            "vararg": false,
+            "returns": 35,
+            "returns_twice": false
+        },
+        {
+            "identifier": 16,
+            "name": "__kefir_builtin_popcountll",
+            "parameters": 36,
+            "vararg": false,
+            "returns": 37,
+            "returns_twice": false
+        },
+        {
+            "identifier": 17,
+            "name": "__kefir_builtin_popcountl",
+            "parameters": 38,
+            "vararg": false,
+            "returns": 39,
+            "returns_twice": false
+        },
+        {
+            "identifier": 18,
+            "name": "__kefir_builtin_return_address",
+            "parameters": 40,
+            "vararg": false,
+            "returns": 41,
+            "returns_twice": false
+        },
+        {
+            "identifier": 19,
+            "name": "__kefir_builtin_clz",
+            "parameters": 42,
+            "vararg": false,
+            "returns": 43,
+            "returns_twice": false
+        },
+        {
+            "identifier": 20,
+            "name": "__kefir_builtin_ctz",
+            "parameters": 44,
+            "vararg": false,
+            "returns": 45,
+            "returns_twice": false
+        },
+        {
+            "identifier": 21,
+            "name": "__kefir_builtin_ffs",
+            "parameters": 46,
+            "vararg": false,
+            "returns": 47,
+            "returns_twice": false
+        },
+        {
+            "identifier": 22,
+            "name": "__kefir_builtin_parityll",
+            "parameters": 48,
+            "vararg": false,
+            "returns": 49,
+            "returns_twice": false
+        },
+        {
+            "identifier": 23,
+            "name": "__kefir_builtin_popcount",
+            "parameters": 50,
+            "vararg": false,
+            "returns": 51,
+            "returns_twice": false
+        },
+        {
+            "identifier": 24,
+            "name": "__kefir_builtin_bswap16",
+            "parameters": 52,
+            "vararg": false,
+            "returns": 53,
+            "returns_twice": false
+        },
+        {
+            "identifier": 25,
+            "name": "__kefir_builtin_bswap32",
+            "parameters": 54,
+            "vararg": false,
+            "returns": 55,
+            "returns_twice": false
+        },
+        {
+            "identifier": 26,
+            "name": "__kefir_builtin_bswap64",
+            "parameters": 56,
+            "vararg": false,
+            "returns": 57,
+            "returns_twice": false
+        },
+        {
+            "identifier": 27,
+            "name": "__kefir_builtin_clrsbll",
+            "parameters": 58,
+            "vararg": false,
+            "returns": 59,
+            "returns_twice": false
+        },
+        {
+            "identifier": 28,
+            "name": "__kefir_builtin_parityl",
+            "parameters": 60,
+            "vararg": false,
+            "returns": 61,
+            "returns_twice": false
+        },
+        {
+            "identifier": 29,
+            "name": "__kefir_builtin_clrsbl",
+            "parameters": 62,
+            "vararg": false,
+            "returns": 63,
+            "returns_twice": false
+        },
+        {
+            "identifier": 30,
+            "name": "__kefir_builtin_parity",
+            "parameters": 64,
+            "vararg": false,
+            "returns": 65,
+            "returns_twice": false
+        },
+        {
+            "identifier": 31,
+            "name": "__kefir_builtin_frame_address",
+            "parameters": 66,
+            "vararg": false,
+            "returns": 67,
+            "returns_twice": false
+        },
+        {
+            "identifier": 32,
+            "name": "__kefir_builtin_clzl",
+            "parameters": 68,
+            "vararg": false,
+            "returns": 69,
+            "returns_twice": false
+        },
+        {
+            "identifier": 33,
+            "name": "__kefir_builtin_ctzl",
+            "parameters": 70,
+            "vararg": false,
+            "returns": 71,
+            "returns_twice": false
+        },
+        {
+            "identifier": 34,
+            "name": "__kefir_builtin_ffsl",
+            "parameters": 72,
+            "vararg": false,
+            "returns": 73,
+            "returns_twice": false
+        },
+        {
+            "identifier": 35,
+            "name": "__kefir_builtin_trap",
+            "parameters": 74,
+            "vararg": false,
+            "returns": 75,
+            "returns_twice": false
+        },
         {
             "identifier": 36,
             "name": "getA",

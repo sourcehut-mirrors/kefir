@@ -39,16 +39,18 @@ static kefir_result_t on_function_free(struct kefir_mem *mem, struct kefir_hasht
 }
 
 kefir_result_t kefir_codegen_amd64_module_init(struct kefir_codegen_amd64_module *module,
-                                               struct kefir_codegen_amd64 *codegen,
-                                               struct kefir_opt_module *opt_module) {
+                                               struct kefir_codegen_amd64 *codegen, struct kefir_opt_module *opt_module,
+                                               struct kefir_opt_module_analysis *analysis) {
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 codegen module"));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen"));
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
 
     memset(module, 0, sizeof(struct kefir_codegen_amd64_module));
 
     module->codegen = codegen;
     module->module = opt_module;
+    module->analysis = analysis;
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, on_function_free, NULL));
     return KEFIR_OK;
