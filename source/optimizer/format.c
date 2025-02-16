@@ -439,7 +439,6 @@ static kefir_result_t format_operation_ref_offset(struct kefir_json_output *json
     REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
     REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
     REQUIRE_OK(kefir_json_output_integer(json, oper->parameters.offset));
-    REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }
 
