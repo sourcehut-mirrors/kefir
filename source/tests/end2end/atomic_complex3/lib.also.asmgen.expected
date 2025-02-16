@@ -64,9 +64,9 @@ _kefir_func_add_f32_label2:
     test %al, %al
     jz _kefir_func_add_f32_label4
     stmxcsr -96(%rbp)
-    mov -96(%rbp), %rcx
+    mov -96(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -132,9 +132,9 @@ _kefir_func_add_f64_label2:
     test %al, %al
     jz _kefir_func_add_f64_label4
     stmxcsr -128(%rbp)
-    mov -128(%rbp), %rcx
+    mov -128(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -210,9 +210,9 @@ _kefir_func_divide_f32_label2:
     test %al, %al
     jz _kefir_func_divide_f32_label4
     stmxcsr -96(%rbp)
-    mov -96(%rbp), %rcx
+    mov -96(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -300,9 +300,9 @@ _kefir_func_divide_f64_label2:
     test %al, %al
     jz _kefir_func_divide_f64_label4
     stmxcsr -128(%rbp)
-    mov -128(%rbp), %rcx
+    mov -128(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -369,9 +369,9 @@ _kefir_func_multiply_f32_label2:
     test %al, %al
     jz _kefir_func_multiply_f32_label4
     stmxcsr -96(%rbp)
-    mov -96(%rbp), %rcx
+    mov -96(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -449,9 +449,9 @@ _kefir_func_multiply_f64_label2:
     test %al, %al
     jz _kefir_func_multiply_f64_label4
     stmxcsr -128(%rbp)
-    mov -128(%rbp), %rcx
+    mov -128(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -513,9 +513,9 @@ _kefir_func_subtract_f32_label2:
     test %al, %al
     jz _kefir_func_subtract_f32_label4
     stmxcsr -96(%rbp)
-    mov -96(%rbp), %rcx
+    mov -96(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)
@@ -581,9 +581,9 @@ _kefir_func_subtract_f64_label2:
     test %al, %al
     jz _kefir_func_subtract_f64_label4
     stmxcsr -128(%rbp)
-    mov -128(%rbp), %rcx
+    mov -128(%rbp), %rdx
     fnstsw %ax
-    or %ecx, %eax
+    or %edx, %eax
     and $63, %eax
     fldenv -64(%rbp)
     ldmxcsr -36(%rbp)

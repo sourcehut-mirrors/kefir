@@ -38,16 +38,15 @@
 __kefir_text_section_begin:
 overflow_sub_long_ulong_ulong:
 __kefir_text_func_overflow_sub_long_ulong_ulong_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
+    mov %rdi, %rcx
+    sub %rsi, %rcx
     test %rdi, %rdi
-    sets %cl
+    sets %al
     cmp %rsi, %rdi
     setb %sil
-    or %sil, %cl
-    movq %rax, (%rdx)
-    and $1, %ecx
-    mov %rcx, %rax
+    or %sil, %al
+    movq %rcx, (%rdx)
+    and $1, %eax
     ret
 __kefir_text_func_overflow_sub_long_ulong_ulong_end:
 
@@ -105,15 +104,14 @@ __kefir_text_func_overflow_sub_ulong_ulong_ulong_end:
 
 overflow_sub_ulong_long_long:
 __kefir_text_func_overflow_sub_ulong_long_long_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    movabs $9223372036854775808, %rcx
-    add %rcx, %rsi
+    mov %rdi, %rcx
+    sub %rsi, %rcx
+    movabs $9223372036854775808, %rax
+    add %rax, %rsi
     cmp %rsi, %rdi
-    setnb %cl
-    movq %rax, (%rdx)
-    and $1, %ecx
-    mov %rcx, %rax
+    setnb %al
+    movq %rcx, (%rdx)
+    and $1, %eax
     ret
 __kefir_text_func_overflow_sub_ulong_long_long_end:
 
@@ -252,29 +250,27 @@ __kefir_text_func_overflow_sub_uchar_schar_uchar_end:
 overflow_sub_long_long_ulong:
 __kefir_text_func_overflow_sub_long_long_ulong_begin:
     mov %rdi, %rax
-    mov %rdi, %rcx
-    sar $63, %rcx
-    mov %rsi, %rdi
     sar $63, %rdi
+    mov %rsi, %rcx
+    sar $63, %rcx
     sub %rsi, %rax
-    sbb %dil, %cl
+    sbb %cl, %dil
     movq %rax, (%rdx)
-    and $1, %ecx
-    mov %rcx, %rax
+    and $1, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_overflow_sub_long_long_ulong_end:
 
 overflow_sub_long_ulong_long:
 __kefir_text_func_overflow_sub_long_ulong_long_begin:
-    mov %rdi, %rax
-    sub %rsi, %rax
-    movabs $9223372036854775808, %rcx
-    add %rcx, %rdi
+    mov %rdi, %rcx
+    sub %rsi, %rcx
+    movabs $9223372036854775808, %rax
+    add %rax, %rdi
     cmp %rsi, %rdi
-    setb %cl
-    movq %rax, (%rdx)
-    and $1, %ecx
-    mov %rcx, %rax
+    setb %al
+    movq %rcx, (%rdx)
+    and $1, %eax
     ret
 __kefir_text_func_overflow_sub_long_ulong_long_end:
 

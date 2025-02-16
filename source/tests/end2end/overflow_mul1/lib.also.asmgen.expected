@@ -321,6 +321,7 @@ __kefir_text_func_overflow_mul_ulong_ulong_short_begin:
     test %rax, %rax
     sets %dl
     or %sil, %dl
+    mov %rax, %rsi
     movsx %si, %rax
     movw %si, (%rcx)
     cmp %rax, %rsi

@@ -26,11 +26,10 @@ _kefir_func_fn1_label10:
 _kefir_func_fn1_label13:
 _kefir_func_fn1_label12:
 _kefir_func_fn1_label11:
-    lea 16(%rbp), %rax
+    lea 16(%rbp), %rsi
 _kefir_func_fn1_label15:
 _kefir_func_fn1_label14:
     leaq -1632(%rbp), %rdi
-    mov %rax, %rsi
     cld
     mov $100, %rcx
     rep movsq
@@ -136,24 +135,23 @@ _kefir_func_fn1_label41:
 _kefir_func_fn1_label42:
     imul $8, %r9, %rax
 _kefir_func_fn1_label43:
-    leaq -1632(%rbp), %rcx
+    leaq -1632(%rbp), %rdi
 .loc 0 32 44
-    add %rax, %rcx
+    add %rax, %rdi
 .loc 0 32 44
 _kefir_func_fn1_label44:
-    movq (%rcx), %rax
+    movq (%rdi), %rax
 .loc 0 32 20
 _kefir_func_fn1_label7:
 _kefir_func_fn1_label46:
 _kefir_func_fn1_label45:
-    cvtsi2sd %rax, %xmm0
+    cvtsi2sd %rax, %xmm1
 .loc 0 32 20
 _kefir_func_fn1_label47:
-    movq %xmm2, %xmm1
-    addsd %xmm0, %xmm1
+    movq %xmm2, %xmm0
+    addsd %xmm1, %xmm0
 .loc 0 32 13
 _kefir_func_fn1_label48:
-    movq %xmm1, %xmm0
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -187,89 +185,96 @@ _kefir_func_fn2_label5:
 _kefir_func_fn2_label4:
 _kefir_func_fn2_label3:
 _kefir_func_fn2_label2:
-    movq 16(%rbp), %r10
+    movq 16(%rbp), %rax
 _kefir_func_fn2_label9:
-    movq 24(%rbp), %r11
+    movq 24(%rbp), %r10
 _kefir_func_fn2_label10:
-    movq 32(%rbp), %rbx
+    movq 32(%rbp), %r11
 _kefir_func_fn2_label11:
-    movq 40(%rbp), %r12
+    movq 40(%rbp), %rbx
 _kefir_func_fn2_label12:
-    movq 48(%rbp), %r13
+    movq 48(%rbp), %r12
 _kefir_func_fn2_label13:
-    movq 56(%rbp), %r14
+    movq 56(%rbp), %r13
 _kefir_func_fn2_label14:
-    movq 64(%rbp), %r15
+    movq 64(%rbp), %r14
 _kefir_func_fn2_label15:
-    movq 72(%rbp), %rax
-    movq %rax, -80(%rbp)
+    movq 72(%rbp), %r15
 _kefir_func_fn2_label16:
-    movq 80(%rbp), %rax
     movq %rax, -72(%rbp)
+    movq 80(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -72(%rbp), %rax
 _kefir_func_fn2_label17:
-    movq 88(%rbp), %rax
     movq %rax, -64(%rbp)
+    movq 88(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -64(%rbp), %rax
 _kefir_func_fn2_label18:
-    movq 96(%rbp), %rax
     movq %rax, -56(%rbp)
+    movq 96(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -56(%rbp), %rax
 _kefir_func_fn2_label19:
-    movq 104(%rbp), %rax
     movq %rax, -48(%rbp)
+    movq 104(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq -48(%rbp), %rax
 .loc 0 39 12
 _kefir_func_fn2_label21:
 _kefir_func_fn2_label20:
-    mov %rdi, %rax
-    add %rsi, %rax
+    add %rsi, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label22:
-    add %rdx, %rax
+    add %rdx, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label23:
-    add %rcx, %rax
+    add %rcx, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label24:
-    add %r8, %rax
+    add %r8, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label25:
-    add %r9, %rax
+    add %r9, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label26:
-    add %r10, %rax
+    add %rax, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label27:
-    add %r11, %rax
+    add %r10, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label28:
-    add %rbx, %rax
+    add %r11, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label29:
-    add %r12, %rax
+    add %rbx, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label30:
-    add %r13, %rax
+    add %r12, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label31:
-    add %r14, %rax
+    add %r13, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label32:
-    add %r15, %rax
+    add %r14, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label33:
-    addq -80(%rbp), %rax
+    add %r15, %rdi
 .loc 0 39 12
 _kefir_func_fn2_label34:
-    addq -72(%rbp), %rax
+    addq -80(%rbp), %rdi
 .loc 0 39 12
 _kefir_func_fn2_label35:
-    addq -64(%rbp), %rax
+    addq -72(%rbp), %rdi
 .loc 0 39 12
 _kefir_func_fn2_label36:
-    addq -56(%rbp), %rax
+    addq -64(%rbp), %rdi
 .loc 0 39 12
 _kefir_func_fn2_label37:
-    addq -48(%rbp), %rax
+    addq -56(%rbp), %rdi
 .loc 0 39 5
 _kefir_func_fn2_label38:
+    mov %rdi, %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -1483,7 +1488,7 @@ __kefir_debug_loclist_section_entry_5:
     .quad _kefir_func_fn1_label14
     .byte 2
     .byte 144
-    .byte 0
+    .byte 4
     .byte 0
 __kefir_debug_loclist_section_entry_6:
     .byte 7
@@ -1615,7 +1620,7 @@ __kefir_debug_loclist_section_entry_22:
     .quad _kefir_func_fn2_label9
     .byte 2
     .byte 144
-    .byte 10
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_23:
     .byte 7
@@ -1623,7 +1628,7 @@ __kefir_debug_loclist_section_entry_23:
     .quad _kefir_func_fn2_label10
     .byte 2
     .byte 144
-    .byte 11
+    .byte 10
     .byte 0
 __kefir_debug_loclist_section_entry_24:
     .byte 7
@@ -1631,7 +1636,7 @@ __kefir_debug_loclist_section_entry_24:
     .quad _kefir_func_fn2_label11
     .byte 2
     .byte 144
-    .byte 3
+    .byte 11
     .byte 0
 __kefir_debug_loclist_section_entry_25:
     .byte 7
@@ -1639,7 +1644,7 @@ __kefir_debug_loclist_section_entry_25:
     .quad _kefir_func_fn2_label12
     .byte 2
     .byte 144
-    .byte 12
+    .byte 3
     .byte 0
 __kefir_debug_loclist_section_entry_26:
     .byte 7
@@ -1647,7 +1652,7 @@ __kefir_debug_loclist_section_entry_26:
     .quad _kefir_func_fn2_label13
     .byte 2
     .byte 144
-    .byte 13
+    .byte 12
     .byte 0
 __kefir_debug_loclist_section_entry_27:
     .byte 7
@@ -1655,7 +1660,7 @@ __kefir_debug_loclist_section_entry_27:
     .quad _kefir_func_fn2_label14
     .byte 2
     .byte 144
-    .byte 14
+    .byte 13
     .byte 0
 __kefir_debug_loclist_section_entry_28:
     .byte 7
@@ -1663,16 +1668,15 @@ __kefir_debug_loclist_section_entry_28:
     .quad _kefir_func_fn2_label15
     .byte 2
     .byte 144
-    .byte 15
+    .byte 14
     .byte 0
 __kefir_debug_loclist_section_entry_29:
     .byte 7
     .quad _kefir_func_fn2_label33
     .quad _kefir_func_fn2_label16
-    .byte 3
-    .byte 145
-    .byte 176
-    .byte 127
+    .byte 2
+    .byte 144
+    .byte 15
     .byte 0
 __kefir_debug_loclist_section_entry_30:
     .byte 7
@@ -1680,16 +1684,17 @@ __kefir_debug_loclist_section_entry_30:
     .quad _kefir_func_fn2_label17
     .byte 3
     .byte 145
-    .byte 184
+    .byte 176
     .byte 127
     .byte 0
 __kefir_debug_loclist_section_entry_31:
     .byte 7
     .quad _kefir_func_fn2_label35
     .quad _kefir_func_fn2_label18
-    .byte 2
+    .byte 3
     .byte 145
-    .byte 64
+    .byte 184
+    .byte 127
     .byte 0
 __kefir_debug_loclist_section_entry_32:
     .byte 7
@@ -1697,7 +1702,7 @@ __kefir_debug_loclist_section_entry_32:
     .quad _kefir_func_fn2_label19
     .byte 2
     .byte 145
-    .byte 72
+    .byte 64
     .byte 0
 __kefir_debug_loclist_section_entry_33:
     .byte 7
@@ -1705,7 +1710,7 @@ __kefir_debug_loclist_section_entry_33:
     .quad _kefir_func_fn2_label20
     .byte 2
     .byte 145
-    .byte 80
+    .byte 72
     .byte 0
 __kefir_debug_loclist_section_entry_34:
     .byte 7
@@ -1761,7 +1766,7 @@ __kefir_debug_loclist_section_entry_40:
     .quad _kefir_func_fn2_label9
     .byte 2
     .byte 144
-    .byte 10
+    .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_41:
     .byte 7
@@ -1769,7 +1774,7 @@ __kefir_debug_loclist_section_entry_41:
     .quad _kefir_func_fn2_label10
     .byte 2
     .byte 144
-    .byte 11
+    .byte 10
     .byte 0
 __kefir_debug_loclist_section_entry_42:
     .byte 7
@@ -1777,7 +1782,7 @@ __kefir_debug_loclist_section_entry_42:
     .quad _kefir_func_fn2_label11
     .byte 2
     .byte 144
-    .byte 3
+    .byte 11
     .byte 0
 __kefir_debug_loclist_section_entry_43:
     .byte 7
@@ -1785,7 +1790,7 @@ __kefir_debug_loclist_section_entry_43:
     .quad _kefir_func_fn2_label12
     .byte 2
     .byte 144
-    .byte 12
+    .byte 3
     .byte 0
 __kefir_debug_loclist_section_entry_44:
     .byte 7
@@ -1793,7 +1798,7 @@ __kefir_debug_loclist_section_entry_44:
     .quad _kefir_func_fn2_label13
     .byte 2
     .byte 144
-    .byte 13
+    .byte 12
     .byte 0
 __kefir_debug_loclist_section_entry_45:
     .byte 7
@@ -1801,7 +1806,7 @@ __kefir_debug_loclist_section_entry_45:
     .quad _kefir_func_fn2_label14
     .byte 2
     .byte 144
-    .byte 14
+    .byte 13
     .byte 0
 __kefir_debug_loclist_section_entry_46:
     .byte 7
@@ -1809,16 +1814,15 @@ __kefir_debug_loclist_section_entry_46:
     .quad _kefir_func_fn2_label15
     .byte 2
     .byte 144
-    .byte 15
+    .byte 14
     .byte 0
 __kefir_debug_loclist_section_entry_47:
     .byte 7
     .quad _kefir_func_fn2_label33
     .quad _kefir_func_fn2_label16
-    .byte 3
-    .byte 145
-    .byte 176
-    .byte 127
+    .byte 2
+    .byte 144
+    .byte 15
     .byte 0
 __kefir_debug_loclist_section_entry_48:
     .byte 7
@@ -1826,16 +1830,17 @@ __kefir_debug_loclist_section_entry_48:
     .quad _kefir_func_fn2_label17
     .byte 3
     .byte 145
-    .byte 184
+    .byte 176
     .byte 127
     .byte 0
 __kefir_debug_loclist_section_entry_49:
     .byte 7
     .quad _kefir_func_fn2_label35
     .quad _kefir_func_fn2_label18
-    .byte 2
+    .byte 3
     .byte 145
-    .byte 64
+    .byte 184
+    .byte 127
     .byte 0
 __kefir_debug_loclist_section_entry_50:
     .byte 7
@@ -1843,7 +1848,7 @@ __kefir_debug_loclist_section_entry_50:
     .quad _kefir_func_fn2_label19
     .byte 2
     .byte 145
-    .byte 72
+    .byte 64
     .byte 0
 __kefir_debug_loclist_section_entry_51:
     .byte 7
@@ -1851,7 +1856,7 @@ __kefir_debug_loclist_section_entry_51:
     .quad _kefir_func_fn2_label20
     .byte 2
     .byte 145
-    .byte 80
+    .byte 72
     .byte 0
 __kefir_debug_loclist_section_entry_52:
     .byte 0

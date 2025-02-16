@@ -24,9 +24,8 @@ __kefir_text_func_add_ld1_begin:
     movq $0, -72(%rbp)
     fldt (%rax)
     fstpt -80(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     mov $16, %rdi
-    mov %rax, %rsi
     leaq -48(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
@@ -47,9 +46,8 @@ _kefir_func_add_ld1_label2:
     movq $0, -24(%rbp)
     fldt -112(%rbp)
     fstpt -32(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     mov $16, %rdi
-    mov %rax, %rsi
     leaq -64(%rbp), %rdx
     leaq -32(%rbp), %rcx
     mov $5, %r8
@@ -81,9 +79,8 @@ __kefir_text_func_add_cld1_begin:
     fstpt -144(%rbp)
     fldt 16(%rax)
     fstpt -128(%rbp)
-    movq cld1@GOTPCREL(%rip), %rax
+    movq cld1@GOTPCREL(%rip), %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     leaq -80(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
@@ -120,9 +117,8 @@ _kefir_func_add_cld1_label2:
     fstpt -48(%rbp)
     fldt -192(%rbp)
     fstpt -32(%rbp)
-    movq cld1@GOTPCREL(%rip), %rax
+    movq cld1@GOTPCREL(%rip), %rsi
     mov $32, %rdi
-    mov %rax, %rsi
     leaq -112(%rbp), %rdx
     leaq -48(%rbp), %rcx
     mov $5, %r8

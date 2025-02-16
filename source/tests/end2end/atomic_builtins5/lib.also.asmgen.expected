@@ -69,8 +69,7 @@ __kefir_text_func_test_fetch_add_short_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_add_2@GOTPCREL(%rip), %rax
-    movsx %si, %rcx
-    mov %rcx, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -82,8 +81,7 @@ __kefir_text_func_test_fetch_and_short_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_and_2@GOTPCREL(%rip), %rax
-    movsx %si, %rcx
-    mov %rcx, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -95,8 +93,7 @@ __kefir_text_func_test_fetch_sub_short_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_sub_2@GOTPCREL(%rip), %rax
-    movsx %si, %rcx
-    mov %rcx, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -108,8 +105,7 @@ __kefir_text_func_test_fetch_xor_short_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_xor_2@GOTPCREL(%rip), %rax
-    movsx %si, %rcx
-    mov %rcx, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -121,8 +117,7 @@ __kefir_text_func_test_fetch_or_int_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_or_4@GOTPCREL(%rip), %rax
-    movsx %esi, %rcx
-    mov %rcx, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -134,8 +129,7 @@ __kefir_text_func_test_fetch_add_char_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_add_1@GOTPCREL(%rip), %rax
-    movsx %sil, %rcx
-    mov %rcx, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -158,8 +152,7 @@ __kefir_text_func_test_fetch_and_char_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_and_1@GOTPCREL(%rip), %rax
-    movsx %sil, %rcx
-    mov %rcx, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -182,8 +175,7 @@ __kefir_text_func_test_fetch_or_short_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_or_2@GOTPCREL(%rip), %rax
-    movsx %si, %rcx
-    mov %rcx, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -195,8 +187,7 @@ __kefir_text_func_test_fetch_sub_char_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_sub_1@GOTPCREL(%rip), %rax
-    movsx %sil, %rcx
-    mov %rcx, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -219,8 +210,7 @@ __kefir_text_func_test_fetch_xor_char_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_xor_1@GOTPCREL(%rip), %rax
-    movsx %sil, %rcx
-    mov %rcx, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -243,8 +233,7 @@ __kefir_text_func_test_fetch_add_int_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_add_4@GOTPCREL(%rip), %rax
-    movsx %esi, %rcx
-    mov %rcx, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -256,8 +245,7 @@ __kefir_text_func_test_fetch_and_int_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_and_4@GOTPCREL(%rip), %rax
-    movsx %esi, %rcx
-    mov %rcx, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -269,8 +257,7 @@ __kefir_text_func_test_fetch_or_char_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_or_1@GOTPCREL(%rip), %rax
-    movsx %sil, %rcx
-    mov %rcx, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -293,8 +280,7 @@ __kefir_text_func_test_fetch_sub_int_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_sub_4@GOTPCREL(%rip), %rax
-    movsx %esi, %rcx
-    mov %rcx, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp
@@ -306,8 +292,7 @@ __kefir_text_func_test_fetch_xor_int_begin:
     push %rbp
     mov %rsp, %rbp
     movq __atomic_fetch_xor_4@GOTPCREL(%rip), %rax
-    movsx %esi, %rcx
-    mov %rcx, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call *%rax
     pop %rbp

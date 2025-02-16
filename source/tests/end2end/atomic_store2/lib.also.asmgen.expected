@@ -20,8 +20,7 @@
 __kefir_text_section_begin:
 store_b:
 __kefir_text_func_store_b_begin:
-    movzx %sil, %rax
-    mov %rax, %rsi
+    movzx %sil, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
@@ -29,8 +28,7 @@ __kefir_text_func_store_b_end:
 
 store_u8:
 __kefir_text_func_store_u8_begin:
-    movzx %sil, %rax
-    mov %rax, %rsi
+    movzx %sil, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
@@ -54,8 +52,7 @@ __kefir_text_func_store_f64_end:
 
 store_u16:
 __kefir_text_func_store_u16_begin:
-    movzx %si, %rax
-    mov %rax, %rsi
+    movzx %si, %rsi
     mov $5, %rdx
     call __atomic_store_2@PLT
     ret
@@ -63,8 +60,7 @@ __kefir_text_func_store_u16_end:
 
 store_u32:
 __kefir_text_func_store_u32_begin:
-    mov %esi, %eax
-    mov %rax, %rsi
+    mov %esi, %esi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret

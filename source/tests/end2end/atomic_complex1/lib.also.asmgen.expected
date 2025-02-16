@@ -44,9 +44,8 @@ __kefir_text_func_add_ld_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq ld_1@GOTPCREL(%rip), %rcx
+    movq ld_1@GOTPCREL(%rip), %rsi
     movq %rax, -48(%rbp)
-    mov %rcx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -80,9 +79,8 @@ __kefir_text_func_div_ld_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq ld_1@GOTPCREL(%rip), %rcx
+    movq ld_1@GOTPCREL(%rip), %rsi
     movq %rax, -48(%rbp)
-    mov %rcx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -165,9 +163,8 @@ __kefir_text_func_mul_ld_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq ld_1@GOTPCREL(%rip), %rcx
+    movq ld_1@GOTPCREL(%rip), %rsi
     movq %rax, -48(%rbp)
-    mov %rcx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -208,8 +205,7 @@ __kefir_text_func_neg_ld_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     stmxcsr -8(%rbp)
-    movq ld_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld_1@GOTPCREL(%rip), %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -235,9 +231,8 @@ __kefir_text_func_sub_ld_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rax
-    movq ld_1@GOTPCREL(%rip), %rcx
+    movq ld_1@GOTPCREL(%rip), %rsi
     movq %rax, -48(%rbp)
-    mov %rcx, %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
     mov $5, %rcx
@@ -271,9 +266,8 @@ __kefir_text_func_add_f32_begin:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f32_1@GOTPCREL(%rip), %rcx
+    movq f32_1@GOTPCREL(%rip), %rsi
     movq %rax, -24(%rbp)
-    mov %rcx, %rsi
     lea -32(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -304,9 +298,8 @@ __kefir_text_func_add_f64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f64_1@GOTPCREL(%rip), %rcx
+    movq f64_1@GOTPCREL(%rip), %rsi
     movq %rax, -32(%rbp)
-    mov %rcx, %rsi
     lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -338,9 +331,8 @@ __kefir_text_func_div_f32_begin:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f32_1@GOTPCREL(%rip), %rcx
+    movq f32_1@GOTPCREL(%rip), %rsi
     movq %rax, -24(%rbp)
-    mov %rcx, %rsi
     lea -32(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -385,9 +377,8 @@ __kefir_text_func_div_f64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f64_1@GOTPCREL(%rip), %rcx
+    movq f64_1@GOTPCREL(%rip), %rsi
     movq %rax, -32(%rbp)
-    mov %rcx, %rsi
     lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -441,9 +432,8 @@ __kefir_text_func_mul_f32_begin:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f32_1@GOTPCREL(%rip), %rcx
+    movq f32_1@GOTPCREL(%rip), %rsi
     movq %rax, -24(%rbp)
-    mov %rcx, %rsi
     lea -32(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -479,9 +469,8 @@ __kefir_text_func_mul_f64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f64_1@GOTPCREL(%rip), %rcx
+    movq f64_1@GOTPCREL(%rip), %rsi
     movq %rax, -32(%rbp)
-    mov %rcx, %rsi
     lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -524,8 +513,7 @@ __kefir_text_func_neg_f32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movq f32_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f32_1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -546,8 +534,7 @@ __kefir_text_func_neg_f64_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    movq f64_1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq f64_1@GOTPCREL(%rip), %rsi
     lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
@@ -573,9 +560,8 @@ __kefir_text_func_sub_f32_begin:
     sub $32, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f32_1@GOTPCREL(%rip), %rcx
+    movq f32_1@GOTPCREL(%rip), %rsi
     movq %rax, -24(%rbp)
-    mov %rcx, %rsi
     lea -32(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -606,9 +592,8 @@ __kefir_text_func_sub_f64_begin:
     sub $48, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rax
-    movq f64_1@GOTPCREL(%rip), %rcx
+    movq f64_1@GOTPCREL(%rip), %rsi
     movq %rax, -32(%rbp)
-    mov %rcx, %rsi
     lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx

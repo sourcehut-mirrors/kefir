@@ -18,14 +18,13 @@ _kefir_func_greater_or_equalsf_label0:
 _kefir_func_greater_or_equalsf_label1:
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movl -16(%rbp), %ecx
-    mov $0, %rdx
-    movd %eax, %xmm0
-    movd %ecx, %xmm1
+    movl -12(%rbp), %ecx
+    movl -16(%rbp), %edx
+    mov $0, %rax
+    movd %ecx, %xmm0
+    movd %edx, %xmm1
     comiss %xmm1, %xmm0
-    setae %dl
-    mov %rdx, %rax
+    setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -42,14 +41,13 @@ _kefir_func_less_or_equalsf_label0:
 _kefir_func_less_or_equalsf_label1:
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %eax
-    movl -16(%rbp), %ecx
-    mov $0, %rdx
-    movd %ecx, %xmm0
-    movd %eax, %xmm1
+    movl -12(%rbp), %ecx
+    movl -16(%rbp), %edx
+    mov $0, %rax
+    movd %edx, %xmm0
+    movd %ecx, %xmm1
     comiss %xmm1, %xmm0
-    setae %dl
-    mov %rdx, %rax
+    setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

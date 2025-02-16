@@ -139,10 +139,10 @@ static kefir_result_t collect_translated_instructions(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t scheduler_schedule(
-    kefir_opt_instruction_ref_t instr_ref,
-    kefir_opt_code_instruction_scheduler_dependency_callback_t dependency_callback, void *dependency_callback_payload,
-    kefir_bool_t *schedule_instruction, void *payload) {
+static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
+                                         kefir_opt_code_instruction_scheduler_dependency_callback_t dependency_callback,
+                                         void *dependency_callback_payload, kefir_bool_t *schedule_instruction,
+                                         void *payload) {
     REQUIRE(
         dependency_callback != NULL,
         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction dependency scheduler callback"));
@@ -155,59 +155,64 @@ static kefir_result_t scheduler_schedule(
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
     if ((instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE &&
-        (instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_GREATER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_LESSER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_GREATER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_LESSER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER ||
-            instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL)) ||
+         (instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_GREATER ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER ||
+          instr->operation.parameters.branch.comparison.operation ==
+              KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_LESSER ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_GREATER ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER ||
+          instr->operation.parameters.branch.comparison.operation ==
+              KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_LESSER ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL ||
+          instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER ||
+          instr->operation.parameters.branch.comparison.operation ==
+              KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL)) ||
         (instr->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE &&
-            (instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_GREATER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_GREATER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL))) {
+         (instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_GREATER ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_GREATER ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER ||
+          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL))) {
         const struct kefir_opt_instruction *arg2_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr->operation.parameters.refs[1], &arg2_instr));
-        if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST || arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST ||
+            arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
             REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[0], dependency_callback_payload));
             *schedule_instruction = true;
             return KEFIR_OK;
         }
     }
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE &&
-            (instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_LESSER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_LESSER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER ||
-            instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL)) {
+        (instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_LESSER ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_LESSER ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER ||
+         instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL)) {
         const struct kefir_opt_instruction *arg1_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr->operation.parameters.refs[0], &arg1_instr));
-        if (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST || arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
+        if (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST ||
+            arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
             REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[1], dependency_callback_payload));
             *schedule_instruction = true;
             return KEFIR_OK;
@@ -221,10 +226,8 @@ static kefir_result_t scheduler_schedule(
 
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     // Schedule code
-    struct kefir_opt_code_instruction_scheduler scheduler = {
-        .try_schedule = scheduler_schedule,
-        .payload = (void *) &func->function->code
-    };
+    struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = scheduler_schedule,
+                                                             .payload = (void *) &func->function->code};
     REQUIRE_OK(
         kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, func->function_analysis, &scheduler));
 
@@ -524,6 +527,58 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
     return KEFIR_OK;
 }
 
+static kefir_result_t trace_preallocation_hints(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func,
+                                                kefir_asmcmp_virtual_register_index_t root,
+                                                struct kefir_hashtreeset *visited,
+                                                kefir_asm_amd64_xasmgen_register_t *phreg) {
+    for (kefir_asmcmp_virtual_register_index_t current = root;
+         !kefir_hashtreeset_has(visited, (kefir_hashtreeset_entry_t) current);) {
+        const struct kefir_asmcmp_amd64_register_preallocation *preallocation;
+        REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(&func->code, current, &preallocation));
+        if (preallocation == NULL) {
+            break;
+        } else if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {
+            REQUIRE_OK(kefir_hashtreeset_add(mem, visited, (kefir_hashtreeset_entry_t) current));
+            current = preallocation->vreg;
+        } else if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT ||
+                   preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT) {
+            *phreg = preallocation->reg;
+            return KEFIR_OK;
+        }
+    }
+
+    return KEFIR_NO_MATCH;
+}
+
+static kefir_result_t propagate_virtual_register_hints(struct kefir_mem *mem,
+                                                       struct kefir_codegen_amd64_function *func) {
+    kefir_size_t num_of_vregs;
+    REQUIRE_OK(kefir_asmcmp_number_of_virtual_registers(&func->code.context, &num_of_vregs));
+
+    for (kefir_asmcmp_virtual_register_index_t vreg_idx = 0; vreg_idx < num_of_vregs; vreg_idx++) {
+        const struct kefir_asmcmp_amd64_register_preallocation *preallocation;
+        REQUIRE_OK(kefir_asmcmp_amd64_get_register_preallocation(&func->code, vreg_idx, &preallocation));
+
+        if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {
+            struct kefir_hashtreeset visited;
+            REQUIRE_OK(kefir_hashtreeset_init(&visited, &kefir_hashtree_uint_ops));
+            kefir_asm_amd64_xasmgen_register_t phreg;
+            kefir_result_t res = trace_preallocation_hints(mem, func, preallocation->vreg, &visited, &phreg);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    kefir_hashtreeset_free(mem, &visited);
+                    return res;
+                });
+                REQUIRE_OK(kefir_hashtreeset_free(mem, &visited));
+                REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_hint(mem, &func->code, vreg_idx, phreg));
+            } else {
+                REQUIRE_OK(kefir_hashtreeset_free(mem, &visited));
+            }
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
@@ -542,6 +597,7 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&func->stack_frame));
     }
     REQUIRE_OK(translate_code(mem, func));
+    REQUIRE_OK(propagate_virtual_register_hints(mem, func));
     REQUIRE_OK(
         kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
 

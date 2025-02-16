@@ -49,8 +49,7 @@ __kefir_text_func_set_a1_end:
 
 set_i8:
 __kefir_text_func_set_i8_begin:
-    movsx %sil, %rax
-    mov %rax, %rsi
+    movsx %sil, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
@@ -77,8 +76,7 @@ __kefir_text_func_set_f64_end:
 set_i16:
 __kefir_text_func_set_i16_begin:
     add $2, %rdi
-    movsx %si, %rax
-    mov %rax, %rsi
+    movsx %si, %rsi
     mov $5, %rdx
     call __atomic_store_2@PLT
     ret
@@ -87,8 +85,7 @@ __kefir_text_func_set_i16_end:
 set_i32:
 __kefir_text_func_set_i32_begin:
     add $4, %rdi
-    movsx %esi, %rax
-    mov %rax, %rsi
+    movsx %esi, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret

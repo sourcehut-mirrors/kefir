@@ -14,9 +14,8 @@ __kefir_text_func_get_ld1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq ld1@GOTPCREL(%rip), %rax
+    movq ld1@GOTPCREL(%rip), %rsi
     lea -16(%rbp), %rdx
-    mov %rax, %rsi
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
@@ -37,8 +36,7 @@ __kefir_text_func_set_ld1_begin:
     fstpt -16(%rbp)
     fldt -16(%rbp)
     fstpt -32(%rbp)
-    movq ld1@GOTPCREL(%rip), %rax
-    mov %rax, %rsi
+    movq ld1@GOTPCREL(%rip), %rsi
     lea -32(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx

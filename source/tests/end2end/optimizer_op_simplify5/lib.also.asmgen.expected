@@ -65,14 +65,13 @@ _kefir_func_greater_or_equalsd_label0:
 _kefir_func_greater_or_equalsd_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    mov $0, %rdx
-    movq %rax, %xmm0
-    movq %rcx, %xmm1
+    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rdx
+    mov $0, %rax
+    movq %rcx, %xmm0
+    movq %rdx, %xmm1
     comisd %xmm1, %xmm0
-    setae %dl
-    mov %rdx, %rax
+    setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -89,14 +88,13 @@ _kefir_func_less_or_equalsd_label0:
 _kefir_func_less_or_equalsd_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
-    mov $0, %rdx
-    movq %rcx, %xmm0
-    movq %rax, %xmm1
+    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rdx
+    mov $0, %rax
+    movq %rdx, %xmm0
+    movq %rcx, %xmm1
     comisd %xmm1, %xmm0
-    setae %dl
-    mov %rdx, %rax
+    setae %al
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -142,14 +142,24 @@ kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *mem, struct kefir_asmcm
 kefir_result_t kefir_asmcmp_amd64_register_allocation_same_as(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                               kefir_asmcmp_virtual_register_index_t vreg_idx,
                                                               kefir_asmcmp_virtual_register_index_t other_vreg_idx) {
-    PREALLOCATION_IMPL(mem, target, vreg_idx,
-                       {
-                           preallocation->type = KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS;
-                           preallocation->vreg = other_vreg_idx;
-                       },
-                       {
-                           // Ignore hint
-                       });
+    PREALLOCATION_IMPL(
+        mem, target, vreg_idx,
+        {
+            preallocation->type = KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS;
+            preallocation->vreg = other_vreg_idx;
+        },
+        {
+            if (preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS) {
+                const struct kefir_asmcmp_amd64_register_preallocation *other_preallocation;
+                REQUIRE_OK(
+                    kefir_asmcmp_amd64_get_register_preallocation(target, preallocation->vreg, &other_preallocation));
+                if (other_preallocation != NULL &&
+                    other_preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_SAME_AS &&
+                    other_preallocation->vreg == vreg_idx) {
+                    preallocation->vreg = other_vreg_idx;
+                }
+            }
+        });
 
     return KEFIR_OK;
 }
@@ -328,6 +338,7 @@ kefir_result_t kefir_asmcmp_amd64_link_virtual_registers(struct kefir_mem *mem, 
         idx_ptr));
 
     REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_same_as(mem, target, vreg1, vreg2));
+    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_same_as(mem, target, vreg2, vreg1));
     return KEFIR_OK;
 }
 

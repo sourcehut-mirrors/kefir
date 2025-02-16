@@ -95,15 +95,14 @@ __kefir_text_func_overflow_add_ulong_ulong_long_end:
 overflow_add_long_long_ulong:
 __kefir_text_func_overflow_add_long_long_ulong_begin:
     mov %rdi, %rax
-    mov %rdi, %rcx
-    sar $63, %rcx
-    mov %rsi, %rdi
     sar $63, %rdi
+    mov %rsi, %rcx
+    sar $63, %rcx
     add %rsi, %rax
-    adc %cl, %dil
+    adc %dil, %cl
     movq %rax, (%rdx)
-    and $1, %edi
-    mov %rdi, %rax
+    and $1, %ecx
+    mov %rcx, %rax
     ret
 __kefir_text_func_overflow_add_long_long_ulong_end:
 
@@ -215,15 +214,14 @@ __kefir_text_func_overflow_add_schar_uchar_uchar_end:
 
 overflow_add_ulong_long_long:
 __kefir_text_func_overflow_add_ulong_long_long_begin:
-    mov %rdi, %rax
-    add %rsi, %rax
-    movabs $9223372036854775808, %rcx
-    add %rax, %rcx
-    cmp %rdi, %rcx
-    setb %cl
-    movq %rax, (%rdx)
-    and $1, %ecx
-    mov %rcx, %rax
+    mov %rdi, %rcx
+    add %rsi, %rcx
+    movabs $9223372036854775808, %rax
+    add %rcx, %rax
+    cmp %rdi, %rax
+    setb %al
+    movq %rcx, (%rdx)
+    and $1, %eax
     ret
 __kefir_text_func_overflow_add_ulong_long_long_end:
 

@@ -586,10 +586,15 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
         ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
         if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
-            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
-            vreg->allocation.direct_reg = reg;
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
-            return KEFIR_OK;
+            for (kefir_size_t i = 0; i < available_registers_length; i++) {
+                const kefir_asm_amd64_xasmgen_register_t available_reg = available_registers[i];
+                if (available_reg == reg) {
+                    vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
+                    vreg->allocation.direct_reg = reg;
+                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                    return KEFIR_OK;
+                }
+            }
         }
     }
 
@@ -605,10 +610,16 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
             if (other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
                 const kefir_asm_amd64_xasmgen_register_t reg = other_vreg->allocation.direct_reg;
                 if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
-                    vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
-                    vreg->allocation.direct_reg = reg;
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
-                    return KEFIR_OK;
+                    for (kefir_size_t i = 0; i < available_registers_length; i++) {
+                        const kefir_asm_amd64_xasmgen_register_t available_reg = available_registers[i];
+                        if (available_reg == reg) {
+                            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
+                            vreg->allocation.direct_reg = reg;
+                            REQUIRE_OK(
+                                kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                            return KEFIR_OK;
+                        }
+                    }
                 }
             } else if (other_vreg->allocation.type ==
                        KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {

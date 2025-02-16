@@ -64,15 +64,14 @@ _kefir_func_sum3_one_label1:
     movq %rsi, -24(%rbp)
     movq %rdi, -16(%rbp)
     movq $0, -8(%rbp)
-    movq -16(%rbp), %rax
+    movq -16(%rbp), %rsi
     movq -24(%rbp), %rdi
     movq -32(%rbp), %rdx
-    lea -8(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    lea -32(%rbp), %rcx
-    movq %rcx, -40(%rbp)
+    lea -8(%rbp), %rax
+    movq %rax, -48(%rbp)
+    lea -32(%rbp), %rax
+    movq %rax, -40(%rbp)
     mov $1, %rcx
-    mov %rax, %rsi
 add %rsi, %rcx
 add %rdi, %rdx
 add %rdx, %rcx

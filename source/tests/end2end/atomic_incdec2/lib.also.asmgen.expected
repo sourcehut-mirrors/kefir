@@ -57,12 +57,11 @@ _kefir_func_postdec_i8_label2:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r10
     movsx %al, %r9
-    mov %r9, %rax
-    add $-1, %al
+    mov %r9, %rdx
+    add $-1, %dl
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)
@@ -159,12 +158,11 @@ _kefir_func_postinc_i8_label2:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r10
     movsx %al, %r9
-    mov %r9, %rax
-    add $1, %al
+    mov %r9, %rdx
+    add $1, %dl
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)
@@ -377,12 +375,11 @@ _kefir_func_postdec_i16_label2:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r10
     movsx %ax, %r9
-    mov %r9, %rax
-    add $-1, %ax
+    mov %r9, %rdx
+    add $-1, %dx
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)
@@ -412,12 +409,11 @@ _kefir_func_postdec_i32_label2:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r10
     movsx %eax, %r9
-    mov %r9, %rax
-    add $-1, %eax
+    mov %r9, %rdx
+    add $-1, %edx
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)
@@ -633,12 +629,11 @@ _kefir_func_postinc_i16_label2:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r10
     movsx %ax, %r9
-    mov %r9, %rax
-    add $1, %ax
+    mov %r9, %rdx
+    add $1, %dx
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)
@@ -668,12 +663,11 @@ _kefir_func_postinc_i32_label2:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r10
     movsx %eax, %r9
-    mov %r9, %rax
-    add $1, %eax
+    mov %r9, %rdx
+    add $1, %edx
     movq %r10, -24(%rbp)
     movq %r9, -16(%rbp)
     mov %r10, %rdi
-    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r9, -32(%rbp)

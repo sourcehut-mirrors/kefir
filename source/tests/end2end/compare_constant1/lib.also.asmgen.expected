@@ -70,71 +70,69 @@ __kefir_text_func_compare2_end:
 
 compare3:
 __kefir_text_func_compare3_begin:
-    movabs $72057594037927935, %rax
-    xor %ecx, %ecx
-    cmp %rax, %rdi
-    sete %cl
-    movabs $72057594037927930, %rax
+    movabs $72057594037927935, %rcx
+    xor %eax, %eax
+    cmp %rcx, %rdi
+    sete %al
+    movabs $72057594037927930, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setne %dl
-    add %edx, %ecx
-    movabs $72057594037927934, %rax
+    add %edx, %eax
+    movabs $72057594037927934, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setg %dl
-    add %edx, %ecx
-    movabs $72057594037927933, %rax
+    add %edx, %eax
+    movabs $72057594037927933, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setge %dl
-    add %edx, %ecx
-    movabs $72057594037927932, %rax
+    add %edx, %eax
+    movabs $72057594037927932, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setl %dl
-    add %edx, %ecx
-    movabs $72057594037927931, %rax
+    add %edx, %eax
+    movabs $72057594037927931, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setle %dl
-    add %edx, %ecx
-    mov %rcx, %rax
+    add %edx, %eax
     ret
 __kefir_text_func_compare3_end:
 
 compare4:
 __kefir_text_func_compare4_begin:
-    movabs $72057594037927935, %rax
-    xor %ecx, %ecx
-    cmp %rax, %rdi
-    sete %cl
-    movabs $72057594037927930, %rax
+    movabs $72057594037927935, %rcx
+    xor %eax, %eax
+    cmp %rcx, %rdi
+    sete %al
+    movabs $72057594037927930, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setne %dl
-    add %edx, %ecx
-    movabs $72057594037927934, %rax
+    add %edx, %eax
+    movabs $72057594037927934, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     seta %dl
-    add %edx, %ecx
-    movabs $72057594037927933, %rax
+    add %edx, %eax
+    movabs $72057594037927933, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setae %dl
-    add %edx, %ecx
-    movabs $72057594037927932, %rax
+    add %edx, %eax
+    movabs $72057594037927932, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setb %dl
-    add %edx, %ecx
-    movabs $72057594037927931, %rax
+    add %edx, %eax
+    movabs $72057594037927931, %rcx
     xor %edx, %edx
-    cmp %rax, %rdi
+    cmp %rcx, %rdi
     setbe %dl
-    add %edx, %ecx
-    mov %rcx, %rax
+    add %edx, %eax
     ret
 __kefir_text_func_compare4_end:
 
