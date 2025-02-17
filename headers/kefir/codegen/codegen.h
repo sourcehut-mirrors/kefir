@@ -38,8 +38,7 @@ typedef struct kefir_codegen_configuration {
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {
-    kefir_result_t (*translate_optimized)(struct kefir_mem *, struct kefir_codegen *, struct kefir_opt_module *,
-                                          struct kefir_opt_module_analysis *);
+    kefir_result_t (*translate_optimized)(struct kefir_mem *, struct kefir_codegen *, struct kefir_opt_module *);
     kefir_result_t (*close)(struct kefir_mem *, struct kefir_codegen *);
 
     void *data;
@@ -49,8 +48,8 @@ typedef struct kefir_codegen {
 kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *, struct kefir_codegen *, struct kefir_ir_module *);
 
 #define KEFIR_CODEGEN_TRANSLATE(mem, codegen, module) (kefir_codegen_translate_ir((mem), (codegen), (module)))
-#define KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module, analysis) \
-    ((codegen)->translate_optimized((mem), (codegen), (module), (analysis)))
+#define KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module) \
+    ((codegen)->translate_optimized((mem), (codegen), (module)))
 #define KEFIR_CODEGEN_CLOSE(mem, codegen) ((codegen)->close((mem), (codegen)))
 
 extern const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration;

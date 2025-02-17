@@ -495,18 +495,14 @@ kefir_result_t kefir_compiler_translate(struct kefir_mem *mem, struct kefir_comp
 }
 
 kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compiler_context *context,
-                                       struct kefir_ir_module *ir_module, struct kefir_opt_module *opt_module,
-                                       struct kefir_opt_module_analysis *opt_module_analysis) {
+                                       struct kefir_ir_module *ir_module, struct kefir_opt_module *opt_module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(ir_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(opt_module_analysis != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module analysis"));
 
     REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
     REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration.pipeline));
-    REQUIRE_OK(kefir_opt_module_analyze(mem, opt_module, opt_module_analysis));
 
     return KEFIR_OK;
 }
@@ -530,17 +526,15 @@ kefir_result_t kefir_compiler_codegen(struct kefir_mem *mem, struct kefir_compil
 }
 
 kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *mem, struct kefir_compiler_context *context,
-                                                struct kefir_opt_module *module,
-                                                struct kefir_opt_module_analysis *analysis, FILE *output) {
+                                                struct kefir_opt_module *module, FILE *output) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler context"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
 
     struct kefir_codegen *codegen = NULL;
     REQUIRE_OK(context->profile->new_codegen(mem, output, &context->codegen_configuration, &codegen));
-    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module, analysis);
+    kefir_result_t res = KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module);
     REQUIRE_ELSE(res == KEFIR_OK, {
         context->profile->free_codegen(mem, codegen);
         return res;

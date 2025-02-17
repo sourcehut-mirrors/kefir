@@ -32,9 +32,11 @@ typedef struct kefir_opt_code_analysis {
     struct kefir_opt_code_liveness liveness;
 } kefir_opt_code_analysis_t;
 
+kefir_result_t kefir_opt_code_analsis_init(struct kefir_opt_code_analysis *);
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *, const struct kefir_opt_code_container *,
                                       struct kefir_opt_code_analysis *);
 kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *, struct kefir_opt_code_analysis *);
+kefir_result_t kefir_opt_code_analysis_clear(struct kefir_mem *, struct kefir_opt_code_analysis *);
 
 typedef struct kefir_opt_module_liveness {
     struct kefir_hashtreeset symbols;

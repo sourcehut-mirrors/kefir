@@ -98,10 +98,10 @@ kefir_result_t kefir_compiler_analyze(struct kefir_mem *, struct kefir_compiler_
 kefir_result_t kefir_compiler_translate(struct kefir_mem *, struct kefir_compiler_context *,
                                         struct kefir_ast_translation_unit *, struct kefir_ir_module *, kefir_bool_t);
 kefir_result_t kefir_compiler_optimize(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
-                                       struct kefir_opt_module *, struct kefir_opt_module_analysis *);
+                                       struct kefir_opt_module *);
 kefir_result_t kefir_compiler_codegen(struct kefir_mem *, struct kefir_compiler_context *, struct kefir_ir_module *,
                                       FILE *);
 kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *, struct kefir_compiler_context *,
-                                                struct kefir_opt_module *, struct kefir_opt_module_analysis *, FILE *);
+                                                struct kefir_opt_module *, FILE *);
 
 #endif

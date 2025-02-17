@@ -32,7 +32,7 @@
 
 static kefir_result_t translate_module_identifiers(const struct kefir_ir_module *module,
                                                    struct kefir_codegen_amd64 *codegen,
-                                                   struct kefir_opt_module_analysis *opt_analysis) {
+                                                   struct kefir_opt_module_liveness *liveness) {
     struct kefir_hashtree_node_iterator identifiers_iter;
     const struct kefir_ir_identifier *identifier;
     static const char BUILTIN_PREFIX[] = "__kefir_builtin";
@@ -101,7 +101,7 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
 
             case KEFIR_IR_IDENTIFIER_SCOPE_IMPORT:
                 if (strncmp(BUILTIN_PREFIX, symbol, sizeof(BUILTIN_PREFIX) - 1) != 0) {
-                    if (kefir_opt_module_is_symbol_alive(&opt_analysis->liveness, symbol)) {
+                    if (kefir_opt_module_is_symbol_alive(liveness, symbol)) {
                         if (!codegen->config->emulated_tls ||
                             identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA) {
                             REQUIRE_OK(KEFIR_AMD64_XASMGEN_EXTERNAL(&codegen->xasmgen, "%s", identifier->symbol));
@@ -123,7 +123,7 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
 
 static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                              struct kefir_opt_module *module,
-                                             struct kefir_opt_module_analysis *analysis,
+                                             struct kefir_opt_module_liveness *liveness,
                                              kefir_ir_data_storage_t storage, kefir_bool_t defined, const char *section,
                                              kefir_uint64_t section_attr) {
     bool first = true;
@@ -138,7 +138,7 @@ static kefir_result_t translate_data_storage(struct kefir_mem *mem, struct kefir
             continue;
         }
 
-        if (!kefir_opt_module_is_symbol_alive(&analysis->liveness, identifier)) {
+        if (!kefir_opt_module_is_symbol_alive(liveness, identifier)) {
             continue;
         }
 
@@ -234,7 +234,7 @@ static kefir_result_t translate_emulated_tls(struct kefir_mem *mem, struct kefir
 }
 
 static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, struct kefir_opt_module *module,
-                                        struct kefir_opt_module_analysis *analysis, kefir_bool_t *has_rodata) {
+                                        struct kefir_opt_module_liveness *liveness, kefir_bool_t *has_rodata) {
     struct kefir_hashtree_node_iterator iter;
     kefir_id_t id;
     kefir_ir_string_literal_type_t literal_type;
@@ -246,7 +246,7 @@ static kefir_result_t translate_strings(struct kefir_codegen_amd64 *codegen, str
                                                    &length);
          res == KEFIR_OK;
          res = kefir_ir_module_string_literal_next(&iter, &id, &literal_type, &public, &content, &length)) {
-        if (!public || !kefir_opt_module_is_string_literal_alive(&analysis->liveness, id)) {
+        if (!public || !kefir_opt_module_is_string_literal_alive(liveness, id)) {
             continue;
         }
         if (!*has_rodata) {
@@ -498,18 +498,17 @@ static kefir_result_t translate_constants(struct kefir_codegen_amd64_module *cod
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                     struct kefir_opt_module_analysis *analysis) {
-    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, analysis,
+static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module) {
+    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
                                       KEFIR_IR_DATA_GLOBAL_STORAGE, true, ".data", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
-    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, analysis,
+    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
                                       KEFIR_IR_DATA_GLOBAL_STORAGE, false, ".bss", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     if (!codegen_module->codegen->config->emulated_tls) {
-        REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, analysis,
-                                          KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, true, ".tdata",
+        REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module,
+                                          codegen_module->liveness, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, true, ".tdata",
                                           KEFIR_AMD64_XASMGEN_SECTION_TLS));
-        REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, analysis,
-                                          KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, false, ".tbss",
+        REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module,
+                                          codegen_module->liveness, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, false, ".tbss",
                                           KEFIR_AMD64_XASMGEN_SECTION_TLS));
     } else {
         REQUIRE_OK(translate_emulated_tls(mem, codegen_module->codegen, codegen_module->module));
@@ -518,7 +517,7 @@ static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen
     kefir_bool_t has_rodata = false;
     REQUIRE_OK(translate_constants(codegen_module, &has_rodata));
     REQUIRE_OK(
-        translate_strings(codegen_module->codegen, codegen_module->module, codegen_module->analysis, &has_rodata));
+        translate_strings(codegen_module->codegen, codegen_module->module, codegen_module->liveness, &has_rodata));
     return KEFIR_OK;
 }
 
@@ -589,12 +588,11 @@ static kefir_result_t generate_fini_array(struct kefir_codegen_amd64_module *cod
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                     struct kefir_opt_module_analysis *analysis) {
-
+static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module) {
+    REQUIRE_OK(kefir_opt_module_liveness_trace(mem, codegen_module->liveness, codegen_module->module));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_PROLOGUE(&codegen_module->codegen->xasmgen));
     REQUIRE_OK(translate_module_identifiers(codegen_module->module->ir_module, codegen_module->codegen,
-                                            codegen_module->analysis));
+                                            codegen_module->liveness));
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
 
     REQUIRE_OK(
@@ -607,16 +605,14 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     for (const struct kefir_ir_function *ir_func =
              kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
-        if (!kefir_opt_module_is_symbol_alive(&analysis->liveness, (const char *) iter.node->key)) {
+        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, (const char *) iter.node->key)) {
             continue;
         }
         struct kefir_opt_function *func = NULL;
-        const struct kefir_opt_code_analysis *func_analysis = NULL;
         REQUIRE_OK(kefir_opt_module_get_function(codegen_module->module, ir_func->declaration->id, &func));
-        REQUIRE_OK(kefir_opt_module_analysis_get_function(analysis, ir_func->declaration->id, &func_analysis));
 
         struct kefir_codegen_amd64_function *codegen_func;
-        REQUIRE_OK(kefir_codegen_amd64_module_insert_function(mem, codegen_module, func, func_analysis, &codegen_func));
+        REQUIRE_OK(kefir_codegen_amd64_module_insert_function(mem, codegen_module, func, &codegen_func));
         REQUIRE_OK(kefir_codegen_amd64_function_translate(mem, codegen_func));
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
 
@@ -632,7 +628,7 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
-    REQUIRE_OK(translate_data(mem, codegen_module, analysis));
+    REQUIRE_OK(translate_data(mem, codegen_module));
 
     if (has_constructors) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
@@ -651,17 +647,23 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module,
-                                   struct kefir_opt_module_analysis *analysis) {
+static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *cg, struct kefir_opt_module *module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cg != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 codegen"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module analysis"));
     ASSIGN_DECL_CAST(struct kefir_codegen_amd64 *, codegen, cg->data);
 
     struct kefir_codegen_amd64_module codegen_module;
-    REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, analysis));
-    kefir_result_t res = translate_impl(mem, &codegen_module, analysis);
+    struct kefir_opt_module_liveness liveness;
+    REQUIRE_OK(kefir_opt_module_liveness_init(&liveness));
+    REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, &liveness));
+    kefir_result_t res = translate_impl(mem, &codegen_module);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_opt_module_liveness_free(mem, &liveness);
+        kefir_codegen_amd64_module_free(mem, &codegen_module);
+        return res;
+    });
+    res = kefir_opt_module_liveness_free(mem, &liveness);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_codegen_amd64_module_free(mem, &codegen_module);
         return res;

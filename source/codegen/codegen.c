@@ -41,7 +41,7 @@ kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_co
     struct kefir_opt_module opt_module;
     REQUIRE_OK(kefir_opt_module_init(mem, ir_module, &opt_module));
 
-    kefir_result_t res = codegen->translate_optimized(mem, codegen, &opt_module, NULL);
+    kefir_result_t res = codegen->translate_optimized(mem, codegen, &opt_module);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_free(mem, &opt_module);
         return res;

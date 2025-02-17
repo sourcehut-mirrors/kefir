@@ -229,7 +229,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = scheduler_schedule,
                                                              .payload = (void *) &func->function->code};
     REQUIRE_OK(
-        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, func->function_analysis, &scheduler));
+        kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis, &scheduler));
 
     REQUIRE_OK(collect_translated_instructions(mem, func));
     // Initialize block labels
@@ -307,7 +307,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
         struct kefir_bucketset_iterator alive_instr_iter;
         kefir_bucketset_entry_t alive_instr_entry;
-        for (res = kefir_bucketset_iter(&func->function_analysis->liveness.blocks[block_id].alive_instr,
+        for (res = kefir_bucketset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr,
                                         &alive_instr_iter, &alive_instr_entry);
              res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
             kefir_asmcmp_virtual_register_index_t vreg = 0;
@@ -324,11 +324,11 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
 
             kefir_bool_t preserve_vreg = false;
             for (const struct kefir_list_entry *iter =
-                     kefir_list_head(&func->function_analysis->structure.blocks[block_id].successors);
+                     kefir_list_head(&func->function_analysis.structure.blocks[block_id].successors);
                  !preserve_vreg && iter != NULL; kefir_list_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, succ_block_id, (kefir_uptr_t) iter->value);
                 if (instr->block_id != succ_block_id &&
-                    kefir_bucketset_has(&func->function_analysis->liveness.blocks[succ_block_id].alive_instr,
+                    kefir_bucketset_has(&func->function_analysis.liveness.blocks[succ_block_id].alive_instr,
                                         alive_instr_entry)) {
                     preserve_vreg = true;
                 }
@@ -596,7 +596,9 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     if (!codegen->config->omit_frame_pointer) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&func->stack_frame));
     }
+    REQUIRE_OK(kefir_opt_code_analyze(mem, &func->function->code, &func->function_analysis));
     REQUIRE_OK(translate_code(mem, func));
+    REQUIRE_OK(kefir_opt_code_analysis_clear(mem, &func->function_analysis));
     REQUIRE_OK(propagate_virtual_register_hints(mem, func));
     REQUIRE_OK(
         kefir_asmcmp_pipeline_apply(mem, &codegen->pipeline, KEFIR_ASMCMP_PIPELINE_PASS_VIRTUAL, &func->code.context));
@@ -630,22 +632,18 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func,
                                                  struct kefir_codegen_amd64_module *codegen_module,
                                                  const struct kefir_opt_module *module,
-                                                 const struct kefir_opt_function *function,
-                                                 const struct kefir_opt_code_analysis *function_analysis) {
+                                                 const struct kefir_opt_function *function) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AMD64 codegen function"));
     REQUIRE(codegen_module != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 code generator module"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
-    REQUIRE(function_analysis != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function analysis"));
 
     *func = (struct kefir_codegen_amd64_function) {.codegen = codegen_module->codegen,
                                                    .codegen_module = codegen_module,
                                                    .module = module,
                                                    .function = function,
-                                                   .function_analysis = function_analysis,
                                                    .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
                                                    .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
                                                    .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
@@ -665,6 +663,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_opt_code_analsis_init(&func->function_analysis));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
@@ -704,6 +703,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
     REQUIRE_OK(kefir_opt_code_schedule_free(mem, &func->schedule));
+    REQUIRE_OK(kefir_opt_code_analysis_free(mem, &func->function_analysis));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));

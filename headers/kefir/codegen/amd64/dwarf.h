@@ -119,7 +119,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_types(struct kefir_mem *, stru
                                                         struct kefir_codegen_amd64_dwarf_context *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(struct kefir_mem *, struct kefir_codegen_amd64 *,
                                                                      const struct kefir_ir_module *,
-                                                                     const struct kefir_opt_module_analysis *,
+                                                                     const struct kefir_opt_module_liveness *,
                                                                      struct kefir_codegen_amd64_dwarf_context *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *, struct kefir_codegen_amd64_module *,
                                                             struct kefir_codegen_amd64_dwarf_context *);

@@ -36,7 +36,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64_module *codegen_module;
     const struct kefir_opt_module *module;
     const struct kefir_opt_function *function;
-    const struct kefir_opt_code_analysis *function_analysis;
+    struct kefir_opt_code_analysis function_analysis;
     struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
     struct kefir_codegen_amd64_xregalloc xregalloc;
@@ -65,8 +65,7 @@ typedef struct kefir_codegen_amd64_function {
 
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                  struct kefir_codegen_amd64_module *, const struct kefir_opt_module *,
-                                                 const struct kefir_opt_function *,
-                                                 const struct kefir_opt_code_analysis *);
+                                                 const struct kefir_opt_function *);
 kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 kefir_result_t kefir_codegen_amd64_function_translate(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 

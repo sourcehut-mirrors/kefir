@@ -23,6 +23,15 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
+kefir_result_t kefir_opt_code_analsis_init(struct kefir_opt_code_analysis *analysis) {
+    REQUIRE(analysis != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code analysis"));
+
+    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                       struct kefir_opt_code_analysis *analysis) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -33,17 +42,9 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &num_of_blocks));
 
-    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
-    REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
-
-    kefir_result_t res = kefir_opt_code_structure_build(mem, &analysis->structure, code);
-    REQUIRE_CHAIN(&res, kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->structure));
-    REQUIRE_CHAIN(&res, kefir_opt_code_structure_drop_sequencing_cache(mem, &analysis->structure));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_opt_code_liveness_free(mem, &analysis->liveness);
-        kefir_opt_code_structure_free(mem, &analysis->structure);
-        return res;
-    });
+    REQUIRE_OK(kefir_opt_code_structure_build(mem, &analysis->structure, code));
+    REQUIRE_OK(kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, &analysis->structure));
     return KEFIR_OK;
 }
 
@@ -53,6 +54,18 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
     REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_analysis_clear(struct kefir_mem *mem, struct kefir_opt_code_analysis *analysis) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
+
+    REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
+    REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
+
+    REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
+    REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
     return KEFIR_OK;
 }
 
@@ -84,14 +97,17 @@ static kefir_result_t module_analyze_impl(struct kefir_mem *mem, struct kefir_op
         REQUIRE(code_analysis != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code analysis data"));
 
-        kefir_result_t res = kefir_opt_code_analyze(mem, &opt_func->code, code_analysis);
+        kefir_result_t res = kefir_opt_code_analsis_init(code_analysis);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, code_analysis);
             return res;
         });
 
-        res = kefir_hashtree_insert(mem, &analysis->functions, (kefir_hashtree_key_t) func->declaration->id,
-                                    (kefir_hashtree_value_t) code_analysis);
+        res = kefir_opt_code_analyze(mem, &opt_func->code, code_analysis);
+        ;
+        REQUIRE_CHAIN(&res,
+                      kefir_hashtree_insert(mem, &analysis->functions, (kefir_hashtree_key_t) func->declaration->id,
+                                            (kefir_hashtree_value_t) code_analysis));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_opt_code_analysis_free(mem, code_analysis);
             KEFIR_FREE(mem, code_analysis);

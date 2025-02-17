@@ -478,7 +478,8 @@ static kefir_result_t dump_opt_impl(struct kefir_mem *mem, const struct kefir_co
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(unit)));
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
-    REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_analysis));
+    REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module));
+    REQUIRE_OK(kefir_opt_module_analyze(mem, &opt_module, &opt_analysis));
 
     if (output != NULL) {
         struct kefir_json_output json;
@@ -508,7 +509,6 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
     struct kefir_ast_translation_unit *unit = NULL;
     struct kefir_ir_module module;
     struct kefir_opt_module opt_module;
-    struct kefir_opt_module_analysis opt_module_analysis;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
@@ -526,11 +526,10 @@ static kefir_result_t dump_asm_impl(struct kefir_mem *mem, const struct kefir_co
 
     REQUIRE_OK(kefir_opt_module_init(mem, &module, &opt_module));
     if (compiler->profile->optimizer_enabled) {
-        REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module, &opt_module_analysis));
+        REQUIRE_OK(kefir_compiler_optimize(mem, compiler, &module, &opt_module));
         if (output != NULL) {
-            REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, &opt_module_analysis, output));
+            REQUIRE_OK(kefir_compiler_codegen_optimized(mem, compiler, &opt_module, output));
         }
-        REQUIRE_OK(kefir_opt_module_analysis_free(mem, &opt_module_analysis));
     } else if (output != NULL) {
         REQUIRE_OK(kefir_compiler_codegen(mem, compiler, &module, output));
     }
