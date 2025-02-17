@@ -232,7 +232,11 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
                     level = 1;
                 }
             } else {
-                level = strtoul(&arg[2], NULL, 10);
+                if (isdigit(arg[2])) {
+                    level = strtoul(&arg[2], NULL, 10);
+                } else {
+                    level = 1;
+                }
             }
 
             config->compiler.optimization_level = (kefir_int_t) level;
