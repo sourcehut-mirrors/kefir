@@ -155,7 +155,16 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
         }
 
         REQUIRE_OK(kefir_bitset_clear(visited_blocks));
-        REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) block_id));
+#define ADD_PREDS(_block_id)                                                                                         \
+    do {                                                                                                             \
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&structure->blocks[(_block_id)].predecessors);   \
+             iter2 != NULL; kefir_list_next(&iter2)) {                                                               \
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                      \
+            REQUIRE_OK(                                                                                              \
+                kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) pred_block_id)); \
+        }                                                                                                            \
+    } while (0)
+        ADD_PREDS(block_id);
 
         for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
             ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id, (kefir_uptr_t) iter->value);
@@ -163,26 +172,20 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
 
             kefir_bool_t visited;
             REQUIRE_OK(kefir_bitset_get(visited_blocks, current_block_id, &visited));
-            if (visited ||
-                (block_id != current_block_id && kefir_bucketset_has(&liveness->blocks[current_block_id].alive_instr,
-                                                                     (kefir_hashtreeset_entry_t) instr_ref))) {
+            if (visited || kefir_bucketset_has(&liveness->blocks[current_block_id].alive_instr,
+                                               (kefir_hashtreeset_entry_t) instr_ref)) {
                 continue;
             }
 
             REQUIRE_OK(kefir_bitset_set(visited_blocks, current_block_id, true));
-            REQUIRE_OK(kefir_bucketset_add(mem, &liveness->blocks[current_block_id].alive_instr,
-                                           (kefir_bucketset_entry_t) instr_ref));
 
             if (current_block_id != instr->block_id) {
-                for (const struct kefir_list_entry *iter2 =
-                         kefir_list_head(&structure->blocks[current_block_id].predecessors);
-                     iter2 != NULL; kefir_list_next(&iter2)) {
-                    ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);
-                    REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue),
-                                                       (void *) (kefir_uptr_t) pred_block_id));
-                }
+                REQUIRE_OK(kefir_bucketset_add(mem, &liveness->blocks[current_block_id].alive_instr,
+                                               (kefir_bucketset_entry_t) instr_ref));
+                ADD_PREDS(current_block_id);
             }
         }
+#undef ADD_PREFS
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);

@@ -137,6 +137,7 @@ kefir_result_t kefir_bucketset_add(struct kefir_mem *mem, struct kefir_bucketset
                                    kefir_bucketset_entry_t entry) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
+    REQUIRE(!kefir_bucketset_has(bucketset, entry), KEFIR_OK);
 
     if (bucketset->max_bucket_length > BUCKET_MAX_LENGTH) {
         struct kefir_hashtree old_buckets = bucketset->buckets;
