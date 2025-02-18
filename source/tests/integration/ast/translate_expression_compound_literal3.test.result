@@ -205,17 +205,6 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 3,
-                        "index": 3
-                    }
-                },
-                {
                     "opcode": "pushstring",
                     "arg": 0
                 },
@@ -329,17 +318,6 @@
                 },
                 {
                     "opcode": "iadd64"
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 5,
-                        "index": 0
-                    }
                 },
                 {
                     "opcode": "pick",

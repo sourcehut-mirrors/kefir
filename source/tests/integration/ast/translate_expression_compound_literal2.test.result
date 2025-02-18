@@ -208,15 +208,15 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "bzero",
                     "arg": {
                         "type": 3,
                         "index": 0
                     }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
                 },
                 {
                     "opcode": "pushstring",
@@ -399,15 +399,15 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
                     "opcode": "bzero",
                     "arg": {
                         "type": 13,
                         "index": 0
                     }
+                },
+                {
+                    "opcode": "pick",
+                    "arg": 0
                 },
                 {
                     "opcode": "pushstring",

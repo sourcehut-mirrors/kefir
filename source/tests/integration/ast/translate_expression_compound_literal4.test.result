@@ -255,17 +255,6 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 3,
-                        "index": 1
-                    }
-                },
-                {
                     "opcode": "pushstring",
                     "arg": 0
                 },
@@ -286,17 +275,6 @@
                 },
                 {
                     "opcode": "iadd64"
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 3,
-                        "index": 3
-                    }
                 },
                 {
                     "opcode": "pushstring",
@@ -321,17 +299,6 @@
                     "opcode": "iadd64"
                 },
                 {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 3,
-                        "index": 5
-                    }
-                },
-                {
                     "opcode": "pushstring",
                     "arg": 2
                 },
@@ -352,17 +319,6 @@
                 },
                 {
                     "opcode": "iadd64"
-                },
-                {
-                    "opcode": "pick",
-                    "arg": 0
-                },
-                {
-                    "opcode": "bzero",
-                    "arg": {
-                        "type": 3,
-                        "index": 7
-                    }
                 },
                 {
                     "opcode": "pushstring",
