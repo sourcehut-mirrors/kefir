@@ -121,9 +121,15 @@ struct do_allocation_state {
     struct virtual_block_data *current_virtual_block;
 };
 
-static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, struct virtual_block_data *block_data,
+static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, const struct kefir_asmcmp_context *context,
+                                                    struct virtual_block_data *block_data,
                                                     kefir_asmcmp_virtual_register_index_t vreg_idx,
                                                     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
+    const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, vreg_idx, &asmcmp_vreg));
+    REQUIRE(asmcmp_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE &&
+                asmcmp_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_STACK_FRAME_POINTER,
+            KEFIR_OK);
     REQUIRE_OK(kefir_bucketset_add(mem, &block_data->virtual_registers, (kefir_bucketset_entry_t) vreg_idx));
     for (; block_data != NULL; block_data = block_data->parent) {
         REQUIRE_OK(
@@ -160,7 +166,7 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
                 vreg->lifetime.begin = MIN(vreg->lifetime.begin, linear_index);
                 vreg->lifetime.end = MAX(vreg->lifetime.end, linear_index);
             }
-            REQUIRE_OK(add_virtual_register_to_block(mem, block_data, value->vreg.index, vreg));
+            REQUIRE_OK(add_virtual_register_to_block(mem, &target->context, block_data, value->vreg.index, vreg));
         } break;
 
         case KEFIR_ASMCMP_VALUE_TYPE_INDIRECT:
@@ -175,7 +181,8 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
                         vreg->lifetime.begin = MIN(vreg->lifetime.begin, linear_index);
                         vreg->lifetime.end = MAX(vreg->lifetime.end, linear_index);
                     }
-                    REQUIRE_OK(add_virtual_register_to_block(mem, block_data, value->indirect.base.vreg, vreg));
+                    REQUIRE_OK(add_virtual_register_to_block(mem, &target->context, block_data,
+                                                             value->indirect.base.vreg, vreg));
                 } break;
 
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
@@ -201,7 +208,7 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
                 vreg->lifetime.begin = MIN(vreg->lifetime.begin, linear_index);
                 vreg->lifetime.end = MAX(vreg->lifetime.end, linear_index);
             }
-            REQUIRE_OK(add_virtual_register_to_block(mem, block_data, vreg_idx, vreg));
+            REQUIRE_OK(add_virtual_register_to_block(mem, &target->context, block_data, vreg_idx, vreg));
         } break;
     }
     return KEFIR_OK;
@@ -301,7 +308,8 @@ static kefir_result_t scan_code(struct kefir_mem *mem, struct kefir_asmcmp_amd64
             if (vreg->lifetime.begin <= linear_index && linear_index <= vreg->lifetime.end) {
                 vreg->lifetime.begin = 0;
                 vreg->lifetime.end = xregalloc->linear_code_length;
-                REQUIRE_OK(add_virtual_register_to_block(mem, state->base_virtual_block, vreg_idx, vreg));
+                REQUIRE_OK(
+                    add_virtual_register_to_block(mem, &code->context, state->base_virtual_block, vreg_idx, vreg));
             }
         }
         if (res != KEFIR_ITERATOR_END) {
