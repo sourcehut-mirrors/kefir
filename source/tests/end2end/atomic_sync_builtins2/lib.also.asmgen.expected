@@ -54,20 +54,20 @@ __kefir_text_func_test_fetch_add_short_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movw $0, -12(%rbp)
+    movw $0, -14(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -12(%rbp), %rdx
+    leaq -14(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxw -12(%rbp), %rax
-    movw %ax, -14(%rbp)
-_kefir_func_test_fetch_add_short_label2:
     movsxw -14(%rbp), %rax
+    movw %ax, -12(%rbp)
+_kefir_func_test_fetch_add_short_label2:
+    movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -78,7 +78,7 @@ _kefir_func_test_fetch_add_short_label2:
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -14(%rbp), %rdx
+    leaq -12(%rbp), %rdx
     leaq -10(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -106,20 +106,20 @@ __kefir_text_func_test_fetch_and_short_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movw $0, -12(%rbp)
+    movw $0, -14(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -12(%rbp), %rdx
+    leaq -14(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxw -12(%rbp), %rax
-    movw %ax, -14(%rbp)
-_kefir_func_test_fetch_and_short_label2:
     movsxw -14(%rbp), %rax
+    movw %ax, -12(%rbp)
+_kefir_func_test_fetch_and_short_label2:
+    movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -130,7 +130,7 @@ _kefir_func_test_fetch_and_short_label2:
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -14(%rbp), %rdx
+    leaq -12(%rbp), %rdx
     leaq -10(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -158,20 +158,20 @@ __kefir_text_func_test_fetch_sub_short_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movw $0, -12(%rbp)
+    movw $0, -14(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -12(%rbp), %rdx
+    leaq -14(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxw -12(%rbp), %rax
-    movw %ax, -14(%rbp)
-_kefir_func_test_fetch_sub_short_label2:
     movsxw -14(%rbp), %rax
+    movw %ax, -12(%rbp)
+_kefir_func_test_fetch_sub_short_label2:
+    movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -182,7 +182,7 @@ _kefir_func_test_fetch_sub_short_label2:
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -14(%rbp), %rdx
+    leaq -12(%rbp), %rdx
     leaq -10(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -210,20 +210,20 @@ __kefir_text_func_test_fetch_xor_short_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movw $0, -12(%rbp)
+    movw $0, -14(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -12(%rbp), %rdx
+    leaq -14(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxw -12(%rbp), %rax
-    movw %ax, -14(%rbp)
-_kefir_func_test_fetch_xor_short_label2:
     movsxw -14(%rbp), %rax
+    movw %ax, -12(%rbp)
+_kefir_func_test_fetch_xor_short_label2:
+    movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -234,7 +234,7 @@ _kefir_func_test_fetch_xor_short_label2:
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -14(%rbp), %rdx
+    leaq -12(%rbp), %rdx
     leaq -10(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -262,20 +262,20 @@ __kefir_text_func_test_fetch_or_int_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movl $0, -16(%rbp)
+    movl $0, -20(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -16(%rbp), %rdx
+    leaq -20(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movsxl -16(%rbp), %rax
-    movl %eax, -20(%rbp)
-_kefir_func_test_fetch_or_int_label2:
     movsxl -20(%rbp), %rax
+    movl %eax, -16(%rbp)
+_kefir_func_test_fetch_or_int_label2:
+    movsxl -16(%rbp), %rax
     movsx %r11d, %rcx
     mov %rax, %rbx
     or %ecx, %ebx
@@ -285,7 +285,7 @@ _kefir_func_test_fetch_or_int_label2:
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -20(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     leaq -12(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -313,20 +313,20 @@ __kefir_text_func_test_fetch_add_char_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movb $0, -10(%rbp)
+    movb $0, -11(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -10(%rbp), %rdx
+    leaq -11(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxb -10(%rbp), %rax
-    movb %al, -11(%rbp)
-_kefir_func_test_fetch_add_char_label2:
     movsxb -11(%rbp), %rax
+    movb %al, -10(%rbp)
+_kefir_func_test_fetch_add_char_label2:
+    movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -337,7 +337,7 @@ _kefir_func_test_fetch_add_char_label2:
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -11(%rbp), %rdx
+    leaq -10(%rbp), %rdx
     leaq -9(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -365,20 +365,20 @@ __kefir_text_func_test_fetch_add_long_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movq $0, -24(%rbp)
+    movq $0, -32(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -24(%rbp), %rdx
+    leaq -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
-_kefir_func_test_fetch_add_long_label2:
     movq -32(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test_fetch_add_long_label2:
+    movq -24(%rbp), %rax
     mov %rax, %rbx
     add %r11, %rbx
     movq %rbx, -16(%rbp)
@@ -386,7 +386,7 @@ _kefir_func_test_fetch_add_long_label2:
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -24(%rbp), %rdx
     leaq -16(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -414,20 +414,20 @@ __kefir_text_func_test_fetch_and_char_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movb $0, -10(%rbp)
+    movb $0, -11(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -10(%rbp), %rdx
+    leaq -11(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxb -10(%rbp), %rax
-    movb %al, -11(%rbp)
-_kefir_func_test_fetch_and_char_label2:
     movsxb -11(%rbp), %rax
+    movb %al, -10(%rbp)
+_kefir_func_test_fetch_and_char_label2:
+    movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -438,7 +438,7 @@ _kefir_func_test_fetch_and_char_label2:
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -11(%rbp), %rdx
+    leaq -10(%rbp), %rdx
     leaq -9(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -466,20 +466,20 @@ __kefir_text_func_test_fetch_and_long_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movq $0, -24(%rbp)
+    movq $0, -32(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -24(%rbp), %rdx
+    leaq -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
-_kefir_func_test_fetch_and_long_label2:
     movq -32(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test_fetch_and_long_label2:
+    movq -24(%rbp), %rax
     mov %rax, %rbx
     and %r11, %rbx
     movq %rbx, -16(%rbp)
@@ -487,7 +487,7 @@ _kefir_func_test_fetch_and_long_label2:
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -24(%rbp), %rdx
     leaq -16(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -515,20 +515,20 @@ __kefir_text_func_test_fetch_or_short_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movw $0, -12(%rbp)
+    movw $0, -14(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -12(%rbp), %rdx
+    leaq -14(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxw -12(%rbp), %rax
-    movw %ax, -14(%rbp)
-_kefir_func_test_fetch_or_short_label2:
     movsxw -14(%rbp), %rax
+    movw %ax, -12(%rbp)
+_kefir_func_test_fetch_or_short_label2:
+    movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
     movsx %cx, %rcx
     mov %rax, %rbx
@@ -539,7 +539,7 @@ _kefir_func_test_fetch_or_short_label2:
     movq %r11, -24(%rbp)
     mov $2, %rdi
     mov %r10, %rsi
-    leaq -14(%rbp), %rdx
+    leaq -12(%rbp), %rdx
     leaq -10(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -567,20 +567,20 @@ __kefir_text_func_test_fetch_sub_char_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movb $0, -10(%rbp)
+    movb $0, -11(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -10(%rbp), %rdx
+    leaq -11(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxb -10(%rbp), %rax
-    movb %al, -11(%rbp)
-_kefir_func_test_fetch_sub_char_label2:
     movsxb -11(%rbp), %rax
+    movb %al, -10(%rbp)
+_kefir_func_test_fetch_sub_char_label2:
+    movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -591,7 +591,7 @@ _kefir_func_test_fetch_sub_char_label2:
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -11(%rbp), %rdx
+    leaq -10(%rbp), %rdx
     leaq -9(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -619,20 +619,20 @@ __kefir_text_func_test_fetch_sub_long_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movq $0, -24(%rbp)
+    movq $0, -32(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -24(%rbp), %rdx
+    leaq -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
-_kefir_func_test_fetch_sub_long_label2:
     movq -32(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test_fetch_sub_long_label2:
+    movq -24(%rbp), %rax
     mov %rax, %rbx
     sub %r11, %rbx
     movq %rbx, -16(%rbp)
@@ -640,7 +640,7 @@ _kefir_func_test_fetch_sub_long_label2:
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -24(%rbp), %rdx
     leaq -16(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -668,20 +668,20 @@ __kefir_text_func_test_fetch_xor_char_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movb $0, -10(%rbp)
+    movb $0, -11(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -10(%rbp), %rdx
+    leaq -11(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxb -10(%rbp), %rax
-    movb %al, -11(%rbp)
-_kefir_func_test_fetch_xor_char_label2:
     movsxb -11(%rbp), %rax
+    movb %al, -10(%rbp)
+_kefir_func_test_fetch_xor_char_label2:
+    movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -692,7 +692,7 @@ _kefir_func_test_fetch_xor_char_label2:
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -11(%rbp), %rdx
+    leaq -10(%rbp), %rdx
     leaq -9(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -720,20 +720,20 @@ __kefir_text_func_test_fetch_xor_long_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movq $0, -24(%rbp)
+    movq $0, -32(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -24(%rbp), %rdx
+    leaq -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
-_kefir_func_test_fetch_xor_long_label2:
     movq -32(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test_fetch_xor_long_label2:
+    movq -24(%rbp), %rax
     mov %rax, %rbx
     xor %r11, %rbx
     movq %rbx, -16(%rbp)
@@ -741,7 +741,7 @@ _kefir_func_test_fetch_xor_long_label2:
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -24(%rbp), %rdx
     leaq -16(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -769,20 +769,20 @@ __kefir_text_func_test_fetch_add_int_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movl $0, -16(%rbp)
+    movl $0, -20(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -16(%rbp), %rdx
+    leaq -20(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movsxl -16(%rbp), %rax
-    movl %eax, -20(%rbp)
-_kefir_func_test_fetch_add_int_label2:
     movsxl -20(%rbp), %rax
+    movl %eax, -16(%rbp)
+_kefir_func_test_fetch_add_int_label2:
+    movsxl -16(%rbp), %rax
     movsx %r11d, %rcx
     mov %rax, %rbx
     add %ecx, %ebx
@@ -792,7 +792,7 @@ _kefir_func_test_fetch_add_int_label2:
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -20(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     leaq -12(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -820,20 +820,20 @@ __kefir_text_func_test_fetch_and_int_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movl $0, -16(%rbp)
+    movl $0, -20(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -16(%rbp), %rdx
+    leaq -20(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movsxl -16(%rbp), %rax
-    movl %eax, -20(%rbp)
-_kefir_func_test_fetch_and_int_label2:
     movsxl -20(%rbp), %rax
+    movl %eax, -16(%rbp)
+_kefir_func_test_fetch_and_int_label2:
+    movsxl -16(%rbp), %rax
     movsx %r11d, %rcx
     mov %rax, %rbx
     and %ecx, %ebx
@@ -843,7 +843,7 @@ _kefir_func_test_fetch_and_int_label2:
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -20(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     leaq -12(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -871,20 +871,20 @@ __kefir_text_func_test_fetch_or_char_begin:
     sub $24, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movb $0, -10(%rbp)
+    movb $0, -11(%rbp)
     movq %r10, -32(%rbp)
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -10(%rbp), %rdx
+    leaq -11(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -32(%rbp), %r10
     movq -24(%rbp), %r11
-    movsxb -10(%rbp), %rax
-    movb %al, -11(%rbp)
-_kefir_func_test_fetch_or_char_label2:
     movsxb -11(%rbp), %rax
+    movb %al, -10(%rbp)
+_kefir_func_test_fetch_or_char_label2:
+    movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
     movsx %cl, %rcx
     mov %rax, %rbx
@@ -895,7 +895,7 @@ _kefir_func_test_fetch_or_char_label2:
     movq %r11, -24(%rbp)
     mov $1, %rdi
     mov %r10, %rsi
-    leaq -11(%rbp), %rdx
+    leaq -10(%rbp), %rdx
     leaq -9(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -923,20 +923,20 @@ __kefir_text_func_test_fetch_or_long_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movq $0, -24(%rbp)
+    movq $0, -32(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -24(%rbp), %rdx
+    leaq -32(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movq -24(%rbp), %rax
-    movq %rax, -32(%rbp)
-_kefir_func_test_fetch_or_long_label2:
     movq -32(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_test_fetch_or_long_label2:
+    movq -24(%rbp), %rax
     mov %rax, %rbx
     or %r11, %rbx
     movq %rbx, -16(%rbp)
@@ -944,7 +944,7 @@ _kefir_func_test_fetch_or_long_label2:
     movq %r11, -40(%rbp)
     mov $8, %rdi
     mov %r10, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -24(%rbp), %rdx
     leaq -16(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -972,20 +972,20 @@ __kefir_text_func_test_fetch_sub_int_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movl $0, -16(%rbp)
+    movl $0, -20(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -16(%rbp), %rdx
+    leaq -20(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movsxl -16(%rbp), %rax
-    movl %eax, -20(%rbp)
-_kefir_func_test_fetch_sub_int_label2:
     movsxl -20(%rbp), %rax
+    movl %eax, -16(%rbp)
+_kefir_func_test_fetch_sub_int_label2:
+    movsxl -16(%rbp), %rax
     movsx %r11d, %rcx
     mov %rax, %rbx
     sub %ecx, %ebx
@@ -995,7 +995,7 @@ _kefir_func_test_fetch_sub_int_label2:
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -20(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     leaq -12(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
@@ -1023,20 +1023,20 @@ __kefir_text_func_test_fetch_xor_int_begin:
     sub $40, %rsp
     mov %rdi, %r10
     mov %rsi, %r11
-    movl $0, -16(%rbp)
+    movl $0, -20(%rbp)
     movq %r10, -48(%rbp)
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -16(%rbp), %rdx
+    leaq -20(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
     movq -48(%rbp), %r10
     movq -40(%rbp), %r11
-    movsxl -16(%rbp), %rax
-    movl %eax, -20(%rbp)
-_kefir_func_test_fetch_xor_int_label2:
     movsxl -20(%rbp), %rax
+    movl %eax, -16(%rbp)
+_kefir_func_test_fetch_xor_int_label2:
+    movsxl -16(%rbp), %rax
     movsx %r11d, %rcx
     mov %rax, %rbx
     xor %ecx, %ebx
@@ -1046,7 +1046,7 @@ _kefir_func_test_fetch_xor_int_label2:
     movq %r11, -40(%rbp)
     mov $4, %rdi
     mov %r10, %rsi
-    leaq -20(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     leaq -12(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9

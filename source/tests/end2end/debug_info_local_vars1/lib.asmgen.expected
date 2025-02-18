@@ -81,12 +81,12 @@ _kefir_func_fn1_label28:
     fstpt -1648(%rbp)
 .loc 0 30 13
 _kefir_func_fn1_label29:
-    movq $0, -24(%rbp)
+    movq $0, -824(%rbp)
     fldt -1648(%rbp)
-    fstpt -32(%rbp)
+    fstpt -832(%rbp)
 .loc 0 31 28
 _kefir_func_fn1_label30:
-    fldt -32(%rbp)
+    fldt -832(%rbp)
     fstpt -1664(%rbp)
 .loc 0 32 29
 _kefir_func_fn1_label31:
@@ -98,7 +98,7 @@ _kefir_func_fn1_label32:
 _kefir_func_fn1_label33:
     imul $8, %rax, %rax
 _kefir_func_fn1_label34:
-    leaq -832(%rbp), %rcx
+    leaq -816(%rbp), %rcx
 .loc 0 32 24
     add %rax, %rcx
 .loc 0 32 24

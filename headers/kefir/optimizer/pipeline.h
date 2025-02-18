@@ -56,6 +56,7 @@ DECLARE_PASS(ConstFold);
 DECLARE_PASS(BranchRemoval);
 DECLARE_PASS(Mem2Reg);
 DECLARE_PASS(PhiPropagate);
+DECLARE_PASS(LocalAllocSink);
 #undef DECLARE_PASS
 #endif
 

@@ -34,7 +34,9 @@
 #include <limits.h>
 #include <libgen.h>
 
-#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC "phi-propagate,constant-fold,mem2reg,phi-propagate,constant-fold,op-simplify,branch-removal"
+#define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC \
+    "phi-propagate,constant-fold,mem2reg,local-alloc-sink,phi-propagate,constant-fold,op-simplify,branch-removal"
+#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "local-alloc-sink"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
     "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
@@ -282,7 +284,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     }
     switch (config->compiler.optimization_level) {
         case 0:
-            compiler_config->optimizer_pipeline_spec = NULL;
+            compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
             compiler_config->codegen.pipeline_spec = NULL;
             break;
 
