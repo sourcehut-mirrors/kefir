@@ -19,6 +19,7 @@
 */
 
 #include "kefir/optimizer/analysis.h"
+#include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -186,7 +187,7 @@ kefir_result_t kefir_opt_module_liveness_free(struct kefir_mem *mem, struct kefi
 }
 
 static kefir_result_t trace_inline_asm(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
-                                       struct kefir_list *symbol_queue,
+                                       struct kefir_queue *symbol_queue,
                                        const struct kefir_ir_inline_assembly *inline_asm) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->parameter_list); iter != NULL;
          kefir_list_next(&iter)) {
@@ -194,8 +195,8 @@ static kefir_result_t trace_inline_asm(struct kefir_mem *mem, struct kefir_opt_m
         if (param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE) {
             switch (param->immediate_type) {
                 case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED:
-                    REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue),
-                                                       (void *) param->immediate_identifier_base));
+                    REQUIRE_OK(
+                        kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) param->immediate_identifier_base));
                     break;
 
                 case KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED:
@@ -213,8 +214,7 @@ static kefir_result_t trace_inline_asm(struct kefir_mem *mem, struct kefir_opt_m
     for (const struct kefir_list_entry *iter = kefir_list_head(&inline_asm->jump_target_list); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ir_inline_assembly_jump_target *, jump_target, iter->value);
-        REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue),
-                                           (void *) jump_target->target_function));
+        REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) jump_target->target_function));
     }
 
     return KEFIR_OK;
@@ -225,7 +225,7 @@ struct function_trace_payload {
     struct kefir_opt_module_liveness *liveness;
     const struct kefir_opt_module *module;
     const struct kefir_opt_function *function;
-    struct kefir_list *symbol_queue;
+    struct kefir_queue *symbol_queue;
 };
 
 static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, void *payload) {
@@ -247,8 +247,7 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
                 kefir_ir_module_get_declaration(param->module->ir_module, call->function_declaration_id);
             REQUIRE(decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
             if (decl->name != NULL) {
-                REQUIRE_OK(kefir_list_insert_after(param->mem, param->symbol_queue,
-                                                   kefir_list_tail(param->symbol_queue), (void *) decl->name));
+                REQUIRE_OK(kefir_queue_push(param->mem, param->symbol_queue, (kefir_queue_entry_t) decl->name));
             }
         } break;
 
@@ -257,8 +256,7 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
             const char *symbol = kefir_ir_module_get_named_symbol(param->module->ir_module,
                                                                   instr->operation.parameters.variable.global_ref);
             REQUIRE(symbol != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find named IR symbol"));
-            REQUIRE_OK(kefir_list_insert_after(param->mem, param->symbol_queue, kefir_list_tail(param->symbol_queue),
-                                               (void *) symbol));
+            REQUIRE_OK(kefir_queue_push(param->mem, param->symbol_queue, (kefir_queue_entry_t) symbol));
         } break;
 
         case KEFIR_OPT_OPCODE_STRING_REF:
@@ -285,7 +283,7 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 
 static kefir_result_t trace_function(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
                                      const struct kefir_opt_module *module, const struct kefir_opt_function *function,
-                                     struct kefir_list *symbol_queue) {
+                                     struct kefir_queue *symbol_queue) {
     struct function_trace_payload payload = {
         .mem = mem, .liveness = liveness, .module = module, .function = function, .symbol_queue = symbol_queue};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = trace_instruction, .payload = &payload};
@@ -294,7 +292,7 @@ static kefir_result_t trace_function(struct kefir_mem *mem, struct kefir_opt_mod
 }
 
 static kefir_result_t trace_data(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
-                                 const struct kefir_ir_data *data, struct kefir_list *symbol_queue) {
+                                 const struct kefir_ir_data *data, struct kefir_queue *symbol_queue) {
     for (kefir_size_t i = 0; i < data->total_length; i++) {
         const struct kefir_ir_data_value *value;
         REQUIRE_OK(kefir_ir_data_value_at(data, i, &value));
@@ -325,8 +323,7 @@ static kefir_result_t trace_data(struct kefir_mem *mem, struct kefir_opt_module_
                 break;
 
             case KEFIR_IR_DATA_VALUE_POINTER:
-                REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue),
-                                                   (void *) value->value.pointer.reference));
+                REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) value->value.pointer.reference));
                 break;
         }
     }
@@ -335,7 +332,7 @@ static kefir_result_t trace_data(struct kefir_mem *mem, struct kefir_opt_module_
 }
 
 static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
-                                              const struct kefir_opt_module *module, struct kefir_list *symbol_queue) {
+                                              const struct kefir_opt_module *module, struct kefir_queue *symbol_queue) {
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&module->ir_module->identifiers, &iter);
          node != NULL; node = kefir_hashtree_next(&iter)) {
@@ -344,7 +341,7 @@ static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefi
         ASSIGN_DECL_CAST(const struct kefir_ir_identifier *, ir_identifier, node->value);
         if (ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT ||
             ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK) {
-            REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue), (void *) symbol));
+            REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) symbol));
         }
     }
 
@@ -354,7 +351,7 @@ static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefi
         ASSIGN_DECL_CAST(const char *, symbol, node->key);
         ASSIGN_DECL_CAST(const struct kefir_ir_function *, function, node->value);
         if (function->flags.constructor || function->flags.destructor) {
-            REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue), (void *) symbol));
+            REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) symbol));
         }
     }
 
@@ -369,12 +366,13 @@ static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefi
 }
 
 static kefir_result_t liveness_trace(struct kefir_mem *mem, struct kefir_opt_module_liveness *liveness,
-                                     const struct kefir_opt_module *module, struct kefir_list *symbol_queue) {
+                                     const struct kefir_opt_module *module, struct kefir_queue *symbol_queue) {
     REQUIRE_OK(initialize_symbol_queue(mem, liveness, module, symbol_queue));
 
-    for (struct kefir_list_entry *iter = kefir_list_head(symbol_queue); iter != NULL;
-         kefir_list_pop(mem, symbol_queue, iter), iter = kefir_list_head(symbol_queue)) {
-        ASSIGN_DECL_CAST(const char *, symbol, iter->value);
+    while (!kefir_queue_is_empty(symbol_queue)) {
+        kefir_queue_entry_t entry;
+        REQUIRE_OK(kefir_queue_pop_first(mem, symbol_queue, &entry));
+        ASSIGN_DECL_CAST(const char *, symbol, entry);
         if (kefir_hashtreeset_has(&liveness->symbols, (kefir_hashtree_key_t) symbol)) {
             continue;
         }
@@ -404,8 +402,7 @@ static kefir_result_t liveness_trace(struct kefir_mem *mem, struct kefir_opt_mod
             ASSIGN_DECL_CAST(struct kefir_ir_identifier *, ir_identifier, node->value);
             REQUIRE_OK(kefir_hashtreeset_add(mem, &liveness->symbols, (kefir_hashtreeset_entry_t) symbol));
             if (ir_identifier->alias != NULL) {
-                REQUIRE_OK(kefir_list_insert_after(mem, symbol_queue, kefir_list_tail(symbol_queue),
-                                                   (void *) ir_identifier->alias));
+                REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) ir_identifier->alias));
             }
         }
     }
@@ -418,15 +415,15 @@ kefir_result_t kefir_opt_module_liveness_trace(struct kefir_mem *mem, struct kef
     REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module liveness"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
 
-    struct kefir_list symbol_queue;
-    REQUIRE_OK(kefir_list_init(&symbol_queue));
+    struct kefir_queue symbol_queue;
+    REQUIRE_OK(kefir_queue_init(&symbol_queue));
     kefir_result_t res = liveness_trace(mem, liveness, module, &symbol_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &symbol_queue);
+        kefir_queue_free(mem, &symbol_queue);
         return res;
     });
 
-    REQUIRE_OK(kefir_list_free(mem, &symbol_queue));
+    REQUIRE_OK(kefir_queue_free(mem, &symbol_queue));
     return KEFIR_OK;
 }
 

@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/core/queue.h"
 #include "kefir/core/bitset.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -139,7 +140,8 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
 static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, struct kefir_opt_code_liveness *liveness,
                                                         const struct kefir_opt_code_structure *structure,
                                                         kefir_opt_block_id_t block_id,
-                                                        struct kefir_bitset *visited_blocks, struct kefir_list *queue) {
+                                                        struct kefir_bitset *visited_blocks,
+                                                        struct kefir_queue *queue) {
     kefir_result_t res;
     struct kefir_bucketset_iterator iter;
     kefir_bucketset_entry_t entry;
@@ -155,20 +157,20 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
         }
 
         REQUIRE_OK(kefir_bitset_clear(visited_blocks));
-#define ADD_PREDS(_block_id)                                                                                         \
-    do {                                                                                                             \
-        for (const struct kefir_list_entry *iter2 = kefir_list_head(&structure->blocks[(_block_id)].predecessors);   \
-             iter2 != NULL; kefir_list_next(&iter2)) {                                                               \
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                      \
-            REQUIRE_OK(                                                                                              \
-                kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) (kefir_uptr_t) pred_block_id)); \
-        }                                                                                                            \
+#define ADD_PREDS(_block_id)                                                                                       \
+    do {                                                                                                           \
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&structure->blocks[(_block_id)].predecessors); \
+             iter2 != NULL; kefir_list_next(&iter2)) {                                                             \
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, pred_block_id, (kefir_uptr_t) iter2->value);                    \
+            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) pred_block_id));                         \
+        }                                                                                                          \
     } while (0)
         ADD_PREDS(block_id);
 
-        for (struct kefir_list_entry *iter = kefir_list_head(queue); iter != NULL; iter = kefir_list_head(queue)) {
-            ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id, (kefir_uptr_t) iter->value);
-            REQUIRE_OK(kefir_list_pop(mem, queue, iter));
+        while (!kefir_queue_is_empty(queue)) {
+            kefir_queue_entry_t entry;
+            REQUIRE_OK(kefir_queue_pop_first(mem, queue, &entry));
+            ASSIGN_DECL_CAST(kefir_opt_block_id_t, current_block_id, entry);
 
             kefir_bool_t visited;
             REQUIRE_OK(kefir_bitset_get(visited_blocks, current_block_id, &visited));
@@ -200,9 +202,9 @@ static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct
     REQUIRE_OK(kefir_opt_code_container_block_count(liveness->code, &num_of_blocks));
 
     struct kefir_bitset visited_blocks;
-    struct kefir_list queue;
+    struct kefir_queue queue;
     REQUIRE_OK(kefir_bitset_init(&visited_blocks));
-    REQUIRE_OK(kefir_list_init(&queue));
+    REQUIRE_OK(kefir_queue_init(&queue));
 
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, kefir_bitset_ensure(mem, &visited_blocks, num_of_blocks));
@@ -211,15 +213,15 @@ static kefir_result_t propagate_alive_instructions(struct kefir_mem *mem, struct
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_bitset_free(mem, &visited_blocks);
-        kefir_list_free(mem, &queue);
+        kefir_queue_free(mem, &queue);
         return res;
     });
     res = kefir_bitset_free(mem, &visited_blocks);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &queue);
+        kefir_queue_free(mem, &queue);
         return res;
     });
-    REQUIRE_OK(kefir_list_free(mem, &queue));
+    REQUIRE_OK(kefir_queue_free(mem, &queue));
     return KEFIR_OK;
 }
 

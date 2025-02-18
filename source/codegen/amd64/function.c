@@ -26,6 +26,7 @@
 #include "kefir/codegen/asmcmp/format.h"
 #include "kefir/optimizer/code.h"
 #include "kefir/optimizer/code_util.h"
+#include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -75,7 +76,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
 struct translate_instruction_collector_param {
     struct kefir_mem *mem;
     struct kefir_codegen_amd64_function *func;
-    struct kefir_list *queue;
+    struct kefir_queue *queue;
 };
 
 static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruction_ref_t instr_ref, void *payload) {
@@ -86,14 +87,14 @@ static kefir_result_t translate_instruction_collector_callback(kefir_opt_instruc
     REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr_ref, &instr));
 
     if (kefir_opt_code_schedule_has_block(&param->func->schedule, instr->block_id)) {
-        REQUIRE_OK(kefir_list_insert_after(param->mem, param->queue, kefir_list_tail(param->queue), (void *) instr));
+        REQUIRE_OK(kefir_queue_push(param->mem, param->queue, (kefir_queue_entry_t) instr));
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem,
                                                            struct kefir_codegen_amd64_function *func,
-                                                           struct kefir_list *queue) {
+                                                           struct kefir_queue *queue) {
     for (kefir_size_t block_linear_index = 0;
          block_linear_index < kefir_opt_code_schedule_num_of_blocks(&func->schedule); block_linear_index++) {
         kefir_opt_block_id_t block_id;
@@ -106,15 +107,16 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
         REQUIRE_OK(kefir_opt_code_block_instr_control_head(&func->function->code, block, &instr_ref));
         for (; instr_ref != KEFIR_ID_NONE;) {
             REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code, instr_ref, &instr));
-            REQUIRE_OK(kefir_list_insert_after(mem, queue, kefir_list_tail(queue), (void *) instr));
+            REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) instr));
             REQUIRE_OK(kefir_opt_instruction_next_control(&func->function->code, instr_ref, &instr_ref));
         }
     }
 
     struct translate_instruction_collector_param param = {.mem = mem, .func = func, .queue = queue};
-    for (struct kefir_list_entry *head = kefir_list_head(queue); head != NULL; head = kefir_list_head(queue)) {
-        ASSIGN_DECL_CAST(struct kefir_opt_instruction *, instr, head->value);
-        REQUIRE_OK(kefir_list_pop(mem, queue, head));
+    while (!kefir_queue_is_empty(queue)) {
+        kefir_queue_entry_t entry;
+        REQUIRE_OK(kefir_queue_pop_first(mem, queue, &entry));
+        ASSIGN_DECL_CAST(struct kefir_opt_instruction *, instr, entry);
 
         if (!kefir_hashtreeset_has(&func->translated_instructions, (kefir_hashtreeset_entry_t) instr->id)) {
             REQUIRE_OK(
@@ -128,14 +130,14 @@ static kefir_result_t collect_translated_instructions_impl(struct kefir_mem *mem
 
 static kefir_result_t collect_translated_instructions(struct kefir_mem *mem,
                                                       struct kefir_codegen_amd64_function *func) {
-    struct kefir_list queue;
-    REQUIRE_OK(kefir_list_init(&queue));
+    struct kefir_queue queue;
+    REQUIRE_OK(kefir_queue_init(&queue));
     kefir_result_t res = collect_translated_instructions_impl(mem, func, &queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &queue);
+        kefir_queue_free(mem, &queue);
         return res;
     });
-    REQUIRE_OK(kefir_list_free(mem, &queue));
+    REQUIRE_OK(kefir_queue_free(mem, &queue));
     return KEFIR_OK;
 }
 
