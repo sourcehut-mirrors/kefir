@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -36,9 +33,6 @@
                     {
                         "id": 1,
                         "control_flow": 6,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 6,
@@ -75,9 +69,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -102,9 +93,6 @@
                     {
                         "id": 1,
                         "control_flow": 5,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 1,
@@ -170,9 +158,6 @@
                     {
                         "id": 2,
                         "control_flow": 17,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 11,
@@ -257,9 +242,6 @@
                     {
                         "id": 5,
                         "control_flow": 31,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 24,
@@ -350,9 +332,6 @@
                     {
                         "id": 6,
                         "control_flow": 23,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 18,
@@ -423,9 +402,6 @@
                     {
                         "id": 3,
                         "control_flow": 9,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 6,
@@ -489,9 +465,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -516,9 +489,6 @@
                     {
                         "id": 1,
                         "control_flow": 7,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 1,
@@ -604,9 +574,6 @@
                     {
                         "id": 2,
                         "control_flow": 16,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 16,
@@ -631,9 +598,6 @@
                     {
                         "id": 3,
                         "control_flow": 14,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 8,

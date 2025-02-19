@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -36,21 +33,21 @@
                     {
                         "id": 1,
                         "control_flow": 1,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [
-                            {
-                                "id": 0,
-                                "inline_asm_id": 0,
-                                "output_ref": 1,
-                                "parameters": [],
-                                "default_jump_target": null,
-                                "jump_targets": []
-                            },
+                        "code": [
                             {
                                 "id": 1,
+                                "opcode": "inline_assembly",
+                                "inline_asm_id": 0,
+                                "parameters": [],
+                                "default_jump_target": null,
+                                "jump_targets": [],
+                                "control_next": 2,
+                                "ir_instruction": 0
+                            },
+                            {
+                                "id": 2,
+                                "opcode": "inline_assembly",
                                 "inline_asm_id": 1,
-                                "output_ref": 2,
                                 "parameters": [
                                     {
                                         "load_store": null,
@@ -58,21 +55,7 @@
                                     }
                                 ],
                                 "default_jump_target": null,
-                                "jump_targets": []
-                            }
-                        ],
-                        "code": [
-                            {
-                                "id": 1,
-                                "opcode": "inline_assembly",
-                                "inline_asm_ref": 0,
-                                "control_next": 2,
-                                "ir_instruction": 0
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "inline_assembly",
-                                "inline_asm_ref": 1,
+                                "jump_targets": [],
                                 "control_next": 4,
                                 "ir_instruction": 1
                             },
@@ -136,9 +119,6 @@
                     {
                         "id": 2,
                         "control_flow": 11,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 10,
@@ -198,13 +178,11 @@
                     {
                         "id": 4,
                         "control_flow": 21,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [
+                        "code": [
                             {
-                                "id": 4,
+                                "id": 21,
+                                "opcode": "inline_assembly",
                                 "inline_asm_id": 4,
-                                "output_ref": 21,
                                 "parameters": [],
                                 "default_jump_target": 8,
                                 "jump_targets": [
@@ -216,14 +194,7 @@
                                         "id": 1,
                                         "target_block": 7
                                     }
-                                ]
-                            }
-                        ],
-                        "code": [
-                            {
-                                "id": 21,
-                                "opcode": "inline_assembly",
-                                "inline_asm_ref": 4,
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 18
                             }
@@ -248,9 +219,6 @@
                     {
                         "id": 8,
                         "control_flow": 22,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 22,
@@ -277,9 +245,6 @@
                     {
                         "id": 9,
                         "control_flow": 25,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 25,
@@ -305,9 +270,6 @@
                     {
                         "id": 6,
                         "control_flow": 23,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 23,
@@ -334,9 +296,6 @@
                     {
                         "id": 7,
                         "control_flow": 24,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 24,
@@ -363,35 +322,6 @@
                     {
                         "id": 5,
                         "control_flow": 17,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [
-                            {
-                                "id": 3,
-                                "inline_asm_id": 3,
-                                "output_ref": 19,
-                                "parameters": [
-                                    {
-                                        "load_store": 14,
-                                        "read": null
-                                    },
-                                    {
-                                        "load_store": 15,
-                                        "read": 18
-                                    },
-                                    {
-                                        "load_store": null,
-                                        "read": null
-                                    },
-                                    {
-                                        "load_store": null,
-                                        "read": 17
-                                    }
-                                ],
-                                "default_jump_target": null,
-                                "jump_targets": []
-                            }
-                        ],
                         "code": [
                             {
                                 "id": 16,
@@ -437,7 +367,27 @@
                             {
                                 "id": 19,
                                 "opcode": "inline_assembly",
-                                "inline_asm_ref": 3,
+                                "inline_asm_id": 3,
+                                "parameters": [
+                                    {
+                                        "load_store": 14,
+                                        "read": null
+                                    },
+                                    {
+                                        "load_store": 15,
+                                        "read": 18
+                                    },
+                                    {
+                                        "load_store": null,
+                                        "read": null
+                                    },
+                                    {
+                                        "load_store": null,
+                                        "read": 17
+                                    }
+                                ],
+                                "default_jump_target": null,
+                                "jump_targets": [],
                                 "control_next": 20,
                                 "ir_instruction": 17
                             },
@@ -472,27 +422,6 @@
                     {
                         "id": 3,
                         "control_flow": 8,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [
-                            {
-                                "id": 2,
-                                "inline_asm_id": 2,
-                                "output_ref": 8,
-                                "parameters": [
-                                    {
-                                        "load_store": 7,
-                                        "read": null
-                                    },
-                                    {
-                                        "load_store": null,
-                                        "read": null
-                                    }
-                                ],
-                                "default_jump_target": null,
-                                "jump_targets": []
-                            }
-                        ],
                         "code": [
                             {
                                 "id": 7,
@@ -505,7 +434,19 @@
                             {
                                 "id": 8,
                                 "opcode": "inline_assembly",
-                                "inline_asm_ref": 2,
+                                "inline_asm_id": 2,
+                                "parameters": [
+                                    {
+                                        "load_store": 7,
+                                        "read": null
+                                    },
+                                    {
+                                        "load_store": null,
+                                        "read": null
+                                    }
+                                ],
+                                "default_jump_target": null,
+                                "jump_targets": [],
                                 "control_next": 9,
                                 "ir_instruction": 7
                             },

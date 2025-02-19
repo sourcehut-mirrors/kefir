@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -36,117 +33,12 @@
                     {
                         "id": 1,
                         "control_flow": 1,
-                        "phi": [],
-                        "calls": [
-                            {
-                                "id": 0,
-                                "function_declaration_id": 32,
-                                "output_ref": 1,
-                                "arguments": []
-                            },
-                            {
-                                "id": 1,
-                                "function_declaration_id": 33,
-                                "output_ref": 3,
-                                "arguments": [
-                                    2
-                                ]
-                            },
-                            {
-                                "id": 2,
-                                "function_declaration_id": 34,
-                                "output_ref": 10,
-                                "arguments": [
-                                    4,
-                                    5,
-                                    6,
-                                    7,
-                                    8,
-                                    9
-                                ]
-                            },
-                            {
-                                "id": 3,
-                                "function_declaration_id": 35,
-                                "output_ref": 11,
-                                "arguments": []
-                            },
-                            {
-                                "id": 4,
-                                "function_declaration_id": 36,
-                                "output_ref": 18,
-                                "arguments": [
-                                    12,
-                                    17
-                                ]
-                            },
-                            {
-                                "id": 5,
-                                "function_declaration_id": 38,
-                                "output_ref": 20,
-                                "arguments": []
-                            },
-                            {
-                                "id": 6,
-                                "function_declaration_id": 39,
-                                "output_ref": 24,
-                                "arguments": [
-                                    21,
-                                    22,
-                                    23
-                                ]
-                            },
-                            {
-                                "id": 7,
-                                "function_declaration_id": 40,
-                                "output_ref": 27,
-                                "arguments": [
-                                    25,
-                                    26
-                                ]
-                            },
-                            {
-                                "id": 8,
-                                "function_declaration_id": 41,
-                                "output_ref": 28,
-                                "arguments": []
-                            },
-                            {
-                                "id": 9,
-                                "function_declaration_id": 37,
-                                "output_ref": 30,
-                                "arguments": [
-                                    19,
-                                    20,
-                                    27,
-                                    29
-                                ]
-                            },
-                            {
-                                "id": 10,
-                                "function_declaration_id": 42,
-                                "output_ref": 33,
-                                "arguments": [
-                                    32
-                                ]
-                            },
-                            {
-                                "id": 11,
-                                "function_declaration_id": 43,
-                                "output_ref": 38,
-                                "arguments": [
-                                    35,
-                                    36,
-                                    37
-                                ]
-                            }
-                        ],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 1,
                                 "opcode": "invoke",
-                                "call_ref": 0,
+                                "function_declaration_id": 32,
+                                "arguments": [],
                                 "indirect_ref": null,
                                 "control_next": 3,
                                 "ir_instruction": 0
@@ -161,7 +53,10 @@
                             {
                                 "id": 3,
                                 "opcode": "invoke",
-                                "call_ref": 1,
+                                "function_declaration_id": 33,
+                                "arguments": [
+                                    2
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 10,
                                 "ir_instruction": 2
@@ -211,7 +106,15 @@
                             {
                                 "id": 10,
                                 "opcode": "invoke",
-                                "call_ref": 2,
+                                "function_declaration_id": 34,
+                                "arguments": [
+                                    4,
+                                    5,
+                                    6,
+                                    7,
+                                    8,
+                                    9
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 11,
                                 "ir_instruction": 9
@@ -219,7 +122,8 @@
                             {
                                 "id": 11,
                                 "opcode": "invoke",
-                                "call_ref": 3,
+                                "function_declaration_id": 35,
+                                "arguments": [],
                                 "indirect_ref": null,
                                 "control_next": 18,
                                 "ir_instruction": 10
@@ -275,7 +179,11 @@
                             {
                                 "id": 18,
                                 "opcode": "invoke",
-                                "call_ref": 4,
+                                "function_declaration_id": 36,
+                                "arguments": [
+                                    12,
+                                    17
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 20,
                                 "ir_instruction": 18
@@ -283,7 +191,8 @@
                             {
                                 "id": 20,
                                 "opcode": "invoke",
-                                "call_ref": 5,
+                                "function_declaration_id": 38,
+                                "arguments": [],
                                 "indirect_ref": null,
                                 "control_next": 24,
                                 "ir_instruction": 21
@@ -312,7 +221,12 @@
                             {
                                 "id": 24,
                                 "opcode": "invoke",
-                                "call_ref": 6,
+                                "function_declaration_id": 39,
+                                "arguments": [
+                                    21,
+                                    22,
+                                    23
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 27,
                                 "ir_instruction": 25
@@ -334,7 +248,11 @@
                             {
                                 "id": 27,
                                 "opcode": "invoke",
-                                "call_ref": 7,
+                                "function_declaration_id": 40,
+                                "arguments": [
+                                    25,
+                                    26
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 28,
                                 "ir_instruction": 28
@@ -342,7 +260,8 @@
                             {
                                 "id": 28,
                                 "opcode": "invoke",
-                                "call_ref": 8,
+                                "function_declaration_id": 41,
+                                "arguments": [],
                                 "indirect_ref": null,
                                 "control_next": 30,
                                 "ir_instruction": 29
@@ -364,7 +283,13 @@
                             {
                                 "id": 30,
                                 "opcode": "invoke",
-                                "call_ref": 9,
+                                "function_declaration_id": 37,
+                                "arguments": [
+                                    19,
+                                    20,
+                                    27,
+                                    29
+                                ],
                                 "indirect_ref": null,
                                 "control_next": 33,
                                 "ir_instruction": 31
@@ -387,7 +312,10 @@
                             {
                                 "id": 33,
                                 "opcode": "invoke_virtual",
-                                "call_ref": 10,
+                                "function_declaration_id": 42,
+                                "arguments": [
+                                    32
+                                ],
                                 "indirect_ref": 31,
                                 "control_next": 38,
                                 "ir_instruction": 35
@@ -424,7 +352,12 @@
                             {
                                 "id": 38,
                                 "opcode": "invoke_virtual",
-                                "call_ref": 11,
+                                "function_declaration_id": 43,
+                                "arguments": [
+                                    35,
+                                    36,
+                                    37
+                                ],
                                 "indirect_ref": 34,
                                 "control_next": 39,
                                 "ir_instruction": 40

@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 1,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -53,24 +50,16 @@
                     {
                         "id": 1,
                         "control_flow": 4,
-                        "phi": [
+                        "code": [
                             {
-                                "id": 0,
+                                "id": 3,
+                                "opcode": "phi",
                                 "links": [
                                     {
                                         "block_id": 0,
                                         "instr_ref": 0
                                     }
-                                ]
-                            }
-                        ],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 3,
-                                "opcode": "phi",
-                                "phi_ref": 0,
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
@@ -175,9 +164,6 @@
                     {
                         "id": 0,
                         "control_flow": 1,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -219,24 +205,16 @@
                     {
                         "id": 1,
                         "control_flow": 4,
-                        "phi": [
+                        "code": [
                             {
-                                "id": 0,
+                                "id": 3,
+                                "opcode": "phi",
                                 "links": [
                                     {
                                         "block_id": 0,
                                         "instr_ref": 0
                                     }
-                                ]
-                            }
-                        ],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 3,
-                                "opcode": "phi",
-                                "phi_ref": 0,
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
@@ -341,9 +319,6 @@
                     {
                         "id": 0,
                         "control_flow": 1,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -394,24 +369,16 @@
                     {
                         "id": 1,
                         "control_flow": 4,
-                        "phi": [
+                        "code": [
                             {
-                                "id": 0,
+                                "id": 3,
+                                "opcode": "phi",
                                 "links": [
                                     {
                                         "block_id": 0,
                                         "instr_ref": 0
                                     }
-                                ]
-                            }
-                        ],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 3,
-                                "opcode": "phi",
-                                "phi_ref": 0,
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 1
                             },

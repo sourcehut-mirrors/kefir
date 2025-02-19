@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -60,9 +57,6 @@
                     {
                         "id": 1,
                         "control_flow": 57,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 59,

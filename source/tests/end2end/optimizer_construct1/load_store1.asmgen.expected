@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -36,9 +33,6 @@
                     {
                         "id": 1,
                         "control_flow": 2,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 9,
@@ -75,9 +69,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -102,9 +93,6 @@
                     {
                         "id": 1,
                         "control_flow": 2,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 9,
@@ -141,9 +129,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -168,9 +153,6 @@
                     {
                         "id": 1,
                         "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 2,
@@ -455,9 +437,6 @@
                     {
                         "id": 0,
                         "control_flow": 3,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 2,
@@ -533,42 +512,16 @@
                     {
                         "id": 1,
                         "control_flow": 6,
-                        "phi": [
+                        "code": [
                             {
-                                "id": 0,
+                                "id": 5,
+                                "opcode": "phi",
                                 "links": [
                                     {
                                         "block_id": 0,
                                         "instr_ref": 2
                                     }
-                                ]
-                            },
-                            {
-                                "id": 1,
-                                "links": [
-                                    {
-                                        "block_id": 0,
-                                        "instr_ref": 1
-                                    }
-                                ]
-                            },
-                            {
-                                "id": 2,
-                                "links": [
-                                    {
-                                        "block_id": 0,
-                                        "instr_ref": 0
-                                    }
-                                ]
-                            }
-                        ],
-                        "calls": [],
-                        "inline_assembly": [],
-                        "code": [
-                            {
-                                "id": 5,
-                                "opcode": "phi",
-                                "phi_ref": 0,
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
@@ -586,7 +539,12 @@
                             {
                                 "id": 8,
                                 "opcode": "phi",
-                                "phi_ref": 1,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 1
+                                    }
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
@@ -604,7 +562,12 @@
                             {
                                 "id": 11,
                                 "opcode": "phi",
-                                "phi_ref": 2,
+                                "links": [
+                                    {
+                                        "block_id": 0,
+                                        "instr_ref": 0
+                                    }
+                                ],
                                 "control_next": null,
                                 "ir_instruction": 7
                             },
@@ -773,9 +736,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -800,9 +760,6 @@
                     {
                         "id": 1,
                         "control_flow": 2,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 1,

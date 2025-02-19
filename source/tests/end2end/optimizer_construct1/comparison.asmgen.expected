@@ -9,9 +9,6 @@
                     {
                         "id": 0,
                         "control_flow": 0,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 0,
@@ -36,9 +33,6 @@
                     {
                         "id": 1,
                         "control_flow": 16,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 1,
@@ -215,9 +209,6 @@
                     {
                         "id": 2,
                         "control_flow": 39,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 39,
@@ -242,9 +233,6 @@
                     {
                         "id": 3,
                         "control_flow": 21,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 17,
@@ -312,9 +300,6 @@
                     {
                         "id": 4,
                         "control_flow": 37,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 25,
@@ -462,9 +447,6 @@
                     {
                         "id": 6,
                         "control_flow": 38,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 38,
@@ -491,9 +473,6 @@
                     {
                         "id": 5,
                         "control_flow": 24,
-                        "phi": [],
-                        "calls": [],
-                        "inline_assembly": [],
                         "code": [
                             {
                                 "id": 22,
