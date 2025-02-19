@@ -18,7 +18,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -66,7 +65,6 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 0,
                                 "control_next": 2,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -74,7 +72,6 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 1,
                                 "control_next": 4,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -83,7 +80,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -94,7 +90,6 @@
                                     "volatile": false
                                 },
                                 "control_next": 6,
-                                "control_side_effect_free": true,
                                 "ir_instruction": 3
                             },
                             {
@@ -102,7 +97,6 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 4,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -113,7 +107,6 @@
                                 "condition": 5,
                                 "condition_variant": "8bit",
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             }
                         ],
@@ -151,7 +144,6 @@
                                 "global_ref": 3,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -162,7 +154,6 @@
                                     "volatile": false
                                 },
                                 "control_next": 13,
-                                "control_side_effect_free": true,
                                 "ir_instruction": 9
                             },
                             {
@@ -170,7 +161,6 @@
                                 "opcode": "int32_bool_not",
                                 "arg": 11,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -181,7 +171,6 @@
                                 "condition": 12,
                                 "condition_variant": "8bit",
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 11
                             }
                         ],
@@ -233,7 +222,6 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 4,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             }
                         ],
@@ -266,7 +254,6 @@
                                 "opcode": "jump",
                                 "target_block": 9,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 19
                             }
                         ],
@@ -296,7 +283,6 @@
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 22
                             }
                         ],
@@ -325,7 +311,6 @@
                                 "opcode": "jump",
                                 "target_block": 9,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 20
                             }
                         ],
@@ -355,7 +340,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             }
                         ],
@@ -411,7 +395,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -422,7 +405,6 @@
                                     "volatile": false
                                 },
                                 "control_next": 19,
-                                "control_side_effect_free": true,
                                 "ir_instruction": 15
                             },
                             {
@@ -431,7 +413,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -439,7 +420,6 @@
                                 "opcode": "int_const",
                                 "value": 314,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 16
                             },
                             {
@@ -448,7 +428,6 @@
                                 "global_ref": 3,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 13
                             },
                             {
@@ -456,7 +435,6 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 3,
                                 "control_next": 20,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             },
                             {
@@ -464,7 +442,6 @@
                                 "opcode": "jump",
                                 "target_block": 4,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -518,7 +495,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -526,7 +502,6 @@
                                 "opcode": "inline_assembly",
                                 "inline_asm_ref": 2,
                                 "control_next": 9,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 7
                             },
                             {
@@ -534,7 +509,6 @@
                                 "opcode": "jump",
                                 "target_block": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],

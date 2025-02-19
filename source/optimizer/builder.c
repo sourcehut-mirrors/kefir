@@ -45,7 +45,7 @@ kefir_result_t kefir_opt_code_builder_add_instruction(struct kefir_mem *mem, str
     kefir_opt_instruction_ref_t instr_id;
     REQUIRE_OK(kefir_opt_code_container_new_instruction(mem, code, block_id, operation, &instr_id));
     if (control) {
-        REQUIRE_OK(kefir_opt_code_container_add_control(code, block_id, instr_id, false));
+        REQUIRE_OK(kefir_opt_code_container_add_control(code, block_id, instr_id));
     }
 
     ASSIGN_PTR(instr_id_ptr, instr_id);
@@ -57,17 +57,7 @@ kefir_result_t kefir_opt_code_builder_add_control(struct kefir_opt_code_containe
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(block_exists(code, block_id));
-    REQUIRE_OK(kefir_opt_code_container_add_control(code, block_id, instr_ref, false));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_opt_code_builder_add_control_side_effect_free(struct kefir_opt_code_container *code,
-                                                                   kefir_opt_block_id_t block_id,
-                                                                   kefir_opt_instruction_ref_t instr_ref) {
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
-
-    REQUIRE_OK(block_exists(code, block_id));
-    REQUIRE_OK(kefir_opt_code_container_add_control(code, block_id, instr_ref, true));
+    REQUIRE_OK(kefir_opt_code_container_add_control(code, block_id, instr_ref));
     return KEFIR_OK;
 }
 

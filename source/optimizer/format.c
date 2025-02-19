@@ -675,9 +675,6 @@ static kefir_result_t instr_format(struct kefir_json_output *json, const struct 
     REQUIRE_OK(kefir_json_output_object_key(json, "control_next"));
     REQUIRE_OK(id_format(json, instr->control_flow.next));
 
-    REQUIRE_OK(kefir_json_output_object_key(json, "control_side_effect_free"));
-    REQUIRE_OK(kefir_json_output_boolean(json, instr->control_side_effect_free));
-
     if (debug_info != NULL) {
         REQUIRE_OK(kefir_json_output_object_key(json, "ir_instruction"));
         kefir_size_t instruction_location;

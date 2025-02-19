@@ -91,7 +91,7 @@ static kefir_result_t trace_block(struct kefir_mem *mem, const struct kefir_opt_
          res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-        if (!instr->control_side_effect_free) {
+        if (!KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(instr)) {
             REQUIRE_OK(enqueue_instr(mem, code, instr_queue, traced_blocks, pending_instr, instr_ref));
         }
     }

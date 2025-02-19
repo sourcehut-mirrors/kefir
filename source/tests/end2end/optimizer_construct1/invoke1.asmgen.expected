@@ -18,7 +18,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -138,7 +137,6 @@
                                 "call_ref": 0,
                                 "indirect_ref": null,
                                 "control_next": 3,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 0
                             },
                             {
@@ -146,7 +144,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 1
                             },
                             {
@@ -155,7 +152,6 @@
                                 "call_ref": 1,
                                 "indirect_ref": null,
                                 "control_next": 10,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 2
                             },
                             {
@@ -163,7 +159,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 3
                             },
                             {
@@ -171,7 +166,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 4
                             },
                             {
@@ -179,7 +173,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 5
                             },
                             {
@@ -187,7 +180,6 @@
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 6
                             },
                             {
@@ -195,7 +187,6 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 7
                             },
                             {
@@ -203,7 +194,6 @@
                                 "opcode": "int_const",
                                 "value": 7,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 8
                             },
                             {
@@ -212,7 +202,6 @@
                                 "call_ref": 2,
                                 "indirect_ref": null,
                                 "control_next": 11,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 9
                             },
                             {
@@ -221,7 +210,6 @@
                                 "call_ref": 3,
                                 "indirect_ref": null,
                                 "control_next": 18,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 10
                             },
                             {
@@ -229,7 +217,6 @@
                                 "opcode": "string_ref",
                                 "value": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -237,7 +224,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 13
                             },
                             {
@@ -245,7 +231,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -253,7 +238,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 15
                             },
                             {
@@ -264,7 +248,6 @@
                                     15
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 16
                             },
                             {
@@ -275,7 +258,6 @@
                                     16
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 17
                             },
                             {
@@ -284,7 +266,6 @@
                                 "call_ref": 4,
                                 "indirect_ref": null,
                                 "control_next": 20,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 18
                             },
                             {
@@ -293,7 +274,6 @@
                                 "call_ref": 5,
                                 "indirect_ref": null,
                                 "control_next": 24,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -301,7 +281,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 22
                             },
                             {
@@ -309,7 +288,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             },
                             {
@@ -317,7 +295,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
@@ -326,7 +303,6 @@
                                 "call_ref": 6,
                                 "indirect_ref": null,
                                 "control_next": 27,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 25
                             },
                             {
@@ -334,7 +310,6 @@
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 26
                             },
                             {
@@ -342,7 +317,6 @@
                                 "opcode": "string_ref",
                                 "value": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 27
                             },
                             {
@@ -351,7 +325,6 @@
                                 "call_ref": 7,
                                 "indirect_ref": null,
                                 "control_next": 28,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 28
                             },
                             {
@@ -360,7 +333,6 @@
                                 "call_ref": 8,
                                 "indirect_ref": null,
                                 "control_next": 30,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 29
                             },
                             {
@@ -368,7 +340,6 @@
                                 "opcode": "int_const",
                                 "value": 5,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 20
                             },
                             {
@@ -376,7 +347,6 @@
                                 "opcode": "float32_to_float64",
                                 "arg": 28,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 30
                             },
                             {
@@ -385,7 +355,6 @@
                                 "call_ref": 9,
                                 "indirect_ref": null,
                                 "control_next": 33,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 31
                             },
                             {
@@ -394,7 +363,6 @@
                                 "global_ref": 1,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 33
                             },
                             {
@@ -402,7 +370,6 @@
                                 "opcode": "string_ref",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 34
                             },
                             {
@@ -411,7 +378,6 @@
                                 "call_ref": 10,
                                 "indirect_ref": 31,
                                 "control_next": 38,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 35
                             },
                             {
@@ -420,7 +386,6 @@
                                 "global_ref": 4,
                                 "offset": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 36
                             },
                             {
@@ -428,7 +393,6 @@
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 37
                             },
                             {
@@ -436,7 +400,6 @@
                                 "opcode": "int_const",
                                 "value": 3,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 38
                             },
                             {
@@ -444,7 +407,6 @@
                                 "opcode": "int_const",
                                 "value": 4,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 39
                             },
                             {
@@ -453,7 +415,6 @@
                                 "call_ref": 11,
                                 "indirect_ref": 34,
                                 "control_next": 39,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 40
                             },
                             {
@@ -461,7 +422,6 @@
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],

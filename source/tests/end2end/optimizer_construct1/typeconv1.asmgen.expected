@@ -18,7 +18,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -46,7 +45,6 @@
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],

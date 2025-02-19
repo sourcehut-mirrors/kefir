@@ -18,7 +18,6 @@
                                 "opcode": "get_argument",
                                 "index": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -26,7 +25,6 @@
                                 "opcode": "get_argument",
                                 "index": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -34,7 +32,6 @@
                                 "opcode": "get_argument",
                                 "index": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             },
                             {
@@ -42,7 +39,6 @@
                                 "opcode": "jump",
                                 "target_block": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": null
                             }
                         ],
@@ -73,7 +69,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 12
                             },
                             {
@@ -81,7 +76,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 14
                             },
                             {
@@ -92,7 +86,6 @@
                                     60
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 15
                             },
                             {
@@ -100,7 +93,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 16,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 21
                             },
                             {
@@ -108,7 +100,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 23
                             },
                             {
@@ -119,7 +110,6 @@
                                     62
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 24
                             },
                             {
@@ -127,7 +117,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 21,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 30
                             },
                             {
@@ -135,7 +124,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 0,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 32
                             },
                             {
@@ -146,7 +134,6 @@
                                     64
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 33
                             },
                             {
@@ -154,7 +141,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 26,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 89
                             },
                             {
@@ -162,7 +148,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 21,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 77
                             },
                             {
@@ -170,7 +155,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 16,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 65
                             },
                             {
@@ -178,7 +162,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 26,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 39
                             },
                             {
@@ -186,7 +169,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 1,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 41
                             },
                             {
@@ -197,7 +179,6 @@
                                     66
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 42
                             },
                             {
@@ -205,7 +186,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 31,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 48
                             },
                             {
@@ -213,7 +193,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 2,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 50
                             },
                             {
@@ -224,7 +203,6 @@
                                     68
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 51
                             },
                             {
@@ -232,7 +210,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 36,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 57
                             },
                             {
@@ -240,7 +217,6 @@
                                 "opcode": "int32_not",
                                 "arg": 69,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 58
                             },
                             {
@@ -248,7 +224,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 40,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 62
                             },
                             {
@@ -259,7 +234,6 @@
                                     70
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 68
                             },
                             {
@@ -267,7 +241,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 44,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 74
                             },
                             {
@@ -278,7 +251,6 @@
                                     72
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 80
                             },
                             {
@@ -286,7 +258,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 48,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 86
                             },
                             {
@@ -297,7 +268,6 @@
                                     74
                                 ],
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 92
                             },
                             {
@@ -305,7 +275,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 52,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 98
                             },
                             {
@@ -313,7 +282,6 @@
                                 "opcode": "int64_sign_extend_32bits",
                                 "arg": 76,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 106
                             },
                             {
@@ -321,7 +289,6 @@
                                 "opcode": "return",
                                 "arg": 77,
                                 "control_next": null,
-                                "control_side_effect_free": false,
                                 "ir_instruction": 107
                             }
                         ],

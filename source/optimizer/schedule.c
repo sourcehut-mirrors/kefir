@@ -156,7 +156,7 @@ static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_con
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-        if (!instr->control_side_effect_free) {
+        if (!KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(instr)) {
             REQUIRE_OK(kefir_list_insert_after(param->mem, &param->instr_queue, kefir_list_tail(&param->instr_queue),
                                                (void *) (kefir_uptr_t) instr_ref));
         }
@@ -277,7 +277,7 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
-        if (instr->control_side_effect_free &&
+        if (KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(instr) &&
             !kefir_hashtree_has(&schedule->instructions, (kefir_hashtree_key_t) instr_ref)) {
             continue;
         }
