@@ -63,7 +63,7 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
             }
 
             REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_id));
-            REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, instr_id));
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, instr_id));
         }
 
         REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(

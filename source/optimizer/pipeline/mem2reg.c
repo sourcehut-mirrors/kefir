@@ -496,7 +496,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
 
                         REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
                             &state->func->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
@@ -536,7 +536,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
-                        REQUIRE_OK(kefir_opt_code_container_drop_instr(&state->func->code, prev_instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
 
                         REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(
                             state->mem, &state->func->debug_info, local_id, replacement_ref));

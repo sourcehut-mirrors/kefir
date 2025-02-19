@@ -65,11 +65,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     for (res = kefir_opt_code_container_instruction_use_instr_iter(param->structure->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
-        res = kefir_opt_code_container_instr(param->structure->code, use_iter.use_instr_ref, &use_instr);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, use_iter.use_instr_ref, &use_instr));
 
         REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[use_instr->block_id].alive_instr,
                                        (kefir_bucketset_entry_t) instr_ref));
@@ -81,11 +77,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     for (res = kefir_opt_code_container_instruction_use_phi_iter(param->structure->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_phi_node *use_phi;
-        res = kefir_opt_code_container_phi(param->structure->code, use_iter.use_phi_ref, &use_phi);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_container_phi(param->structure->code, use_iter.use_phi_ref, &use_phi));
 
         struct kefir_hashtree_node_iterator iter;
         for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&use_phi->links, &iter); node != NULL;
@@ -105,11 +97,7 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     for (res = kefir_opt_code_container_instruction_use_call_iter(param->structure->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_call_node *use_call;
-        res = kefir_opt_code_container_call(param->structure->code, use_iter.use_call_ref, &use_call);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_container_call(param->structure->code, use_iter.use_call_ref, &use_call));
 
         REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[use_call->block_id].alive_instr,
                                        (kefir_bucketset_entry_t) instr_ref));
@@ -121,12 +109,8 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     for (res = kefir_opt_code_container_instruction_use_inline_asm_iter(param->structure->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_inline_assembly_node *use_inline_asm;
-        res = kefir_opt_code_container_inline_assembly(param->structure->code, use_iter.use_inline_asm_ref,
-                                                       &use_inline_asm);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
-        }
-        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_container_inline_assembly(param->structure->code, use_iter.use_inline_asm_ref,
+                                                       &use_inline_asm));
 
         REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[use_inline_asm->block_id].alive_instr,
                                        (kefir_bucketset_entry_t) instr_ref));

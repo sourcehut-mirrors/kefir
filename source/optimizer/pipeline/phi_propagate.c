@@ -62,8 +62,8 @@ static kefir_result_t phi_propagate_impl(struct kefir_mem *mem, struct kefir_opt
             prev_phi_ref = phi_ref;
             res = kefir_opt_phi_next_sibling(&func->code, phi_ref, &phi_ref);
             REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, instr_ref, phi_node->output_ref));
-            REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, phi_node->output_ref));
-            REQUIRE_OK(kefir_opt_code_container_drop_phi(&func->code, prev_phi_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, phi_node->output_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_phi(mem, &func->code, prev_phi_ref));
             *fixpoint_reached = false;
         } else {
             res = kefir_opt_phi_next_sibling(&func->code, phi_ref, &phi_ref);

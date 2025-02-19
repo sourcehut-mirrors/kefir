@@ -1835,7 +1835,7 @@ static kefir_result_t op_simplify_apply(struct kefir_mem *mem, const struct kefi
                     }
                     kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                     REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
-                    REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, prev_instr_id));
+                    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, prev_instr_id));
                     REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
                         &func->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
                 } else {

@@ -720,7 +720,7 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir
                 }
                 kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
-                REQUIRE_OK(kefir_opt_code_container_drop_instr(&func->code, prev_instr_id));
+                REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, prev_instr_id));
             } else {
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_id, &instr_id));
             }
