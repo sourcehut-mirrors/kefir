@@ -722,6 +722,8 @@ static kefir_result_t call_format(struct kefir_json_output *json, const struct k
     REQUIRE_OK(kefir_json_output_uinteger(json, call->node_id));
     REQUIRE_OK(kefir_json_output_object_key(json, "function_declaration_id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, call->function_declaration_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "output_ref"));
+    REQUIRE_OK(id_format(json, call->output_ref));
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
 
@@ -741,6 +743,8 @@ static kefir_result_t inline_asm_format(struct kefir_json_output *json,
     REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->node_id));
     REQUIRE_OK(kefir_json_output_object_key(json, "inline_asm_id"));
     REQUIRE_OK(kefir_json_output_uinteger(json, inline_asm->inline_asm_id));
+    REQUIRE_OK(kefir_json_output_object_key(json, "output_ref"));
+    REQUIRE_OK(id_format(json, inline_asm->output_ref));
     REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
 

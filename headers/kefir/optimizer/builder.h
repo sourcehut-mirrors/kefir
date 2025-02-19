@@ -53,18 +53,6 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *, struct
 
 kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_block_id_t, kefir_size_t, kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_builder_phi(struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t,
-                                          kefir_opt_phi_id_t, kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_builder_inline_assembly(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                      kefir_opt_block_id_t, kefir_opt_inline_assembly_id_t,
-                                                      kefir_opt_instruction_ref_t *);
-
-kefir_result_t kefir_opt_code_builder_invoke(struct kefir_mem *, struct kefir_opt_code_container *,
-                                             kefir_opt_block_id_t, kefir_opt_call_id_t, kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_builder_invoke_virtual(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                     kefir_opt_block_id_t, kefir_opt_call_id_t,
-                                                     kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
-
 kefir_result_t kefir_opt_code_builder_int_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                    kefir_opt_block_id_t, kefir_int64_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_uint_constant(struct kefir_mem *, struct kefir_opt_code_container *,

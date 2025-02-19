@@ -140,10 +140,11 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
         }
     }
 
+    kefir_opt_instruction_ref_t instr_ref;
     kefir_opt_inline_assembly_id_t inline_asm_ref;
     REQUIRE_OK(kefir_opt_code_container_new_inline_assembly(
         mem, code, state->current_block->block_id, ir_inline_asm->id, kefir_list_length(&ir_inline_asm->parameter_list),
-        &inline_asm_ref));
+        &inline_asm_ref, &instr_ref));
 
     kefir_size_t param_idx = 0;
     for (const struct kefir_list_entry *iter = kefir_list_head(&ir_inline_asm->parameter_list); iter != NULL;
@@ -185,9 +186,6 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
         }
     }
 
-    kefir_opt_instruction_ref_t instr_ref;
-    REQUIRE_OK(
-        kefir_opt_code_builder_inline_assembly(mem, code, state->current_block->block_id, inline_asm_ref, &instr_ref));
     REQUIRE_OK(kefir_opt_code_builder_add_control(code, state->current_block->block_id, instr_ref));
 
     kefir_opt_instruction_ref_t param_ref;
@@ -465,14 +463,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             kefir_opt_call_id_t call_ref;
             REQUIRE_OK(
-                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, &call_ref));
+                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, KEFIR_ID_NONE, &call_ref, &instr_ref));
             for (kefir_size_t i = 0; i < num_of_params; i++) {
-                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
-                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref));
+                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
             }
 
-            REQUIRE_OK(kefir_opt_code_builder_invoke(mem, code, current_block_id, call_ref, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             if (has_return) {
                 REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
@@ -487,17 +484,16 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
 
             kefir_opt_call_id_t call_ref;
+            REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, num_of_params, &instr_ref2));
             REQUIRE_OK(
-                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, &call_ref));
+                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, instr_ref2, &call_ref, &instr_ref));
             for (kefir_size_t i = 0; i < num_of_params; i++) {
-                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+                REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
-                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref));
+                    kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
             }
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
 
-            REQUIRE_OK(
-                kefir_opt_code_builder_invoke_virtual(mem, code, current_block_id, call_ref, instr_ref2, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             if (has_return) {
                 REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
@@ -1119,8 +1115,7 @@ static kefir_result_t link_blocks_equalize_stack(struct kefir_mem *mem, struct k
     while (kefir_list_length(&source_state->stack) > kefir_list_length(&target_state->phi_stack)) {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_instruction_ref_t instr_ref;
-        REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref));
-        REQUIRE_OK(kefir_opt_code_builder_phi(mem, &state->function->code, target_block_id, phi_ref, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref, &instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
     }

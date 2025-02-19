@@ -31,7 +31,7 @@ static kefir_result_t phi_propagate_impl(struct kefir_mem *mem, struct kefir_opt
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
 
-    kefir_opt_phi_id_t phi_ref, prev_phi_ref;
+    kefir_opt_phi_id_t phi_ref;
     const struct kefir_opt_phi_node *phi_node;
     kefir_result_t res;
     for (res = kefir_opt_code_block_phi_head(&func->code, block, &phi_ref); res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;) {
@@ -59,11 +59,10 @@ static kefir_result_t phi_propagate_impl(struct kefir_mem *mem, struct kefir_opt
         }
 
         if (can_propagate) {
-            prev_phi_ref = phi_ref;
             res = kefir_opt_phi_next_sibling(&func->code, phi_ref, &phi_ref);
-            REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, instr_ref, phi_node->output_ref));
-            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, phi_node->output_ref));
-            REQUIRE_OK(kefir_opt_code_container_drop_phi(mem, &func->code, prev_phi_ref));
+            kefir_opt_instruction_ref_t output_ref = phi_node->output_ref;
+            REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, instr_ref, output_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, output_ref));
             *fixpoint_reached = false;
         } else {
             res = kefir_opt_phi_next_sibling(&func->code, phi_ref, &phi_ref);

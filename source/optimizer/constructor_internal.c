@@ -191,9 +191,7 @@ static kefir_result_t stack_ensure_depth(struct kefir_mem *mem, struct kefir_opt
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_instruction_ref_t instr_ref;
         REQUIRE_OK(
-            kefir_opt_code_container_new_phi(mem, &state->function->code, state->current_block->block_id, &phi_ref));
-        REQUIRE_OK(kefir_opt_code_builder_phi(mem, &state->function->code, state->current_block->block_id, phi_ref,
-                                              &instr_ref));
+            kefir_opt_code_container_new_phi(mem, &state->function->code, state->current_block->block_id, &phi_ref, &instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &state->current_block->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));

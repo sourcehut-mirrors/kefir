@@ -411,9 +411,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                             if (block_id != state->func->code.entry_point) {
                                 kefir_opt_phi_id_t phi_ref;
                                 REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code, block_id,
-                                                                            &phi_ref));
-                                REQUIRE_OK(kefir_opt_code_builder_phi(state->mem, &state->func->code, block_id, phi_ref,
-                                                                      &replacement_ref));
+                                                                            &phi_ref, &replacement_ref));
                                 REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
                                                                  (kefir_hashtree_key_t) block_id,
                                                                  (kefir_hashtree_value_t) phi_ref));
@@ -565,9 +563,7 @@ static kefir_result_t mem2reg_link_blocks(struct mem2reg_state *state, kefir_siz
         if (source_block_ref != state->func->code.entry_point) {
             kefir_opt_phi_id_t source_phi_ref;
             REQUIRE_OK(
-                kefir_opt_code_container_new_phi(state->mem, &state->func->code, source_block_ref, &source_phi_ref));
-            REQUIRE_OK(kefir_opt_code_builder_phi(state->mem, &state->func->code, source_block_ref, source_phi_ref,
-                                                  &source_instr_ref));
+                kefir_opt_code_container_new_phi(state->mem, &state->func->code, source_block_ref, &source_phi_ref, &source_instr_ref));
             REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
                                              (kefir_hashtree_key_t) source_block_ref,
                                              (kefir_hashtree_value_t) source_phi_ref));

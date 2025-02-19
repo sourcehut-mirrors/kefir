@@ -41,11 +41,13 @@
                             {
                                 "id": 0,
                                 "function_declaration_id": 32,
+                                "output_ref": 1,
                                 "arguments": []
                             },
                             {
                                 "id": 1,
                                 "function_declaration_id": 33,
+                                "output_ref": 3,
                                 "arguments": [
                                     2
                                 ]
@@ -53,6 +55,7 @@
                             {
                                 "id": 2,
                                 "function_declaration_id": 34,
+                                "output_ref": 10,
                                 "arguments": [
                                     4,
                                     5,
@@ -65,11 +68,13 @@
                             {
                                 "id": 3,
                                 "function_declaration_id": 35,
+                                "output_ref": 11,
                                 "arguments": []
                             },
                             {
                                 "id": 4,
                                 "function_declaration_id": 36,
+                                "output_ref": 18,
                                 "arguments": [
                                     12,
                                     17
@@ -78,11 +83,13 @@
                             {
                                 "id": 5,
                                 "function_declaration_id": 38,
+                                "output_ref": 20,
                                 "arguments": []
                             },
                             {
                                 "id": 6,
                                 "function_declaration_id": 39,
+                                "output_ref": 24,
                                 "arguments": [
                                     21,
                                     22,
@@ -92,6 +99,7 @@
                             {
                                 "id": 7,
                                 "function_declaration_id": 40,
+                                "output_ref": 27,
                                 "arguments": [
                                     25,
                                     26
@@ -100,11 +108,13 @@
                             {
                                 "id": 8,
                                 "function_declaration_id": 41,
+                                "output_ref": 28,
                                 "arguments": []
                             },
                             {
                                 "id": 9,
                                 "function_declaration_id": 37,
+                                "output_ref": 30,
                                 "arguments": [
                                     19,
                                     20,
@@ -115,6 +125,7 @@
                             {
                                 "id": 10,
                                 "function_declaration_id": 42,
+                                "output_ref": 33,
                                 "arguments": [
                                     32
                                 ]
@@ -122,6 +133,7 @@
                             {
                                 "id": 11,
                                 "function_declaration_id": 43,
+                                "output_ref": 38,
                                 "arguments": [
                                     35,
                                     36,
