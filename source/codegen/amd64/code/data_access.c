@@ -25,6 +25,28 @@
 #include "kefir/core/util.h"
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_mem *mem,
+                                                                 struct kefir_codegen_amd64_function *function,
+                                                                 const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    REQUIRE(function->function->locals.type != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR function local type"));
+
+    kefir_asmcmp_virtual_register_index_t vreg;
+
+    kefir_int64_t offset;
+    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, instruction->id, true, &offset));
+
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(
+        mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem *mem,
                                                                struct kefir_codegen_amd64_function *function,
                                                                const struct kefir_opt_instruction *instruction) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -36,35 +58,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
 
     kefir_asmcmp_virtual_register_index_t vreg;
 
-    kefir_int64_t offset;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, instruction->operation.parameters.type.type_index, true, &offset));
-
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
-
-    return KEFIR_OK;
-}
-
-kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem *mem,
-    struct kefir_codegen_amd64_function *function,
-    const struct kefir_opt_instruction *instruction) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
-    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    REQUIRE(function->function->locals.type != NULL,
-    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR function local type"));
-
-    kefir_asmcmp_virtual_register_index_t vreg;
-
     const struct kefir_opt_instruction *location_instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0], &location_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0],
+                                              &location_instr));
 
     kefir_int64_t offset;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, location_instr->operation.parameters.type.type_index, true, &offset));
+    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, location_instr->id, true, &offset));
     offset += instruction->operation.parameters.offset;
 
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(
+        mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;

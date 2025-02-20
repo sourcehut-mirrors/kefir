@@ -30,15 +30,13 @@ static kefir_result_t is_local_var(struct kefir_mem *mem, struct kefir_codegen_a
     REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &location_instr));
     if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
         *res = true;
-        REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(
-            mem, function, location_instr->operation.parameters.type.type_index, true, offset));
+        REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, location_instr->id, true, offset));
     } else if (location_instr->operation.opcode == KEFIR_OPT_OPCODE_REF_LOCAL) {
         *res = true;
         const kefir_int64_t ref_offset = location_instr->operation.parameters.offset;
         REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code,
                                                   location_instr->operation.parameters.refs[0], &location_instr));
-        REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(
-            mem, function, location_instr->operation.parameters.type.type_index, true, offset));
+        REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, location_instr->id, true, offset));
         *offset += ref_offset;
     } else {
         *res = false;

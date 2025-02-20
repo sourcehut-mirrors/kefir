@@ -333,58 +333,58 @@
                 "debug": {
                     "local_variables": [
                         {
-                            "variable": 0,
-                            "refs": [
-                                0
-                            ]
-                        },
-                        {
-                            "variable": 1,
-                            "refs": [
-                                1
-                            ]
-                        },
-                        {
-                            "variable": 2,
+                            "variable": 4,
                             "refs": [
                                 2
                             ]
                         },
                         {
-                            "variable": 3,
+                            "variable": 7,
+                            "refs": [
+                                1
+                            ]
+                        },
+                        {
+                            "variable": 10,
+                            "refs": [
+                                0
+                            ]
+                        },
+                        {
+                            "variable": 13,
                             "refs": [
                                 16,
                                 44
                             ]
                         },
                         {
-                            "variable": 4,
+                            "variable": 18,
                             "refs": [
                                 21,
                                 48
                             ]
                         },
                         {
-                            "variable": 5,
+                            "variable": 23,
                             "refs": [
                                 26,
                                 52
                             ]
                         },
                         {
-                            "variable": 6,
+                            "variable": 28,
                             "refs": [
                                 31
                             ]
                         },
                         {
-                            "variable": 7,
+                            "variable": 33,
                             "refs": [
                                 36
                             ]
                         },
                         {
-                            "variable": 8,
+                            "variable": 38,
                             "refs": [
                                 40,
                                 76

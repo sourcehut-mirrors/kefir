@@ -5234,7 +5234,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 2
+                                "value": {
+                                    "type_id": 80,
+                                    "type_index": 2
+                                }
                             },
                             {
                                 "tag": "external",
@@ -5281,7 +5284,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 3
+                                "value": {
+                                    "type_id": 80,
+                                    "type_index": 3
+                                }
                             },
                             {
                                 "tag": "external",
@@ -5328,7 +5334,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 18
+                                "value": {
+                                    "type_id": 80,
+                                    "type_index": 18
+                                }
                             },
                             {
                                 "tag": "external",
@@ -5375,7 +5384,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 19
+                                "value": {
+                                    "type_id": 80,
+                                    "type_index": 19
+                                }
                             },
                             {
                                 "tag": "external",

@@ -2423,7 +2423,10 @@
                                                             },
                                                             {
                                                                 "tag": "local_variable",
-                                                                "value": 6
+                                                                "value": {
+                                                                    "type_id": 54,
+                                                                    "type_index": 6
+                                                                }
                                                             },
                                                             {
                                                                 "tag": "external",
@@ -2474,7 +2477,10 @@
                                             },
                                             {
                                                 "tag": "local_variable",
-                                                "value": 4
+                                                "value": {
+                                                    "type_id": 54,
+                                                    "type_index": 4
+                                                }
                                             },
                                             {
                                                 "tag": "external",
@@ -2521,7 +2527,10 @@
                                             },
                                             {
                                                 "tag": "local_variable",
-                                                "value": 5
+                                                "value": {
+                                                    "type_id": 54,
+                                                    "type_index": 5
+                                                }
                                             },
                                             {
                                                 "tag": "external",
@@ -2584,7 +2593,10 @@
                                             },
                                             {
                                                 "tag": "local_variable",
-                                                "value": 7
+                                                "value": {
+                                                    "type_id": 54,
+                                                    "type_index": 7
+                                                }
                                             },
                                             {
                                                 "tag": "external",
@@ -2635,7 +2647,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 0
+                                "value": {
+                                    "type_id": 54,
+                                    "type_index": 0
+                                }
                             },
                             {
                                 "tag": "external",
@@ -2682,7 +2697,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 1
+                                "value": {
+                                    "type_id": 54,
+                                    "type_index": 1
+                                }
                             },
                             {
                                 "tag": "external",
@@ -2729,7 +2747,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 2
+                                "value": {
+                                    "type_id": 54,
+                                    "type_index": 2
+                                }
                             },
                             {
                                 "tag": "external",
@@ -2776,7 +2797,10 @@
                             },
                             {
                                 "tag": "local_variable",
-                                "value": 3
+                                "value": {
+                                    "type_id": 54,
+                                    "type_index": 3
+                                }
                             },
                             {
                                 "tag": "external",

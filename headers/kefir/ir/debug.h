@@ -102,7 +102,10 @@ typedef struct kefir_ir_debug_entry_attribute {
         kefir_ir_debug_entry_id_t type_id;
         kefir_bool_t function_prototyped;
         kefir_size_t code_index;
-        kefir_size_t local_variable;
+        struct {
+            kefir_id_t type_id;
+            kefir_size_t type_index;
+        } local_variable;
         kefir_id_t global_variable;
         kefir_id_t thread_local_variable;
         kefir_size_t parameter;
@@ -128,57 +131,57 @@ typedef struct kefir_ir_debug_entries {
 } kefir_ir_debug_entries_t;
 
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(_name) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, .name = (_name)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, .name = (_name)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(_size) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, .size = (_size)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, .size = (_size)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(_align) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, .alignment = (_align)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, .alignment = (_align)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(_length) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH, .length = (_length)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_CONSTANT_UINT(_const_uint)                                      \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT, \
-                                             .constant_uint = (_const_uint)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH, .length = (_length)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_CONSTANT_UINT(_const_uint)                                       \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT, \
+                                              .constant_uint = (_const_uint)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_OFFSET(_offset) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET, .offset = (_offset)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITOFFSET(_bitoffset)                                       \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET, \
-                                             .bitoffset = (_bitoffset)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET, .offset = (_offset)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_BITOFFSET(_bitoffset)                                        \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITOFFSET, \
+                                              .bitoffset = (_bitoffset)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_BITWIDTH(_bitwidth) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH, .bitwidth = (_bitwidth)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BITWIDTH, .bitwidth = (_bitwidth)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(_type_id) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, .type_id = (_type_id)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_FUNCTION_PROTOTYPED(_prototyped)                                           \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG, \
-                                             .function_prototyped = (_prototyped)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_TYPE, .type_id = (_type_id)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_FUNCTION_PROTOTYPED(_prototyped)                                            \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_FUNCTION_PROTOTYPED_FLAG, \
+                                              .function_prototyped = (_prototyped)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(_index) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, .code_index = (_index)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, .code_index = (_index)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(_index) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, .code_index = (_index)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(_location)                                        \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE, \
-                                             .local_variable = (_location)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_GLOBAL_VARIABLE(_location)                                        \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE, \
-                                             .global_variable = (_location)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_THREAD_LOCAL_VARIABLE(_location)                                        \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE, \
-                                             .thread_local_variable = (_location)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, .code_index = (_index)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(_type_id, _type_index)                             \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE, \
+                                              .local_variable = {.type_id = (_type_id), .type_index = (_type_index)}})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_GLOBAL_VARIABLE(_location)                                         \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE, \
+                                              .global_variable = (_location)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_THREAD_LOCAL_VARIABLE(_location)                                         \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_THREAD_LOCAL_VARIABLE, \
+                                              .thread_local_variable = (_location)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_PARAMETER(_param) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER, .parameter = (_param)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_PARAMETER, .parameter = (_param)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(_external) \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_EXTERNAL, .external = (_external)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(_declaration)                                     \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_DECLARATION, \
-                                             .declaration = (_declaration)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION(_location)                                        \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION, \
-                                             .source_location = (_location)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_LINE(_line)                                            \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_LINE, \
-                                             .line = (_line)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(_column)                                          \
-    ((struct kefir_ir_debug_entry_attribute){.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_COLUMN, \
-                                             .column = (_column)})
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_EXTERNAL, .external = (_external)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_DECLARATION(_declaration)                                      \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_DECLARATION, \
+                                              .declaration = (_declaration)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION(_location)                                         \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION, \
+                                              .source_location = (_location)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_LINE(_line)                                             \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_LINE, \
+                                              .line = (_line)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(_column)                                           \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SOURCE_LOCATION_COLUMN, \
+                                              .column = (_column)})
 
 typedef struct kefir_ir_debug_source_location {
     struct kefir_source_location location;

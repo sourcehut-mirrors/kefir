@@ -911,27 +911,55 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
 
 kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64_function *function,
-                                                                  kefir_size_t local_index, kefir_bool_t allocate,
-                                                                  kefir_int64_t *offset_ptr) {
+                                                                  kefir_opt_instruction_ref_t instr_ref,
+                                                                  kefir_bool_t allocate, kefir_int64_t *offset_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
     REQUIRE(offset_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
 
     struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&function->locals, (kefir_hashtree_key_t) local_index, &node);
+    kefir_result_t res = kefir_hashtree_at(&function->locals, (kefir_hashtree_key_t) instr_ref, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *offset_ptr = (kefir_int64_t) node->value;
     } else {
         REQUIRE(allocate, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested local variable offset"));
 
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &instr));
+        REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected local variable allocation instruction"));
+
+        kefir_size_t entry_size, entry_alignment;
         kefir_int64_t offset;
-        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
-        REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout, local_index, &entry));
-        REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(&function->stack_frame, entry->size, entry->alignment,
+        if (instr->operation.parameters.type.type_id == function->function->ir_func->locals_type_id) {
+            const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout,
+                                                      instr->operation.parameters.type.type_index, &entry));
+            entry_size = entry->size;
+            entry_alignment = entry->alignment;
+        } else {
+            const struct kefir_ir_type *ir_type =
+                kefir_ir_module_get_named_type(function->module->ir_module, instr->operation.parameters.type.type_id);
+            REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+            struct kefir_abi_amd64_type_layout type_layout;
+            REQUIRE_OK(kefir_abi_amd64_type_layout(mem, function->codegen->abi_variant,
+                                                   KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK, ir_type, &type_layout));
+
+            const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+            res = kefir_abi_amd64_type_layout_at(&type_layout, instr->operation.parameters.type.type_index, &entry);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_abi_amd64_type_layout_free(mem, &type_layout);
+                return res;
+            });
+            entry_size = entry->size;
+            entry_alignment = entry->alignment;
+            REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
+        }
+        REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(&function->stack_frame, entry_size, entry_alignment,
                                                                   &offset));
-        REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) local_index,
+        REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) instr_ref,
                                          (kefir_hashtree_value_t) offset));
         *offset_ptr = offset;
     }

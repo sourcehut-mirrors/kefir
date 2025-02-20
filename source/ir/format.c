@@ -1435,7 +1435,12 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE:
                 REQUIRE_OK(kefir_json_output_string(json, "local_variable"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable));
+                REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable.type_id));
+                REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable.type_index));
+                REQUIRE_OK(kefir_json_output_object_end(json));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE:

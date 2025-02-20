@@ -965,21 +965,21 @@ kefir_result_t kefir_opt_code_format(struct kefir_mem *mem, struct kefir_json_ou
         REQUIRE_OK(kefir_json_output_array_begin(json));
         struct kefir_opt_code_debug_info_local_variable_iterator iter;
         struct kefir_opt_code_debug_info_local_variable_ref_iterator ref_iter;
-        kefir_size_t local_variable;
+        kefir_opt_instruction_ref_t alloc_instr_ref;
         kefir_opt_instruction_ref_t instr_ref;
         kefir_result_t res;
 
-        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &iter, &local_variable); res == KEFIR_OK;
-             res = kefir_opt_code_debug_info_local_variable_next(&iter, &local_variable)) {
+        for (res = kefir_opt_code_debug_info_local_variable_iter(debug_info, &iter, &alloc_instr_ref); res == KEFIR_OK;
+             res = kefir_opt_code_debug_info_local_variable_next(&iter, &alloc_instr_ref)) {
             REQUIRE_OK(kefir_json_output_object_begin(json));
             REQUIRE_OK(kefir_json_output_object_key(json, "variable"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, local_variable));
+            REQUIRE_OK(id_format(json, alloc_instr_ref));
             REQUIRE_OK(kefir_json_output_object_key(json, "refs"));
             REQUIRE_OK(kefir_json_output_array_begin(json));
-            for (res = kefir_opt_code_debug_info_local_variable_ref_iter(debug_info, &ref_iter, local_variable,
+            for (res = kefir_opt_code_debug_info_local_variable_ref_iter(debug_info, &ref_iter, alloc_instr_ref,
                                                                          &instr_ref);
                  res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&ref_iter, &instr_ref)) {
-                REQUIRE_OK(kefir_json_output_uinteger(json, instr_ref));
+                REQUIRE_OK(id_format(json, instr_ref));
             }
             if (res != KEFIR_ITERATOR_END) {
                 REQUIRE_OK(res);

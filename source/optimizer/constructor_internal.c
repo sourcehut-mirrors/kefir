@@ -190,8 +190,8 @@ static kefir_result_t stack_ensure_depth(struct kefir_mem *mem, struct kefir_opt
     while (kefir_list_length(&state->current_block->stack) < depth) {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_instruction_ref_t instr_ref;
-        REQUIRE_OK(
-            kefir_opt_code_container_new_phi(mem, &state->function->code, state->current_block->block_id, &phi_ref, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, state->current_block->block_id,
+                                                    &phi_ref, &instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &state->current_block->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
         REQUIRE_OK(
             kefir_list_insert_after(mem, &state->current_block->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
@@ -257,8 +257,10 @@ kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem, struct kefir_opt_constructor_state *state,
-    kefir_id_t type_id, kefir_size_t type_index, kefir_opt_instruction_ref_t *instr_ref) {
+kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
+                                                          struct kefir_opt_constructor_state *state, kefir_id_t type_id,
+                                                          kefir_size_t type_index,
+                                                          kefir_opt_instruction_ref_t *instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(state != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer constructor state"));
     REQUIRE(state->entry_block != NULL,
@@ -274,10 +276,13 @@ kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
         *instr_ref = (kefir_opt_instruction_ref_t) node->value;
     } else {
         kefir_opt_instruction_ref_t local_ref;
-        REQUIRE_OK(kefir_opt_code_builder_alloc_local(mem, &state->function->code, state->entry_block->block_id, type_id, type_index, &local_ref));
+        REQUIRE_OK(kefir_opt_code_builder_alloc_local(mem, &state->function->code, state->entry_block->block_id,
+                                                      type_id, type_index, &local_ref));
         REQUIRE_OK(kefir_hashtree_insert(mem, &state->locals, key, (kefir_hashtree_value_t) local_ref));
+        REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(mem, &state->function->debug_info,
+                                                                                local_ref, type_id, type_index));
         *instr_ref = local_ref;
     }
-    
+
     return KEFIR_OK;
 }
