@@ -127,17 +127,17 @@ kefir_result_t kefir_codegen_amd64_dwarf_context_generate_compile_unit(struct ke
                                                                        struct kefir_codegen_amd64_module *,
                                                                        struct kefir_codegen_amd64_dwarf_context *);
 
-kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem *,
-                                                                struct kefir_codegen_amd64_function *,
-                                                                struct kefir_codegen_amd64_dwarf_context *,
-                                                                kefir_ir_debug_entry_id_t,
-                                                                kefir_codegen_amd64_dwarf_entry_id_t *);
+kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(
+    struct kefir_mem *, struct kefir_codegen_amd64_function *, struct kefir_codegen_amd64_dwarf_context *,
+    const struct kefir_opt_module_liveness *, kefir_ir_debug_entry_id_t, kefir_codegen_amd64_dwarf_entry_id_t *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(struct kefir_mem *,
                                                                         struct kefir_codegen_amd64_function *,
                                                                         struct kefir_codegen_amd64_dwarf_context *,
+                                                                        const struct kefir_opt_module_liveness *,
                                                                         kefir_ir_debug_entry_id_t);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_variable(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                            struct kefir_codegen_amd64_dwarf_context *,
+                                                           const struct kefir_opt_module_liveness *,
                                                            kefir_ir_debug_entry_id_t,
                                                            kefir_codegen_amd64_dwarf_entry_id_t *);
 kefir_result_t kefir_codegen_amd64_dwarf_generate_function_parameter(struct kefir_mem *,

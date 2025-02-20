@@ -138,6 +138,74 @@ __kefir_debug_abbrev_section_entry_5:
     .byte 11
     .byte 0
     .byte 0
+__kefir_debug_abbrev_section_entry_6:
+    .byte 6
+    .byte 46
+    .byte 1
+    .byte 3
+    .byte 8
+    .byte 17
+    .byte 1
+    .byte 18
+    .byte 7
+    .byte 64
+    .byte 24
+    .byte 73
+    .byte 19
+    .byte 63
+    .byte 12
+    .byte 60
+    .byte 12
+    .byte 110
+    .byte 8
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_7:
+    .byte 7
+    .byte 1
+    .byte 1
+    .byte 73
+    .byte 19
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_8:
+    .byte 8
+    .byte 33
+    .byte 0
+    .byte 73
+    .byte 19
+    .byte 55
+    .byte 15
+    .byte 0
+    .byte 0
+__kefir_debug_abbrev_section_entry_9:
+    .byte 9
+    .byte 52
+    .byte 0
+    .byte 3
+    .byte 8
+    .byte 73
+    .byte 19
+    .byte 2
+    .byte 23
+    .byte 63
+    .byte 12
+    .byte 60
+    .byte 12
+    .byte 58
+    .byte 8
+    .byte 59
+    .byte 7
+    .byte 57
+    .byte 7
+    .byte 0
+    .byte 0
     .byte 0
 
 .section .debug_info
@@ -177,6 +245,32 @@ __kefir_debug_info_section_entry_4:
     .ascii "source/tests/end2end/debug_info_thread_local_var2/lib.kefir.asmgen.c\000"
     .quad 23
     .quad 20
+__kefir_debug_info_section_entry_6:
+    .byte 6
+    .ascii "getb\000"
+    .quad __kefir_text_func_getb_begin
+    .quad __kefir_text_func_getb_end - __kefir_text_func_getb_begin
+    .byte 2
+    .byte 118
+    .byte 0
+    .long __kefir_debug_info_section_entry_7 - __kefir_debug_info_section
+    .byte 1
+    .byte 0
+    .ascii "getb\000"
+    .ascii "source/tests/end2end/debug_info_thread_local_var2/lib.kefir.asmgen.c\000"
+    .quad 25
+    .quad 1
+__kefir_debug_info_section_entry_8:
+    .byte 9
+    .ascii "__func__\000"
+    .long __kefir_debug_info_section_entry_9 - __kefir_debug_info_section
+    .long __kefir_debug_loclist_section_entry_1
+    .byte 0
+    .byte 0
+    .ascii "\000"
+    .quad 0
+    .quad 0
+    .byte 0
 __kefir_debug_info_section_entry_3:
     .byte 2
     .ascii "signed int\000"
@@ -187,11 +281,37 @@ __kefir_debug_info_section_entry_5:
     .byte 4
     .byte 8
     .byte 8
-    .long __kefir_debug_info_section_entry_6 - __kefir_debug_info_section
-__kefir_debug_info_section_entry_6:
+    .long __kefir_debug_info_section_entry_10 - __kefir_debug_info_section
+__kefir_debug_info_section_entry_7:
+    .byte 2
+    .ascii "float\000"
+    .byte 4
+    .byte 4
+    .byte 4
+__kefir_debug_info_section_entry_9:
+    .byte 7
+    .long __kefir_debug_info_section_entry_11 - __kefir_debug_info_section
+__kefir_debug_info_section_entry_12:
+    .byte 8
+    .long __kefir_debug_info_section_entry_13 - __kefir_debug_info_section
+    .byte 5
+    .byte 0
+__kefir_debug_info_section_entry_10:
     .byte 5
     .ascii "void\000"
     .byte 0
+__kefir_debug_info_section_entry_11:
+    .byte 2
+    .ascii "char\000"
+    .byte 1
+    .byte 1
+    .byte 6
+__kefir_debug_info_section_entry_13:
+    .byte 2
+    .ascii "unsigned long\000"
+    .byte 8
+    .byte 8
+    .byte 7
     .byte 0
     .byte 0
 __kefir_debug_info_section_end:
@@ -204,6 +324,8 @@ __kefir_debug_loclists_section_begin:
     .byte 8
     .byte 0
     .long 0
+__kefir_debug_loclist_section_entry_1:
+    .byte 0
 __kefir_debug_loclists_section_end:
 
 .section .debug_line

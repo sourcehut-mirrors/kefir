@@ -52,6 +52,9 @@ kefir_result_t kefir_opt_code_debug_info_register_local_variable_allocation(stru
                                                                             struct kefir_opt_code_debug_info *,
                                                                             kefir_opt_instruction_ref_t, kefir_id_t,
                                                                             kefir_size_t);
+kefir_result_t kefir_opt_code_debug_info_replace_local_variable_allocation(struct kefir_opt_code_debug_info *,
+                                                                           kefir_opt_instruction_ref_t,
+                                                                           kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_of(const struct kefir_opt_code_debug_info *,
                                                                       kefir_id_t, kefir_size_t,
                                                                       kefir_opt_instruction_ref_t *);

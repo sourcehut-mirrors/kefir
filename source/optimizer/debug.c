@@ -137,6 +137,22 @@ kefir_result_t kefir_opt_code_debug_info_register_local_variable_allocation(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_debug_info_replace_local_variable_allocation(
+    struct kefir_opt_code_debug_info *debug_info, kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_instruction_ref_t replacement_instr_ref) {
+    REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+
+    struct kefir_hashtree_node_iterator iter;
+    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&debug_info->local_variable_allocs, &iter);
+         node != NULL; node = kefir_hashtree_next(&iter)) {
+        if (node->value == (kefir_hashtree_value_t) instr_ref) {
+            node->value = (kefir_hashtree_value_t) replacement_instr_ref;
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_of(
     const struct kefir_opt_code_debug_info *debug_info, kefir_id_t type_id, kefir_size_t type_index,
     kefir_opt_instruction_ref_t *alloc_instr_ref) {

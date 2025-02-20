@@ -520,25 +520,28 @@ static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE,
                                                   &attr));
     kefir_opt_instruction_ref_t allocation_instr_ref;
-    REQUIRE_OK(kefir_opt_code_debug_info_local_variable_allocation_of(
+    kefir_result_t res = kefir_opt_code_debug_info_local_variable_allocation_of(
         &codegen_function->function->debug_info, attr->local_variable.type_id, attr->local_variable.type_index,
-        &allocation_instr_ref));
-    REQUIRE_OK(kefir_opt_code_debug_info_local_variable_has_refs(&codegen_function->function->debug_info,
-                                                                 allocation_instr_ref, &has_refs));
-    if (!has_refs) {
-        REQUIRE_OK(
-            generate_local_variable_simple_location(mem, codegen_function, variable_entry_id, allocation_instr_ref));
-    } else {
-        kefir_result_t res;
-        kefir_opt_instruction_ref_t instr_ref;
-        struct kefir_opt_code_debug_info_local_variable_ref_iterator iter;
-        for (res = kefir_opt_code_debug_info_local_variable_ref_iter(&codegen_function->function->debug_info, &iter,
-                                                                     allocation_instr_ref, &instr_ref);
-             res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&iter, &instr_ref)) {
-            REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_instruction_location(codegen_function, instr_ref));
-        }
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
+        &allocation_instr_ref);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        REQUIRE_OK(kefir_opt_code_debug_info_local_variable_has_refs(&codegen_function->function->debug_info,
+                                                                     allocation_instr_ref, &has_refs));
+        if (!has_refs) {
+            REQUIRE_OK(generate_local_variable_simple_location(mem, codegen_function, variable_entry_id,
+                                                               allocation_instr_ref));
+        } else {
+            kefir_result_t res;
+            kefir_opt_instruction_ref_t instr_ref;
+            struct kefir_opt_code_debug_info_local_variable_ref_iterator iter;
+            for (res = kefir_opt_code_debug_info_local_variable_ref_iter(&codegen_function->function->debug_info, &iter,
+                                                                         allocation_instr_ref, &instr_ref);
+                 res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&iter, &instr_ref)) {
+                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_instruction_location(codegen_function, instr_ref));
+            }
+            if (res != KEFIR_ITERATOR_END) {
+                REQUIRE_OK(res);
+            }
         }
     }
 
@@ -549,6 +552,7 @@ static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
 static kefir_result_t generate_global_variable_loclists(struct kefir_mem *mem,
                                                         struct kefir_codegen_amd64_function *codegen_function,
                                                         struct kefir_codegen_amd64_dwarf_context *context,
+                                                        const struct kefir_opt_module_liveness *liveness,
                                                         kefir_ir_debug_entry_id_t variable_entry_id) {
     UNUSED(mem);
     struct kefir_hashtree_node *node;
@@ -574,14 +578,13 @@ static kefir_result_t generate_global_variable_loclists(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE,
                                                   &attr));
+    const char *symbol = kefir_ir_module_get_named_symbol(codegen_function->module->ir_module, attr->global_variable);
     const struct kefir_ir_identifier *variable_identifier;
-    kefir_result_t res = kefir_ir_module_get_identifier(
-        codegen_function->module->ir_module,
-        kefir_ir_module_get_named_symbol(codegen_function->module->ir_module, attr->global_variable),
-        &variable_identifier);
+    kefir_result_t res =
+        kefir_ir_module_get_identifier(codegen_function->module->ir_module, symbol, &variable_identifier);
 
     if (res != KEFIR_NOT_FOUND && range_begin_label != KEFIR_ASMCMP_INDEX_NONE &&
-        range_end_label != KEFIR_ASMCMP_INDEX_NONE) {
+        range_end_label != KEFIR_ASMCMP_INDEX_NONE && kefir_opt_module_is_symbol_alive(liveness, symbol)) {
         REQUIRE_OK(res);
 
         const struct kefir_ir_identifier *function_identifier;
@@ -688,11 +691,13 @@ static kefir_result_t generate_thread_local_variable_loclists(struct kefir_mem *
 kefir_result_t kefir_codegen_amd64_dwarf_generate_variable(struct kefir_mem *mem,
                                                            struct kefir_codegen_amd64_function *codegen_function,
                                                            struct kefir_codegen_amd64_dwarf_context *context,
+                                                           const struct kefir_opt_module_liveness *liveness,
                                                            kefir_ir_debug_entry_id_t entry_id,
                                                            kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module liveness"));
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_variable_abbrev(mem, codegen_function, context, entry_id));
@@ -715,7 +720,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_variable(struct kefir_mem *mem
             REQUIRE_OK(generate_local_variable_loclists(mem, codegen_function, context, entry_id));
             ASSIGN_PTR(dwarf_entry_ptr, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
         } else if (is_global) {
-            REQUIRE_OK(generate_global_variable_loclists(mem, codegen_function, context, entry_id));
+            REQUIRE_OK(generate_global_variable_loclists(mem, codegen_function, context, liveness, entry_id));
             ASSIGN_PTR(dwarf_entry_ptr, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
         } else {
             REQUIRE_OK(generate_thread_local_variable_loclists(mem, codegen_function, context, entry_id));

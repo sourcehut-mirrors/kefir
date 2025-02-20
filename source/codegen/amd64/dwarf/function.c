@@ -163,23 +163,24 @@ static kefir_result_t generate_function_info(struct kefir_mem *mem,
 }
 
 static kefir_result_t generate_function(struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
+                                        const struct kefir_opt_module_liveness *liveness,
                                         struct kefir_codegen_amd64_dwarf_context *context) {
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_subprogram_abbrev(mem, codegen_function, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-            mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
+            mem, codegen_function, context, liveness, codegen_function->function->ir_func->debug_info.subprogram_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
         REQUIRE_OK(generate_function_info(mem, codegen_function, context));
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-            mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
+            mem, codegen_function, context, liveness, codegen_function->function->ir_func->debug_info.subprogram_id));
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, KEFIR_DWARF(null)));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
         REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(
-            mem, codegen_function, context, codegen_function->function->ir_func->debug_info.subprogram_id));
+            mem, codegen_function, context, liveness, codegen_function->function->ir_func->debug_info.subprogram_id));
     }
     return KEFIR_OK;
 }
@@ -196,14 +197,14 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_functions(struct kefir_mem *me
              kefir_ir_module_function_iter(codegen_module->module->ir_module, &iter);
          function != NULL; function = kefir_ir_module_function_next(&iter)) {
 
-        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, (const char *) iter.node->value)) {
+        if (!kefir_opt_module_is_symbol_alive(codegen_module->liveness, (const char *) iter.node->key)) {
             continue;
         }
 
         if (function->debug_info.subprogram_id != KEFIR_IR_DEBUG_ENTRY_ID_NONE) {
             struct kefir_codegen_amd64_function *codegen_function;
             REQUIRE_OK(kefir_codegen_amd64_module_function(codegen_module, function->name, &codegen_function));
-            REQUIRE_OK(generate_function(mem, codegen_function, context));
+            REQUIRE_OK(generate_function(mem, codegen_function, codegen_module->liveness, context));
         }
     }
 

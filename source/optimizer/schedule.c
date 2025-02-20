@@ -433,12 +433,6 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, struct kefir_opt_cod
 
     struct schedule_instruction_param param = {
         .mem = mem, .schedule = schedule, .code = code, .block_schedule = block_schedule, .scheduler = scheduler};
-    const struct kefir_opt_code_structure_block *block_props = &code_analysis->structure.blocks[block->id];
-    for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->successors); iter != NULL;
-         kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
-        REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, successor_block_id, scheduler));
-    }
 
     REQUIRE_OK(kefir_list_init(&param.instr_queue));
 
@@ -453,6 +447,13 @@ static kefir_result_t schedule_block(struct kefir_mem *mem, struct kefir_opt_cod
         return res;
     });
     REQUIRE_OK(kefir_list_free(mem, &param.instr_queue));
+
+    const struct kefir_opt_code_structure_block *block_props = &code_analysis->structure.blocks[block->id];
+    for (const struct kefir_list_entry *iter = kefir_list_head(&block_props->successors); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(schedule_block(mem, schedule, code, code_analysis, successor_block_id, scheduler));
+    }
 
     return KEFIR_OK;
 }

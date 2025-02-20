@@ -859,7 +859,6 @@ kefir_result_t kefir_codegen_amd64_function_find_instruction_lifetime(
             }
         }
     }
-
     return KEFIR_OK;
 }
 

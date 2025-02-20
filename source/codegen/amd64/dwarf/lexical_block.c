@@ -43,6 +43,7 @@ static kefir_result_t generate_lexical_block_abbrev(struct kefir_codegen_amd64 *
 static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
                                                   struct kefir_codegen_amd64_dwarf_context *context,
                                                   struct kefir_codegen_amd64_function *codegen_function,
+                                                  const struct kefir_opt_module_liveness *liveness,
                                                   kefir_ir_debug_entry_id_t entry_id,
                                                   kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     const struct kefir_ir_identifier *ir_identifier;
@@ -90,7 +91,8 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
         ASSIGN_PTR(dwarf_entry_id, KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL);
     }
 
-    REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
+    REQUIRE_OK(
+        kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness, entry_id));
 
     if (begin_label != KEFIR_ASMCMP_INDEX_NONE && end_label != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen, KEFIR_DWARF(null)));
@@ -101,6 +103,7 @@ static kefir_result_t generate_lexical_block_info(struct kefir_mem *mem,
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem *mem,
                                                                 struct kefir_codegen_amd64_function *codegen_function,
                                                                 struct kefir_codegen_amd64_dwarf_context *context,
+                                                                const struct kefir_opt_module_liveness *liveness,
                                                                 kefir_ir_debug_entry_id_t entry_id,
                                                                 kefir_codegen_amd64_dwarf_entry_id_t *dwarf_entry_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -109,16 +112,18 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_ABBREV) {
         REQUIRE_OK(generate_lexical_block_abbrev(codegen_function->codegen, context));
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness,
+                                                                            entry_id));
         ASSIGN_PTR(dwarf_entry_id, context->abbrev.entries.lexical_block);
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_INFO) {
-        REQUIRE_OK(generate_lexical_block_info(mem, context, codegen_function, entry_id, dwarf_entry_id));
+        REQUIRE_OK(generate_lexical_block_info(mem, context, codegen_function, liveness, entry_id, dwarf_entry_id));
     }
 
     KEFIR_DWARF_GENERATOR_SECTION(context->section, KEFIR_DWARF_GENERATOR_SECTION_LOCLISTS) {
-        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, entry_id));
+        REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block_content(mem, codegen_function, context, liveness,
+                                                                            entry_id));
     }
 
     return KEFIR_OK;
@@ -126,10 +131,12 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block(struct kefir_mem
 
 kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *codegen_function,
-    struct kefir_codegen_amd64_dwarf_context *context, kefir_ir_debug_entry_id_t entry_id) {
+    struct kefir_codegen_amd64_dwarf_context *context, const struct kefir_opt_module_liveness *liveness,
+    kefir_ir_debug_entry_id_t entry_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen_function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen DWARF context"));
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module liveness"));
 
     kefir_ir_debug_entry_id_t child_id;
     struct kefir_ir_debug_entry_child_iterator iter;
@@ -144,13 +151,13 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_lexical_block_content(
 
         switch (child_entry->tag) {
             case KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK:
-                REQUIRE_OK(
-                    kefir_codegen_amd64_dwarf_generate_lexical_block(mem, codegen_function, context, child_id, NULL));
+                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_lexical_block(mem, codegen_function, context, liveness,
+                                                                            child_id, NULL));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_VARIABLE:
-                REQUIRE_OK(
-                    kefir_codegen_amd64_dwarf_generate_variable(mem, codegen_function, context, child_id, NULL));
+                REQUIRE_OK(kefir_codegen_amd64_dwarf_generate_variable(mem, codegen_function, context, liveness,
+                                                                       child_id, NULL));
                 break;
 
             case KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER:
