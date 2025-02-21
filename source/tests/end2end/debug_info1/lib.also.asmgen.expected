@@ -224,7 +224,7 @@ __kefir_debug_info_section_entry_4:
 __kefir_debug_info_section_entry_5:
     .byte 5
     .quad _kefir_func_factorial64_label11
-    .quad _kefir_func_factorial64_label16 - _kefir_func_factorial64_label11
+    .quad _kefir_func_factorial64_label20 - _kefir_func_factorial64_label11
 __kefir_debug_info_section_entry_6:
     .byte 5
     .quad _kefir_func_factorial64_label20
@@ -233,7 +233,7 @@ __kefir_debug_info_section_entry_6:
 __kefir_debug_info_section_entry_7:
     .byte 5
     .quad _kefir_func_factorial64_label12
-    .quad _kefir_func_factorial64_label16 - _kefir_func_factorial64_label12
+    .quad _kefir_func_factorial64_label20 - _kefir_func_factorial64_label12
 __kefir_debug_info_section_entry_8:
     .byte 5
     .quad _kefir_func_factorial64_label19
@@ -242,7 +242,7 @@ __kefir_debug_info_section_entry_8:
 __kefir_debug_info_section_entry_9:
     .byte 5
     .quad _kefir_func_factorial64_label13
-    .quad _kefir_func_factorial64_label16 - _kefir_func_factorial64_label13
+    .quad _kefir_func_factorial64_label19 - _kefir_func_factorial64_label13
 __kefir_debug_info_section_entry_10:
     .byte 5
     .quad _kefir_func_factorial64_label14

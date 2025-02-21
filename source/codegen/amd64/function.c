@@ -869,40 +869,36 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
     REQUIRE(begin_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
     REQUIRE(end_label != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
 
-    kefir_asmcmp_label_index_t tmp_label;
+    kefir_asmcmp_label_index_t tmp_label, tmp2_label;
+    kefir_size_t begin_linear_position = 0, end_linear_position = 0;
     *begin_label = KEFIR_ASMCMP_INDEX_NONE;
     *end_label = KEFIR_ASMCMP_INDEX_NONE;
 
-    struct kefir_hashtree_node *node;
-    kefir_result_t res =
-        kefir_hashtree_at(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) begin_index, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        res = kefir_hashtree_upper_bound(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) begin_index,
-                                         &node);
-        if (res == KEFIR_OK && (kefir_size_t) node->key >= end_index) {
-            res = KEFIR_NOT_FOUND;
-            node = NULL;
+    for (kefir_size_t i = begin_index; i <= end_index; i++) {
+        struct kefir_hashtree_node *node;
+        kefir_result_t res =
+            kefir_hashtree_at(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) i, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
         }
-    }
-    if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(
-            codegen_function, (kefir_opt_instruction_ref_t) node->value, begin_label, end_label));
-    }
 
-    res = kefir_hashtree_at(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) end_index, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        res = kefir_hashtree_lower_bound(&codegen_function->debug.ir_instructions, (kefir_hashtree_key_t) end_index,
-                                         &node);
-        if (res == KEFIR_OK && (kefir_size_t) node->key < begin_index) {
-            res = KEFIR_NOT_FOUND;
-            node = NULL;
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->value);
+        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(codegen_function, instr_ref, &tmp_label,
+                                                                          &tmp2_label));
+        const struct kefir_opt_code_instruction_schedule *instr_schedule;
+        REQUIRE_OK(kefir_opt_code_schedule_of(&codegen_function->schedule, instr_ref, &instr_schedule));
+
+        if (*begin_label == KEFIR_ASMCMP_INDEX_NONE ||
+            instr_schedule->liveness_range.begin_index < begin_linear_position) {
+            *begin_label = tmp_label;
+            begin_linear_position = instr_schedule->linear_index;
         }
-    }
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        REQUIRE_OK(kefir_codegen_amd64_function_find_instruction_lifetime(
-            codegen_function, (kefir_opt_instruction_ref_t) node->value, &tmp_label, end_label));
+
+        if (*end_label == KEFIR_ASMCMP_INDEX_NONE || instr_schedule->liveness_range.end_index > end_linear_position) {
+            *end_label = tmp2_label;
+            end_linear_position = instr_schedule->linear_index;
+        }
     }
 
     return KEFIR_OK;
