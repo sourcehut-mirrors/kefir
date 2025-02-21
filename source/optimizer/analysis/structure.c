@@ -218,3 +218,129 @@ kefir_result_t kefir_opt_code_structure_is_sequenced_before(struct kefir_mem *me
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_opt_code_structure_redirect_edge(struct kefir_mem *mem, struct kefir_opt_code_structure *structure,
+                                                      kefir_opt_block_id_t old_source_block_id,
+                                                      kefir_opt_block_id_t new_source_block_id,
+                                                      kefir_opt_block_id_t target_block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(old_source_block_id != target_block_id,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to redirect loop edges"));
+
+    kefir_size_t total_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &total_blocks));
+
+    REQUIRE(old_source_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+    REQUIRE(new_source_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+    REQUIRE(target_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[old_source_block_id].successors);
+         iter != NULL;) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
+        struct kefir_list_entry *next_iter = iter->next;
+        if (block_id == target_block_id) {
+            REQUIRE_OK(kefir_list_pop(mem, &structure->blocks[old_source_block_id].successors, iter));
+        }
+        iter = next_iter;
+    }
+    REQUIRE_OK(kefir_list_insert_after(mem, &structure->blocks[new_source_block_id].successors,
+                                       kefir_list_tail(&structure->blocks[new_source_block_id].successors),
+                                       (void *) (kefir_uptr_t) target_block_id));
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[target_block_id].predecessors);
+         iter != NULL; iter = iter->next) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, block_id, (kefir_uptr_t) iter->value);
+        if (block_id == old_source_block_id) {
+            iter->value = (void *) (kefir_uptr_t) new_source_block_id;
+        }
+    }
+
+    if (structure->blocks[target_block_id].immediate_dominator == old_source_block_id) {
+        structure->blocks[target_block_id].immediate_dominator = new_source_block_id;
+    }
+
+    REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_structure_redirect_edges(struct kefir_mem *mem,
+                                                       struct kefir_opt_code_structure *structure,
+                                                       kefir_opt_block_id_t old_source_block_id,
+                                                       kefir_opt_block_id_t new_source_block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+
+    kefir_size_t total_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &total_blocks));
+
+    REQUIRE(old_source_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[old_source_block_id].successors);
+         iter != NULL; iter = kefir_list_head(&structure->blocks[old_source_block_id].successors)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_opt_code_structure_redirect_edge(mem, structure, old_source_block_id, new_source_block_id,
+                                                          successor_block_id));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_structure_is_reachable_from_entry(const struct kefir_opt_code_structure *structure,
+                                                                kefir_opt_block_id_t block_id,
+                                                                kefir_bool_t *reachable_flag_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(reachable_flag_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
+    REQUIRE(block_id < num_of_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
+
+    *reachable_flag_ptr =
+        block_id == structure->code->entry_point || structure->blocks[block_id].immediate_dominator != KEFIR_ID_NONE;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_structure_block_exclusive_direct_predecessor(
+    const struct kefir_opt_code_structure *structure, kefir_opt_block_id_t block_id,
+    kefir_opt_block_id_t successor_block_id, kefir_bool_t *result_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
+    REQUIRE(block_id < num_of_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
+    REQUIRE(successor_block_id < num_of_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
+
+    const struct kefir_opt_code_block *successor_block;
+    REQUIRE_OK(kefir_opt_code_container_block(structure->code, successor_block_id, &successor_block));
+
+    kefir_bool_t result = block_id != successor_block_id && kefir_hashtreeset_empty(&successor_block->public_labels);
+    kefir_bool_t found_block_id = false;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[successor_block_id].predecessors);
+         result && iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
+
+        if (successor_block_id == predecessor_block_id) {
+            result = false;
+        } else if (predecessor_block_id != block_id) {
+            kefir_bool_t reachable_from_entry;
+            REQUIRE_OK(kefir_opt_code_structure_is_reachable_from_entry(structure, predecessor_block_id,
+                                                                        &reachable_from_entry));
+            result = result && !reachable_from_entry;
+        } else {
+            found_block_id = true;
+        }
+    }
+
+    *result_ptr = result && found_block_id;
+    return KEFIR_OK;
+}

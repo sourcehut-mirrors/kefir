@@ -57,6 +57,7 @@ DECLARE_PASS(BranchRemoval);
 DECLARE_PASS(Mem2Reg);
 DECLARE_PASS(PhiPropagate);
 DECLARE_PASS(LocalAllocSink);
+DECLARE_PASS(BlockMerge);
 DECLARE_PASS(DropDeadPhiLinks);
 #undef DECLARE_PASS
 #endif

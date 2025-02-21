@@ -15,17 +15,13 @@ getb:
 .loc 0 25 1
 __kefir_text_func_getb_begin:
 .extern __tls_get_addr
-.loc 0 26 12
-_kefir_func_getb_label3:
-_kefir_func_getb_label2:
+_kefir_func_getb_label1:
     data16     lea b@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
-.loc 0 26 12
-_kefir_func_getb_label4:
+_kefir_func_getb_label2:
     movl (%rax), %eax
-.loc 0 26 5
-_kefir_func_getb_label5:
+_kefir_func_getb_label3:
     movq %rax, %xmm0
     ret
 __kefir_text_func_getb_end:

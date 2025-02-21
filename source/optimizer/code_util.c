@@ -330,3 +330,84 @@ kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt
                   instr->control_flow.next != KEFIR_ID_NONE;
     return KEFIR_OK;
 }
+
+static kefir_result_t copy_instruction_resolve_phi(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                   kefir_opt_instruction_ref_t instr_ref, kefir_opt_block_id_t block_id,
+                                                   kefir_opt_instruction_ref_t *copied_instr_ref) {
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, instr->operation.parameters.phi_ref, block_id,
+                                                         copied_instr_ref));
+    } else {
+        REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, block_id, instr_ref, copied_instr_ref));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                               kefir_opt_block_id_t target_block_id,
+                                               kefir_opt_block_id_t source_block_id, kefir_bool_t merge_control_tail) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    const struct kefir_opt_code_block *source_block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, source_block_id, &source_block));
+
+    kefir_result_t res;
+    kefir_opt_instruction_ref_t instr_ref, replacement_ref, tail_control_ref;
+    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, source_block, &tail_control_ref));
+    for (res = kefir_opt_code_block_instr_control_head(code, source_block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
+        if (!merge_control_tail && instr_ref == tail_control_ref) {
+            continue;
+        }
+
+        REQUIRE_OK(copy_instruction_resolve_phi(mem, code, instr_ref, target_block_id, &replacement_ref));
+        kefir_bool_t is_control_flow;
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, replacement_ref, &is_control_flow));
+        if (!is_control_flow) {
+            REQUIRE_OK(kefir_opt_code_container_add_control(code, target_block_id, replacement_ref));
+        }
+        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+    }
+    REQUIRE_OK(res);
+
+    for (res = kefir_opt_code_block_instr_head(code, source_block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
+        kefir_bool_t is_control_flow;
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+        if (!is_control_flow) {
+            REQUIRE_OK(copy_instruction_resolve_phi(mem, code, instr_ref, target_block_id, &replacement_ref));
+            REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+        }
+    }
+    REQUIRE_OK(res);
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                       kefir_opt_block_id_t old_predecessor_block_id,
+                                                       kefir_opt_block_id_t new_predecessor_block_id,
+                                                       kefir_opt_block_id_t block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    const struct kefir_opt_code_block *block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
+
+    kefir_opt_phi_id_t phi_ref;
+    kefir_result_t res;
+    for (res = kefir_opt_code_block_phi_head(code, block, &phi_ref); res == KEFIR_OK && phi_ref != KEFIR_ID_NONE;
+         res = kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
+        kefir_opt_instruction_ref_t instr_ref;
+        REQUIRE_OK(kefir_opt_code_container_phi_link_for(code, phi_ref, old_predecessor_block_id, &instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, code, phi_ref, new_predecessor_block_id, instr_ref));
+    }
+    REQUIRE_OK(res);
+
+    return KEFIR_OK;
+}

@@ -103,7 +103,7 @@ __kefir_text_func_div_ld_begin:
     fxch %st(1)
     fstp %st(0)
     fldt __kefir_constant_complex_long_double_div(%rip)
-    jb _kefir_func_div_ld_label4
+    jb _kefir_func_div_ld_label3
     fxch %st(1)
     fdivr %st(0), %st(2)
     fld %st(2)
@@ -121,12 +121,12 @@ __kefir_text_func_div_ld_begin:
     fsubrp %st(0), %st(1)
     fmulp %st(0), %st(2)
     fxch %st(1)
+_kefir_func_div_ld_label2:
+    fxch %st(1)
+    fxch %st(1)
+    fxch %st(1)
+    jmp _kefir_func_div_ld_label4
 _kefir_func_div_ld_label3:
-    fxch %st(1)
-    fxch %st(1)
-    fxch %st(1)
-    jmp _kefir_func_div_ld_label5
-_kefir_func_div_ld_label4:
     fxch %st(1)
     fdiv %st(2), %st(0)
     fld %st(0)
@@ -144,8 +144,8 @@ _kefir_func_div_ld_label4:
     fxch %st(1)
     fsubrp %st(0), %st(2)
     fmulp %st(0), %st(1)
-    jmp _kefir_func_div_ld_label3
-_kefir_func_div_ld_label5:
+    jmp _kefir_func_div_ld_label2
+_kefir_func_div_ld_label4:
     fstpt -80(%rbp)
     fstpt -64(%rbp)
     fldt -64(%rbp)

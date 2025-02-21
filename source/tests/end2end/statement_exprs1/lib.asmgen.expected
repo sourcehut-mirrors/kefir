@@ -50,12 +50,12 @@ __kefir_text_func_eval2_begin:
     movq -8(%rbp), %rcx
     movq -24(%rbp), %rax
     cmpq $0, -32(%rbp)
-    jz _kefir_func_eval2_label2
+    jz _kefir_func_eval2_label1
     movq -32(%rbp), %rsp
     movq (%rsp), %rax
     movq %rax, -32(%rbp)
     add $16, %rsp
-_kefir_func_eval2_label2:
+_kefir_func_eval2_label1:
     movsx %edi, %rax
     movsx %eax, %rax
     add %rcx, %rax

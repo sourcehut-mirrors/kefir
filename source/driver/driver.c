@@ -36,7 +36,7 @@
 
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC                                                                         \
     "phi-propagate,constant-fold,mem2reg,local-alloc-sink,phi-propagate,constant-fold,op-simplify,branch-removal," \
-    "drop-dead-phi-links"
+    "drop-dead-phi-links,block-merge"
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "local-alloc-sink"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \

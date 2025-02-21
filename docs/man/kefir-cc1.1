@@ -281,6 +281,9 @@ Moving local variable allocations closer to their actual uses (does not affect e
 .\"
 .It Ar drop-dead-phi-links
 Drop phi links to predecessor blocks that do not lead to the target block anymore.
+.\"
+.It Ar block-merge
+Remove unnecessary jump instructions and merge respective blocks.
 .El
 .\"
 .Ss TARGET

@@ -45,6 +45,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(Mem2Reg);
     PASS(PhiPropagate);
     PASS(LocalAllocSink);
+    PASS(BlockMerge);
     PASS(DropDeadPhiLinks);
 #undef PASS
     return KEFIR_SET_ERRORF(KEFIR_NOT_FOUND, "Unable to find optimizer pass '%s'", name);

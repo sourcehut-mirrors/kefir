@@ -12,26 +12,25 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq 32(%rbp), %rsi
-    mov %rsi, %rcx
-_kefir_func_test1_label2:
-    movq %rsi, -16(%rbp)
-    movq %rcx, -8(%rbp)
-    mov %rcx, %rdi
+    movq 32(%rbp), %rcx
+    mov %rcx, %rdx
+_kefir_func_test1_label1:
+    movq %rcx, -16(%rbp)
+    movq %rdx, -8(%rbp)
+    mov %rdx, %rdi
     call callback1@PLT
+    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    cmp $100, %rax
+    jge _kefir_func_test1_label2
+_kefir_func_test1_label3:
     mov %rax, %rdx
-    movq -16(%rbp), %rsi
-    movq -8(%rbp), %rcx
-    cmp $100, %rdx
-    jl _kefir_func_test1_label4
-    mov %rdx, %rax
-    add %rsi, %rax
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label2:
+    add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_test1_label4:
-    mov %rdx, %rcx
-    jmp _kefir_func_test1_label2
 __kefir_text_func_test1_end:
 
 __kefir_text_section_end:

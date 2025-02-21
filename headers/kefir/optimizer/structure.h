@@ -48,6 +48,11 @@ kefir_result_t kefir_opt_code_structure_drop_sequencing_cache(struct kefir_mem *
 kefir_result_t kefir_opt_code_structure_link_blocks(struct kefir_mem *, struct kefir_opt_code_structure *);
 kefir_result_t kefir_opt_code_structure_find_dominators(struct kefir_mem *, struct kefir_opt_code_structure *);
 
+kefir_result_t kefir_opt_code_structure_redirect_edge(struct kefir_mem *, struct kefir_opt_code_structure *,
+                                                      kefir_opt_block_id_t, kefir_opt_block_id_t, kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_structure_redirect_edges(struct kefir_mem *, struct kefir_opt_code_structure *,
+                                                       kefir_opt_block_id_t, kefir_opt_block_id_t);
+
 typedef struct kefir_opt_code_container_tracer {
     kefir_result_t (*trace_instruction)(kefir_opt_instruction_ref_t, void *);
     void *payload;
@@ -61,5 +66,12 @@ kefir_result_t kefir_opt_code_structure_is_dominator(const struct kefir_opt_code
 kefir_result_t kefir_opt_code_structure_is_sequenced_before(struct kefir_mem *, struct kefir_opt_code_structure *,
                                                             kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
                                                             kefir_bool_t *);
+
+kefir_result_t kefir_opt_code_structure_is_reachable_from_entry(const struct kefir_opt_code_structure *,
+                                                                kefir_opt_block_id_t, kefir_bool_t *);
+
+kefir_result_t kefir_opt_code_structure_block_exclusive_direct_predecessor(const struct kefir_opt_code_structure *,
+                                                                           kefir_opt_block_id_t, kefir_opt_block_id_t,
+                                                                           kefir_bool_t *);
 
 #endif

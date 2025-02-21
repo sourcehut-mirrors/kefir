@@ -41,4 +41,10 @@ kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt
       (_instr)->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) &&   \
      !(_instr)->operation.parameters.memory_access.flags.volatile_access)
 
+kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *, struct kefir_opt_code_container *,
+                                               kefir_opt_block_id_t, kefir_opt_block_id_t, kefir_bool_t);
+kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                       kefir_opt_block_id_t, kefir_opt_block_id_t,
+                                                       kefir_opt_block_id_t);
+
 #endif
