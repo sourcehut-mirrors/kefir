@@ -278,6 +278,9 @@ Eliminating branches with constant conditions
 .\"
 .It Ar local-alloc-sink
 Moving local variable allocations closer to their actual uses (does not affect effective variable lifetimes).
+.\"
+.It Ar drop-dead-phi-links
+Drop phi links to predecessor blocks that do not lead to the target block anymore.
 .El
 .\"
 .Ss TARGET

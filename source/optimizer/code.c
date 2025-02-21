@@ -986,6 +986,24 @@ kefir_result_t kefir_opt_code_container_phi_link_for(const struct kefir_opt_code
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_container_phi_drop_link(struct kefir_mem *mem,
+                                                      const struct kefir_opt_code_container *code,
+                                                      kefir_opt_phi_id_t phi_ref, kefir_opt_block_id_t block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_phi_node *phi_node = NULL;
+    REQUIRE_OK(code_container_phi_mutable(code, phi_ref, &phi_node));
+
+    REQUIRE(phi_node->block_id != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Phi node has been previously dropped from block"));
+    kefir_result_t res = kefir_hashtree_delete(mem, &phi_node->links, (kefir_hashtree_key_t) block_id);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_container_new_call(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                  kefir_opt_block_id_t block_id, kefir_id_t func_decl_id,
                                                  kefir_size_t argc, kefir_opt_instruction_ref_t function_ref,
