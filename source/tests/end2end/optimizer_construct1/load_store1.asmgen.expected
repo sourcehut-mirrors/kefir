@@ -439,9 +439,9 @@
                         "control_flow": 3,
                         "code": [
                             {
-                                "id": 2,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 2,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -453,9 +453,9 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 2,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 2,
                                 "control_next": null,
                                 "ir_instruction": null
                             },

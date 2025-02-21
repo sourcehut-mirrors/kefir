@@ -270,6 +270,18 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
 
     const struct kefir_opt_code_structure_block *block_props = &code_analysis->structure.blocks[block->id];
 
+    for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
+
+        const struct kefir_opt_instruction *instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
+            kefir_hashtree_has(&schedule->instructions, (kefir_hashtree_key_t) instr_ref)) {
+            REQUIRE_OK(schedule_stack_push(param, instr_ref, true, kefir_list_tail(&param->instr_queue)));
+        }
+    }
+    REQUIRE_OK(res);
+
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(code, block, &tail_control_ref));
     for (res = kefir_opt_code_block_instr_control_head(code, block, &instr_ref);
          res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;

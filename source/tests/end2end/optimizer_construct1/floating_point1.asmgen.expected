@@ -11,16 +11,9 @@
                         "control_flow": 4,
                         "code": [
                             {
-                                "id": 3,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 3,
-                                "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_argument",
-                                "index": 2,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -32,9 +25,16 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 2,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 2,
+                                "control_next": null,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_argument",
+                                "index": 3,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -347,16 +347,9 @@
                         "control_flow": 4,
                         "code": [
                             {
-                                "id": 3,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 3,
-                                "control_next": null,
-                                "ir_instruction": null
-                            },
-                            {
-                                "id": 2,
-                                "opcode": "get_argument",
-                                "index": 2,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -368,9 +361,16 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 2,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 2,
+                                "control_next": null,
+                                "ir_instruction": null
+                            },
+                            {
+                                "id": 3,
+                                "opcode": "get_argument",
+                                "index": 3,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -683,16 +683,16 @@
                         "control_flow": 2,
                         "code": [
                             {
-                                "id": 1,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 1,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 1,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -829,16 +829,16 @@
                         "control_flow": 2,
                         "code": [
                             {
-                                "id": 1,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 1,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 1,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
@@ -975,16 +975,16 @@
                         "control_flow": 2,
                         "code": [
                             {
-                                "id": 1,
+                                "id": 0,
                                 "opcode": "get_argument",
-                                "index": 1,
+                                "index": 0,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
                             {
-                                "id": 0,
+                                "id": 1,
                                 "opcode": "get_argument",
-                                "index": 0,
+                                "index": 1,
                                 "control_next": null,
                                 "ir_instruction": null
                             },
