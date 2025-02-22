@@ -22,6 +22,7 @@
 #define KEFIR_OPTIMIZER_INSTR_UTIL_H_
 
 #include "kefir/optimizer/code.h"
+#include "kefir/optimizer/structure.h"
 
 kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_container *,
                                                     const struct kefir_opt_instruction *, kefir_bool_t,
@@ -46,5 +47,8 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *, struct kefir_
 kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_opt_block_id_t,
                                                        kefir_opt_block_id_t);
+kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                struct kefir_opt_code_structure *, kefir_opt_instruction_ref_t,
+                                                kefir_opt_block_id_t *);
 
 #endif

@@ -59,6 +59,7 @@ DECLARE_PASS(PhiPropagate);
 DECLARE_PASS(LocalAllocSink);
 DECLARE_PASS(BlockMerge);
 DECLARE_PASS(DropDeadPhiLinks);
+DECLARE_PASS(InlineFunc);
 #undef DECLARE_PASS
 #endif
 

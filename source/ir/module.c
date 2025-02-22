@@ -631,6 +631,16 @@ const struct kefir_ir_function_decl *kefir_ir_module_get_declaration(const struc
     return (const struct kefir_ir_function_decl *) node->value;
 }
 
+const struct kefir_ir_function *kefir_ir_module_get_function(const struct kefir_ir_module *module,
+                                                             const char *identifier) {
+    REQUIRE(module != NULL, NULL);
+    REQUIRE(identifier != NULL, NULL);
+    struct kefir_hashtree_node *node = NULL;
+    REQUIRE(kefir_hashtree_at(&module->functions, (kefir_hashtree_key_t) identifier, &node) == KEFIR_OK, NULL);
+    REQUIRE(node != NULL, NULL);
+    return (const struct kefir_ir_function *) node->value;
+}
+
 struct kefir_ir_type *kefir_ir_module_get_named_type(const struct kefir_ir_module *module, kefir_id_t id) {
     REQUIRE(module != NULL, NULL);
     struct kefir_hashtree_node *node = NULL;

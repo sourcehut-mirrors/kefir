@@ -43,9 +43,7 @@ kefir_result_t kefir_opt_code_structure_free(struct kefir_mem *mem, struct kefir
         REQUIRE_OK(kefir_hashtreeset_free(mem, &structure->indirect_jump_target_blocks));
         REQUIRE_OK(kefir_bucketset_free(mem, &structure->sequenced_before));
 
-        kefir_size_t num_of_blocks;
-        REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
-        for (kefir_size_t i = 0; i < num_of_blocks; i++) {
+        for (kefir_size_t i = 0; i < structure->num_of_blocks; i++) {
             REQUIRE_OK(kefir_list_free(mem, &structure->blocks[i].predecessors));
             REQUIRE_OK(kefir_list_free(mem, &structure->blocks[i].successors));
         }
@@ -64,13 +62,12 @@ kefir_result_t kefir_opt_code_structure_build(struct kefir_mem *mem, struct kefi
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Optimizer code structure has already been built"));
 
     kefir_result_t res;
-    kefir_size_t num_of_blocks;
     structure->code = code;
-    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
-    structure->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_structure_block) * num_of_blocks);
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &structure->num_of_blocks));
+    structure->blocks = KEFIR_MALLOC(mem, sizeof(struct kefir_opt_code_structure_block) * structure->num_of_blocks);
     REQUIRE(structure->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code structure blocks"));
-    for (kefir_size_t i = 0; i < num_of_blocks; i++) {
+    for (kefir_size_t i = 0; i < structure->num_of_blocks; i++) {
         structure->blocks[i].immediate_dominator = KEFIR_ID_NONE;
         res = kefir_list_init(&structure->blocks[i].predecessors);
         REQUIRE_CHAIN(&res, kefir_list_init(&structure->blocks[i].successors));
@@ -194,6 +191,11 @@ kefir_result_t kefir_opt_code_structure_is_sequenced_before(struct kefir_mem *me
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    if (instr_ref1 == instr_ref2) {
+        *result_ptr = false;
+        return KEFIR_OK;
+    }
 
     kefir_bucketset_entry_t entry =
         (((kefir_uint64_t) instr_ref1) << 32) | (((kefir_uint64_t) instr_ref2) & ((1ull << 32) - 1));

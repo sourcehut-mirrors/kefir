@@ -119,6 +119,8 @@ const char *kefir_ir_module_get_named_symbol(const struct kefir_ir_module *, kef
 
 const struct kefir_ir_function_decl *kefir_ir_module_get_declaration(const struct kefir_ir_module *, kefir_id_t);
 
+const struct kefir_ir_function *kefir_ir_module_get_function(const struct kefir_ir_module *, const char *);
+
 struct kefir_ir_type *kefir_ir_module_get_named_type(const struct kefir_ir_module *, kefir_id_t);
 
 const struct kefir_ir_function_decl *kefir_ir_module_function_declaration_iter(const struct kefir_ir_module *,

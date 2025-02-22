@@ -19,6 +19,8 @@
 */
 
 #include "kefir/optimizer/code_util.h"
+#include "kefir/optimizer/builder.h"
+#include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -409,5 +411,121 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
     }
     REQUIRE_OK(res);
 
+    return KEFIR_OK;
+}
+
+static kefir_result_t collect_instr_after_split(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                struct kefir_opt_code_structure *structure,
+                                                kefir_opt_instruction_ref_t split_instr_ref,
+                                                struct kefir_queue *queue) {
+    const struct kefir_opt_instruction *split_instr, *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, split_instr_ref, &split_instr));
+
+    const struct kefir_opt_code_block *block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, split_instr->block_id, &block));
+
+    kefir_result_t res;
+    kefir_opt_instruction_ref_t instr_ref;
+    for (res = kefir_opt_code_block_instr_control_head(code, block, &instr_ref);
+         res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_control(code, instr_ref, &instr_ref)) {
+        kefir_bool_t sequenced_before;
+        REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, instr_ref, split_instr_ref,
+                                                                &sequenced_before));
+        if (sequenced_before || instr_ref == split_instr_ref) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) instr_ref));
+    }
+    REQUIRE_OK(res);
+
+    for (res = kefir_opt_code_block_instr_head(code, block, &instr_ref); res == KEFIR_OK && instr_ref != KEFIR_ID_NONE;
+         res = kefir_opt_instruction_next_sibling(code, instr_ref, &instr_ref)) {
+        kefir_bool_t sequenced_before, is_control_flow;
+        REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, instr_ref, split_instr_ref,
+                                                                &sequenced_before));
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+        if (sequenced_before || instr_ref == split_instr_ref || is_control_flow) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_PHI) {
+            continue;
+        }
+
+        REQUIRE_OK(kefir_queue_push(mem, queue, (kefir_queue_entry_t) instr_ref));
+    }
+    REQUIRE_OK(res);
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                             struct kefir_opt_code_structure *structure,
+                                             kefir_opt_instruction_ref_t split_instr_ref,
+                                             kefir_opt_block_id_t *split_block_id, struct kefir_queue *instr_queue) {
+    const struct kefir_opt_instruction *split_instr, *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, split_instr_ref, &split_instr));
+
+    kefir_opt_block_id_t new_block_id;
+    REQUIRE_OK(kefir_opt_code_container_new_block(mem, code, false, &new_block_id));
+
+    const struct kefir_opt_code_block *block;
+    REQUIRE_OK(kefir_opt_code_container_block(code, split_instr->block_id, &block));
+
+    REQUIRE_OK(collect_instr_after_split(mem, code, structure, split_instr_ref, instr_queue));
+
+    while (!kefir_queue_is_empty(instr_queue)) {
+        kefir_queue_entry_t queue_entry;
+        REQUIRE_OK(kefir_queue_pop_first(mem, instr_queue, &queue_entry));
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, queue_entry);
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+
+        kefir_bool_t is_control_flow;
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+
+        kefir_opt_instruction_ref_t replacement_ref;
+        REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, new_block_id, instr_ref, &replacement_ref));
+        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+        if (is_control_flow) {
+            REQUIRE_OK(kefir_opt_code_container_add_control(code, new_block_id, replacement_ref));
+            REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr_ref));
+        }
+        REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
+    }
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[block->id].successors); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, code, block->id, new_block_id, successor_block_id));
+    }
+
+    REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, code, block->id, new_block_id, NULL));
+    REQUIRE_OK(kefir_opt_code_structure_free(mem, structure));
+    REQUIRE_OK(kefir_opt_code_structure_init(structure));
+    REQUIRE_OK(kefir_opt_code_structure_build(mem, structure, code));
+    *split_block_id = new_block_id;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                struct kefir_opt_code_structure *structure,
+                                                kefir_opt_instruction_ref_t split_instr_ref,
+                                                kefir_opt_block_id_t *split_block_id) {
+    struct kefir_queue instr_queue;
+    REQUIRE_OK(kefir_queue_init(&instr_queue));
+    kefir_result_t res = split_block_after_impl(mem, code, structure, split_instr_ref, split_block_id, &instr_queue);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_queue_free(mem, &instr_queue);
+        return res;
+    });
+    REQUIRE_OK(kefir_queue_free(mem, &instr_queue));
     return KEFIR_OK;
 }

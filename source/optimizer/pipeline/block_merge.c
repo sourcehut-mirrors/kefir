@@ -25,7 +25,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
-#include <stdio.h>
 
 static kefir_result_t match_passthrough_block(struct kefir_opt_function *func,
                                               struct kefir_opt_code_structure *structure,

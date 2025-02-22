@@ -232,9 +232,14 @@ kefir_result_t kefir_ast_translator_function_context_init(struct kefir_mem *mem,
         return res;
     });
 
-    ctx->ir_func->flags.constructor =
-        function->base.properties.function_definition.scoped_id->function.flags.constructor;
-    ctx->ir_func->flags.destructor = function->base.properties.function_definition.scoped_id->function.flags.destructor;
+    const struct kefir_ast_scoped_identifier *function_scoped_id =
+        function->base.properties.function_definition.scoped_id;
+    ctx->ir_func->flags.constructor = function_scoped_id->function.flags.constructor;
+    ctx->ir_func->flags.destructor = function_scoped_id->function.flags.destructor;
+    ctx->ir_func->flags.inline_function =
+        function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE ||
+        function_scoped_id->function.specifier == KEFIR_AST_FUNCTION_SPECIFIER_INLINE_NORETURN ||
+        function_scoped_id->function.flags.gnu_inline;
 
     ctx->local_translator_context.function_debug_info = &ctx->ir_func->debug_info;
 
@@ -513,7 +518,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
                 init_decl->base.properties.declaration_props.original_type, translate_variably_modified,
-                &(struct vl_modified_param){.mem = mem, .context = context, .builder = builder}));
+                &(struct vl_modified_param) {.mem = mem, .context = context, .builder = builder}));
         }
     }
 
@@ -532,7 +537,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
 
             REQUIRE_OK(kefir_ast_type_list_variable_modificators(
                 decl->base.properties.declaration_props.original_type, translate_variably_modified,
-                &(struct vl_modified_param){.mem = mem, .context = context, .builder = builder}));
+                &(struct vl_modified_param) {.mem = mem, .context = context, .builder = builder}));
         }
     }
 

@@ -54,6 +54,7 @@ typedef struct kefir_ir_function {
     struct {
         kefir_bool_t constructor;
         kefir_bool_t destructor;
+        kefir_bool_t inline_function;
     } flags;
     struct kefir_ir_function_debug_info debug_info;
 } kefir_ir_function_t;
