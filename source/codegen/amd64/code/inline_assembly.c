@@ -1312,9 +1312,14 @@ static kefir_result_t inline_assembly_build(struct kefir_mem *mem, struct kefir_
         ASSIGN_DECL_CAST(const struct kefir_ir_inline_assembly_parameter *, ir_asm_param, iter->value);
 
         struct inline_assembly_parameter_allocation_entry *entry = &context->parameters[ir_asm_param->parameter_id];
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code,
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                             entry->allocation_vreg, NULL));
+        if (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER ||
+            entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER ||
+            entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT ||
+            entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY) {
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), entry->allocation_vreg,
+                NULL));
+        }
     }
 
     kefir_asmcmp_instruction_index_t instr_idx;

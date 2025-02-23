@@ -29,15 +29,14 @@ __kefir_text_func_sub_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_sub_label0:
-    movq %xmm0, %xmm2
 _kefir_func_sub_label1:
     movq %xmm1, -24(%rbp)
-    movq %xmm2, -16(%rbp)
+    movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
     movq %rcx, -48(%rbp)
-    movq %rax, %xmm1
-    movq %xmm1, -40(%rbp)
+    movq %rax, %xmm0
+    movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fsubp
@@ -58,15 +57,14 @@ __kefir_text_func_subf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_subf_label0:
-    movq %xmm0, %xmm2
 _kefir_func_subf_label1:
     movd %xmm1, -16(%rbp)
-    movd %xmm2, -12(%rbp)
+    movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
     movq %rcx, -32(%rbp)
-    movd %eax, %xmm1
-    movd %xmm1, -24(%rbp)
+    movd %eax, %xmm0
+    movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fsubp
@@ -121,15 +119,14 @@ __kefir_text_func_mydiv_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydiv_label0:
-    movq %xmm0, %xmm2
 _kefir_func_mydiv_label1:
     movq %xmm1, -24(%rbp)
-    movq %xmm2, -16(%rbp)
+    movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
     movq %rcx, -48(%rbp)
-    movq %rax, %xmm1
-    movq %xmm1, -40(%rbp)
+    movq %rax, %xmm0
+    movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fdivp
@@ -150,15 +147,14 @@ __kefir_text_func_mydivf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivf_label0:
-    movq %xmm0, %xmm2
 _kefir_func_mydivf_label1:
     movd %xmm1, -16(%rbp)
-    movd %xmm2, -12(%rbp)
+    movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
     movq %rcx, -32(%rbp)
-    movd %eax, %xmm1
-    movd %xmm1, -24(%rbp)
+    movd %eax, %xmm0
+    movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fdivp
@@ -213,15 +209,14 @@ __kefir_text_func_mydivr_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivr_label0:
-    movq %xmm0, %xmm2
 _kefir_func_mydivr_label1:
     movq %xmm1, -24(%rbp)
-    movq %xmm2, -16(%rbp)
+    movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
     movq %rcx, -48(%rbp)
-    movq %rax, %xmm1
-    movq %xmm1, -40(%rbp)
+    movq %rax, %xmm0
+    movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fdivrp
@@ -242,15 +237,14 @@ __kefir_text_func_mydivrf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivrf_label0:
-    movq %xmm0, %xmm2
 _kefir_func_mydivrf_label1:
     movd %xmm1, -16(%rbp)
-    movd %xmm2, -12(%rbp)
+    movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
     movq %rcx, -32(%rbp)
-    movd %eax, %xmm1
-    movd %xmm1, -24(%rbp)
+    movd %eax, %xmm0
+    movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fdivrp
