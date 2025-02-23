@@ -1,0 +1,19 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global overflow_add
+.type overflow_add, @function
+
+.section .text
+__kefir_text_section_begin:
+overflow_add:
+__kefir_text_func_overflow_add_begin:
+    add %rsi, %rdi
+    seto %al
+    movq %rdi, (%rdx)
+    and $1, %eax
+    ret
+__kefir_text_func_overflow_add_end:
+
+__kefir_text_section_end:
+

@@ -1,0 +1,50 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern x
+.global addx
+.type addx, @function
+.extern __atomic_compare_exchange
+
+.section .text
+__kefir_text_section_begin:
+addx:
+__kefir_text_func_addx_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdi, %r10
+    movq x@GOTPCREL(%rip), %rdi
+    movq %r10, -32(%rbp)
+    mov $5, %rsi
+    call __atomic_load_8@PLT
+    movq -32(%rbp), %r10
+    movq %rax, -16(%rbp)
+    movq $0, -8(%rbp)
+_kefir_func_addx_label1:
+    movq -16(%rbp), %rax
+    add %r10, %rax
+    movq %rax, -8(%rbp)
+    movq x@GOTPCREL(%rip), %rsi
+    movq %r10, -32(%rbp)
+    mov $8, %rdi
+    leaq -16(%rbp), %rdx
+    leaq -8(%rbp), %rcx
+    mov $5, %r8
+    mov $5, %r9
+    call __atomic_compare_exchange@PLT
+    movq -32(%rbp), %r10
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
+    test %ecx, %ecx
+    jnz _kefir_func_addx_label1
+_kefir_func_addx_label2:
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_addx_end:
+
+__kefir_text_section_end:
+

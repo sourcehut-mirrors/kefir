@@ -1,0 +1,92 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial
+.type factorial, @function
+
+.section .text
+__kefir_text_section_begin:
+factorial:
+__kefir_text_func_factorial_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rcx
+    cmp $1, %rcx
+    jg _kefir_func_factorial_label2
+    mov $1, %rdx
+_kefir_func_factorial_label1:
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label2:
+    mov %rcx, %rdi
+    sub $1, %rdi
+    movq %rcx, -16(%rbp)
+    movq %rdx, -8(%rbp)
+    call factorial_helper
+    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    mov %rcx, %rdi
+    imul %rax, %rdi
+    mov %rdi, %rdx
+    jmp _kefir_func_factorial_label1
+__kefir_text_func_factorial_end:
+
+factorial_helper2:
+__kefir_text_func_factorial_helper2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rcx
+    cmp $1, %rcx
+    jg _kefir_func_factorial_helper2_label2
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_helper2_label2:
+    mov %rcx, %rdi
+    sub $1, %rdi
+    movq %rcx, -16(%rbp)
+    call factorial_helper2
+    movq -16(%rbp), %rcx
+    mov %rcx, %rdi
+    imul %rax, %rdi
+    mov %rdi, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_factorial_helper2_end:
+
+factorial_helper:
+__kefir_text_func_factorial_helper_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rcx
+    cmp $1, %rcx
+    jg _kefir_func_factorial_helper_label2
+    mov $1, %rdx
+_kefir_func_factorial_helper_label1:
+    mov %rdx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_helper_label2:
+    mov %rcx, %rdi
+    sub $1, %rdi
+    movq %rcx, -16(%rbp)
+    movq %rdx, -8(%rbp)
+    call factorial_helper2
+    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    mov %rcx, %rdi
+    imul %rax, %rdi
+    mov %rdi, %rdx
+    jmp _kefir_func_factorial_helper_label1
+__kefir_text_func_factorial_helper_end:
+
+__kefir_text_section_end:
+

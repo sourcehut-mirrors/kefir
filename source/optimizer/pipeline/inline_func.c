@@ -29,11 +29,12 @@
 #include <string.h>
 
 static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure) {
+                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
+                                       kefir_bool_t *fixpoint_reached) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
 
-    for (kefir_opt_block_id_t block_id = 0; block_id < num_of_blocks; block_id++) {
+    for (kefir_opt_block_id_t block_id = 0; block_id < structure->num_of_blocks; block_id++) {
         kefir_bool_t reachable;
         REQUIRE_OK(kefir_opt_code_structure_is_reachable_from_entry(structure, block_id, &reachable));
         if (!reachable) {
@@ -54,7 +55,9 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
                 REQUIRE_OK(kefir_opt_try_inline_function_call(mem, module, func, structure, instr_ref, &inlined));
             }
             if (inlined) {
+                REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
                 REQUIRE_OK(kefir_opt_code_block_instr_head(&func->code, block, &instr_ref));
+                *fixpoint_reached = false;
             } else {
                 REQUIRE_OK(kefir_opt_instruction_next_sibling(&func->code, instr_ref, &instr_ref));
             }
@@ -73,7 +76,11 @@ static kefir_result_t inline_func_apply(struct kefir_mem *mem, const struct kefi
     struct kefir_opt_code_structure structure;
     REQUIRE_OK(kefir_opt_code_structure_init(&structure));
     kefir_result_t res = kefir_opt_code_structure_build(mem, &structure, &func->code);
-    REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &structure));
+    kefir_bool_t fixpoint_reached = false;
+    while (!fixpoint_reached && res == KEFIR_OK) {
+        fixpoint_reached = true;
+        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &structure, &fixpoint_reached));
+    }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_structure_free(mem, &structure);
         return res;

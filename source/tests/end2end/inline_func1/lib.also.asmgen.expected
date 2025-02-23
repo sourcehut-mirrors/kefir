@@ -1,0 +1,22 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global hypot_sq
+.type hypot_sq, @function
+
+.section .text
+__kefir_text_section_begin:
+hypot_sq:
+__kefir_text_func_hypot_sq_begin:
+    mov %rdi, %rax
+    imul %rdi, %rax
+    mov %rsi, %rcx
+    imul %rsi, %rcx
+    mov %rax, %rdi
+    add %rcx, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_hypot_sq_end:
+
+__kefir_text_section_end:
+
