@@ -360,6 +360,27 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references(struct mem2reg_state *state, kefir_opt_instruction_ref_t to_ref, kefir_opt_instruction_ref_t from_ref) {
+    REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code,
+        to_ref, from_ref));
+
+    struct kefir_hashtree_node_iterator iter1, iter2;
+    for (struct kefir_hashtree_node *node1 = kefir_hashtree_iter(&state->local_regs, &iter1);
+        node1 != NULL;
+        node1 = kefir_hashtree_next(&iter1)) {
+        ASSIGN_DECL_CAST(struct mem2reg_reg_state *, reg_state,
+            node1->value);
+        for (struct kefir_hashtree_node *node2 = kefir_hashtree_iter(&reg_state->block_outputs, &iter2);
+            node2 != NULL;
+            node2 = kefir_hashtree_next(&iter2)) {
+            if (node2->value == (kefir_hashtree_value_t) from_ref) {
+                node2->value = (kefir_hashtree_value_t) to_ref;
+            }            
+        }    
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
     struct kefir_opt_code_container_iterator iter;
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&state->func->code, &iter); block != NULL;
@@ -487,8 +508,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                 break;
                         }
 
-                        REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code,
-                                                                               replacement_ref, instr_id));
+                        REQUIRE_OK(replace_references(state, replacement_ref, instr_id));
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
                         REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
