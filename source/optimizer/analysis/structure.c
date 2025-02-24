@@ -292,6 +292,45 @@ kefir_result_t kefir_opt_code_structure_redirect_edges(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_structure_drop_edge(struct kefir_mem *mem, struct kefir_opt_code_structure *structure,
+    kefir_opt_block_id_t src_block_id, kefir_opt_block_id_t dst_block_id) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+
+    kefir_size_t total_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &total_blocks));
+
+    REQUIRE(src_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+    REQUIRE(dst_block_id < total_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
+
+        
+    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[src_block_id].successors);
+        iter != NULL;) {
+        struct kefir_list_entry *next_iter = iter->next;
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id,
+            (kefir_uptr_t) iter->value);
+        if (successor_block_id == dst_block_id) {
+            REQUIRE_OK(kefir_list_pop(mem, &structure->blocks[src_block_id].successors, iter));
+        }
+        iter = next_iter;
+    }
+
+    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[dst_block_id].predecessors);
+        iter != NULL;) {
+        struct kefir_list_entry *next_iter = iter->next;
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id,
+            (kefir_uptr_t) iter->value);
+        if (predecessor_block_id == src_block_id) {
+            REQUIRE_OK(kefir_list_pop(mem, &structure->blocks[dst_block_id].predecessors, iter));
+        }
+        iter = next_iter;
+    }
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_structure_is_reachable_from_entry(const struct kefir_opt_code_structure *structure,
                                                                 kefir_opt_block_id_t block_id,
                                                                 kefir_bool_t *reachable_flag_ptr) {

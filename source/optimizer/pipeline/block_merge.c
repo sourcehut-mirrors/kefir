@@ -128,6 +128,7 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
                                                                    target_block_id, true));
 
+                        REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                         REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
                         fixpoint_reached = false;
                     }
@@ -176,10 +177,12 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                                                                           resolved_alternative_block_id, NULL));
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
+                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                             REQUIRE_OK(
                                 kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
+                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, alternative_block_id));
                             REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, alternative_block_id,
                                                                                block_id));
                         }
@@ -230,10 +233,12 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                             resolved_alternative_block_id, NULL));
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
+                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                             REQUIRE_OK(
                                 kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
+                            REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, alternative_block_id));
                             REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, alternative_block_id,
                                                                                block_id));
                         }
@@ -251,7 +256,7 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
 }
 
 static kefir_result_t block_merge_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass) {
+    struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass) {
     UNUSED(pass);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
