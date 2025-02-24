@@ -22,10 +22,10 @@ __kefir_text_func_temp_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-.loc 0 34 5
+.loc 0 29 5
 _kefir_func_temp_label1:
     call test1@PLT
-.loc 0 34 5
+.loc 0 30 5
 _kefir_func_temp_label2:
     mov $1, %rdi
     mov $2, %rsi
@@ -34,22 +34,22 @@ _kefir_func_temp_label2:
     call test2@PLT
 _kefir_func_temp_label3:
     mov $5, %rax
-.loc 0 34 5
+.loc 0 31 5
     push %rax
     fildq (%rsp)
     add $8, %rsp
     fstpt -48(%rbp)
-.loc 0 34 5
+.loc 0 31 5
 _kefir_func_temp_label4:
     fldt _kefir_func_temp_label5(%rip)
     fstpt -32(%rbp)
-.loc 0 34 5
+.loc 0 31 5
 _kefir_func_temp_label6:
     fldt -48(%rbp)
     fldt -32(%rbp)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
-.loc 0 34 5
+.loc 0 31 5
 _kefir_func_temp_label7:
     sub $32, %rsp
     mov $3, %rdi
@@ -60,7 +60,7 @@ _kefir_func_temp_label7:
     fstpt 16(%rsp)
     call test3@PLT
     add $32, %rsp
-.loc 0 34 5
+.loc 0 32 5
 _kefir_func_temp_label8:
     mov $1, %rdi
     mov $2, %rsi
@@ -69,7 +69,7 @@ _kefir_func_temp_label8:
     mov $5, %r8
     xor %eax, %eax
     call test4@PLT
-.loc 0 34 5
+.loc 0 33 5
 _kefir_func_temp_label9:
     mov $1, %rdi
     mov $2, %rsi
@@ -101,11 +101,10 @@ _kefir_func_temp_label15:
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-.loc 0 34 5
+.loc 0 37 5
 _kefir_func_temp_label16:
     mov $100, %rdi
     call test7@PLT
-.loc 0 34 5
 _kefir_func_temp_label17:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)

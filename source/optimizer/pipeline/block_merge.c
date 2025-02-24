@@ -125,7 +125,8 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, tail_instr_ref));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_instr_ref));
 
-                        REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, block_id, target_block_id, true));
+                        REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
+                                                                   target_block_id, true));
 
                         REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
                         fixpoint_reached = false;
@@ -158,14 +159,14 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_instr_ref));
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_block_merge_into(mem, &func->code, block_id, target_block_id, false));
+                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
+                                                                       target_block_id, false));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
                                                                                block_id, target_passthrough_block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, block_id, alternative_block_id,
-                                                                       false));
+                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
+                                                                       alternative_block_id, false));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(
                                 mem, &func->code, alternative_block_id, block_id, alternative_passthrough_block_id));
                         }
@@ -212,14 +213,14 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_instr_ref));
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(
-                                kefir_opt_code_block_merge_into(mem, &func->code, block_id, target_block_id, false));
+                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
+                                                                       target_block_id, false));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
                                                                                block_id, target_passthrough_block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
-                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, block_id, alternative_block_id,
-                                                                       false));
+                            REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
+                                                                       alternative_block_id, false));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(
                                 mem, &func->code, alternative_block_id, block_id, alternative_passthrough_block_id));
                         }

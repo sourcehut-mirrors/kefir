@@ -19,13 +19,17 @@ __kefir_text_func_SOMEFN1_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
+.loc 0 27 20
 _kefir_func_SOMEFN1_label1:
     mov $1, %rdi
     call SOMEFN0@PLT
+.loc 0 27 12
 _kefir_func_SOMEFN1_label2:
     movd _kefir_func_SOMEFN1_label3(%rip), %xmm1
+.loc 0 27 12
 _kefir_func_SOMEFN1_label4:
     addss %xmm0, %xmm1
+.loc 0 27 5
 _kefir_func_SOMEFN1_label5:
     movq %xmm1, %xmm0
     ldmxcsr -8(%rbp)

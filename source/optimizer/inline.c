@@ -33,6 +33,7 @@ struct do_inline_param {
     kefir_opt_block_id_t inline_predecessor_block_id;
     kefir_opt_block_id_t inline_successor_block_id;
     kefir_opt_call_id_t original_call_ref;
+    kefir_opt_instruction_ref_t original_call_instr_ref;
     kefir_opt_phi_id_t result_phi_ref;
     kefir_opt_instruction_ref_t result_phi_instr;
 
@@ -609,6 +610,13 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
+    kefir_size_t src_ir_instruction_location;
+    REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&param->src_function->debug_info, instr_ref,
+                                                              &src_ir_instruction_location));
+    REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
+        &param->dst_function->debug_info,
+        param->dst_function->debug_info_mapping.ir_code_length + src_ir_instruction_location));
+
     kefir_opt_instruction_ref_t mapped_instr_ref;
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN) {
         REQUIRE_OK(inline_return(param, instr, &mapped_instr_ref));
@@ -731,10 +739,184 @@ static kefir_result_t link_inlined_entry_block(struct do_inline_param *param) {
     return KEFIR_OK;
 }
 
+static kefir_result_t clone_entry_into(struct kefir_mem *mem, struct kefir_ir_debug_entries *entries,
+                                       struct kefir_string_pool *symbols, kefir_ir_debug_entry_id_t src_entry_id,
+                                       kefir_ir_debug_entry_id_t dst_parent_entry_id, kefir_size_t ir_mapping_base) {
+    const struct kefir_ir_debug_entry *src_entry;
+    REQUIRE_OK(kefir_ir_debug_entry_get(entries, src_entry_id, &src_entry));
+
+    kefir_ir_debug_entry_id_t dst_entry_id;
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(mem, entries, dst_parent_entry_id, src_entry->tag, &dst_entry_id));
+
+    kefir_result_t res;
+    struct kefir_ir_debug_entry_attribute_iterator attr_iter;
+    const struct kefir_ir_debug_entry_attribute *src_entry_attr;
+    for (res = kefir_ir_debug_entry_attribute_iter(entries, src_entry_id, &attr_iter, &src_entry_attr); res == KEFIR_OK;
+         res = kefir_ir_debug_entry_attribute_next(&attr_iter, &src_entry_attr)) {
+        if (src_entry_attr->tag == KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN ||
+            src_entry_attr->tag == KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END) {
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, entries, symbols, dst_entry_id,
+                &(struct kefir_ir_debug_entry_attribute) {.tag = src_entry_attr->tag,
+                                                          .code_index = src_entry_attr->code_index + ir_mapping_base}));
+        } else {
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, entries, symbols, dst_entry_id, src_entry_attr));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    struct kefir_ir_debug_entry_child_iterator entry_iter;
+    kefir_ir_debug_entry_id_t child_entry_id;
+    for (res = kefir_ir_debug_entry_child_iter(entries, src_entry_id, &entry_iter, &child_entry_id); res == KEFIR_OK;
+         res = kefir_ir_debug_entry_child_next(&entry_iter, &child_entry_id)) {
+        REQUIRE_OK(clone_entry_into(mem, entries, symbols, child_entry_id, dst_parent_entry_id, ir_mapping_base));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t inline_debug_source_map(struct do_inline_param *param) {
+    kefir_result_t res;
+    struct kefir_ir_debug_function_source_map_iterator iter;
+    const struct kefir_ir_debug_source_location *source_location;
+    const kefir_size_t ir_mapping_base = param->dst_function->debug_info_mapping.ir_code_length;
+    ASSIGN_DECL_CAST(struct kefir_ir_debug_function_source_map *, source_map,
+                     &param->dst_function->ir_func->debug_info.source_map);
+    for (res = kefir_ir_debug_function_source_map_iter(&param->src_function->ir_func->debug_info.source_map, &iter,
+                                                       &source_location);
+         res == KEFIR_OK; res = kefir_ir_debug_function_source_map_next(&iter, &source_location)) {
+        REQUIRE_OK(kefir_ir_debug_function_source_map_insert(
+            param->mem, source_map, &param->module->ir_module->symbols, &source_location->location,
+            source_location->begin + ir_mapping_base, source_location->end + ir_mapping_base));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t inline_debug_entries(struct do_inline_param *param) {
+    kefir_result_t res;
+    struct kefir_ir_debug_entry_child_iterator entry_iter;
+    kefir_ir_debug_entry_id_t child_entry_id;
+    const kefir_size_t ir_mapping_base = param->dst_function->debug_info_mapping.ir_code_length;
+    ASSIGN_DECL_CAST(struct kefir_ir_debug_entries *, entries, &param->module->ir_module->debug_info.entries);
+
+    kefir_ir_debug_entry_id_t inlined_function_lexical_block_id;
+    REQUIRE_OK(kefir_ir_debug_entry_new_child(param->mem, entries,
+                                              param->dst_function->ir_func->debug_info.subprogram_id,
+                                              KEFIR_IR_DEBUG_ENTRY_LEXICAL_BLOCK, &inlined_function_lexical_block_id));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(param->mem, entries, &param->module->ir_module->symbols,
+                                                  inlined_function_lexical_block_id,
+                                                  &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_BEGIN(ir_mapping_base)));
+    REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+        param->mem, entries, &param->module->ir_module->symbols, inlined_function_lexical_block_id,
+        &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(ir_mapping_base +
+                                            kefir_irblock_length(&param->src_function->ir_func->body))));
+
+    for (res = kefir_ir_debug_entry_child_iter(entries, param->src_function->ir_func->debug_info.subprogram_id,
+                                               &entry_iter, &child_entry_id);
+         res == KEFIR_OK; res = kefir_ir_debug_entry_child_next(&entry_iter, &child_entry_id)) {
+        const struct kefir_ir_debug_entry *src_entry;
+        REQUIRE_OK(kefir_ir_debug_entry_get(entries, child_entry_id, &src_entry));
+        if (src_entry->tag != KEFIR_IR_DEBUG_ENTRY_FUNCTION_PARAMETER &&
+            src_entry->tag != KEFIR_IR_DEBUG_ENTRY_FUNCTION_VARARG) {
+            REQUIRE_OK(clone_entry_into(param->mem, entries, &param->module->ir_module->symbols, child_entry_id,
+                                        inlined_function_lexical_block_id, ir_mapping_base));
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param) {
+    kefir_result_t res;
+    struct kefir_opt_code_debug_info_local_variable_iterator alloc_iter;
+    kefir_id_t type_id;
+    kefir_size_t type_index;
+    for (res = kefir_opt_code_debug_info_local_variable_allocation_iter(&param->src_function->debug_info, &alloc_iter,
+                                                                        &type_id, &type_index);
+         res == KEFIR_OK;
+         res = kefir_opt_code_debug_info_local_variable_allocation_next(&alloc_iter, &type_id, &type_index)) {
+        const struct kefir_opt_code_debug_info_local_variable_refset *refset;
+        REQUIRE_OK(kefir_opt_code_debug_info_local_variable_allocation_of(&param->src_function->debug_info, type_id,
+                                                                          type_index, &refset));
+
+        struct kefir_hashtreeset_iterator iter;
+        for (res = kefir_hashtreeset_iter(&refset->refs, &iter); res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alloc_instr_ref, iter.entry);
+
+            struct kefir_hashtree_node *node2;
+            res = kefir_hashtree_at(&param->instr_mapping, (kefir_hashtree_key_t) alloc_instr_ref, &node2);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_alloc_instr_ref, node2->value);
+                REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(
+                    param->mem, &param->dst_function->debug_info, mapped_alloc_instr_ref, type_id, type_index));
+            }
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    kefir_opt_instruction_ref_t alloc_instr_ref;
+    for (res = kefir_opt_code_debug_info_local_variable_iter(&param->src_function->debug_info, &alloc_iter,
+                                                             &alloc_instr_ref);
+         res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_next(&alloc_iter, &alloc_instr_ref)) {
+        struct kefir_hashtree_node *node;
+        res = kefir_hashtree_at(&param->instr_mapping, (kefir_hashtree_key_t) alloc_instr_ref, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_alloc_instr_ref, node->value);
+
+        kefir_opt_instruction_ref_t ref;
+        struct kefir_opt_code_debug_info_local_variable_ref_iterator ref_iter;
+        for (res = kefir_opt_code_debug_info_local_variable_ref_iter(&param->src_function->debug_info, &ref_iter,
+                                                                     alloc_instr_ref, &ref);
+             res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_ref_next(&ref_iter, &ref)) {
+            res = kefir_hashtree_at(&param->instr_mapping, (kefir_hashtree_key_t) ref, &node);
+            if (res == KEFIR_NOT_FOUND) {
+                continue;
+            }
+            REQUIRE_OK(res);
+            ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_ref, node->value);
+            REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(param->mem, &param->dst_function->debug_info,
+                                                                        mapped_alloc_instr_ref, mapped_ref));
+        }
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_inline_impl(struct do_inline_param *param) {
     REQUIRE_OK(inline_blocks(param));
     REQUIRE_OK(map_inlined_phis(param));
     REQUIRE_OK(link_inlined_entry_block(param));
+
+    REQUIRE_OK(inline_debug_source_map(param));
+    REQUIRE_OK(inline_debug_entries(param));
+    REQUIRE_OK(inline_debug_allocation_info(param));
+    param->dst_function->debug_info_mapping.ir_code_length += kefir_irblock_length(&param->src_function->ir_func->body);
 
     return KEFIR_OK;
 }
@@ -742,7 +924,8 @@ static kefir_result_t do_inline_impl(struct do_inline_param *param) {
 static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                 struct kefir_opt_function *dst_function, const struct kefir_opt_function *src_function,
                                 kefir_opt_block_id_t inline_predecessor_block_id,
-                                kefir_opt_block_id_t inline_successor_block_id, kefir_opt_call_id_t original_call_ref) {
+                                kefir_opt_block_id_t inline_successor_block_id, kefir_opt_call_id_t original_call_ref,
+                                kefir_opt_instruction_ref_t original_call_instr_ref) {
     struct do_inline_param param = {.mem = mem,
                                     .module = module,
                                     .dst_function = dst_function,
@@ -751,6 +934,7 @@ static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_mo
                                     .inline_predecessor_block_id = inline_predecessor_block_id,
                                     .inline_successor_block_id = inline_successor_block_id,
                                     .original_call_ref = original_call_ref,
+                                    .original_call_instr_ref = original_call_instr_ref,
                                     .result_phi_ref = KEFIR_ID_NONE,
                                     .result_phi_instr = KEFIR_ID_NONE};
     REQUIRE_OK(kefir_hashtree_init(&param.block_mapping, &kefir_hashtree_uint_ops));
@@ -812,8 +996,6 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
     return KEFIR_OK;
 }
 
-#include <stdio.h>
-
 kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                                   struct kefir_opt_function *func,
                                                   struct kefir_opt_code_structure *structure,
@@ -849,8 +1031,10 @@ kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const s
     if (can_inline) {
         kefir_opt_block_id_t block_id = instr->block_id;
         kefir_opt_block_id_t split_block_id;
-        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, structure, instr_ref, &split_block_id));
-        REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id));
+        REQUIRE_OK(kefir_opt_code_split_block_after(mem, &func->code, &func->debug_info, structure, instr_ref,
+                                                    &split_block_id));
+        REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
+                             call_node->output_ref));
         ASSIGN_PTR(did_inline_ptr, true);
 
         REQUIRE_OK(kefir_opt_code_structure_free(mem, structure));

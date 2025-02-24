@@ -14,6 +14,7 @@ test:
 .file 0 "source/tests/end2end/debug_info_parameters1/lib.kefir.asmgen.c"
 .loc 0 21 1
 __kefir_text_func_test_begin:
+.loc 0 22 5
 _kefir_func_test_label1:
     xor %eax, %eax
     ret

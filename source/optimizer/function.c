@@ -51,6 +51,7 @@ kefir_result_t kefir_opt_function_init(const struct kefir_opt_module *module, co
     func->ir_func = ir_func;
     func->locals.type = ir_func->locals;
     func->locals.type_id = ir_func->locals_type_id;
+    func->debug_info_mapping.ir_code_length = kefir_irblock_length(&ir_func->body);
     REQUIRE_OK(kefir_opt_code_container_init(&func->code));
     REQUIRE_OK(kefir_opt_code_debug_info_init(&func->debug_info));
     REQUIRE_OK(kefir_hashtree_init(&func->inlines, &kefir_hashtree_uint_ops));

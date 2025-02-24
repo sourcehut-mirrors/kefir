@@ -27,6 +27,10 @@
 
 #define KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE ((kefir_size_t) - 1ll)
 
+typedef struct kefir_opt_code_debug_info_local_variable_refset {
+    struct kefir_hashtreeset refs;
+} kefir_opt_code_debug_info_local_variable_refset_t;
+
 typedef struct kefir_opt_code_debug_info {
     struct kefir_opt_code_event_listener listener;
 
@@ -52,12 +56,12 @@ kefir_result_t kefir_opt_code_debug_info_register_local_variable_allocation(stru
                                                                             struct kefir_opt_code_debug_info *,
                                                                             kefir_opt_instruction_ref_t, kefir_id_t,
                                                                             kefir_size_t);
-kefir_result_t kefir_opt_code_debug_info_replace_local_variable_allocation(struct kefir_opt_code_debug_info *,
-                                                                           kefir_opt_instruction_ref_t,
-                                                                           kefir_opt_instruction_ref_t);
-kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_of(const struct kefir_opt_code_debug_info *,
-                                                                      kefir_id_t, kefir_size_t,
-                                                                      kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_debug_info_replace_local_variable(struct kefir_mem *, struct kefir_opt_code_debug_info *,
+                                                                kefir_opt_instruction_ref_t,
+                                                                kefir_opt_instruction_ref_t);
+kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_of(
+    const struct kefir_opt_code_debug_info *, kefir_id_t, kefir_size_t,
+    const struct kefir_opt_code_debug_info_local_variable_refset **);
 kefir_result_t kefir_opt_code_debug_info_add_local_variable_ref(struct kefir_mem *, struct kefir_opt_code_debug_info *,
                                                                 kefir_opt_instruction_ref_t,
                                                                 kefir_opt_instruction_ref_t);
@@ -71,6 +75,12 @@ typedef struct kefir_opt_code_debug_info_local_variable_iterator {
 typedef struct kefir_opt_code_debug_info_local_variable_ref_iterator {
     struct kefir_hashtreeset_iterator iter;
 } kefir_opt_code_debug_info_local_variable_ref_iterator_t;
+
+kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_iter(
+    const struct kefir_opt_code_debug_info *, struct kefir_opt_code_debug_info_local_variable_iterator *, kefir_id_t *,
+    kefir_size_t *);
+kefir_result_t kefir_opt_code_debug_info_local_variable_allocation_next(
+    struct kefir_opt_code_debug_info_local_variable_iterator *, kefir_id_t *, kefir_size_t *);
 
 kefir_result_t kefir_opt_code_debug_info_local_variable_iter(const struct kefir_opt_code_debug_info *,
                                                              struct kefir_opt_code_debug_info_local_variable_iterator *,

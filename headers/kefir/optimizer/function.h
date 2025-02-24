@@ -33,6 +33,9 @@ typedef struct kefir_opt_function {
     struct kefir_opt_code_container code;
     struct kefir_opt_code_debug_info debug_info;
     struct {
+        kefir_size_t ir_code_length;
+    } debug_info_mapping;
+    struct {
         const struct kefir_ir_type *type;
         kefir_id_t type_id;
     } locals;

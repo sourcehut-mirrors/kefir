@@ -17,46 +17,60 @@ __kefir_text_func_test1_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
+.loc 0 26 12
 _kefir_func_test1_label1:
     movq x@GOTPCREL(%rip), %rax
+.loc 0 26 12
 _kefir_func_test1_label2:
     movsxl (%rax), %rcx
 _kefir_func_test1_label3:
     movq %rcx, -48(%rbp)
+.loc 0 26 16
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movq -48(%rbp), %rcx
+.loc 0 26 16
 _kefir_func_test1_label4:
     movq (%rax), %rdx
+.loc 0 26 20
 _kefir_func_test1_label5:
     lea __kefir_function_test1_static_z_3(%rip), %rax
+.loc 0 26 20
 _kefir_func_test1_label6:
     movl (%rax), %esi
 _kefir_func_test1_label7:
     movq %rcx, -40(%rbp)
     movq %rdx, -32(%rbp)
     movq %rsi, -24(%rbp)
+.loc 0 26 25
     data16     lea __kefir_function_test1_static_w_2@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movq -40(%rbp), %rcx
     movq -32(%rbp), %rdx
     movq -24(%rbp), %rsi
+.loc 0 26 25
 _kefir_func_test1_label8:
     movq (%rax), %rax
+.loc 0 26 12
 _kefir_func_test1_label9:
     add %rdx, %rcx
+.loc 0 26 12
 _kefir_func_test1_label10:
     cvtsi2ss %rcx, %xmm0
 _kefir_func_test1_label11:
     movd %esi, %xmm1
+.loc 0 26 12
     addss %xmm1, %xmm0
+.loc 0 26 12
 _kefir_func_test1_label12:
     cvtss2sd %xmm0, %xmm0
 _kefir_func_test1_label13:
     movq %rax, %xmm1
+.loc 0 26 12
     addsd %xmm1, %xmm0
+.loc 0 26 5
 _kefir_func_test1_label14:
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -318,12 +332,38 @@ __kefir_debug_loclists_section_begin:
     .byte 0
     .long 0
 __kefir_debug_loclist_section_entry_1:
+    .byte 7
+    .quad _kefir_func_test1_label1
+    .quad _kefir_func_test1_label14
+    .byte 10
+    .byte 14
+    .quad __kefir_function_test1_static_w_2@dtpoff
+    .byte 155
     .byte 0
 __kefir_debug_loclist_section_entry_2:
+    .byte 7
+    .quad _kefir_func_test1_label1
+    .quad _kefir_func_test1_label14
+    .byte 9
+    .byte 3
+    .quad x
     .byte 0
 __kefir_debug_loclist_section_entry_3:
+    .byte 7
+    .quad _kefir_func_test1_label1
+    .quad _kefir_func_test1_label14
+    .byte 10
+    .byte 14
+    .quad y@dtpoff
+    .byte 155
     .byte 0
 __kefir_debug_loclist_section_entry_4:
+    .byte 7
+    .quad _kefir_func_test1_label1
+    .quad _kefir_func_test1_label14
+    .byte 9
+    .byte 3
+    .quad __kefir_function_test1_static_z_3
     .byte 0
 __kefir_debug_loclist_section_entry_5:
     .byte 0
