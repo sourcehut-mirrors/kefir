@@ -1,0 +1,82 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern A
+.global main
+.type main, @function
+
+.section .text
+__kefir_text_section_begin:
+main:
+__kefir_text_func_main_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    add $100, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    sub $50, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    add $200, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    sub $30, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    add $-500, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    sub $45, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    add $123, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    add $-90, %ecx
+    movl %ecx, (%rax)
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    sub $-56, %ecx
+    movl %ecx, (%rax)
+    mov $1000, %rdi
+    call test1
+    mov $2000, %rdi
+    call test2
+    pop %rbp
+    ret
+__kefir_text_func_main_end:
+
+test1:
+__kefir_text_func_test1_begin:
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    movsx %edi, %rdx
+    add %edx, %ecx
+    movl %ecx, (%rax)
+    ret
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    movq A@GOTPCREL(%rip), %rax
+    movsxl (%rax), %rcx
+    movsx %edi, %rdx
+    sub %edx, %ecx
+    movl %ecx, (%rax)
+    ret
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+

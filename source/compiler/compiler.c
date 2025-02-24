@@ -502,7 +502,7 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
 
     REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
-    REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration.pipeline));
+    REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration));
 
     return KEFIR_OK;
 }

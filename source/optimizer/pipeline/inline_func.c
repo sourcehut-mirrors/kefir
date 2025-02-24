@@ -19,6 +19,7 @@
 */
 
 #include "kefir/optimizer/pipeline.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/structure.h"
@@ -29,7 +30,7 @@
 #include <string.h>
 
 static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
+                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure, const struct kefir_optimizer_configuration *config,
                                        kefir_bool_t *fixpoint_reached) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
@@ -52,7 +53,10 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
             kefir_bool_t inlined = false;
             if (instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
-                REQUIRE_OK(kefir_opt_try_inline_function_call(mem, module, func, structure, instr_ref, &inlined));
+                REQUIRE_OK(kefir_opt_try_inline_function_call(mem, module, func, structure, &(struct kefir_opt_try_inline_function_call_parameters) {
+                    .max_inline_depth = config->max_inline_depth,
+                    .max_inlines_per_function = config->max_inlines_per_function
+                }, instr_ref, &inlined));
             }
             if (inlined) {
                 REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
@@ -67,11 +71,14 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
 }
 
 static kefir_result_t inline_func_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass) {
+                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                        const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);
+    UNUSED(config);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
 
     struct kefir_opt_code_structure structure;
     REQUIRE_OK(kefir_opt_code_structure_init(&structure));
@@ -79,7 +86,7 @@ static kefir_result_t inline_func_apply(struct kefir_mem *mem, const struct kefi
     kefir_bool_t fixpoint_reached = false;
     while (!fixpoint_reached && res == KEFIR_OK) {
         fixpoint_reached = true;
-        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &structure, &fixpoint_reached));
+        REQUIRE_CHAIN(&res, inline_func_impl(mem, module, func, &structure, config, &fixpoint_reached));
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_code_structure_free(mem, &structure);

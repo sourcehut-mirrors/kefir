@@ -74,6 +74,11 @@ typedef struct kefir_compiler_runner_configuration {
     } dependency_output;
 
     struct {
+        kefir_size_t max_inline_depth;
+        kefir_size_t max_inlines_per_function;
+    } optimizer;
+
+    struct {
         kefir_bool_t fail_on_attributes;
         kefir_bool_t missing_function_return_type;
         kefir_bool_t designated_initializer_colons;

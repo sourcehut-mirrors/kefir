@@ -40,6 +40,7 @@ typedef struct kefir_opt_function {
         kefir_id_t type_id;
     } locals;
     struct kefir_hashtree inlines;
+    kefir_size_t num_of_inlines;
 } kefir_opt_function_t;
 
 kefir_result_t kefir_opt_function_init(const struct kefir_opt_module *, const struct kefir_ir_function *,
@@ -50,6 +51,6 @@ kefir_result_t kefir_opt_function_block_inlined_from(struct kefir_mem *, struct 
                                                      kefir_opt_block_id_t, const struct kefir_opt_function *,
                                                      kefir_opt_block_id_t);
 kefir_result_t kefir_opt_function_block_can_inline(const struct kefir_opt_function *, kefir_opt_block_id_t,
-                                                   const struct kefir_opt_function *, kefir_bool_t *);
+                                                   const struct kefir_opt_function *, kefir_size_t, kefir_bool_t *);
 
 #endif

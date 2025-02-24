@@ -192,6 +192,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.codegen_configuration.print_details = options->codegen.print_details;
     compiler.codegen_configuration.pipeline_spec = options->codegen.pipeline_spec;
 
+    compiler.optimizer_configuration.max_inline_depth = options->optimizer.max_inline_depth;
+    compiler.optimizer_configuration.max_inlines_per_function = options->optimizer.max_inlines_per_function;
     if (options->optimizer_pipeline_spec != NULL) {
         char buf[256];
         const char *spec = options->optimizer_pipeline_spec;

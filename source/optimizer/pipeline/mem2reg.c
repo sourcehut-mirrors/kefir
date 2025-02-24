@@ -711,8 +711,10 @@ static kefir_result_t free_mem2reg_block_predecessors(struct kefir_mem *mem, str
 }
 
 static kefir_result_t mem2reg_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                    struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass) {
+                                    struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                    const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);
+    UNUSED(config);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));

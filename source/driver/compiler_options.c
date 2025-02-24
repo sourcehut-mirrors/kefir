@@ -258,6 +258,9 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CUSTOM(0, "quote-include-dir", true, quote_include_hook),
     CUSTOM(0, "include", true, include_file_hook),
 
+    SIMPLE(0, "optimizer-max-inline-depth", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, optimizer.max_inline_depth),
+    SIMPLE(0, "optimizer-max-inlines-per-func", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, optimizer.max_inlines_per_function),
+
     FEATURE("non-strict-qualifiers", features.non_strict_qualifiers),
     FEATURE("signed-enums", features.signed_enum_type),
     FEATURE("implicit-function-decl", features.implicit_function_declaration),

@@ -24,10 +24,12 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/core/list.h"
 
+typedef struct kefir_optimizer_configuration kefir_optimizer_configuration_t; // Forward declaration
+
 typedef struct kefir_optimizer_pass {
     const char *name;
     kefir_result_t (*apply)(struct kefir_mem *, const struct kefir_opt_module *, struct kefir_opt_function *,
-                            const struct kefir_optimizer_pass *);
+                            const struct kefir_optimizer_pass *, const struct kefir_optimizer_configuration *);
     void *payload;
 } kefir_optimizer_pass_t;
 
@@ -44,9 +46,9 @@ kefir_result_t kefir_optimizer_pipeline_add(struct kefir_mem *, struct kefir_opt
                                             const struct kefir_optimizer_pass *);
 
 kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *, const struct kefir_opt_module *,
-                                              const struct kefir_optimizer_pipeline *);
+                                              const struct kefir_optimizer_configuration *);
 kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *, const struct kefir_opt_module *, kefir_id_t,
-                                                       const struct kefir_optimizer_pipeline *);
+    const struct kefir_optimizer_configuration *);
 
 #ifdef KEFIR_OPTIMIZER_PIPELINE_INTERNAL
 #define DECLARE_PASS(_id) extern const struct kefir_optimizer_pass KefirOptimizerPass##_id

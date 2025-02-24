@@ -958,13 +958,16 @@ static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_mo
 
 static kefir_result_t can_inline_function(const struct kefir_opt_function *callee_function,
                                           const struct kefir_opt_function *called_function,
-                                          const struct kefir_opt_call_node *call_node, kefir_bool_t *can_inline_ptr) {
+                                          const struct kefir_opt_call_node *call_node,
+                                          const struct kefir_opt_try_inline_function_call_parameters *inline_params,
+                                          kefir_bool_t *can_inline_ptr) {
     kefir_bool_t can_inline;
-    REQUIRE_OK(kefir_opt_function_block_can_inline(callee_function, call_node->block_id, called_function, &can_inline));
+    REQUIRE_OK(kefir_opt_function_block_can_inline(callee_function, call_node->block_id, called_function, (inline_params == NULL ? KEFIR_SIZE_MAX : inline_params->max_inline_depth), &can_inline));
 
     if (!called_function->ir_func->flags.inline_function || called_function->ir_func->declaration->vararg ||
         called_function->ir_func->declaration->returns_twice ||
-        called_function->ir_func->declaration->id == callee_function->ir_func->declaration->id) {
+        called_function->ir_func->declaration->id == callee_function->ir_func->declaration->id ||
+        (inline_params == NULL || callee_function->num_of_inlines >= inline_params->max_inlines_per_function)) {
         can_inline = false;
     }
 
@@ -999,6 +1002,7 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
 kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                                   struct kefir_opt_function *func,
                                                   struct kefir_opt_code_structure *structure,
+                                                  const struct kefir_opt_try_inline_function_call_parameters *inline_params,
                                                   kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *did_inline_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
@@ -1026,7 +1030,7 @@ kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const s
     REQUIRE_OK(kefir_opt_module_get_function(module, ir_func->declaration->id, &called_func));
 
     kefir_bool_t can_inline;
-    REQUIRE_OK(can_inline_function(func, called_func, call_node, &can_inline));
+    REQUIRE_OK(can_inline_function(func, called_func, call_node, inline_params, &can_inline));
 
     if (can_inline) {
         kefir_opt_block_id_t block_id = instr->block_id;
@@ -1035,6 +1039,7 @@ kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const s
                                                     &split_block_id));
         REQUIRE_OK(do_inline(mem, module, func, called_func, block_id, split_block_id, call_node->node_id,
                              call_node->output_ref));
+        func->num_of_inlines++;
         ASSIGN_PTR(did_inline_ptr, true);
 
         REQUIRE_OK(kefir_opt_code_structure_free(mem, structure));

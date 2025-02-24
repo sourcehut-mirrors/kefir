@@ -346,6 +346,12 @@ Add directory to include search path and mark it as a system include path (used 
 .It Fl \-debug-info
 Include debug information into produced output
 .\"
+.It Fl \-optimizer-max-inline-depth Ar depth
+Maximum depth of function inlining (5 by default).
+.\"
+.It Fl \-optimizer-max-inlines-per-func Ar inlines
+Maximum number of inlined functions (10 by default).
+.\"
 .It Fl \-feature-[name]
 Enable compiler feature (see
 .Sx FEATURES

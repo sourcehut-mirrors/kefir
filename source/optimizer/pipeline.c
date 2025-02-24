@@ -20,6 +20,7 @@
 
 #define KEFIR_OPTIMIZER_PIPELINE_INTERNAL
 #include "kefir/optimizer/pipeline.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
@@ -78,36 +79,36 @@ kefir_result_t kefir_optimizer_pipeline_add(struct kefir_mem *mem, struct kefir_
 }
 
 kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                              const struct kefir_optimizer_pipeline *pipeline) {
+    const struct kefir_optimizer_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(pipeline != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pipeline"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));
 
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
 
-        REQUIRE_OK(kefir_optimizer_pipeline_apply_function(mem, module, ir_func->declaration->id, pipeline));
+        REQUIRE_OK(kefir_optimizer_pipeline_apply_function(mem, module, ir_func->declaration->id, config));
     }
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                                        kefir_id_t function_id,
-                                                       const struct kefir_optimizer_pipeline *pipeline) {
+                                                       const struct kefir_optimizer_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
-    REQUIRE(pipeline != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer pipeline"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer config"));
 
     struct kefir_opt_function *func;
     REQUIRE_OK(kefir_opt_module_get_function(module, function_id, &func));
 
-    for (const struct kefir_list_entry *iter = kefir_list_head(&pipeline->pipeline); iter != NULL;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->pipeline.pipeline); iter != NULL;
          kefir_list_next(&iter)) {
 
         ASSIGN_DECL_CAST(struct kefir_optimizer_pass *, pass, iter->value);
 
-        REQUIRE_OK(pass->apply(mem, module, func, pass));
+        REQUIRE_OK(pass->apply(mem, module, func, pass, config));
     }
     return KEFIR_OK;
 }

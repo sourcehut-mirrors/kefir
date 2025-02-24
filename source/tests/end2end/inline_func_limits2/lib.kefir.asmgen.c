@@ -18,19 +18,44 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_OPTIMZIER_INLINE_H_
-#define KEFIR_OPTIMZIER_INLINE_H_
+extern void test0(void);
 
-#include "kefir/optimizer/code.h"
-#include "kefir/optimizer/structure.h"
-#include "kefir/optimizer/module.h"
+inline void test1() {
+    test0();
+}
 
-typedef struct kefir_opt_try_inline_function_call_parameters {
-    kefir_size_t max_inline_depth;
-    kefir_size_t max_inlines_per_function;
-} kefir_opt_try_inline_function_call_parameters_t;
+inline void test2() {
+    test1();
+}
 
-kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *, const struct kefir_opt_module *, struct kefir_opt_function *,
-    struct kefir_opt_code_structure *, const struct kefir_opt_try_inline_function_call_parameters *, kefir_opt_instruction_ref_t, kefir_bool_t *);
+inline void test3() {
+    test2();
+}
 
-#endif
+inline void test4() {
+    test3();
+}
+
+inline void test5() {
+    test4();
+}
+
+inline void test6() {
+    test5();
+}
+
+inline void test7() {
+    test6();
+}
+
+void main() {
+    test5();
+}
+
+void main1() {
+    test6();
+}
+
+void main2() {
+    test7();
+}
