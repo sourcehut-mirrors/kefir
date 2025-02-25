@@ -1,0 +1,49 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sum
+.type sum, @function
+.global sum_helper
+.type sum_helper, @function
+
+.section .text
+__kefir_text_section_begin:
+sum:
+__kefir_text_func_sum_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movq %rdi, -32(%rbp)
+    movq %xmm0, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movq -16(%rbp), %rdi
+    movq -8(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp sum_helper
+__kefir_text_func_sum_end:
+
+sum_helper:
+__kefir_text_func_sum_helper_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    stmxcsr -8(%rbp)
+    movq %rdi, -48(%rbp)
+    movq %xmm0, -40(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -16(%rbp), %rcx
+    cvtsi2sd %rax, %xmm0
+    movq %rcx, %xmm1
+    addsd %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sum_helper_end:
+
+__kefir_text_section_end:
+

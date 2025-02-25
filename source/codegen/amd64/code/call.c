@@ -887,21 +887,86 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
     return KEFIR_OK;
 }
 
+static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                       const struct kefir_opt_instruction *instruction,
+                                       const struct kefir_opt_call_node *call_node,
+                                       struct kefir_abi_amd64_function_decl *abi_func_decl,
+                                       struct kefir_hashtree *argument_placement) {
+
+    const struct kefir_ir_function_decl *ir_func_decl =
+        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+    REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+    REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement));
+
+    kefir_asmcmp_virtual_register_index_t indirect_call_idx;
+    if (instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &indirect_call_idx));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, indirect_call_idx,
+                                                                      KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
+        kefir_asmcmp_virtual_register_index_t func_vreg;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+            function, instruction->operation.parameters.function_call.indirect_ref, &func_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             indirect_call_idx, func_vreg, NULL));
+    }
+
+    if (instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE) {
+        const struct kefir_ir_identifier *ir_identifier;
+        REQUIRE_OK(kefir_ir_module_get_identifier(function->module->ir_module, ir_func_decl->name, &ir_identifier));
+        kefir_asmcmp_external_label_relocation_t fn_location =
+            function->codegen->config->position_independent_code &&
+                    ir_identifier->scope == KEFIR_IR_IDENTIFIER_SCOPE_IMPORT
+                ? KEFIR_ASMCMP_EXTERNAL_LABEL_PLT
+                : KEFIR_ASMCMP_EXTERNAL_LABEL_ABSOLUTE;
+        REQUIRE_OK(kefir_asmcmp_amd64_tail_call(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_EXTERNAL_LABEL(fn_location, ir_identifier->symbol, 0), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_tail_call(mem, &function->code,
+                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                &KEFIR_ASMCMP_MAKE_VREG(indirect_call_idx), NULL));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                   const struct kefir_opt_instruction *instruction,
                                   const struct kefir_opt_call_node *call_node,
                                   struct kefir_abi_amd64_function_decl *abi_func_decl,
-                                  struct kefir_hashtree *argument_placement,
-                                  kefir_asmcmp_virtual_register_index_t *result_vreg) {
+                                  struct kefir_hashtree *argument_placement, kefir_bool_t tail_call,
+                                  kefir_asmcmp_virtual_register_index_t *result_vreg, kefir_bool_t *tail_call_done) {
+    const struct kefir_ir_function_decl *ir_func_decl =
+        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+    REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+
+    if (tail_call) {
+        struct kefir_abi_amd64_function_parameter_requirements reqs, return_reqs;
+        const struct kefir_abi_amd64_function_parameters *parameters;
+        REQUIRE_OK(kefir_abi_amd64_function_decl_parameters(abi_func_decl, &parameters));
+        REQUIRE_OK(kefir_abi_amd64_function_parameters_requirements(parameters, &reqs));
+
+        const struct kefir_abi_amd64_function_parameters *return_parameters;
+        REQUIRE_OK(kefir_abi_amd64_function_decl_returns(abi_func_decl, &return_parameters));
+        REQUIRE_OK(kefir_abi_amd64_function_parameters_requirements(return_parameters, &return_reqs));
+
+        if (reqs.stack == 0 && return_reqs.stack == 0 && !ir_func_decl->returns_twice && !ir_func_decl->vararg) {
+            REQUIRE_OK(tail_invoke_impl(mem, function, instruction, call_node, abi_func_decl, argument_placement));
+            *result_vreg = KEFIR_ID_NONE;
+            *tail_call_done = true;
+            return KEFIR_OK;
+        }
+    }
+
     kefir_size_t stack_increment;
     REQUIRE_OK(prepare_stack(mem, function, abi_func_decl, &stack_increment));
 
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
 
-    const struct kefir_ir_function_decl *ir_func_decl =
-        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
-    REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
     REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
@@ -949,8 +1014,9 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
 }
 
 static kefir_result_t do_invoke(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                const struct kefir_opt_instruction *instruction,
-                                kefir_asmcmp_virtual_register_index_t *result_vreg_ptr) {
+                                const struct kefir_opt_instruction *instruction, kefir_bool_t tail_call,
+                                kefir_asmcmp_virtual_register_index_t *result_vreg_ptr, kefir_bool_t *tail_call_done) {
+    *tail_call_done = false;
     const struct kefir_opt_call_node *call_node = NULL;
     REQUIRE_OK(kefir_opt_code_container_call(&function->function->code,
                                              instruction->operation.parameters.function_call.call_ref, &call_node));
@@ -972,8 +1038,8 @@ static kefir_result_t do_invoke(struct kefir_mem *mem, struct kefir_codegen_amd6
     struct kefir_hashtree argument_placement;
     REQUIRE_OK(kefir_hashtree_init(&argument_placement, &kefir_hashtree_uint_ops));
 
-    kefir_result_t res =
-        invoke_impl(mem, function, instruction, call_node, &abi_func_decl, &argument_placement, result_vreg_ptr);
+    kefir_result_t res = invoke_impl(mem, function, instruction, call_node, &abi_func_decl, &argument_placement,
+                                     tail_call, result_vreg_ptr, tail_call_done);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &argument_placement);
         kefir_abi_amd64_function_decl_free(mem, &abi_func_decl);
@@ -998,7 +1064,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(invoke)(struct kefir_mem *me
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_asmcmp_virtual_register_index_t result_vreg = KEFIR_ID_NONE;
-    REQUIRE_OK(do_invoke(mem, function, instruction, &result_vreg));
+    kefir_bool_t tail_call_done;
+    REQUIRE_OK(do_invoke(mem, function, instruction, false, &result_vreg, &tail_call_done));
     if (result_vreg != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     }
@@ -1014,8 +1081,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(tail_invoke)(struct kefir_me
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     kefir_asmcmp_virtual_register_index_t result_vreg = KEFIR_ID_NONE;
-    REQUIRE_OK(do_invoke(mem, function, instruction, &result_vreg));
-    REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, result_vreg));
+    kefir_bool_t tail_call_done;
+    REQUIRE_OK(do_invoke(mem, function, instruction, true, &result_vreg, &tail_call_done));
+    if (!tail_call_done) {
+        REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, result_vreg));
+    }
 
     return KEFIR_OK;
 }

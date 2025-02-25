@@ -1,0 +1,452 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global run_bf
+.type run_bf, @function
+
+.section .text
+__kefir_text_section_begin:
+run_bf:
+__kefir_text_func_run_bf_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $70688, %rsp
+    mov %rdi, %rdx
+    leaq -70688(%rbp), %rdi
+    xor %eax, %eax
+    mov $5144, %rcx
+    rep stosb
+    movq %rdx, -70688(%rbp)
+    movb $0, -70680(%rbp)
+    movq $0, -66584(%rbp)
+    movl $0, -65560(%rbp)
+    movw $0, -65556(%rbp)
+    movb $0, -65554(%rbp)
+    movq %rsi, -65552(%rbp)
+    movsxb -65536(%rbp), %rax
+    movq -70688(%rbp), %rax
+    movl -65560(%rbp), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, -65560(%rbp)
+    add %rcx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    leaq -70688(%rbp), %rdi
+    call *%rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_run_bf_end:
+
+op_next:
+__kefir_text_func_op_next_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %rax
+    add $5132, %rax
+    movzxw (%rax), %rcx
+    add $1, %cx
+    movw %cx, (%rax)
+    movsxb -65536(%rbp), %rax
+    movq (%rdi), %rax
+    mov %rdi, %rcx
+    add $5128, %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    add $1, %esi
+    movl %esi, (%rcx)
+    add %rdx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+__kefir_text_func_op_next_end:
+
+op_plus:
+__kefir_text_func_op_plus_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %rax
+    add $5132, %rax
+    movzxw (%rax), %rax
+    mov %rdi, %rcx
+    add $8, %rcx
+    add %rax, %rcx
+    movzxb (%rcx), %rax
+    add $1, %al
+    movb %al, (%rcx)
+    movsxb -65536(%rbp), %rax
+    movq (%rdi), %rax
+    mov %rdi, %rcx
+    add $5128, %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    add $1, %esi
+    movl %esi, (%rcx)
+    add %rdx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+__kefir_text_func_op_plus_end:
+
+op_prev:
+__kefir_text_func_op_prev_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %rax
+    add $5132, %rax
+    movzxw (%rax), %rcx
+    add $-1, %cx
+    movw %cx, (%rax)
+    movsxb -65536(%rbp), %rax
+    movq (%rdi), %rax
+    mov %rdi, %rcx
+    add $5128, %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    add $1, %esi
+    movl %esi, (%rcx)
+    add %rdx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+__kefir_text_func_op_prev_end:
+
+op_minus:
+__kefir_text_func_op_minus_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %rax
+    add $5132, %rax
+    movzxw (%rax), %rax
+    mov %rdi, %rcx
+    add $8, %rcx
+    add %rax, %rcx
+    movzxb (%rcx), %rax
+    add $-1, %al
+    movb %al, (%rcx)
+    movsxb -65536(%rbp), %rax
+    movq (%rdi), %rax
+    mov %rdi, %rcx
+    add $5128, %rcx
+    movl (%rcx), %edx
+    mov %rdx, %rsi
+    add $1, %esi
+    movl %esi, (%rcx)
+    add %rdx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+__kefir_text_func_op_minus_end:
+
+op_print:
+__kefir_text_func_op_print_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65552, %rsp
+    mov %rdi, %rsi
+    mov %rsi, %rdi
+    add $5136, %rdi
+    movq (%rdi), %rax
+    mov %rsi, %rdi
+    add $5132, %rdi
+    movzxw (%rdi), %rcx
+    mov %rsi, %rdi
+    add $8, %rdi
+    add %rcx, %rdi
+    movzxb (%rdi), %rdi
+    movq %rsi, -65552(%rbp)
+    call *%rax
+    movq -65552(%rbp), %rsi
+    movsxb -65536(%rbp), %rax
+    movq (%rsi), %rax
+    mov %rsi, %rdi
+    add $5128, %rdi
+    movl (%rdi), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, (%rdi)
+    add %rcx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    mov %rsi, %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+__kefir_text_func_op_print_end:
+
+op_loop_end:
+__kefir_text_func_op_loop_end_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %rsi
+    mov %rsi, %rdi
+    add $5134, %rdi
+    movzxb (%rdi), %rax
+    add $-1, %al
+    movb %al, (%rdi)
+    mov %rsi, %rdi
+    add $5132, %rdi
+    movzxw (%rdi), %rax
+    mov %rsi, %rdi
+    add $8, %rdi
+    add %rax, %rdi
+    movzxb (%rdi), %rax
+    cmp $0, %eax
+    jne _kefir_func_op_loop_end_label2
+_kefir_func_op_loop_end_label1:
+    movsxb -65536(%rbp), %rax
+    movq (%rsi), %rax
+    mov %rsi, %rdi
+    add $5128, %rdi
+    movl (%rdi), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, (%rdi)
+    add %rcx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    mov %rsi, %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+_kefir_func_op_loop_end_label2:
+    mov %rsi, %rdi
+    add $5134, %rdi
+    movzxb (%rdi), %rax
+    mov %rsi, %rdi
+    add $4104, %rdi
+    imul $8, %rax, %rax
+    add %rax, %rdi
+    movq (%rdi), %rax
+    mov %rsi, %rdi
+    add $5128, %rdi
+    sub $1, %rax
+    movl %eax, (%rdi)
+    jmp _kefir_func_op_loop_end_label1
+__kefir_text_func_op_loop_end_end:
+
+op_loop_begin:
+__kefir_text_func_op_loop_begin_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $65536, %rsp
+    mov %rdi, %r8
+    mov %r8, %rdi
+    add $5132, %rdi
+    movzxw (%rdi), %rax
+    mov %r8, %rdi
+    add $8, %rdi
+    add %rax, %rdi
+    movzxb (%rdi), %rax
+    cmp $0, %eax
+    jne _kefir_func_op_loop_begin_label7
+    xor %esi, %esi
+_kefir_func_op_loop_begin_label1:
+    movq (%r8), %rax
+    mov %r8, %rdi
+    add $5128, %rdi
+    movl (%rdi), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, (%rdi)
+    add %rcx, %rax
+    movsxb (%rax), %rax
+    cmp $91, %eax
+    je _kefir_func_op_loop_begin_label6
+    cmp $93, %eax
+    je _kefir_func_op_loop_begin_label5
+    mov %rsi, %rcx
+_kefir_func_op_loop_begin_label3:
+    mov %ecx, %eax
+    cmp $0, %eax
+    jbe _kefir_func_op_loop_begin_label4
+    mov %rcx, %rsi
+    jmp _kefir_func_op_loop_begin_label1
+_kefir_func_op_loop_begin_label4:
+    movsxb -65536(%rbp), %rax
+    movq (%r8), %rax
+    mov %r8, %rdi
+    add $5128, %rdi
+    movl (%rdi), %ecx
+    mov %rcx, %rdx
+    add $1, %edx
+    movl %edx, (%rdi)
+    add %rcx, %rax
+    movsxb (%rax), %rax
+    lea ops(%rip), %rcx
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    mov %r8, %rdi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp *%rax
+_kefir_func_op_loop_begin_label5:
+    mov %esi, %eax
+    add $-1, %eax
+    mov %rax, %rcx
+    jmp _kefir_func_op_loop_begin_label3
+_kefir_func_op_loop_begin_label6:
+    mov %esi, %eax
+    add $1, %eax
+    mov %rax, %rcx
+    jmp _kefir_func_op_loop_begin_label3
+_kefir_func_op_loop_begin_label7:
+    mov %r8, %rdi
+    add $5128, %rdi
+    movl (%rdi), %eax
+    mov %r8, %rdi
+    add $5134, %rdi
+    movzxb (%rdi), %rcx
+    mov %rcx, %rdx
+    add $1, %dl
+    movb %dl, (%rdi)
+    mov %r8, %rdi
+    add $4104, %rdi
+    imul $8, %rcx, %rcx
+    add %rcx, %rdi
+    movq %rax, (%rdi)
+    jmp _kefir_func_op_loop_begin_label4
+__kefir_text_func_op_loop_begin_end:
+
+op_terminate:
+__kefir_text_func_op_terminate_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_op_terminate_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+ops:
+    .quad op_terminate
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad op_plus
+    .quad 0
+    .quad op_minus
+    .quad op_print
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad op_prev
+    .quad 0
+    .quad op_next
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad 0
+    .quad op_loop_begin
+    .quad 0
+    .quad op_loop_end
+

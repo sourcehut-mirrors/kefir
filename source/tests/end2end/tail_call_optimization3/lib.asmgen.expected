@@ -1,0 +1,286 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+.global test7
+.type test7, @function
+.global test8
+.type test8, @function
+.global test9
+.type test9, @function
+.extern somefn
+.global test10
+.type test10, @function
+.global test11
+.type test11, @function
+.global test12
+.type test12, @function
+.extern somejmp
+.extern someptr
+.extern somejmp2
+.extern someothervar
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movq someptr@GOTPCREL(%rip), %rax
+    lea -4(%rbp), %rdi
+    movq %rdi, (%rax)
+    movsxl -4(%rbp), %rdi
+    add $1, %edi
+    call test
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    movsx %edi, %rdi
+    add $1, %edi
+    jmp test2
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    leaq -4(%rbp), %rdi
+    call somefn@PLT
+    movsxl -4(%rbp), %rdi
+    add $1, %edi
+    call test3
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movl %edi, -4(%rbp)
+    movq someothervar@GOTPCREL(%rip), %rcx
+    leaq -4(%rbp), %rax
+    sub %rcx, %rax
+    cqo
+    mov $4, %rcx
+    idiv %rcx
+    mov %rax, %r9
+    movq someothervar@GOTPCREL(%rip), %r10
+_kefir_func_test4_label1:
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r10, %rdi
+    mov $5, %rsi
+    call __atomic_load_4@PLT
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movsx %eax, %rax
+    movsx %eax, %rax
+    mov %rax, %rdx
+    add %r9, %rdx
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    mov %r10, %rdi
+    mov $5, %rcx
+    mov $5, %r8
+    mov %rax, -32(%rbp)
+    lea -32(%rbp), %rsi
+    call __atomic_compare_exchange_4@PLT
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    test %al, %al
+    jz _kefir_func_test4_label1
+    movsxl -4(%rbp), %rdi
+    add $1, %edi
+    call test4
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test4_end:
+
+test5:
+__kefir_text_func_test5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    leaq -4(%rbp), %rax
+
+    movsxl -4(%rbp), %rdi
+    add $1, %edi
+    call test5
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test5_end:
+
+test6:
+__kefir_text_func_test6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movsx %edi, %rax
+
+    movsx %edi, %rdi
+    add $1, %edi
+    pop %rbp
+    jmp test5
+__kefir_text_func_test6_end:
+
+test7:
+__kefir_text_func_test7_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl %edi, -4(%rbp)
+    movsxl -4(%rbp), %rax
+    cmp $0, %eax
+    jle _kefir_func_test7_label3
+    leaq -4(%rbp), %rcx
+_kefir_func_test7_label2:
+    movq %rcx, -16(%rbp)
+    mov %rcx, %rdi
+    call somefn@PLT
+    movq -16(%rbp), %rcx
+    movsxl -4(%rbp), %rdi
+    add $1, %edi
+    movq %rcx, -16(%rbp)
+    call test7
+    movq -16(%rbp), %rcx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_test7_label3:
+    xor %ecx, %ecx
+    jmp _kefir_func_test7_label2
+__kefir_text_func_test7_end:
+
+test8:
+__kefir_text_func_test8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rax
+    movsx %eax, %rcx
+    cmp $0, %ecx
+    jg _kefir_func_test8_label1
+_kefir_func_test8_label3:
+    xor %ecx, %ecx
+    jmp _kefir_func_test8_label2
+_kefir_func_test8_label1:
+    movsx %eax, %rdx
+    mov %rdx, %rcx
+_kefir_func_test8_label2:
+    movsx %ecx, %rdi
+    movq %rax, -16(%rbp)
+    call somefn@PLT
+    movq -16(%rbp), %rax
+    movsx %eax, %rdi
+    add $1, %edi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp test8
+__kefir_text_func_test8_end:
+
+test9:
+__kefir_text_func_test9_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rcx
+    movq %rcx, -16(%rbp)
+    call somejmp@PLT
+    movq -16(%rbp), %rcx
+    movsx %ecx, %rdi
+    add $1, %edi
+    movq %rcx, -8(%rbp)
+    call test9
+    movq -8(%rbp), %rcx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test9_end:
+
+test10:
+__kefir_text_func_test10_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -16(%rbp)
+    call somejmp2@PLT
+    movq -16(%rbp), %rdi
+    movsx %edi, %rdi
+    add $1, %edi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp test10
+__kefir_text_func_test10_end:
+
+test11:
+__kefir_text_func_test11_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $272, %rsp
+    movq %rdi, -144(%rbp)
+    movsx %esi, %rsi
+    add $1, %esi
+    leaq -272(%rbp), %rdi
+    call test11
+    leaq (%rax), %rsi
+    leaq -128(%rbp), %rdi
+    cld
+    mov $16, %rcx
+    rep movsq
+    movq -144(%rbp), %rax
+    mov %rax, %rdi
+    leaq -128(%rbp), %rsi
+    cld
+    mov $16, %rcx
+    rep movsq
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test11_end:
+
+test12:
+__kefir_text_func_test12_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movsx %edi, %rdi
+    add $1, %edi
+    call test12
+    movq %rax, -32(%rbp)
+    movq %rdx, -24(%rbp)
+    leaq -32(%rbp), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test12_end:
+
+__kefir_text_section_end:
+

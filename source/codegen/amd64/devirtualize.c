@@ -1404,6 +1404,11 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
                 REQUIRE_OK(kefir_list_pop(mem, &state->virtual_blocks, kefir_list_tail(&state->virtual_blocks)));
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
+                REQUIRE_OK(devirtualize_instr1(mem, state, idx, &devirtualized_instr, &original_instr, &tail_idx,
+                                               KEFIR_AMD64_INSTRDB_NONE, KEFIR_AMD64_INSTRDB_BRANCH_TAGET));
+                break;
+
             case KEFIR_ASMCMP_AMD64_OPCODE(touch_virtual_register):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_prologue):
             case KEFIR_ASMCMP_AMD64_OPCODE(function_epilogue):

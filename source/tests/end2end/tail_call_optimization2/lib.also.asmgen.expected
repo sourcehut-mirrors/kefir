@@ -1,0 +1,76 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial
+.type factorial, @function
+
+.section .text
+__kefir_text_section_begin:
+factorial:
+__kefir_text_func_factorial_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    stmxcsr -8(%rbp)
+    mov $1, %rax
+    cvtsi2sd %rax, %xmm1
+    mov $1, %rax
+    cvtsi2sd %rax, %xmm2
+    ucomisd %xmm2, %xmm0
+    jp _kefir_func_factorial_label3
+    ja _kefir_func_factorial_label2
+_kefir_func_factorial_label3:
+    movq %xmm1, %xmm2
+_kefir_func_factorial_label1:
+    movq %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_label2:
+    mulsd %xmm0, %xmm1
+    mov $1, %rax
+    cvtsi2sd %rax, %xmm3
+    movq %xmm0, %xmm4
+    subsd %xmm3, %xmm4
+    movdqu %xmm2, -32(%rbp)
+    movq %xmm1, %xmm0
+    movq %xmm4, %xmm1
+    call factorial_helper
+    movdqu -32(%rbp), %xmm2
+    movq %xmm0, %xmm2
+    jmp _kefir_func_factorial_label1
+__kefir_text_func_factorial_end:
+
+factorial_helper:
+__kefir_text_func_factorial_helper_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq %xmm0, %xmm2
+    mov $1, %rax
+    cvtsi2sd %rax, %xmm0
+    ucomisd %xmm0, %xmm1
+    jp _kefir_func_factorial_helper_label3
+    ja _kefir_func_factorial_helper_label2
+_kefir_func_factorial_helper_label3:
+    movq %xmm2, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_factorial_helper_label2:
+    movq %xmm2, %xmm0
+    mulsd %xmm1, %xmm0
+    mov $1, %rax
+    cvtsi2sd %rax, %xmm2
+    subsd %xmm2, %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp factorial_helper
+__kefir_text_func_factorial_helper_end:
+
+__kefir_text_section_end:
+

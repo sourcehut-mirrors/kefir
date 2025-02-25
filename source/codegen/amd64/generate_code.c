@@ -529,6 +529,13 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
             break;
 
+        case KEFIR_ASMCMP_AMD64_OPCODE(tail_call):
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_epilogue(xasmgen, target->abi_variant, stack_frame));
+            REQUIRE_OK(build_operand(target, stack_frame, &instr->args[0], &arg_state[0],
+                                     KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT));
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_INSTR_JMP(xasmgen, arg_state[0].operand));
+            break;
+
         case KEFIR_ASMCMP_AMD64_OPCODE(data_word):
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
