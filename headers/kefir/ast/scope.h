@@ -77,6 +77,8 @@ typedef struct kefir_ast_scoped_identifier {
             struct {
                 kefir_bool_t weak;
                 kefir_bool_t gnu_inline;
+                kefir_bool_t always_inline;
+                kefir_bool_t noinline;
                 kefir_bool_t constructor;
                 kefir_bool_t destructor;
             } flags;

@@ -73,6 +73,9 @@ typedef struct kefir_ast_declarator {
 typedef struct kefir_ast_declarator_attributes {
     kefir_size_t aligned;
     kefir_bool_t gnu_inline;
+    kefir_bool_t always_inline;
+    kefir_bool_t no_inline;
+    kefir_bool_t no_ipa;
     kefir_bool_t weak;
     kefir_ast_declarator_visibility_attr_t visibility;
     const char *alias;

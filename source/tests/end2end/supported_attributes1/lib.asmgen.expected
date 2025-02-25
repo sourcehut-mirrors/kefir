@@ -2,10 +2,13 @@
 
 weak
 alias
+noipa
 packed
 aligned
 __weak__
+noinline
 __alias__
+__noipa__
 __packed__
 destructor
 gnu_inline
@@ -16,3 +19,6 @@ __returns_twice__
 __gnu_inline__
 __visibility__
 returns_twice
+__noinline__
+always_inline
+__always_inline__

@@ -31,10 +31,29 @@
 #include "kefir/ast/type_completion.h"
 #include "kefir/core/source_error.h"
 
-const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {
-    "aligned",  "__aligned__", "gnu_inline", "__gnu_inline__", "returns_twice",  "__returns_twice__", "weak",
-    "__weak__", "alias",       "__alias__",  "visibility",     "__visibility__", "constructor",       "destructor",
-    "packed",   "__packed__",  NULL};
+const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {"aligned",
+                                                                "__aligned__",
+                                                                "gnu_inline",
+                                                                "__gnu_inline__",
+                                                                "always_inline",
+                                                                "__always_inline__",
+                                                                "noinline",
+                                                                "__noinline__",
+                                                                "noipa",
+                                                                "__noipa__",
+                                                                "returns_twice",
+                                                                "__returns_twice__",
+                                                                "weak",
+                                                                "__weak__",
+                                                                "alias",
+                                                                "__alias__",
+                                                                "visibility",
+                                                                "__visibility__",
+                                                                "constructor",
+                                                                "destructor",
+                                                                "packed",
+                                                                "__packed__",
+                                                                NULL};
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
@@ -1231,6 +1250,16 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
             } else if ((strcmp(attribute->name, "gnu_inline") == 0 || strcmp(attribute->name, "__gnu_inline__") == 0) &&
                        attributes != NULL) {
                 attributes->gnu_inline = true;
+            } else if ((strcmp(attribute->name, "always_inline") == 0 ||
+                        strcmp(attribute->name, "__always_inline__") == 0) &&
+                       attributes != NULL) {
+                attributes->always_inline = true;
+            } else if ((strcmp(attribute->name, "noinline") == 0 || strcmp(attribute->name, "__noinline__") == 0) &&
+                       attributes != NULL) {
+                attributes->no_inline = true;
+            } else if ((strcmp(attribute->name, "noipa") == 0 || strcmp(attribute->name, "noipa") == 0) &&
+                       attributes != NULL) {
+                attributes->no_ipa = true;
             } else if ((strcmp(attribute->name, "returns_twice") == 0 ||
                         strcmp(attribute->name, "__returns_twice__") == 0)) {
                 REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
@@ -1352,7 +1381,7 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
 
     if (attributes != NULL) {
-        *attributes = (struct kefir_ast_declarator_attributes){0};
+        *attributes = (struct kefir_ast_declarator_attributes) {0};
     }
 
     REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, declarator, identifier, base_type, alignment, flags,

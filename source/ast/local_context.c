@@ -1275,6 +1275,9 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.always_inline, attributes->always_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.noinline, attributes->no_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.noinline, attributes->no_ipa);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.constructor, attributes->constructor);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.destructor, attributes->destructor);
         }
@@ -1300,6 +1303,9 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_FUNCTION_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.gnu_inline, attributes->gnu_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.always_inline, attributes->always_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.noinline, attributes->no_inline);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.noinline, attributes->no_ipa);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.constructor, attributes->constructor);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.destructor, attributes->destructor);
         }
@@ -1327,6 +1333,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
         ordinary_id->function.flags.weak = attributes != NULL && attributes->weak;
         ordinary_id->function.flags.gnu_inline = attributes != NULL && attributes->gnu_inline;
+        ordinary_id->function.flags.always_inline = attributes != NULL && attributes->always_inline;
+        ordinary_id->function.flags.noinline = attributes != NULL && (attributes->no_inline || attributes->no_ipa);
         ordinary_id->function.flags.constructor = attributes != NULL && attributes->constructor;
         ordinary_id->function.flags.destructor = attributes != NULL && attributes->destructor;
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
