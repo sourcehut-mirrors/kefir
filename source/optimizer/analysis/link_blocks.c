@@ -32,6 +32,7 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_st
     kefir_opt_instruction_ref_t tail_instr_ref;
     const struct kefir_opt_instruction *tail_instr = NULL;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(structure->code, block, &tail_instr_ref));
+    REQUIRE(tail_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
     REQUIRE_OK(kefir_opt_code_container_instr(structure->code, tail_instr_ref, &tail_instr));
     switch (tail_instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_JUMP:
@@ -82,6 +83,8 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_st
         } break;
 
         case KEFIR_OPT_OPCODE_RETURN:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
             // Intentionally left blank
             break;
 

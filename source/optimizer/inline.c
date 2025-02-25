@@ -620,6 +620,9 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
     kefir_opt_instruction_ref_t mapped_instr_ref;
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN) {
         REQUIRE_OK(inline_return(param, instr, &mapped_instr_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+               instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to inline function with tail calls");
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT) {
         const struct kefir_opt_call_node *call_node;
         REQUIRE_OK(kefir_opt_code_container_call(param->dst_code, param->original_call_ref, &call_node));
@@ -962,7 +965,9 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
                                           const struct kefir_opt_try_inline_function_call_parameters *inline_params,
                                           kefir_bool_t *can_inline_ptr) {
     kefir_bool_t can_inline;
-    REQUIRE_OK(kefir_opt_function_block_can_inline(callee_function, call_node->block_id, called_function, (inline_params == NULL ? KEFIR_SIZE_MAX : inline_params->max_inline_depth), &can_inline));
+    REQUIRE_OK(kefir_opt_function_block_can_inline(
+        callee_function, call_node->block_id, called_function,
+        (inline_params == NULL ? KEFIR_SIZE_MAX : inline_params->max_inline_depth), &can_inline));
 
     if (!called_function->ir_func->flags.inline_function || called_function->ir_func->declaration->vararg ||
         called_function->ir_func->declaration->returns_twice ||
@@ -987,8 +992,10 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
              res = kefir_opt_instruction_next_sibling(&called_function->code, instr_ref, &instr_ref)) {
             const struct kefir_opt_instruction *instruction;
             REQUIRE_OK(kefir_opt_code_container_instr(&called_function->code, instr_ref, &instruction));
-            if (instruction->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
-                instruction->operation.parameters.index >= call_node->argument_count) {
+            if ((instruction->operation.opcode == KEFIR_OPT_OPCODE_GET_ARGUMENT &&
+                 instruction->operation.parameters.index >= call_node->argument_count) ||
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
                 can_inline = false;
             }
         }
@@ -999,11 +1006,11 @@ static kefir_result_t can_inline_function(const struct kefir_opt_function *calle
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_try_inline_function_call(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                                  struct kefir_opt_function *func,
-                                                  struct kefir_opt_code_structure *structure,
-                                                  const struct kefir_opt_try_inline_function_call_parameters *inline_params,
-                                                  kefir_opt_instruction_ref_t instr_ref, kefir_bool_t *did_inline_ptr) {
+kefir_result_t kefir_opt_try_inline_function_call(
+    struct kefir_mem *mem, const struct kefir_opt_module *module, struct kefir_opt_function *func,
+    struct kefir_opt_code_structure *structure,
+    const struct kefir_opt_try_inline_function_call_parameters *inline_params, kefir_opt_instruction_ref_t instr_ref,
+    kefir_bool_t *did_inline_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));

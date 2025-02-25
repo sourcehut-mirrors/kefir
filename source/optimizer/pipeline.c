@@ -49,6 +49,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(BlockMerge);
     PASS(DropDeadPhiLinks);
     PASS(InlineFunc);
+    PASS(TailCalls);
 #undef PASS
     return KEFIR_SET_ERRORF(KEFIR_NOT_FOUND, "Unable to find optimizer pass '%s'", name);
 }
@@ -79,7 +80,7 @@ kefir_result_t kefir_optimizer_pipeline_add(struct kefir_mem *mem, struct kefir_
 }
 
 kefir_result_t kefir_optimizer_pipeline_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
-    const struct kefir_optimizer_configuration *config) {
+                                              const struct kefir_optimizer_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer configuration"));

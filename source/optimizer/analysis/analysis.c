@@ -238,7 +238,9 @@ static kefir_result_t trace_instruction(kefir_opt_instruction_ref_t instr_ref, v
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INVOKE:
-        case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL: {
+        case KEFIR_OPT_OPCODE_INVOKE_VIRTUAL:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL: {
             const struct kefir_opt_call_node *call;
             REQUIRE_OK(kefir_opt_code_container_call(&param->function->code,
                                                      instr->operation.parameters.function_call.call_ref, &call));

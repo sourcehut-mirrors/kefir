@@ -397,6 +397,8 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
     }
     REQUIRE_OK(res);
 
+    REQUIRE_OK(kefir_opt_code_container_drop_block(mem, code, source_block_id));
+
     return KEFIR_OK;
 }
 

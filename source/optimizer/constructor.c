@@ -462,8 +462,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
 
             kefir_opt_call_id_t call_ref;
-            REQUIRE_OK(
-                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, KEFIR_ID_NONE, &call_ref, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
+                                                         KEFIR_ID_NONE, &call_ref, &instr_ref));
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
@@ -485,8 +485,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             kefir_opt_call_id_t call_ref;
             REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, num_of_params, &instr_ref2));
-            REQUIRE_OK(
-                kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params, instr_ref2, &call_ref, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
+                                                         instr_ref2, &call_ref, &instr_ref));
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
@@ -1115,7 +1115,8 @@ static kefir_result_t link_blocks_equalize_stack(struct kefir_mem *mem, struct k
     while (kefir_list_length(&source_state->stack) > kefir_list_length(&target_state->phi_stack)) {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_instruction_ref_t instr_ref;
-        REQUIRE_OK(kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref, &instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_container_new_phi(mem, &state->function->code, target_block_id, &phi_ref, &instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->stack, NULL, (void *) (kefir_uptr_t) instr_ref));
         REQUIRE_OK(kefir_list_insert_after(mem, &target_state->phi_stack, NULL, (void *) (kefir_uptr_t) phi_ref));
     }
@@ -1158,6 +1159,8 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
 
         case KEFIR_OPT_OPCODE_IJUMP:
         case KEFIR_OPT_OPCODE_RETURN:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE:
+        case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
             // Intentionally left blank
             break;
 

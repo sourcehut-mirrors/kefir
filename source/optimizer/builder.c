@@ -79,6 +79,8 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
             case KEFIR_OPT_OPCODE_IJUMP:
             case KEFIR_OPT_OPCODE_BRANCH:
             case KEFIR_OPT_OPCODE_RETURN:
+            case KEFIR_OPT_OPCODE_TAIL_INVOKE:
+            case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
                 *finalized_ptr = true;
                 break;
 

@@ -25,7 +25,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
-#include <stdio.h>
 
 static kefir_result_t drop_dead_phi_links_impl(struct kefir_mem *mem, struct kefir_opt_function *func,
                                                struct kefir_opt_code_structure *structure) {

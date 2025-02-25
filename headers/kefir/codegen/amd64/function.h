@@ -94,6 +94,8 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
                                                                   struct kefir_codegen_amd64_function *,
                                                                   kefir_opt_instruction_ref_t, kefir_bool_t,
                                                                   kefir_int64_t *);
+kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                        kefir_asmcmp_virtual_register_index_t);
 
 // clang-format off
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
@@ -177,6 +179,8 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
     _def(pop_scope, KEFIR_OPT_OPCODE_SCOPE_POP) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE) _separator \
     _def(invoke, KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) _separator \
+    _def(tail_invoke, KEFIR_OPT_OPCODE_TAIL_INVOKE) _separator \
+    _def(tail_invoke, KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) _separator \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT8_ADD) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT16_ADD) _separator                                                   \
     _def(int_arithmetics, KEFIR_OPT_OPCODE_INT32_ADD) _separator                                                   \
@@ -348,7 +352,8 @@ kefir_result_t kefir_codegen_amd64_copy_memory(struct kefir_mem *, struct kefir_
                                                kefir_asmcmp_virtual_register_index_t, kefir_size_t);
 
 kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                     const struct kefir_opt_instruction *, kefir_bool_t *);
+                                                     const struct kefir_opt_instruction *, kefir_bool_t *,
+                                                     kefir_asmcmp_virtual_register_index_t *);
 
 #endif
 
