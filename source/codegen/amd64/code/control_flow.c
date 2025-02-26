@@ -786,9 +786,26 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
         &function->function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
 
+    kefir_bool_t invert_condition = false;
+    const struct kefir_opt_instruction *condition_instr;
     kefir_asmcmp_virtual_register_index_t condition_vreg_idx;
-    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.branch.condition_ref,
-                                                    &condition_vreg_idx));
+    REQUIRE_OK(kefir_opt_code_container_instr(
+        &function->function->code, instruction->operation.parameters.branch.condition_ref, &condition_instr));
+    if ((instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT &&
+         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT) ||
+        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT &&
+         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT) ||
+        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT &&
+         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT) ||
+        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT &&
+         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)) {
+        invert_condition = true;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, condition_instr->operation.parameters.refs[0],
+                                                        &condition_vreg_idx));
+    } else {
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+            function, instruction->operation.parameters.branch.condition_ref, &condition_vreg_idx));
+    }
 
     switch (instruction->operation.parameters.branch.condition_variant) {
         case KEFIR_OPT_BRANCH_CONDITION_8BIT:
@@ -823,13 +840,27 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     if (alternative_phi_outputs) {
         REQUIRE_OK(
             kefir_asmcmp_context_new_label(mem, &function->code.context, KEFIR_ASMCMP_INDEX_NONE, &branch_label_idx));
-        REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                         &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+        if (invert_condition) {
+            REQUIRE_OK(kefir_asmcmp_amd64_jnz(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(branch_label_idx), NULL));
+        }
     } else {
         REQUIRE_OK(kefir_hashtree_at(&function->labels, (kefir_hashtree_key_t) alternative_block->id, &label_node));
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, target_label, label_node->value);
-        REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                         &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
+        if (invert_condition) {
+            REQUIRE_OK(kefir_asmcmp_amd64_jnz(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_jz(mem, &function->code,
+                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                             &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(target_label), NULL));
+        }
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_map_phi_outputs(mem, function, target_block->id, instruction->block_id));

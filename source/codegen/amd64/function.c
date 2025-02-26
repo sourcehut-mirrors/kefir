@@ -220,6 +220,24 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
             return KEFIR_OK;
         }
     }
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH) {
+        const struct kefir_opt_instruction *cond_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(code, instr->operation.parameters.branch.condition_ref, &cond_instr));
+        if ((instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT &&
+             cond_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT) ||
+            (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT &&
+             cond_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT) ||
+            (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT &&
+             cond_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT) ||
+            (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT &&
+             cond_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)) {
+            REQUIRE_OK(dependency_callback(cond_instr->operation.parameters.refs[0], dependency_callback_payload));
+            *schedule_instruction = true;
+            return KEFIR_OK;
+        }
+    }
+
     REQUIRE_OK(
         kefir_opt_instruction_extract_inputs(code, instr, true, dependency_callback, dependency_callback_payload));
     *schedule_instruction = true;
