@@ -272,9 +272,8 @@ __kefir_text_func_test_fetch_or_int_begin:
     movl %eax, -16(%rbp)
 _kefir_func_test_fetch_or_int_label1:
     movsxl -16(%rbp), %rax
-    movsx %r11d, %rcx
     mov %rax, %rbx
-    or %ecx, %ebx
+    or %r11d, %ebx
     movsx %ebx, %rcx
     movl %ecx, -12(%rbp)
     movq %r10, -48(%rbp)
@@ -774,9 +773,8 @@ __kefir_text_func_test_fetch_add_int_begin:
     movl %eax, -16(%rbp)
 _kefir_func_test_fetch_add_int_label1:
     movsxl -16(%rbp), %rax
-    movsx %r11d, %rcx
     mov %rax, %rbx
-    add %ecx, %ebx
+    add %r11d, %ebx
     movsx %ebx, %rcx
     movl %ecx, -12(%rbp)
     movq %r10, -48(%rbp)
@@ -825,9 +823,8 @@ __kefir_text_func_test_fetch_and_int_begin:
     movl %eax, -16(%rbp)
 _kefir_func_test_fetch_and_int_label1:
     movsxl -16(%rbp), %rax
-    movsx %r11d, %rcx
     mov %rax, %rbx
-    and %ecx, %ebx
+    and %r11d, %ebx
     movsx %ebx, %rcx
     movl %ecx, -12(%rbp)
     movq %r10, -48(%rbp)
@@ -976,9 +973,8 @@ __kefir_text_func_test_fetch_sub_int_begin:
     movl %eax, -16(%rbp)
 _kefir_func_test_fetch_sub_int_label1:
     movsxl -16(%rbp), %rax
-    movsx %r11d, %rcx
     mov %rax, %rbx
-    sub %ecx, %ebx
+    sub %r11d, %ebx
     movsx %ebx, %rcx
     movl %ecx, -12(%rbp)
     movq %r10, -48(%rbp)
@@ -1027,9 +1023,8 @@ __kefir_text_func_test_fetch_xor_int_begin:
     movl %eax, -16(%rbp)
 _kefir_func_test_fetch_xor_int_label1:
     movsxl -16(%rbp), %rax
-    movsx %r11d, %rcx
     mov %rax, %rbx
-    xor %ecx, %ebx
+    xor %r11d, %ebx
     movsx %ebx, %rcx
     movl %ecx, -12(%rbp)
     movq %r10, -48(%rbp)

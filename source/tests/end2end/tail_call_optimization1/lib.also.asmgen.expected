@@ -317,12 +317,12 @@ _kefir_func_op_loop_begin_label4:
     pop %rbp
     jmp *%rax
 _kefir_func_op_loop_begin_label5:
-    mov %esi, %eax
+    mov %rsi, %rax
     add $-1, %eax
     mov %rax, %rcx
     jmp _kefir_func_op_loop_begin_label3
 _kefir_func_op_loop_begin_label6:
-    mov %esi, %eax
+    mov %rsi, %rax
     add $1, %eax
     mov %rax, %rcx
     jmp _kefir_func_op_loop_begin_label3

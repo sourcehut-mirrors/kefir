@@ -57,11 +57,11 @@ _kefir_func_postdec_i8_label1:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
     movsx %al, %r10
-    mov %r10, %rdx
-    add $-1, %dl
+    add $-1, %al
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)
@@ -157,11 +157,11 @@ _kefir_func_postinc_i8_label1:
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
     movsx %al, %r10
-    mov %r10, %rdx
-    add $1, %dl
+    add $1, %al
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)
@@ -373,11 +373,11 @@ _kefir_func_postdec_i16_label1:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
     movsx %ax, %r10
-    mov %r10, %rdx
-    add $-1, %dx
+    add $-1, %ax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)
@@ -406,11 +406,11 @@ _kefir_func_postdec_i32_label1:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
     movsx %eax, %r10
-    mov %r10, %rdx
-    add $-1, %edx
+    add $-1, %eax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)
@@ -623,11 +623,11 @@ _kefir_func_postinc_i16_label1:
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
     movsx %ax, %r10
-    mov %r10, %rdx
-    add $1, %dx
+    add $1, %ax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)
@@ -656,11 +656,11 @@ _kefir_func_postinc_i32_label1:
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
     movsx %eax, %r10
-    mov %r10, %rdx
-    add $1, %edx
+    add $1, %eax
     movq %r9, -24(%rbp)
     movq %r10, -16(%rbp)
     mov %r9, %rdi
+    mov %rax, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %r10, -32(%rbp)

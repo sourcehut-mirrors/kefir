@@ -1,0 +1,62 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global int_not
+.type int_not, @function
+.global char_not
+.type char_not, @function
+.global uint_not
+.type uint_not, @function
+.global short_not
+.type short_not, @function
+.global uchar_not
+.type uchar_not, @function
+.global ushort_not
+.type ushort_not, @function
+
+.section .text
+__kefir_text_section_begin:
+int_not:
+__kefir_text_func_int_not_begin:
+    not %edi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_not_end:
+
+char_not:
+__kefir_text_func_char_not_begin:
+    movsx %dil, %rax
+    not %eax
+    ret
+__kefir_text_func_char_not_end:
+
+uint_not:
+__kefir_text_func_uint_not_begin:
+    not %edi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_uint_not_end:
+
+short_not:
+__kefir_text_func_short_not_begin:
+    movsx %di, %rax
+    not %eax
+    ret
+__kefir_text_func_short_not_end:
+
+uchar_not:
+__kefir_text_func_uchar_not_begin:
+    movzx %dil, %rax
+    not %eax
+    ret
+__kefir_text_func_uchar_not_end:
+
+ushort_not:
+__kefir_text_func_ushort_not_begin:
+    movzx %di, %rax
+    not %eax
+    ret
+__kefir_text_func_ushort_not_end:
+
+__kefir_text_section_end:
+

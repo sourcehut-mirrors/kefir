@@ -46,13 +46,12 @@ _kefir_func_factorial_label5:
     movsx %eax, %rax
     ret
 _kefir_func_factorial_label6:
-    movsx %edi, %rax
+    mov %rdi, %rax
     add $-1, %eax
-    movsx %ecx, %rcx
-    movsx %edi, %rdx
-    imul %edx, %ecx
+    mov %rcx, %rdx
+    imul %edi, %edx
     mov %rax, %rsi
-    mov %rcx, %r8
+    mov %rdx, %r8
     jmp _kefir_func_factorial_label4
 _kefir_func_factorial_label7:
     movsx %edi, %rax

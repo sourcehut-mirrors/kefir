@@ -56,7 +56,7 @@ _kefir_func_predec_i8_label1:
     mov $5, %rsi
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
-    movsx %al, %rax
+    movsx %al, %rsi
     mov %rax, %r10
     add $-1, %r10b
     movq %r9, -24(%rbp)
@@ -65,7 +65,7 @@ _kefir_func_predec_i8_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
     movq -24(%rbp), %r9
@@ -157,7 +157,7 @@ _kefir_func_preinc_i8_label1:
     mov $5, %rsi
     call __atomic_load_1@PLT
     movq -32(%rbp), %r9
-    movsx %al, %rax
+    movsx %al, %rsi
     mov %rax, %r10
     add $1, %r10b
     movq %r9, -24(%rbp)
@@ -166,7 +166,7 @@ _kefir_func_preinc_i8_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
     movq -24(%rbp), %r9
@@ -372,7 +372,7 @@ _kefir_func_predec_i16_label1:
     mov $5, %rsi
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
-    movsx %ax, %rax
+    movsx %ax, %rsi
     mov %rax, %r10
     add $-1, %r10w
     movq %r9, -24(%rbp)
@@ -381,7 +381,7 @@ _kefir_func_predec_i16_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
     movq -24(%rbp), %r9
@@ -406,7 +406,7 @@ _kefir_func_predec_i32_label1:
     mov $5, %rsi
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
-    movsx %eax, %rax
+    movsx %eax, %rsi
     mov %rax, %r10
     add $-1, %r10d
     movq %r9, -24(%rbp)
@@ -415,7 +415,7 @@ _kefir_func_predec_i32_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_4@PLT
     movq -24(%rbp), %r9
@@ -620,7 +620,7 @@ _kefir_func_preinc_i16_label1:
     mov $5, %rsi
     call __atomic_load_2@PLT
     movq -32(%rbp), %r9
-    movsx %ax, %rax
+    movsx %ax, %rsi
     mov %rax, %r10
     add $1, %r10w
     movq %r9, -24(%rbp)
@@ -629,7 +629,7 @@ _kefir_func_preinc_i16_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
     movq -24(%rbp), %r9
@@ -654,7 +654,7 @@ _kefir_func_preinc_i32_label1:
     mov $5, %rsi
     call __atomic_load_4@PLT
     movq -32(%rbp), %r9
-    movsx %eax, %rax
+    movsx %eax, %rsi
     mov %rax, %r10
     add $1, %r10d
     movq %r9, -24(%rbp)
@@ -663,7 +663,7 @@ _kefir_func_preinc_i32_label1:
     mov %r10, %rdx
     mov $5, %rcx
     mov $5, %r8
-    mov %rax, -32(%rbp)
+    mov %rsi, -32(%rbp)
     lea -32(%rbp), %rsi
     call __atomic_compare_exchange_4@PLT
     movq -24(%rbp), %r9

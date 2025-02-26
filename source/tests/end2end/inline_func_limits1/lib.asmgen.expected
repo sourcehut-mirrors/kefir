@@ -62,8 +62,7 @@ test1:
 __kefir_text_func_test1_begin:
     movq A@GOTPCREL(%rip), %rax
     movsxl (%rax), %rcx
-    movsx %edi, %rdx
-    add %edx, %ecx
+    add %edi, %ecx
     movl %ecx, (%rax)
     ret
 __kefir_text_func_test1_end:
@@ -72,8 +71,7 @@ test2:
 __kefir_text_func_test2_begin:
     movq A@GOTPCREL(%rip), %rax
     movsxl (%rax), %rcx
-    movsx %edi, %rdx
-    sub %edx, %ecx
+    sub %edi, %ecx
     movl %ecx, (%rax)
     ret
 __kefir_text_func_test2_end:

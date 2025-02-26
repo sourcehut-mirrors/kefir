@@ -52,7 +52,6 @@ __kefir_text_func_test_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    movsx %edi, %rdi
     add $1, %edi
     jmp test2
 __kefir_text_func_test2_end:
@@ -140,7 +139,6 @@ __kefir_text_func_test6_begin:
     mov %rsp, %rbp
     movsx %edi, %rax
 
-    movsx %edi, %rdi
     add $1, %edi
     pop %rbp
     jmp test5
@@ -194,7 +192,7 @@ _kefir_func_test8_label2:
     movq %rax, -16(%rbp)
     call somefn@PLT
     movq -16(%rbp), %rax
-    movsx %eax, %rdi
+    mov %rax, %rdi
     add $1, %edi
     lea (%rbp), %rsp
     pop %rbp
@@ -210,7 +208,7 @@ __kefir_text_func_test9_begin:
     movq %rcx, -16(%rbp)
     call somejmp@PLT
     movq -16(%rbp), %rcx
-    movsx %ecx, %rdi
+    mov %rcx, %rdi
     add $1, %edi
     movq %rcx, -8(%rbp)
     call test9
@@ -228,7 +226,6 @@ __kefir_text_func_test10_begin:
     movq %rdi, -16(%rbp)
     call somejmp2@PLT
     movq -16(%rbp), %rdi
-    movsx %edi, %rdi
     add $1, %edi
     lea (%rbp), %rsp
     pop %rbp
@@ -241,7 +238,6 @@ __kefir_text_func_test11_begin:
     mov %rsp, %rbp
     sub $272, %rsp
     movq %rdi, -144(%rbp)
-    movsx %esi, %rsi
     add $1, %esi
     leaq -272(%rbp), %rdi
     call test11
@@ -266,7 +262,6 @@ __kefir_text_func_test12_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movsx %edi, %rdi
     add $1, %edi
     call test12
     movq %rax, -32(%rbp)

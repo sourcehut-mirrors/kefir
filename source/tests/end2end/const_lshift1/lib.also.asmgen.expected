@@ -118,57 +118,57 @@
 __kefir_text_section_begin:
 sint_shl1:
 __kefir_text_func_sint_shl1_begin:
-    movsx %edi, %rax
-    shl $1, %eax
+    shl $1, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_sint_shl1_end:
 
 sint_shl2:
 __kefir_text_func_sint_shl2_begin:
-    movsx %edi, %rax
-    shl $2, %eax
+    shl $2, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_sint_shl2_end:
 
 sint_shl4:
 __kefir_text_func_sint_shl4_begin:
-    movsx %edi, %rax
-    shl $4, %eax
+    shl $4, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_sint_shl4_end:
 
 sint_shl8:
 __kefir_text_func_sint_shl8_begin:
-    movsx %edi, %rax
-    shl $8, %eax
+    shl $8, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_sint_shl8_end:
 
 uint_shl1:
 __kefir_text_func_uint_shl1_begin:
-    mov %edi, %eax
-    shl $1, %eax
+    shl $1, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_uint_shl1_end:
 
 uint_shl2:
 __kefir_text_func_uint_shl2_begin:
-    mov %edi, %eax
-    shl $2, %eax
+    shl $2, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_uint_shl2_end:
 
 uint_shl4:
 __kefir_text_func_uint_shl4_begin:
-    mov %edi, %eax
-    shl $4, %eax
+    shl $4, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_uint_shl4_end:
 
 uint_shl8:
 __kefir_text_func_uint_shl8_begin:
-    mov %edi, %eax
-    shl $8, %eax
+    shl $8, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_uint_shl8_end:
 
@@ -202,8 +202,8 @@ __kefir_text_func_schar_shl8_end:
 
 sint_shl16:
 __kefir_text_func_sint_shl16_begin:
-    movsx %edi, %rax
-    shl $16, %eax
+    shl $16, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_sint_shl16_end:
 
@@ -277,8 +277,8 @@ __kefir_text_func_uchar_shl8_end:
 
 uint_shl16:
 __kefir_text_func_uint_shl16_begin:
-    mov %edi, %eax
-    shl $16, %eax
+    shl $16, %edi
+    mov %rdi, %rax
     ret
 __kefir_text_func_uint_shl16_end:
 
