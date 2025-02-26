@@ -139,7 +139,6 @@ __kefir_text_func_vla1_begin:
     movq %rsp, -32(%rbp)
     movq %rax, -24(%rbp)
     movsx %edi, %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
     sub %rax, %rsp
     mov $16, %rax

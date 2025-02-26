@@ -47,7 +47,6 @@ _kefir_func_get_T2_label3:
     lea T1(%rip), %rax
     add $8, %rax
     movsx %edi, %rcx
-    movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
     ret

@@ -96,7 +96,6 @@ _kefir_func_test4_label1:
     movq -24(%rbp), %r9
     movq -16(%rbp), %r10
     movsx %eax, %rax
-    movsx %eax, %rax
     mov %rax, %rdx
     add %r9, %rdx
     movq %r9, -24(%rbp)

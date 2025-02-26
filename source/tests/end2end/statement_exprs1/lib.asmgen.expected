@@ -35,7 +35,6 @@ __kefir_text_func_eval2_begin:
     movq %rsp, -32(%rbp)
     movq %rax, -24(%rbp)
     movsx %edi, %rax
-    movsx %eax, %rax
     imul $8, %rax, %rax
     movq %rax, -8(%rbp)
     sub %rax, %rsp
@@ -57,7 +56,6 @@ __kefir_text_func_eval2_begin:
     add $16, %rsp
 _kefir_func_eval2_label1:
     movsx %edi, %rax
-    movsx %eax, %rax
     add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp

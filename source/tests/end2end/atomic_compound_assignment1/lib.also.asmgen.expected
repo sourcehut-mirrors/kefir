@@ -117,37 +117,35 @@ __kefir_text_func_add_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_add_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    add %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    add %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_add_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -223,37 +221,35 @@ __kefir_text_func_ior_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_ior_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    or %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    or %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_ior_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -264,38 +260,36 @@ __kefir_text_func_shl_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r10
-    movsx %sil, %rax
-    movsx %al, %r11
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_shl_i8_label1:
-    movq %r10, -40(%rbp)
-    movq %r11, -32(%rbp)
-    mov %r10, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r11
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r9
-    mov %r11, %rcx
-    shl %cl, %r9d
-    movq %r10, -24(%rbp)
-    movq %r11, -16(%rbp)
-    movq %r9, -8(%rbp)
-    mov %r10, %rdi
-    mov %r9, %rdx
+    mov %rax, %r11
+    mov %r10, %rcx
+    shl %cl, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r10
-    movq -16(%rbp), %r11
-    movq -8(%rbp), %r9
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_shl_i8_label1
-    mov %r9, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -306,38 +300,36 @@ __kefir_text_func_shr_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r10
-    movsx %sil, %rax
-    movsx %al, %r11
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_shr_i8_label1:
-    movq %r10, -40(%rbp)
-    movq %r11, -32(%rbp)
-    mov %r10, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r11
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r9
-    mov %r11, %rcx
-    sar %cl, %r9b
-    movq %r10, -24(%rbp)
-    movq %r11, -16(%rbp)
-    movq %r9, -8(%rbp)
-    mov %r10, %rdi
-    mov %r9, %rdx
+    mov %rax, %r11
+    mov %r10, %rcx
+    sar %cl, %r11b
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r10
-    movq -16(%rbp), %r11
-    movq -8(%rbp), %r9
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_shr_i8_label1
-    mov %r9, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -458,37 +450,35 @@ __kefir_text_func_add_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_add_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    add %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    add %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_add_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -615,37 +605,35 @@ __kefir_text_func_iand_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_iand_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    and %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    and %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_iand_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -656,37 +644,35 @@ __kefir_text_func_ior_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_ior_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    or %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    or %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_ior_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -774,37 +760,35 @@ __kefir_text_func_ixor_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_ixor_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    xor %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    xor %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_ixor_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -815,38 +799,36 @@ __kefir_text_func_shl_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r10
-    movsx %si, %rax
-    movsx %ax, %r11
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_shl_i16_label1:
-    movq %r10, -40(%rbp)
-    movq %r11, -32(%rbp)
-    mov %r10, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r11
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r9
-    mov %r11, %rcx
-    shl %cl, %r9d
-    movq %r10, -24(%rbp)
-    movq %r11, -16(%rbp)
-    movq %r9, -8(%rbp)
-    mov %r10, %rdi
-    mov %r9, %rdx
+    mov %rax, %r11
+    mov %r10, %rcx
+    shl %cl, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r10
-    movq -16(%rbp), %r11
-    movq -8(%rbp), %r9
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_shl_i16_label1
-    mov %r9, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -936,38 +918,36 @@ __kefir_text_func_shr_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r10
-    movsx %si, %rax
-    movsx %ax, %r11
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_shr_i16_label1:
-    movq %r10, -40(%rbp)
-    movq %r11, -32(%rbp)
-    mov %r10, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r11
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r9
-    mov %r11, %rcx
-    sar %cl, %r9w
-    movq %r10, -24(%rbp)
-    movq %r11, -16(%rbp)
-    movq %r9, -8(%rbp)
-    mov %r10, %rdi
-    mov %r9, %rdx
+    mov %rax, %r11
+    mov %r10, %rcx
+    sar %cl, %r11w
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r10
-    movq -16(%rbp), %r11
-    movq -8(%rbp), %r9
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_shr_i16_label1
-    mov %r9, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1057,37 +1037,35 @@ __kefir_text_func_iand_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_iand_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    and %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    and %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_iand_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1175,37 +1153,35 @@ __kefir_text_func_ixor_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_ixor_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    xor %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    xor %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_ixor_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1294,8 +1270,7 @@ __kefir_text_func_divide_i8_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     mov %rdi, %r10
-    movsx %sil, %rax
-    movsx %al, %r11
+    movsx %sil, %r11
 _kefir_func_divide_i8_label1:
     movq %r10, -40(%rbp)
     movq %r11, -32(%rbp)
@@ -1304,7 +1279,6 @@ _kefir_func_divide_i8_label1:
     call __atomic_load_1@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    movsx %al, %rax
     movsx %al, %rsi
     mov %rsi, %rax
     cdq
@@ -1402,8 +1376,7 @@ __kefir_text_func_modulo_i8_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     mov %rdi, %r10
-    movsx %sil, %rax
-    movsx %al, %r11
+    movsx %sil, %r11
 _kefir_func_modulo_i8_label1:
     movq %r10, -40(%rbp)
     movq %r11, -32(%rbp)
@@ -1412,7 +1385,6 @@ _kefir_func_modulo_i8_label1:
     call __atomic_load_1@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    movsx %al, %rax
     movsx %al, %rsi
     mov %rsi, %rax
     cdq
@@ -1555,8 +1527,7 @@ __kefir_text_func_divide_i16_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     mov %rdi, %r10
-    movsx %si, %rax
-    movsx %ax, %r11
+    movsx %si, %r11
 _kefir_func_divide_i16_label1:
     movq %r10, -40(%rbp)
     movq %r11, -32(%rbp)
@@ -1565,7 +1536,6 @@ _kefir_func_divide_i16_label1:
     call __atomic_load_2@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    movsx %ax, %rax
     movsx %ax, %rsi
     mov %rsi, %rax
     cdq
@@ -1678,8 +1648,7 @@ __kefir_text_func_modulo_i16_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     mov %rdi, %r10
-    movsx %si, %rax
-    movsx %ax, %r11
+    movsx %si, %r11
 _kefir_func_modulo_i16_label1:
     movq %r10, -40(%rbp)
     movq %r11, -32(%rbp)
@@ -1688,7 +1657,6 @@ _kefir_func_modulo_i16_label1:
     call __atomic_load_2@PLT
     movq -40(%rbp), %r10
     movq -32(%rbp), %r11
-    movsx %ax, %rax
     movsx %ax, %rsi
     mov %rsi, %rax
     cdq
@@ -1800,37 +1768,35 @@ __kefir_text_func_multiply_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_multiply_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    imul %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    imul %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_multiply_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -1906,37 +1872,35 @@ __kefir_text_func_subtract_i8_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %sil, %rax
-    movsx %al, %r9
+    mov %rdi, %r9
+    movsx %sil, %r10
 _kefir_func_subtract_i8_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_1@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %al, %rax
-    movsx %al, %rax
-    mov %rax, %r10
-    sub %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    sub %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_subtract_i8_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -2122,37 +2086,35 @@ __kefir_text_func_multiply_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_multiply_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    imul %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    imul %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_multiply_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -2350,37 +2312,35 @@ __kefir_text_func_subtract_i16_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %r11
-    movsx %si, %rax
-    movsx %ax, %r9
+    mov %rdi, %r9
+    movsx %si, %r10
 _kefir_func_subtract_i16_label1:
-    movq %r11, -40(%rbp)
-    movq %r9, -32(%rbp)
-    mov %r11, %rdi
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
+    mov %r9, %rdi
     mov $5, %rsi
     call __atomic_load_2@PLT
-    movq -40(%rbp), %r11
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movsx %ax, %rax
-    movsx %ax, %rax
-    mov %rax, %r10
-    sub %r9d, %r10d
-    movq %r11, -24(%rbp)
-    movq %r9, -16(%rbp)
-    movq %r10, -8(%rbp)
-    mov %r11, %rdi
-    mov %r10, %rdx
+    mov %rax, %r11
+    sub %r10d, %r11d
+    movq %r9, -24(%rbp)
+    movq %r10, -16(%rbp)
+    movq %r11, -8(%rbp)
+    mov %r9, %rdi
+    mov %r11, %rdx
     mov $5, %rcx
     mov $5, %r8
     mov %rax, -48(%rbp)
     lea -48(%rbp), %rsi
     call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r10
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %r10
+    movq -8(%rbp), %r11
     test %al, %al
     jz _kefir_func_subtract_i16_label1
-    mov %r10, %rax
+    mov %r11, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

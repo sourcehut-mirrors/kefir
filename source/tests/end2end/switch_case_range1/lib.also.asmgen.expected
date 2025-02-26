@@ -186,8 +186,7 @@ __kefir_text_func_clamp_int_end:
 
 clamp_char:
 __kefir_text_func_clamp_char_begin:
-    movsx %dil, %rax
-    movsx %al, %rdx
+    movsx %dil, %rdx
     cmp $0, %edx
     je _kefir_func_clamp_char_label18
     xor %eax, %eax
@@ -530,8 +529,7 @@ __kefir_text_func_clamp_long_end:
 
 clamp_short:
 __kefir_text_func_clamp_short_begin:
-    movsx %di, %rax
-    movsx %ax, %rdx
+    movsx %di, %rdx
     cmp $0, %edx
     je _kefir_func_clamp_short_label18
     xor %eax, %eax

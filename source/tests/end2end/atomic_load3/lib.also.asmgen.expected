@@ -103,7 +103,6 @@ get_arr1_el:
 __kefir_text_func_get_arr1_el_begin:
     add $96, %rdi
     movsx %esi, %rax
-    movsx %eax, %rax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov $5, %rsi
@@ -119,7 +118,6 @@ __kefir_text_func_get_arr2_el_begin:
     movq %rdi, -80(%rbp)
     add $160, %rsi
     movsx %edx, %rax
-    movsx %eax, %rax
     imul $64, %rax, %rax
     add %rax, %rsi
     leaq -64(%rbp), %rdx

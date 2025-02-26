@@ -69,7 +69,6 @@ __kefir_text_func_test_fetch_add_short_begin:
 _kefir_func_test_fetch_add_short_label1:
     movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
-    movsx %cx, %rcx
     mov %rax, %rbx
     add %ecx, %ebx
     movsx %bx, %rcx
@@ -121,7 +120,6 @@ __kefir_text_func_test_fetch_and_short_begin:
 _kefir_func_test_fetch_and_short_label1:
     movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
-    movsx %cx, %rcx
     mov %rax, %rbx
     and %ecx, %ebx
     movsx %bx, %rcx
@@ -173,7 +171,6 @@ __kefir_text_func_test_fetch_sub_short_begin:
 _kefir_func_test_fetch_sub_short_label1:
     movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
-    movsx %cx, %rcx
     mov %rax, %rbx
     sub %ecx, %ebx
     movsx %bx, %rcx
@@ -225,7 +222,6 @@ __kefir_text_func_test_fetch_xor_short_begin:
 _kefir_func_test_fetch_xor_short_label1:
     movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
-    movsx %cx, %rcx
     mov %rax, %rbx
     xor %ecx, %ebx
     movsx %bx, %rcx
@@ -328,7 +324,6 @@ __kefir_text_func_test_fetch_add_char_begin:
 _kefir_func_test_fetch_add_char_label1:
     movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
-    movsx %cl, %rcx
     mov %rax, %rbx
     add %ecx, %ebx
     movsx %bl, %rcx
@@ -429,7 +424,6 @@ __kefir_text_func_test_fetch_and_char_begin:
 _kefir_func_test_fetch_and_char_label1:
     movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
-    movsx %cl, %rcx
     mov %rax, %rbx
     and %ecx, %ebx
     movsx %bl, %rcx
@@ -530,7 +524,6 @@ __kefir_text_func_test_fetch_or_short_begin:
 _kefir_func_test_fetch_or_short_label1:
     movsxw -12(%rbp), %rax
     movsx %r11w, %rcx
-    movsx %cx, %rcx
     mov %rax, %rbx
     or %ecx, %ebx
     movsx %bx, %rcx
@@ -582,7 +575,6 @@ __kefir_text_func_test_fetch_sub_char_begin:
 _kefir_func_test_fetch_sub_char_label1:
     movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
-    movsx %cl, %rcx
     mov %rax, %rbx
     sub %ecx, %ebx
     movsx %bl, %rcx
@@ -683,7 +675,6 @@ __kefir_text_func_test_fetch_xor_char_begin:
 _kefir_func_test_fetch_xor_char_label1:
     movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
-    movsx %cl, %rcx
     mov %rax, %rbx
     xor %ecx, %ebx
     movsx %bl, %rcx
@@ -886,7 +877,6 @@ __kefir_text_func_test_fetch_or_char_begin:
 _kefir_func_test_fetch_or_char_label1:
     movsxb -10(%rbp), %rax
     movsx %r11b, %rcx
-    movsx %cl, %rcx
     mov %rax, %rbx
     or %ecx, %ebx
     movsx %bl, %rcx

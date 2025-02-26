@@ -175,7 +175,6 @@ __kefir_text_func_uint_shl8_end:
 schar_shl1:
 __kefir_text_func_schar_shl1_begin:
     movsx %dil, %rax
-    movsx %al, %rax
     shl $1, %eax
     ret
 __kefir_text_func_schar_shl1_end:
@@ -183,7 +182,6 @@ __kefir_text_func_schar_shl1_end:
 schar_shl2:
 __kefir_text_func_schar_shl2_begin:
     movsx %dil, %rax
-    movsx %al, %rax
     shl $2, %eax
     ret
 __kefir_text_func_schar_shl2_end:
@@ -191,7 +189,6 @@ __kefir_text_func_schar_shl2_end:
 schar_shl4:
 __kefir_text_func_schar_shl4_begin:
     movsx %dil, %rax
-    movsx %al, %rax
     shl $4, %eax
     ret
 __kefir_text_func_schar_shl4_end:
@@ -199,7 +196,6 @@ __kefir_text_func_schar_shl4_end:
 schar_shl8:
 __kefir_text_func_schar_shl8_begin:
     movsx %dil, %rax
-    movsx %al, %rax
     shl $8, %eax
     ret
 __kefir_text_func_schar_shl8_end:
@@ -254,7 +250,6 @@ __kefir_text_func_slong_shl8_end:
 uchar_shl1:
 __kefir_text_func_uchar_shl1_begin:
     movzx %dil, %rax
-    movzx %al, %rax
     shl $1, %eax
     ret
 __kefir_text_func_uchar_shl1_end:
@@ -262,7 +257,6 @@ __kefir_text_func_uchar_shl1_end:
 uchar_shl2:
 __kefir_text_func_uchar_shl2_begin:
     movzx %dil, %rax
-    movzx %al, %rax
     shl $2, %eax
     ret
 __kefir_text_func_uchar_shl2_end:
@@ -270,7 +264,6 @@ __kefir_text_func_uchar_shl2_end:
 uchar_shl4:
 __kefir_text_func_uchar_shl4_begin:
     movzx %dil, %rax
-    movzx %al, %rax
     shl $4, %eax
     ret
 __kefir_text_func_uchar_shl4_end:
@@ -278,7 +271,6 @@ __kefir_text_func_uchar_shl4_end:
 uchar_shl8:
 __kefir_text_func_uchar_shl8_begin:
     movzx %dil, %rax
-    movzx %al, %rax
     shl $8, %eax
     ret
 __kefir_text_func_uchar_shl8_end:
@@ -333,7 +325,6 @@ __kefir_text_func_ulong_shl8_end:
 schar_shl16:
 __kefir_text_func_schar_shl16_begin:
     movsx %dil, %rax
-    movsx %al, %rax
     shl $16, %eax
     ret
 __kefir_text_func_schar_shl16_end:
@@ -373,7 +364,6 @@ __kefir_text_func_slong_shl64_end:
 sshort_shl1:
 __kefir_text_func_sshort_shl1_begin:
     movsx %di, %rax
-    movsx %ax, %rax
     shl $1, %eax
     ret
 __kefir_text_func_sshort_shl1_end:
@@ -381,7 +371,6 @@ __kefir_text_func_sshort_shl1_end:
 sshort_shl2:
 __kefir_text_func_sshort_shl2_begin:
     movsx %di, %rax
-    movsx %ax, %rax
     shl $2, %eax
     ret
 __kefir_text_func_sshort_shl2_end:
@@ -389,7 +378,6 @@ __kefir_text_func_sshort_shl2_end:
 sshort_shl4:
 __kefir_text_func_sshort_shl4_begin:
     movsx %di, %rax
-    movsx %ax, %rax
     shl $4, %eax
     ret
 __kefir_text_func_sshort_shl4_end:
@@ -397,7 +385,6 @@ __kefir_text_func_sshort_shl4_end:
 sshort_shl8:
 __kefir_text_func_sshort_shl8_begin:
     movsx %di, %rax
-    movsx %ax, %rax
     shl $8, %eax
     ret
 __kefir_text_func_sshort_shl8_end:
@@ -405,7 +392,6 @@ __kefir_text_func_sshort_shl8_end:
 uchar_shl16:
 __kefir_text_func_uchar_shl16_begin:
     movzx %dil, %rax
-    movzx %al, %rax
     shl $16, %eax
     ret
 __kefir_text_func_uchar_shl16_end:
@@ -445,7 +431,6 @@ __kefir_text_func_ulong_shl64_end:
 ushort_shl1:
 __kefir_text_func_ushort_shl1_begin:
     movzx %di, %rax
-    movzx %ax, %rax
     shl $1, %eax
     ret
 __kefir_text_func_ushort_shl1_end:
@@ -453,7 +438,6 @@ __kefir_text_func_ushort_shl1_end:
 ushort_shl2:
 __kefir_text_func_ushort_shl2_begin:
     movzx %di, %rax
-    movzx %ax, %rax
     shl $2, %eax
     ret
 __kefir_text_func_ushort_shl2_end:
@@ -461,7 +445,6 @@ __kefir_text_func_ushort_shl2_end:
 ushort_shl4:
 __kefir_text_func_ushort_shl4_begin:
     movzx %di, %rax
-    movzx %ax, %rax
     shl $4, %eax
     ret
 __kefir_text_func_ushort_shl4_end:
@@ -469,7 +452,6 @@ __kefir_text_func_ushort_shl4_end:
 ushort_shl8:
 __kefir_text_func_ushort_shl8_begin:
     movzx %di, %rax
-    movzx %ax, %rax
     shl $8, %eax
     ret
 __kefir_text_func_ushort_shl8_end:
@@ -477,7 +459,6 @@ __kefir_text_func_ushort_shl8_end:
 sshort_shl16:
 __kefir_text_func_sshort_shl16_begin:
     movsx %di, %rax
-    movsx %ax, %rax
     shl $16, %eax
     ret
 __kefir_text_func_sshort_shl16_end:
@@ -497,7 +478,6 @@ __kefir_text_func_sshort_shl64_end:
 ushort_shl16:
 __kefir_text_func_ushort_shl16_begin:
     movzx %di, %rax
-    movzx %ax, %rax
     shl $16, %eax
     ret
 __kefir_text_func_ushort_shl16_end:

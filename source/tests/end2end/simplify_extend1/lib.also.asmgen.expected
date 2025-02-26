@@ -1,0 +1,200 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global int_int
+.type int_int, @function
+.global char_int
+.type char_int, @function
+.global int_uint
+.type int_uint, @function
+.global uint_int
+.type uint_int, @function
+.global char_char
+.type char_char, @function
+.global char_uint
+.type char_uint, @function
+.global short_int
+.type short_int, @function
+.global uchar_int
+.type uchar_int, @function
+.global uint_uint
+.type uint_uint, @function
+.global char_short
+.type char_short, @function
+.global char_uchar
+.type char_uchar, @function
+.global short_uint
+.type short_uint, @function
+.global uchar_char
+.type uchar_char, @function
+.global uchar_uint
+.type uchar_uint, @function
+.global ushort_int
+.type ushort_int, @function
+.global char_ushort
+.type char_ushort, @function
+.global short_short
+.type short_short, @function
+.global uchar_short
+.type uchar_short, @function
+.global uchar_uchar
+.type uchar_uchar, @function
+.global ushort_uint
+.type ushort_uint, @function
+.global ushort_ushort
+.type ushort_ushort, @function
+.global short_ushort
+.type short_ushort, @function
+.global uchar_ushort
+.type uchar_ushort, @function
+.global ushort_short
+.type ushort_short, @function
+
+.section .text
+__kefir_text_section_begin:
+int_int:
+__kefir_text_func_int_int_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_int_end:
+
+char_int:
+__kefir_text_func_char_int_begin:
+    movsx %dil, %rax
+    ret
+__kefir_text_func_char_int_end:
+
+int_uint:
+__kefir_text_func_int_uint_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_uint_end:
+
+uint_int:
+__kefir_text_func_uint_int_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_uint_int_end:
+
+char_char:
+__kefir_text_func_char_char_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_char_char_end:
+
+char_uint:
+__kefir_text_func_char_uint_begin:
+    movsx %dil, %rax
+    ret
+__kefir_text_func_char_uint_end:
+
+short_int:
+__kefir_text_func_short_int_begin:
+    movsx %di, %rax
+    ret
+__kefir_text_func_short_int_end:
+
+uchar_int:
+__kefir_text_func_uchar_int_begin:
+    movzx %dil, %rax
+    ret
+__kefir_text_func_uchar_int_end:
+
+uint_uint:
+__kefir_text_func_uint_uint_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_uint_uint_end:
+
+char_short:
+__kefir_text_func_char_short_begin:
+    movsx %dil, %rax
+    ret
+__kefir_text_func_char_short_end:
+
+char_uchar:
+__kefir_text_func_char_uchar_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_char_uchar_end:
+
+short_uint:
+__kefir_text_func_short_uint_begin:
+    movsx %di, %rax
+    ret
+__kefir_text_func_short_uint_end:
+
+uchar_char:
+__kefir_text_func_uchar_char_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_uchar_char_end:
+
+uchar_uint:
+__kefir_text_func_uchar_uint_begin:
+    movzx %dil, %rax
+    ret
+__kefir_text_func_uchar_uint_end:
+
+ushort_int:
+__kefir_text_func_ushort_int_begin:
+    movzx %di, %rax
+    ret
+__kefir_text_func_ushort_int_end:
+
+char_ushort:
+__kefir_text_func_char_ushort_begin:
+    movsx %dil, %rax
+    ret
+__kefir_text_func_char_ushort_end:
+
+short_short:
+__kefir_text_func_short_short_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_short_short_end:
+
+uchar_short:
+__kefir_text_func_uchar_short_begin:
+    movzx %dil, %rax
+    ret
+__kefir_text_func_uchar_short_end:
+
+uchar_uchar:
+__kefir_text_func_uchar_uchar_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_uchar_uchar_end:
+
+ushort_uint:
+__kefir_text_func_ushort_uint_begin:
+    movzx %di, %rax
+    ret
+__kefir_text_func_ushort_uint_end:
+
+ushort_ushort:
+__kefir_text_func_ushort_ushort_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ushort_ushort_end:
+
+short_ushort:
+__kefir_text_func_short_ushort_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_short_ushort_end:
+
+uchar_ushort:
+__kefir_text_func_uchar_ushort_begin:
+    movzx %dil, %rax
+    ret
+__kefir_text_func_uchar_ushort_end:
+
+ushort_short:
+__kefir_text_func_ushort_short_begin:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_ushort_short_end:
+
+__kefir_text_section_end:
+
