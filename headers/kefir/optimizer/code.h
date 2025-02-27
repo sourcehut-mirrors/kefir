@@ -138,6 +138,7 @@ typedef struct kefir_opt_operation_parameters {
         kefir_int64_t offset;
         kefir_id_t ir_ref;
         kefir_opt_comparison_operation_t comparison;
+        kefir_opt_branch_condition_variant_t condition_variant;
         struct {
             kefir_id_t global_ref;
             kefir_int64_t offset;

@@ -180,23 +180,23 @@ __kefir_text_func_test8_begin:
     mov %rdi, %rax
     movsx %eax, %rcx
     cmp $0, %ecx
-    jg _kefir_func_test8_label1
-_kefir_func_test8_label3:
-    xor %ecx, %ecx
-    jmp _kefir_func_test8_label2
-_kefir_func_test8_label1:
-    movsx %eax, %rdx
-    mov %rdx, %rcx
+    jle _kefir_func_test8_label3
+    movsx %eax, %rcx
 _kefir_func_test8_label2:
     movsx %ecx, %rdi
     movq %rax, -16(%rbp)
+    movq %rcx, -8(%rbp)
     call somefn@PLT
     movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     mov %rax, %rdi
     add $1, %edi
     lea (%rbp), %rsp
     pop %rbp
     jmp test8
+_kefir_func_test8_label3:
+    xor %ecx, %ecx
+    jmp _kefir_func_test8_label2
 __kefir_text_func_test8_end:
 
 test9:

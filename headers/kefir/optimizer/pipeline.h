@@ -63,6 +63,7 @@ DECLARE_PASS(BlockMerge);
 DECLARE_PASS(DropDeadPhiLinks);
 DECLARE_PASS(InlineFunc);
 DECLARE_PASS(TailCalls);
+DECLARE_PASS(PhiSelect);
 #undef DECLARE_PASS
 #endif
 

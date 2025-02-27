@@ -293,7 +293,8 @@ kefir_result_t kefir_opt_code_structure_redirect_edges(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_opt_code_structure_drop_edge(struct kefir_mem *mem, struct kefir_opt_code_structure *structure,
-    kefir_opt_block_id_t src_block_id, kefir_opt_block_id_t dst_block_id) {
+                                                  kefir_opt_block_id_t src_block_id,
+                                                  kefir_opt_block_id_t dst_block_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
 
@@ -305,12 +306,9 @@ kefir_result_t kefir_opt_code_structure_drop_edge(struct kefir_mem *mem, struct 
     REQUIRE(dst_block_id < total_blocks,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is out of code container bounds"));
 
-        
-    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[src_block_id].successors);
-        iter != NULL;) {
+    for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[src_block_id].successors); iter != NULL;) {
         struct kefir_list_entry *next_iter = iter->next;
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id,
-            (kefir_uptr_t) iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, successor_block_id, (kefir_uptr_t) iter->value);
         if (successor_block_id == dst_block_id) {
             REQUIRE_OK(kefir_list_pop(mem, &structure->blocks[src_block_id].successors, iter));
         }
@@ -318,10 +316,9 @@ kefir_result_t kefir_opt_code_structure_drop_edge(struct kefir_mem *mem, struct 
     }
 
     for (struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[dst_block_id].predecessors);
-        iter != NULL;) {
+         iter != NULL;) {
         struct kefir_list_entry *next_iter = iter->next;
-        ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id,
-            (kefir_uptr_t) iter->value);
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
         if (predecessor_block_id == src_block_id) {
             REQUIRE_OK(kefir_list_pop(mem, &structure->blocks[dst_block_id].predecessors, iter));
         }
@@ -345,6 +342,37 @@ kefir_result_t kefir_opt_code_structure_is_reachable_from_entry(const struct kef
 
     *reachable_flag_ptr =
         block_id == structure->code->entry_point || structure->blocks[block_id].immediate_dominator != KEFIR_ID_NONE;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_structure_block_direct_predecessor(const struct kefir_opt_code_structure *structure,
+                                                                 kefir_opt_block_id_t block_id,
+                                                                 kefir_opt_block_id_t successor_block_id,
+                                                                 kefir_bool_t *result_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    kefir_size_t num_of_blocks;
+    REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
+    REQUIRE(block_id < num_of_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
+    REQUIRE(successor_block_id < num_of_blocks,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided block identifier is outside of code container bounds"));
+
+    const struct kefir_opt_code_block *successor_block;
+    REQUIRE_OK(kefir_opt_code_container_block(structure->code, successor_block_id, &successor_block));
+
+    kefir_bool_t found_block_id = false;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&structure->blocks[successor_block_id].predecessors);
+         !found_block_id && iter != NULL; kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_block_id_t, predecessor_block_id, (kefir_uptr_t) iter->value);
+
+        if (predecessor_block_id == block_id) {
+            found_block_id = true;
+        }
+    }
+
+    *result_ptr = found_block_id;
     return KEFIR_OK;
 }
 

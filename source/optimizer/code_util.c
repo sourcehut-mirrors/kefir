@@ -20,6 +20,7 @@
 
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/builder.h"
+#include "kefir/optimizer/structure.h"
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -113,6 +114,18 @@ static kefir_result_t extract_inputs_typed_ref2(const struct kefir_opt_code_cont
     UNUSED(resolve_phi);
     INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
     INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+    return KEFIR_OK;
+}
+
+static kefir_result_t extract_inputs_ref3_cond(const struct kefir_opt_code_container *code,
+                                               const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+                                               kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                               void *payload) {
+    UNUSED(code);
+    UNUSED(resolve_phi);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[2], callback, payload);
     return KEFIR_OK;
 }
 
@@ -549,5 +562,226 @@ kefir_result_t kefir_opt_code_split_block_after(struct kefir_mem *mem, struct ke
         return res;
     });
     REQUIRE_OK(kefir_queue_free(mem, &instr_queue));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_instruction *instr,
+                                                         kefir_bool_t *result_ptr) {
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+    REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_INT_CONST:
+        case KEFIR_OPT_OPCODE_UINT_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT32_CONST:
+        case KEFIR_OPT_OPCODE_FLOAT64_CONST:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_CONST:
+        case KEFIR_OPT_OPCODE_STRING_REF:
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
+        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
+        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
+        case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
+        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS:
+        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
+        case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
+            *result_ptr = true;
+            break;
+
+        default:
+            *result_ptr = false;
+            break;
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                          kefir_opt_instruction_ref_t instr_ref, kefir_opt_block_id_t target_block_id,
+                                          kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    kefir_bool_t is_control_flow;
+    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
+    REQUIRE(!is_control_flow,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to move instruction which is a part of block control flow"));
+
+    kefir_opt_instruction_ref_t moved_instr_ref;
+    REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, target_block_id, instr_ref, &moved_instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, moved_instr_ref, instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
+    ASSIGN_PTR(moved_instr_ref_ptr, moved_instr_ref);
+
+    return KEFIR_OK;
+}
+
+struct move_instrs_param {
+    struct kefir_mem *mem;
+    struct kefir_opt_code_container *code;
+    kefir_opt_block_id_t source_block_id;
+    kefir_opt_block_id_t target_block_id;
+    kefir_opt_instruction_ref_t moved_instr_ref;
+};
+
+static kefir_result_t move_instr_to(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct move_instrs_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
+    REQUIRE(instr->block_id == param->source_block_id, KEFIR_OK);
+
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, move_instr_to, payload));
+    REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, instr_ref, param->target_block_id,
+                                          &param->moved_instr_ref));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_mem *mem,
+                                                                  struct kefir_opt_code_container *code,
+                                                                  kefir_opt_instruction_ref_t instr_ref,
+                                                                  kefir_opt_block_id_t target_block_id,
+                                                                  kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+
+    struct move_instrs_param param = {.mem = mem,
+                                      .code = code,
+                                      .source_block_id = instr->block_id,
+                                      .target_block_id = target_block_id,
+                                      .moved_instr_ref = KEFIR_ID_NONE};
+    REQUIRE_OK(move_instr_to(instr_ref, &param));
+    ASSIGN_PTR(moved_instr_ref_ptr, param.moved_instr_ref);
+    return KEFIR_OK;
+}
+
+static kefir_result_t can_move_isolated_instruction(const struct kefir_opt_code_structure *structure,
+                                                    kefir_opt_instruction_ref_t instr_ref,
+                                                    kefir_opt_block_id_t target_block_id,
+                                                    const struct kefir_hashtreeset *moved_instr,
+                                                    const struct kefir_opt_can_move_instruction_ignore_use *ignore_use,
+                                                    kefir_bool_t *can_move_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(can_move_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *can_move_ptr = false;
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+    REQUIRE(instr->block_id != target_block_id, KEFIR_OK);
+
+    kefir_bool_t is_control_flow;
+    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(structure->code, instr_ref, &is_control_flow));
+    REQUIRE(!is_control_flow, KEFIR_OK);
+
+    kefir_bool_t is_side_effect_free;
+    REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
+    REQUIRE(is_side_effect_free, KEFIR_OK);
+
+    struct kefir_opt_instruction_use_iterator use_iter;
+    kefir_result_t res;
+    for (res = kefir_opt_code_container_instruction_use_instr_iter(structure->code, instr_ref, &use_iter);
+         res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+        if (kefir_hashtreeset_has(moved_instr, (kefir_hashtreeset_entry_t) use_iter.use_instr_ref)) {
+            continue;
+        }
+        if (ignore_use != NULL && ignore_use->callback != NULL) {
+            kefir_bool_t ignore_use_flag = false;
+            REQUIRE_OK(ignore_use->callback(instr_ref, use_iter.use_instr_ref, &ignore_use_flag, ignore_use->payload));
+            if (ignore_use_flag) {
+                continue;
+            }
+        }
+        const struct kefir_opt_instruction *use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(structure->code, use_iter.use_instr_ref, &use_instr));
+        REQUIRE(use_instr->block_id != target_block_id || use_instr->operation.opcode != KEFIR_OPT_OPCODE_PHI,
+                KEFIR_OK);
+        kefir_bool_t is_dominator;
+        REQUIRE_OK(
+            kefir_opt_code_structure_is_dominator(structure, use_instr->block_id, target_block_id, &is_dominator));
+        REQUIRE(is_dominator, KEFIR_OK);
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+
+    *can_move_ptr = true;
+    return KEFIR_OK;
+}
+
+struct can_move_param {
+    struct kefir_mem *mem;
+    const struct kefir_opt_code_structure *structure;
+    kefir_opt_block_id_t source_block_id;
+    kefir_opt_block_id_t target_block_id;
+    struct kefir_hashtreeset moved_instr;
+    const struct kefir_opt_can_move_instruction_ignore_use *ignore_use;
+    kefir_bool_t can_move;
+};
+
+static kefir_result_t can_move_instr(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct can_move_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
+    REQUIRE(param->can_move, KEFIR_OK);
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
+    if (instr->block_id != param->source_block_id) {
+        kefir_bool_t is_dominator;
+        REQUIRE_OK(kefir_opt_code_structure_is_dominator(param->structure, param->target_block_id, instr->block_id,
+                                                         &is_dominator));
+        if (!is_dominator) {
+            param->can_move = false;
+        }
+        return KEFIR_OK;
+    }
+
+    kefir_bool_t can_move_isolated = false;
+    REQUIRE_OK(can_move_isolated_instruction(param->structure, instr_ref, param->target_block_id, &param->moved_instr,
+                                             param->ignore_use, &can_move_isolated));
+    if (!can_move_isolated) {
+        param->can_move = false;
+        return KEFIR_OK;
+    }
+
+    REQUIRE_OK(kefir_hashtreeset_add(param->mem, &param->moved_instr, (kefir_hashtreeset_entry_t) instr_ref));
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, can_move_instr, payload));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_can_move_instruction_with_local_dependencies(
+    struct kefir_mem *mem, const struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_block_id_t target_block_id, const struct kefir_opt_can_move_instruction_ignore_use *ignore_use,
+    kefir_bool_t *can_move_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(can_move_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+
+    struct can_move_param param = {.mem = mem,
+                                   .structure = structure,
+                                   .source_block_id = instr->block_id,
+                                   .target_block_id = target_block_id,
+                                   .ignore_use = ignore_use,
+                                   .can_move = true};
+    REQUIRE_OK(kefir_hashtreeset_init(&param.moved_instr, &kefir_hashtree_uint_ops));
+    kefir_result_t res = can_move_instr(instr_ref, &param);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &param.moved_instr);
+        return KEFIR_OK;
+    });
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &param.moved_instr));
+
+    *can_move_ptr = param.can_move;
+
     return KEFIR_OK;
 }

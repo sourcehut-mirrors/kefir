@@ -912,3 +912,60 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
 
     return KEFIR_OK;
 }
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *mem,
+                                                            struct kefir_codegen_amd64_function *function,
+                                                            const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t condition_vreg, arg1_vreg, arg2_vreg, arg2_placement_vreg, result_vreg;
+    REQUIRE_OK(
+        kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &condition_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[1], &arg1_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[2], &arg2_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg2_placement_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, arg1_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         arg2_placement_vreg, arg2_vreg, NULL));
+    switch (instruction->operation.parameters.condition_variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg), NULL));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+            REQUIRE_OK(kefir_asmcmp_amd64_test(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg), NULL));
+            break;
+    }
+
+    REQUIRE_OK(kefir_asmcmp_amd64_cmovz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+                                        &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
