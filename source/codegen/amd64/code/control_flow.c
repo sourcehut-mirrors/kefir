@@ -786,47 +786,38 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
         &function->function->code, instruction->operation.parameters.branch.alternative_block, &alternative_block));
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code, instruction->block_id, &source_block));
 
-    kefir_bool_t invert_condition = false;
+    const kefir_bool_t invert_condition = KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instruction->operation.parameters.branch.condition_variant);
     const struct kefir_opt_instruction *condition_instr;
     kefir_asmcmp_virtual_register_index_t condition_vreg_idx;
     REQUIRE_OK(kefir_opt_code_container_instr(
         &function->function->code, instruction->operation.parameters.branch.condition_ref, &condition_instr));
-    if ((instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT &&
-         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT) ||
-        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT &&
-         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT) ||
-        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT &&
-         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT) ||
-        (instruction->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT &&
-         condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)) {
-        invert_condition = true;
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, condition_instr->operation.parameters.refs[0],
-                                                        &condition_vreg_idx));
-    } else {
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-            function, instruction->operation.parameters.branch.condition_ref, &condition_vreg_idx));
-    }
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
+        function, instruction->operation.parameters.branch.condition_ref, &condition_vreg_idx));
 
     switch (instruction->operation.parameters.branch.condition_variant) {
         case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg_idx), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg_idx), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg_idx), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg_idx), &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg_idx), NULL));
@@ -1131,35 +1122,47 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          arg2_placement_vreg, arg2_vreg, NULL));
+    
+    const kefir_bool_t invert_condition = KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instruction->operation.parameters.condition_variant);
     switch (instruction->operation.parameters.condition_variant) {
         case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG8(condition_vreg), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG16(condition_vreg), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG32(condition_vreg), NULL));
             break;
 
         case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
             REQUIRE_OK(kefir_asmcmp_amd64_test(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg), &KEFIR_ASMCMP_MAKE_VREG64(condition_vreg), NULL));
             break;
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_cmovz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
-                                        &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+    if (invert_condition) {
+        REQUIRE_OK(kefir_asmcmp_amd64_cmovnz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+                                            &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_cmovz(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+                                            &KEFIR_ASMCMP_MAKE_VREG64(arg2_placement_vreg), NULL));
+    }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;

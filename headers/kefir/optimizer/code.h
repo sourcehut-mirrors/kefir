@@ -109,6 +109,8 @@ typedef enum kefir_opt_comparison_operation {
     KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL
 } kefir_opt_comparison_operation_t;
 
+kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t, kefir_opt_comparison_operation_t *);
+
 #define KEFIR_OPT_COMPARISON_IS_INTEGRAL(_comparison) \
     ((_comparison) == KEFIR_OPT_COMPARISON_INT8_EQUALS || \
      (_comparison) == KEFIR_OPT_COMPARISON_INT16_EQUALS || \
@@ -162,10 +164,21 @@ typedef enum kefir_opt_operation_reference_index {
 
 typedef enum kefir_opt_branch_condition_variant {
     KEFIR_OPT_BRANCH_CONDITION_8BIT,
+    KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT,
     KEFIR_OPT_BRANCH_CONDITION_16BIT,
+    KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT,
     KEFIR_OPT_BRANCH_CONDITION_32BIT,
-    KEFIR_OPT_BRANCH_CONDITION_64BIT
+    KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT,
+    KEFIR_OPT_BRANCH_CONDITION_64BIT,
+    KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT
 } kefir_opt_branch_condition_variant_t;
+
+#define KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(_variant) \
+    ((_variant) == KEFIR_OPT_BRANCH_CONDITION_8BIT || \
+    (_variant) == KEFIR_OPT_BRANCH_CONDITION_16BIT || \
+    (_variant) == KEFIR_OPT_BRANCH_CONDITION_32BIT || \
+    (_variant) == KEFIR_OPT_BRANCH_CONDITION_64BIT)
+#define KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(_variant) (!KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT((_variant)))
 
 typedef struct kefir_opt_operation_parameters {
     kefir_opt_instruction_ref_t refs[4];

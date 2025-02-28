@@ -32,6 +32,43 @@ static kefir_result_t id_format(struct kefir_json_output *json, kefir_id_t id) {
     return KEFIR_OK;
 }
 
+static kefir_result_t format_condition_variamt(struct kefir_json_output *json, kefir_opt_branch_condition_variant_t variant) {
+    switch (variant) {
+        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "8bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "inverted_8bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "16bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "inverted_16bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "32bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "inverted_32bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "64bit"));
+            break;
+
+        case KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT:
+            REQUIRE_OK(kefir_json_output_string(json, "inverted_64bit"));
+            break;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_branch(struct kefir_json_output *json,
                                               const struct kefir_opt_code_container *code,
                                               const struct kefir_opt_operation *oper) {
@@ -50,23 +87,7 @@ static kefir_result_t format_operation_branch(struct kefir_json_output *json,
             REQUIRE_OK(kefir_json_output_object_key(json, "condition"));
             REQUIRE_OK(id_format(json, oper->parameters.branch.condition_ref));
             REQUIRE_OK(kefir_json_output_object_key(json, "condition_variant"));
-            switch (oper->parameters.branch.condition_variant) {
-                case KEFIR_OPT_BRANCH_CONDITION_8BIT:
-                    REQUIRE_OK(kefir_json_output_string(json, "8bit"));
-                    break;
-
-                case KEFIR_OPT_BRANCH_CONDITION_16BIT:
-                    REQUIRE_OK(kefir_json_output_string(json, "16bit"));
-                    break;
-
-                case KEFIR_OPT_BRANCH_CONDITION_32BIT:
-                    REQUIRE_OK(kefir_json_output_string(json, "32bit"));
-                    break;
-
-                case KEFIR_OPT_BRANCH_CONDITION_64BIT:
-                    REQUIRE_OK(kefir_json_output_string(json, "64bit"));
-                    break;
-            }
+            REQUIRE_OK(format_condition_variamt(json, oper->parameters.branch.condition_variant));
             break;
 
         default:
@@ -366,23 +387,7 @@ static kefir_result_t format_operation_ref3_cond(struct kefir_json_output *json,
                                                  const struct kefir_opt_operation *oper) {
     UNUSED(code);
     REQUIRE_OK(kefir_json_output_object_key(json, "variant"));
-    switch (oper->parameters.condition_variant) {
-        case KEFIR_OPT_BRANCH_CONDITION_8BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "8bit"));
-            break;
-
-        case KEFIR_OPT_BRANCH_CONDITION_16BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "16bit"));
-            break;
-
-        case KEFIR_OPT_BRANCH_CONDITION_32BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "32bit"));
-            break;
-
-        case KEFIR_OPT_BRANCH_CONDITION_64BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "64bit"));
-            break;
-    }
+    REQUIRE_OK(format_condition_variamt(json, oper->parameters.condition_variant));
     REQUIRE_OK(kefir_json_output_object_key(json, "args"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     REQUIRE_OK(id_format(json, oper->parameters.refs[0]));

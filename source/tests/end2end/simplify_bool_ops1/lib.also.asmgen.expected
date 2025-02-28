@@ -71,14 +71,13 @@ __kefir_text_func_int_and_begin:
     test %edi, %edi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %esi, %esi
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_int_and_end:
 
@@ -126,14 +125,13 @@ __kefir_text_func_char_and_begin:
     test %dil, %dil
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %sil, %sil
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_char_and_end:
 
@@ -166,25 +164,22 @@ __kefir_text_func_int_and3_begin:
     test %edi, %edi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %esi, %esi
-    setne %sil
-    movzx %sil, %rsi
-    test %cl, %cl
-    cmovz %rsi, %rax
-    test %eax, %eax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rsi
+    test %al, %al
+    cmovnz %rcx, %rsi
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %edx, %edx
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_int_and3_end:
 
@@ -193,15 +188,13 @@ __kefir_text_func_long_and_begin:
     test %rdi, %rdi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %rsi, %rsi
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
-    movsx %eax, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    movsx %edx, %rax
     ret
 __kefir_text_func_long_and_end:
 
@@ -249,25 +242,22 @@ __kefir_text_func_char_and3_begin:
     test %dil, %dil
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %sil, %sil
-    setne %sil
-    movzx %sil, %rsi
-    test %cl, %cl
-    cmovz %rsi, %rax
-    test %eax, %eax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rsi
+    test %al, %al
+    cmovnz %rcx, %rsi
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %dl, %dl
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_char_and3_end:
 
@@ -276,26 +266,22 @@ __kefir_text_func_long_and3_begin:
     test %rdi, %rdi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %rsi, %rsi
-    setne %sil
-    movzx %sil, %rsi
-    test %cl, %cl
-    cmovz %rsi, %rax
-    test %eax, %eax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rsi
+    test %al, %al
+    cmovnz %rcx, %rsi
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %rdx, %rdx
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
-    movsx %eax, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    movsx %edx, %rax
     ret
 __kefir_text_func_long_and3_end:
 
@@ -304,14 +290,13 @@ __kefir_text_func_short_and_begin:
     test %di, %di
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %si, %si
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_short_and_end:
 
@@ -344,25 +329,22 @@ __kefir_text_func_short_and3_begin:
     test %di, %di
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %si, %si
-    setne %sil
-    movzx %sil, %rsi
-    test %cl, %cl
-    cmovz %rsi, %rax
-    test %eax, %eax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rsi
+    test %al, %al
+    cmovnz %rcx, %rsi
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    test %al, %al
-    sete %cl
     test %dx, %dx
-    setne %dl
-    movzx %dl, %rdx
-    test %cl, %cl
-    cmovz %rdx, %rax
+    setne %cl
+    movzx %cl, %rcx
+    mov %rax, %rdx
+    test %al, %al
+    cmovnz %rcx, %rdx
+    mov %rdx, %rax
     ret
 __kefir_text_func_short_and3_end:
 

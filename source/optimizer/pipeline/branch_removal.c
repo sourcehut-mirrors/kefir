@@ -54,8 +54,12 @@ static kefir_result_t branch_removal_apply(struct kefir_mem *mem, const struct k
             kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
         if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
             arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+            kefir_bool_t condition = arg1->operation.parameters.imm.integer != 0;
+            if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instr->operation.parameters.branch.condition_variant)) {
+                condition = !condition;
+            }
             REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
-            if (arg1->operation.parameters.imm.integer != 0) {
+            if (condition) {
                 REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
                     mem, &func->code, block_id, instr->operation.parameters.branch.target_block, &replacement_ref));
             } else {
