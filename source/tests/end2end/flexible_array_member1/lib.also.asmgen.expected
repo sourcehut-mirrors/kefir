@@ -29,6 +29,9 @@ __kefir_text_func_get_T2_begin:
     test %ecx, %ecx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_get_T2_label4
     mov %rax, %rsi

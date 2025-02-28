@@ -64,11 +64,23 @@ static kefir_result_t phi_select_match(struct kefir_mem *mem, struct kefir_opt_f
 
     const struct kefir_opt_instruction *immediate_dominator_tail;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, immediate_dominator_tail_ref, &immediate_dominator_tail));
-    REQUIRE(immediate_dominator_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
 
-    kefir_opt_branch_condition_variant_t condition_variant =
-        immediate_dominator_tail->operation.parameters.branch.condition_variant;
-    kefir_opt_instruction_ref_t condition_ref = immediate_dominator_tail->operation.parameters.branch.condition_ref;
+    kefir_bool_t comparison = false;
+    kefir_opt_branch_condition_variant_t condition_variant;
+    kefir_opt_instruction_ref_t condition_ref, comparison_arg1, comparison_arg2;
+    kefir_opt_comparison_operation_t comparison_operation;
+
+    if (immediate_dominator_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH) {
+        condition_variant = immediate_dominator_tail->operation.parameters.branch.condition_variant;
+        condition_ref = immediate_dominator_tail->operation.parameters.branch.condition_ref;
+    } else if (immediate_dominator_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE && KEFIR_OPT_COMPARISON_IS_INTEGRAL(immediate_dominator_tail->operation.parameters.branch.comparison.operation)) {
+        comparison_operation = immediate_dominator_tail->operation.parameters.branch.comparison.operation;
+        comparison_arg1 = immediate_dominator_tail->operation.parameters.refs[0];
+        comparison_arg2 = immediate_dominator_tail->operation.parameters.refs[1];
+        comparison = true;
+    } else {
+        return KEFIR_OK;
+    }
 
     const kefir_opt_block_id_t immediate_dominator_target =
         immediate_dominator_tail->operation.parameters.branch.target_block;
@@ -136,8 +148,13 @@ static kefir_result_t phi_select_match(struct kefir_mem *mem, struct kefir_opt_f
     }
 
     kefir_opt_instruction_ref_t replacement_ref;
-    REQUIRE_OK(kefir_opt_code_builder_select(mem, &func->code, phi_instr_block_id, condition_variant, condition_ref,
-                                             link_ref1, link_ref2, &replacement_ref));
+    if (!comparison) {
+        REQUIRE_OK(kefir_opt_code_builder_select(mem, &func->code, phi_instr_block_id, condition_variant, condition_ref,
+                                                link_ref1, link_ref2, &replacement_ref));
+    } else {
+        REQUIRE_OK(kefir_opt_code_builder_select_compare(mem, &func->code, phi_instr_block_id, comparison_operation, comparison_arg1, comparison_arg2,
+                                                link_ref1, link_ref2, &replacement_ref));
+    }
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, phi_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, phi_instr_ref));
 

@@ -109,6 +109,48 @@ typedef enum kefir_opt_comparison_operation {
     KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL
 } kefir_opt_comparison_operation_t;
 
+#define KEFIR_OPT_COMPARISON_IS_INTEGRAL(_comparison) \
+    ((_comparison) == KEFIR_OPT_COMPARISON_INT8_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_GREATER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_GREATER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_GREATER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_GREATER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_LESSER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_LESSER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_LESSER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_LESSER || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_ABOVE || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_ABOVE || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_ABOVE || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_ABOVE || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_BELOW || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_BELOW || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_BELOW || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_BELOW || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS || \
+     (_comparison) == KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS)
+
 typedef enum kefir_opt_operation_reference_index {
     KEFIR_OPT_BITFIELD_BASE_REF = 0,
     KEFIR_OPT_BITFIELD_VALUE_REF = 1,
@@ -126,7 +168,7 @@ typedef enum kefir_opt_branch_condition_variant {
 } kefir_opt_branch_condition_variant_t;
 
 typedef struct kefir_opt_operation_parameters {
-    kefir_opt_instruction_ref_t refs[3];
+    kefir_opt_instruction_ref_t refs[4];
     struct {
         kefir_id_t type_id;
         kefir_size_t type_index;
@@ -149,14 +191,14 @@ typedef struct kefir_opt_operation_parameters {
             kefir_opt_block_id_t alternative_block;
             union {
                 struct {
-                    kefir_opt_branch_condition_variant_t condition_variant;
-                    kefir_opt_instruction_ref_t condition_ref;
-                };
-
-                struct {
-                    kefir_opt_comparison_operation_t operation;
-                } comparison;
+                kefir_opt_branch_condition_variant_t condition_variant;
+                kefir_opt_instruction_ref_t condition_ref;
             };
+
+            struct {
+                kefir_opt_comparison_operation_t operation;
+            } comparison;
+        };
         } branch;
 
         union {

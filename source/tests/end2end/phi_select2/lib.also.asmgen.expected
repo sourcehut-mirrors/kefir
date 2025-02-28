@@ -1,0 +1,108 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global select_above_or_equals
+.type select_above_or_equals, @function
+.global select_not_equals
+.type select_not_equals, @function
+.global select_lesser_or_equals
+.type select_lesser_or_equals, @function
+.global select_equals
+.type select_equals, @function
+.global select_lesser
+.type select_lesser, @function
+.global select_greater_or_equals
+.type select_greater_or_equals, @function
+.global select_above
+.type select_above, @function
+.global select_below
+.type select_below, @function
+.global select_greater
+.type select_greater, @function
+.global select_below_or_equals
+.type select_below_or_equals, @function
+
+.section .text
+__kefir_text_section_begin:
+select_above_or_equals:
+__kefir_text_func_select_above_or_equals_begin:
+    cmp %rsi, %rdi
+    cmovb %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_above_or_equals_end:
+
+select_not_equals:
+__kefir_text_func_select_not_equals_begin:
+    cmp %rsi, %rdi
+    cmove %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_not_equals_end:
+
+select_lesser_or_equals:
+__kefir_text_func_select_lesser_or_equals_begin:
+    cmp %rsi, %rdi
+    cmovg %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_lesser_or_equals_end:
+
+select_equals:
+__kefir_text_func_select_equals_begin:
+    cmp %rsi, %rdi
+    cmovne %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_equals_end:
+
+select_lesser:
+__kefir_text_func_select_lesser_begin:
+    cmp %rsi, %rdi
+    cmovge %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_lesser_end:
+
+select_greater_or_equals:
+__kefir_text_func_select_greater_or_equals_begin:
+    cmp %rsi, %rdi
+    cmovl %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_greater_or_equals_end:
+
+select_above:
+__kefir_text_func_select_above_begin:
+    cmp %rsi, %rdi
+    cmovbe %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_above_end:
+
+select_below:
+__kefir_text_func_select_below_begin:
+    cmp %rsi, %rdi
+    cmovae %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_below_end:
+
+select_greater:
+__kefir_text_func_select_greater_begin:
+    cmp %rsi, %rdi
+    cmovle %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_greater_end:
+
+select_below_or_equals:
+__kefir_text_func_select_below_or_equals_begin:
+    cmp %rsi, %rdi
+    cmova %rcx, %rdx
+    mov %rdx, %rax
+    ret
+__kefir_text_func_select_below_or_equals_end:
+
+__kefir_text_section_end:
+

@@ -151,25 +151,17 @@ __kefir_text_func_test7_begin:
     sub $16, %rsp
     movl %edi, -4(%rbp)
     movsxl -4(%rbp), %rax
+    leaq -4(%rbp), %rdi
+    xor %ecx, %ecx
     cmp $0, %eax
-    jle _kefir_func_test7_label3
-    leaq -4(%rbp), %rcx
-_kefir_func_test7_label2:
-    movq %rcx, -16(%rbp)
-    mov %rcx, %rdi
+    cmovle %rcx, %rdi
     call somefn@PLT
-    movq -16(%rbp), %rcx
     movsxl -4(%rbp), %rdi
     add $1, %edi
-    movq %rcx, -16(%rbp)
     call test7
-    movq -16(%rbp), %rcx
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_test7_label3:
-    xor %ecx, %ecx
-    jmp _kefir_func_test7_label2
 __kefir_text_func_test7_end:
 
 test8:
@@ -179,24 +171,19 @@ __kefir_text_func_test8_begin:
     sub $16, %rsp
     mov %rdi, %rax
     movsx %eax, %rcx
+    movsx %eax, %rdx
+    xor %esi, %esi
     cmp $0, %ecx
-    jle _kefir_func_test8_label3
-    movsx %eax, %rcx
-_kefir_func_test8_label2:
-    movsx %ecx, %rdi
+    cmovle %rsi, %rdx
+    movsx %edx, %rdi
     movq %rax, -16(%rbp)
-    movq %rcx, -8(%rbp)
     call somefn@PLT
     movq -16(%rbp), %rax
-    movq -8(%rbp), %rcx
     mov %rax, %rdi
     add $1, %edi
     lea (%rbp), %rsp
     pop %rbp
     jmp test8
-_kefir_func_test8_label3:
-    xor %ecx, %ecx
-    jmp _kefir_func_test8_label2
 __kefir_text_func_test8_end:
 
 test9:

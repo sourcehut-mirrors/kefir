@@ -30,6 +30,7 @@
     OPCODE(PHI, "phi", phi_ref) SEPARATOR \
     OPCODE(INLINE_ASSEMBLY, "inline_assembly", inline_asm) SEPARATOR \
     OPCODE(SELECT, "select", ref3_cond) SEPARATOR \
+    OPCODE(SELECT_COMPARE, "select_compare", ref4_compare) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \

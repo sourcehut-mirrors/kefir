@@ -1961,6 +1961,16 @@ static kefir_result_t replace_references_ref3_cond(struct kefir_opt_instruction 
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_ref4_compare(struct kefir_opt_instruction *instr,
+                                                   kefir_opt_instruction_ref_t to_ref,
+                                                   kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[2], to_ref, from_ref);
+    REPLACE_REF(&instr->operation.parameters.refs[3], to_ref, from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_load_mem(struct kefir_opt_instruction *instr,
                                                   kefir_opt_instruction_ref_t to_ref,
                                                   kefir_opt_instruction_ref_t from_ref) {

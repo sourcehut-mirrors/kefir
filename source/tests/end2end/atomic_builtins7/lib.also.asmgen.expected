@@ -57,6 +57,9 @@ __kefir_text_func_test_is_lock_free_begin:
     test %ecx, %ecx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label18
     mov %rax, %r8
@@ -64,6 +67,9 @@ _kefir_func_test_is_lock_free_label1:
     test %r8d, %r8d
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label17
     mov %rax, %rdx
@@ -71,6 +77,9 @@ _kefir_func_test_is_lock_free_label2:
     test %edx, %edx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label16
     mov %rax, %r8
@@ -78,6 +87,9 @@ _kefir_func_test_is_lock_free_label3:
     test %r8d, %r8d
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label15
     mov %rax, %rdx
@@ -85,6 +97,9 @@ _kefir_func_test_is_lock_free_label4:
     test %edx, %edx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label14
     mov %rax, %r8
@@ -92,6 +107,9 @@ _kefir_func_test_is_lock_free_label5:
     test %r8d, %r8d
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label13
     mov %rax, %rdx
@@ -99,6 +117,9 @@ _kefir_func_test_is_lock_free_label6:
     test %edx, %edx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label12
     mov %rax, %r8
@@ -106,6 +127,9 @@ _kefir_func_test_is_lock_free_label7:
     test %r8d, %r8d
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label11
     mov %rax, %rdx
@@ -113,6 +137,9 @@ _kefir_func_test_is_lock_free_label8:
     test %edx, %edx
     setne %al
     movzx %al, %rax
+    xor %ecx, %ecx
+    test %al, %al
+    sete %cl
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label10
     mov %rax, %rcx

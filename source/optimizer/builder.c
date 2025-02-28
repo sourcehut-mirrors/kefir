@@ -324,11 +324,39 @@ kefir_result_t kefir_opt_code_builder_select(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
+    REQUIRE_OK(instr_exists(code, block_id, ref2, false));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation) {
             .opcode = KEFIR_OPT_OPCODE_SELECT,
             .parameters = {.condition_variant = condition_variant, .refs = {condition_ref, ref1, ref2}}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_select_compare(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+    kefir_opt_block_id_t block_id, kefir_opt_comparison_operation_t comparison_op,
+    kefir_opt_instruction_ref_t comparison_arg1, kefir_opt_instruction_ref_t comparison_arg2, kefir_opt_instruction_ref_t ref1,
+    kefir_opt_instruction_ref_t ref2, kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(instr_exists(code, block_id, comparison_arg1, false));
+    REQUIRE_OK(instr_exists(code, block_id, comparison_arg2, false));
+    REQUIRE_OK(instr_exists(code, block_id, ref1, false));
+    REQUIRE_OK(instr_exists(code, block_id, ref2, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {
+            .opcode = KEFIR_OPT_OPCODE_SELECT_COMPARE,
+            .parameters = {
+                .comparison = comparison_op,
+                .refs = {
+                    comparison_arg1, comparison_arg2,
+                    ref1, ref2
+                }
+            }
+        },
         false, instr_id_ptr));
     return KEFIR_OK;
 }

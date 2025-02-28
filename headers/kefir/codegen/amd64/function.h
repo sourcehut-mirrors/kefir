@@ -102,6 +102,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(get_argument, KEFIR_OPT_OPCODE_GET_ARGUMENT) _separator \
     _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
     _def(select, KEFIR_OPT_OPCODE_SELECT) _separator \
+    _def(select_compare, KEFIR_OPT_OPCODE_SELECT_COMPARE) _separator \
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
     _def(uint_const, KEFIR_OPT_OPCODE_UINT_CONST) _separator \
     _def(float32_const, KEFIR_OPT_OPCODE_FLOAT32_CONST) _separator \
