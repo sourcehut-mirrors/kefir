@@ -45,7 +45,6 @@
     "constant-fold," \
     "op-simplify," \
     "drop-dead-phi-links," \
-    "phi-select," \
     "op-simplify," \
     "block-merge," \
     "tail-calls"
