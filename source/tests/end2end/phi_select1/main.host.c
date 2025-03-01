@@ -26,6 +26,22 @@
 #include <string.h>
 #include "./definitions.h"
 
+#ifdef CMPLXF
+#undef CMPLXF
+#endif
+
+#define CMPLXF(_a, _b) ((float) (_a) + I * (float) (_b))
+
+#ifdef CMPLX
+#undef CMPLX
+#endif
+#define CMPLX(_a, _b) ((double) (_a) + I * (double) (_b))
+
+#ifdef CMPLXL
+#undef CMPLXL
+#endif
+#define CMPLXL(_a, _b) ((long double) (_a) + I * (long double) (_b))
+
 int main(void) {
     assert(select1(1, 100, -100) == 100);
     assert(select1(0, 100, -100) == -100);
