@@ -1,0 +1,368 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global char_int_or
+.type char_int_or, @function
+.global int_char_or
+.type int_char_or, @function
+.global int_long_or
+.type int_long_or, @function
+.global long_int_or
+.type long_int_or, @function
+.global long_char_and
+.type long_char_and, @function
+.global long_short_or
+.type long_short_or, @function
+.global short_char_and
+.type short_char_and, @function
+.global short_long_and
+.type short_long_and, @function
+.global long_short_and
+.type long_short_and, @function
+.global short_char_or
+.type short_char_or, @function
+.global short_int_and
+.type short_int_and, @function
+.global short_long_or
+.type short_long_or, @function
+.global char_int_and
+.type char_int_and, @function
+.global char_long_or
+.type char_long_or, @function
+.global int_char_and
+.type int_char_and, @function
+.global int_long_and
+.type int_long_and, @function
+.global int_short_or
+.type int_short_or, @function
+.global long_char_or
+.type long_char_or, @function
+.global long_int_and
+.type long_int_and, @function
+.global short_int_or
+.type short_int_or, @function
+.global char_long_and
+.type char_long_and, @function
+.global char_short_or
+.type char_short_or, @function
+.global char_short_and
+.type char_short_and, @function
+.global int_short_and
+.type int_short_and, @function
+
+.section .text
+__kefir_text_section_begin:
+char_int_or:
+__kefir_text_func_char_int_or_begin:
+    test %esi, %esi
+    setne %al
+    movzx %al, %rax
+    or %al, %dil
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_char_int_or_end:
+
+int_char_or:
+__kefir_text_func_int_char_or_begin:
+    test %sil, %sil
+    setne %al
+    movzx %al, %rax
+    or %eax, %edi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_char_or_end:
+
+int_long_or:
+__kefir_text_func_int_long_or_begin:
+    test %rsi, %rsi
+    setne %al
+    movzx %al, %rax
+    or %eax, %edi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_long_or_end:
+
+long_int_or:
+__kefir_text_func_long_int_or_begin:
+    test %esi, %esi
+    setne %al
+    movzx %al, %rax
+    or %rax, %rdi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_long_int_or_end:
+
+long_char_and:
+__kefir_text_func_long_char_and_begin:
+    test %sil, %sil
+    setne %cl
+    movzx %cl, %rcx
+    test %rdi, %rdi
+    setne %al
+    test %rcx, %rcx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_long_char_and_end:
+
+long_short_or:
+__kefir_text_func_long_short_or_begin:
+    test %si, %si
+    setne %al
+    movzx %al, %rax
+    or %rax, %rdi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_long_short_or_end:
+
+short_char_and:
+__kefir_text_func_short_char_and_begin:
+    test %sil, %sil
+    setne %cl
+    movzx %cl, %rcx
+    test %di, %di
+    setne %al
+    test %cx, %cx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_short_char_and_end:
+
+short_long_and:
+__kefir_text_func_short_long_and_begin:
+    test %rsi, %rsi
+    setne %cl
+    movzx %cl, %rcx
+    test %di, %di
+    setne %al
+    test %cx, %cx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_short_long_and_end:
+
+long_short_and:
+__kefir_text_func_long_short_and_begin:
+    test %si, %si
+    setne %cl
+    movzx %cl, %rcx
+    test %rdi, %rdi
+    setne %al
+    test %rcx, %rcx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_long_short_and_end:
+
+short_char_or:
+__kefir_text_func_short_char_or_begin:
+    test %sil, %sil
+    setne %al
+    movzx %al, %rax
+    or %ax, %di
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_short_char_or_end:
+
+short_int_and:
+__kefir_text_func_short_int_and_begin:
+    test %esi, %esi
+    setne %cl
+    movzx %cl, %rcx
+    test %di, %di
+    setne %al
+    test %cx, %cx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_short_int_and_end:
+
+short_long_or:
+__kefir_text_func_short_long_or_begin:
+    test %rsi, %rsi
+    setne %al
+    movzx %al, %rax
+    or %ax, %di
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_short_long_or_end:
+
+char_int_and:
+__kefir_text_func_char_int_and_begin:
+    test %esi, %esi
+    setne %cl
+    movzx %cl, %rcx
+    test %dil, %dil
+    setne %al
+    test %cl, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_char_int_and_end:
+
+char_long_or:
+__kefir_text_func_char_long_or_begin:
+    test %rsi, %rsi
+    setne %al
+    movzx %al, %rax
+    or %al, %dil
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_char_long_or_end:
+
+int_char_and:
+__kefir_text_func_int_char_and_begin:
+    test %sil, %sil
+    setne %cl
+    movzx %cl, %rcx
+    test %edi, %edi
+    setne %al
+    test %ecx, %ecx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_int_char_and_end:
+
+int_long_and:
+__kefir_text_func_int_long_and_begin:
+    test %rsi, %rsi
+    setne %cl
+    movzx %cl, %rcx
+    test %edi, %edi
+    setne %al
+    test %ecx, %ecx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_int_long_and_end:
+
+int_short_or:
+__kefir_text_func_int_short_or_begin:
+    test %si, %si
+    setne %al
+    movzx %al, %rax
+    or %eax, %edi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_int_short_or_end:
+
+long_char_or:
+__kefir_text_func_long_char_or_begin:
+    test %sil, %sil
+    setne %al
+    movzx %al, %rax
+    or %rax, %rdi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_long_char_or_end:
+
+long_int_and:
+__kefir_text_func_long_int_and_begin:
+    test %esi, %esi
+    setne %cl
+    movzx %cl, %rcx
+    test %rdi, %rdi
+    setne %al
+    test %rcx, %rcx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_long_int_and_end:
+
+short_int_or:
+__kefir_text_func_short_int_or_begin:
+    test %esi, %esi
+    setne %al
+    movzx %al, %rax
+    or %ax, %di
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_short_int_or_end:
+
+char_long_and:
+__kefir_text_func_char_long_and_begin:
+    test %rsi, %rsi
+    setne %cl
+    movzx %cl, %rcx
+    test %dil, %dil
+    setne %al
+    test %cl, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_char_long_and_end:
+
+char_short_or:
+__kefir_text_func_char_short_or_begin:
+    test %si, %si
+    setne %al
+    movzx %al, %rax
+    or %al, %dil
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_char_short_or_end:
+
+char_short_and:
+__kefir_text_func_char_short_and_begin:
+    test %si, %si
+    setne %cl
+    movzx %cl, %rcx
+    test %dil, %dil
+    setne %al
+    test %cl, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_char_short_and_end:
+
+int_short_and:
+__kefir_text_func_int_short_and_begin:
+    test %si, %si
+    setne %cl
+    movzx %cl, %rcx
+    test %edi, %edi
+    setne %al
+    test %ecx, %ecx
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_int_short_and_end:
+
+__kefir_text_section_end:
+

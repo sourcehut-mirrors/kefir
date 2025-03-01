@@ -35,10 +35,10 @@ static kefir_result_t simplify_bool_not(struct kefir_mem *mem, struct kefir_opt_
     kefir_opt_comparison_operation_t inverse_comparison;
     if (arg0->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         switch (arg0->operation.parameters.comparison) {
-#define FLIP(_opcode)                                                                              \
+#define FLIP(_opcode)                                                                                           \
     case (_opcode):                                                                                             \
-        REQUIRE_OK(kefir_opt_comparison_operation_inverse((_opcode), &inverse_comparison)); \
-        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, inverse_comparison,             \
+        REQUIRE_OK(kefir_opt_comparison_operation_inverse((_opcode), &inverse_comparison));                     \
+        REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id, inverse_comparison,        \
                                                          arg0->operation.parameters.refs[0],                    \
                                                          arg0->operation.parameters.refs[1], replacement_ref)); \
         break
@@ -377,8 +377,8 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
 
     if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(arg1_block_tail->operation.parameters.branch.condition_variant)) {
         const struct kefir_opt_instruction *condition_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg1_block_tail->operation.parameters.branch.condition_ref,
-                                                &condition_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(
+            &func->code, arg1_block_tail->operation.parameters.branch.condition_ref, &condition_instr));
         REQUIRE(condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT, KEFIR_OK);
         REQUIRE(condition_instr->operation.parameters.refs[0] == arg1->id, KEFIR_OK);
     }
@@ -2624,8 +2624,8 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                       const struct kefir_opt_instruction *instr,
                                       kefir_opt_instruction_ref_t *replacement_ref) {
     const kefir_opt_block_id_t block_id = instr->block_id,
-                                target_block = instr->operation.parameters.branch.target_block,
-                                alternative_block = instr->operation.parameters.branch.alternative_block;
+                               target_block = instr->operation.parameters.branch.target_block,
+                               alternative_block = instr->operation.parameters.branch.alternative_block;
 
     const struct kefir_opt_instruction *arg1;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
@@ -2642,62 +2642,170 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch_compare(mem, &func->code, block_id, comparison, ref1, ref2,
                                                                   target_block, alternative_block, replacement_ref));
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
-        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
+                                                          KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT, condition_ref,
+                                                          target_block, alternative_block, replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
-        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
+                                                          KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT, condition_ref,
+                                                          target_block, alternative_block, replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
-        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
+                                                          KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT, condition_ref,
+                                                          target_block, alternative_block, replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
-        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
+                                                          KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT, condition_ref,
+                                                          target_block, alternative_block, replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_8BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+                                                          condition_ref, target_block, alternative_block,
+                                                          replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_16BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+                                                          condition_ref, target_block, alternative_block,
+                                                          replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_32BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+                                                          condition_ref, target_block, alternative_block,
+                                                          replacement_ref));
 
-    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT && instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT) {
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
+               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_64BIT,
-            condition_ref,
-            target_block, alternative_block, replacement_ref));
+                                                          condition_ref, target_block, alternative_block,
+                                                          replacement_ref));
+    }
+    return KEFIR_OK;
+}
 
+static kefir_result_t simplify_select(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                      const struct kefir_opt_instruction *instr,
+                                      kefir_opt_instruction_ref_t *replacement_ref) {
+
+    const struct kefir_opt_instruction *condition, *arg1, *arg2;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &condition));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg1));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[2], &arg2));
+
+    if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL &&
+        arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id,
+                                                           arg1->operation.parameters.refs[0],
+                                                           arg2->operation.parameters.refs[0], replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id,
+                                                            arg1->operation.parameters.refs[0],
+                                                            arg2->operation.parameters.refs[0], replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL &&
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL)) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(mem, &func->code, instr->block_id,
+                                                            arg1->operation.parameters.refs[0],
+                                                            arg2->operation.parameters.refs[0], replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(mem, &func->code, instr->block_id,
+                                                             arg1->operation.parameters.refs[0],
+                                                             arg2->operation.parameters.refs[0], replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL &&
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL)) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(mem, &func->code, instr->block_id,
+                                                            arg1->operation.parameters.refs[0],
+                                                            arg2->operation.parameters.refs[0], replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(mem, &func->code, instr->block_id,
+                                                             arg1->operation.parameters.refs[0],
+                                                             arg2->operation.parameters.refs[0], replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL &&
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL)) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL &&
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(mem, &func->code, instr->block_id,
+                                                            arg1->operation.parameters.refs[0],
+                                                            arg2->operation.parameters.refs[0], replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(mem, &func->code, instr->block_id,
+                                                             arg1->operation.parameters.refs[0],
+                                                             arg2->operation.parameters.refs[0], replacement_ref));
+        }
+    } else if (condition->id == arg1->id && arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL &&
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL)) {
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(instr->operation.parameters.condition_variant)) {
+            REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(
+                mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
+        }
     }
     return KEFIR_OK;
 }
@@ -2838,6 +2946,10 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, struct kefir
 
                     case KEFIR_OPT_OPCODE_BRANCH:
                         REQUIRE_OK(simplify_branch(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_SELECT:
+                        REQUIRE_OK(simplify_select(mem, func, instr, &replacement_ref));
                         break;
 
                     default:

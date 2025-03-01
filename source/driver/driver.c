@@ -34,14 +34,27 @@
 #include <limits.h>
 #include <libgen.h>
 
+// clang-format off
 #define KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC                                                                             \
-    "inline-func,phi-propagate,constant-fold,mem2reg,local-alloc-sink,phi-propagate,constant-fold,op-simplify,branch-" \
-    "removal,"                                                                                                         \
-    "drop-dead-phi-links,phi-select,block-merge,tail-calls"
+    "inline-func," \
+    "phi-propagate," \
+    "constant-fold," \
+    "mem2reg," \
+    "local-alloc-sink," \
+    "phi-propagate," \
+    "constant-fold," \
+    "op-simplify," \
+    "branch-removal," \
+    "drop-dead-phi-links," \
+    "phi-select," \
+    "op-simplify," \
+    "block-merge," \
+    "tail-calls"
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-func,local-alloc-sink"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
     "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"
+// clang-format on
 
 static kefir_result_t driver_generate_asm_config(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                                  struct kefir_driver_configuration *config,
