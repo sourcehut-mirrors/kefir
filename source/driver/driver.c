@@ -44,7 +44,7 @@
     "phi-propagate," \
     "constant-fold," \
     "op-simplify," \
-    "drop-dead-phi-links," \
+    "dead-code-elimination," \
     "op-simplify," \
     "block-merge," \
     "tail-calls"

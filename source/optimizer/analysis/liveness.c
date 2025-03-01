@@ -250,3 +250,17 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
 
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_opt_code_liveness *liveness,
+                                                            kefir_opt_instruction_ref_t instr_ref,
+                                                            kefir_bool_t *alive_ptr) {
+    REQUIRE(liveness != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code liveness"));
+    REQUIRE(alive_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(liveness->code, instr_ref, &instr));
+
+    *alive_ptr =
+        kefir_bucketset_has(&liveness->blocks[instr->block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref);
+    return KEFIR_OK;
+}

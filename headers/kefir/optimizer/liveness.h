@@ -38,4 +38,7 @@ kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *, struct kefir_opt
 kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *, struct kefir_opt_code_liveness *,
                                              struct kefir_opt_code_structure *);
 
+kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_opt_code_liveness *,
+                                                            kefir_opt_instruction_ref_t, kefir_bool_t *);
+
 #endif

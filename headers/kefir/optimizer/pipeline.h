@@ -59,7 +59,7 @@ DECLARE_PASS(Mem2Reg);
 DECLARE_PASS(PhiPropagate);
 DECLARE_PASS(LocalAllocSink);
 DECLARE_PASS(BlockMerge);
-DECLARE_PASS(DropDeadPhiLinks);
+DECLARE_PASS(DCE);
 DECLARE_PASS(InlineFunc);
 DECLARE_PASS(TailCalls);
 #undef DECLARE_PASS

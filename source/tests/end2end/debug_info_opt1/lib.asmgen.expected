@@ -32,7 +32,7 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 107,
+                                "id": 89,
                                 "opcode": "int32_add",
                                 "args": [
                                     0,
@@ -42,93 +42,93 @@
                                 "ir_instruction": 15
                             },
                             {
-                                "id": 108,
+                                "id": 90,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    107,
+                                    89,
                                     2
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 109,
+                                "id": 91,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    108,
+                                    90,
                                     0
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 33
                             },
                             {
-                                "id": 110,
+                                "id": 92,
                                 "opcode": "int32_xor",
                                 "args": [
-                                    109,
+                                    91,
                                     1
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 42
                             },
                             {
-                                "id": 111,
+                                "id": 93,
                                 "opcode": "int32_or",
                                 "args": [
-                                    110,
+                                    92,
                                     2
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 51
                             },
                             {
-                                "id": 112,
+                                "id": 94,
                                 "opcode": "int32_not",
-                                "arg": 111,
+                                "arg": 93,
                                 "control_next": null,
                                 "ir_instruction": 58
                             },
                             {
-                                "id": 113,
+                                "id": 95,
                                 "opcode": "int32_add",
                                 "args": [
-                                    107,
-                                    112
+                                    89,
+                                    94
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 68
                             },
                             {
-                                "id": 114,
+                                "id": 96,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    108,
-                                    113
+                                    90,
+                                    95
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 80
                             },
                             {
-                                "id": 115,
+                                "id": 97,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    109,
-                                    114
+                                    91,
+                                    96
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 92
                             },
                             {
-                                "id": 116,
+                                "id": 98,
                                 "opcode": "int64_sign_extend_32bits",
-                                "arg": 115,
+                                "arg": 97,
                                 "control_next": null,
                                 "ir_instruction": 106
                             },
                             {
                                 "id": 88,
                                 "opcode": "return",
-                                "arg": 116,
+                                "arg": 98,
                                 "control_next": null,
                                 "ir_instruction": 107
                             }
@@ -143,16 +143,16 @@
                                 1,
                                 2,
                                 88,
-                                107,
-                                108,
-                                109,
-                                110,
-                                111,
-                                112,
-                                113,
-                                114,
-                                115,
-                                116
+                                89,
+                                90,
+                                91,
+                                92,
+                                93,
+                                94,
+                                95,
+                                96,
+                                97,
+                                98
                             ]
                         }
                     }
@@ -214,7 +214,7 @@
                             "variable": 38,
                             "refs": [
                                 40,
-                                106
+                                76
                             ]
                         }
                     ]

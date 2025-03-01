@@ -24,7 +24,7 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-kefir_result_t kefir_opt_code_analsis_init(struct kefir_opt_code_analysis *analysis) {
+kefir_result_t kefir_opt_code_analysis_init(struct kefir_opt_code_analysis *analysis) {
     REQUIRE(analysis != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code analysis"));
 
@@ -98,7 +98,7 @@ static kefir_result_t module_analyze_impl(struct kefir_mem *mem, struct kefir_op
         REQUIRE(code_analysis != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code analysis data"));
 
-        kefir_result_t res = kefir_opt_code_analsis_init(code_analysis);
+        kefir_result_t res = kefir_opt_code_analysis_init(code_analysis);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, code_analysis);
             return res;

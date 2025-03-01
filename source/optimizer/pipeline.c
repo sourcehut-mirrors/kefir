@@ -46,7 +46,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(PhiPropagate);
     PASS(LocalAllocSink);
     PASS(BlockMerge);
-    PASS(DropDeadPhiLinks);
+    PASS(DCE);
     PASS(InlineFunc);
     PASS(TailCalls);
 #undef PASS
