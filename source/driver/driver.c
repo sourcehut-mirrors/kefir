@@ -44,7 +44,6 @@
     "phi-propagate," \
     "constant-fold," \
     "op-simplify," \
-    "branch-removal," \
     "drop-dead-phi-links," \
     "phi-select," \
     "op-simplify," \

@@ -55,7 +55,6 @@ kefir_result_t kefir_optimizer_pipeline_apply_function(struct kefir_mem *, const
 DECLARE_PASS(Noop);
 DECLARE_PASS(OpSimplify);
 DECLARE_PASS(ConstFold);
-DECLARE_PASS(BranchRemoval);
 DECLARE_PASS(Mem2Reg);
 DECLARE_PASS(PhiPropagate);
 DECLARE_PASS(LocalAllocSink);

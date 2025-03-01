@@ -2705,6 +2705,22 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_64BIT,
                                                           condition_ref, target_block, alternative_block,
                                                           replacement_ref));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        kefir_bool_t condition = arg1->operation.parameters.imm.integer != 0;
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_NEGATED(instr->operation.parameters.branch.condition_variant)) {
+            condition = !condition;
+        }
+
+        const kefir_opt_instruction_ref_t instr_ref = instr->id;
+        REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_ref));
+        if (condition) {
+            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
+                mem, &func->code, block_id, instr->operation.parameters.branch.target_block, replacement_ref));
+        } else {
+            REQUIRE_OK(kefir_opt_code_builder_finalize_jump(
+                mem, &func->code, block_id, instr->operation.parameters.branch.alternative_block, replacement_ref));
+        }
     }
     return KEFIR_OK;
 }
