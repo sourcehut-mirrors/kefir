@@ -439,6 +439,13 @@
                     }
                 },
                 {
+                    "opcode": "pushu",
+                    "arg": 65535
+                },
+                {
+                    "opcode": "iand64"
+                },
+                {
                     "opcode": "extsbits",
                     "arg": [
                         0,
@@ -465,6 +472,13 @@
                     }
                 },
                 {
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
+                },
+                {
                     "opcode": "extsbits",
                     "arg": [
                         1,
@@ -489,6 +503,13 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 65535
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "extubits",
@@ -530,6 +551,13 @@
                     }
                 },
                 {
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
+                },
+                {
                     "opcode": "extubits",
                     "arg": [
                         0,
@@ -567,6 +595,13 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "extubits",
@@ -620,6 +655,13 @@
                 },
                 {
                     "opcode": "pushu",
+                    "arg": 255
+                },
+                {
+                    "opcode": "iand64"
+                },
+                {
+                    "opcode": "pushu",
                     "arg": 32
                 },
                 {
@@ -634,6 +676,13 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "pushu",
+                    "arg": 4294967295
+                },
+                {
+                    "opcode": "iand64"
                 },
                 {
                     "opcode": "ior64"

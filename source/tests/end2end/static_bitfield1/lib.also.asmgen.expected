@@ -17,6 +17,7 @@ _kefir_func_getfield40_label1:
     movq struct1@GOTPCREL(%rip), %rax
     add $8, %rax
     movzxb (%rax), %rax
+    and $255, %rax
     shl $63, %rax
     shr $63, %rax
     pop %rbp
