@@ -127,12 +127,9 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(int32_store, KEFIR_OPT_OPCODE_INT32_STORE) _separator \
     _def(int64_store, KEFIR_OPT_OPCODE_INT64_STORE) _separator \
     _def(long_double_store, KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE) _separator \
-    _def(int8_load_signed, KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED) _separator \
-    _def(int8_load_unsigned, KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED) _separator \
-    _def(int16_load_signed, KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED) _separator \
-    _def(int16_load_unsigned, KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED) _separator \
-    _def(int32_load_signed, KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED) _separator \
-    _def(int32_load_unsigned, KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED) _separator \
+    _def(int8_load, KEFIR_OPT_OPCODE_INT8_LOAD) _separator \
+    _def(int16_load, KEFIR_OPT_OPCODE_INT16_LOAD) _separator \
+    _def(int32_load, KEFIR_OPT_OPCODE_INT32_LOAD) _separator \
     _def(int64_load, KEFIR_OPT_OPCODE_INT64_LOAD) _separator \
     _def(long_double_load, KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) _separator \
     _def(int_to_float32, KEFIR_OPT_OPCODE_INT_TO_FLOAT32) _separator \

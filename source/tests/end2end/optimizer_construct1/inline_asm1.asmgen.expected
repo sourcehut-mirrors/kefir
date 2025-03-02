@@ -69,9 +69,10 @@
                             },
                             {
                                 "id": 4,
-                                "opcode": "int32_load_signed",
+                                "opcode": "int32_load",
                                 "location": 3,
                                 "flags": {
+                                    "load_extension": "sign_extend",
                                     "volatile": false
                                 },
                                 "control_next": 6,
@@ -130,9 +131,10 @@
                             },
                             {
                                 "id": 11,
-                                "opcode": "int32_load_signed",
+                                "opcode": "int32_load",
                                 "location": 10,
                                 "flags": {
+                                    "load_extension": "sign_extend",
                                     "volatile": false
                                 },
                                 "control_next": 13,
@@ -333,9 +335,10 @@
                             },
                             {
                                 "id": 17,
-                                "opcode": "int32_load_signed",
+                                "opcode": "int32_load",
                                 "location": 16,
                                 "flags": {
+                                    "load_extension": "sign_extend",
                                     "volatile": false
                                 },
                                 "control_next": 19,

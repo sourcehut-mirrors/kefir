@@ -148,12 +148,9 @@
     OPCODE(GET_THREAD_LOCAL, "get_thread_local", variable) SEPARATOR \
     OPCODE(ALLOC_LOCAL, "alloc_local", type) SEPARATOR \
     OPCODE(REF_LOCAL, "ref_local", ref_offset) SEPARATOR \
-    OPCODE(INT8_LOAD_SIGNED, "int8_load_signed", load_mem) SEPARATOR \
-    OPCODE(INT8_LOAD_UNSIGNED, "int8_load_unsigned", load_mem) SEPARATOR \
-    OPCODE(INT16_LOAD_SIGNED, "int16_load_signed", load_mem) SEPARATOR \
-    OPCODE(INT16_LOAD_UNSIGNED, "int16_load_unsigned", load_mem) SEPARATOR \
-    OPCODE(INT32_LOAD_SIGNED, "int32_load_signed", load_mem) SEPARATOR \
-    OPCODE(INT32_LOAD_UNSIGNED, "int32_load_unsigned", load_mem) SEPARATOR \
+    OPCODE(INT8_LOAD, "int8_load", load_mem) SEPARATOR \
+    OPCODE(INT16_LOAD, "int16_load", load_mem) SEPARATOR \
+    OPCODE(INT32_LOAD, "int32_load", load_mem) SEPARATOR \
     OPCODE(INT64_LOAD, "int64_load", load_mem) SEPARATOR \
     OPCODE(LONG_DOUBLE_LOAD, "long_double_load", load_mem) SEPARATOR \
     OPCODE(INT8_STORE, "int8_store", store_mem) SEPARATOR \

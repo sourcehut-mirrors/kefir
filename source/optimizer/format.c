@@ -32,7 +32,8 @@ static kefir_result_t id_format(struct kefir_json_output *json, kefir_id_t id) {
     return KEFIR_OK;
 }
 
-static kefir_result_t format_condition_variamt(struct kefir_json_output *json, kefir_opt_branch_condition_variant_t variant) {
+static kefir_result_t format_condition_variamt(struct kefir_json_output *json,
+                                               kefir_opt_branch_condition_variant_t variant) {
     switch (variant) {
         case KEFIR_OPT_BRANCH_CONDITION_8BIT:
             REQUIRE_OK(kefir_json_output_string(json, "8bit"));
@@ -398,8 +399,8 @@ static kefir_result_t format_operation_ref3_cond(struct kefir_json_output *json,
 }
 
 static kefir_result_t format_operation_ref4_compare(struct kefir_json_output *json,
-                                                 const struct kefir_opt_code_container *code,
-                                                 const struct kefir_opt_operation *oper) {
+                                                    const struct kefir_opt_code_container *code,
+                                                    const struct kefir_opt_operation *oper) {
     UNUSED(code);
     REQUIRE_OK(kefir_json_output_object_key(json, "comparison"));
     REQUIRE_OK(format_comparison(json, oper->parameters.comparison));
@@ -424,6 +425,20 @@ static kefir_result_t format_operation_load_mem(struct kefir_json_output *json,
     REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
     REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
     REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "load_extension"));
+    switch (oper->parameters.memory_access.flags.load_extension) {
+        case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
+            REQUIRE_OK(kefir_json_output_string(json, "noextend"));
+            break;
+
+        case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
+            REQUIRE_OK(kefir_json_output_string(json, "zero_extend"));
+            break;
+
+        case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
+            REQUIRE_OK(kefir_json_output_string(json, "sign_extend"));
+            break;
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
     REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.memory_access.flags.volatile_access));
     REQUIRE_OK(kefir_json_output_object_end(json));

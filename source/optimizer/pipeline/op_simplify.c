@@ -2528,17 +2528,23 @@ static kefir_result_t simplify_int_extend(struct kefir_mem *mem, struct kefir_op
                                           kefir_opt_instruction_ref_t *replacement_ref) {
     const struct kefir_opt_instruction *arg1;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
-    if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED &&
+    if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS) ||
-        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS) ||
-        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS) ||
-        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS) ||
-        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS) ||
-        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED &&
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
+         arg1->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND &&
          instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS) ||
         (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS &&
          (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||

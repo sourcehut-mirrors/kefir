@@ -32,15 +32,12 @@ kefir_result_t kefir_opt_instruction_extract_inputs(const struct kefir_opt_code_
 kefir_result_t kefir_opt_code_instruction_is_control_flow(const struct kefir_opt_code_container *,
                                                           kefir_opt_instruction_ref_t, kefir_bool_t *);
 
-#define KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(_instr)                   \
-    (((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD_SIGNED ||    \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD_UNSIGNED ||  \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD_SIGNED ||   \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD_UNSIGNED || \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD_SIGNED ||   \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD_UNSIGNED || \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||          \
-      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) &&   \
+#define KEFIR_OPT_INSTRUCTION_IS_NONVOLATILE_LOAD(_instr)                 \
+    (((_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD ||         \
+      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD ||        \
+      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD ||        \
+      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_INT64_LOAD ||        \
+      (_instr)->operation.opcode == KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD) && \
      !(_instr)->operation.parameters.memory_access.flags.volatile_access)
 
 kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *, struct kefir_opt_code_container *,

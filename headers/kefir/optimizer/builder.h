@@ -78,9 +78,10 @@ kefir_result_t kefir_opt_code_builder_select(struct kefir_mem *, struct kefir_op
                                              kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
                                              kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_select_compare(struct kefir_mem *, struct kefir_opt_code_container *,
-    kefir_opt_block_id_t, kefir_opt_comparison_operation_t,
-    kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
-    kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *);
+                                                     kefir_opt_block_id_t, kefir_opt_comparison_operation_t,
+                                                     kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
+                                                     kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
+                                                     kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_builder_int_placeholder(struct kefir_mem *, struct kefir_opt_code_container *,
                                                       kefir_opt_block_id_t, kefir_opt_instruction_ref_t *);
@@ -390,12 +391,9 @@ ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_long_double);
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
         const struct kefir_opt_memory_access_flags *, kefir_opt_instruction_ref_t *)
 
-LOAD_OP(int8_load_signed);
-LOAD_OP(int8_load_unsigned);
-LOAD_OP(int16_load_signed);
-LOAD_OP(int16_load_unsigned);
-LOAD_OP(int32_load_signed);
-LOAD_OP(int32_load_unsigned);
+LOAD_OP(int8_load);
+LOAD_OP(int16_load);
+LOAD_OP(int32_load);
 LOAD_OP(int64_load);
 LOAD_OP(long_double_load);
 

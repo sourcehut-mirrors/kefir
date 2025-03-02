@@ -40,7 +40,14 @@ typedef kefir_id_t kefir_opt_phi_id_t;
 typedef kefir_id_t kefir_opt_call_id_t;
 typedef kefir_id_t kefir_opt_inline_assembly_id_t;
 
+typedef enum kefir_opt_memory_load_extension {
+    KEFIR_OPT_MEMORY_LOAD_NOEXTEND,
+    KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND,
+    KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND
+} kefir_opt_memory_load_extension_t;
+
 typedef struct kefir_opt_memory_access_flags {
+    kefir_opt_memory_load_extension_t load_extension;
     kefir_bool_t volatile_access;
 } kefir_opt_memory_access_flags_t;
 
