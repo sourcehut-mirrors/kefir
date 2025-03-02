@@ -79,41 +79,47 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST conditional operator node"));
 
+    const struct kefir_ast_type *unqualified_condition_type =
+        kefir_ast_unqualified_type(node->condition->properties.type);
+    const struct kefir_ast_type *unqualified_expr1_type =
+        node->expr1 != NULL ? kefir_ast_unqualified_type(node->expr1->properties.type) : NULL;
+    const struct kefir_ast_type *unqualified_expr2_type = kefir_ast_unqualified_type(node->expr2->properties.type);
+
     if (node->expr1 != NULL) {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
         kefir_size_t jmp1Index;
-        REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
+        REQUIRE_OK(generate_branch(mem, context, builder, unqualified_condition_type, &jmp1Index));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
-        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr2->properties.type)) {
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_expr2_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    node->expr2->properties.type, node->base.properties.type));
+                                                    unqualified_expr2_type, node->base.properties.type));
         }
         kefir_size_t jmp2Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp1Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr1, builder, context));
-        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr1->properties.type)) {
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_expr1_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    node->expr1->properties.type, node->base.properties.type));
+                                                    unqualified_expr1_type, node->base.properties.type));
         }
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp2Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
         kefir_size_t jmp1Index;
-        REQUIRE_OK(generate_branch(mem, context, builder, node->condition->properties.type, &jmp1Index));
+        REQUIRE_OK(generate_branch(mem, context, builder, unqualified_condition_type, &jmp1Index));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
-        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->expr2->properties.type)) {
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_expr2_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    node->expr2->properties.type, node->base.properties.type));
+                                                    unqualified_expr2_type, node->base.properties.type));
         }
         kefir_size_t jmp2Index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp1Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(node->condition->properties.type)) {
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_condition_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    node->condition->properties.type, node->base.properties.type));
+                                                    unqualified_condition_type, node->base.properties.type));
         }
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp2Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     }
