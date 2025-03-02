@@ -506,8 +506,6 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                                         struct kefir_irbuilder_block *builder,
                                         const struct kefir_ast_binary_operation *node) {
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
-    const struct kefir_ast_type *arg1_normalized_type =
-        kefir_ast_translator_normalize_type(node->arg1->properties.type);
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
 
@@ -544,7 +542,7 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
             break;
 
         case KEFIR_AST_OPERATION_SHIFT_RIGHT:
-            switch (arg1_normalized_type->tag) {
+            switch (result_normalized_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_BOOL:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT8, 0));
