@@ -324,6 +324,7 @@ kefir_result_t kefir_opt_code_builder_select(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
+    REQUIRE_OK(instr_exists(code, block_id, condition_ref, false));
     REQUIRE_OK(instr_exists(code, block_id, ref1, false));
     REQUIRE_OK(instr_exists(code, block_id, ref2, false));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(

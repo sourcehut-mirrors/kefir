@@ -130,7 +130,7 @@ static kefir_result_t inline_operation_ref3_cond(struct do_inline_param *param,
     REQUIRE_OK(kefir_opt_code_container_new_instruction(
         param->mem, param->dst_code, mapped_block_id,
         &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
-                                       .parameters = {.refs = {mapped_ref1, mapped_ref2, mapped_ref3}}},
+                                       .parameters = {.refs = {mapped_ref1, mapped_ref2, mapped_ref3}, .condition_variant = instr->operation.parameters.condition_variant}},
         mapped_instr_ref_ptr));
     return KEFIR_OK;
 }
