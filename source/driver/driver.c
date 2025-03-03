@@ -47,6 +47,7 @@
     "dead-code-elimination," \
     "op-simplify," \
     "block-merge," \
+    "dead-code-elimination," \
     "tail-calls"
 #define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-func,local-alloc-sink"
 
