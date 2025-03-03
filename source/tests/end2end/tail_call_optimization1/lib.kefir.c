@@ -35,13 +35,7 @@ struct bf_context {
 typedef int (*op_fn_t)(struct bf_context *);
 static op_fn_t ops[];
 
-#define DUMMY_SIZE (1024 * 64)
-#define RUN_NEXT(_ops, _ctx)                                  \
-    ({                                                        \
-        volatile char array[DUMMY_SIZE];                      \
-        (void) array[0];                                      \
-        (_ops)[(_ctx)->code[(_ctx)->code_pointer++]]((_ctx)); \
-    })
+#define RUN_NEXT(_ops, _ctx) ({ (_ops)[(_ctx)->code[(_ctx)->code_pointer++]]((_ctx)); })
 
 static int op_plus(struct bf_context *ctx) {
     ctx->mem[ctx->mem_pointer]++;

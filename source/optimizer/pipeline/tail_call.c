@@ -126,11 +126,30 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_INT8_LOAD:
+        case KEFIR_OPT_OPCODE_INT16_LOAD:
+        case KEFIR_OPT_OPCODE_INT32_LOAD:
+        case KEFIR_OPT_OPCODE_INT64_LOAD:
+        case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
+            if (instr->operation.parameters.memory_access.flags.volatile_access) {
+                REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
+                REQUIRE_OK(check_escape(instr->operation.parameters.refs[0], param));
+            }
+            break;
+
         case KEFIR_OPT_OPCODE_INT8_STORE:
         case KEFIR_OPT_OPCODE_INT16_STORE:
         case KEFIR_OPT_OPCODE_INT32_STORE:
         case KEFIR_OPT_OPCODE_INT64_STORE:
         case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
+            REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
+            REQUIRE_OK(check_escape(instr->operation.parameters.refs[1], param));
+            if (instr->operation.parameters.memory_access.flags.volatile_access) {
+                REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
+                REQUIRE_OK(check_escape(instr->operation.parameters.refs[0], param));
+            }
+            break;
+
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
         case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
         case KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_STORE:
@@ -139,6 +158,8 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
         case KEFIR_OPT_OPCODE_ATOMIC_STORE32:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE64:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE:
+            REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
+            REQUIRE_OK(check_escape(instr->operation.parameters.refs[0], param));
             REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
             REQUIRE_OK(check_escape(instr->operation.parameters.refs[1], param));
             break;

@@ -26,6 +26,10 @@
 .type test11, @function
 .global test12
 .type test12, @function
+.global test13
+.type test13, @function
+.global test14
+.type test14, @function
 .extern somejmp
 .extern someptr
 .extern somejmp2
@@ -262,6 +266,32 @@ __kefir_text_func_test12_begin:
     pop %rbp
     ret
 __kefir_text_func_test12_end:
+
+test13:
+__kefir_text_func_test13_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $4096, %rsp
+    movl $0, -4096(%rbp)
+    movsx %edi, %rdi
+    call test13
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test13_end:
+
+test14:
+__kefir_text_func_test14_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $4096, %rsp
+    movsxl -4096(%rbp), %rax
+    add %eax, %edi
+    call test14
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test14_end:
 
 __kefir_text_section_end:
 

@@ -10,32 +10,31 @@ run_bf:
 __kefir_text_func_run_bf_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $70688, %rsp
+    sub $5152, %rsp
     mov %rdi, %rdx
-    leaq -70688(%rbp), %rdi
+    leaq -5144(%rbp), %rdi
     xor %eax, %eax
     mov $5144, %rcx
     rep stosb
-    movq %rdx, -70688(%rbp)
-    movb $0, -70680(%rbp)
-    movq $0, -66584(%rbp)
-    movl $0, -65560(%rbp)
-    movw $0, -65556(%rbp)
-    movb $0, -65554(%rbp)
-    movq %rsi, -65552(%rbp)
-    movsxb -65536(%rbp), %rax
-    movq -70688(%rbp), %rax
-    movl -65560(%rbp), %ecx
+    movq %rdx, -5144(%rbp)
+    movb $0, -5136(%rbp)
+    movq $0, -1040(%rbp)
+    movl $0, -16(%rbp)
+    movw $0, -12(%rbp)
+    movb $0, -10(%rbp)
+    movq %rsi, -8(%rbp)
+    movq -5144(%rbp), %rax
+    movl -16(%rbp), %ecx
     mov %rcx, %rdx
     add $1, %edx
-    movl %edx, -65560(%rbp)
+    movl %edx, -16(%rbp)
     add %rcx, %rax
     movsxb (%rax), %rax
     lea ops(%rip), %rcx
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    leaq -70688(%rbp), %rdi
+    leaq -5144(%rbp), %rdi
     call *%rax
     lea (%rbp), %rsp
     pop %rbp
@@ -44,15 +43,11 @@ __kefir_text_func_run_bf_end:
 
 op_next:
 __kefir_text_func_op_next_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %rax
     add $5132, %rax
     movzxw (%rax), %rcx
     add $1, %cx
     movw %cx, (%rax)
-    movsxb -65536(%rbp), %rax
     movq (%rdi), %rax
     mov %rdi, %rcx
     add $5128, %rcx
@@ -66,16 +61,11 @@ __kefir_text_func_op_next_begin:
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 __kefir_text_func_op_next_end:
 
 op_plus:
 __kefir_text_func_op_plus_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %rax
     add $5132, %rax
     movzxw (%rax), %rax
@@ -85,7 +75,6 @@ __kefir_text_func_op_plus_begin:
     movzxb (%rcx), %rax
     add $1, %al
     movb %al, (%rcx)
-    movsxb -65536(%rbp), %rax
     movq (%rdi), %rax
     mov %rdi, %rcx
     add $5128, %rcx
@@ -99,22 +88,16 @@ __kefir_text_func_op_plus_begin:
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 __kefir_text_func_op_plus_end:
 
 op_prev:
 __kefir_text_func_op_prev_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %rax
     add $5132, %rax
     movzxw (%rax), %rcx
     add $-1, %cx
     movw %cx, (%rax)
-    movsxb -65536(%rbp), %rax
     movq (%rdi), %rax
     mov %rdi, %rcx
     add $5128, %rcx
@@ -128,16 +111,11 @@ __kefir_text_func_op_prev_begin:
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 __kefir_text_func_op_prev_end:
 
 op_minus:
 __kefir_text_func_op_minus_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %rax
     add $5132, %rax
     movzxw (%rax), %rax
@@ -147,7 +125,6 @@ __kefir_text_func_op_minus_begin:
     movzxb (%rcx), %rax
     add $-1, %al
     movb %al, (%rcx)
-    movsxb -65536(%rbp), %rax
     movq (%rdi), %rax
     mov %rdi, %rcx
     add $5128, %rcx
@@ -161,8 +138,6 @@ __kefir_text_func_op_minus_begin:
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 __kefir_text_func_op_minus_end:
 
@@ -170,7 +145,7 @@ op_print:
 __kefir_text_func_op_print_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $65552, %rsp
+    sub $16, %rsp
     mov %rdi, %rsi
     mov %rsi, %rdi
     add $5136, %rdi
@@ -182,10 +157,9 @@ __kefir_text_func_op_print_begin:
     add $8, %rdi
     add %rcx, %rdi
     movzxb (%rdi), %rdi
-    movq %rsi, -65552(%rbp)
+    movq %rsi, -16(%rbp)
     call *%rax
-    movq -65552(%rbp), %rsi
-    movsxb -65536(%rbp), %rax
+    movq -16(%rbp), %rsi
     movq (%rsi), %rax
     mov %rsi, %rdi
     add $5128, %rdi
@@ -207,9 +181,6 @@ __kefir_text_func_op_print_end:
 
 op_loop_end:
 __kefir_text_func_op_loop_end_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %rsi
     mov %rsi, %rdi
     add $5134, %rdi
@@ -226,7 +197,6 @@ __kefir_text_func_op_loop_end_begin:
     cmp $0, %eax
     jne _kefir_func_op_loop_end_label2
 _kefir_func_op_loop_end_label1:
-    movsxb -65536(%rbp), %rax
     movq (%rsi), %rax
     mov %rsi, %rdi
     add $5128, %rdi
@@ -241,8 +211,6 @@ _kefir_func_op_loop_end_label1:
     add %rax, %rcx
     movq (%rcx), %rax
     mov %rsi, %rdi
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 _kefir_func_op_loop_end_label2:
     mov %rsi, %rdi
@@ -262,9 +230,6 @@ __kefir_text_func_op_loop_end_end:
 
 op_loop_begin:
 __kefir_text_func_op_loop_begin_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $65536, %rsp
     mov %rdi, %r8
     mov %r8, %rdi
     add $5132, %rdi
@@ -298,7 +263,6 @@ _kefir_func_op_loop_begin_label3:
     mov %rcx, %rsi
     jmp _kefir_func_op_loop_begin_label1
 _kefir_func_op_loop_begin_label4:
-    movsxb -65536(%rbp), %rax
     movq (%r8), %rax
     mov %r8, %rdi
     add $5128, %rdi
@@ -313,8 +277,6 @@ _kefir_func_op_loop_begin_label4:
     add %rax, %rcx
     movq (%rcx), %rax
     mov %r8, %rdi
-    lea (%rbp), %rsp
-    pop %rbp
     jmp *%rax
 _kefir_func_op_loop_begin_label5:
     mov %rsi, %rax

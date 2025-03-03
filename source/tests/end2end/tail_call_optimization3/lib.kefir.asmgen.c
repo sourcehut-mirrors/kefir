@@ -91,3 +91,14 @@ struct S2 {
 struct S2 test12(int x) {
     return test12(x + 1);
 }
+
+int test13(int x) {
+    volatile int arr[1024];
+    arr[0] = 0;
+    return test13(x);
+}
+
+int test14(int x) {
+    volatile int arr[1024];
+    return test14(x + arr[0]);
+}
