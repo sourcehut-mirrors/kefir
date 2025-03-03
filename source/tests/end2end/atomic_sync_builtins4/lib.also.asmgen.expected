@@ -43,7 +43,7 @@ __kefir_text_func_test_and_set_begin:
     leaq -4(%rbp), %rcx
     mov $2, %r8
     call __atomic_exchange@PLT
-    movzxb -4(%rbp), %rax
+    movb -4(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -20,8 +20,6 @@ overflow_smul:
 __kefir_text_func_overflow_smul_begin:
     movsx %edi, %rax
     movsx %esi, %rcx
-    movsx %eax, %rax
-    movsx %ecx, %rcx
     imul %rcx, %rax
     seto %cl
     movsx %eax, %rsi
@@ -38,8 +36,6 @@ overflow_umul:
 __kefir_text_func_overflow_umul_begin:
     mov %edi, %eax
     mov %esi, %ecx
-    mov %eax, %eax
-    mov %ecx, %ecx
     imul %rcx, %rax
     seto %cl
     mov %eax, %esi

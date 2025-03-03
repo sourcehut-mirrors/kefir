@@ -140,8 +140,7 @@ __kefir_text_func_test2_atomic_store16_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %si, %rcx
-    movw %cx, -2(%rbp)
+    movw %si, -2(%rbp)
     mov $2, %rdi
     mov %rax, %rsi
     leaq -2(%rbp), %rdx
@@ -158,8 +157,7 @@ __kefir_text_func_test2_atomic_store32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %esi, %rcx
-    movl %ecx, -4(%rbp)
+    movl %esi, -4(%rbp)
     mov $4, %rdi
     mov %rax, %rsi
     leaq -4(%rbp), %rdx
@@ -261,8 +259,7 @@ __kefir_text_func_test2_atomic_store8_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %sil, %rcx
-    movb %cl, -1(%rbp)
+    movb %sil, -1(%rbp)
     mov $1, %rdi
     mov %rax, %rsi
     leaq -1(%rbp), %rdx

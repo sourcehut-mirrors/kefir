@@ -157,12 +157,9 @@
     /* Data access */ \
     OPCODE(GETGLOBAL,   "getglobal",    identifier) SEPARATOR \
     OPCODE(GETLOCAL,    "getlocal",     typeref) SEPARATOR \
-    OPCODE(LOAD8U,      "load8u",       memflags) SEPARATOR \
-    OPCODE(LOAD8I,      "load8i",       memflags) SEPARATOR \
-    OPCODE(LOAD16U,     "load16u",      memflags) SEPARATOR \
-    OPCODE(LOAD16I,     "load16i",      memflags) SEPARATOR \
-    OPCODE(LOAD32U,     "load32u",      memflags) SEPARATOR \
-    OPCODE(LOAD32I,     "load32i",      memflags) SEPARATOR \
+    OPCODE(LOAD8,       "load8",       memflags) SEPARATOR \
+    OPCODE(LOAD16,      "load16",      memflags) SEPARATOR \
+    OPCODE(LOAD32,      "load32",      memflags) SEPARATOR \
     OPCODE(LOAD64,      "load64",       memflags) SEPARATOR \
     OPCODE(LOADLD,      "loadld",       memflags) SEPARATOR \
     OPCODE(STORE8,      "store8",       memflags) SEPARATOR \

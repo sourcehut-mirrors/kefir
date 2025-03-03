@@ -33,7 +33,7 @@ __kefir_text_func_getw_begin:
 _kefir_func_getw_label0:
 _kefir_func_getw_label1:
     movq w@GOTPCREL(%rip), %rax
-    movsxl (%rax), %rax
+    movl (%rax), %eax
     pop %rbp
     ret
 __kefir_text_func_getw_end:
@@ -45,7 +45,7 @@ __kefir_text_func_getx_begin:
 _kefir_func_getx_label0:
 _kefir_func_getx_label1:
     movq x@GOTPCREL(%rip), %rax
-    movsxl (%rax), %rax
+    movl (%rax), %eax
     pop %rbp
     ret
 __kefir_text_func_getx_end:
@@ -57,7 +57,7 @@ __kefir_text_func_gety_begin:
 _kefir_func_gety_label0:
 _kefir_func_gety_label1:
     movq y@GOTPCREL(%rip), %rax
-    movsxl (%rax), %rax
+    movl (%rax), %eax
     pop %rbp
     ret
 __kefir_text_func_gety_end:
@@ -69,7 +69,7 @@ __kefir_text_func_getz_begin:
 _kefir_func_getz_label0:
 _kefir_func_getz_label1:
     movq z@GOTPCREL(%rip), %rax
-    movsxl (%rax), %rax
+    movl (%rax), %eax
     pop %rbp
     ret
 __kefir_text_func_getz_end:

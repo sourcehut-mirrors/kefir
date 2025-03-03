@@ -34,9 +34,9 @@
 __kefir_text_section_begin:
 set_b:
 __kefir_text_func_set_b_begin:
-    movq b@GOTPCREL(%rip), %rax
-    movzx %dil, %rsi
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movq b@GOTPCREL(%rip), %rdi
+    mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
@@ -44,9 +44,9 @@ __kefir_text_func_set_b_end:
 
 set_u8:
 __kefir_text_func_set_u8_begin:
-    movq u8@GOTPCREL(%rip), %rax
-    movzx %dil, %rsi
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movq u8@GOTPCREL(%rip), %rdi
+    mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_1@PLT
     ret
@@ -72,9 +72,9 @@ __kefir_text_func_set_f64_end:
 
 set_u16:
 __kefir_text_func_set_u16_begin:
-    movq u16@GOTPCREL(%rip), %rax
-    movzx %di, %rsi
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movq u16@GOTPCREL(%rip), %rdi
+    mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_2@PLT
     ret
@@ -82,9 +82,9 @@ __kefir_text_func_set_u16_end:
 
 set_u32:
 __kefir_text_func_set_u32_begin:
-    movq u32@GOTPCREL(%rip), %rax
-    mov %edi, %esi
-    mov %rax, %rdi
+    mov %rdi, %rax
+    movq u32@GOTPCREL(%rip), %rdi
+    mov %rax, %rsi
     mov $5, %rdx
     call __atomic_store_4@PLT
     ret

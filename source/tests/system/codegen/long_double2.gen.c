@@ -69,7 +69,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     entry_layout = kefir_vector_at(&type_layout.layout, 1);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IADD64, 0);
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD32I, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_LOAD32, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_EXTEND32, 0);
     entry_layout = kefir_vector_at(&type_layout.layout, 3);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_PUSHU64, entry_layout->size);
     kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_IMUL64, 0);

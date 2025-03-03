@@ -116,7 +116,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load16i",
+                    "opcode": "load16",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -153,7 +153,7 @@
                     }
                 },
                 {
-                    "opcode": "load16i",
+                    "opcode": "load16",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -199,7 +199,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load16i",
+                    "opcode": "load16",
                     "memory_flags": {
                         "volatile": false
                     }

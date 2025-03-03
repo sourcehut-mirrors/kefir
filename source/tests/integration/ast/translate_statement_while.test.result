@@ -146,7 +146,7 @@
                     }
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -169,7 +169,7 @@
                     "opcode": "iadd64"
                 },
                 {
-                    "opcode": "load8i",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -206,7 +206,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -271,7 +271,7 @@
                     }
                 },
                 {
-                    "opcode": "load8u",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": true
                     }

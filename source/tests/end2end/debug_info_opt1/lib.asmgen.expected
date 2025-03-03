@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 88,
+                        "control_flow": 59,
                         "code": [
                             {
                                 "id": 0,
@@ -32,7 +32,7 @@
                                 "ir_instruction": null
                             },
                             {
-                                "id": 89,
+                                "id": 60,
                                 "opcode": "int32_add",
                                 "args": [
                                     0,
@@ -42,93 +42,86 @@
                                 "ir_instruction": 15
                             },
                             {
-                                "id": 90,
+                                "id": 61,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    89,
+                                    60,
                                     2
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 24
                             },
                             {
-                                "id": 91,
+                                "id": 62,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    90,
+                                    61,
                                     0
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 33
                             },
                             {
-                                "id": 92,
+                                "id": 63,
                                 "opcode": "int32_xor",
                                 "args": [
-                                    91,
+                                    62,
                                     1
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 42
                             },
                             {
-                                "id": 93,
+                                "id": 64,
                                 "opcode": "int32_or",
                                 "args": [
-                                    92,
+                                    63,
                                     2
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 51
                             },
                             {
-                                "id": 94,
+                                "id": 65,
                                 "opcode": "int32_not",
-                                "arg": 93,
+                                "arg": 64,
                                 "control_next": null,
                                 "ir_instruction": 58
                             },
                             {
-                                "id": 95,
+                                "id": 66,
                                 "opcode": "int32_add",
                                 "args": [
-                                    89,
-                                    94
+                                    60,
+                                    65
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 68
                             },
                             {
-                                "id": 96,
+                                "id": 67,
                                 "opcode": "int32_sub",
                                 "args": [
-                                    90,
-                                    95
+                                    61,
+                                    66
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 80
                             },
                             {
-                                "id": 97,
+                                "id": 68,
                                 "opcode": "int32_mul",
                                 "args": [
-                                    91,
-                                    96
+                                    62,
+                                    67
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 92
                             },
                             {
-                                "id": 98,
-                                "opcode": "int64_sign_extend_32bits",
-                                "arg": 97,
-                                "control_next": null,
-                                "ir_instruction": 106
-                            },
-                            {
-                                "id": 88,
+                                "id": 59,
                                 "opcode": "return",
-                                "arg": 98,
+                                "arg": 68,
                                 "control_next": null,
                                 "ir_instruction": 107
                             }
@@ -142,17 +135,16 @@
                                 0,
                                 1,
                                 2,
-                                88,
-                                89,
-                                90,
-                                91,
-                                92,
-                                93,
-                                94,
-                                95,
-                                96,
-                                97,
-                                98
+                                59,
+                                60,
+                                61,
+                                62,
+                                63,
+                                64,
+                                65,
+                                66,
+                                67,
+                                68
                             ]
                         }
                     }
@@ -180,41 +172,41 @@
                         {
                             "variable": 13,
                             "refs": [
-                                16,
-                                44
+                                60,
+                                66
                             ]
                         },
                         {
                             "variable": 18,
                             "refs": [
-                                21,
-                                48
+                                61,
+                                67
                             ]
                         },
                         {
                             "variable": 23,
                             "refs": [
-                                26,
-                                52
+                                62,
+                                68
                             ]
                         },
                         {
                             "variable": 28,
                             "refs": [
-                                31
+                                63
                             ]
                         },
                         {
                             "variable": 33,
                             "refs": [
-                                36
+                                64
                             ]
                         },
                         {
                             "variable": 38,
                             "refs": [
-                                40,
-                                76
+                                65,
+                                68
                             ]
                         }
                     ]

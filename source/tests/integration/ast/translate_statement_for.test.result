@@ -279,7 +279,7 @@
                     }
                 },
                 {
-                    "opcode": "load32i",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -317,7 +317,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32i",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -421,7 +421,7 @@
                     }
                 },
                 {
-                    "opcode": "load32i",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -478,7 +478,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32i",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }

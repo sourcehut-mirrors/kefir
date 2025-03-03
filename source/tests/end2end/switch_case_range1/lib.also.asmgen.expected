@@ -14,14 +14,13 @@
 __kefir_text_section_begin:
 clamp_int:
 __kefir_text_func_clamp_int_begin:
-    movsx %edi, %rdx
-    cmp $0, %edx
+    cmp $0, %edi
     je _kefir_func_clamp_int_label18
     xor %eax, %eax
-    cmp $1, %edx
+    cmp $1, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $9, %edx
+    cmp $9, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -32,10 +31,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label17
     xor %eax, %eax
-    cmp $10, %edx
+    cmp $10, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $19, %edx
+    cmp $19, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -46,10 +45,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label16
     xor %eax, %eax
-    cmp $20, %edx
+    cmp $20, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $29, %edx
+    cmp $29, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -60,10 +59,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label15
     xor %eax, %eax
-    cmp $30, %edx
+    cmp $30, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $39, %edx
+    cmp $39, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -74,10 +73,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label14
     xor %eax, %eax
-    cmp $-39, %edx
+    cmp $-39, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $-30, %edx
+    cmp $-30, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -88,10 +87,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label13
     xor %eax, %eax
-    cmp $-29, %edx
+    cmp $-29, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $-20, %edx
+    cmp $-20, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -102,10 +101,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label12
     xor %eax, %eax
-    cmp $-19, %edx
+    cmp $-19, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $-10, %edx
+    cmp $-10, %edi
     setle %cl
     test %al, %al
     setne %al
@@ -116,10 +115,10 @@ __kefir_text_func_clamp_int_begin:
     test %al, %al
     jnz _kefir_func_clamp_int_label11
     xor %eax, %eax
-    cmp $-9, %edx
+    cmp $-9, %edi
     setge %al
     xor %ecx, %ecx
-    cmp $-1, %edx
+    cmp $-1, %edi
     setle %cl
     test %al, %al
     setne %al

@@ -199,7 +199,7 @@
                                 "opcode": "int32_load",
                                 "location": 14,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 20,
@@ -377,7 +377,7 @@
                                 "opcode": "int32_load",
                                 "location": 8,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 31,
@@ -522,7 +522,7 @@
                                 "opcode": "int32_load",
                                 "location": 5,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 35,
@@ -598,7 +598,7 @@
                                 "opcode": "int32_load",
                                 "location": 11,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 24,
@@ -793,7 +793,7 @@
                                 "opcode": "int32_load",
                                 "location": 2,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 14,

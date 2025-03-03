@@ -312,7 +312,7 @@
                     }
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -360,7 +360,7 @@
                     }
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -404,7 +404,7 @@
                     }
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -660,7 +660,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "load8i",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -673,7 +673,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "load16i",
+                    "opcode": "load16",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -686,7 +686,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -718,7 +718,7 @@
                     }
                 },
                 {
-                    "opcode": "load8u",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -731,7 +731,7 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -837,7 +837,7 @@
                     }
                 },
                 {
-                    "opcode": "load32u",
+                    "opcode": "load32",
                     "memory_flags": {
                         "volatile": false
                     }

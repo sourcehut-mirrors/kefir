@@ -117,8 +117,8 @@ _kefir_func_greater_or_equals2_label0:
 _kefir_func_greater_or_equals2_label1:
     movl %esi, -8(%rbp)
     movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rcx
-    movsxl -8(%rbp), %rdx
+    movl -4(%rbp), %ecx
+    movl -8(%rbp), %edx
     mov $0, %rax
     cmp %edx, %ecx
     setge %al
@@ -136,8 +136,8 @@ _kefir_func_less_or_equals_label0:
 _kefir_func_less_or_equals_label1:
     movl %esi, -8(%rbp)
     movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rax
-    movsxl -8(%rbp), %rcx
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jle _kefir_func_less_or_equals_label3
 _kefir_func_less_or_equals_label2:
@@ -161,8 +161,8 @@ _kefir_func_greater_or_equals_label0:
 _kefir_func_greater_or_equals_label1:
     movl %esi, -8(%rbp)
     movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rax
-    movsxl -8(%rbp), %rcx
+    movl -4(%rbp), %eax
+    movl -8(%rbp), %ecx
     cmp %ecx, %eax
     jge _kefir_func_greater_or_equals_label3
 _kefir_func_greater_or_equals_label2:
@@ -186,8 +186,8 @@ _kefir_func_less_or_equals2_label0:
 _kefir_func_less_or_equals2_label1:
     movl %esi, -8(%rbp)
     movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rcx
-    movsxl -8(%rbp), %rdx
+    movl -4(%rbp), %ecx
+    movl -8(%rbp), %edx
     mov $0, %rax
     cmp %edx, %ecx
     setle %al

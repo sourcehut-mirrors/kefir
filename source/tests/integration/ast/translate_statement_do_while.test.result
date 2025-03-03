@@ -207,7 +207,7 @@
                     }
                 },
                 {
-                    "opcode": "load8u",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -240,7 +240,7 @@
                     }
                 },
                 {
-                    "opcode": "load8u",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": true
                     }

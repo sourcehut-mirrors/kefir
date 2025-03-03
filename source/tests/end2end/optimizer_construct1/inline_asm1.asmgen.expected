@@ -72,7 +72,7 @@
                                 "opcode": "int32_load",
                                 "location": 3,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 6,
@@ -134,7 +134,7 @@
                                 "opcode": "int32_load",
                                 "location": 10,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 13,
@@ -338,7 +338,7 @@
                                 "opcode": "int32_load",
                                 "location": 16,
                                 "flags": {
-                                    "load_extension": "sign_extend",
+                                    "load_extension": "noextend",
                                     "volatile": false
                                 },
                                 "control_next": 19,

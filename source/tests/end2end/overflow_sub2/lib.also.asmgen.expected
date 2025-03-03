@@ -20,8 +20,6 @@ overflow_ssub:
 __kefir_text_func_overflow_ssub_begin:
     movsx %edi, %rax
     movsx %esi, %rcx
-    movsx %eax, %rax
-    movsx %ecx, %rcx
     sub %rcx, %rax
     seto %cl
     movsx %eax, %rsi
@@ -38,8 +36,6 @@ overflow_usub:
 __kefir_text_func_overflow_usub_begin:
     mov %edi, %eax
     mov %esi, %ecx
-    mov %eax, %eax
-    mov %ecx, %ecx
     sub %rcx, %rax
     seto %cl
     mov %eax, %esi

@@ -48,7 +48,6 @@ __kefir_text_func_test2_atomic_compare_exchange16_begin:
     sub $16, %rsp
     mov %rdi, %rax
     mov %rsi, %rcx
-    movsx %dx, %rdx
     movw %dx, -2(%rbp)
     mov $2, %rdi
     mov %rax, %rsi
@@ -69,7 +68,6 @@ __kefir_text_func_test2_atomic_compare_exchange32_begin:
     sub $16, %rsp
     mov %rdi, %rax
     mov %rsi, %rcx
-    movsx %edx, %rdx
     movl %edx, -4(%rbp)
     mov $4, %rdi
     mov %rax, %rsi
@@ -110,7 +108,6 @@ __kefir_text_func_test2_atomic_compare_exchange8_begin:
     sub $16, %rsp
     mov %rdi, %rax
     mov %rsi, %rcx
-    movsx %dl, %rdx
     movb %dl, -1(%rbp)
     mov $1, %rdi
     mov %rax, %rsi

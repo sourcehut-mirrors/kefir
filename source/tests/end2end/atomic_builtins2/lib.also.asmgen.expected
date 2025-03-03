@@ -41,7 +41,7 @@ __kefir_text_func_test2_atomic_load8_begin:
     leaq -1(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxb -1(%rbp), %rax
+    movb -1(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -102,7 +102,7 @@ __kefir_text_func_test_atomic_load8_begin:
     leaq -1(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxb -1(%rbp), %rax
+    movb -1(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -120,7 +120,7 @@ __kefir_text_func_test_atomic_load16_begin:
     leaq -2(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxw -2(%rbp), %rax
+    movw -2(%rbp), %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -138,7 +138,7 @@ __kefir_text_func_test_atomic_load32_begin:
     leaq -4(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -217,7 +217,7 @@ __kefir_text_func_test2_atomic_load16_begin:
     leaq -2(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxw -2(%rbp), %rax
+    movw -2(%rbp), %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -235,7 +235,7 @@ __kefir_text_func_test2_atomic_load32_begin:
     leaq -4(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret

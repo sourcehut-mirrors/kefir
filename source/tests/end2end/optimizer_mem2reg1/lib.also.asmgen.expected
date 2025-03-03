@@ -18,43 +18,40 @@ __kefir_text_section_begin:
 factorial:
 __kefir_text_func_factorial_begin:
 _kefir_func_factorial_label0:
+    mov %rdi, %rcx
 _kefir_func_factorial_label1:
-    movsx %edi, %rax
-    cmp $0, %eax
+    cmp $0, %ecx
     jl _kefir_func_factorial_label8
 _kefir_func_factorial_label2:
-    movsx %edi, %rax
-    cmp $2, %eax
+    cmp $2, %ecx
     jle _kefir_func_factorial_label9
     jmp _kefir_func_factorial_label3
 _kefir_func_factorial_label9:
     jmp _kefir_func_factorial_label7
 _kefir_func_factorial_label3:
-    mov %rdi, %rsi
-    mov $1, %r8
+    mov %rcx, %rdi
+    mov $1, %rax
 _kefir_func_factorial_label4:
-    movsx %esi, %rax
-    cmp $1, %eax
+    cmp $1, %edi
     jg _kefir_func_factorial_label10
-    mov %r8, %rax
+    mov %rax, %rcx
     jmp _kefir_func_factorial_label5
 _kefir_func_factorial_label10:
-    mov %rsi, %rdi
-    mov %r8, %rcx
+    mov %rdi, %rdx
+    mov %rax, %rsi
     jmp _kefir_func_factorial_label6
 _kefir_func_factorial_label5:
-    movsx %eax, %rax
+    mov %rcx, %rax
     ret
 _kefir_func_factorial_label6:
-    mov %rdi, %rax
-    add $-1, %eax
-    mov %rcx, %rdx
-    imul %edi, %edx
-    mov %rax, %rsi
-    mov %rdx, %r8
+    mov %rdx, %rcx
+    add $-1, %ecx
+    imul %edx, %esi
+    mov %rcx, %rdi
+    mov %rsi, %rax
     jmp _kefir_func_factorial_label4
 _kefir_func_factorial_label7:
-    movsx %edi, %rax
+    mov %rcx, %rax
     ret
 _kefir_func_factorial_label8:
     mov $0, %rax
@@ -131,8 +128,7 @@ _kefir_func_quad_equation_label1:
     mulsd %xmm2, %xmm4
     movq %xmm3, %xmm1
     subsd %xmm4, %xmm1
-    movsx %edi, %rax
-    test %eax, %eax
+    test %edi, %edi
     jz _kefir_func_quad_equation_label5
     jmp _kefir_func_quad_equation_label2
 _kefir_func_quad_equation_label5:

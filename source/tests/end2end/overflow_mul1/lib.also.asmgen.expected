@@ -40,8 +40,6 @@ overflow_mul_schar_schar_schar:
 __kefir_text_func_overflow_mul_schar_schar_schar_begin:
     movsx %dil, %rax
     movsx %sil, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
     imul %rcx, %rax
     seto %cl
     movsx %al, %rsi
@@ -58,8 +56,6 @@ overflow_mul_schar_schar_uchar:
 __kefir_text_func_overflow_mul_schar_schar_uchar_begin:
     movsx %dil, %rax
     movsx %sil, %rcx
-    movsx %al, %rax
-    movsx %cl, %rcx
     imul %rcx, %rax
     seto %cl
     movzx %al, %rsi
@@ -76,8 +72,6 @@ overflow_mul_schar_uchar_uchar:
 __kefir_text_func_overflow_mul_schar_uchar_uchar_begin:
     movsx %dil, %rax
     movzx %sil, %rcx
-    movsx %al, %rax
-    movzx %cl, %rcx
     imul %rcx, %rax
     seto %cl
     movzx %al, %rsi
@@ -119,8 +113,6 @@ overflow_mul_uint_short_ushort:
 __kefir_text_func_overflow_mul_uint_short_ushort_begin:
     mov %edi, %eax
     movsx %si, %rcx
-    mov %eax, %eax
-    movsx %cx, %rcx
     imul %rcx, %rax
     seto %cl
     movzx %ax, %rsi
@@ -136,7 +128,6 @@ __kefir_text_func_overflow_mul_uint_short_ushort_end:
 overflow_mul_long_int_int:
 __kefir_text_func_overflow_mul_long_int_int_begin:
     movsx %esi, %rax
-    movsx %eax, %rax
     imul %rax, %rdi
     seto %al
     movsx %edi, %rcx
@@ -152,8 +143,6 @@ overflow_mul_uchar_schar_uchar:
 __kefir_text_func_overflow_mul_uchar_schar_uchar_begin:
     movzx %dil, %rax
     movsx %sil, %rcx
-    movzx %al, %rax
-    movsx %cl, %rcx
     imul %rcx, %rax
     seto %cl
     movzx %al, %rsi
@@ -170,8 +159,6 @@ overflow_mul_int_short_uint:
 __kefir_text_func_overflow_mul_int_short_uint_begin:
     movsx %edi, %rax
     movsx %si, %rcx
-    movsx %eax, %rax
-    movsx %cx, %rcx
     imul %rcx, %rax
     seto %cl
     mov %eax, %esi

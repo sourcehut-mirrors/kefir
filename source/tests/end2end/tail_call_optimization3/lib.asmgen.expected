@@ -46,7 +46,7 @@ __kefir_text_func_test_begin:
     movq someptr@GOTPCREL(%rip), %rax
     lea -4(%rbp), %rdi
     movq %rdi, (%rax)
-    movsxl -4(%rbp), %rdi
+    movl -4(%rbp), %edi
     add $1, %edi
     call test
     lea (%rbp), %rsp
@@ -68,7 +68,7 @@ __kefir_text_func_test3_begin:
     movl %edi, -4(%rbp)
     leaq -4(%rbp), %rdi
     call somefn@PLT
-    movsxl -4(%rbp), %rdi
+    movl -4(%rbp), %edi
     add $1, %edi
     call test3
     lea (%rbp), %rsp
@@ -113,7 +113,7 @@ _kefir_func_test4_label1:
     movq -16(%rbp), %r10
     test %al, %al
     jz _kefir_func_test4_label1
-    movsxl -4(%rbp), %rdi
+    movl -4(%rbp), %edi
     add $1, %edi
     call test4
     lea (%rbp), %rsp
@@ -129,7 +129,7 @@ __kefir_text_func_test5_begin:
     movl %edi, -4(%rbp)
     leaq -4(%rbp), %rax
 
-    movsxl -4(%rbp), %rdi
+    movl -4(%rbp), %edi
     add $1, %edi
     call test5
     lea (%rbp), %rsp
@@ -141,7 +141,7 @@ test6:
 __kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
-    movsx %edi, %rax
+    mov %rdi, %rax
 
     add $1, %edi
     pop %rbp
@@ -154,13 +154,13 @@ __kefir_text_func_test7_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movl %edi, -4(%rbp)
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
     leaq -4(%rbp), %rdi
     xor %ecx, %ecx
     cmp $0, %eax
     cmovle %rcx, %rdi
     call somefn@PLT
-    movsxl -4(%rbp), %rdi
+    movl -4(%rbp), %edi
     add $1, %edi
     call test7
     lea (%rbp), %rsp
@@ -174,12 +174,11 @@ __kefir_text_func_test8_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %eax, %rcx
-    movsx %eax, %rdx
-    xor %esi, %esi
-    cmp $0, %ecx
-    cmovle %rsi, %rdx
-    movsx %edx, %rdi
+    mov %rax, %rdi
+    xor %ecx, %ecx
+    cmp $0, %eax
+    cmovle %rcx, %rdi
+    movsx %edi, %rdi
     movq %rax, -16(%rbp)
     call somefn@PLT
     movq -16(%rbp), %rax
@@ -273,7 +272,6 @@ __kefir_text_func_test13_begin:
     mov %rsp, %rbp
     sub $4096, %rsp
     movl $0, -4096(%rbp)
-    movsx %edi, %rdi
     call test13
     lea (%rbp), %rsp
     pop %rbp
@@ -285,7 +283,7 @@ __kefir_text_func_test14_begin:
     push %rbp
     mov %rsp, %rbp
     sub $4096, %rsp
-    movsxl -4096(%rbp), %rax
+    movl -4096(%rbp), %eax
     add %eax, %edi
     call test14
     lea (%rbp), %rsp

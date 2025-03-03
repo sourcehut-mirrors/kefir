@@ -138,12 +138,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 4,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -359,12 +359,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 8,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -789,12 +789,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 15,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1011,12 +1011,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 19,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1112,12 +1112,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 21,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1137,12 +1137,12 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 22,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1229,12 +1229,12 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 24,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1379,12 +1379,12 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "movsx",
+#                "opcode": "mov",
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
 #                        "index": 27,
-#                        "variant": "64bit"
+#                        "variant": "32bit"
 #                    },
 #                    {
 #                        "type": "indirect",
@@ -1566,7 +1566,7 @@ _kefir_func_factorial_label11:
     movl %edi, -8(%rbp)
 .loc 0 22 9
 _kefir_func_factorial_label12:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 22 9
 _kefir_func_factorial_label13:
     mov $0, %rcx
@@ -1584,7 +1584,7 @@ _kefir_func_factorial_label15:
 .loc 0 24 9
 _kefir_func_factorial_label2:
 _kefir_func_factorial_label16:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 24 9
 _kefir_func_factorial_label17:
     mov $0, %rcx
@@ -1619,7 +1619,7 @@ _kefir_func_factorial_label23:
 .loc 0 28 12
 _kefir_func_factorial_label4:
 _kefir_func_factorial_label24:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 28 12
 _kefir_func_factorial_label25:
     mov $0, %rcx
@@ -1637,7 +1637,7 @@ _kefir_func_factorial_label27:
 .loc 0 31 12
 _kefir_func_factorial_label5:
 _kefir_func_factorial_label28:
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
 .loc 0 31 5
 _kefir_func_factorial_label29:
     lea (%rbp), %rsp
@@ -1646,10 +1646,10 @@ _kefir_func_factorial_label29:
 .loc 0 29 19
 _kefir_func_factorial_label6:
 _kefir_func_factorial_label30:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 29 9
 _kefir_func_factorial_label31:
-    movsxl -4(%rbp), %rcx
+    movl -4(%rbp), %ecx
 .loc 0 29 9
 _kefir_func_factorial_label32:
     imul %eax, %ecx
@@ -1658,7 +1658,7 @@ _kefir_func_factorial_label33:
     movl %ecx, -4(%rbp)
 .loc 0 28 19
 _kefir_func_factorial_label34:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 28 19
 _kefir_func_factorial_label35:
     add $-1, %eax
@@ -1671,7 +1671,7 @@ _kefir_func_factorial_label37:
 .loc 0 25 16
 _kefir_func_factorial_label7:
 _kefir_func_factorial_label38:
-    movsxl -8(%rbp), %rax
+    movl -8(%rbp), %eax
 .loc 0 25 9
 _kefir_func_factorial_label39:
     lea (%rbp), %rsp

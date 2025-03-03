@@ -131,7 +131,7 @@
                     "opcode": "iadd64"
                 },
                 {
-                    "opcode": "load8i",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -183,7 +183,7 @@
                     "opcode": "iadd64"
                 },
                 {
-                    "opcode": "load8i",
+                    "opcode": "load8",
                     "memory_flags": {
                         "volatile": false
                     }

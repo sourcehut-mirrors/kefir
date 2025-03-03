@@ -27,8 +27,7 @@ __kefir_text_func_test2_atomic_exchange16_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %si, %rcx
-    movw %cx, -4(%rbp)
+    movw %si, -4(%rbp)
     movw $0, -2(%rbp)
     mov $2, %rdi
     mov %rax, %rsi
@@ -36,7 +35,7 @@ __kefir_text_func_test2_atomic_exchange16_begin:
     leaq -2(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxw -2(%rbp), %rax
+    movw -2(%rbp), %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -48,8 +47,7 @@ __kefir_text_func_test2_atomic_exchange32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %esi, %rcx
-    movl %ecx, -8(%rbp)
+    movl %esi, -8(%rbp)
     movl $0, -4(%rbp)
     mov $4, %rdi
     mov %rax, %rsi
@@ -57,7 +55,7 @@ __kefir_text_func_test2_atomic_exchange32_begin:
     leaq -4(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -97,7 +95,7 @@ __kefir_text_func_test_atomic_exchange8_begin:
     leaq -1(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxb -1(%rbp), %rax
+    movb -1(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -109,8 +107,7 @@ __kefir_text_func_test2_atomic_exchange8_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rax
-    movsx %sil, %rcx
-    movb %cl, -2(%rbp)
+    movb %sil, -2(%rbp)
     movb $0, -1(%rbp)
     mov $1, %rdi
     mov %rax, %rsi
@@ -118,7 +115,7 @@ __kefir_text_func_test2_atomic_exchange8_begin:
     leaq -1(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxb -1(%rbp), %rax
+    movb -1(%rbp), %al
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -138,7 +135,7 @@ __kefir_text_func_test_atomic_exchange16_begin:
     leaq -2(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxw -2(%rbp), %rax
+    movw -2(%rbp), %ax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -158,7 +155,7 @@ __kefir_text_func_test_atomic_exchange32_begin:
     leaq -4(%rbp), %rcx
     mov $5, %r8
     call __atomic_exchange@PLT
-    movsxl -4(%rbp), %rax
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
