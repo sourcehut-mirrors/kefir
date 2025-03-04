@@ -449,6 +449,7 @@ kefir_result_t kefir_opt_code_block_redirect_phi_links(struct kefir_mem *mem, st
         }
         REQUIRE_OK(res);
         REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_ref, old_predecessor_block_id));
+        REQUIRE_OK(kefir_opt_code_container_phi_drop_link(mem, code, phi_ref, new_predecessor_block_id));
         REQUIRE_OK(kefir_opt_code_container_phi_attach(mem, code, phi_ref, new_predecessor_block_id, instr_ref));
     }
     REQUIRE_OK(res);
