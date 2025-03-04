@@ -2834,15 +2834,11 @@ static kefir_result_t simplify_select(struct kefir_mem *mem, struct kefir_opt_fu
 }
 
 static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_function *func,
-                                      const struct kefir_opt_instruction *instr,
-                                      kefir_opt_instruction_ref_t *replacement_ref) {
-    struct kefir_opt_instruction_use_iterator use_iter;
-    kefir_result_t res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, instr->id, &use_iter);
-    REQUIRE(res != KEFIR_ITERATOR_END, KEFIR_OK);
-    REQUIRE_OK(res);
-    const kefir_opt_instruction_ref_t use_instr_ref = use_iter.use_instr_ref;
-    res = kefir_opt_code_container_instruction_use_next(&use_iter);
-    REQUIRE(res == KEFIR_ITERATOR_END, res);
+                                    const struct kefir_opt_instruction *instr,
+                                    kefir_opt_instruction_ref_t *replacement_ref) {
+    kefir_opt_instruction_ref_t use_instr_ref;
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr->id, &use_instr_ref));
+    REQUIRE(use_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
 
     const struct kefir_opt_instruction *use_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, use_instr_ref, &use_instr));
@@ -2855,63 +2851,63 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD &&
-        instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
-        use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS &&
-        use_instr->operation.parameters.refs[0] == instr->id) {
+               instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
+               use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS &&
+               use_instr->operation.parameters.refs[0] == instr->id) {
         REQUIRE_OK(kefir_opt_code_builder_int8_load(
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
-        instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
-        use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS &&
-        use_instr->operation.parameters.refs[0] == instr->id) {
+               instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
+               use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS &&
+               use_instr->operation.parameters.refs[0] == instr->id) {
         REQUIRE_OK(kefir_opt_code_builder_int16_load(
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
-        instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
-        use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS &&
-        use_instr->operation.parameters.refs[0] == instr->id) {
+               instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
+               use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS &&
+               use_instr->operation.parameters.refs[0] == instr->id) {
         REQUIRE_OK(kefir_opt_code_builder_int16_load(
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
-        instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
-        use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS &&
-        use_instr->operation.parameters.refs[0] == instr->id) {
+               instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
+               use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS &&
+               use_instr->operation.parameters.refs[0] == instr->id) {
         REQUIRE_OK(kefir_opt_code_builder_int32_load(
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
-        instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
-        use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS &&
-        use_instr->operation.parameters.refs[0] == instr->id) {
+               instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
+               use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS &&
+               use_instr->operation.parameters.refs[0] == instr->id) {
         REQUIRE_OK(kefir_opt_code_builder_int32_load(
             mem, &func->code, instr->block_id, instr->operation.parameters.refs[0],
             &(struct kefir_opt_memory_access_flags) {
                 .load_extension = KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND,
-                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access
-            }, replacement_ref));
+                .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
+            replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
     }
 

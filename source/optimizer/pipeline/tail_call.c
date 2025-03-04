@@ -204,6 +204,10 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
                 tail_prev_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL,
             KEFIR_OK);
 
+    kefir_opt_instruction_ref_t sole_use_ref;
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, tail_prev_instr_ref, &sole_use_ref));
+    REQUIRE(sole_use_ref == tail_instr_ref, KEFIR_OK);
+
     struct escape_analysis_param param = {.mem = mem, .module = module, .func = func, .tail_call_possible = true};
     struct kefir_opt_code_container_tracer tracer = {.trace_instruction = escape_analyze, .payload = &param};
     REQUIRE_OK(kefir_hashtreeset_init(&param.no_escapes, &kefir_hashtree_uint_ops));

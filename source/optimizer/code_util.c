@@ -130,9 +130,9 @@ static kefir_result_t extract_inputs_ref3_cond(const struct kefir_opt_code_conta
 }
 
 static kefir_result_t extract_inputs_ref4_compare(const struct kefir_opt_code_container *code,
-                                               const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
-                                               kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
-                                               void *payload) {
+                                                  const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+                                                  kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                                  void *payload) {
     UNUSED(code);
     UNUSED(resolve_phi);
     INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
@@ -608,6 +608,28 @@ kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_
             *result_ptr = false;
             break;
     }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_instruction_get_sole_use(const struct kefir_opt_code_container *code,
+                                                  kefir_opt_instruction_ref_t instr_ref,
+                                                  kefir_opt_instruction_ref_t *use_instr_ref_ptr) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(use_instr_ref_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction reference"));
+
+    *use_instr_ref_ptr = KEFIR_ID_NONE;
+
+    struct kefir_opt_instruction_use_iterator use_iter;
+    kefir_result_t res = kefir_opt_code_container_instruction_use_instr_iter(code, instr_ref, &use_iter);
+    REQUIRE(res != KEFIR_ITERATOR_END, KEFIR_OK);
+    REQUIRE_OK(res);
+    const kefir_opt_instruction_ref_t use_instr_ref = use_iter.use_instr_ref;
+    res = kefir_opt_code_container_instruction_use_next(&use_iter);
+    REQUIRE(res == KEFIR_ITERATOR_END, res);
+
+    *use_instr_ref_ptr = use_instr_ref;
 
     return KEFIR_OK;
 }
