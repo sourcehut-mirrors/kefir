@@ -37,6 +37,8 @@ typedef struct kefir_opt_code_structure {
     struct kefir_opt_code_structure_block *blocks;
     struct kefir_hashtreeset indirect_jump_target_blocks;
     struct kefir_bucketset sequenced_before;
+    struct kefir_hashtree sequence_numbering;
+    kefir_size_t next_seq_number;
 } kefir_opt_code_structure_t;
 
 kefir_result_t kefir_opt_code_structure_init(struct kefir_opt_code_structure *);
