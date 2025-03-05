@@ -91,13 +91,7 @@ __kefir_text_func_test4_begin:
     mov %rax, %r9
     movq someothervar@GOTPCREL(%rip), %r10
 _kefir_func_test4_label1:
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r10, %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    movl (%r10), %eax
     movsx %eax, %rax
     mov %rax, %rdx
     add %r9, %rdx

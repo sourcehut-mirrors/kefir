@@ -20,52 +20,50 @@
 __kefir_text_section_begin:
 store_b:
 __kefir_text_func_store_b_begin:
-    mov $5, %rdx
-    call __atomic_store_1@PLT
+    mov %rsi, %rax
+    xchgb (%rdi), %al
     ret
 __kefir_text_func_store_b_end:
 
 store_u8:
 __kefir_text_func_store_u8_begin:
-    mov $5, %rdx
-    call __atomic_store_1@PLT
+    mov %rsi, %rax
+    xchgb (%rdi), %al
     ret
 __kefir_text_func_store_u8_end:
 
 store_f32:
 __kefir_text_func_store_f32_begin:
-    movq %xmm0, %rsi
-    mov $5, %rdx
-    call __atomic_store_4@PLT
+    movq %xmm0, %rax
+    xchgl (%rdi), %eax
     ret
 __kefir_text_func_store_f32_end:
 
 store_f64:
 __kefir_text_func_store_f64_begin:
-    movq %xmm0, %rsi
-    mov $5, %rdx
-    call __atomic_store_8@PLT
+    movq %xmm0, %rax
+    xchgq (%rdi), %rax
     ret
 __kefir_text_func_store_f64_end:
 
 store_u16:
 __kefir_text_func_store_u16_begin:
-    mov $5, %rdx
-    call __atomic_store_2@PLT
+    mov %rsi, %rax
+    xchgw (%rdi), %ax
     ret
 __kefir_text_func_store_u16_end:
 
 store_u32:
 __kefir_text_func_store_u32_begin:
-    mov $5, %rdx
-    call __atomic_store_4@PLT
+    mov %rsi, %rax
+    xchgl (%rdi), %eax
     ret
 __kefir_text_func_store_u32_end:
 
 store_u64:
 __kefir_text_func_store_u64_begin:
-    mov $5, %rdx
-    call __atomic_store_8@PLT
+    mov %rsi, %rax
+    xchgq (%rdi), %rax
     ret
 __kefir_text_func_store_u64_end:
 

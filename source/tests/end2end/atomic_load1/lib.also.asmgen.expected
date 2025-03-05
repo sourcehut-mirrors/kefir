@@ -34,59 +34,52 @@
 __kefir_text_section_begin:
 get_b:
 __kefir_text_func_get_b_begin:
-    movq b@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_1@PLT
+    movq b@GOTPCREL(%rip), %rax
+    movb (%rax), %al
     ret
 __kefir_text_func_get_b_end:
 
 get_u8:
 __kefir_text_func_get_u8_begin:
-    movq u8@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_1@PLT
+    movq u8@GOTPCREL(%rip), %rax
+    movb (%rax), %al
     ret
 __kefir_text_func_get_u8_end:
 
 get_f32:
 __kefir_text_func_get_f32_begin:
-    movq f32@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
+    movq f32@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
     movq %rax, %xmm0
     ret
 __kefir_text_func_get_f32_end:
 
 get_f64:
 __kefir_text_func_get_f64_begin:
-    movq f64@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq f64@GOTPCREL(%rip), %rax
+    movq (%rax), %rax
     movq %rax, %xmm0
     ret
 __kefir_text_func_get_f64_end:
 
 get_u16:
 __kefir_text_func_get_u16_begin:
-    movq u16@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_2@PLT
+    movq u16@GOTPCREL(%rip), %rax
+    movw (%rax), %ax
     ret
 __kefir_text_func_get_u16_end:
 
 get_u32:
 __kefir_text_func_get_u32_begin:
-    movq u32@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
+    movq u32@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
     ret
 __kefir_text_func_get_u32_end:
 
 get_u64:
 __kefir_text_func_get_u64_begin:
-    movq u64@GOTPCREL(%rip), %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq u64@GOTPCREL(%rip), %rax
+    movq (%rax), %rax
     ret
 __kefir_text_func_get_u64_end:
 

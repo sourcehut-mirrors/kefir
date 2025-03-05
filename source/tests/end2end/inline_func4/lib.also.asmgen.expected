@@ -14,11 +14,8 @@ __kefir_text_func_addx_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdi, %r10
-    movq x@GOTPCREL(%rip), %rdi
-    movq %r10, -32(%rbp)
-    mov $5, %rsi
-    call __atomic_load_8@PLT
-    movq -32(%rbp), %r10
+    movq x@GOTPCREL(%rip), %rax
+    movq (%rax), %rax
     movq %rax, -16(%rbp)
     movq $0, -8(%rbp)
 _kefir_func_addx_label1:

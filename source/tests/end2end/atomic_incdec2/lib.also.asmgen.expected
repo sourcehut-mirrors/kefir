@@ -51,11 +51,7 @@ __kefir_text_func_postdec_i8_begin:
     sub $32, %rsp
     movq i8@GOTPCREL(%rip), %r9
 _kefir_func_postdec_i8_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_1@PLT
-    movq -32(%rbp), %r9
+    movb (%r9), %al
     movsx %al, %r10
     add $-1, %al
     movq %r9, -24(%rbp)
@@ -151,11 +147,7 @@ __kefir_text_func_postinc_i8_begin:
     sub $32, %rsp
     movq i8@GOTPCREL(%rip), %r9
 _kefir_func_postinc_i8_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_1@PLT
-    movq -32(%rbp), %r9
+    movb (%r9), %al
     movsx %al, %r10
     add $1, %al
     movq %r9, -24(%rbp)
@@ -255,12 +247,8 @@ __kefir_text_func_postdec_f32_begin:
     fnclex
     movq f32@GOTPCREL(%rip), %r9
 _kefir_func_postdec_f32_label1:
-    movq %r9, -64(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
+    movl (%r9), %eax
     mov %rax, %r10
-    movq -64(%rbp), %r9
     movd _kefir_func_postdec_f32_label4(%rip), %xmm0
     movq %r10, %xmm1
     addss %xmm0, %xmm1
@@ -313,12 +301,8 @@ __kefir_text_func_postdec_f64_begin:
     fnclex
     movq f64@GOTPCREL(%rip), %r9
 _kefir_func_postdec_f64_label1:
-    movq %r9, -64(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -64(%rbp), %r9
     movq _kefir_func_postdec_f64_label4(%rip), %xmm0
     movq %r10, %xmm1
     addsd %xmm0, %xmm1
@@ -367,11 +351,7 @@ __kefir_text_func_postdec_i16_begin:
     sub $32, %rsp
     movq i16@GOTPCREL(%rip), %r9
 _kefir_func_postdec_i16_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_2@PLT
-    movq -32(%rbp), %r9
+    movw (%r9), %ax
     movsx %ax, %r10
     add $-1, %ax
     movq %r9, -24(%rbp)
@@ -400,11 +380,7 @@ __kefir_text_func_postdec_i32_begin:
     sub $32, %rsp
     movq i32@GOTPCREL(%rip), %r9
 _kefir_func_postdec_i32_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
-    movq -32(%rbp), %r9
+    movl (%r9), %eax
     movsx %eax, %r10
     add $-1, %eax
     movq %r9, -24(%rbp)
@@ -433,12 +409,8 @@ __kefir_text_func_postdec_i64_begin:
     sub $32, %rsp
     movq i64@GOTPCREL(%rip), %r9
 _kefir_func_postdec_i64_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -32(%rbp), %r9
     mov %r10, %rax
     add $-1, %rax
     movq %r9, -24(%rbp)
@@ -467,12 +439,8 @@ __kefir_text_func_postdec_ptr_begin:
     sub $32, %rsp
     movq ptr@GOTPCREL(%rip), %r9
 _kefir_func_postdec_ptr_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -32(%rbp), %r9
     mov %r10, %rax
     add $-8, %rax
     movq %r9, -24(%rbp)
@@ -505,12 +473,8 @@ __kefir_text_func_postinc_f32_begin:
     fnclex
     movq f32@GOTPCREL(%rip), %r9
 _kefir_func_postinc_f32_label1:
-    movq %r9, -64(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
+    movl (%r9), %eax
     mov %rax, %r10
-    movq -64(%rbp), %r9
     movd _kefir_func_postinc_f32_label4(%rip), %xmm0
     movq %r10, %xmm1
     addss %xmm0, %xmm1
@@ -563,12 +527,8 @@ __kefir_text_func_postinc_f64_begin:
     fnclex
     movq f64@GOTPCREL(%rip), %r9
 _kefir_func_postinc_f64_label1:
-    movq %r9, -64(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -64(%rbp), %r9
     movq _kefir_func_postinc_f64_label4(%rip), %xmm0
     movq %r10, %xmm1
     addsd %xmm0, %xmm1
@@ -617,11 +577,7 @@ __kefir_text_func_postinc_i16_begin:
     sub $32, %rsp
     movq i16@GOTPCREL(%rip), %r9
 _kefir_func_postinc_i16_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_2@PLT
-    movq -32(%rbp), %r9
+    movw (%r9), %ax
     movsx %ax, %r10
     add $1, %ax
     movq %r9, -24(%rbp)
@@ -650,11 +606,7 @@ __kefir_text_func_postinc_i32_begin:
     sub $32, %rsp
     movq i32@GOTPCREL(%rip), %r9
 _kefir_func_postinc_i32_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_4@PLT
-    movq -32(%rbp), %r9
+    movl (%r9), %eax
     movsx %eax, %r10
     add $1, %eax
     movq %r9, -24(%rbp)
@@ -683,12 +635,8 @@ __kefir_text_func_postinc_i64_begin:
     sub $32, %rsp
     movq i64@GOTPCREL(%rip), %r9
 _kefir_func_postinc_i64_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -32(%rbp), %r9
     mov %r10, %rax
     add $1, %rax
     movq %r9, -24(%rbp)
@@ -717,12 +665,8 @@ __kefir_text_func_postinc_ptr_begin:
     sub $32, %rsp
     movq ptr@GOTPCREL(%rip), %r9
 _kefir_func_postinc_ptr_label1:
-    movq %r9, -32(%rbp)
-    mov %r9, %rdi
-    mov $5, %rsi
-    call __atomic_load_8@PLT
+    movq (%r9), %rax
     mov %rax, %r10
-    movq -32(%rbp), %r9
     mov %r10, %rax
     add $8, %rax
     movq %r9, -24(%rbp)
