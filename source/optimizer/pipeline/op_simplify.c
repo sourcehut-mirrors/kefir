@@ -209,25 +209,35 @@ static kefir_result_t simplify_or_candidate(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    REQUIRE(arg1->block_id != instr->block_id, KEFIR_OK);
-
     kefir_bool_t only_predecessor;
     REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(structure, arg1->block_id, instr->block_id,
                                                                            &only_predecessor));
-    REQUIRE(only_predecessor, KEFIR_OK);
+    if (only_predecessor) {
+        const struct kefir_opt_code_block *arg1_block;
+        REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
 
-    const struct kefir_opt_code_block *arg1_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
+        kefir_opt_instruction_ref_t arg1_block_tail_ref;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
+        REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
 
-    kefir_opt_instruction_ref_t arg1_block_tail_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
-    REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
+        const struct kefir_opt_instruction *arg1_block_tail;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg1_block_tail_ref, &arg1_block_tail));
+        REQUIRE(arg1_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
+        REQUIRE(arg1_block_tail->operation.parameters.branch.alternative_block == instr->block_id, KEFIR_OK);
+        REQUIRE(arg1_block_tail->operation.parameters.branch.condition_ref == arg1->id, KEFIR_OK);
 
-    const struct kefir_opt_instruction *arg1_block_tail;
-    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg1_block_tail_ref, &arg1_block_tail));
-    REQUIRE(arg1_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
-    REQUIRE(arg1_block_tail->operation.parameters.branch.alternative_block == instr->block_id, KEFIR_OK);
-    REQUIRE(arg1_block_tail->operation.parameters.branch.condition_ref == arg1->id, KEFIR_OK);
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr_ref, &sole_use_ref));
+        REQUIRE(sole_use_ref != KEFIR_ID_NONE, KEFIR_OK);
+
+        const struct kefir_opt_instruction *sole_use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+        REQUIRE(sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_SELECT, KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[0] == instr->operation.parameters.refs[0], KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[1] == instr->operation.parameters.refs[0], KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[2] == instr->id, KEFIR_OK);
+    }
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_BOOL_OR:
@@ -362,26 +372,38 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
     kefir_bool_t only_predecessor;
     REQUIRE_OK(kefir_opt_code_structure_block_exclusive_direct_predecessor(structure, arg1->block_id, instr->block_id,
                                                                            &only_predecessor));
-    REQUIRE(only_predecessor, KEFIR_OK);
+    if (only_predecessor) {
+        const struct kefir_opt_code_block *arg1_block;
+        REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
 
-    const struct kefir_opt_code_block *arg1_block;
-    REQUIRE_OK(kefir_opt_code_container_block(&func->code, arg1->block_id, &arg1_block));
+        kefir_opt_instruction_ref_t arg1_block_tail_ref;
+        REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
+        REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
 
-    kefir_opt_instruction_ref_t arg1_block_tail_ref;
-    REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, arg1_block, &arg1_block_tail_ref));
-    REQUIRE(arg1_block_tail_ref != KEFIR_ID_NONE, KEFIR_OK);
+        const struct kefir_opt_instruction *arg1_block_tail;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg1_block_tail_ref, &arg1_block_tail));
+        REQUIRE(arg1_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
+        REQUIRE(arg1_block_tail->operation.parameters.branch.alternative_block == instr->block_id, KEFIR_OK);
 
-    const struct kefir_opt_instruction *arg1_block_tail;
-    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, arg1_block_tail_ref, &arg1_block_tail));
-    REQUIRE(arg1_block_tail->operation.opcode == KEFIR_OPT_OPCODE_BRANCH, KEFIR_OK);
-    REQUIRE(arg1_block_tail->operation.parameters.branch.alternative_block == instr->block_id, KEFIR_OK);
+        if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(
+                arg1_block_tail->operation.parameters.branch.condition_variant)) {
+            const struct kefir_opt_instruction *condition_instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(
+                &func->code, arg1_block_tail->operation.parameters.branch.condition_ref, &condition_instr));
+            REQUIRE(condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT, KEFIR_OK);
+            REQUIRE(condition_instr->operation.parameters.refs[0] == arg1->id, KEFIR_OK);
+        }
+    } else {
+        kefir_opt_instruction_ref_t sole_use_ref;
+        REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, instr_ref, &sole_use_ref));
+        REQUIRE(sole_use_ref != KEFIR_ID_NONE, KEFIR_OK);
 
-    if (KEFIR_OPT_BRANCH_CONDITION_VARIANT_IS_DIRECT(arg1_block_tail->operation.parameters.branch.condition_variant)) {
-        const struct kefir_opt_instruction *condition_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(
-            &func->code, arg1_block_tail->operation.parameters.branch.condition_ref, &condition_instr));
-        REQUIRE(condition_instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT, KEFIR_OK);
-        REQUIRE(condition_instr->operation.parameters.refs[0] == arg1->id, KEFIR_OK);
+        const struct kefir_opt_instruction *sole_use_instr;
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, sole_use_ref, &sole_use_instr));
+        REQUIRE(sole_use_instr->operation.opcode == KEFIR_OPT_OPCODE_SELECT, KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[0] == instr->operation.parameters.refs[0], KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[1] == instr->operation.parameters.refs[0], KEFIR_OK);
+        REQUIRE(sole_use_instr->operation.parameters.refs[2] == instr->id, KEFIR_OK);
     }
 
     switch (instr->operation.opcode) {

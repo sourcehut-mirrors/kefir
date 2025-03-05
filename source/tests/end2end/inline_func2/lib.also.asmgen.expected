@@ -40,6 +40,8 @@ __kefir_text_func_factorial_helper2_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rcx
+    mov %rcx, %rdi
+    sub $1, %rdi
     cmp $1, %rcx
     jg _kefir_func_factorial_helper2_label2
     mov $1, %rax
@@ -47,8 +49,6 @@ __kefir_text_func_factorial_helper2_begin:
     pop %rbp
     ret
 _kefir_func_factorial_helper2_label2:
-    mov %rcx, %rdi
-    sub $1, %rdi
     movq %rcx, -16(%rbp)
     call factorial_helper2
     movq -16(%rbp), %rcx
@@ -66,6 +66,8 @@ __kefir_text_func_factorial_helper_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     mov %rdi, %rcx
+    mov %rcx, %rdi
+    sub $1, %rdi
     cmp $1, %rcx
     jg _kefir_func_factorial_helper_label2
     mov $1, %rdx
@@ -75,8 +77,6 @@ _kefir_func_factorial_helper_label1:
     pop %rbp
     ret
 _kefir_func_factorial_helper_label2:
-    mov %rcx, %rdi
-    sub $1, %rdi
     movq %rcx, -16(%rbp)
     movq %rdx, -8(%rbp)
     call factorial_helper2
