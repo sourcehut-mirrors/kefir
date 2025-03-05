@@ -46,30 +46,20 @@
 __kefir_text_section_begin:
 postdec_i8:
 __kefir_text_func_postdec_i8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i8@GOTPCREL(%rip), %r9
+    movq i8@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i8_label1:
-    movb (%r9), %al
-    movsx %al, %r10
+    movb (%rsi), %al
+    movsx %al, %rdi
     add $-1, %al
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_i8_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i8_end:
 
@@ -142,30 +132,20 @@ _kefir_func_postdec_ld_label4:
 
 postinc_i8:
 __kefir_text_func_postinc_i8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i8@GOTPCREL(%rip), %r9
+    movq i8@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i8_label1:
-    movb (%r9), %al
-    movsx %al, %r10
+    movb (%rsi), %al
+    movsx %al, %rdi
     add $1, %al
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_1@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_i8_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i8_end:
 
@@ -240,42 +220,37 @@ postdec_f32:
 __kefir_text_func_postdec_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     stmxcsr -8(%rbp)
-    fnstenv -56(%rbp)
-    stmxcsr -28(%rbp)
+    fnstenv -40(%rbp)
+    stmxcsr -12(%rbp)
     fnclex
-    movq f32@GOTPCREL(%rip), %r9
+    movq f32@GOTPCREL(%rip), %rdi
 _kefir_func_postdec_f32_label1:
-    movl (%r9), %eax
-    mov %rax, %r10
+    movl (%rdi), %eax
+    mov %rax, %rsi
     movd _kefir_func_postdec_f32_label4(%rip), %xmm0
-    movq %r10, %xmm1
+    movq %rsi, %xmm1
     addss %xmm0, %xmm1
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    movq %xmm1, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -64(%rbp)
-    lea -64(%rbp), %rsi
-    call __atomic_compare_exchange_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    mov %rsi, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_f32_label3
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -48(%rbp)
+    mov -48(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -56(%rbp)
-    ldmxcsr -28(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
-    movq %r10, %xmm0
+    fldenv -40(%rbp)
+    ldmxcsr -12(%rbp)
+    stmxcsr -48(%rbp)
+    orl %eax, -48(%rbp)
+    ldmxcsr -48(%rbp)
+    movq %rsi, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -294,42 +269,37 @@ postdec_f64:
 __kefir_text_func_postdec_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     stmxcsr -8(%rbp)
-    fnstenv -56(%rbp)
-    stmxcsr -28(%rbp)
+    fnstenv -40(%rbp)
+    stmxcsr -12(%rbp)
     fnclex
-    movq f64@GOTPCREL(%rip), %r9
+    movq f64@GOTPCREL(%rip), %rdi
 _kefir_func_postdec_f64_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
+    movq (%rdi), %rax
+    mov %rax, %rsi
     movq _kefir_func_postdec_f64_label4(%rip), %xmm0
-    movq %r10, %xmm1
+    movq %rsi, %xmm1
     addsd %xmm0, %xmm1
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    movq %xmm1, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -64(%rbp)
-    lea -64(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    mov %rsi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_f64_label3
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -48(%rbp)
+    mov -48(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -56(%rbp)
-    ldmxcsr -28(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
-    movq %r10, %xmm0
+    fldenv -40(%rbp)
+    ldmxcsr -12(%rbp)
+    stmxcsr -48(%rbp)
+    orl %eax, -48(%rbp)
+    ldmxcsr -48(%rbp)
+    movq %rsi, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -346,119 +316,79 @@ _kefir_func_postdec_f64_label4:
 
 postdec_i16:
 __kefir_text_func_postdec_i16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i16@GOTPCREL(%rip), %r9
+    movq i16@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i16_label1:
-    movw (%r9), %ax
-    movsx %ax, %r10
+    movw (%rsi), %ax
+    movsx %ax, %rdi
     add $-1, %ax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_i16_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i16_end:
 
 postdec_i32:
 __kefir_text_func_postdec_i32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i32@GOTPCREL(%rip), %r9
+    movq i32@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i32_label1:
-    movl (%r9), %eax
-    movsx %eax, %r10
+    movl (%rsi), %eax
+    movsx %eax, %rdi
     add $-1, %eax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_i32_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i32_end:
 
 postdec_i64:
 __kefir_text_func_postdec_i64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i64@GOTPCREL(%rip), %r9
+    movq i64@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_i64_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
-    mov %r10, %rax
+    movq (%rsi), %rax
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $-1, %rax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_i64_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_i64_end:
 
 postdec_ptr:
 __kefir_text_func_postdec_ptr_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq ptr@GOTPCREL(%rip), %r9
+    movq ptr@GOTPCREL(%rip), %rsi
 _kefir_func_postdec_ptr_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
-    mov %r10, %rax
+    movq (%rsi), %rax
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $-8, %rax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postdec_ptr_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postdec_ptr_end:
 
@@ -466,42 +396,37 @@ postinc_f32:
 __kefir_text_func_postinc_f32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     stmxcsr -8(%rbp)
-    fnstenv -56(%rbp)
-    stmxcsr -28(%rbp)
+    fnstenv -40(%rbp)
+    stmxcsr -12(%rbp)
     fnclex
-    movq f32@GOTPCREL(%rip), %r9
+    movq f32@GOTPCREL(%rip), %rdi
 _kefir_func_postinc_f32_label1:
-    movl (%r9), %eax
-    mov %rax, %r10
+    movl (%rdi), %eax
+    mov %rax, %rsi
     movd _kefir_func_postinc_f32_label4(%rip), %xmm0
-    movq %r10, %xmm1
+    movq %rsi, %xmm1
     addss %xmm0, %xmm1
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    movq %xmm1, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -64(%rbp)
-    lea -64(%rbp), %rsi
-    call __atomic_compare_exchange_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    mov %rsi, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_f32_label3
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -48(%rbp)
+    mov -48(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -56(%rbp)
-    ldmxcsr -28(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
-    movq %r10, %xmm0
+    fldenv -40(%rbp)
+    ldmxcsr -12(%rbp)
+    stmxcsr -48(%rbp)
+    orl %eax, -48(%rbp)
+    ldmxcsr -48(%rbp)
+    movq %rsi, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -520,42 +445,37 @@ postinc_f64:
 __kefir_text_func_postinc_f64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     stmxcsr -8(%rbp)
-    fnstenv -56(%rbp)
-    stmxcsr -28(%rbp)
+    fnstenv -40(%rbp)
+    stmxcsr -12(%rbp)
     fnclex
-    movq f64@GOTPCREL(%rip), %r9
+    movq f64@GOTPCREL(%rip), %rdi
 _kefir_func_postinc_f64_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
+    movq (%rdi), %rax
+    mov %rax, %rsi
     movq _kefir_func_postinc_f64_label4(%rip), %xmm0
-    movq %r10, %xmm1
+    movq %rsi, %xmm1
     addsd %xmm0, %xmm1
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    movq %xmm1, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -64(%rbp)
-    lea -64(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rdi, %rdx
+    movq %xmm1, %rcx
+    mov %rsi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_f64_label3
-    stmxcsr -64(%rbp)
-    mov -64(%rbp), %rcx
+    stmxcsr -48(%rbp)
+    mov -48(%rbp), %rcx
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -56(%rbp)
-    ldmxcsr -28(%rbp)
-    stmxcsr -64(%rbp)
-    orl %eax, -64(%rbp)
-    ldmxcsr -64(%rbp)
-    movq %r10, %xmm0
+    fldenv -40(%rbp)
+    ldmxcsr -12(%rbp)
+    stmxcsr -48(%rbp)
+    orl %eax, -48(%rbp)
+    ldmxcsr -48(%rbp)
+    movq %rsi, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -572,119 +492,79 @@ _kefir_func_postinc_f64_label4:
 
 postinc_i16:
 __kefir_text_func_postinc_i16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i16@GOTPCREL(%rip), %r9
+    movq i16@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i16_label1:
-    movw (%r9), %ax
-    movsx %ax, %r10
+    movw (%rsi), %ax
+    movsx %ax, %rdi
     add $1, %ax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_2@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_i16_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i16_end:
 
 postinc_i32:
 __kefir_text_func_postinc_i32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i32@GOTPCREL(%rip), %r9
+    movq i32@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i32_label1:
-    movl (%r9), %eax
-    movsx %eax, %r10
+    movl (%rsi), %eax
+    movsx %eax, %rdi
     add $1, %eax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_i32_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i32_end:
 
 postinc_i64:
 __kefir_text_func_postinc_i64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq i64@GOTPCREL(%rip), %r9
+    movq i64@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_i64_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
-    mov %r10, %rax
+    movq (%rsi), %rax
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $1, %rax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_i64_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_i64_end:
 
 postinc_ptr:
 __kefir_text_func_postinc_ptr_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
-    movq ptr@GOTPCREL(%rip), %r9
+    movq ptr@GOTPCREL(%rip), %rsi
 _kefir_func_postinc_ptr_label1:
-    movq (%r9), %rax
-    mov %rax, %r10
-    mov %r10, %rax
+    movq (%rsi), %rax
+    mov %rax, %rdi
+    mov %rdi, %rax
     add $8, %rax
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r9, %rdi
-    mov %rax, %rdx
-    mov $5, %rcx
-    mov $5, %r8
-    mov %r10, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_8@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rsi, %rdx
+    mov %rax, %rcx
+    mov %rdi, %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_postinc_ptr_label1
-    mov %r10, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rdi, %rax
     ret
 __kefir_text_func_postinc_ptr_end:
 

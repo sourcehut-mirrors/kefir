@@ -80,7 +80,7 @@ test4:
 __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     movl %edi, -4(%rbp)
     movq someothervar@GOTPCREL(%rip), %rcx
     leaq -4(%rbp), %rax
@@ -88,23 +88,17 @@ __kefir_text_func_test4_begin:
     cqo
     mov $4, %rcx
     idiv %rcx
-    mov %rax, %r9
-    movq someothervar@GOTPCREL(%rip), %r10
+    mov %rax, %rsi
+    movq someothervar@GOTPCREL(%rip), %rdi
 _kefir_func_test4_label1:
-    movl (%r10), %eax
+    movl (%rdi), %eax
     movsx %eax, %rax
-    mov %rax, %rdx
-    add %r9, %rdx
-    movq %r9, -24(%rbp)
-    movq %r10, -16(%rbp)
-    mov %r10, %rdi
-    mov $5, %rcx
-    mov $5, %r8
-    mov %rax, -32(%rbp)
-    lea -32(%rbp), %rsi
-    call __atomic_compare_exchange_4@PLT
-    movq -24(%rbp), %r9
-    movq -16(%rbp), %r10
+    mov %rax, %rcx
+    add %rsi, %rcx
+    mov %rdi, %rdx
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
     test %al, %al
     jz _kefir_func_test4_label1
     movl -4(%rbp), %edi
