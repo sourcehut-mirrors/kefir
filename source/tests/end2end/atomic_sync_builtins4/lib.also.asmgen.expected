@@ -3,8 +3,6 @@
 
 .global clear
 .type clear, @function
-.extern __atomic_exchange
-.extern __atomic_store
 .global test_and_set
 .type test_and_set, @function
 .global test_sync_synchronize
@@ -14,38 +12,18 @@
 __kefir_text_section_begin:
 clear:
 __kefir_text_func_clear_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movl $0, -4(%rbp)
-    mov $1, %rdi
-    mov %rax, %rsi
-    leaq -4(%rbp), %rdx
-    mov $3, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    xor %eax, %eax
+    xchgb %al, (%rdi)
     ret
 __kefir_text_func_clear_end:
 
 test_and_set:
 __kefir_text_func_test_and_set_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movl $1, -8(%rbp)
-    movb $0, -4(%rbp)
-    mov $1, %rdi
-    mov %rax, %rsi
-    leaq -8(%rbp), %rdx
-    leaq -4(%rbp), %rcx
-    mov $2, %r8
-    call __atomic_exchange@PLT
-    movb -4(%rbp), %al
-    lea (%rbp), %rsp
-    pop %rbp
+    mov $1, %rax
+    xchgb (%rdi), %al
+    test %al, %al
+    setne %al
+    movzx %al, %rax
     ret
 __kefir_text_func_test_and_set_end:
 

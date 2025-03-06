@@ -136,137 +136,55 @@ __kefir_text_func_test2_atomic_store256_end:
 
 test2_atomic_store16:
 __kefir_text_func_test2_atomic_store16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movw %si, -2(%rbp)
-    mov $2, %rdi
-    mov %rax, %rsi
-    leaq -2(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %si, %rax
+    xchgw %ax, (%rdi)
     ret
 __kefir_text_func_test2_atomic_store16_end:
 
 test2_atomic_store32:
 __kefir_text_func_test2_atomic_store32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movl %esi, -4(%rbp)
-    mov $4, %rdi
-    mov %rax, %rsi
-    leaq -4(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %esi, %rax
+    xchgl %eax, (%rdi)
     ret
 __kefir_text_func_test2_atomic_store32_end:
 
 test2_atomic_store64:
 __kefir_text_func_test2_atomic_store64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movq %rsi, -8(%rbp)
-    mov $8, %rdi
-    mov %rax, %rsi
-    leaq -8(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    xchgq %rsi, (%rdi)
     ret
 __kefir_text_func_test2_atomic_store64_end:
 
 test_atomic_store8:
 __kefir_text_func_test_atomic_store8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movb %sil, -1(%rbp)
-    mov $1, %rdi
-    mov %rax, %rsi
-    leaq -1(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %sil, %rax
+    xchgb %al, (%rdi)
     ret
 __kefir_text_func_test_atomic_store8_end:
 
 test_atomic_store16:
 __kefir_text_func_test_atomic_store16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movw %si, -2(%rbp)
-    mov $2, %rdi
-    mov %rax, %rsi
-    leaq -2(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %si, %rax
+    xchgw %ax, (%rdi)
     ret
 __kefir_text_func_test_atomic_store16_end:
 
 test_atomic_store32:
 __kefir_text_func_test_atomic_store32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movl %esi, -4(%rbp)
-    mov $4, %rdi
-    mov %rax, %rsi
-    leaq -4(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %esi, %rax
+    xchgl %eax, (%rdi)
     ret
 __kefir_text_func_test_atomic_store32_end:
 
 test_atomic_store64:
 __kefir_text_func_test_atomic_store64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movq %rsi, -8(%rbp)
-    mov $8, %rdi
-    mov %rax, %rsi
-    leaq -8(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    xchgq %rsi, (%rdi)
     ret
 __kefir_text_func_test_atomic_store64_end:
 
 test2_atomic_store8:
 __kefir_text_func_test2_atomic_store8_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    mov %rdi, %rax
-    movb %sil, -1(%rbp)
-    mov $1, %rdi
-    mov %rax, %rsi
-    leaq -1(%rbp), %rdx
-    mov $5, %rcx
-    call __atomic_store@PLT
-    lea (%rbp), %rsp
-    pop %rbp
+    movsx %sil, %rax
+    xchgb %al, (%rdi)
     ret
 __kefir_text_func_test2_atomic_store8_end:
 

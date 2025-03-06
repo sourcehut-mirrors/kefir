@@ -4,7 +4,6 @@
 .extern x
 .global addx
 .type addx, @function
-.extern __atomic_compare_exchange
 
 .section .text
 __kefir_text_section_begin:
@@ -12,25 +11,23 @@ addx:
 __kefir_text_func_addx_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    mov %rdi, %r10
+    sub $16, %rsp
     movq x@GOTPCREL(%rip), %rax
     movq (%rax), %rax
     movq %rax, -16(%rbp)
     movq $0, -8(%rbp)
 _kefir_func_addx_label1:
     movq -16(%rbp), %rax
-    add %r10, %rax
+    add %rdi, %rax
     movq %rax, -8(%rbp)
-    movq x@GOTPCREL(%rip), %rsi
-    movq %r10, -32(%rbp)
-    mov $8, %rdi
-    leaq -16(%rbp), %rdx
-    leaq -8(%rbp), %rcx
-    mov $5, %r8
-    mov $5, %r9
-    call __atomic_compare_exchange@PLT
-    movq -32(%rbp), %r10
+    movq -8(%rbp), %rcx
+    movq x@GOTPCREL(%rip), %rdx
+    movq -16(%rbp), %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    je _kefir_func_addx_label3
+    movq %rax, -16(%rbp)
+_kefir_func_addx_label3:
+    sete %al
     xor %ecx, %ecx
     test %al, %al
     sete %cl

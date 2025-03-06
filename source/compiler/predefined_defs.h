@@ -108,10 +108,23 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __ATOMIC_ACQ_REL 4
 #define __ATOMIC_SEQ_CST 5
 
-#define __atomic_store(_ptr, _val, _memorder)                           \
-    ({                                                                  \
-        extern void __atomic_store(__SIZE_TYPE__, void *, void *, int); \
-        __atomic_store(sizeof(*(_ptr)), (_ptr), (_val), (_memorder));   \
+#define __atomic_store(_ptr, _val, _memorder)                                                                         \
+    ({                                                                                                                \
+        extern void __kefir_builtin_atomic_store8(void *, void *, int);                                               \
+        extern void __kefir_builtin_atomic_store16(void *, void *, int);                                              \
+        extern void __kefir_builtin_atomic_store32(void *, void *, int);                                              \
+        extern void __kefir_builtin_atomic_store64(void *, void *, int);                                              \
+        extern void __atomic_store(__SIZE_TYPE__, void *, void *, int);                                               \
+        typedef __typeof__((void) 0, *(_ptr)) ptr_type_t;                                                             \
+        __builtin_choose_expr(                                                                                        \
+            sizeof(*(_ptr)) == 1, __kefir_builtin_atomic_store8((_ptr), (ptr_type_t) * (_val), (_memorder)),          \
+            __builtin_choose_expr(                                                                                    \
+                sizeof(*(_ptr)) == 2, __kefir_builtin_atomic_store16((_ptr), (ptr_type_t) * (_val), (_memorder)),     \
+                __builtin_choose_expr(                                                                                \
+                    sizeof(*(_ptr)) == 4, __kefir_builtin_atomic_store32((_ptr), (ptr_type_t) * (_val), (_memorder)), \
+                    __builtin_choose_expr(sizeof(*(_ptr)) == 8,                                                       \
+                                          __kefir_builtin_atomic_store64((_ptr), (ptr_type_t) * (_val), (_memorder)), \
+                                          __atomic_store(sizeof(*(_ptr)), (_ptr), (_val), (_memorder))))));           \
     })
 
 #define __atomic_store_n(_ptr, _val, _memorder)           \
@@ -120,10 +133,30 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
         __atomic_store((_ptr), &__copy_val, (_memorder)); \
     })
 
-#define __atomic_load(_ptr, _mem, _memorder)                           \
-    ({                                                                 \
-        extern void __atomic_load(__SIZE_TYPE__, void *, void *, int); \
-        __atomic_load(sizeof(*(_ptr)), (_ptr), (_mem), (_memorder));   \
+#define __atomic_load(_ptr, _mem, _memorder)                                                                \
+    ({                                                                                                      \
+        extern __UINT8_TYPE__ __kefir_builtin_atomic_load8(void *, int);                                    \
+        extern void __atomic_load(__SIZE_TYPE__, void *, void *, int);                                      \
+        __builtin_choose_expr(                                                                              \
+            sizeof(*(_ptr)) == 1, ({                                                                        \
+                *(_mem) = __kefir_builtin_atomic_load8((_ptr), (_memorder));                                \
+                (void) 0;                                                                                   \
+            }),                                                                                             \
+            __builtin_choose_expr(                                                                          \
+                sizeof(*(_ptr)) == 2, ({                                                                    \
+                    *(_mem) = __kefir_builtin_atomic_load16((_ptr), (_memorder));                           \
+                    (void) 0;                                                                               \
+                }),                                                                                         \
+                __builtin_choose_expr(                                                                      \
+                    sizeof(*(_ptr)) == 4, ({                                                                \
+                        *(_mem) = __kefir_builtin_atomic_load32((_ptr), (_memorder));                       \
+                        (void) 0;                                                                           \
+                    }),                                                                                     \
+                    __builtin_choose_expr(sizeof(*(_ptr)) == 8, ({                                          \
+                                              *(_mem) = __kefir_builtin_atomic_load64((_ptr), (_memorder)); \
+                                              (void) 0;                                                     \
+                                          }),                                                               \
+                                          __atomic_load(sizeof(*(_ptr)), (_ptr), (_mem), (_memorder))))));  \
     })
 
 #define __atomic_load_n(_ptr, _memorder)                 \
@@ -133,10 +166,34 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
         __target;                                        \
     })
 
-#define __atomic_exchange(_ptr, _val, _ret, _memorder)                             \
-    ({                                                                             \
-        extern void __atomic_exchange(__SIZE_TYPE__, void *, void *, void *, int); \
-        __atomic_exchange(sizeof(*(_ptr)), (_ptr), (_val), (_ret), (_memorder));   \
+#define __atomic_exchange(_ptr, _val, _ret, _memorder)                                                                 \
+    ({                                                                                                                 \
+        extern __UINT8_TYPE__ __kefir_builtin_atomic_exchange8(void *, __UINT8_TYPE__, int);                           \
+        extern __UINT16_TYPE__ __kefir_builtin_atomic_exchange16(void *, __UINT16_TYPE__, int);                        \
+        extern __UINT32_TYPE__ __kefir_builtin_atomic_exchange32(void *, __UINT32_TYPE__, int);                        \
+        extern __UINT64_TYPE__ __kefir_builtin_atomic_exchange64(void *, __UINT64_TYPE__, int);                        \
+        extern void __atomic_exchange(__SIZE_TYPE__, void *, void *, void *, int);                                     \
+        __builtin_choose_expr(                                                                                         \
+            sizeof(*(_ptr)) == 1, ({                                                                                   \
+                *(_ret) = __kefir_builtin_atomic_exchange8((_ptr), *(_val), (_memorder));                              \
+                (void) 0;                                                                                              \
+            }),                                                                                                        \
+            __builtin_choose_expr(                                                                                     \
+                sizeof(*(_ptr)) == 2, ({                                                                               \
+                    *(_ret) = __kefir_builtin_atomic_exchange16((_ptr), *(_val), (_memorder));                         \
+                    (void) 0;                                                                                          \
+                }),                                                                                                    \
+                __builtin_choose_expr(                                                                                 \
+                    sizeof(*(_ptr)) == 4, ({                                                                           \
+                        *(_ret) = __kefir_builtin_atomic_exchange32((_ptr), *(_val), (_memorder));                     \
+                        (void) 0;                                                                                      \
+                    }),                                                                                                \
+                    __builtin_choose_expr(sizeof(*(_ptr)) == 8, ({                                                     \
+                                              *(_ret) =                                                                \
+                                                  __kefir_builtin_atomic_exchange64((_ptr), *(_val), (_memorder));     \
+                                              (void) 0;                                                                \
+                                          }),                                                                          \
+                                          __atomic_exchange(sizeof(*(_ptr)), (_ptr), (_val), (_ret), (_memorder)))))); \
     })
 
 #define __atomic_exchange_n(_ptr, _val, _memorder)                           \
@@ -147,18 +204,37 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
         __ret_val;                                                           \
     })
 
-#define __atomic_compare_exchange(_ptr, _expected, _desired, _weak, _success_memorder, _failure_memorder) \
-    ({                                                                                                    \
-        extern _Bool __atomic_compare_exchange(__SIZE_TYPE__, void *, void *, void *, int, int);          \
-        (void) (_weak);                                                                                   \
-        __atomic_compare_exchange(sizeof(*(_ptr)), (_ptr), (_expected), (_desired), (_success_memorder),  \
-                                  (_failure_memorder));                                                   \
+#define __atomic_compare_exchange(_ptr, _expected, _desired, _weak, _success_memorder, _failure_memorder)              \
+    ({                                                                                                                 \
+        extern _Bool __atomic_compare_exchange(__SIZE_TYPE__, void *, void *, void *, int, int);                       \
+        extern _Bool __kefir_builtin_atomic_compare_exchange8(void *, void *, __UINT8_TYPE__, int, int);               \
+        extern _Bool __kefir_builtin_atomic_compare_exchange16(void *, void *, __UINT16_TYPE__, int, int);             \
+        extern _Bool __kefir_builtin_atomic_compare_exchange32(void *, void *, __UINT32_TYPE__, int, int);             \
+        extern _Bool __kefir_builtin_atomic_compare_exchange64(void *, void *, __UINT64_TYPE__, int, int);             \
+        (void) (_weak);                                                                                                \
+        __builtin_choose_expr(                                                                                         \
+            sizeof(*(_ptr)) == 1,                                                                                      \
+            __kefir_builtin_atomic_compare_exchange8((_ptr), (_expected), (__UINT8_TYPE__) * (_desired),               \
+                                                     (_success_memorder), (_failure_memorder)),                        \
+            __builtin_choose_expr(                                                                                     \
+                sizeof(*(_ptr)) == 2,                                                                                  \
+                __kefir_builtin_atomic_compare_exchange16((_ptr), (_expected), (__UINT16_TYPE__) * (_desired),         \
+                                                          (_success_memorder), (_failure_memorder)),                   \
+                __builtin_choose_expr(                                                                                 \
+                    sizeof(*(_ptr)) == 4,                                                                              \
+                    __kefir_builtin_atomic_compare_exchange32((_ptr), (_expected), (__UINT32_TYPE__) * (_desired),     \
+                                                              (_success_memorder), (_failure_memorder)),               \
+                    __builtin_choose_expr(                                                                             \
+                        sizeof(*(_ptr)) == 8,                                                                          \
+                        __kefir_builtin_atomic_compare_exchange64((_ptr), (_expected), (__UINT64_TYPE__) * (_desired), \
+                                                                  (_success_memorder), (_failure_memorder)),           \
+                        __atomic_compare_exchange(sizeof(*(_ptr)), (_ptr), (_expected), (_desired),                    \
+                                                  (_success_memorder), (_failure_memorder))))));                       \
     })
 
 #define __atomic_compare_exchange_n(_ptr, _expected, _desired, _weak, _success_memorder, _failure_memorder) \
     ({                                                                                                      \
         __typeof__((void) 0, (_desired)) __copy_desired = (_desired);                                       \
-        (void) (_weak);                                                                                     \
         __atomic_compare_exchange((_ptr), (_expected), &(__copy_desired), (_weak), (_success_memorder),     \
                                   (_failure_memorder));                                                     \
     })
