@@ -255,8 +255,9 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
     kefir_asmcmp_virtual_register_index_t ptr_vreg, ptr_placement_vreg, expected_ptr_vreg, expected_placement_vreg,
         desired_vreg, desired_placement_vreg, result_vreg;
 
-    REQUIRE(call_node->argument_count == 5,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected three arguments for __kefir_builtin_atomic_exchange"));
+    REQUIRE(
+        call_node->argument_count == 5,
+        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected three arguments for __kefir_builtin_atomic_compare_exchange"));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &ptr_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &expected_ptr_vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[2], &desired_vreg));
@@ -373,6 +374,84 @@ static kefir_result_t translate_atomic_compare_exchange(struct kefir_mem *mem,
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, equal_label));
     REQUIRE_OK(kefir_asmcmp_amd64_sete(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+
+    *result_vreg_ptr = result_vreg;
+    return KEFIR_OK;
+}
+
+static kefir_result_t translate_atomic_fetch_add(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                                 const struct kefir_opt_instruction *instruction,
+                                                 const struct kefir_opt_call_node *call_node, kefir_size_t width,
+                                                 kefir_asmcmp_virtual_register_index_t *result_vreg_ptr) {
+    UNUSED(instruction);
+    kefir_asmcmp_virtual_register_index_t ptr_vreg, ptr_placement_vreg, arg_vreg, arg_placement_vreg, result_vreg;
+
+    REQUIRE(call_node->argument_count == 3,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected three arguments for __kefir_builtin_atomic_fetch_add"));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[0], &ptr_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[1], &arg_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &arg_placement_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &ptr_placement_vreg));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, ptr_placement_vreg,
+                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RDX));
+    REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, arg_placement_vreg,
+                                                                  KEFIR_AMD64_XASMGEN_REGISTER_RAX));
+
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         ptr_placement_vreg, ptr_vreg, NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         arg_placement_vreg, arg_vreg, NULL));
+
+    switch (width) {
+        case 8:
+            REQUIRE_OK(kefir_asmcmp_amd64_lock(mem, &function->code,
+                                               kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_xadd(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_8BIT),
+                &KEFIR_ASMCMP_MAKE_VREG8(arg_placement_vreg), NULL));
+            break;
+
+        case 16:
+            REQUIRE_OK(kefir_asmcmp_amd64_lock(mem, &function->code,
+                                               kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_xadd(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_16BIT),
+                &KEFIR_ASMCMP_MAKE_VREG16(arg_placement_vreg), NULL));
+            break;
+
+        case 32:
+            REQUIRE_OK(kefir_asmcmp_amd64_lock(mem, &function->code,
+                                               kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_xadd(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
+                &KEFIR_ASMCMP_MAKE_VREG32(arg_placement_vreg), NULL));
+            break;
+
+        case 64:
+            REQUIRE_OK(kefir_asmcmp_amd64_lock(mem, &function->code,
+                                               kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_xadd(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(ptr_placement_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                &KEFIR_ASMCMP_MAKE_VREG64(arg_placement_vreg), NULL));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected atomic exchange operation width");
+    }
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                         kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                         result_vreg, arg_placement_vreg, NULL));
 
     *result_vreg_ptr = result_vreg;
     return KEFIR_OK;
@@ -1159,6 +1238,18 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_compare_exchange64") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_atomic_compare_exchange(mem, function, instruction, call_node, 64, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_fetch_add8") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_atomic_fetch_add(mem, function, instruction, call_node, 8, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_fetch_add16") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_atomic_fetch_add(mem, function, instruction, call_node, 16, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_fetch_add32") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_atomic_fetch_add(mem, function, instruction, call_node, 32, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_fetch_add64") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_atomic_fetch_add(mem, function, instruction, call_node, 64, result_vreg_ptr));
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_trap") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_trap(mem, function, instruction));
