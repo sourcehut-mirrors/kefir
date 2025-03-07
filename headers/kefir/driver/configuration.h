@@ -156,7 +156,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t include_stdinc;
         kefir_bool_t link_libc;
         kefir_bool_t include_rtinc;
-        kefir_bool_t soft_atomics;
+        kefir_bool_t enable_atomics;
         kefir_bool_t pthread;
         kefir_bool_t verbose;
     } flags;

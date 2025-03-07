@@ -520,12 +520,12 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("-nortinc", arg) == 0) {
             // Do not include runtime headers
             config->flags.include_rtinc = false;
-        } else if (strcmp("--soft-atomics", arg) == 0) {
-            // Enable software atomics support
-            config->flags.soft_atomics = true;
-        } else if (strcmp("--no-soft-atomics", arg) == 0) {
-            // Disable software atomics support
-            config->flags.soft_atomics = false;
+        } else if (strcmp("--enable-atomics", arg) == 0) {
+            // Enable atomics support
+            config->flags.enable_atomics = true;
+        } else if (strcmp("--disable-atomics", arg) == 0) {
+            // Disable atomics support
+            config->flags.enable_atomics = false;
         } else if (strcmp("-pthread", arg) == 0) {
             // Enable pthreads
             config->flags.pthread = true;

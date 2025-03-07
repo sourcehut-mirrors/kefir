@@ -106,7 +106,6 @@ including:
 * Implementing optimizing code generator -- initial basic implementation has
   been finished. Pending subtasks are:
   * Implementing actual optimization passes -- several basic optimizations have been implemented.
-  * Implementing atomics natively instead of relying on software library.
   * Improving debug information generator.
 * Adding support for upcoming C23 standard -- the compiler currently implements
   several C23 features as extensions, however their completeness and compliance
@@ -124,9 +123,11 @@ Some implementation details that user needs to take into account:
 * Kefir might provide own versions of some header files as well -- if the
   environment is configured correctly, they are added to include path
   automatically.
-* Atomic implementation fully relies on software atomic library (`libatomic` for
-  GCC, `libcompiler_rt` for Clang), thus any program that employs atomic
-  operations need to link a `libatomic`-compatible library. It happens by
+* Atomic implementation partially relies on software atomic library (`libatomic`
+  for GCC, `libcompiler_rt` for Clang). Kefir implements atomic primitives for
+  1, 2, 4 and 8 byte integral values natively; atomic operations for any other
+  types rely on the software library. Thus any program that utilizes atomic
+  operations might need to link a `libatomic`-compatible library. It happens by
   default for Glibc and *BSD targets. Furthermore, if `<stdatomic.h>` header
   from Clang includes is used (the default on FreeBSD and OpenBSD),
   `-D__GNUC__=4 -D__GNUC_MINOR__=20` command line arguments shall be added to

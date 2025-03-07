@@ -236,11 +236,11 @@ Do not add standard library to include path
 .It Fl nortinc
 Do not add runtime includes to include path
 .\"
-.It Fl \-soft-atomics
-Enables atomic support via software library. Implies \-\-Wdeclare-atomic-support option and links appropriate atomic primitives library (libatomic/libcompiler_rt). Unavailable for musl target.
+.It Fl \-enable-atomics
+Enables atomic support. Implies \-\-Wdeclare-atomic-support option and links appropriate atomic primitives library (libatomic/libcompiler_rt) where necessary.
 .\"
-.It Fl \-no-soft-atomics
-Disables atomic support via software library. Implies \-\-Wno-declare-atomic-support option.
+.It Fl \-disable-atomics
+Disables atomic support. Implies \-\-Wno-declare-atomic-support option.
 .\"
 .It Fl Wp,option
 Pass "option" to preprocessing phase as command line option. If option contains commas, it is split into multiple options
@@ -399,10 +399,10 @@ May cause failures for structures allocated close to boundaries with unmapped
 memory pages. Does not change bitfield layout.
 .\"
 .It Fl \-declare-atomic-support
-Declare support of atomics (requires explicit linking of software atomic library such as libatomic or libcompiler_rt). Default for Glibc and BSD targets.
+Declare support of atomics (might require explicit linking of software atomic library such as libatomic or libcompiler_rt).
 .\"
 .It Fl \-no-declare-atomic-support
-Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro. Default for musl target.
+Declare the absence of atomic support via defining __STDC_NO_ATOMICS__ macro.
 .\"
 .It Fl \-unsigned-char
 Let the type char be unsigned. By default, it is target-specific.
