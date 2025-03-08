@@ -92,7 +92,7 @@ kefir_result_t kefir_lexer_cursor_match_whitespace(struct kefir_mem *mem, struct
         REQUIRE_OK(skip_whitespaces(lexer->context, lexer->cursor, &matched));
         REQUIRE_OK(skip_multiline_comment(lexer->cursor, &matched));
         REQUIRE_OK(skip_oneline_comment(lexer->context, lexer->cursor, &matched));
-        continue_scan = matched != WHITESPACE_NO_MATCH && token == NULL;
+        continue_scan = matched != WHITESPACE_NO_MATCH;
         match = MAX(match, matched);
     }
 

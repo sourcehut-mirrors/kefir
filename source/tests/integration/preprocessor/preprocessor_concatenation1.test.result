@@ -32,7 +32,7 @@ test(123) + 5.000e1
 ##
 
 'a'
-CONCAT("xyz",      )
+CONCAT("xyz", )
 CONCAT
 L'h'
 u'e'

@@ -1,5 +1,3 @@
- 
-
 
 __builtin_va_start = 1;
 __builtin_va_end = 1;
@@ -14,6 +12,5 @@ __builtin_types_compatible_p = 1;
 __builtin_choose_expr = 1;
 __builtin_constant_p = 1;
 __builtin_classify_type = 1;
-
 TEST123 = 0
 xyz = 0

@@ -10,44 +10,9 @@
         "newline": false
     },
     {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
         "class": "pp_number",
         "preprocessor": true,
         "literal": "0xef7368"
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": true
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": true
     },
     {
         "class": "whitespace",
@@ -65,11 +30,6 @@
         "newline": true
     },
     {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
         "class": "pp_number",
         "preprocessor": true,
         "literal": "1e-9"
@@ -78,51 +38,6 @@
         "class": "whitespace",
         "preprocessor": true,
         "newline": true
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
     },
     {
         "class": "pp_number",
@@ -148,11 +63,6 @@
         "class": "pp_number",
         "preprocessor": true,
         "literal": "1"
-    },
-    {
-        "class": "whitespace",
-        "preprocessor": true,
-        "newline": false
     },
     {
         "class": "whitespace",

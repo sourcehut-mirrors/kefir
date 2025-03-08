@@ -1,7 +1,7 @@
 static const unsigned TOTAL_LINES;
 
 int get_total_lines() {
-    return total_lines + 100;
+return total_lines + 100;
 }
 void some_function();
 
