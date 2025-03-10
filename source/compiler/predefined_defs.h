@@ -136,6 +136,9 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __atomic_load(_ptr, _mem, _memorder)                                                               \
     ({                                                                                                     \
         extern __UINT8_TYPE__ __kefir_builtin_atomic_load8(void *, int);                                   \
+        extern __UINT16_TYPE__ __kefir_builtin_atomic_load16(void *, int);                                 \
+        extern __UINT32_TYPE__ __kefir_builtin_atomic_load32(void *, int);                                 \
+        extern __UINT64_TYPE__ __kefir_builtin_atomic_load64(void *, int);                                 \
         extern void __atomic_load(__SIZE_TYPE__, void *, void *, int);                                     \
         typedef __typeof_unqual__((void) 0, *(_mem)) * __mem_type_t;                                       \
         __builtin_choose_expr(                                                                             \

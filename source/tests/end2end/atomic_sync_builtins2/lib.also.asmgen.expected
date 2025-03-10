@@ -241,7 +241,6 @@ __kefir_text_func_test_fetch_add_long_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movq (%rdi), %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
 _kefir_func_test_fetch_add_long_label1:
     movq -8(%rbp), %rcx
@@ -305,7 +304,6 @@ __kefir_text_func_test_fetch_and_long_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movq (%rdi), %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
 _kefir_func_test_fetch_and_long_label1:
     movq -8(%rbp), %rcx
@@ -401,7 +399,6 @@ __kefir_text_func_test_fetch_sub_long_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movq (%rdi), %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
 _kefir_func_test_fetch_sub_long_label1:
     movq -8(%rbp), %rcx
@@ -465,7 +462,6 @@ __kefir_text_func_test_fetch_xor_long_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movq (%rdi), %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
 _kefir_func_test_fetch_xor_long_label1:
     movq -8(%rbp), %rcx
@@ -591,7 +587,6 @@ __kefir_text_func_test_fetch_or_long_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     movq (%rdi), %rax
-    movsx %eax, %rax
     movq %rax, -8(%rbp)
 _kefir_func_test_fetch_or_long_label1:
     movq -8(%rbp), %rcx
