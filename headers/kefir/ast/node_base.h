@@ -28,6 +28,7 @@
 #include "kefir/ast/constants.h"
 #include "kefir/ast/type.h"
 #include "kefir/ast/temporaries.h"
+#include "kefir/ast/constant_expression.h"
 #include "kefir/core/source_location.h"
 
 typedef struct kefir_ast_visitor kefir_ast_visitor_t;
@@ -45,6 +46,7 @@ typedef struct kefir_ast_node_properties {
     struct {
         kefir_bool_t lvalue;
         kefir_bool_t constant_expression;
+        struct kefir_ast_constant_expression_value constant_expression_value;
         kefir_bool_t addressable;
         kefir_bool_t atomic;
         struct kefir_ast_bitfield_properties bitfield_props;

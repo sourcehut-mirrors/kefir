@@ -191,7 +191,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE_OK(kefir_ast_analyze_member_designator(mem, context, base_type, field));
 
             base->properties.type = context->type_traits->size_type;
-            base->properties.expression_props.constant_expression = field->properties.member_designator.constant;
         } break;
 
         case KEFIR_AST_BUILTIN_TYPES_COMPATIBLE: {
@@ -212,7 +211,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type2_node->source_location, "Expected a type name"));
 
             base->properties.type = kefir_ast_type_signed_int();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_CHOOSE_EXPRESSION: {
@@ -263,7 +261,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             kefir_list_next(&iter);
 
             base->properties.type = kefir_ast_type_signed_int();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
@@ -279,7 +276,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             kefir_list_next(&iter);
 
             base->properties.type = kefir_ast_type_signed_int();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_INFINITY_FLOAT32: {
@@ -288,7 +284,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "inff type builtin invocation should have no parameters"));
 
             base->properties.type = kefir_ast_type_float();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_INFINITY_FLOAT64: {
@@ -297,7 +292,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "inf type builtin invocation should have no parameters"));
 
             base->properties.type = kefir_ast_type_double();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_INFINITY_LONG_DOUBLE: {
@@ -306,7 +300,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                            "infl type builtin invocation should have no parameters"));
 
             base->properties.type = kefir_ast_type_long_double();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT32: {
@@ -324,7 +317,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                        "Expected multibyte string literal"));
 
             base->properties.type = kefir_ast_type_float();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_FLOAT64: {
@@ -342,7 +334,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                        "Expected multibyte string literal"));
 
             base->properties.type = kefir_ast_type_double();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE: {
@@ -360,7 +351,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                                        "Expected multibyte string literal"));
 
             base->properties.type = kefir_ast_type_long_double();
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:

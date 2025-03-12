@@ -32,9 +32,6 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
@@ -48,7 +45,7 @@ kefir_result_t kefir_ast_evaluate_identifier_node(struct kefir_mem *mem, const s
             REQUIRE(scoped_id->type->tag == KEFIR_AST_TYPE_ARRAY &&
                         (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                          scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                            "Identifier in a constant expression shall refer either to an "
                                            "array of static lifetime or to a function"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;

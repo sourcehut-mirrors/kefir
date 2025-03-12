@@ -22,6 +22,7 @@
 #define KEFIR_AST_CONSTANT_EXPRESSION_IMPL_H_
 
 #include "kefir/ast/constant_expression.h"
+#include "kefir/ast/node.h"
 #include "kefir/ast/context.h"
 
 #define EVAL(_id, _type)                                                                                 \

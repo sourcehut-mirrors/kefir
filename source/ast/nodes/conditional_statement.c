@@ -60,6 +60,11 @@ struct kefir_ast_conditional_statement *kefir_ast_new_conditional_statement(stru
         KEFIR_FREE(mem, stmt);
         return NULL;
     });
+    res = kefir_source_location_empty(&stmt->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stmt);
+        return NULL;
+    });
 
     stmt->condition = condition;
     stmt->thenBranch = thenBranch;

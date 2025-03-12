@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/context.h"
+#include "kefir/ast/node.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 

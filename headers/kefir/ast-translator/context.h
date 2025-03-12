@@ -22,6 +22,7 @@
 #define KEFIR_AST_TRANSLATOR_CONTEXT_H_
 
 #include "kefir/ast/context.h"
+#include "kefir/ast/node.h"
 #include "kefir/ast-translator/environment.h"
 #include "kefir/ast-translator/scope/global_scope_layout.h"
 #include "kefir/ast-translator/scope/local_scope_layout.h"

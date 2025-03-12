@@ -387,7 +387,7 @@ END_CASE
 
 #undef ASSERT_LABEL_ADDRESS
 
-#define ASSERT_ARRAY_SUBSCRIPT(_mem, _context, _identifier, _index, _type)                                     \
+#define ASSERT_ARRAY_SUBSCRIPT(_mem, _context, _identifier, _index, _type, _const)                                     \
     do {                                                                                                       \
         struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                           \
             (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
@@ -395,7 +395,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                 \
-        ASSERT(!subscript->base.properties.expression_props.constant_expression);                              \
+        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                              \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
@@ -405,7 +405,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
-        ASSERT(!subscript2->base.properties.expression_props.constant_expression);                             \
+        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_const));                             \
         ASSERT(subscript2->base.properties.expression_props.lvalue);                                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
@@ -433,7 +433,7 @@ END_CASE
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
 
-#define ASSERT_ARRAY_SUBSCRIPT2(_mem, _context, _identifier, _index1, _index2, _type)                              \
+#define ASSERT_ARRAY_SUBSCRIPT2(_mem, _context, _identifier, _index1, _index2, _type, _const)                              \
     do {                                                                                                           \
         struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                               \
             (_mem),                                                                                                \
@@ -444,7 +444,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                     \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                         \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                     \
-        ASSERT(!subscript->base.properties.expression_props.constant_expression);                                  \
+        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                                  \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                                \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                               \
     } while (0)
@@ -493,11 +493,11 @@ DEFINE_CASE(ast_node_analysis_array_subscripts, "AST node analysis - array subsc
         kefir_ast_global_context_declare_external(&kft_mem, &global_context, "var6", array6, NULL, NULL, NULL, NULL));
 
     for (kefir_size_t i = 0; i < 10; i++) {
-        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var1", i, kefir_ast_type_char());
-        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var2", i, kefir_ast_type_signed_short());
-        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var3", i, kefir_ast_type_signed_int());
+        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var1", i, kefir_ast_type_char(), true);
+        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var2", i, kefir_ast_type_signed_short(), true);
+        ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var3", i, kefir_ast_type_signed_int(), true);
         ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var4", i,
-                               kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()));
+                               kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()), true);
         ASSERT_ARRAY_SUBSCRIPT3(
             &kft_mem, context, "var5", i,
             kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long_long(), NULL), true);
@@ -505,9 +505,9 @@ DEFINE_CASE(ast_node_analysis_array_subscripts, "AST node analysis - array subsc
                                kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(),
                                                     kefir_ast_constant_expression_integer(&kft_mem, 12), NULL), true);
 
-        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var4", i, i + 100, kefir_ast_type_signed_long());
-        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var5", i, i + 100, kefir_ast_type_signed_long_long());
-        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var6", i, i + 100, kefir_ast_type_unsigned_long());
+        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var4", i, i + 100, kefir_ast_type_signed_long(), true);
+        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var5", i, i + 100, kefir_ast_type_signed_long_long(), true);
+        ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var6", i, i + 100, kefir_ast_type_unsigned_long(), true);
     }
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

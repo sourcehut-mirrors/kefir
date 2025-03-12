@@ -49,7 +49,6 @@ kefir_result_t kefir_ast_analyze_comma_operator_node(struct kefir_mem *mem, cons
                                        "All comma operands shall be expressions"));
 
         base->properties.type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, expr->properties.type);
-        base->properties.expression_props.constant_expression = expr->properties.expression_props.constant_expression;
         base->properties.expression_props.lvalue = expr->properties.expression_props.lvalue;
         base->properties.expression_props.atomic = expr->properties.expression_props.atomic;
         base->properties.expression_props.addressable = expr->properties.expression_props.addressable;

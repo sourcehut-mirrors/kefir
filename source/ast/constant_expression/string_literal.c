@@ -32,9 +32,6 @@ kefir_result_t kefir_ast_evaluate_string_literal_node(struct kefir_mem *mem, con
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 

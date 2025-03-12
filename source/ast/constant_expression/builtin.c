@@ -37,7 +37,7 @@ static kefir_result_t visit_non_designator(const struct kefir_ast_visitor *visit
     UNUSED(visitor);
     UNUSED(base);
     UNUSED(payload);
-    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location, "Expected a member designator");
+    return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &base->source_location, "Expected a member designator");
 }
 
 static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor,
@@ -117,9 +117,6 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
@@ -183,7 +180,7 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, cond_node, &cond_value));
 
             REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &cond_node->source_location,
                                            "Expected a constant expression evaluating to an integer"));
 
             if (cond_value.integer != 0) {

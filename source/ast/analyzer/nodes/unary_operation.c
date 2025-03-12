@@ -54,8 +54,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             } else {
                 base->properties.type = type1;
             }
-            base->properties.expression_props.constant_expression =
-                node->arg->properties.expression_props.constant_expression;
         } break;
 
         case KEFIR_AST_OPERATION_INVERT: {
@@ -69,8 +67,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                                            "Inversion operand shall be an integral expression"));
             base->properties.type = kefir_ast_type_int_promotion(context->type_traits, type1,
                                                                  node->arg->properties.expression_props.bitfield_props);
-            base->properties.expression_props.constant_expression =
-                node->arg->properties.expression_props.constant_expression;
         } break;
 
         case KEFIR_AST_OPERATION_LOGICAL_NEGATE: {
@@ -83,8 +79,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Logical negation operand shall be a scalar expression"));
             base->properties.type = kefir_ast_type_signed_int();
-            base->properties.expression_props.constant_expression =
-                node->arg->properties.expression_props.constant_expression;
         } break;
 
         case KEFIR_AST_OPERATION_PREFIX_INCREMENT:
@@ -141,14 +135,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
             }
             base->properties.expression_props.addressable = true;
 
-            struct kefir_ast_unary_operation *indirect_op;
-            kefir_result_t res = kefir_ast_downcast_unary_operation(node->arg, &indirect_op, false);
-            if (res != KEFIR_NO_MATCH) {
-                REQUIRE_OK(res);
-                base->properties.expression_props.constant_expression =
-                    indirect_op->arg->properties.expression_props.constant_expression;
-            }
-
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
             if (base->properties.expression_props.atomic && (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
                                                              KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
@@ -177,7 +163,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                        "Sizeof operator cannot be applied to incomplete type"));
             base->properties.type = context->type_traits->size_type;
-            base->properties.expression_props.constant_expression = !KEFIR_AST_TYPE_IS_VL_ARRAY(type);
         } break;
 
         case KEFIR_AST_OPERATION_ALIGNOF: {
@@ -195,7 +180,6 @@ kefir_result_t kefir_ast_analyze_unary_operation_node(struct kefir_mem *mem, con
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
                                            "Alignof operator cannot be applied to incomplete type"));
             base->properties.type = context->type_traits->size_type;
-            base->properties.expression_props.constant_expression = true;
         } break;
 
         default:

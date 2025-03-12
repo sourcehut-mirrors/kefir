@@ -65,3 +65,48 @@ struct kefir_ast_constant *make_constant(struct kefir_mem *mem, const struct kef
             return NULL;
     }
 }
+
+struct kefir_ast_constant *make_constant2(struct kefir_mem *mem, const struct kefir_ast_type *type,
+                                          kefir_int64_t value) {
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+            return kefir_ast_new_constant_bool(mem, (kefir_bool_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            return kefir_ast_new_constant_char(mem, (kefir_int_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            return kefir_ast_new_constant_uint(mem, (kefir_uint64_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            return kefir_ast_new_constant_int(mem, value);
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            return kefir_ast_new_constant_ulong(mem, (kefir_uint64_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            return kefir_ast_new_constant_long(mem, value);
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            return kefir_ast_new_constant_ulong_long(mem, (kefir_uint64_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            return kefir_ast_new_constant_long_long(mem, value);
+
+        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            return kefir_ast_new_constant_float(mem, (kefir_float32_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+            return kefir_ast_new_constant_double(mem, (kefir_float64_t) value);
+
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            return kefir_ast_new_constant_long_double(mem, (kefir_long_double_t) value);
+
+        default:
+            return NULL;
+    }
+}

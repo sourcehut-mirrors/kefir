@@ -43,7 +43,6 @@ kefir_result_t kefir_ast_analyze_label_address_node(struct kefir_mem *mem, const
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void());
-    base->properties.expression_props.constant_expression = true;
     base->properties.expression_props.scoped_id = scoped_id;
     return KEFIR_OK;
 }

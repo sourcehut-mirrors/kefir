@@ -67,7 +67,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(mem, 6)));
         BINARY_NODE(KEFIR_AST_OPERATION_SHIFT_LEFT,
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(mem, 0xcafebabe)),
-                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '5')));
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(mem, '\x03')));
     });
 
     FUNC("right_shift", {

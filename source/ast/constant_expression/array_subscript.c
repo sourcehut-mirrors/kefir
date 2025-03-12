@@ -27,25 +27,34 @@
 
 static kefir_result_t calculate_index_offset(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                              const struct kefir_ast_type *qualified_type, kefir_size_t index,
-                                             kefir_size_t *offset,
+                                             kefir_int64_t *offset,
                                              const struct kefir_source_location *source_location) {
-    struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_SUBSCRIPT, .index = index, .next = NULL};
-
     const struct kefir_ast_type *array_type = kefir_ast_unqualified_type(qualified_type);
+    const struct kefir_ast_type *referenced_type;
+    if (array_type->tag == KEFIR_AST_TYPE_ARRAY) {
+        referenced_type = array_type->array_type.element_type;
+    } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+        referenced_type = array_type->referenced_type;
+    } else {
+        return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Expected constant expression with array/pointer base");
+    }
 
-    struct kefir_ast_target_environment_object_info object_info;
+    if (context->configuration->analysis.ext_pointer_arithmetics &&
+        (referenced_type->tag == KEFIR_AST_TYPE_FUNCTION ||
+        kefir_ast_unqualified_type(referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
+        referenced_type = context->type_traits->incomplete_type_substitute;
+    }
+
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, array_type, &opaque_type,
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, referenced_type, &opaque_type,
                                                      source_location));
     kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, &designator, &object_info);
+        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET(mem, context->target_env, opaque_type, index, offset);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
         return res;
     });
     REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
-
-    *offset = object_info.relative_offset;
     return KEFIR_OK;
 }
 
@@ -58,9 +67,6 @@ kefir_result_t kefir_ast_evaluate_array_subscript_node(struct kefir_mem *mem, co
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
@@ -80,15 +86,14 @@ kefir_result_t kefir_ast_evaluate_array_subscript_node(struct kefir_mem *mem, co
     struct kefir_ast_constant_expression_value index_value;
     REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, subscript_node, &index_value));
     REQUIRE(index_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &subscript_node->source_location,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subscript_node->source_location,
                                    "Expected integral constant expression"));
-
-    kefir_size_t offset = 0;
-    REQUIRE_OK(calculate_index_offset(mem, context, node->array->properties.type, index_value.integer, &offset,
-                                      &node->base.source_location));
 
     REQUIRE_OK(
         kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, array_node, &value->pointer));
+    kefir_int64_t offset = 0;
+    REQUIRE_OK(calculate_index_offset(mem, context, array_node->properties.type, index_value.integer, &offset,
+                                        &node->base.source_location));
     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
     value->pointer.offset += offset;
     value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);

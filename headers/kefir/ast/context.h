@@ -28,6 +28,9 @@
 #include "kefir/ast/temporaries.h"
 #include "kefir/ast/flow_control.h"
 #include "kefir/ast/type/struct.h"
+#include "kefir/ast/initializer.h"
+#include "kefir/ast/constants.h"
+#include "kefir/ast/declarator.h"
 
 typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
 

@@ -21,9 +21,10 @@
 #ifndef KEFIR_AST_CONSTANT_EXPRESSION_H_
 #define KEFIR_AST_CONSTANT_EXPRESSION_H_
 
-#include "kefir/ast/node.h"
 #include "kefir/ast/context.h"
 #include "kefir/ast/base.h"
+#include "kefir/ast/constants.h"
+#include "kefir/core/source_location.h"
 
 typedef enum kefir_ast_constant_expression_class {
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE,

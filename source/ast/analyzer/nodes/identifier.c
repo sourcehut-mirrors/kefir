@@ -43,10 +43,6 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             base->properties.expression_props.addressable =
                 scoped_id->object.storage != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER;
             base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(scoped_id->object.type);
-            base->properties.expression_props.constant_expression =
-                scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT && scoped_id->type->tag == KEFIR_AST_TYPE_ARRAY &&
-                (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
-                 scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
             base->properties.expression_props.alignment =
                 scoped_id->object.alignment != NULL ? scoped_id->object.alignment->value : 0;
 
@@ -64,14 +60,12 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
             base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
             base->properties.type = scoped_id->function.type;
             base->properties.expression_props.addressable = true;
-            base->properties.expression_props.constant_expression = true;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
             REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
             base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
             base->properties.type = scoped_id->enum_constant.type;
-            base->properties.expression_props.constant_expression = true;
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_TYPE_DEFINITION:

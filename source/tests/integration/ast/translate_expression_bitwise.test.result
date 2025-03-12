@@ -277,7 +277,7 @@
                 },
                 {
                     "opcode": "pushi",
-                    "arg": 53
+                    "arg": 3
                 },
                 {
                     "opcode": "extend32"

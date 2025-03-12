@@ -102,10 +102,7 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
     }
 
     if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
-        if (base->klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
-            base->properties.expression_props.constant_expression =
-                node->structure->properties.expression_props.constant_expression;
-        } else {
+        if (base->klass->type != KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
             REQUIRE_OK(kefir_ast_node_is_lvalue_reference_constant(
                 context, node->structure, &base->properties.expression_props.constant_expression));
         }

@@ -147,11 +147,11 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     } else {
         REQUIRE(
             array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &array->source_location, "Expected either array or pointer"));
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &array->source_location, "Expected either array or pointer"));
         struct kefir_ast_constant_expression_value base_expr;
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, array, &base_expr));
         REQUIRE(base_expr.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &array->source_location,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &array->source_location,
                                        "Expected constant expression to yield an address"));
         base_pointer = base_expr.pointer;
 
@@ -162,7 +162,7 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     struct kefir_ast_constant_expression_value subscript_value;
     REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, subscript, &subscript_value));
     REQUIRE(subscript_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->subscript->source_location,
                                    "Expected constant array subscript to have integral type"));
 
     struct kefir_ast_designator designator = {
@@ -197,7 +197,7 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
     struct kefir_ast_constant_expression_value base_expr;
     REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, node->structure, &base_expr));
     REQUIRE(base_expr.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                    "Expected constant expression to yield an address"));
 
     struct kefir_ast_designator designator = {
@@ -208,7 +208,7 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
     REQUIRE(pointer_to_structure_type != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to obtain AST unqualified type"));
     REQUIRE(pointer_to_structure_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                    "Expected indirection left operand to be a pointer"));
 
     struct kefir_ast_target_environment_object_info object_info;

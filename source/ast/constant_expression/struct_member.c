@@ -32,7 +32,7 @@ static kefir_result_t calculate_member_offset(struct kefir_mem *mem, const struc
     const struct kefir_ast_type *structure_type = kefir_ast_unqualified_type(node->structure->properties.type);
     if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
         REQUIRE(structure_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                        "Expected constant expression of pointer type"));
         structure_type = structure_type->referenced_type;
     }
@@ -62,9 +62,6 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
@@ -79,7 +76,7 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
     if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->structure, value));
         REQUIRE(value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                        "Expected constant expression of pointer type"));
     } else {
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, node->structure,

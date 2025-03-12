@@ -65,28 +65,6 @@ kefir_result_t kefir_ast_analyze_conditional_operator_node(struct kefir_mem *mem
 
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
-    base->properties.expression_props.constant_expression =
-        node->condition->properties.expression_props.constant_expression &&
-        left_expr->properties.expression_props.constant_expression &&
-        node->expr2->properties.expression_props.constant_expression;
-    if (node->condition->properties.expression_props.constant_expression) {
-        struct kefir_ast_constant_expression_value cond_value;
-        kefir_result_t res = kefir_ast_constant_expression_value_evaluate(mem, context, node->condition, &cond_value);
-
-        if (res != KEFIR_NOT_CONSTANT) {
-            REQUIRE_OK(res);
-            kefir_bool_t condition = false;
-            REQUIRE_OK(kefir_ast_constant_expression_value_to_boolean(&cond_value, &condition));
-
-            if (condition) {
-                base->properties.expression_props.constant_expression =
-                    node->expr1 == NULL || node->expr1->properties.expression_props.constant_expression;
-            } else {
-                base->properties.expression_props.constant_expression =
-                    node->expr2->properties.expression_props.constant_expression;
-            }
-        }
-    }
 
     REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(cond_type),
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->condition->source_location,

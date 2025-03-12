@@ -80,9 +80,16 @@ static kefir_result_t evaluate_pointer_offset(struct kefir_mem *mem, const struc
 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
     if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+        const struct kefir_ast_type *referenced_type = unqualified_type->referenced_type;
+        if (context->configuration->analysis.ext_pointer_arithmetics &&
+            (referenced_type->tag == KEFIR_AST_TYPE_FUNCTION ||
+            kefir_ast_unqualified_type(referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
+            referenced_type = context->type_traits->incomplete_type_substitute;
+        }
+
         kefir_ast_target_environment_opaque_type_t opaque_type;
         REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env,
-                                                         node->properties.type->referenced_type, &opaque_type,
+                                                         referenced_type, &opaque_type,
                                                          &node->source_location));
         kefir_result_t res =
             KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET(mem, context->target_env, opaque_type, index, &offset);
@@ -93,7 +100,7 @@ static kefir_result_t evaluate_pointer_offset(struct kefir_mem *mem, const struc
         REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
     } else {
         REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                        "Expected either pointer, or integral type"));
         offset = index;
     }
@@ -137,7 +144,7 @@ static kefir_result_t evaluate_pointer_diff(struct kefir_mem *mem, const struct 
         diff_factor = objinfo.size;
     } else {
         REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location1, "Expected either pointer, or integral type"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, location1, "Expected either pointer, or integral type"));
     }
 
     kefir_int64_t diff = (pointer1->base.integral + pointer1->offset) - (pointer2->base.integral + pointer2->offset);
@@ -174,15 +181,24 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
+    const struct kefir_ast_type *arg1_init_normalized_type = kefir_ast_type_conv_unwrap_enumeration(kefir_ast_unqualified_type(node->arg1->properties.type));
+    const struct kefir_ast_type *arg1_normalized_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, arg1_init_normalized_type);
+    REQUIRE(arg1_normalized_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to perform lvalue conversions"));
+    const struct kefir_ast_type *arg2_init_normalized_type =
+    kefir_ast_type_conv_unwrap_enumeration(kefir_ast_unqualified_type(node->arg2->properties.type));
+    const struct kefir_ast_type *arg2_normalized_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, arg2_init_normalized_type);
+    REQUIRE(arg2_normalized_type != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to perform lvalue conversions"));
+
     const struct kefir_ast_type *common_arith_type = kefir_ast_type_common_arithmetic(
-        context->type_traits, node->arg1->properties.type, node->arg1->properties.expression_props.bitfield_props,
-        node->arg2->properties.type, node->arg2->properties.expression_props.bitfield_props);
+        context->type_traits, arg1_normalized_type, node->arg1->properties.expression_props.bitfield_props,
+        arg2_normalized_type, node->arg2->properties.expression_props.bitfield_props);
     kefir_bool_t common_type_signed_integer = false;
     if (common_arith_type != NULL && KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(common_arith_type)) {
         REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, common_arith_type, &common_type_signed_integer));
@@ -282,7 +298,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                                      &node->arg2->source_location));
                 } else {
                     REQUIRE(arg2_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg2->source_location,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
                                                    "Second subtraction operand shall have integral type"));
                     REQUIRE_OK(evaluate_pointer_offset(mem, context, KEFIR_AST_NODE_BASE(node), &arg1_value.pointer,
                                                        -arg2_value.integer, value));
@@ -364,6 +380,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
         case KEFIR_AST_OPERATION_MODULO:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            REQUIRE(arg2_value.integer != 0,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
+                                           "Expected non-zero divisor in constant expression"));
             if (common_type_signed_integer) {
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
@@ -408,7 +427,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_NOT_CONSTANT, &node->base.source_location,
                     "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) < as_float(&arg2_value);
@@ -430,7 +449,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_NOT_CONSTANT, &node->base.source_location,
                     "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) <= as_float(&arg2_value);
@@ -452,7 +471,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_NOT_CONSTANT, &node->base.source_location,
                     "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) > as_float(&arg2_value);
@@ -474,7 +493,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                        "Constant expressions with address comparisons are not supported");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 return KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_NOT_CONSTANT, &node->base.source_location,
                     "Constant expressions with complex floating point comparisons are invalid");
             } else if (ANY_OF(&arg1_value, &arg2_value, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 value->integer = as_float(&arg1_value) >= as_float(&arg2_value);

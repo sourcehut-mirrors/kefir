@@ -71,9 +71,6 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
 
     REQUIRE(
         node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected constant expression AST node"));
-    REQUIRE(
-        node->properties.expression_props.constant_expression,
         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location, "Expected constant expression AST node"));
 
     struct eval_param param = {.mem = mem, .context = context, .value = value};

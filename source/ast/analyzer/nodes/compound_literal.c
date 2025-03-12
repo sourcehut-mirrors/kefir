@@ -57,6 +57,5 @@ kefir_result_t kefir_ast_analyze_compound_literal_node(struct kefir_mem *mem, co
     base->properties.type = type;
     base->properties.expression_props.lvalue = true;
     base->properties.expression_props.addressable = true;
-    base->properties.expression_props.constant_expression = initializer_properties.constant;
     return KEFIR_OK;
 }

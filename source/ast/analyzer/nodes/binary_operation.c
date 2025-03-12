@@ -248,9 +248,6 @@ kefir_result_t kefir_ast_analyze_binary_operation_node(struct kefir_mem *mem, co
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->arg2->properties.type);
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
-    base->properties.expression_props.constant_expression =
-        node->arg1->properties.expression_props.constant_expression &&
-        node->arg2->properties.expression_props.constant_expression;
 
     struct kefir_ast_bitfield_properties bitfield1 = node->arg1->properties.expression_props.bitfield_props;
     struct kefir_ast_bitfield_properties bitfield2 = node->arg2->properties.expression_props.bitfield_props;

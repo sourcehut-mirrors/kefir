@@ -24,6 +24,7 @@
 #include "kefir/ast/type.h"
 #include "kefir/ast/designator.h"
 #include "kefir/ast/object.h"
+#include "kefir/core/source_location.h"
 
 typedef void *kefir_ast_target_environment_opaque_type_t;
 

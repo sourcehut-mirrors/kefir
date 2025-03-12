@@ -86,10 +86,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
     kefir_bool_t type_signed_integer = false;
@@ -112,7 +109,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = arg_value.floating_point;
             } else {
-                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
                                               "Expected integeral or floating-point constant expression");
             }
             break;
@@ -179,7 +176,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT;
                 value->floating_point = -arg_value.floating_point;
             } else {
-                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
                                               "Expected integeral or floating-point constant expression");
             }
             break;
@@ -197,7 +194,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                     APPLY_UNARY_UNSIGNED_OP(type_info.size, value, ~, &arg_value);
                 }
             } else {
-                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->arg->source_location,
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
                                               "Expected integeral constant expression");
             }
             break;
@@ -261,7 +258,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
         } break;
 
         case KEFIR_AST_OPERATION_SIZEOF: {
-            const struct kefir_ast_type *type = node->arg->properties.type;
+            const struct kefir_ast_type *type = kefir_ast_unqualified_type(node->arg->properties.type);
             if (context->configuration->analysis.ext_pointer_arithmetics &&
                 (type->tag == KEFIR_AST_TYPE_FUNCTION ||
                  kefir_ast_unqualified_type(type)->tag == KEFIR_AST_TYPE_VOID)) {
@@ -269,6 +266,9 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             }
 
             REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, type));
+            if (type->tag == KEFIR_AST_TYPE_ARRAY) {
+                REQUIRE(!KEFIR_AST_TYPE_IS_VL_ARRAY(type), KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Size of variable-length array is not a constant expression"));
+            }
 
             struct kefir_ast_target_environment_object_info type_info;
             REQUIRE_OK(get_type_info(mem, context, type, &node->base.source_location, &type_info));

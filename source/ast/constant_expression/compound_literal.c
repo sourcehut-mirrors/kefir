@@ -32,9 +32,6 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
     REQUIRE(value != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value pointer"));
     REQUIRE(node->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
-                                   "Expected constant expression AST node"));
-    REQUIRE(node->base.properties.expression_props.constant_expression,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
@@ -46,7 +43,7 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
                     (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                      scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
                 KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                    KEFIR_NOT_CONSTANT, &node->base.source_location,
                     "Constant compound literal shall be either scalar, or an array with external/static storage"));
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
         value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
@@ -57,7 +54,7 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
     } else {
         const struct kefir_ast_node_base *initializer = kefir_ast_initializer_head(node->initializer);
         REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                        "Constant compound literal shall be either scalar with an initializer, or an "
                                        "array with external/static storage"));
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, initializer, value));

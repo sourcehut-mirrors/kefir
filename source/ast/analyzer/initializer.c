@@ -22,6 +22,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/type_traversal.h"
 #include "kefir/ast/initializer_traversal.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -33,8 +34,19 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
                                              struct kefir_ast_initializer_properties *properties) {
     if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, initializer->expression));
-        if (properties != NULL && !initializer->expression->properties.expression_props.constant_expression) {
-            properties->constant = false;
+        if (properties != NULL &&
+            !initializer->expression->properties.expression_props.constant_expression) {
+            struct kefir_ast_compound_literal *compound_literal;
+            kefir_result_t res = kefir_ast_downcast_compound_literal(initializer->expression, &compound_literal, false);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                struct kefir_ast_initializer_properties initializer_properties;
+                REQUIRE_OK(kefir_ast_analyze_initializer(mem, context, compound_literal->type_name->base.properties.type, compound_literal->initializer,
+                                                        &initializer_properties));
+                properties->constant = properties->constant && initializer_properties.constant;
+            } else {
+                properties->constant = false;
+            }
         }
     } else {
         for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers); iter != NULL;
