@@ -220,23 +220,19 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *mem,
                 return res;
             });
 
-            struct kefir_ast_constant_expression_value value;
-            res = kefir_ast_constant_expression_value_evaluate(mem, context, designation->index, &value);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                if (next_designator != NULL) {
-                    kefir_ast_designator_free(mem, next_designator);
-                }
-                return res;
-            });
-            REQUIRE_ELSE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, {
-                if (next_designator != NULL) {
-                    kefir_ast_designator_free(mem, next_designator);
-                }
-                return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &designation->source_location,
-                                              "AST designator index must be an integral constant expression");
-            });
+            REQUIRE_ELSE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(designation->index,
+                                                                  KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                         {
+                             if (next_designator != NULL) {
+                                 kefir_ast_designator_free(mem, next_designator);
+                             }
+                             return KEFIR_SET_SOURCE_ERROR(
+                                 KEFIR_ANALYSIS_ERROR, &designation->source_location,
+                                 "AST designator index must be an integral constant expression");
+                         });
 
-            designator = kefir_ast_new_index_designator(mem, value.integer, next_designator);
+            designator = kefir_ast_new_index_designator(
+                mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(designation->index)->integer, next_designator);
             REQUIRE_ELSE(designator != NULL, {
                 if (next_designator != NULL) {
                     kefir_ast_designator_free(mem, next_designator);
@@ -255,19 +251,10 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *mem,
                 return res;
             });
 
-            struct kefir_ast_constant_expression_value begin_value, end_value;
-            REQUIRE_CHAIN(&res, kefir_ast_constant_expression_value_evaluate(mem, context, designation->range.begin,
-                                                                             &begin_value));
-            REQUIRE_CHAIN(
-                &res, kefir_ast_constant_expression_value_evaluate(mem, context, designation->range.end, &end_value));
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                if (next_designator != NULL) {
-                    kefir_ast_designator_free(mem, next_designator);
-                }
-                return res;
-            });
-            REQUIRE_ELSE(begin_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER &&
-                             end_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+            REQUIRE_ELSE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(designation->range.begin,
+                                                                  KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) &&
+                             KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(designation->range.end,
+                                                                      KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                          {
                              if (next_designator != NULL) {
                                  kefir_ast_designator_free(mem, next_designator);
@@ -277,7 +264,9 @@ kefir_result_t kefir_ast_evaluate_initializer_designation(struct kefir_mem *mem,
                                  "AST designator range indices must be an integral constant expression");
                          });
 
-            designator = kefir_ast_new_range_designator(mem, begin_value.integer, end_value.integer, next_designator);
+            designator = kefir_ast_new_range_designator(
+                mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(designation->range.begin)->integer,
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(designation->range.end)->integer, next_designator);
             REQUIRE_ELSE(designator != NULL, {
                 if (next_designator != NULL) {
                     kefir_ast_designator_free(mem, next_designator);

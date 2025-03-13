@@ -74,8 +74,10 @@ static kefir_result_t translate_outputs(struct kefir_mem *mem, const struct kefi
             REQUIRE(constraints.explicit_register == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Explicit register specification conflicts with parameter constraint"));
-            constraints.explicit_register = kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
-            REQUIRE(constraints.explicit_register != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
+            constraints.explicit_register =
+                kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
+            REQUIRE(constraints.explicit_register != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
         }
 
         const struct kefir_ast_type *param_type = KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
@@ -244,20 +246,24 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
             REQUIRE(constraints.explicit_register == NULL,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Explicit register specification conflicts with parameter constraint"));
-            constraints.explicit_register = kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
-            REQUIRE(constraints.explicit_register != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
+            constraints.explicit_register =
+                kefir_string_pool_insert(mem, &context->module->symbols, param->explicit_register, NULL);
+            REQUIRE(constraints.explicit_register != NULL,
+                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert explicit register into string pool"));
         }
 
         if (constraints.immediate && param->parameter->properties.expression_props.constant_expression) {
-            struct kefir_ast_constant_expression_value value = {0};
-            REQUIRE_OK(
-                kefir_ast_constant_expression_value_evaluate(mem, context->ast_context, param->parameter, &value));
-            if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
-                value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT) {
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(param->parameter),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &param->parameter->source_location,
+                                           "Unable to evaluate constant expression"));
+            if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
+                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER) ||
+                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT)) {
                 imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                param_value = value.integer;
-            } else if (value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) {
-                switch (value.pointer.type) {
+                param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->integer;
+            } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(param->parameter,
+                                                                KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
+                switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.type) {
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
                         REQUIRE(
                             !constraints.strict_immediate,
@@ -265,13 +271,16 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                 KEFIR_ANALYSIS_ERROR, &inline_asm->base.source_location,
                                 "Value of strict immediate inline assembly parameter shall be known at compile time"));
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                        REQUIRE_OK(translate_pointer_to_identifier(mem, context->module, &value, &imm_identifier_base,
-                                                                   &param_value, &inline_asm->base.source_location));
+                        REQUIRE_OK(translate_pointer_to_identifier(
+                            mem, context->module, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter),
+                            &imm_identifier_base, &param_value, &inline_asm->base.source_location));
                         break;
 
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED;
-                        param_value = value.pointer.base.integral + value.pointer.offset;
+                        param_value =
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.offset;
                         break;
 
                     case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
@@ -283,10 +292,15 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                         imm_type = KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_LITERAL_BASED;
                         kefir_id_t id;
                         REQUIRE_OK(kefir_ir_module_string_literal(
-                            mem, context->module, StringLiteralTypes[value.pointer.base.string.type], true,
-                            value.pointer.base.string.content, value.pointer.base.string.length, &id));
+                            mem, context->module,
+                            StringLiteralTypes[KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)
+                                                   ->pointer.base.string.type],
+                            true,
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string.content,
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.base.string.length,
+                            &id));
                         imm_literal_base = id;
-                        param_value = value.pointer.offset;
+                        param_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(param->parameter)->pointer.offset;
                     } break;
                 }
             } else {

@@ -142,4 +142,14 @@ kefir_result_t kefir_ast_node_properties_init(struct kefir_ast_node_properties *
 kefir_result_t kefir_ast_node_properties_clone(struct kefir_ast_node_properties *,
                                                const struct kefir_ast_node_properties *);
 
+#define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(_node)                       \
+    ((_node)->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION && \
+     (_node)->properties.expression_props.constant_expression)
+#define KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(_node, _klass) \
+    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) &&          \
+     (_node)->properties.expression_props.constant_expression_value.klass == (_klass))
+#define KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(_node)                                                               \
+    (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION((_node)) ? &(_node)->properties.expression_props.constant_expression_value \
+                                                    : NULL)
+
 #endif

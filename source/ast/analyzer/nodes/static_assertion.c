@@ -47,12 +47,10 @@ kefir_result_t kefir_ast_analyze_static_assertion_node(struct kefir_mem *mem, co
             node->string->base.properties.expression_props.string_literal.content != NULL,
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->string->base.source_location, "Expected string literal"));
 
-    struct kefir_ast_constant_expression_value value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->condition, &value));
-    REQUIRE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->condition, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->condition->source_location,
                                    "Static assertion condition shall be an integral constant expression"));
-    REQUIRE(value.integer != 0,
+    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->condition)->integer != 0,
             KEFIR_SET_SOURCE_ERRORF(KEFIR_STATIC_ASSERT, &node->base.source_location, "%s",
                                     node->string->base.properties.expression_props.string_literal.content));
     return KEFIR_OK;

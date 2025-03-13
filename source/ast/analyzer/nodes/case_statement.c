@@ -71,23 +71,23 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
                                 "End range for case statement may only be specified when expression is non-NULL"));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->range_end_expression));
-        struct kefir_ast_constant_expression_value range_begin, range_end;
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expression, &range_begin));
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->range_end_expression, &range_end));
-        REQUIRE(range_begin.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->expression, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
-        REQUIRE(range_end.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->range_end_expression,
+                                                         KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
-        REQUIRE(range_begin.integer != range_end.integer,
+        REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer !=
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
                                        "Expected AST case label range to be non-empty"));
         struct kefir_ast_flow_control_point *point = kefir_ast_flow_control_point_alloc(mem, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-        kefir_ast_constant_expression_int_t begin = range_begin.integer;
-        kefir_ast_constant_expression_int_t end = range_end.integer;
+        kefir_ast_constant_expression_int_t begin = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer;
+        kefir_ast_constant_expression_int_t end =
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer;
         if (end < begin) {
             kefir_ast_constant_expression_int_t tmp = begin;
             begin = end;
@@ -105,16 +105,15 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
         base->properties.statement_props.target_flow_control_point = point;
     } else if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
-        struct kefir_ast_constant_expression_value value;
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expression, &value));
-        REQUIRE(value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->expression, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
         struct kefir_ast_flow_control_point *point = kefir_ast_flow_control_point_alloc(mem, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-        kefir_result_t res =
-            kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.cases,
-                                  (kefir_hashtree_key_t) value.integer, (kefir_hashtree_value_t) point);
+        kefir_result_t res = kefir_hashtree_insert(
+            mem, &switch_statement->value.switchStatement.cases,
+            (kefir_hashtree_key_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer,
+            (kefir_hashtree_value_t) point);
         if (res == KEFIR_ALREADY_EXISTS) {
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                          "Cannot duplicate case statement constants");

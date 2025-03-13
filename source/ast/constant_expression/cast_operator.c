@@ -230,10 +230,12 @@ kefir_result_t kefir_ast_evaluate_cast_operator_node(struct kefir_mem *mem, cons
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    struct kefir_ast_constant_expression_value arg_value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expr, &arg_value));
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expr),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->expr->source_location,
+                                   "Unable to evaluate constant expression"));
 
-    REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, value, &arg_value, KEFIR_AST_NODE_BASE(node),
-                                                        node->base.properties.type));
+    REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, value,
+                                                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expr),
+                                                        KEFIR_AST_NODE_BASE(node), node->base.properties.type));
     return KEFIR_OK;
 }

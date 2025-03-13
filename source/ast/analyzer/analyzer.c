@@ -150,13 +150,16 @@ kefir_result_t kefir_ast_analyze_node(struct kefir_mem *mem, const struct kefir_
     REQUIRE_OK(res);
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(&visitor, base, &param));
 
-    res = kefir_ast_constant_expression_value_evaluate(mem, context, base, &base->properties.expression_props.constant_expression_value);
-    if (res != KEFIR_NOT_CONSTANT) {
-        REQUIRE_OK(res);
-        base->properties.expression_props.constant_expression = true;
-    } else {
-        kefir_clear_error();
-        base->properties.expression_props.constant_expression = false;
+    if (base->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION) {
+        res = kefir_ast_constant_expression_value_evaluate(
+            mem, context, base, &base->properties.expression_props.constant_expression_value);
+        if (res != KEFIR_NOT_CONSTANT) {
+            REQUIRE_OK(res);
+            base->properties.expression_props.constant_expression = true;
+        } else {
+            kefir_clear_error();
+            base->properties.expression_props.constant_expression = false;
+        }
     }
 
     KEFIR_RUN_EXTENSION(&res, mem, context, after_node_analysis, base);
@@ -180,23 +183,19 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *mem, const s
                  node->properties.type->referenced_type->tag == KEFIR_AST_TYPE_VOID),
             KEFIR_OK);
 
-    struct kefir_ast_constant_expression_value value;
-    kefir_result_t res = kefir_ast_constant_expression_value_evaluate(mem, context, node, &value);
-    if (res == KEFIR_NOT_CONSTANT) {
-        return KEFIR_OK;
-    } else {
-        REQUIRE_OK(res);
-    }
-    switch (value.klass) {
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node), KEFIR_OK);
+    switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-            if (value.integer == 0) {
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->integer == 0) {
                 *is_null = true;
             }
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
-            if (value.pointer.type == KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER &&
-                value.pointer.base.integral == 0 && value.pointer.offset == 0) {
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->pointer.type ==
+                    KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->pointer.base.integral == 0 &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->pointer.offset == 0) {
                 *is_null = true;
             }
             break;

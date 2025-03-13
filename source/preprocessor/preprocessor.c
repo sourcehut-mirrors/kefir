@@ -504,7 +504,6 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
     struct kefir_parser_token_cursor cursor;
     struct kefir_parser parser;
     struct kefir_ast_node_base *expression = NULL;
-    struct kefir_ast_constant_expression_value expr_value;
 
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     kefir_result_t res =
@@ -538,13 +537,16 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
 
     res = kefir_token_buffer_free(mem, &tokens);
     REQUIRE_CHAIN(&res, kefir_ast_analyze_node(mem, preprocessor->context->ast_context, expression));
-    REQUIRE_CHAIN(&res, kefir_ast_constant_expression_value_evaluate(mem, preprocessor->context->ast_context,
-                                                                     expression, &expr_value));
+    REQUIRE_CHAIN_SET(&res, KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expression),
+                      KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expression->source_location,
+                                             "Unable to evaluate constant expression"));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, expression);
         return res;
     });
+    struct kefir_ast_constant_expression_value expr_value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, expression));
+
     switch (expr_value.klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
             *result = expr_value.integer != 0;

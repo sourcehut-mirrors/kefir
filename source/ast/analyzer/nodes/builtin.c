@@ -232,14 +232,11 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
 
-            struct kefir_ast_constant_expression_value cond_value;
-            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, cond_node, &cond_value));
-
-            REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(cond_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
                                            "Expected a constant expression evaluating to an integer"));
 
-            if (cond_value.integer != 0) {
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(cond_node)->integer != 0) {
                 REQUIRE_OK(kefir_ast_analyze_node(mem, context, expr1_node));
                 REQUIRE_OK(kefir_ast_node_properties_clone(&base->properties, &expr1_node->properties));
             } else {

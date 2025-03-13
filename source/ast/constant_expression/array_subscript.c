@@ -41,7 +41,7 @@ static kefir_result_t calculate_index_offset(struct kefir_mem *mem, const struct
 
     if (context->configuration->analysis.ext_pointer_arithmetics &&
         (referenced_type->tag == KEFIR_AST_TYPE_FUNCTION ||
-        kefir_ast_unqualified_type(referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
+         kefir_ast_unqualified_type(referenced_type)->tag == KEFIR_AST_TYPE_VOID)) {
         referenced_type = context->type_traits->incomplete_type_substitute;
     }
 
@@ -83,17 +83,16 @@ kefir_result_t kefir_ast_evaluate_array_subscript_node(struct kefir_mem *mem, co
         subscript_node = node->array;
     }
 
-    struct kefir_ast_constant_expression_value index_value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, subscript_node, &index_value));
-    REQUIRE(index_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subscript_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subscript_node->source_location,
                                    "Expected integral constant expression"));
 
     REQUIRE_OK(
         kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, array_node, &value->pointer));
     kefir_int64_t offset = 0;
-    REQUIRE_OK(calculate_index_offset(mem, context, array_node->properties.type, index_value.integer, &offset,
-                                        &node->base.source_location));
+    REQUIRE_OK(calculate_index_offset(mem, context, array_node->properties.type,
+                                      KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subscript_node)->integer, &offset,
+                                      &node->base.source_location));
     value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
     value->pointer.offset += offset;
     value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);

@@ -53,11 +53,12 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         value->pointer.scoped_id = scoped_id;
     } else {
         const struct kefir_ast_node_base *initializer = kefir_ast_initializer_head(node->initializer);
-        REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL,
+        REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL &&
+                    KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                        "Constant compound literal shall be either scalar with an initializer, or an "
                                        "array with external/static storage"));
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, initializer, value));
+        *value = initializer->properties.expression_props.constant_expression_value;
     }
     return KEFIR_OK;
 }

@@ -36,22 +36,27 @@ kefir_result_t kefir_ast_evaluate_conditional_operator_node(struct kefir_mem *me
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
                                    "Expected constant expression AST node"));
 
-    struct kefir_ast_constant_expression_value cond_value, arg1_value, arg2_value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->condition, &cond_value));
-
     kefir_bool_t condition = false;
-    REQUIRE_OK(kefir_ast_constant_expression_value_to_boolean(&cond_value, &condition));
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->condition),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->condition->source_location,
+                                   "Unable to evaluate constant expression"));
+    REQUIRE_OK(kefir_ast_constant_expression_value_to_boolean(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->condition),
+                                                              &condition));
 
     if (condition) {
         if (node->expr1 != NULL) {
-            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expr1, &arg1_value));
-            *value = arg1_value;
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expr1),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->expr1->source_location,
+                                           "Unable to evaluate constant expression"));
+            *value = node->expr1->properties.expression_props.constant_expression_value;
         } else {
-            *value = cond_value;
+            *value = node->condition->properties.expression_props.constant_expression_value;
         }
     } else {
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->expr2, &arg2_value));
-        *value = arg2_value;
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node->expr2),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->expr2->source_location,
+                                       "Unable to evaluate constant expression"));
+        *value = node->expr2->properties.expression_props.constant_expression_value;
     }
     return KEFIR_OK;
 }

@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/constant_expression_impl.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -79,11 +80,22 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(visitor, subscript->array, payload));
 
-    struct kefir_ast_constant_expression_value value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, subscript->subscript, &value));
+    const struct kefir_ast_type *array_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(param->mem, param->context->type_bundle, subscript->array->properties.type);
 
-    struct kefir_ast_designator *designator =
-        kefir_ast_new_index_designator(param->mem, value.integer, param->designator);
+    struct kefir_ast_node_base *subscript_node;
+    if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+        subscript_node = subscript->subscript;
+    } else {
+        subscript_node = subscript->array;
+    }
+
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subscript_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subscript_node->source_location,
+                                   "Unable to evaluate constant expression"));
+
+    struct kefir_ast_designator *designator = kefir_ast_new_index_designator(
+        param->mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subscript_node)->integer, param->designator);
     REQUIRE(designator != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate member designator"));
     param->designator = designator;
     return KEFIR_OK;
@@ -176,37 +188,37 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, expr2_node, iter->value);
 
-            struct kefir_ast_constant_expression_value cond_value;
-            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, cond_node, &cond_value));
-
-            REQUIRE(cond_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(cond_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &cond_node->source_location,
                                            "Expected a constant expression evaluating to an integer"));
 
-            if (cond_value.integer != 0) {
-                REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, expr1_node, value));
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(cond_node)->integer != 0) {
+                REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expr1_node),
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expr1_node->source_location,
+                                               "Unable to evaluate constant expression"));
+                *value = expr1_node->properties.expression_props.constant_expression_value;
             } else {
-                REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, expr2_node, value));
+                REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expr2_node),
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expr2_node->source_location,
+                                               "Unable to evaluate constant expression"));
+                *value = expr2_node->properties.expression_props.constant_expression_value;
             }
         } break;
 
         case KEFIR_AST_BUILTIN_CONSTANT: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
 
-            struct kefir_ast_constant_expression_value node_value;
-            kefir_result_t res = kefir_ast_constant_expression_value_evaluate(mem, context, node, &node_value);
-
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (res == KEFIR_NOT_CONSTANT) {
-                kefir_clear_error();
+            if (!node->properties.expression_props.constant_expression) {
                 value->integer = 0;
             } else {
-                REQUIRE_OK(res);
-                value->integer = (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
-                                  node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
-                                  node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT ||
-                                  (node_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
-                                   node_value.pointer.type != KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
+                kefir_ast_constant_expression_class_t klass = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->klass;
+                value->integer = (klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
+                                  klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
+                                  klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT ||
+                                  (klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
+                                   KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->pointer.type !=
+                                       KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
                                      ? 1
                                      : 0;
             }

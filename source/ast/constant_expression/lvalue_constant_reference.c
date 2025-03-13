@@ -148,25 +148,22 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
         REQUIRE(
             array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &array->source_location, "Expected either array or pointer"));
-        struct kefir_ast_constant_expression_value base_expr;
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, array, &base_expr));
-        REQUIRE(base_expr.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(array, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &array->source_location,
-                                       "Expected constant expression to yield an address"));
-        base_pointer = base_expr.pointer;
+                                       "Unable to evaluate constant expression"));
+        base_pointer = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(array)->pointer;
 
         array_type =
             kefir_ast_type_unbounded_array(param->mem, param->context->type_bundle, array_type->referenced_type, NULL);
     }
 
-    struct kefir_ast_constant_expression_value subscript_value;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, subscript, &subscript_value));
-    REQUIRE(subscript_value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subscript, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->subscript->source_location,
                                    "Expected constant array subscript to have integral type"));
 
-    struct kefir_ast_designator designator = {
-        .type = KEFIR_AST_DESIGNATOR_SUBSCRIPT, .index = subscript_value.integer, .next = NULL};
+    struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_SUBSCRIPT,
+                                              .index = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subscript)->integer,
+                                              .next = NULL};
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
@@ -194,9 +191,7 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
 
-    struct kefir_ast_constant_expression_value base_expr;
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(param->mem, param->context, node->structure, &base_expr));
-    REQUIRE(base_expr.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                    "Expected constant expression to yield an address"));
 
@@ -224,7 +219,7 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
     });
     REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type));
 
-    *param->pointer = base_expr.pointer;
+    *param->pointer = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->pointer;
     param->pointer->offset += object_info.relative_offset;
     param->pointer->pointer_node = KEFIR_AST_NODE_BASE(node);
 

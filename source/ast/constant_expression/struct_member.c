@@ -74,10 +74,10 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
     REQUIRE_OK(calculate_member_offset(mem, context, node, &member_offset));
 
     if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, node->structure, value));
-        REQUIRE(value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                        "Expected constant expression of pointer type"));
+        *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure);
     } else {
         REQUIRE_OK(kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, node->structure,
                                                                                  &value->pointer));
