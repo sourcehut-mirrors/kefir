@@ -55,8 +55,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_define_auto(
         mem, &local_context, "ptr2",
         kefir_ast_type_pointer(mem, context->type_bundle,
-                               kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_long(),
-                                                    kefir_ast_constant_expression_integer(mem, 4), NULL)),
+                               kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_long(), 4, NULL)),
         NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ir_module module;

@@ -47,8 +47,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_local_init1, "AST Declaration initializer
     const struct kefir_ast_type *type1 =
         kefir_ast_type_unbounded_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(), NULL);
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 3), NULL);
+        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(), 3, NULL);
 
     ASSERT_OK(kefir_ast_local_context_define_static(&kft_mem, &context, "var1", kefir_ast_type_signed_int(), NULL, NULL,
                                                     NULL, NULL, NULL));
@@ -116,8 +115,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_local_init2, "AST Declaration initializer
     const struct kefir_ast_type *type1 =
         kefir_ast_type_unbounded_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(), NULL);
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 3), NULL);
+        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_float(), 3, NULL);
 
     ASSERT_OK(kefir_ast_local_context_define_static_thread_local(
         &kft_mem, &context, "var1", kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL, NULL));
@@ -190,8 +188,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_local_init3, "AST Declaration initializer
     const struct kefir_ast_type *type1 =
         kefir_ast_type_unbounded_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(), NULL);
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 5), NULL);
+        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(), 5, NULL);
 
     ASSERT_OK(kefir_ast_local_context_define_auto(&kft_mem, &context, "var1", kefir_ast_type_signed_short(), NULL, NULL,
                                                   NULL, NULL, NULL));
@@ -255,8 +252,7 @@ DEFINE_CASE(ast_ordinary_scope_objects_local_init4, "AST Declaration initializer
     const struct kefir_ast_type *type1 =
         kefir_ast_type_unbounded_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(), NULL);
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 5), NULL);
+        kefir_ast_type_array(&kft_mem, context.context.type_bundle, kefir_ast_type_signed_char(), 5, NULL);
 
     ASSERT_OK(kefir_ast_local_context_define_register(&kft_mem, &context, "var1", kefir_ast_type_signed_short(), NULL,
                                                       NULL, NULL, NULL, NULL));

@@ -83,19 +83,19 @@ DEFINE_CASE(ast_constant_expression_identifier1, "AST constant expressions - ide
     struct kefir_ast_context *context = &local_context.context;
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "x",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 0),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(0),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 1),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "z",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 2),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(2),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_define_auto(
         &kft_mem, &local_context, "var1",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_char(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_INTEGER_CONST_EXPR(&kft_mem, context, kefir_ast_new_identifier(&kft_mem, context->symbols, "x"), 0);
@@ -574,22 +574,20 @@ DEFINE_CASE(ast_constant_expression_binary_operations4, "AST constant expression
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct_type1);
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "array",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 64), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "array",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 64, NULL), NULL));
 
     ASSERT_OK(kefir_ast_global_context_define_static(
         &kft_mem, &global_context, "x",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_global_context_define_static(
         &kft_mem, &global_context, "y",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL, NULL));
 
     for (kefir_int_t i = -100; i < 100; i++) {

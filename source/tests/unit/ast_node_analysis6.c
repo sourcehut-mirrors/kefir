@@ -335,7 +335,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal1, "AST node analysis - compound l
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "x", kefir_ast_type_signed_int(), NULL,
                                                        NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 100),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
 
     struct kefir_ast_type_name *TYPES[] = {
@@ -477,9 +477,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
 
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "x",
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 10), NULL),
-        NULL, NULL, NULL, NULL));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 10, NULL), NULL, NULL, NULL, NULL));
 
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(
         &kft_mem, kefir_ast_declarator_array(&kft_mem, KEFIR_AST_DECLARATOR_ARRAY_UNBOUNDED, NULL,
@@ -495,8 +493,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
                                                          kefir_ast_type_specifier_char(&kft_mem)));
 
     ASSERT_COMPOUND_LITERAL(&kft_mem, context, type_name1, {},
-                            kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                 kefir_ast_constant_expression_integer(&kft_mem, 0), NULL),
+                            kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 0, NULL),
                             false);
 
     ASSERT_COMPOUND_LITERAL(
@@ -508,9 +505,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
                     &kft_mem,
                     KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!")))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 14), NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 14, NULL), false);
 
     ASSERT_COMPOUND_LITERAL(
         &kft_mem, context, type_name1,
@@ -536,9 +531,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
                 kefir_ast_new_expression_initializer(&kft_mem,
                                                      KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'o')))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 5), NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 5, NULL), false);
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)));
 
     ASSERT_COMPOUND_LITERAL_NOK(&kft_mem, context, type_name2, {});
@@ -547,7 +540,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal2, "AST node analysis - compound l
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_char(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     ASSERT_COMPOUND_LITERAL(
         &kft_mem, context, type_name2,
@@ -683,11 +676,8 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
     struct kefir_ast_struct_type *structure2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(&kft_mem, context->type_bundle, NULL, &structure2);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure2, "x", kefir_ast_type_float(), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, structure2, "y",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 2), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure2, "y",
+                                          kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 2, NULL), NULL));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, type2, NULL);
 
@@ -857,9 +847,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
         type2, false);
 
     ASSERT_COMPOUND_LITERAL(&kft_mem, context, type_name2, {},
-                            kefir_ast_type_array(&kft_mem, context->type_bundle, type2,
-                                                 kefir_ast_constant_expression_integer(&kft_mem, 0), NULL),
-                            false);
+                            kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 0, NULL), false);
 
     ASSERT_COMPOUND_LITERAL_NOK(&kft_mem, context, type_name2, {
         ASSERT_OK(kefir_ast_initializer_list_append(
@@ -876,9 +864,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
                 kefir_ast_new_expression_initializer(
                     &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "var2")))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, kefir_ast_constant_expression_integer(&kft_mem, 1),
-                             NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 1, NULL), false);
 
     ASSERT_COMPOUND_LITERAL(
         &kft_mem, context, type_name2,
@@ -900,9 +886,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
                 kefir_ast_new_expression_initializer(
                     &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "var2")))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, kefir_ast_constant_expression_integer(&kft_mem, 4),
-                             NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 4, NULL), false);
 
     ASSERT_COMPOUND_LITERAL_NOK(&kft_mem, context, type_name2, {
         ASSERT_OK(kefir_ast_initializer_list_append(
@@ -988,9 +972,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
                 kefir_ast_new_expression_initializer(&kft_mem,
                                                      KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, kefir_ast_constant_expression_integer(&kft_mem, 2),
-                             NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 2, NULL), false);
 
     ASSERT_COMPOUND_LITERAL(
         &kft_mem, context, type_name2,
@@ -1033,9 +1015,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal3, "AST node analysis - compound l
                 kefir_ast_new_expression_initializer(
                     &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "var1")))));
         },
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, kefir_ast_constant_expression_integer(&kft_mem, 2),
-                             NULL),
-        false);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 2, NULL), false);
 
     ASSERT_COMPOUND_LITERAL_NOK(&kft_mem, context, type_name2, {
         ASSERT_OK(kefir_ast_initializer_list_append(

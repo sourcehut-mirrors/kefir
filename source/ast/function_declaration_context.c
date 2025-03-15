@@ -109,7 +109,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
 static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
                                                      struct kefir_ast_function_declaration_context *context,
                                                      const char *identifier,
-                                                     struct kefir_ast_constant_expression *value,
+                                                     const struct kefir_ast_constant_expression_value *value,
                                                      const struct kefir_ast_type *type,
                                                      const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -231,7 +231,8 @@ static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kef
 }
 
 static kefir_result_t context_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                              const char *identifier, struct kefir_ast_constant_expression *value,
+                                              const char *identifier,
+                                              const struct kefir_ast_constant_expression_value *value,
                                               const struct kefir_ast_type *type,
                                               const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

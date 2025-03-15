@@ -32,10 +32,9 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     kefir_ast_scoped_identifier_storage_t, struct kefir_ast_alignment *, kefir_ast_scoped_identifier_linkage_t,
     kefir_bool_t, struct kefir_ast_initializer *, const char *, const struct kefir_source_location *);
 
-struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(struct kefir_mem *,
-                                                                               struct kefir_ast_constant_expression *,
-                                                                               const struct kefir_ast_type *,
-                                                                               const struct kefir_source_location *);
+struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(
+    struct kefir_mem *, const struct kefir_ast_constant_expression_value *, const struct kefir_ast_type *,
+    const struct kefir_source_location *);
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_type_tag(struct kefir_mem *,
                                                                                const struct kefir_ast_type *,
@@ -97,20 +96,20 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
         }                                                                                                \
     } while (0)
 
-#define KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(_ordinary_id, _attributes)                           \
-    do {                                                                                                 \
-        if ((_attributes)->alias != NULL) {                                                              \
-            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->object.asm_label == NULL,      \
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                               \
-                                           "Assembly label cannot be attached to an aliased object")); \
-            if ((_ordinary_id)->object.alias != NULL) {                                                \
-                REQUIRE(strcmp((_attributes)->alias, (_ordinary_id)->object.alias) == 0,               \
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                           \
-                                               "Alias mismatch in object redeclaration"));             \
-            } else {                                                                                     \
-                (_ordinary_id)->object.alias = (_attributes)->alias;                                   \
-            }                                                                                            \
-        }                                                                                                \
+#define KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(_ordinary_id, _attributes)                                           \
+    do {                                                                                                               \
+        if ((_attributes)->alias != NULL) {                                                                            \
+            REQUIRE((_attributes)->asm_label == NULL && (_ordinary_id)->object.asm_label == NULL,                      \
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,                                             \
+                                           "Assembly label cannot be attached to an aliased object"));                 \
+            if ((_ordinary_id)->object.alias != NULL) {                                                                \
+                REQUIRE(                                                                                               \
+                    strcmp((_attributes)->alias, (_ordinary_id)->object.alias) == 0,                                   \
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Alias mismatch in object redeclaration")); \
+            } else {                                                                                                   \
+                (_ordinary_id)->object.alias = (_attributes)->alias;                                                   \
+            }                                                                                                          \
+        }                                                                                                              \
     } while (0)
 
 #define KEFIR_AST_CONTEXT_MERGE_BOOL(_left, _right) \
@@ -121,11 +120,11 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
 #define KEFIR_AST_CONTEXT_GET_ATTR(_attributes, _name, _default) \
     ((_attributes) != NULL ? (_attributes)->_name : (_default))
 
-#define KEFIR_AST_CONTEXT_MERGE_VISIBILITY(_visibility, _attributes) \
-    do { \
+#define KEFIR_AST_CONTEXT_MERGE_VISIBILITY(_visibility, _attributes)                            \
+    do {                                                                                        \
         if (*(_visibility) == KEFIR_AST_DECLARATOR_VISIBILITY_UNSET && (_attributes) != NULL) { \
-            *(_visibility) = (_attributes)->visibility; \
-        } \
+            *(_visibility) = (_attributes)->visibility;                                         \
+        }                                                                                       \
     } while (0)
 
 #define KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(_mem, _context, _identifier, _ordinary_id)                        \

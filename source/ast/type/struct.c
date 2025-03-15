@@ -48,9 +48,7 @@ static kefir_bool_t same_structure_type(const struct kefir_ast_type *type1, cons
             ASSIGN_DECL_CAST(const struct kefir_ast_struct_field *, field2, iter2->value);
             REQUIRE(strings_same(field1->identifier, field2->identifier), false);
             REQUIRE(field1->alignment->value == field2->alignment->value, false);
-            REQUIRE((!field1->bitfield && !field2->bitfield) ||
-                        (field1->bitwidth->value.integer == field2->bitwidth->value.integer),
-                    false);
+            REQUIRE((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth), false);
             REQUIRE(KEFIR_AST_TYPE_SAME(field1->type, field2->type), false);
         }
     }
@@ -73,9 +71,7 @@ static kefir_bool_t compatible_structure_types(const struct kefir_ast_type_trait
             ASSIGN_DECL_CAST(const struct kefir_ast_struct_field *, field2, iter2->value);
             REQUIRE(strings_same(field1->identifier, field2->identifier), false);
             REQUIRE(field1->alignment->value == field2->alignment->value, false);
-            REQUIRE((!field1->bitfield && !field2->bitfield) ||
-                        (field1->bitwidth->value.integer == field2->bitwidth->value.integer),
-                    false);
+            REQUIRE((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth), false);
             REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, field1->type, field2->type), false);
         }
     }
@@ -116,8 +112,7 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
             if (field1->bitfield) {
                 res = kefir_ast_struct_type_bitfield(
                     mem, symbols, composite_struct, field1->identifier, composite_field_type,
-                    kefir_ast_alignment_clone(mem, field1->alignment),
-                    kefir_ast_constant_expression_integer(mem, field1->bitwidth->value.integer));
+                    kefir_ast_alignment_clone(mem, field1->alignment), field1->bitwidth);
             } else {
                 res = kefir_ast_struct_type_field(mem, symbols, composite_struct, field1->identifier,
                                                   composite_field_type,
@@ -150,9 +145,7 @@ static kefir_bool_t same_union_type(const struct kefir_ast_type *type1, const st
             ASSIGN_DECL_CAST(const struct kefir_ast_struct_field *, field1, node1->value);
             ASSIGN_DECL_CAST(const struct kefir_ast_struct_field *, field2, node2->value);
             REQUIRE(strings_same(field1->identifier, field2->identifier), false);
-            REQUIRE((!field1->bitfield && !field2->bitfield) ||
-                        (field1->bitwidth->value.integer == field2->bitwidth->value.integer),
-                    false);
+            REQUIRE((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth), false);
             REQUIRE(KEFIR_AST_TYPE_SAME(field1->type, field2->type), false);
         }
         for (const struct kefir_hashtree_node *node2 = kefir_hashtree_iter(&type2->structure_type.field_index, &iter);
@@ -182,9 +175,7 @@ static kefir_bool_t compatible_union_types(const struct kefir_ast_type_traits *t
                 REQUIRE(res == KEFIR_OK, false);
                 ASSIGN_DECL_CAST(const struct kefir_ast_struct_field *, field2, node2->value);
 
-                REQUIRE((!field1->bitfield && !field2->bitfield) ||
-                            (field1->bitwidth->value.integer == field2->bitwidth->value.integer),
-                        false);
+                REQUIRE((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth), false);
                 REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, field1->type, field2->type), false);
             } else {
                 kefir_bool_t found_match = false;
@@ -195,9 +186,9 @@ static kefir_bool_t compatible_union_types(const struct kefir_ast_type_traits *t
                         continue;
                     }
 
-                    found_match = ((!field1->bitfield && !field2->bitfield) ||
-                                   (field1->bitwidth->value.integer == field2->bitwidth->value.integer)) &&
-                                  KEFIR_AST_TYPE_COMPATIBLE(type_traits, field1->type, field2->type);
+                    found_match =
+                        ((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth)) &&
+                        KEFIR_AST_TYPE_COMPATIBLE(type_traits, field1->type, field2->type);
                 }
 
                 REQUIRE(found_match, false);
@@ -248,8 +239,7 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
                     field2 = iter2->value;
 
                     if (field2->identifier != NULL ||
-                        !(((!field1->bitfield && !field2->bitfield) ||
-                           (field1->bitwidth->value.integer == field2->bitwidth->value.integer)) &&
+                        !(((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth)) &&
                           KEFIR_AST_TYPE_COMPATIBLE(type_traits, field1->type, field2->type))) {
                         field2 = NULL;
                     }
@@ -264,14 +254,11 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
             if (field1->bitfield) {
                 res = kefir_ast_struct_type_bitfield(
                     mem, symbols, composite_union, field1->identifier, composite_field_type,
-                    kefir_ast_alignment_const_expression(
-                        mem, kefir_ast_constant_expression_integer(mem, field1->alignment->value)),
-                    kefir_ast_constant_expression_integer(mem, field1->bitwidth->value.integer));
+                    kefir_ast_alignment_const_expression(mem, field1->alignment->value), field1->bitwidth);
             } else {
-                res = kefir_ast_struct_type_field(
-                    mem, symbols, composite_union, field1->identifier, composite_field_type,
-                    kefir_ast_alignment_const_expression(
-                        mem, kefir_ast_constant_expression_integer(mem, field1->alignment->value)));
+                res =
+                    kefir_ast_struct_type_field(mem, symbols, composite_union, field1->identifier, composite_field_type,
+                                                kefir_ast_alignment_const_expression(mem, field1->alignment->value));
             }
             REQUIRE(res == KEFIR_OK, NULL);
         }
@@ -367,9 +354,6 @@ static kefir_result_t struct_field_free(struct kefir_mem *mem, struct kefir_list
     if (field->alignment != NULL) {
         REQUIRE_OK(kefir_ast_alignment_free(mem, field->alignment));
     }
-    if (field->bitfield) {
-        REQUIRE_OK(kefir_ast_constant_expression_free(mem, field->bitwidth));
-    }
     KEFIR_FREE(mem, (void *) field);
     return KEFIR_OK;
 }
@@ -378,7 +362,7 @@ static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, st
                                                        struct kefir_ast_struct_type *struct_type,
                                                        const char *identifier, const struct kefir_ast_type *type,
                                                        struct kefir_ast_alignment *alignment, kefir_bool_t bitfield,
-                                                       struct kefir_ast_constant_expression *bitwidth) {
+                                                       kefir_size_t bitwidth) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(struct_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST structure type"));
     REQUIRE(identifier == NULL || strlen(identifier) > 0,
@@ -400,12 +384,6 @@ static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, st
     field->type = type;
     field->bitfield = bitfield;
     field->bitwidth = bitwidth;
-    if (field->bitwidth != NULL) {
-        REQUIRE(
-            field->bitwidth->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE ||
-                field->bitwidth->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Structure/union field alignment should be an integer constant"));
-    }
     if (alignment != NULL) {
         field->alignment = alignment;
     } else {
@@ -477,15 +455,13 @@ kefir_result_t kefir_ast_struct_type_resolve_field(const struct kefir_ast_struct
 kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                            struct kefir_ast_struct_type *struct_type, const char *identifier,
                                            const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment) {
-    return kefir_ast_struct_type_field_impl(mem, symbols, struct_type, identifier, type, alignment, false, NULL);
+    return kefir_ast_struct_type_field_impl(mem, symbols, struct_type, identifier, type, alignment, false, 0);
 }
 
 kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                               struct kefir_ast_struct_type *struct_type, const char *identifier,
                                               const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment,
-                                              struct kefir_ast_constant_expression *bitwidth) {
-    REQUIRE(bitwidth != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant exression bitwidth"));
+                                              kefir_size_t bitwidth) {
     return kefir_ast_struct_type_field_impl(mem, symbols, struct_type, identifier, type, alignment, true, bitwidth);
 }
 

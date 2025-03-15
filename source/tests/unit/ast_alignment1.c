@@ -98,20 +98,9 @@ DEFINE_CASE(ast_alignment_as_const_expr, "AST alignment - as constant expression
     struct kefir_ast_context *context = &local_context.context;
 
     for (kefir_size_t i = 0; i < 5; i++) {
-        ASSERT_ALIGN_AS_CONST_EXPR(&kft_mem, context, kefir_ast_constant_expression_integer(&kft_mem, 1 << i), 1u << i);
+        ASSERT_ALIGN_AS_CONST_EXPR(&kft_mem, context, 1 << i, 1u << i);
 
-        ASSERT_ALIGN_AS_CONST_EXPR(&kft_mem, context,
-                                   kefir_ast_new_constant_expression(
-                                       &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 1 << i))),
-                                   1u << i);
-
-        ASSERT_ALIGN_AS_CONST_EXPR(&kft_mem, context,
-                                   kefir_ast_new_constant_expression(
-                                       &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-                                                     &kft_mem, KEFIR_AST_OPERATION_SHIFT_LEFT,
-                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, 1)),
-                                                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_uint(&kft_mem, i))))),
-                                   1u << i);
+        ASSERT_ALIGN_AS_CONST_EXPR(&kft_mem, context, 1 << i, 1u << i);
     }
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));

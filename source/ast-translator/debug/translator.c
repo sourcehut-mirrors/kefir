@@ -429,8 +429,8 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                      iter != NULL; kefir_list_next(&iter)) {
                     ASSIGN_DECL_CAST(struct kefir_ast_enum_enumerator *, enumerator, iter->value);
                     kefir_uint64_t value = next_value;
-                    if (enumerator->value != NULL) {
-                        value = enumerator->value->value.uinteger;
+                    if (enumerator->has_value) {
+                        value = enumerator->value;
                     }
                     next_value = value + 1;
 
@@ -487,7 +487,7 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                     array_iter->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) {
                     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                         mem, &module->debug_info.entries, &module->symbols, child_entry_id,
-                        &KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(array_iter->array_type.const_length->value.uinteger)));
+                        &KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(array_iter->array_type.const_length)));
                 }
             }
             REQUIRE(array_iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST array element type"));

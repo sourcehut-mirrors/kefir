@@ -91,7 +91,7 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
     base->properties.expression_props.bitfield_props.bitfield = field->bitfield;
     base->properties.expression_props.atomic = KEFIR_AST_TYPE_IS_ATOMIC(type);
     if (field->bitfield) {
-        base->properties.expression_props.bitfield_props.width = field->bitwidth->value.integer;
+        base->properties.expression_props.bitfield_props.width = field->bitwidth;
     }
 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);

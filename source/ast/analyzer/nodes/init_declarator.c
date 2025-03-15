@@ -65,8 +65,7 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
     if (base->properties.declaration_props.identifier != NULL) {
         struct kefir_ast_alignment *alignment = NULL;
         if (base->properties.declaration_props.alignment != 0) {
-            alignment = kefir_ast_alignment_const_expression(
-                mem, kefir_ast_constant_expression_integer(mem, base->properties.declaration_props.alignment));
+            alignment = kefir_ast_alignment_const_expression(mem, base->properties.declaration_props.alignment);
             REQUIRE(alignment != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST alignment"));
         }
 

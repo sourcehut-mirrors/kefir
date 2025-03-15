@@ -38,50 +38,35 @@ DEFINE_CASE(ast_bitfield_translator1, "AST translator - bitfields #1") {
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(&kft_mem, context.context.type_bundle, NULL, &struct_type1);
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field1",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 2)));
+                                             kefir_ast_type_signed_int(), NULL, 2));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field2",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_signed_int(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field3",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 10)));
+                                             kefir_ast_type_signed_int(), NULL, 10));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field4",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_int(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field5",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 8)));
+                                             kefir_ast_type_signed_int(), NULL, 8));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field6",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 10)));
+                                             kefir_ast_type_signed_int(), NULL, 10));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field7",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 22)));
+                                             kefir_ast_type_signed_int(), NULL, 22));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field8",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 32)));
+                                             kefir_ast_type_signed_int(), NULL, 32));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field9",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_int(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, NULL,
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_int(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field10",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 2)));
+                                             kefir_ast_type_signed_int(), NULL, 2));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, NULL,
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 0)));
+                                             kefir_ast_type_signed_int(), NULL, 0));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field11",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_int(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, NULL,
-                                             kefir_ast_type_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 0)));
+                                             kefir_ast_type_char(), NULL, 0));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field12",
-                                             kefir_ast_type_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_char(), NULL, 1));
 
     struct kefir_irbuilder_type type_builder;
     struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER, .member = NULL, .next = NULL};
@@ -147,23 +132,17 @@ DEFINE_CASE(ast_bitfield_translator2, "AST translator - bitfields #2") {
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(&kft_mem, context.context.type_bundle, NULL, &struct_type1);
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field1",
-                                             kefir_ast_type_unsigned_long(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 5)));
+                                             kefir_ast_type_unsigned_long(), NULL, 5));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field2",
-                                             kefir_ast_type_signed_short(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 10)));
+                                             kefir_ast_type_signed_short(), NULL, 10));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field3",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 11)));
+                                             kefir_ast_type_signed_int(), NULL, 11));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field4",
-                                             kefir_ast_type_unsigned_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 8)));
+                                             kefir_ast_type_unsigned_char(), NULL, 8));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field5",
-                                             kefir_ast_type_signed_long(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 13)));
+                                             kefir_ast_type_signed_long(), NULL, 13));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field6",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 12)));
+                                             kefir_ast_type_unsigned_int(), NULL, 12));
 
     struct kefir_irbuilder_type type_builder;
     struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER, .member = NULL, .next = NULL};
@@ -223,21 +202,17 @@ DEFINE_CASE(ast_bitfield_translator3, "AST translator - bitfields #3") {
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(&kft_mem, context.context.type_bundle, NULL, &struct_type1);
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field1",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 16)));
+                                             kefir_ast_type_unsigned_int(), NULL, 16));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context.context.symbols, struct_type1, "field2",
                                           kefir_ast_type_char(), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field3",
-                                             kefir_ast_type_unsigned_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_unsigned_char(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field4",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 4)));
+                                             kefir_ast_type_unsigned_int(), NULL, 4));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context.context.symbols, struct_type1, "field5",
                                           kefir_ast_type_unsigned_char(), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field6",
-                                             kefir_ast_type_unsigned_short(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_unsigned_short(), NULL, 1));
 
     struct kefir_irbuilder_type type_builder;
     struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER, .member = NULL, .next = NULL};
@@ -295,19 +270,15 @@ DEFINE_CASE(ast_bitfield_translator4, "AST translator - union bitfields #1") {
     const struct kefir_ast_type *type1 =
         kefir_ast_type_union(&kft_mem, context.context.type_bundle, NULL, &union_type1);
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, union_type1, "field1",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 2)));
+                                             kefir_ast_type_signed_int(), NULL, 2));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, union_type1, "field2",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_signed_int(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, union_type1, "field3",
-                                             kefir_ast_type_signed_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 6)));
+                                             kefir_ast_type_signed_int(), NULL, 6));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context.context.symbols, union_type1, "field4",
                                           kefir_ast_type_unsigned_long_long(), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, union_type1, "field5",
-                                             kefir_ast_type_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_char(), NULL, 1));
 
     struct kefir_irbuilder_type type_builder;
     struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER, .member = NULL, .next = NULL};
@@ -363,35 +334,25 @@ DEFINE_CASE(ast_bitfield_translator5, "AST translator - bitfields alignments #1"
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(&kft_mem, context.context.type_bundle, NULL, &struct_type1);
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field1",
-                                             kefir_ast_type_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 7)));
+                                             kefir_ast_type_char(), NULL, 7));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field2",
-                                             kefir_ast_type_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_char(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field3",
-                                             kefir_ast_type_signed_short(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 2)));
+                                             kefir_ast_type_signed_short(), NULL, 2));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field4",
-                                             kefir_ast_type_signed_short(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 8)));
+                                             kefir_ast_type_signed_short(), NULL, 8));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field5",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 6)));
+                                             kefir_ast_type_unsigned_int(), NULL, 6));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field6",
-                                             kefir_ast_type_signed_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_signed_char(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field7",
-                                             kefir_ast_type_unsigned_short(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_unsigned_short(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field8",
-                                             kefir_ast_type_signed_long(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_long(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field9",
-                                             kefir_ast_type_signed_long(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 20)));
+                                             kefir_ast_type_signed_long(), NULL, 20));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context.context.symbols, struct_type1, "field10",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 2)));
+                                             kefir_ast_type_unsigned_int(), NULL, 2));
 
     struct kefir_irbuilder_type type_builder;
     struct kefir_ast_designator designator = {.type = KEFIR_AST_DESIGNATOR_MEMBER, .member = NULL, .next = NULL};

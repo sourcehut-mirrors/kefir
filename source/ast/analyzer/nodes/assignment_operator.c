@@ -29,8 +29,6 @@ static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const st
                                                  const struct kefir_ast_assignment_operator *node,
                                                  struct kefir_ast_node_base *base) {
     UNUSED(base);
-    const struct kefir_ast_type *value_type =
-        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->value->properties.type);
     const struct kefir_ast_type *target_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->target->properties.type);
 
@@ -39,17 +37,6 @@ static kefir_result_t validate_simple_assignment(struct kefir_mem *mem, const st
                      KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->value->source_location,
                                             "Expression shall be assignable to target type"));
     REQUIRE_OK(res);
-
-    if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(target_type) || KEFIR_AST_TYPE_IS_LONG_DOUBLE(value_type)) {
-        struct kefir_ast_constant_expression *cexpr = kefir_ast_constant_expression_integer(mem, 2);
-        REQUIRE(cexpr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant expression"));
-        const struct kefir_ast_type *array_type =
-            kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_long_double(), cexpr, NULL);
-        REQUIRE_ELSE(array_type != NULL, {
-            kefir_ast_constant_expression_free(mem, cexpr);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
-        });
-    }
     return KEFIR_OK;
 }
 

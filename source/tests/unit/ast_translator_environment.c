@@ -53,11 +53,9 @@ DEFINE_CASE(ast_translator_environment1, "AST translator - environment object in
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, &type_bundle, "", &struct1_type);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct1_type, "x", kefir_ast_type_char(), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct1_type, "y", kefir_ast_type_float(), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, &symbols, struct1_type, "z",
-                                    kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_signed_short(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, &symbols, struct1_type, "z",
+        kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_signed_short(), 16, NULL), NULL));
 
     struct kefir_ast_struct_type *struct2_type = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(&kft_mem, &type_bundle, "", &struct2_type);
@@ -202,9 +200,8 @@ DEFINE_CASE(ast_translator_environment2, "AST translator - environment object of
         -100, 100, 8);
 
     ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env,
-                         kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_unsigned_char(),
-                                              kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-                         -100, 100, 16);
+                         kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_unsigned_char(), 16, NULL), -100,
+                         100, 16);
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, &type_bundle, "", &struct_type1);
@@ -212,11 +209,9 @@ DEFINE_CASE(ast_translator_environment2, "AST translator - environment object of
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "y",
                                           kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_boolean()),
                                           NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "z",
-                                    kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_float(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 5), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "z",
+                                          kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_float(), 5, NULL),
+                                          NULL));
 
     ASSERT_OBJECT_OFFSET(&kft_mem, &global_context.context, &env.target_env, type1, -100, 100, 40);
 

@@ -32,15 +32,9 @@ static kefir_result_t unwrap_vla_type(struct kefir_mem *mem, const struct kefir_
     if (KEFIR_AST_TYPE_IS_VL_ARRAY(type)) {
         const struct kefir_ast_type *element_type = NULL;
         REQUIRE_OK(unwrap_vla_type(mem, context, type->array_type.element_type, &element_type));
-        struct kefir_ast_constant_expression *len_expr = kefir_ast_constant_expression_integer(mem, 1);
-        REQUIRE(len_expr != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate integral constant expression"));
         const struct kefir_ast_type *array_type =
-            kefir_ast_type_array(mem, context->type_bundle, element_type, len_expr, NULL);
-        REQUIRE_ELSE(array_type != NULL, {
-            kefir_ast_constant_expression_free(mem, len_expr);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST array type");
-        });
+            kefir_ast_type_array(mem, context->type_bundle, element_type, 1, NULL);
+        REQUIRE(array_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed toa allocate AST array type"));
         *result = array_type;
     } else {
         *result = type;

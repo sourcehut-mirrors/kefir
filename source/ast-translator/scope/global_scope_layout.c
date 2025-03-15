@@ -182,22 +182,13 @@ static kefir_result_t resolve_flexible_array_member(struct kefir_mem *mem, const
 
         kefir_result_t res = KEFIR_OK;
         if (field == last_field) {
-            struct kefir_ast_constant_expression *array_length =
-                kefir_ast_constant_expression_integer(mem, payload.flexible_array_member_size);
-            REQUIRE_ELSE(array_length != NULL, {
-                if (field_alignment != NULL) {
-                    kefir_ast_alignment_free(mem, field_alignment);
-                }
-                return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate constant expression");
-            });
             const struct kefir_ast_type *complete_flexible_array_type =
-                kefir_ast_type_array(mem, context->type_bundle, last_field->type->array_type.element_type, array_length,
-                                     &last_field->type->array_type.qualifications);
+                kefir_ast_type_array(mem, context->type_bundle, last_field->type->array_type.element_type,
+                                     payload.flexible_array_member_size, &last_field->type->array_type.qualifications);
             REQUIRE_ELSE(complete_flexible_array_type != NULL, {
                 if (field_alignment != NULL) {
                     kefir_ast_alignment_free(mem, field_alignment);
                 }
-                kefir_ast_constant_expression_free(mem, array_length);
                 return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
             });
             res = kefir_ast_struct_type_field(mem, context->symbols, updated_struct, field->identifier,
@@ -206,7 +197,6 @@ static kefir_result_t resolve_flexible_array_member(struct kefir_mem *mem, const
                 if (field_alignment != NULL) {
                     kefir_ast_alignment_free(mem, field_alignment);
                 }
-                kefir_ast_constant_expression_free(mem, array_length);
                 return res;
             });
         } else if (field->bitfield) {
@@ -257,12 +247,9 @@ kefir_result_t kefir_ast_translator_scope_layout_complete_object_type(
         object_type = context->type_traits->incomplete_type_substitute;
     } else if (unqualified_object_type->tag == KEFIR_AST_TYPE_ARRAY &&
                unqualified_object_type->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED) {
-        struct kefir_ast_constant_expression *array_length = kefir_ast_constant_expression_integer(mem, 1);
-        REQUIRE(array_length != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate constant expression"));
         object_type = kefir_ast_type_array(mem, context->type_bundle, unqualified_object_type->array_type.element_type,
-                                           array_length, &unqualified_object_type->array_type.qualifications);
-        REQUIRE(array_length != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate bounded array type"));
+                                           1, &unqualified_object_type->array_type.qualifications);
+        REQUIRE(object_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate bounded array type"));
     }
 
     if ((object_type->tag == KEFIR_AST_TYPE_STRUCTURE || object_type->tag == KEFIR_AST_TYPE_UNION) &&

@@ -41,7 +41,7 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
-            REQUIRE_OK(kefir_ast_constant_expression_free(mem, scoped_id->enum_constant.value));
+            // Intentionally left blank
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_LABEL:
@@ -111,14 +111,14 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
 }
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(
-    struct kefir_mem *mem, struct kefir_ast_constant_expression *value, const struct kefir_ast_type *type,
+    struct kefir_mem *mem, const struct kefir_ast_constant_expression_value *value, const struct kefir_ast_type *type,
     const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT;
     scoped_id->cleanup.callback = NULL;
     scoped_id->cleanup.payload = NULL;
     scoped_id->enum_constant.type = type;
-    scoped_id->enum_constant.value = value;
+    scoped_id->enum_constant.value = *value;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {

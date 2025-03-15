@@ -163,11 +163,9 @@ DEFINE_CASE(ast_initializer_analysis3, "AST initializer - analysis #3") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "x",
                                           kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()),
                                           NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "y",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_int(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 5), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, structure1, "y",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_int(), 5, NULL), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "z", kefir_ast_type_boolean(), NULL));
 
     struct kefir_ast_struct_type *union2 = NULL;
@@ -180,16 +178,12 @@ DEFINE_CASE(ast_initializer_analysis3, "AST initializer - analysis #3") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure3, "a", type2, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure3, "b",
                                           kefir_ast_type_pointer(&kft_mem, context->type_bundle, type2), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, structure3, "c",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 2), NULL),
-                                    NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, structure3, "d",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 100), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, structure3, "c",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_char(), 2, NULL), NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, structure3, "d",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_char(), 100, NULL), NULL));
 
     struct kefir_ast_initializer_properties traversal_props;
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -286,25 +280,23 @@ DEFINE_CASE(ast_initializer_analysis4, "AST initializer - analysis #4") {
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_char(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}),
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}),
         NULL);
 
     struct kefir_ast_initializer_properties traversal_props;
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init1, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
         &kft_mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!")));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init2, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 14), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 14, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
@@ -314,9 +306,8 @@ DEFINE_CASE(ast_initializer_analysis4, "AST initializer - analysis #4") {
             &kft_mem, KEFIR_AST_NODE_BASE(KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "Hello, world!")))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init3, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 14), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 14, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -330,9 +321,8 @@ DEFINE_CASE(ast_initializer_analysis4, "AST initializer - analysis #4") {
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init4, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 14), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 14, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -344,9 +334,8 @@ DEFINE_CASE(ast_initializer_analysis4, "AST initializer - analysis #4") {
     ASSERT_OK(kefir_ast_initializer_list_append(&kft_mem, &init5->list, NULL, init5_1));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init5, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 14), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 14, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6 = kefir_ast_new_list_initializer(&kft_mem);
@@ -370,9 +359,8 @@ DEFINE_CASE(ast_initializer_analysis4, "AST initializer - analysis #4") {
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, 'l')))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init6, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 3), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 3, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -394,8 +382,8 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_char(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}),
-        kefir_ast_constant_expression_integer(&kft_mem, 10), NULL);
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}),
+        10, NULL);
 
     const struct kefir_ast_type *type2 = kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, type1, NULL);
 
@@ -404,8 +392,7 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type2, init1, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     struct kefir_ast_initializer *init2 = kefir_ast_new_expression_initializer(
@@ -421,8 +408,7 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type2, init3, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 1), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 1, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -437,8 +423,7 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type2, init4, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 2), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 2, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5 = kefir_ast_new_list_initializer(&kft_mem);
@@ -453,8 +438,7 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type2, init5, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 2), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 2, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -467,8 +451,7 @@ DEFINE_CASE(ast_initializer_analysis5, "AST initializer - analysis #5") {
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type2, init6, &traversal_props));
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 1), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 1, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -493,9 +476,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init1, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     const char LITERAL1[] = "Hello, world!";
@@ -505,8 +487,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
@@ -518,8 +499,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -535,8 +515,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -550,8 +529,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6 = kefir_ast_new_list_initializer(&kft_mem);
@@ -575,9 +553,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode8, "AST initializer - unicode8 strin
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_char(&kft_mem, u'l')))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init6, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 3), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 3, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -602,9 +579,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init1, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     const kefir_char16_t LITERAL1[] = u"Hello, world!";
@@ -614,8 +590,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
@@ -627,8 +602,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -644,8 +618,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -659,8 +632,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6 = kefir_ast_new_list_initializer(&kft_mem);
@@ -684,9 +656,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode16, "AST initializer - unicode16 str
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode16_char(&kft_mem, u'l')))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init6, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 3), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 3, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -711,9 +682,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init1, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     const kefir_char32_t LITERAL1[] = U"Hello, world!";
@@ -723,8 +693,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
@@ -736,8 +705,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -753,8 +721,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -768,8 +735,7 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6 = kefir_ast_new_list_initializer(&kft_mem);
@@ -793,9 +759,8 @@ DEFINE_CASE(ast_initializer_analysis_unicode32, "AST initializer - unicode32 str
             &kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unicode32_char(&kft_mem, U'l')))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init6, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 3), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 3, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -820,9 +785,8 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init1, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 0), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 0, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init1));
 
     const kefir_wchar_t LITERAL1[] = L"Hello, world!";
@@ -832,8 +796,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init2));
 
     struct kefir_ast_initializer *init3 = kefir_ast_new_list_initializer(&kft_mem);
@@ -845,8 +808,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init3));
 
     struct kefir_ast_initializer *init4 = kefir_ast_new_list_initializer(&kft_mem);
@@ -862,8 +824,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init4));
 
     struct kefir_ast_initializer *init5_1 = kefir_ast_new_list_initializer(&kft_mem);
@@ -877,8 +838,7 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
     ASSERT(traversal_props.constant);
     ASSERT(KEFIR_AST_TYPE_SAME(
         traversal_props.type,
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, sizeof(LITERAL1)), NULL)));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type, sizeof(LITERAL1), NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init5));
 
     struct kefir_ast_initializer *init6 = kefir_ast_new_list_initializer(&kft_mem);
@@ -902,9 +862,8 @@ DEFINE_CASE(ast_initializer_analysis_wide, "AST initializer - wide string analys
                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_wide_char(&kft_mem, U'l')))));
     ASSERT_OK(kefir_ast_analyze_initializer(&kft_mem, context, type1, init6, &traversal_props));
     ASSERT(traversal_props.constant);
-    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, type1->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 3), NULL)));
+    ASSERT(KEFIR_AST_TYPE_SAME(traversal_props.type, kefir_ast_type_array(&kft_mem, context->type_bundle,
+                                                                          type1->array_type.element_type, 3, NULL)));
     ASSERT_OK(kefir_ast_initializer_free(&kft_mem, init6));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
@@ -924,31 +883,21 @@ DEFINE_CASE(ast_initializer_analysis_mixed_strings, "AST initializer - mixed str
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, NULL, &struct_type1);
-    REQUIRE_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "narrow",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-                                    NULL));
-    REQUIRE_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "unicode8",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-                                    NULL));
+    REQUIRE_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "narrow",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 16, NULL), NULL));
+    REQUIRE_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "unicode8",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 16, NULL), NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type1, "unicode16",
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->unicode16_char_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-        NULL));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->unicode16_char_type, 16, NULL), NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type1, "unicode32",
-        kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->unicode32_char_type,
-                             kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-        NULL));
-    REQUIRE_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "wide",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->wide_char_type,
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 16), NULL),
-                                    NULL));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->unicode32_char_type, 16, NULL), NULL));
+    REQUIRE_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "wide",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, type_traits->wide_char_type, 16, NULL), NULL));
 
     struct kefir_ast_initializer_properties traversal_props;
     struct kefir_ast_initializer *init1 = kefir_ast_new_list_initializer(&kft_mem);

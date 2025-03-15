@@ -54,10 +54,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(mem, context->type_bundle, "", &struct_type);
     REQUIRE_OK(
         kefir_ast_struct_type_field(mem, context->symbols, struct_type, "fiel1", kefir_ast_type_unsigned_char(), NULL));
-    REQUIRE_OK(kefir_ast_struct_type_field(mem, context->symbols, struct_type, "fiel2",
-                                           kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_double(),
-                                                                kefir_ast_constant_expression_integer(mem, 4), NULL),
-                                           NULL));
+    REQUIRE_OK(kefir_ast_struct_type_field(
+        mem, context->symbols, struct_type, "fiel2",
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_double(), 4, NULL), NULL));
 
     struct kefir_ast_struct_type *struct_type2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(mem, context->type_bundle, "", &struct_type2);
@@ -70,9 +69,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                         NULL, NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_define_static(
         mem, &global_context, "variable3",
-        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_boolean(),
-                             kefir_ast_constant_expression_integer(mem, 3), NULL),
-        NULL, NULL, NULL, NULL, NULL));
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_boolean(), 3, NULL), NULL, NULL, NULL, NULL,
+        NULL));
     REQUIRE_OK(kefir_ast_local_context_declare_external(
         mem, &local_context, "variable4", kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_float()),
         NULL, NULL, NULL, NULL));

@@ -95,7 +95,8 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
     struct kefir_ast_alignment *, struct kefir_ast_initializer *, const struct kefir_ast_declarator_attributes *,
     const struct kefir_source_location *, const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *, struct kefir_ast_global_context *,
-                                                        const char *, struct kefir_ast_constant_expression *,
+                                                        const char *,
+                                                        const struct kefir_ast_constant_expression_value *,
                                                         const struct kefir_ast_type *,
                                                         const struct kefir_source_location *,
                                                         const struct kefir_ast_scoped_identifier **);

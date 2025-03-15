@@ -48,8 +48,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(mem, &type_bundle, "struct1", &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_field(mem, &symbols, struct_type1, "x", kefir_ast_type_char(), NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(mem, &symbols, struct_type1, "y",
-                                           kefir_ast_type_array(mem, &type_bundle, kefir_ast_type_char(),
-                                                                kefir_ast_constant_expression_integer(mem, 1), NULL),
+                                           kefir_ast_type_array(mem, &type_bundle, kefir_ast_type_char(), 1, NULL),
                                            NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, &symbols, struct_type1, "z",
@@ -62,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, &symbols, struct_type2, "z",
         kefir_ast_type_unbounded_array(mem, &type_bundle, kefir_ast_type_signed_short(), NULL),
-        kefir_ast_alignment_const_expression(mem, kefir_ast_constant_expression_integer(mem, 8))));
+        kefir_ast_alignment_const_expression(mem, 8)));
     REQUIRE_OK(dump_type(mem, &global_context.context, &json, type2));
 
     struct kefir_ast_struct_type *struct_type3 = NULL;

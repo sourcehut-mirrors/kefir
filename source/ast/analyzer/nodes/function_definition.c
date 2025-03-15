@@ -338,18 +338,10 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     REQUIRE_OK(local_context->context.pop_block(mem, &local_context->context));
 
     if (local_context->vl_arrays.next_id > 0) {
-        struct kefir_ast_constant_expression *array_length =
-            kefir_ast_constant_expression_integer(mem, local_context->vl_arrays.next_id);
-        REQUIRE(array_length != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array length constant"));
-
         const struct kefir_ast_type *array_type = kefir_ast_type_array(
             mem, context->type_bundle, kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void()),
-            array_length, NULL);
-        REQUIRE_ELSE(array_type != NULL, {
-            kefir_ast_constant_expression_free(mem, array_length);
-            return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type");
-        });
+            local_context->vl_arrays.next_id, NULL);
+        REQUIRE(array_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST array type"));
 
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         REQUIRE_OK(local_context->context.define_identifier(

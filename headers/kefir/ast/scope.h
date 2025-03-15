@@ -89,7 +89,7 @@ typedef struct kefir_ast_scoped_identifier {
 
         struct {
             const struct kefir_ast_type *type;
-            struct kefir_ast_constant_expression *value;
+            struct kefir_ast_constant_expression_value value;
         } enum_constant;
 
         struct {

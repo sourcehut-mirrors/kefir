@@ -41,7 +41,7 @@ DEFINE_CASE(ast_declarator_analysis7, "AST declarator analysis - struct declarat
         &kft_mem, context,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle,
                                  kefir_ast_type_incomplete_structure(&kft_mem, context->type_bundle, "struct1"),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 3,
         kefir_ast_storage_class_specifier_auto(&kft_mem), kefir_ast_type_qualifier_const(&kft_mem),
         kefir_ast_type_specifier_struct(
@@ -102,17 +102,17 @@ DEFINE_CASE(ast_declarator_analysis7, "AST declarator analysis - struct declarat
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type2, "x",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_short(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(
         &kft_mem, context->symbols, struct_type2, "y",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_short(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
-        NULL, kefir_ast_constant_expression_integer(&kft_mem, 5)));
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
+        NULL, 5));
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type2, "z",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_short(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL));
 
     struct kefir_ast_struct_type *struct_type3 = NULL;
@@ -122,13 +122,12 @@ DEFINE_CASE(ast_declarator_analysis7, "AST declarator analysis - struct declarat
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type3, "b",
                                           kefir_ast_type_signed_long_long(), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context->symbols, struct_type3, "c",
-                                             kefir_ast_type_signed_long_long(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 1)));
+                                             kefir_ast_type_signed_long_long(), NULL, 1));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type2, "w", type3, NULL));
 
     ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
                            kefir_ast_type_qualified(&kft_mem, context->type_bundle, type2,
-                                                    (struct kefir_ast_type_qualification){.volatile_type = true}),
+                                                    (struct kefir_ast_type_qualification) {.volatile_type = true}),
                            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0,
                            4, kefir_ast_type_qualifier_volatile(&kft_mem),
                            kefir_ast_storage_class_specifier_extern(&kft_mem),
@@ -209,21 +208,18 @@ DEFINE_CASE(ast_declarator_analysis8, "AST declarator analysis - struct declarat
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_union(&kft_mem, context->type_bundle, "struct1", &struct_type1);
-    ASSERT_OK(kefir_ast_struct_type_field(
-        &kft_mem, context->symbols, struct_type1, "field1", kefir_ast_type_unsigned_long_long(),
-        kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 16))));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "field1",
+                                          kefir_ast_type_unsigned_long_long(),
+                                          kefir_ast_alignment_const_expression(&kft_mem, 16)));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context->symbols, struct_type1, "field2",
-                                             kefir_ast_type_unsigned_int(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             kefir_ast_type_unsigned_int(), NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context->symbols, struct_type1, "field3",
-                                             kefir_ast_type_signed_char(), NULL,
-                                             kefir_ast_constant_expression_integer(&kft_mem, 5)));
+                                             kefir_ast_type_signed_char(), NULL, 5));
 
     struct kefir_ast_struct_type *struct_type2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(&kft_mem, context->type_bundle, NULL, &struct_type2);
-    ASSERT_OK(kefir_ast_struct_type_field(
-        &kft_mem, context->symbols, struct_type2, "field4", kefir_ast_type_float(),
-        kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 8))));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type2, "field4", kefir_ast_type_float(),
+                                          kefir_ast_alignment_const_expression(&kft_mem, 8)));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, NULL, type2, NULL));
 
     ASSERT_IDENTIFIER_TYPE(
@@ -272,19 +268,16 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
     const struct kefir_ast_type *type2 = kefir_ast_type_enumeration(
         &kft_mem, context->type_bundle, "enum2", context->type_traits->underlying_enumeration_type, &enum_type2);
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type2, "A"));
-    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "B",
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 1)));
-    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "C",
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 2)));
+    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "B", 1));
+    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "C", 2));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type2, "D"));
-    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "CONST1",
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 200)));
+    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type2, "CONST1", 200));
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type2, NULL));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type2,
-                                 (struct kefir_ast_type_qualification){.volatile_type = true}),
+                                 (struct kefir_ast_type_qualification) {.volatile_type = true}),
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 4,
         kefir_ast_storage_class_specifier_thread_local(&kft_mem), kefir_ast_type_specifier_enum(&kft_mem, specifier2),
         kefir_ast_type_qualifier_volatile(&kft_mem), kefir_ast_storage_class_specifier_static(&kft_mem));
@@ -302,18 +295,16 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
     struct kefir_ast_enum_type *enum_type3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_enumeration(
         &kft_mem, context->type_bundle, NULL, context->type_traits->underlying_enumeration_type, &enum_type3);
-    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type3, "ONE",
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 1)));
+    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type3, "ONE", 1));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type3, "TWO"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type3, "THREE"));
-    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type3, "TEN",
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 10)));
+    ASSERT_OK(kefir_ast_enumeration_type_constant(&kft_mem, context->symbols, enum_type3, "TEN", 10));
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type3, NULL));
 
     ASSERT_IDENTIFIER_TYPE(
         &kft_mem, context,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type3,
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 4, 3,
         kefir_ast_type_qualifier_const(&kft_mem), kefir_ast_type_specifier_enum(&kft_mem, specifier3),
         kefir_ast_alignment_specifier(&kft_mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4))));

@@ -109,7 +109,8 @@ static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kef
 }
 
 static kefir_result_t context_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                              const char *identifier, struct kefir_ast_constant_expression *value,
+                                              const char *identifier,
+                                              const struct kefir_ast_constant_expression_value *value,
                                               const struct kefir_ast_type *type,
                                               const struct kefir_source_location *location) {
     UNUSED(location);
@@ -1109,7 +1110,7 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
 
 kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                        const char *identifier,
-                                                       struct kefir_ast_constant_expression *value,
+                                                       const struct kefir_ast_constant_expression_value *value,
                                                        const struct kefir_ast_type *type,
                                                        const struct kefir_source_location *location,
                                                        const struct kefir_ast_scoped_identifier **scoped_id_ptr) {

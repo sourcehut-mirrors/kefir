@@ -68,7 +68,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(struct kefir_mem *, co
 
 static struct kefir_ast_alignment *wrap_alignment(struct kefir_mem *mem, kefir_size_t alignment) {
     if (alignment > 0) {
-        return kefir_ast_alignment_const_expression(mem, kefir_ast_constant_expression_integer(mem, alignment));
+        return kefir_ast_alignment_const_expression(mem, alignment);
     } else {
         return NULL;
     }
@@ -156,18 +156,10 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
             struct kefir_ast_alignment *ast_alignment = wrap_alignment(mem, alignment);
             REQUIRE(alignment == 0 || ast_alignment != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST alignment"));
-            struct kefir_ast_constant_expression *ast_bitwidth = kefir_ast_constant_expression_integer(
-                mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(entry_declarator->bitwidth)->integer);
-            REQUIRE_ELSE(ast_bitwidth != NULL, {
-                if (ast_alignment != NULL) {
-                    kefir_ast_alignment_free(mem, ast_alignment);
-                }
-                return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant expression");
-            });
-            res = kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type, identifier, field_type,
-                                                 ast_alignment, ast_bitwidth);
+            res = kefir_ast_struct_type_bitfield(
+                mem, context->symbols, struct_type, identifier, field_type, ast_alignment,
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(entry_declarator->bitwidth)->integer);
             REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_constant_expression_free(mem, ast_bitwidth);
                 if (ast_alignment != NULL) {
                     kefir_ast_alignment_free(mem, ast_alignment);
                 }
@@ -305,9 +297,8 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry->value->source_location,
                                            "Enumeration constant value shall be an integer constant expression"));
                 constant_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(entry->value)->integer;
-                REQUIRE_OK(
-                    kefir_ast_enumeration_type_constant(mem, context->symbols, enum_type, entry->constant,
-                                                        kefir_ast_constant_expression_integer(mem, constant_value)));
+                REQUIRE_OK(kefir_ast_enumeration_type_constant(mem, context->symbols, enum_type, entry->constant,
+                                                               constant_value));
             } else {
                 REQUIRE_OK(kefir_ast_enumeration_type_constant_auto(mem, context->symbols, enum_type, entry->constant));
             }
@@ -315,7 +306,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             min_constant = MIN(min_constant, constant_value);
             max_constant = MAX(max_constant, constant_value);
             REQUIRE_OK(context->define_constant(
-                mem, context, entry->constant, kefir_ast_constant_expression_integer(mem, constant_value++),
+                mem, context, entry->constant, &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value++),
                 context->type_traits->underlying_enumeration_type, &decl_specifier->source_location));
         }
 
@@ -1052,15 +1043,11 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                 if (declarator->array.static_array) {
                     *base_type = kefir_ast_type_array_static(
                         mem, context->type_bundle, *base_type,
-                        kefir_ast_constant_expression_integer(
-                            mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer),
-                        &qualification);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer, &qualification);
                 } else {
                     *base_type = kefir_ast_type_array(
                         mem, context->type_bundle, *base_type,
-                        kefir_ast_constant_expression_integer(
-                            mem, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer),
-                        &qualification);
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->integer, &qualification);
                 }
             }
         } break;

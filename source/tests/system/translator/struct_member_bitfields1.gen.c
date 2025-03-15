@@ -100,14 +100,11 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(mem, context_manager.current->type_bundle, NULL, &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "field1",
-                                              kefir_ast_type_signed_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 4)));
+                                              kefir_ast_type_signed_char(), NULL, 4));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "field2",
-                                              kefir_ast_type_unsigned_long_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 2)));
+                                              kefir_ast_type_unsigned_long_long(), NULL, 2));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "field3",
-                                              kefir_ast_type_signed_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 10)));
+                                              kefir_ast_type_signed_long(), NULL, 10));
 
     struct function sum;
     REQUIRE_OK(define_sum_function(mem, &sum, &context_manager, "sum",
@@ -121,8 +118,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &sum, &context_manager, &global_scope, &translator_context));
 

@@ -46,7 +46,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, context->type_bundle, "", context->type_traits->underlying_enumeration_type, &enum_type);
     const struct kefir_ast_type *type2 =
         kefir_ast_type_qualified(mem, context->type_bundle, kefir_ast_type_signed_short(),
-                                 (struct kefir_ast_type_qualification){.volatile_type = true});
+                                 (struct kefir_ast_type_qualification) {.volatile_type = true});
 
     struct kefir_ast_struct_type *struct_type = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(mem, context->type_bundle, "", &struct_type);
@@ -56,8 +56,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     const struct kefir_ast_type *type4 = kefir_ast_type_union(mem, context->type_bundle, "", &union_type);
     REQUIRE_OK(kefir_ast_struct_type_field(mem, context->symbols, union_type, "y", kefir_ast_type_float(), NULL));
 
-    const struct kefir_ast_type *type5 = kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                                              kefir_ast_constant_expression_integer(mem, 2), NULL);
+    const struct kefir_ast_type *type5 =
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_int(), 2, NULL);
     const struct kefir_ast_type *type6 = kefir_ast_type_unbounded_array(mem, context->type_bundle, type4, NULL);
 
     struct kefir_ast_function_type *function_type = NULL;

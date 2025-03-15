@@ -727,11 +727,9 @@ DEFINE_CASE(ast_ordinary_scope_objects14, "AST Declaration scoping - block exter
     const struct kefir_ast_type *array_type1 =
         kefir_ast_type_unbounded_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), NULL);
     const struct kefir_ast_type *array_type2 =
-        kefir_ast_type_array_static(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(),
-                                    kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array_static(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), 100, NULL);
     const struct kefir_ast_type *array_type3 =
-        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), 100, NULL);
 
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "array1", array_type1, NULL, NULL,
                                                         NULL, NULL));
@@ -746,10 +744,9 @@ DEFINE_CASE(ast_ordinary_scope_objects14, "AST Declaration scoping - block exter
 
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
-        ASSERT_OK(kefir_ast_local_context_declare_external(
-            &kft_mem, &context, "array1", array_type2,
-            kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 16)), NULL,
-            NULL, NULL));
+        ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &context, "array1", array_type2,
+                                                           kefir_ast_alignment_const_expression(&kft_mem, 16), NULL,
+                                                           NULL, NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
         ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
@@ -793,16 +790,13 @@ DEFINE_CASE(ast_ordinary_scope_objects15, "AST Declaration scoping - block exter
     const struct kefir_ast_type *array_type1 =
         kefir_ast_type_unbounded_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), NULL);
     const struct kefir_ast_type *array_type2 =
-        kefir_ast_type_array_static(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(),
-                                    kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array_static(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), 100, NULL);
     const struct kefir_ast_type *array_type3 =
-        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_int(), 100, NULL);
 
-    ASSERT_OK(kefir_ast_global_context_define_external_thread_local(
-        &kft_mem, &global_context, "array1", array_type1,
-        kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 8)), NULL, NULL,
-        NULL, NULL));
+    ASSERT_OK(kefir_ast_global_context_define_external_thread_local(&kft_mem, &global_context, "array1", array_type1,
+                                                                    kefir_ast_alignment_const_expression(&kft_mem, 8),
+                                                                    NULL, NULL, NULL, NULL));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
@@ -815,9 +809,8 @@ DEFINE_CASE(ast_ordinary_scope_objects15, "AST Declaration scoping - block exter
     do {
         ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
         ASSERT_OK(kefir_ast_local_context_declare_external_thread_local(
-            &kft_mem, &context, "array1", array_type2,
-            kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 2)), NULL,
-            NULL, NULL));
+            &kft_mem, &context, "array1", array_type2, kefir_ast_alignment_const_expression(&kft_mem, 2), NULL, NULL,
+            NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "array1", &scoped_id));
         ASSERT(scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);

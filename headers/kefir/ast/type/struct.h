@@ -29,7 +29,7 @@ typedef struct kefir_ast_struct_field {
     const struct kefir_ast_type *type;
     struct kefir_ast_alignment *alignment;
     kefir_bool_t bitfield;
-    struct kefir_ast_constant_expression *bitwidth;
+    kefir_size_t bitwidth;
 } kefir_ast_struct_field_t;
 
 typedef struct kefir_ast_struct_type {
@@ -58,7 +58,7 @@ kefir_result_t kefir_ast_struct_type_field(struct kefir_mem *, struct kefir_stri
 kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *, struct kefir_string_pool *,
                                               struct kefir_ast_struct_type *, const char *,
                                               const struct kefir_ast_type *, struct kefir_ast_alignment *,
-                                              struct kefir_ast_constant_expression *);
+                                              kefir_size_t);
 
 const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *, struct kefir_ast_type_bundle *, const char *,
                                                       struct kefir_ast_struct_type **);

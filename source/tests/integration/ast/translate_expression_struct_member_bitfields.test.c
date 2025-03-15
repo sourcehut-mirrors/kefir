@@ -44,25 +44,19 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(mem, context->type_bundle, "", &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value1",
-                                              kefir_ast_type_signed_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 9)));
+                                              kefir_ast_type_signed_int(), NULL, 9));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value2",
-                                              kefir_ast_type_signed_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 4)));
+                                              kefir_ast_type_signed_int(), NULL, 4));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value3",
-                                              kefir_ast_type_unsigned_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 6)));
+                                              kefir_ast_type_unsigned_int(), NULL, 6));
     REQUIRE_OK(
         kefir_ast_struct_type_field(mem, context->symbols, struct_type1, "payload", kefir_ast_type_char(), NULL));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value4",
-                                              kefir_ast_type_unsigned_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 3)));
+                                              kefir_ast_type_unsigned_char(), NULL, 3));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value5",
-                                              kefir_ast_type_unsigned_long_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 1)));
+                                              kefir_ast_type_unsigned_long_long(), NULL, 1));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context->symbols, struct_type1, "value6",
-                                              kefir_ast_type_unsigned_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 33)));
+                                              kefir_ast_type_unsigned_long(), NULL, 33));
 
     REQUIRE_OK(
         kefir_ast_global_context_declare_external(mem, &global_context, "structure1", type1, NULL, NULL, NULL, NULL));

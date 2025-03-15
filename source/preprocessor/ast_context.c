@@ -53,7 +53,8 @@ static kefir_result_t pp_define_tag(struct kefir_mem *mem, const struct kefir_as
 }
 
 static kefir_result_t pp_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                         const char *identifier, struct kefir_ast_constant_expression *cexpr,
+                                         const char *identifier,
+                                         const struct kefir_ast_constant_expression_value *cexpr,
                                          const struct kefir_ast_type *type,
                                          const struct kefir_source_location *source_location) {
     UNUSED(mem);
@@ -217,6 +218,6 @@ kefir_result_t kefir_preprocessor_ast_context_free(struct kefir_mem *mem,
     context->context.extensions_payload = NULL;
 
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
-    *context = (struct kefir_preprocessor_ast_context){0};
+    *context = (struct kefir_preprocessor_ast_context) {0};
     return KEFIR_OK;
 }

@@ -133,7 +133,7 @@ static kefir_result_t assign_string(struct kefir_mem *mem, const struct kefir_as
     kefir_result_t res = KEFIR_OK;
     if (stop_fn(type, stop_payload) && (type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
                                         type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC)) {
-        kefir_size_t length = MIN((kefir_size_t) type->array_type.const_length->value.integer,
+        kefir_size_t length = MIN((kefir_size_t) type->array_type.const_length,
                                   entry->value->expression->properties.expression_props.string_literal.length);
         INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_string_literal, designator_layer, node,
                                node->properties.expression_props.string_literal.type,
@@ -165,14 +165,12 @@ struct traverse_aggregate_union_param {
 };
 
 static kefir_result_t traverse_aggregate_union(struct kefir_mem *, const struct kefir_ast_context *,
-                                               const struct kefir_ast_initializer *,
-                                               struct kefir_ast_type_traversal *,
+                                               const struct kefir_ast_initializer *, struct kefir_ast_type_traversal *,
                                                const struct kefir_ast_initializer_traversal *);
 
 static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator *entry_designator, void *payoad) {
     REQUIRE(payoad != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid designator unroll payload"));
-    ASSIGN_DECL_CAST(struct traverse_aggregate_union_param *, param,
-        payoad);
+    ASSIGN_DECL_CAST(struct traverse_aggregate_union_param *, param, payoad);
 
     struct kefir_mem *mem = param->mem;
     const struct kefir_ast_context *context = param->context;
@@ -202,8 +200,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
                 if (field->identifier == NULL &&
                     (field_type->tag == KEFIR_AST_TYPE_STRUCTURE || field_type->tag == KEFIR_AST_TYPE_UNION)) {
                     REQUIRE_OK(kefir_ast_type_traversal_step(mem, traversal));
-                    REQUIRE_OK(
-                        traverse_aggregate_union(mem, context, entry->value, traversal, initializer_traversal));
+                    REQUIRE_OK(traverse_aggregate_union(mem, context, entry->value, traversal, initializer_traversal));
                     anonymous_nested_aggregate_field = true;
                 }
             }
@@ -212,8 +209,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         if (!anonymous_nested_aggregate_field) {
             REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
 
-            INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_initializer_list, designator_layer,
-                                entry->value);
+            INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_initializer_list, designator_layer, entry->value);
         }
     } else if (entry->value->expression->properties.expression_props.string_literal.content != NULL) {
         REQUIRE_OK(assign_string(mem, context, entry, traversal, initializer_traversal));
@@ -222,8 +218,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         REQUIRE_OK(kefir_ast_type_traversal_next_recursive(mem, traversal, &type, &layer));
         REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
 
-        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
-                            entry->value->expression);
+        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer, entry->value->expression);
     } else {
         const struct kefir_ast_type *type = NULL;
         REQUIRE_OK(kefir_ast_type_traversal_next(mem, traversal, &type, &layer));
@@ -241,8 +236,7 @@ static kefir_result_t traverse_aggregate_union_impl(struct kefir_ast_designator 
         REQUIRE_OK(res);
         REQUIRE_OK(layer_designator(mem, context->symbols, entry_designator, layer, &designator_layer));
 
-        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer,
-                            entry->value->expression);
+        INVOKE_TRAVERSAL_CHAIN(&res, initializer_traversal, visit_value, designator_layer, entry->value->expression);
     }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -266,14 +260,14 @@ static kefir_result_t traverse_aggregate_union(struct kefir_mem *mem, const stru
     for (; init_iter != NULL; kefir_list_next(&init_iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_initializer_list_entry *, entry, init_iter->value);
 
-        kefir_result_t res = kefir_ast_designator_unroll(entry->designator, traverse_aggregate_union_impl, &(struct traverse_aggregate_union_param) {
-            .mem = mem,
-            .context = context,
-            .initializer = initializer,
-            .traversal = traversal,
-            .initializer_traversal = initializer_traversal,
-            .entry = entry
-        });
+        kefir_result_t res = kefir_ast_designator_unroll(
+            entry->designator, traverse_aggregate_union_impl,
+            &(struct traverse_aggregate_union_param) {.mem = mem,
+                                                      .context = context,
+                                                      .initializer = initializer,
+                                                      .traversal = traversal,
+                                                      .initializer_traversal = initializer_traversal,
+                                                      .entry = entry});
         if (res != KEFIR_YIELD) {
             REQUIRE_OK(res);
         }

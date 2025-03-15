@@ -50,11 +50,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_define_auto(mem, &local_context, "local_var1", kefir_ast_type_boolean(), NULL,
                                                    NULL, NULL, NULL, NULL));
 
-    struct kefir_ast_constant_expression *const_expr_X =
-        kefir_ast_new_constant_expression(mem, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 10)));
-    REQUIRE_OK(kefir_ast_analyze_constant_expression(mem, context, const_expr_X));
-    REQUIRE_OK(kefir_ast_constant_expression_evaluate(mem, context, const_expr_X));
-    REQUIRE_OK(kefir_ast_local_context_define_constant(mem, &local_context, "X", const_expr_X,
+    REQUIRE_OK(kefir_ast_local_context_define_constant(mem, &local_context, "X",
+                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
                                                        context->type_traits->underlying_enumeration_type, NULL, NULL));
 
     struct kefir_ast_node_base *node1 =

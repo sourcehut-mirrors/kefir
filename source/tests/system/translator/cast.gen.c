@@ -102,9 +102,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
         kefir_ast_type_structure(mem, context_manager.current->type_bundle, "", &struct_type);
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, context_manager.current->symbols, struct_type, "array",
-        kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_signed_char(),
-                             kefir_ast_constant_expression_integer(mem, 32), NULL),
-        NULL));
+        kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_signed_char(), 32, NULL), NULL));
 
 #define MAKE_TYPENAME(_id, _spec_count, ...)                                                                          \
     struct kefir_ast_type_name *_id = kefir_ast_new_type_name(mem, kefir_ast_declarator_identifier(mem, NULL, NULL)); \
@@ -218,8 +216,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &char_int_cast, &context_manager, &global_scope, &translator_context));
     REQUIRE_OK(translate_function(mem, &int_char_cast, &context_manager, &global_scope, &translator_context));

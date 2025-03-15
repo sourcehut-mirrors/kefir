@@ -177,8 +177,7 @@ DEFINE_CASE(ast_node_analysis_conditinal_statements3, "AST node analysis - condi
     ASSERT(stmt2->base.properties.statement_props.flow_control_statement->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_IF);
     ASSERT(stmt2->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(KEFIR_AST_TYPE_SAME(stmt2->condition->properties.type,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 10), NULL)));
+                               kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 10, NULL)));
     ASSERT(stmt2->thenBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt2->elseBranch->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt2->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd != NULL);

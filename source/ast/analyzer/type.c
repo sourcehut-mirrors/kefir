@@ -36,17 +36,11 @@ static kefir_result_t analyze_enum(struct kefir_mem *mem, const struct kefir_ast
              kefir_list_next(&iter)) {
 
             ASSIGN_DECL_CAST(struct kefir_ast_enum_enumerator *, enumerator, iter->value);
-            if (enumerator->value != NULL) {
-                REQUIRE_OK(kefir_ast_analyze_constant_expression(mem, context, enumerator->value));
-                REQUIRE_OK(kefir_ast_constant_expression_evaluate(mem, context, enumerator->value));
-                REQUIRE(enumerator->value->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                               "Enumerator constant expression shall have integral type"));
-                next_value = enumerator->value->value.integer + 1;
+            if (enumerator->has_value) {
+                next_value = enumerator->value + 1;
             } else {
-                enumerator->value = kefir_ast_constant_expression_integer(mem, next_value);
-                REQUIRE(enumerator->value != NULL,
-                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate constant expression"));
+                enumerator->has_value = true;
+                enumerator->value = next_value;
                 next_value++;
             }
         }
@@ -73,15 +67,9 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
             "Array type qualifications shall appear only for the outermost function parameter type"));
     switch (array_type->boundary) {
         case KEFIR_AST_ARRAY_UNBOUNDED:
-            break;
-
         case KEFIR_AST_ARRAY_BOUNDED:
         case KEFIR_AST_ARRAY_BOUNDED_STATIC:
-            REQUIRE_OK(kefir_ast_analyze_constant_expression(mem, context, array_type->const_length));
-            REQUIRE_OK(kefir_ast_constant_expression_evaluate(mem, context, array_type->const_length));
-            REQUIRE(array_type->const_length->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                           "Array type subscript shall have integral type"));
+            // Intentionally left blank
             break;
 
         case KEFIR_AST_ARRAY_VLA:
@@ -114,17 +102,7 @@ static kefir_result_t analyze_structure(struct kefir_mem *mem, const struct kefi
             REQUIRE_OK(kefir_ast_analyze_alignment(mem, context, field->alignment));
             REQUIRE_OK(kefir_ast_alignment_evaluate(mem, context, field->alignment));
             if (field->bitfield) {
-                REQUIRE_OK(kefir_ast_analyze_constant_expression(mem, context, field->bitwidth));
-                if (field->bitwidth->expression != NULL) {
-                    REQUIRE(
-                        KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(field->bitwidth->expression->properties.type),
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Bit-field shall have integral type"));
-                }
-                REQUIRE_OK(kefir_ast_constant_expression_evaluate(mem, context, field->bitwidth));
-                REQUIRE(field->bitwidth->value.integer >= 0,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                               "Structure/union bitfield width shall be non-negative"));
-                REQUIRE(field->bitwidth->value.integer > 0 || field->identifier == NULL,
+                REQUIRE(field->bitwidth > 0 || field->identifier == NULL,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Named bit-field with zero width is not permitted"));
                 REQUIRE(field->alignment->klass == KEFIR_AST_ALIGNMENT_DEFAULT,

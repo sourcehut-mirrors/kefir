@@ -34,15 +34,15 @@ static kefir_result_t preanalyze_initializer(struct kefir_mem *mem, const struct
                                              struct kefir_ast_initializer_properties *properties) {
     if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, initializer->expression));
-        if (properties != NULL &&
-            !initializer->expression->properties.expression_props.constant_expression) {
+        if (properties != NULL && !initializer->expression->properties.expression_props.constant_expression) {
             struct kefir_ast_compound_literal *compound_literal;
             kefir_result_t res = kefir_ast_downcast_compound_literal(initializer->expression, &compound_literal, false);
             if (res != KEFIR_NO_MATCH) {
                 REQUIRE_OK(res);
                 struct kefir_ast_initializer_properties initializer_properties;
-                REQUIRE_OK(kefir_ast_analyze_initializer(mem, context, compound_literal->type_name->base.properties.type, compound_literal->initializer,
-                                                        &initializer_properties));
+                REQUIRE_OK(kefir_ast_analyze_initializer(mem, context,
+                                                         compound_literal->type_name->base.properties.type,
+                                                         compound_literal->initializer, &initializer_properties));
                 properties->constant = properties->constant && initializer_properties.constant;
             } else {
                 properties->constant = false;
@@ -219,7 +219,7 @@ static kefir_result_t traverse_aggregate_union(struct kefir_mem *mem, const stru
 
         kefir_result_t res = kefir_ast_designator_unroll(
             entry->designator, traverse_aggregate_union_impl,
-            &(struct traverse_aggregate_union_param){
+            &(struct traverse_aggregate_union_param) {
                 .mem = mem, .context = context, .initializer = initializer, .traversal = traversal, .entry = entry});
         if (res != KEFIR_YIELD) {
             REQUIRE_OK(res);
@@ -314,8 +314,7 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
     if (properties != NULL) {
         if (type->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED) {
             properties->type = kefir_ast_type_array(mem, context->type_bundle, type->array_type.element_type,
-                                                    kefir_ast_constant_expression_integer(mem, array_length),
-                                                    &type->array_type.qualifications);
+                                                    array_length, &type->array_type.qualifications);
         } else {
             properties->type = type;
         }

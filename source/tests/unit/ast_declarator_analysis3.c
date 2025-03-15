@@ -65,8 +65,8 @@ DEFINE_CASE(ast_declarator_analysis10, "AST declarator analysis - pointer declar
             &kft_mem, context->type_bundle,
             kefir_ast_type_pointer(&kft_mem, context->type_bundle,
                                    kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                            (struct kefir_ast_type_qualification){.constant = true})),
-            (struct kefir_ast_type_qualification){.volatile_type = true})));
+                                                            (struct kefir_ast_type_qualification) {.constant = true})),
+            (struct kefir_ast_type_qualification) {.volatile_type = true})));
     ASSERT(storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER);
     ASSERT(function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
     ASSERT(alignment == 0);
@@ -146,8 +146,8 @@ DEFINE_CASE(ast_declarator_analysis11, "AST declarator analysis - pointer declar
                   kefir_ast_type_pointer(
                       &kft_mem, context->type_bundle,
                       kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
-                                               (struct kefir_ast_type_qualification){.volatile_type = true})),
-                  (struct kefir_ast_type_qualification){.restricted = true, .constant = true})));
+                                               (struct kefir_ast_type_qualification) {.volatile_type = true})),
+                  (struct kefir_ast_type_qualification) {.restricted = true, .constant = true})));
     ASSERT(storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL);
     ASSERT(function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
     ASSERT(alignment == 16);
@@ -194,8 +194,8 @@ DEFINE_CASE(ast_declarator_analysis12, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type1 = kefir_ast_type_unbounded_array(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
-        &(struct kefir_ast_type_qualification){.volatile_type = true});
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
+        &(struct kefir_ast_type_qualification) {.volatile_type = true});
 
     ASSERT(strcmp(identifier, "array1") == 0);
     ASSERT(type != NULL);
@@ -255,8 +255,8 @@ DEFINE_CASE(ast_declarator_analysis13, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type1 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle,
                                   kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                                           (struct kefir_ast_type_qualification){.constant = true}),
-                                  NULL, &(struct kefir_ast_type_qualification){.restricted = true});
+                                                           (struct kefir_ast_type_qualification) {.constant = true}),
+                                  NULL, &(struct kefir_ast_type_qualification) {.restricted = true});
 
     ASSERT(strcmp(identifier, "array_one") == 0);
     ASSERT(type != NULL);
@@ -271,8 +271,8 @@ DEFINE_CASE(ast_declarator_analysis13, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type2 = kefir_ast_type_vlen_array_static(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
-        NULL, &(struct kefir_ast_type_qualification){.restricted = true, .constant = true});
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
+        NULL, &(struct kefir_ast_type_qualification) {.restricted = true, .constant = true});
 
     ASSERT(identifier == NULL);
     ASSERT(type != NULL);
@@ -334,9 +334,8 @@ DEFINE_CASE(ast_declarator_analysis14, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type1 =
         kefir_ast_type_array(&kft_mem, context->type_bundle,
                              kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                                      (struct kefir_ast_type_qualification){.constant = true}),
-                             kefir_ast_constant_expression_integer(&kft_mem, 10),
-                             &(struct kefir_ast_type_qualification){.restricted = true});
+                                                      (struct kefir_ast_type_qualification) {.constant = true}),
+                             10, &(struct kefir_ast_type_qualification) {.restricted = true});
 
     ASSERT(identifier == NULL);
     ASSERT(type != NULL);
@@ -402,9 +401,9 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type1 =
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle,
                                   kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                                           (struct kefir_ast_type_qualification){.constant = true}),
+                                                           (struct kefir_ast_type_qualification) {.constant = true}),
                                   KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
-                                  &(struct kefir_ast_type_qualification){.restricted = true});
+                                  &(struct kefir_ast_type_qualification) {.restricted = true});
 
     ASSERT(identifier == NULL);
     ASSERT(type != NULL);
@@ -419,9 +418,9 @@ DEFINE_CASE(ast_declarator_analysis15, "AST declarator analysis - array declarat
     const struct kefir_ast_type *type2 = kefir_ast_type_vlen_array_static(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(&kft_mem, context->symbols, "variable")),
-        &(struct kefir_ast_type_qualification){.volatile_type = true, .constant = true});
+        &(struct kefir_ast_type_qualification) {.volatile_type = true, .constant = true});
 
     ASSERT(strcmp(identifier, "another_array") == 0);
     ASSERT(type != NULL);

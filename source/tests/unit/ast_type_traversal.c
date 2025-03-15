@@ -93,8 +93,7 @@ DEFINE_CASE(ast_type_traversal1, "AST Type analysis - type traversal #1") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union3, "k", type1, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union3, "l", kefir_ast_type_signed_int(), NULL));
 
-    const struct kefir_ast_type *type4 = kefir_ast_type_array(&kft_mem, context->type_bundle, type3,
-                                                              kefir_ast_constant_expression_integer(&kft_mem, 4), NULL);
+    const struct kefir_ast_type *type4 = kefir_ast_type_array(&kft_mem, context->type_bundle, type3, 4, NULL);
 
     const struct kefir_ast_type *type5 = kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, type1, NULL);
 
@@ -176,8 +175,7 @@ DEFINE_CASE(ast_type_traversal2, "AST Type analysis - type traversal #2") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union3, "k", type1, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union3, "l", kefir_ast_type_signed_int(), NULL));
 
-    const struct kefir_ast_type *type4 = kefir_ast_type_array(&kft_mem, context->type_bundle, type3,
-                                                              kefir_ast_constant_expression_integer(&kft_mem, 4), NULL);
+    const struct kefir_ast_type *type4 = kefir_ast_type_array(&kft_mem, context->type_bundle, type3, 4, NULL);
 
     const struct kefir_ast_type *type5 = kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, type1, NULL);
 
@@ -281,8 +279,7 @@ DEFINE_CASE(ast_type_traversal3, "AST Type analysis - type traversal #3") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "b", kefir_ast_type_char(), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "c", kefir_ast_type_double(), NULL));
 
-    const struct kefir_ast_type *type2 = kefir_ast_type_array(&kft_mem, context->type_bundle, type1,
-                                                              kefir_ast_constant_expression_integer(&kft_mem, 5), NULL);
+    const struct kefir_ast_type *type2 = kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 5, NULL);
 
     struct kefir_ast_struct_type *structure3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &structure3);
@@ -295,8 +292,7 @@ DEFINE_CASE(ast_type_traversal3, "AST Type analysis - type traversal #3") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union4, "f", type3, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union4, "g", type1, NULL));
 
-    const struct kefir_ast_type *type5 = kefir_ast_type_array(&kft_mem, context->type_bundle, type4,
-                                                              kefir_ast_constant_expression_integer(&kft_mem, 3), NULL);
+    const struct kefir_ast_type *type5 = kefir_ast_type_array(&kft_mem, context->type_bundle, type4, 3, NULL);
 
     struct kefir_ast_struct_type *structure6 = NULL;
     const struct kefir_ast_type *type6 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &structure6);
@@ -358,8 +354,7 @@ DEFINE_CASE(ast_type_traversal4, "AST Type analysis - type traversal #4") {
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "c",
                                           kefir_ast_type_signed_long_long(), NULL));
 
-    const struct kefir_ast_type *type2 = kefir_ast_type_array(
-        &kft_mem, context->type_bundle, type1, kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+    const struct kefir_ast_type *type2 = kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 100, NULL);
 
     struct kefir_ast_struct_type *structure3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &structure3);
@@ -481,8 +476,7 @@ DEFINE_CASE(ast_type_traversal5, "AST Type analysis - type traversal designators
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, structure1, "c",
                                           kefir_ast_type_signed_long_long(), NULL));
 
-    const struct kefir_ast_type *type2 = kefir_ast_type_array(
-        &kft_mem, context->type_bundle, type1, kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+    const struct kefir_ast_type *type2 = kefir_ast_type_array(&kft_mem, context->type_bundle, type1, 100, NULL);
 
     struct kefir_ast_struct_type *structure3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &structure3);

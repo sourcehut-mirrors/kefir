@@ -109,9 +109,7 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
                                            kefir_ast_type_signed_int(), NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, context_manager.current->symbols, struct_type, "y",
-        kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(mem, 16), NULL),
-        NULL));
+        kefir_ast_type_array(mem, context_manager.current->type_bundle, kefir_ast_type_char(), 16, NULL), NULL));
     REQUIRE_OK(kefir_ast_struct_type_field(
         mem, context_manager.current->symbols, struct_type, "z",
         kefir_ast_type_pointer(mem, context_manager.current->type_bundle, kefir_ast_type_void()), NULL));
@@ -186,8 +184,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
     REQUIRE_OK(translate_function(mem, &simple_assign_long, &context_manager, &global_scope, &translator_context));
     REQUIRE_OK(translate_function(mem, &simple_assign_struct, &context_manager, &global_scope, &translator_context));
     REQUIRE_OK(translate_function(mem, &multiply_assign_int, &context_manager, &global_scope, &translator_context));

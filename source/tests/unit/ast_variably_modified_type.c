@@ -49,10 +49,9 @@ DEFINE_CASE(ast_type_variably_modified1, "AST types - variably modified types #1
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_va_list()));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_void())));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_qualified(
-        &kft_mem, &type_bundle, kefir_ast_type_char(), (struct kefir_ast_type_qualification){.constant = true})));
+        &kft_mem, &type_bundle, kefir_ast_type_char(), (struct kefir_ast_type_qualification) {.constant = true})));
     ASSERT(!kefir_ast_type_is_variably_modified(
-        kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_signed_int(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 10), NULL)));
+        kefir_ast_type_array(&kft_mem, &type_bundle, kefir_ast_type_signed_int(), 10, NULL)));
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, &type_bundle, NULL, &struct_type1);
@@ -96,8 +95,7 @@ DEFINE_CASE(ast_type_variably_modified2, "AST types - variably modified types #2
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(&kft_mem, &type_bundle, type1);
     ASSERT(kefir_ast_type_is_variably_modified(type3));
 
-    const struct kefir_ast_type *type4 =
-        kefir_ast_type_array(&kft_mem, &type_bundle, type2, kefir_ast_constant_expression_integer(&kft_mem, 15), NULL);
+    const struct kefir_ast_type *type4 = kefir_ast_type_array(&kft_mem, &type_bundle, type2, 15, NULL);
     ASSERT(kefir_ast_type_is_variably_modified(type4));
 
     const struct kefir_ast_type *type5 = kefir_ast_type_pointer(&kft_mem, &type_bundle, type3);

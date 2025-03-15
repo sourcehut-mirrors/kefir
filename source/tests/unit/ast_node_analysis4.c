@@ -68,11 +68,11 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator1, "AST node analysis - 
         &kft_mem, &global_context, "y",
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}),
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}),
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "z", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 300),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(300),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "w", kefir_ast_type_unsigned_char(),
                                                         NULL, NULL, NULL, NULL));
@@ -232,11 +232,9 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator3, "AST node analysis - 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct_type1);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "a", kefir_ast_type_char(), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "b",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_short(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 10), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "b",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_short(), 10, NULL), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "c",
                                           kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()),
                                           NULL));
@@ -245,11 +243,9 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator3, "AST node analysis - 
     const struct kefir_ast_type *type2 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct_type2);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type2, "x", kefir_ast_type_unsigned_long(),
                                           NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type2, "y",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 12), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type2, "y",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 12, NULL), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct_type2, "z",
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_float()), NULL));
@@ -258,22 +254,16 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator3, "AST node analysis - 
     const struct kefir_ast_type *type3 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct_type3);
     ASSERT_OK(
         kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type3, "j", kefir_ast_type_double(), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type3, "k",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, type2,
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 3), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type3, "k",
+                                          kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 3, NULL), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type3, "l",
                                           kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1), NULL));
 
     struct kefir_ast_struct_type *union_type4 = NULL;
     const struct kefir_ast_type *type4 = kefir_ast_type_union(&kft_mem, context->type_bundle, "", &union_type4);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union_type4, "j", kefir_ast_type_double(), NULL));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, union_type4, "k",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, type2,
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 3), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union_type4, "k",
+                                          kefir_ast_type_array(&kft_mem, context->type_bundle, type2, 3, NULL), NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, union_type4, "l",
                                           kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1), NULL));
 
@@ -364,31 +354,31 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator4, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = false, .restricted = false, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = false, .restricted = false, .volatile_type = true}));
 
     const struct kefir_ast_type *type4 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = true}));
 
     const struct kefir_ast_type *type5 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = false}));
 
     const struct kefir_ast_type *type6 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "a", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "b", type2, NULL, NULL, NULL, NULL));
@@ -563,13 +553,13 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator5, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     const struct kefir_ast_type *type4 = kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void());
 
@@ -577,13 +567,13 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator5, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_void(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     const struct kefir_ast_type *type6 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_void(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "a", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "b", type2, NULL, NULL, NULL, NULL));
@@ -686,13 +676,13 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator6, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     const struct kefir_ast_type *type3 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     const struct kefir_ast_type *type4 = kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void());
 
@@ -700,13 +690,13 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator6, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_void(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}));
 
     const struct kefir_ast_type *type6 = kefir_ast_type_pointer(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_void(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "a", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "b", type2, NULL, NULL, NULL, NULL));
@@ -761,7 +751,7 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator7, "AST node analysis - 
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_void(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = true}));
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = true}));
 
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "a", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "b", type2, NULL, NULL, NULL, NULL));
@@ -771,7 +761,7 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator7, "AST node analysis - 
         &kft_mem, &local_context, "y",
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_boolean(),
-            (struct kefir_ast_type_qualification){.constant = false, .restricted = true, .volatile_type = true}),
+            (struct kefir_ast_type_qualification) {.constant = false, .restricted = true, .volatile_type = true}),
         NULL, NULL, NULL, NULL));
 
     ASSERT_SIMPLE_ASSIGNMENT(

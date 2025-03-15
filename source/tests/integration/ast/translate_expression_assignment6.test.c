@@ -56,8 +56,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_global_context_declare_external(
         mem, &global_context, "ptr2",
         kefir_ast_type_pointer(mem, context->type_bundle,
-                               kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_float(),
-                                                    kefir_ast_constant_expression_integer(mem, 16), NULL)),
+                               kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_float(), 16, NULL)),
         NULL, NULL, NULL, NULL));
 
     struct kefir_ir_module module;

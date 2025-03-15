@@ -196,9 +196,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                                       kefir_ast_type_float(), NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_define_external_thread_local(
         mem, &global_context, "global_var4",
-        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(mem, 16), NULL),
-        NULL, NULL, NULL, NULL, NULL));
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_char(), 16, NULL), NULL, NULL, NULL, NULL,
+        NULL));
 
     REQUIRE_OK(kefir_ast_global_context_define_static(
         mem, &global_context, "static_var1",
@@ -208,17 +207,15 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(mem, context->type_bundle, "", &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_field(mem, context->symbols, struct_type1, "x", kefir_ast_type_double(), NULL));
-    REQUIRE_OK(kefir_ast_struct_type_field(mem, context->symbols, struct_type1, "y",
-                                           kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_char(),
-                                                                kefir_ast_constant_expression_integer(mem, 32), NULL),
-                                           NULL));
+    REQUIRE_OK(kefir_ast_struct_type_field(
+        mem, context->symbols, struct_type1, "y",
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_char(), 32, NULL), NULL));
     REQUIRE_OK(kefir_ast_global_context_define_static(mem, &global_context, "static_var2", type1, NULL, NULL, NULL,
                                                       NULL, NULL));
 
     REQUIRE_OK(kefir_ast_global_context_define_static_thread_local(
-        mem, &global_context, "static_var3",
-        kefir_ast_type_array(mem, context->type_bundle, type1, kefir_ast_constant_expression_integer(mem, 1), NULL),
-        NULL, NULL, NULL, NULL, NULL));
+        mem, &global_context, "static_var3", kefir_ast_type_array(mem, context->type_bundle, type1, 1, NULL), NULL,
+        NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_global_context_define_static_thread_local(
         mem, &global_context, "static_var4", kefir_ast_type_signed_short(), NULL, NULL, NULL, NULL, NULL));
 
@@ -227,24 +224,21 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_declare_external_thread_local(
         mem, &local_context, "global_var101",
         kefir_ast_type_array(mem, context->type_bundle,
-                             kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void()),
-                             kefir_ast_constant_expression_integer(mem, 100), NULL),
-        kefir_ast_alignment_const_expression(mem, kefir_ast_constant_expression_integer(mem, 32)), NULL, NULL, NULL));
+                             kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void()), 100, NULL),
+        kefir_ast_alignment_const_expression(mem, 32), NULL, NULL, NULL));
 
     REQUIRE_OK(kefir_ast_local_context_define_static(
         mem, &local_context, "local_static_var1",
-        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(mem, 128), NULL),
-        NULL, NULL, NULL, NULL, NULL));
+        kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_char(), 128, NULL), NULL, NULL, NULL, NULL,
+        NULL));
     REQUIRE_OK(kefir_ast_local_context_define_static(mem, &local_context, "local_static_var2",
                                                      kefir_ast_type_signed_long_long(), NULL, NULL, NULL, NULL, NULL));
 
     REQUIRE_OK(kefir_ast_local_context_define_static_thread_local(
         mem, &local_context, "local_static_var3",
         kefir_ast_type_qualified(mem, context->type_bundle, kefir_ast_type_boolean(),
-                                 (struct kefir_ast_type_qualification){.restricted = true}),
-        kefir_ast_alignment_const_expression(mem, kefir_ast_constant_expression_integer(mem, 8)), NULL, NULL, NULL,
-        NULL));
+                                 (struct kefir_ast_type_qualification) {.restricted = true}),
+        kefir_ast_alignment_const_expression(mem, 8), NULL, NULL, NULL, NULL));
     REQUIRE_OK(kefir_ast_local_context_define_static_thread_local(
         mem, &local_context, "local_static_var4", kefir_ast_type_float(), NULL, NULL, NULL, NULL, NULL));
 
@@ -253,9 +247,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_local_context_define_auto(
         mem, &local_context, "local_var2",
         kefir_ast_type_array(mem, context->type_bundle,
-                             kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                                  kefir_ast_constant_expression_integer(mem, 16), NULL),
-                             kefir_ast_constant_expression_integer(mem, 64), NULL),
+                             kefir_ast_type_array(mem, context->type_bundle, kefir_ast_type_signed_int(), 16, NULL), 64,
+                             NULL),
         NULL, NULL, NULL, NULL, NULL));
 
     struct kefir_ast_translator_global_scope_layout translator_global_scope;

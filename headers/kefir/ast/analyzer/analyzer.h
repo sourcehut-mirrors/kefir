@@ -33,9 +33,6 @@ typedef struct kefir_ast_analysis_parameters {
     const struct kefir_ast_context *context;
 } kefir_ast_analysis_parameters_t;
 
-kefir_result_t kefir_ast_analyze_constant_expression(struct kefir_mem *, const struct kefir_ast_context *,
-                                                     struct kefir_ast_constant_expression *);
-
 kefir_result_t kefir_ast_analyze_alignment(struct kefir_mem *, const struct kefir_ast_context *,
                                            struct kefir_ast_alignment *);
 

@@ -38,7 +38,7 @@ DEFINE_CASE(ast_node_analysis_static_assertions1, "AST node analysis - static as
     struct kefir_ast_context *context = &local_context.context;
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 1),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1),
                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
 
 #define ASSERT_STATIC_OK(_mem, _context, _cond, _err)                                                         \
@@ -208,7 +208,7 @@ DEFINE_CASE(ast_node_analysis_case_statements1, "AST node analysis - case statem
     struct kefir_ast_context *context = &local_context.context;
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 1004),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1004),
                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "whatever",
                                                        kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL));
@@ -635,9 +635,10 @@ DEFINE_CASE(ast_node_analysis_compound_statements3, "AST node analysis - compoun
     ASSERT(item2_decl->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
     ASSERT(item2_decl->properties.declaration_props.alignment == 0);
     ASSERT(item2_decl->properties.declaration_props.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
-    ASSERT(KEFIR_AST_TYPE_SAME(item2_decl->properties.type,
-                               kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_int(),
-                                                        (struct kefir_ast_type_qualification){.volatile_type = true})));
+    ASSERT(
+        KEFIR_AST_TYPE_SAME(item2_decl->properties.type,
+                            kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_int(),
+                                                     (struct kefir_ast_type_qualification) {.volatile_type = true})));
 
     kefir_list_next(&iter);
     ASSERT(iter != NULL);
@@ -654,11 +655,9 @@ DEFINE_CASE(ast_node_analysis_compound_statements3, "AST node analysis - compoun
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, NULL, &struct_type1);
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct_type1, "arr",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 4), NULL),
-                                    NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(
+        &kft_mem, context->symbols, struct_type1, "arr",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), 4, NULL), NULL));
     ASSERT(KEFIR_AST_TYPE_SAME(item3_decl->properties.type,
                                kefir_ast_type_pointer(&kft_mem, context->type_bundle, type1)));
 

@@ -415,8 +415,7 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_designator *de
     if (resolved_layout->type->tag == KEFIR_AST_TYPE_ARRAY &&
         (resolved_layout->type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
          resolved_layout->type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC)) {
-        string_length =
-            MIN(string_length, (kefir_size_t) resolved_layout->type->array_type.const_length->value.integer);
+        string_length = MIN(string_length, (kefir_size_t) resolved_layout->type->array_type.const_length);
     }
 
     REQUIRE_OK(kefir_ir_data_set_string(param->mem, param->data, slot, StringLiteralTypes[type], string_content,

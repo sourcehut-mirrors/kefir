@@ -184,35 +184,25 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(mem, context_manager.current->type_bundle, NULL, &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "a",
-                                              kefir_ast_type_unsigned_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 7)));
+                                              kefir_ast_type_unsigned_char(), NULL, 7));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "b",
-                                              kefir_ast_type_unsigned_short(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 15)));
+                                              kefir_ast_type_unsigned_short(), NULL, 15));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "c",
-                                              kefir_ast_type_unsigned_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 31)));
+                                              kefir_ast_type_unsigned_int(), NULL, 31));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "d",
-                                              kefir_ast_type_unsigned_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 63)));
+                                              kefir_ast_type_unsigned_long(), NULL, 63));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "e",
-                                              kefir_ast_type_unsigned_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 31)));
+                                              kefir_ast_type_unsigned_int(), NULL, 31));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "f",
-                                              kefir_ast_type_unsigned_short(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 15)));
+                                              kefir_ast_type_unsigned_short(), NULL, 15));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "g",
-                                              kefir_ast_type_unsigned_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 7)));
+                                              kefir_ast_type_unsigned_char(), NULL, 7));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "h",
-                                              kefir_ast_type_unsigned_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 33)));
+                                              kefir_ast_type_unsigned_long(), NULL, 33));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "i",
-                                              kefir_ast_type_unsigned_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 17)));
+                                              kefir_ast_type_unsigned_int(), NULL, 17));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "j",
-                                              kefir_ast_type_unsigned_short(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 9)));
+                                              kefir_ast_type_unsigned_short(), NULL, 9));
 
     struct function assign_and, assign_or, assign_xor, assign_shl, assign_shr;
     REQUIRE_OK(define_modify_function(mem, &assign_and, &context_manager, "modify_and",
@@ -241,8 +231,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &assign_and, &context_manager, &global_scope, &translator_context));
     REQUIRE_OK(translate_function(mem, &assign_or, &context_manager, &global_scope, &translator_context));

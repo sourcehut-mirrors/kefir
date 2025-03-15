@@ -99,8 +99,7 @@ END_CASE
         ASSERT(literal->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                             \
         ASSERT(KEFIR_AST_TYPE_SAME(                                                                                  \
             literal->base.properties.type,                                                                           \
-            kefir_ast_type_array((_mem), (_context)->type_bundle, (_underlying),                                     \
-                                 kefir_ast_constant_expression_integer((_mem), sizeof(LITERAL)), NULL)));            \
+            kefir_ast_type_array((_mem), (_context)->type_bundle, (_underlying), sizeof(LITERAL), NULL)));           \
         ASSERT(literal->base.properties.expression_props.constant_expression);                                       \
         ASSERT(!literal->base.properties.expression_props.lvalue);                                                   \
         ASSERT(literal->base.properties.expression_props.string_literal.type == (_literal_type));                    \
@@ -314,7 +313,7 @@ DEFINE_CASE(ast_node_analysis_identifiers, "AST node analysis - identifiers") {
         &kft_mem, &global_context, "var1",
         kefir_ast_type_qualified(
             &kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-            (struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = false}),
+            (struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = false}),
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "var2", kefir_ast_type_float(), NULL,
                                                         NULL, NULL, NULL));
@@ -323,10 +322,10 @@ DEFINE_CASE(ast_node_analysis_identifiers, "AST node analysis - identifiers") {
     ASSERT_OK(kefir_ast_global_context_declare_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_INLINE,
                                                         true, "func2", function2_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 100),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "Y",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, -150),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(-150),
                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
 
     ASSERT_IDENTIFIER_LITERAL(&kft_mem, context, "var1", kefir_ast_type_signed_int(), false, true);
@@ -387,7 +386,7 @@ END_CASE
 
 #undef ASSERT_LABEL_ADDRESS
 
-#define ASSERT_ARRAY_SUBSCRIPT(_mem, _context, _identifier, _index, _type, _const)                                     \
+#define ASSERT_ARRAY_SUBSCRIPT(_mem, _context, _identifier, _index, _type, _const)                             \
     do {                                                                                                       \
         struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                           \
             (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
@@ -395,7 +394,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                 \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                              \
+        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                   \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
@@ -405,12 +404,12 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
-        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_const));                             \
+        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_const));                  \
         ASSERT(subscript2->base.properties.expression_props.lvalue);                                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
 
-#define ASSERT_ARRAY_SUBSCRIPT3(_mem, _context, _identifier, _index, _type, _cnst_expr)                                     \
+#define ASSERT_ARRAY_SUBSCRIPT3(_mem, _context, _identifier, _index, _type, _cnst_expr)                        \
     do {                                                                                                       \
         struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                           \
             (_mem), KEFIR_AST_NODE_BASE(kefir_ast_new_identifier((_mem), (_context)->symbols, (_identifier))), \
@@ -418,7 +417,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                 \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                     \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                 \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_cnst_expr));                              \
+        ASSERT(subscript->base.properties.expression_props.constant_expression == (_cnst_expr));               \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                            \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                           \
                                                                                                                \
@@ -428,12 +427,12 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript2)));                \
         ASSERT(subscript2->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                    \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript2->base.properties.type, (_type)));                                \
-        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_cnst_expr));                             \
+        ASSERT(subscript2->base.properties.expression_props.constant_expression == (_cnst_expr));              \
         ASSERT(subscript2->base.properties.expression_props.lvalue);                                           \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript2));                                          \
     } while (0)
 
-#define ASSERT_ARRAY_SUBSCRIPT2(_mem, _context, _identifier, _index1, _index2, _type, _const)                              \
+#define ASSERT_ARRAY_SUBSCRIPT2(_mem, _context, _identifier, _index1, _index2, _type, _const)                      \
     do {                                                                                                           \
         struct kefir_ast_array_subscript *subscript = kefir_ast_new_array_subscript(                               \
             (_mem),                                                                                                \
@@ -444,7 +443,7 @@ END_CASE
         ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(subscript)));                     \
         ASSERT(subscript->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                         \
         ASSERT(KEFIR_AST_TYPE_SAME(subscript->base.properties.type, (_type)));                                     \
-        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                                  \
+        ASSERT(subscript->base.properties.expression_props.constant_expression == (_const));                       \
         ASSERT(subscript->base.properties.expression_props.lvalue);                                                \
         KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(subscript));                                               \
     } while (0)
@@ -463,21 +462,17 @@ DEFINE_CASE(ast_node_analysis_array_subscripts, "AST node analysis - array subsc
     const struct kefir_ast_type *array2 =
         kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_short(), NULL);
     const struct kefir_ast_type *array3 =
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 256), NULL);
-    const struct kefir_ast_type *array4 =
-        kefir_ast_type_array(&kft_mem, context->type_bundle,
-                             kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()),
-                             kefir_ast_constant_expression_integer(&kft_mem, 10), NULL);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(), 256, NULL);
+    const struct kefir_ast_type *array4 = kefir_ast_type_array(
+        &kft_mem, context->type_bundle,
+        kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()), 10, NULL);
     const struct kefir_ast_type *array5 = kefir_ast_type_array(
         &kft_mem, context->type_bundle,
-        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long_long(), NULL),
-        kefir_ast_constant_expression_integer(&kft_mem, 10), NULL);
-    const struct kefir_ast_type *array6 =
-        kefir_ast_type_array(&kft_mem, context->type_bundle,
-                             kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(),
-                                                  kefir_ast_constant_expression_integer(&kft_mem, 12), NULL),
-                             kefir_ast_constant_expression_integer(&kft_mem, 12), NULL);
+        kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long_long(), NULL), 10,
+        NULL);
+    const struct kefir_ast_type *array6 = kefir_ast_type_array(
+        &kft_mem, context->type_bundle,
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(), 12, NULL), 12, NULL);
 
     ASSERT_OK(
         kefir_ast_global_context_declare_external(&kft_mem, &global_context, "var1", array1, NULL, NULL, NULL, NULL));
@@ -497,13 +492,15 @@ DEFINE_CASE(ast_node_analysis_array_subscripts, "AST node analysis - array subsc
         ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var2", i, kefir_ast_type_signed_short(), true);
         ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var3", i, kefir_ast_type_signed_int(), true);
         ASSERT_ARRAY_SUBSCRIPT(&kft_mem, context, "var4", i,
-                               kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()), true);
+                               kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_long()),
+                               true);
         ASSERT_ARRAY_SUBSCRIPT3(
             &kft_mem, context, "var5", i,
-            kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long_long(), NULL), true);
-        ASSERT_ARRAY_SUBSCRIPT3(&kft_mem, context, "var6", i,
-                               kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(),
-                                                    kefir_ast_constant_expression_integer(&kft_mem, 12), NULL), true);
+            kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long_long(), NULL),
+            true);
+        ASSERT_ARRAY_SUBSCRIPT3(
+            &kft_mem, context, "var6", i,
+            kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long(), 12, NULL), true);
 
         ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var4", i, i + 100, kefir_ast_type_signed_long(), true);
         ASSERT_ARRAY_SUBSCRIPT2(&kft_mem, context, "var5", i, i + 100, kefir_ast_type_signed_long_long(), true);
@@ -550,7 +547,7 @@ DEFINE_CASE(ast_node_analysis_struct_members1, "AST node analysis - struct membe
         &kft_mem, context->symbols, struct1, "field2",
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context->symbols, struct1, "field3", kefir_ast_type_signed_int(),
-                                             NULL, kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct1, "field4",
         kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL), NULL));
@@ -641,7 +638,7 @@ DEFINE_CASE(ast_node_analysis_indirect_struct_members1, "AST node analysis - ind
         &kft_mem, context->symbols, struct1, "field2",
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_unsigned_long()), NULL));
     ASSERT_OK(kefir_ast_struct_type_bitfield(&kft_mem, context->symbols, struct1, "field3", kefir_ast_type_signed_int(),
-                                             NULL, kefir_ast_constant_expression_integer(&kft_mem, 3)));
+                                             NULL, 3));
     ASSERT_OK(kefir_ast_struct_type_field(
         &kft_mem, context->symbols, struct1, "field4",
         kefir_ast_type_unbounded_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), NULL), NULL));
@@ -795,7 +792,7 @@ DEFINE_CASE(ast_node_analysis_function_call_qualified_rvalues,
     const struct kefir_ast_type *function2_type = kefir_ast_type_function(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle, kefir_ast_type_signed_long_long(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         &function2);
     ASSERT_OK(kefir_ast_type_function_parameter(&kft_mem, context->type_bundle, function2,
                                                 kefir_ast_type_unsigned_int(), NULL));
@@ -804,20 +801,20 @@ DEFINE_CASE(ast_node_analysis_function_call_qualified_rvalues,
     const struct kefir_ast_type *function3_type = kefir_ast_type_function(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle, kefir_ast_type_signed_long_long(),
-                                 (struct kefir_ast_type_qualification){.constant = true, .restricted = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true, .restricted = true}),
         &function3);
     ASSERT_OK(kefir_ast_type_function_parameter(&kft_mem, context->type_bundle, function3,
                                                 kefir_ast_type_unsigned_int(), NULL));
 
     const struct kefir_ast_type *fn4_type =
         kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle, kefir_ast_type_signed_long_long(),
-                                 (struct kefir_ast_type_qualification){.constant = true, .restricted = true});
+                                 (struct kefir_ast_type_qualification) {.constant = true, .restricted = true});
     struct kefir_ast_function_type *function4 = NULL;
     const struct kefir_ast_type *function4_type = kefir_ast_type_function(
         &kft_mem, context->type_bundle,
         kefir_ast_type_qualified(&kft_mem, local_context.context.type_bundle,
                                  kefir_ast_type_pointer(&kft_mem, local_context.context.type_bundle, fn4_type),
-                                 (struct kefir_ast_type_qualification){.restricted = true}),
+                                 (struct kefir_ast_type_qualification) {.restricted = true}),
         &function4);
     ASSERT_OK(kefir_ast_type_function_parameter(&kft_mem, context->type_bundle, function4,
                                                 kefir_ast_type_unsigned_int(), NULL));
@@ -950,8 +947,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_address, "AST node analysis - unar
 
     const struct kefir_ast_type *type1 = kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char());
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), 100, NULL);
 
     struct kefir_ast_function_type *function3 = NULL;
     const struct kefir_ast_type *function_type3 =
@@ -960,7 +956,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_address, "AST node analysis - unar
     ASSERT_OK(kefir_ast_global_context_declare_external(
         &kft_mem, &global_context, "var0",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "var1", kefir_ast_type_signed_int(),
                                                        NULL, NULL, NULL, NULL));
@@ -975,7 +971,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_address, "AST node analysis - unar
         &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier(&kft_mem, context->symbols, "var0"),
         kefir_ast_type_pointer(&kft_mem, context->type_bundle,
                                kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(),
-                                                        (struct kefir_ast_type_qualification){.constant = true})),
+                                                        (struct kefir_ast_type_qualification) {.constant = true})),
         true, false, false);
     ASSERT_UNARY_OPERATION(
         &kft_mem, context, KEFIR_AST_OPERATION_ADDRESS, kefir_ast_new_identifier(&kft_mem, context->symbols, "var1"),
@@ -1006,8 +1002,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_indirect, "AST node analysis - una
     struct kefir_ast_context *context = &local_context.context;
     const struct kefir_ast_type *type1 = kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_char());
     const struct kefir_ast_type *type2 =
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 100), NULL);
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_float(), 100, NULL);
 
     struct kefir_ast_function_type *function3 = NULL;
     const struct kefir_ast_type *function_type3 =
@@ -1158,9 +1153,7 @@ DEFINE_CASE(ast_node_analysis_unary_operation_sizeof, "AST node analysis - unary
                                                        NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(
         &kft_mem, &local_context, "y",
-        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 1), NULL),
-        NULL, NULL, NULL, NULL));
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_char(), 1, NULL), NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_auto(
         &kft_mem, &local_context, "z",
         kefir_ast_type_vlen_array(&kft_mem, context->type_bundle, kefir_ast_type_char(),
@@ -1303,10 +1296,10 @@ DEFINE_CASE(ast_node_analysis_type_name, "AST node analysis - type names") {
     ASSERT_TYPE_NAME(&kft_mem, context, type_name6, kefir_ast_type_double());
     ASSERT_TYPE_NAME(&kft_mem, context, type_name7,
                      kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()));
-    ASSERT_TYPE_NAME(&kft_mem, context, type_name8,
-                     kefir_ast_type_array(&kft_mem, context->type_bundle,
-                                          kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()),
-                                          kefir_ast_constant_expression_integer(&kft_mem, 256), NULL));
+    ASSERT_TYPE_NAME(
+        &kft_mem, context, type_name8,
+        kefir_ast_type_array(&kft_mem, context->type_bundle,
+                             kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_void()), 256, NULL));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

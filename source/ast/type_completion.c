@@ -125,21 +125,14 @@ kefir_result_t kefir_ast_type_completion(struct kefir_mem *mem, const struct kef
 
                 case KEFIR_AST_ARRAY_BOUNDED:
                 case KEFIR_AST_ARRAY_BOUNDED_STATIC: {
-                    struct kefir_ast_constant_expression *len =
-                        kefir_ast_constant_expression_integer(mem, type->array_type.const_length->value.integer);
-                    REQUIRE(len != NULL,
-                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST constant expression"));
                     if (type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) {
-                        *dst = kefir_ast_type_array_static(mem, context->type_bundle, element_type, len,
+                        *dst = kefir_ast_type_array_static(mem, context->type_bundle, element_type,
+                                                           type->array_type.const_length,
                                                            &type->array_type.qualifications);
                     } else {
-                        *dst = kefir_ast_type_array(mem, context->type_bundle, element_type, len,
-                                                    &type->array_type.qualifications);
+                        *dst = kefir_ast_type_array(mem, context->type_bundle, element_type,
+                                                    type->array_type.const_length, &type->array_type.qualifications);
                     }
-                    REQUIRE_ELSE(*dst != NULL, {
-                        kefir_ast_constant_expression_free(mem, len);
-                        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST type");
-                    });
                 } break;
 
                 case KEFIR_AST_ARRAY_VLA:

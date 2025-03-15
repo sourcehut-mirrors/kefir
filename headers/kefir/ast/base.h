@@ -30,7 +30,6 @@ typedef struct kefir_ast_node_base kefir_ast_node_base_t;
 typedef struct kefir_ast_scoped_identifier kefir_ast_scoped_identifier_t;
 typedef struct kefir_ast_context kefir_ast_context_t;
 typedef struct kefir_ast_type_bundle kefir_ast_type_bundle_t;
-typedef struct kefir_ast_constant_expression kefir_ast_constant_expression_t;
 typedef struct kefir_ast_alignment kefir_ast_alignment_t;
 typedef struct kefir_ast_global_context kefir_ast_global_context_t;
 typedef struct kefir_ast_local_context kefir_ast_local_context_t;
@@ -38,5 +37,8 @@ typedef struct kefir_ast_function_declaration_context kefir_ast_function_declara
 typedef struct kefir_ast_visitor kefir_ast_visitor_t;
 typedef struct kefir_ast_declarator_attributes kefir_ast_declarator_attributes_t;
 typedef struct kefir_ast_flow_control_structure kefir_ast_flow_control_structure_t;
+
+typedef kefir_int64_t kefir_ast_constant_expression_int_t;
+typedef kefir_uint64_t kefir_ast_constant_expression_uint_t;
 
 #endif

@@ -116,7 +116,7 @@ DEFINE_CASE(ast_ordinary_function_scope2, "AST ordinary scope - functions #2") {
         &kft_mem, &global_context.type_bundle, function_type1,
         kefir_ast_type_qualified(
             &kft_mem, &global_context.type_bundle, kefir_ast_type_double(),
-            (const struct kefir_ast_type_qualification){.constant = true, .restricted = true, .volatile_type = false}),
+            (const struct kefir_ast_type_qualification) {.constant = true, .restricted = true, .volatile_type = false}),
         NULL));
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, &global_context.type_bundle, function_type1,
@@ -140,9 +140,7 @@ DEFINE_CASE(ast_ordinary_function_scope2, "AST ordinary scope - functions #2") {
         kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, kefir_ast_type_void()), &function_type2);
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, &global_context.type_bundle, function_type2,
-        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_long_long(),
-                             kefir_ast_constant_expression_integer(&kft_mem, 1), NULL),
-        NULL));
+        kefir_ast_type_array(&kft_mem, &global_context.type_bundle, kefir_ast_type_signed_long_long(), 1, NULL), NULL));
 
     ASSERT_NOK(kefir_ast_global_context_declare_function(&kft_mem, &global_context, KEFIR_AST_FUNCTION_SPECIFIER_NONE,
                                                          true, "func1", type2, NULL, NULL, NULL));
@@ -158,7 +156,7 @@ DEFINE_CASE(ast_ordinary_function_scope2, "AST ordinary scope - functions #2") {
         kefir_ast_type_qualified(
             &kft_mem, &global_context.type_bundle,
             kefir_ast_type_pointer(&kft_mem, &global_context.type_bundle, kefir_ast_type_void()),
-            (const struct kefir_ast_type_qualification){.constant = true, .restricted = false, .volatile_type = true}),
+            (const struct kefir_ast_type_qualification) {.constant = true, .restricted = false, .volatile_type = true}),
         NULL));
 
     ASSERT_OK(kefir_ast_global_context_declare_function(

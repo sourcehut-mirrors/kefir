@@ -27,7 +27,7 @@ struct kefir_ast_alignment *kefir_ast_alignment_default(struct kefir_mem *mem) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_alignment *alignment = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_alignment));
     REQUIRE(alignment != NULL, NULL);
-    *alignment = (const struct kefir_ast_alignment){0};
+    *alignment = (const struct kefir_ast_alignment) {0};
     alignment->klass = KEFIR_AST_ALIGNMENT_DEFAULT;
     alignment->value = KEFIR_AST_DEFAULT_ALIGNMENT;
     return alignment;
@@ -38,33 +38,20 @@ struct kefir_ast_alignment *kefir_ast_alignment_as_type(struct kefir_mem *mem, c
     REQUIRE(type != NULL, NULL);
     struct kefir_ast_alignment *alignment = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_alignment));
     REQUIRE(alignment != NULL, NULL);
-    *alignment = (const struct kefir_ast_alignment){0};
+    *alignment = (const struct kefir_ast_alignment) {0};
     alignment->klass = KEFIR_AST_ALIGNMENT_AS_TYPE;
     alignment->value = KEFIR_AST_DEFAULT_ALIGNMENT;
     alignment->type = type;
     return alignment;
 }
 
-struct kefir_ast_alignment *kefir_ast_alignment_const_expression(struct kefir_mem *mem,
-                                                                 struct kefir_ast_constant_expression *const_expr) {
+struct kefir_ast_alignment *kefir_ast_alignment_const_expression(struct kefir_mem *mem, kefir_size_t value) {
     REQUIRE(mem != NULL, NULL);
-    REQUIRE(const_expr != NULL, NULL);
-    REQUIRE(const_expr->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE ||
-                const_expr->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-            NULL);
     struct kefir_ast_alignment *alignment = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_alignment));
     REQUIRE(alignment != NULL, NULL);
-    *alignment = (const struct kefir_ast_alignment){0};
+    *alignment = (const struct kefir_ast_alignment) {0};
     alignment->klass = KEFIR_AST_ALIGNMENT_AS_CONST_EXPR;
-    alignment->const_expr = const_expr;
-
-    if (const_expr->value.klass != KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE) {
-        REQUIRE_ELSE(const_expr->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, {
-            KEFIR_FREE(mem, alignment);
-            return NULL;
-        });
-        alignment->value = const_expr->value.integer;
-    }
+    alignment->value = value;
     return alignment;
 }
 
@@ -79,19 +66,12 @@ struct kefir_ast_alignment *kefir_ast_alignment_clone(struct kefir_mem *mem,
     new_alignment->value = alignment->value;
     switch (alignment->klass) {
         case KEFIR_AST_ALIGNMENT_DEFAULT:
+        case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
             // Intentionally left blank
             break;
 
         case KEFIR_AST_ALIGNMENT_AS_TYPE:
             new_alignment->type = alignment->type;
-            break;
-
-        case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
-            new_alignment->const_expr = kefir_ast_constant_expression_integer(mem, alignment->value);
-            REQUIRE_ELSE(new_alignment->const_expr != NULL, {
-                KEFIR_FREE(mem, new_alignment);
-                return NULL;
-            });
             break;
     }
     return new_alignment;
@@ -112,8 +92,6 @@ kefir_result_t kefir_ast_alignment_free(struct kefir_mem *mem, struct kefir_ast_
 
         case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
             alignment->klass = KEFIR_AST_ALIGNMENT_DEFAULT;
-            REQUIRE_OK(kefir_ast_constant_expression_free(mem, alignment->const_expr));
-            alignment->const_expr = NULL;
             break;
     }
     KEFIR_FREE(mem, alignment);
@@ -146,12 +124,9 @@ kefir_result_t kefir_ast_alignment_evaluate(struct kefir_mem *mem, const struct 
             REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, target_type));
         } break;
 
-        case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR: {
-            REQUIRE_OK(kefir_ast_constant_expression_evaluate(mem, context, alignment->const_expr));
-            REQUIRE(alignment->const_expr->value.klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected integral constant expression as an alignment"));
-            alignment->value = alignment->const_expr->value.integer;
-        } break;
+        case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
+            // Intentionally left blank
+            break;
     }
     return KEFIR_OK;
 }

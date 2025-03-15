@@ -450,25 +450,22 @@ DEFINE_CASE(ast_constant_expression_unary_operations5, "AST constant expressions
     struct kefir_ast_struct_type *struct1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct1);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldX", kefir_ast_type_float(), NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldY", kefir_ast_type_signed_int(),
+                                          kefir_ast_alignment_const_expression(&kft_mem, 8)));
     ASSERT_OK(kefir_ast_struct_type_field(
-        &kft_mem, context->symbols, struct1, "fieldY", kefir_ast_type_signed_int(),
-        kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 8))));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldZ",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 8), NULL),
-                                    NULL));
+        &kft_mem, context->symbols, struct1, "fieldZ",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(), 8, NULL), NULL));
 
     ASSERT_OK(kefir_ast_global_context_declare_external(
         &kft_mem, &global_context, "var1",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, kefir_ast_type_signed_int(),
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_global_context_declare_external(
         &kft_mem, &global_context, "var2",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL));
 
     ASSERT_IDENTIFIER_CONST_EXPR(&kft_mem, context,
@@ -554,19 +551,16 @@ DEFINE_CASE(ast_constant_expression_unary_operations6, "AST constant expressions
     struct kefir_ast_struct_type *struct1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_structure(&kft_mem, context->type_bundle, "", &struct1);
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldX", kefir_ast_type_float(), NULL));
+    ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldY", kefir_ast_type_signed_int(),
+                                          kefir_ast_alignment_const_expression(&kft_mem, 8)));
     ASSERT_OK(kefir_ast_struct_type_field(
-        &kft_mem, context->symbols, struct1, "fieldY", kefir_ast_type_signed_int(),
-        kefir_ast_alignment_const_expression(&kft_mem, kefir_ast_constant_expression_integer(&kft_mem, 8))));
-    ASSERT_OK(
-        kefir_ast_struct_type_field(&kft_mem, context->symbols, struct1, "fieldZ",
-                                    kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(),
-                                                         kefir_ast_constant_expression_integer(&kft_mem, 8), NULL),
-                                    NULL));
+        &kft_mem, context->symbols, struct1, "fieldZ",
+        kefir_ast_type_array(&kft_mem, context->type_bundle, kefir_ast_type_signed_long(), 8, NULL), NULL));
 
     ASSERT_OK(kefir_ast_global_context_declare_external(
         &kft_mem, &global_context, "var1",
         kefir_ast_type_qualified(&kft_mem, context->type_bundle, type1,
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL));
 
     ASSERT_IDENTIFIER_CONST_EXPR(

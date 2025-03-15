@@ -489,7 +489,7 @@ DEFINE_CASE(ast_node_analysis_comma_operator, "AST node analysis - comma operato
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "x", kefir_ast_type_float(), NULL,
                                                        NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
-                                                      kefir_ast_constant_expression_integer(&kft_mem, 100),
+                                                      &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
                                                       type_traits->underlying_enumeration_type, NULL, NULL));
 
     struct kefir_ast_type_name *type_name1 = kefir_ast_new_type_name(

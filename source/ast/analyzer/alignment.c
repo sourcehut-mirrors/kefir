@@ -31,10 +31,8 @@ kefir_result_t kefir_ast_analyze_alignment(struct kefir_mem *mem, const struct k
     switch (alignment->klass) {
         case KEFIR_AST_ALIGNMENT_DEFAULT:
         case KEFIR_AST_ALIGNMENT_AS_TYPE:
-            break;
-
         case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:
-            REQUIRE_OK(kefir_ast_analyze_constant_expression(mem, context, alignment->const_expr));
+            // Intentionally left blank
             break;
     }
     return KEFIR_OK;

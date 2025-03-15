@@ -75,7 +75,7 @@ typedef struct kefir_ast_context {
     kefir_result_t (*define_tag)(struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_type *,
                                  const struct kefir_source_location *);
     kefir_result_t (*define_constant)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
-                                      struct kefir_ast_constant_expression *, const struct kefir_ast_type *,
+                                      const struct kefir_ast_constant_expression_value *, const struct kefir_ast_type *,
                                       const struct kefir_source_location *);
     kefir_result_t (*define_identifier)(struct kefir_mem *, const struct kefir_ast_context *, kefir_bool_t,
                                         const char *, const struct kefir_ast_type *,

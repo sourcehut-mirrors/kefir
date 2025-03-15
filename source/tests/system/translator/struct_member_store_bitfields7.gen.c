@@ -174,34 +174,25 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     const struct kefir_ast_type *type1 =
         kefir_ast_type_structure(mem, context_manager.current->type_bundle, NULL, &struct_type1);
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "a",
-                                              kefir_ast_type_signed_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 25)));
+                                              kefir_ast_type_signed_long(), NULL, 25));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "b",
-                                              kefir_ast_type_signed_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 21)));
+                                              kefir_ast_type_signed_int(), NULL, 21));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "c",
-                                              kefir_ast_type_signed_short(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 15)));
+                                              kefir_ast_type_signed_short(), NULL, 15));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "d",
-                                              kefir_ast_type_signed_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 7)));
+                                              kefir_ast_type_signed_char(), NULL, 7));
     REQUIRE_OK(kefir_ast_struct_type_field(mem, context_manager.current->symbols, struct_type1, "e",
                                            kefir_ast_type_signed_int(), NULL));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, NULL,
-                                              kefir_ast_type_signed_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 6)));
+                                              kefir_ast_type_signed_char(), NULL, 6));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "f",
-                                              kefir_ast_type_signed_long(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 40)));
+                                              kefir_ast_type_signed_long(), NULL, 40));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "g",
-                                              kefir_ast_type_signed_int(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 30)));
+                                              kefir_ast_type_signed_int(), NULL, 30));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "h",
-                                              kefir_ast_type_signed_char(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 8)));
+                                              kefir_ast_type_signed_char(), NULL, 8));
     REQUIRE_OK(kefir_ast_struct_type_bitfield(mem, context_manager.current->symbols, struct_type1, "i",
-                                              kefir_ast_type_signed_short(), NULL,
-                                              kefir_ast_constant_expression_integer(mem, 14)));
+                                              kefir_ast_type_signed_short(), NULL, 14));
 
     struct function assign;
     REQUIRE_OK(define_modify_function(mem, &assign, &context_manager, "modify",
@@ -215,8 +206,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
 
     struct kefir_ast_translator_global_scope_layout global_scope;
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, module, &global_context,
-                                                              translator_context.environment, translator_context.debug_entries, &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(
+        mem, module, &global_context, translator_context.environment, translator_context.debug_entries, &global_scope));
 
     REQUIRE_OK(translate_function(mem, &assign, &context_manager, &global_scope, &translator_context));
 

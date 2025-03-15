@@ -21,7 +21,7 @@
 #ifndef KEFIR_AST_CONSTANT_EXPRESSION_H_
 #define KEFIR_AST_CONSTANT_EXPRESSION_H_
 
-#include "kefir/ast/context.h"
+#include "kefir/core/mem.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/constants.h"
 #include "kefir/core/source_location.h"
@@ -40,8 +40,6 @@ typedef enum kefir_ast_constant_expression_pointer_base_type {
     KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL
 } kefir_ast_constant_expression_pointer_base_type_t;
 
-typedef kefir_int64_t kefir_ast_constant_expression_int_t;
-typedef kefir_uint64_t kefir_ast_constant_expression_uint_t;
 typedef kefir_long_double_t kefir_ast_constant_expression_float_t;
 
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_MIN KEFIR_INT64_MIN
@@ -80,10 +78,9 @@ typedef struct kefir_ast_constant_expression_value {
     struct kefir_ast_constant_expression_pointer pointer;
 } kefir_ast_constant_expression_value_t;
 
-typedef struct kefir_ast_constant_expression {
-    struct kefir_ast_constant_expression_value value;
-    struct kefir_ast_node_base *expression;
-} kefir_ast_constant_expression_t;
+#define KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(_value)                                                  \
+    ((struct kefir_ast_constant_expression_value) {.klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, \
+                                                   .integer = (_value)})
 
 kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *, const struct kefir_ast_context *,
                                                             const struct kefir_ast_node_base *,
@@ -94,17 +91,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *, cons
                                                         const struct kefir_ast_constant_expression_value *,
                                                         const struct kefir_ast_node_base *,
                                                         const struct kefir_ast_type *);
-
-struct kefir_ast_constant_expression *kefir_ast_new_constant_expression(struct kefir_mem *,
-                                                                        struct kefir_ast_node_base *);
-
-struct kefir_ast_constant_expression *kefir_ast_constant_expression_integer(struct kefir_mem *,
-                                                                            kefir_ast_constant_expression_int_t);
-
-kefir_result_t kefir_ast_constant_expression_free(struct kefir_mem *, struct kefir_ast_constant_expression *);
-
-kefir_result_t kefir_ast_constant_expression_evaluate(struct kefir_mem *, const struct kefir_ast_context *,
-                                                      struct kefir_ast_constant_expression *);
 
 kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *,
                                                               kefir_bool_t *);
