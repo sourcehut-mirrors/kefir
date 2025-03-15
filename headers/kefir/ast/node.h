@@ -231,8 +231,6 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_statement_expression, {
 typedef struct kefir_ast_extension_node kefir_ast_extension_node_t;
 typedef struct kefir_ast_extension_node_class {
     kefir_result_t (*free)(struct kefir_mem *, struct kefir_ast_extension_node *);
-    kefir_result_t (*clone)(struct kefir_mem *, struct kefir_ast_extension_node *,
-                            const struct kefir_ast_extension_node *);
     void *payload;
 } kefir_ast_extension_node_class_t;
 
