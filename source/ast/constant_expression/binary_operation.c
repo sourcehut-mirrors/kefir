@@ -429,7 +429,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             struct kefir_ast_target_environment_object_info type_info;
             REQUIRE_OK(
                 get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-            if (common_type_signed_integer) {
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer >= (kefir_int64_t) type_info.size * 8) {
+                value->integer = 0;
+            } else if (common_type_signed_integer) {
                 APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), <<,
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
             } else {
@@ -443,7 +445,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             struct kefir_ast_target_environment_object_info type_info;
             REQUIRE_OK(
                 get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-            if (common_type_signed_integer) {
+            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer >= (kefir_int64_t) type_info.size * 8) {
+                value->integer = 0;
+            } else if (common_type_signed_integer) {
                 APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), >>,
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
             } else {

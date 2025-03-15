@@ -615,6 +615,18 @@ DEFINE_CASE(ast_node_analysis_shift_operator, "AST node analysis - shift operato
                 KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[i], 2000)),
                 KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[j], 5)),
                 kefir_ast_type_int_promotion(context->type_traits, TYPES[i], KEFIR_AST_BITFIELD_PROPERTIES_NONE), true);
+
+            ASSERT_BINARY(
+                &kft_mem, context, KEFIR_AST_OPERATION_SHIFT_LEFT,
+                KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[i], 1000)),
+                KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[j], 64)),
+                kefir_ast_type_int_promotion(context->type_traits, TYPES[i], KEFIR_AST_BITFIELD_PROPERTIES_NONE), true);
+
+            ASSERT_BINARY(
+                &kft_mem, context, KEFIR_AST_OPERATION_SHIFT_RIGHT,
+                KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[i], 2000)),
+                KEFIR_AST_NODE_BASE(make_constant2(&kft_mem, TYPES[j], 64)),
+                kefir_ast_type_int_promotion(context->type_traits, TYPES[i], KEFIR_AST_BITFIELD_PROPERTIES_NONE), true);
         }
 
         ASSERT_BINARY(&kft_mem, context, KEFIR_AST_OPERATION_SHIFT_RIGHT,
