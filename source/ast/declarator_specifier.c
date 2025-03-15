@@ -210,7 +210,7 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
             struct kefir_ast_structure_declaration_entry *entry_clone = NULL;
             if (entry->is_static_assertion) {
                 struct kefir_ast_node_base *assertion_clone =
-                    KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(entry->static_assertion));
+                    KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(entry->static_assertion));
                 REQUIRE_ELSE(assertion_clone != NULL, {
                     kefir_ast_structure_specifier_free(mem, clone);
                     return NULL;
@@ -260,7 +260,7 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                     ASSIGN_DECL_CAST(struct kefir_ast_structure_entry_declarator *, entry_declarator, iter->value);
                     struct kefir_ast_declarator *declarator_clone =
                         kefir_ast_declarator_clone(mem, entry_declarator->declarator);
-                    struct kefir_ast_node_base *bitwidth_clone = KEFIR_AST_NODE_REF(mem, entry_declarator->bitwidth);
+                    struct kefir_ast_node_base *bitwidth_clone = KEFIR_AST_NODE_REF(entry_declarator->bitwidth);
                     REQUIRE_ELSE(entry_declarator->bitwidth == NULL || bitwidth_clone != NULL, {
                         kefir_ast_declarator_free(mem, declarator_clone);
                         kefir_ast_structure_declaration_entry_free(mem, entry_clone);
@@ -475,7 +475,7 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
         for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
-            struct kefir_ast_node_base *value = KEFIR_AST_NODE_REF(mem, entry->value);
+            struct kefir_ast_node_base *value = KEFIR_AST_NODE_REF(entry->value);
             REQUIRE_ELSE(entry->value == NULL || value != NULL, {
                 kefir_ast_enum_specifier_free(mem, clone);
                 return NULL;
@@ -846,7 +846,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
 
                 case KEFIR_AST_TYPE_SPECIFIER_ATOMIC:
                     clone = kefir_ast_type_specifier_atomic(
-                        mem, KEFIR_AST_NODE_REF(mem, specifier->type_specifier.value.atomic_type));
+                        mem, KEFIR_AST_NODE_REF(specifier->type_specifier.value.atomic_type));
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_STRUCT:
@@ -875,7 +875,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
                 case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
                     clone = kefir_ast_type_specifier_typeof(
                         mem, specifier->type_specifier.value.type_of.qualified,
-                        KEFIR_AST_NODE_REF(mem, specifier->type_specifier.value.type_of.node));
+                        KEFIR_AST_NODE_REF(specifier->type_specifier.value.type_of.node));
                     break;
 
                 case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
@@ -961,7 +961,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
         } break;
 
         case KEFIR_AST_ALIGNMENT_SPECIFIER:
-            clone = kefir_ast_alignment_specifier(mem, KEFIR_AST_NODE_REF(mem, specifier->alignment_specifier));
+            clone = kefir_ast_alignment_specifier(mem, KEFIR_AST_NODE_REF(specifier->alignment_specifier));
             break;
     }
 

@@ -89,7 +89,7 @@ const struct kefir_ast_type *composite_array_types(struct kefir_mem *mem, struct
             type2->array_type.const_length, NULL);
     } else if (type1->array_type.boundary == KEFIR_AST_ARRAY_VLA_STATIC ||
                type1->array_type.boundary == KEFIR_AST_ARRAY_VLA) {
-        struct kefir_ast_node_base *vlen = KEFIR_AST_NODE_REF(mem, type1->array_type.vla_length);
+        struct kefir_ast_node_base *vlen = KEFIR_AST_NODE_REF(type1->array_type.vla_length);
         REQUIRE((vlen != NULL && type1->array_type.vla_length != NULL) ||
                     (vlen == NULL && type1->array_type.vla_length == NULL),
                 NULL);
@@ -105,7 +105,7 @@ const struct kefir_ast_type *composite_array_types(struct kefir_mem *mem, struct
         return composite_type;
     } else if (type2->array_type.boundary == KEFIR_AST_ARRAY_VLA_STATIC ||
                type2->array_type.boundary == KEFIR_AST_ARRAY_VLA) {
-        struct kefir_ast_node_base *vlen = KEFIR_AST_NODE_REF(mem, type2->array_type.vla_length);
+        struct kefir_ast_node_base *vlen = KEFIR_AST_NODE_REF(type2->array_type.vla_length);
         REQUIRE((vlen != NULL && type2->array_type.vla_length != NULL) ||
                     (vlen == NULL && type2->array_type.vla_length == NULL),
                 NULL);

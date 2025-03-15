@@ -123,7 +123,7 @@ struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clon
             break;
 
         case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT:
-            clone->index = KEFIR_AST_NODE_REF(mem, designation->index);
+            clone->index = KEFIR_AST_NODE_REF(designation->index);
             REQUIRE_ELSE(clone->index != NULL, {
                 kefir_ast_initializer_designation_free(mem, clone->next);
                 KEFIR_FREE(mem, clone);
@@ -132,13 +132,13 @@ struct kefir_ast_initializer_designation *kefir_ast_initializer_designation_clon
             break;
 
         case KEFIR_AST_INIITIALIZER_DESIGNATION_SUBSCRIPT_RANGE:
-            clone->range.begin = KEFIR_AST_NODE_REF(mem, designation->range.begin);
+            clone->range.begin = KEFIR_AST_NODE_REF(designation->range.begin);
             REQUIRE_ELSE(clone->index != NULL, {
                 kefir_ast_initializer_designation_free(mem, clone->next);
                 KEFIR_FREE(mem, clone);
                 return NULL;
             });
-            clone->range.end = KEFIR_AST_NODE_REF(mem, designation->range.end);
+            clone->range.end = KEFIR_AST_NODE_REF(designation->range.end);
             REQUIRE_ELSE(clone->index != NULL, {
                 kefir_ast_initializer_designation_free(mem, clone->next);
                 KEFIR_FREE(mem, clone);
@@ -380,7 +380,7 @@ struct kefir_ast_initializer *kefir_ast_initializer_clone(struct kefir_mem *mem,
     dst->type = src->type;
     switch (src->type) {
         case KEFIR_AST_INITIALIZER_EXPRESSION:
-            dst->expression = KEFIR_AST_NODE_REF(mem, src->expression);
+            dst->expression = KEFIR_AST_NODE_REF(src->expression);
             REQUIRE_ELSE(dst->expression != NULL, {
                 KEFIR_FREE(mem, dst);
                 return NULL;

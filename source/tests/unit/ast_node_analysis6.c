@@ -297,29 +297,29 @@ DEFINE_CASE(ast_node_analysis_function_calls4, "AST node analysis - function cal
 }
 END_CASE
 
-#define ASSERT_COMPOUND_LITERAL(_mem, _context, _type, _init, _result_type, _constant)                            \
-    do {                                                                                                          \
-        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(                             \
-            (_mem), (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF((_mem), KEFIR_AST_NODE_BASE(_type))->self); \
-        ASSERT(compound != NULL);                                                                                 \
-        _init ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));               \
-        ASSERT(compound->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                         \
-        ASSERT(KEFIR_AST_TYPE_SAME(compound->base.properties.type, (_result_type)));                              \
-        ASSERT(compound->base.properties.expression_props.constant_expression == (_constant));                    \
-        ASSERT(compound->base.properties.expression_props.lvalue);                                                \
-        ASSERT(compound->base.properties.expression_props.addressable);                                           \
-        ASSERT(!compound->base.properties.expression_props.bitfield_props.bitfield);                              \
-        ASSERT(!compound->base.properties.expression_props.string_literal.content);                               \
-        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                                    \
+#define ASSERT_COMPOUND_LITERAL(_mem, _context, _type, _init, _result_type, _constant)                    \
+    do {                                                                                                  \
+        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(                     \
+            (_mem), (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(_type))->self); \
+        ASSERT(compound != NULL);                                                                         \
+        _init ASSERT_OK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));       \
+        ASSERT(compound->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);                 \
+        ASSERT(KEFIR_AST_TYPE_SAME(compound->base.properties.type, (_result_type)));                      \
+        ASSERT(compound->base.properties.expression_props.constant_expression == (_constant));            \
+        ASSERT(compound->base.properties.expression_props.lvalue);                                        \
+        ASSERT(compound->base.properties.expression_props.addressable);                                   \
+        ASSERT(!compound->base.properties.expression_props.bitfield_props.bitfield);                      \
+        ASSERT(!compound->base.properties.expression_props.string_literal.content);                       \
+        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                            \
     } while (0)
 
-#define ASSERT_COMPOUND_LITERAL_NOK(_mem, _context, _type, _init)                                                 \
-    do {                                                                                                          \
-        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(                             \
-            (_mem), (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF((_mem), KEFIR_AST_NODE_BASE(_type))->self); \
-        ASSERT(compound != NULL);                                                                                 \
-        _init ASSERT_NOK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));              \
-        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                                    \
+#define ASSERT_COMPOUND_LITERAL_NOK(_mem, _context, _type, _init)                                         \
+    do {                                                                                                  \
+        struct kefir_ast_compound_literal *compound = kefir_ast_new_compound_literal(                     \
+            (_mem), (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(_type))->self); \
+        ASSERT(compound != NULL);                                                                         \
+        _init ASSERT_NOK(kefir_ast_analyze_node((_mem), (_context), KEFIR_AST_NODE_BASE(compound)));      \
+        ASSERT_OK(KEFIR_AST_NODE_FREE((_mem), KEFIR_AST_NODE_BASE(compound)));                            \
     } while (0)
 
 DEFINE_CASE(ast_node_analysis_compound_literal1, "AST node analysis - compound literals #1") {
@@ -1233,7 +1233,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal4, "AST node analysis - compound l
         },
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO);
     ASSERT_COMPOUND_LITERAL_TEMP(
-        &kft_mem, context, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name8)),
+        &kft_mem, context, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name8)),
         {
             ASSERT_OK(kefir_ast_initializer_list_append(
                 &kft_mem, &compound->initializer->list, NULL,
@@ -1271,7 +1271,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal4, "AST node analysis - compound l
         KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
     ASSERT_COMPOUND_LITERAL_TEMP(
         &kft_mem, &global_context.context,
-        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name11)),
+        (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name11)),
         {
             ASSERT_OK(kefir_ast_initializer_list_append(
                 &kft_mem, &compound->initializer->list, NULL,

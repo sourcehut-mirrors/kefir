@@ -73,7 +73,7 @@ static kefir_result_t define_get_sizeof_function(struct kefir_mem *mem, struct f
     REQUIRE_OK(kefir_ast_context_manager_attach_local(&func->local_context, context_manager));
 
     struct kefir_ast_compound_literal *compound_literal = kefir_ast_new_compound_literal(
-        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name16))->self);
+        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name16))->self);
 #define APPEND(_type_name)                                                                          \
     REQUIRE_OK(kefir_ast_initializer_list_append(                                                   \
         mem, &compound_literal->initializer->list, NULL,                                            \

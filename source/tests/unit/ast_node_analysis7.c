@@ -648,8 +648,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &param1->specifiers,
                                                          kefir_ast_type_specifier_float(&kft_mem)));
 
-    ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, param2,
-                     KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(param1))->self);
+    ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, param2, KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(param1))->self);
 
     struct kefir_ast_init_declarator *decl_declaration = NULL;
     struct kefir_ast_declaration *decl = kefir_ast_new_single_declaration(

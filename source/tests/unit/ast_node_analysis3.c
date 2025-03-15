@@ -240,8 +240,7 @@ DEFINE_CASE(ast_node_analysis_conditional_operator2, "AST node analysis - condit
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(&kft_mem, type_name1,
                                                         KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
@@ -465,180 +464,150 @@ DEFINE_CASE(ast_node_analysis_conditional_operator4, "AST node analysis - condit
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_1)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_2)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name3))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_4)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name4))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name4))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_4)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name3))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_3)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name3))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_4)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name5))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_1)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name6))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_6)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name6))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_6)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name3))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name6))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_8)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name3))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name3))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name7))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name7))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_7)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name5))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name5))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_5)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name6))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name5))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_6)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name6))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name7))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name7))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_8)); });
 
     ASSERT_CONDITIONAL(
         &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name4))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name4))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-            &kft_mem,
-            (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name8))->self,
+            &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name8))->self,
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
         true, { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, type_8)); });
 
@@ -759,8 +728,7 @@ DEFINE_CASE(ast_node_analysis_conditional_operator5, "AST node analysis - condit
         ASSERT_CONDITIONAL(
             &kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                &kft_mem,
-                (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(TYPES[i]))->self,
+                &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES[i]))->self,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
             KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)), true,
             { ASSERT(KEFIR_AST_TYPE_SAME(oper->base.properties.type, TYPES2[i])); });

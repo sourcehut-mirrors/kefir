@@ -104,7 +104,7 @@ static kefir_result_t define_sum_function(struct kefir_mem *mem, struct function
     struct kefir_ast_node_base *adds = KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
         mem, KEFIR_AST_OPERATION_ADD,
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, KEFIR_AST_OPERATION_SIZEOF,
-                                                          KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name1)))),
+                                                          KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)))),
         add1));
 
     struct kefir_ast_node_base *adda = KEFIR_AST_NODE_BASE(

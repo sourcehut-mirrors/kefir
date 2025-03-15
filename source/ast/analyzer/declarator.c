@@ -1020,13 +1020,13 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->array.length->source_location,
                                                "Variable-length array declaration length shall have integral type"));
                 if (declarator->array.static_array) {
-                    *base_type = kefir_ast_type_vlen_array_static(mem, context->type_bundle, *base_type,
-                                                                  KEFIR_AST_NODE_REF(mem, declarator->array.length),
-                                                                  &qualification);
+                    *base_type =
+                        kefir_ast_type_vlen_array_static(mem, context->type_bundle, *base_type,
+                                                         KEFIR_AST_NODE_REF(declarator->array.length), &qualification);
                 } else {
                     *base_type =
                         kefir_ast_type_vlen_array(mem, context->type_bundle, *base_type,
-                                                  KEFIR_AST_NODE_REF(mem, declarator->array.length), &qualification);
+                                                  KEFIR_AST_NODE_REF(declarator->array.length), &qualification);
                 }
             } else {
                 REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(declarator->array.length)->klass ==

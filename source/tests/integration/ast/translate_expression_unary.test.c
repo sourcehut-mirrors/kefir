@@ -105,7 +105,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ast_global_context_define_external(
         mem, &global_context, "X",
         kefir_ast_type_qualified(mem, context->type_bundle, type_A,
-                                 (struct kefir_ast_type_qualification){.constant = true}),
+                                 (struct kefir_ast_type_qualification) {.constant = true}),
         NULL, NULL, NULL, NULL, NULL));
 
     REQUIRE_OK(
@@ -264,7 +264,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     FUNC("sizeof1", {
         for (kefir_size_t i = 0; i < TYPES_LEN; i++) {
-            UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(TYPES[i])));
+            UNARY_NODE(KEFIR_AST_OPERATION_SIZEOF, KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(TYPES[i])));
         }
     });
 

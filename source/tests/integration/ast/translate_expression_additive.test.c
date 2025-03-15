@@ -185,41 +185,37 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_float(mem)));
 
     FUNC("sub_pointers", {
-        BINARY_NODE(
-            KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name5))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 128)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name5))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 64)))));
+        BINARY_NODE(KEFIR_AST_OPERATION_SUBTRACT,
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 128)))),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name5))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 64)))));
 
-        BINARY_NODE(
-            KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name6))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1024)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name6))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 32)))));
+        BINARY_NODE(KEFIR_AST_OPERATION_SUBTRACT,
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1024)))),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name6))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 32)))));
 
-        BINARY_NODE(
-            KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name7))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 256)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name7))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 8)))));
+        BINARY_NODE(KEFIR_AST_OPERATION_SUBTRACT,
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name7))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 256)))),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name7))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 8)))));
 
-        BINARY_NODE(
-            KEFIR_AST_OPERATION_SUBTRACT,
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name8))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))),
-            KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(mem, KEFIR_AST_NODE_BASE(type_name8))->self,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
+        BINARY_NODE(KEFIR_AST_OPERATION_SUBTRACT,
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name8))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 1)))),
+                    KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
+                        mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name8))->self,
+                        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(mem, 0)))));
     });
 
     FUNC("sub_pointer_integer", {

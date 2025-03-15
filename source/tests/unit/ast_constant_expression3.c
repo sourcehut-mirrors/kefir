@@ -672,7 +672,7 @@ DEFINE_CASE(ast_constant_expression_unary_operations7, "AST constant expressions
         kefir_ast_new_unary_operation(
             &kft_mem, KEFIR_AST_OPERATION_LOGICAL_NEGATE,
             KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name1)),
+                &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name1)),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0))))),
         1);
 
@@ -695,8 +695,7 @@ DEFINE_CASE(ast_constant_expression_unary_operations7, "AST constant expressions
             KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
                 &kft_mem, KEFIR_AST_OPERATION_SUBTRACT,
                 KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
-                    &kft_mem,
-                    (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2)),
+                    &kft_mem, (struct kefir_ast_type_name *) KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2)),
                     KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 4)))),
                 KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))))),
         1);

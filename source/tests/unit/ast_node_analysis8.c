@@ -716,16 +716,16 @@ DEFINE_CASE(ast_node_analysis_compound_statements4, "AST node analysis - compoun
                                                          kefir_ast_type_specifier_int(&kft_mem)));
 
     struct kefir_ast_compound_statement *stmt3 = kefir_ast_new_compound_statement(&kft_mem);
-    ASSERT_OK(kefir_list_insert_after(&kft_mem, &stmt3->block_items, kefir_list_tail(&stmt3->block_items),
-                                      KEFIR_AST_NODE_BASE(kefir_ast_new_static_assertion(
-                                          &kft_mem,
-                                          KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
-                                              &kft_mem, KEFIR_AST_OPERATION_EQUAL,
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
-                                                  &kft_mem, KEFIR_AST_OPERATION_SIZEOF,
-                                                  KEFIR_AST_NODE_REF(&kft_mem, KEFIR_AST_NODE_BASE(type_name2)))),
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)))),
-                                          KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "ERROR!")))));
+    ASSERT_OK(kefir_list_insert_after(
+        &kft_mem, &stmt3->block_items, kefir_list_tail(&stmt3->block_items),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_static_assertion(
+            &kft_mem,
+            KEFIR_AST_NODE_BASE(kefir_ast_new_binary_operation(
+                &kft_mem, KEFIR_AST_OPERATION_EQUAL,
+                KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(&kft_mem, KEFIR_AST_OPERATION_SIZEOF,
+                                                                  KEFIR_AST_NODE_REF(KEFIR_AST_NODE_BASE(type_name2)))),
+                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)))),
+            KEFIR_AST_MAKE_STRING_LITERAL_MULTIBYTE(&kft_mem, "ERROR!")))));
     ASSERT_NOK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(stmt3)));
 
     struct kefir_ast_compound_statement *stmt4 = kefir_ast_new_compound_statement(&kft_mem);

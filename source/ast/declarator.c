@@ -182,9 +182,9 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
         } break;
 
         case KEFIR_AST_DECLARATOR_ARRAY: {
-            struct kefir_ast_declarator *decl = kefir_ast_declarator_array(
-                mem, declarator->array.type, KEFIR_AST_NODE_REF(mem, declarator->array.length),
-                kefir_ast_declarator_clone(mem, declarator->array.declarator));
+            struct kefir_ast_declarator *decl =
+                kefir_ast_declarator_array(mem, declarator->array.type, KEFIR_AST_NODE_REF(declarator->array.length),
+                                           kefir_ast_declarator_clone(mem, declarator->array.declarator));
             REQUIRE(decl != NULL, NULL);
 
             decl->array.static_array = declarator->array.static_array;
@@ -206,7 +206,7 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *mem,
             for (const struct kefir_list_entry *iter = kefir_list_head(&declarator->function.parameters); iter != NULL;
                  kefir_list_next(&iter)) {
                 ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
-                struct kefir_ast_node_base *param_clone = KEFIR_AST_NODE_REF(mem, param);
+                struct kefir_ast_node_base *param_clone = KEFIR_AST_NODE_REF(param);
                 REQUIRE_ELSE(param_clone != NULL, {
                     kefir_ast_declarator_free(mem, decl);
                     return NULL;
