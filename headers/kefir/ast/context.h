@@ -53,6 +53,12 @@ typedef struct kefir_ast_context_extensions {
     kefir_result_t (*on_free)(struct kefir_mem *, struct kefir_ast_context *);
     kefir_result_t (*analyze_extension_node)(struct kefir_mem *, const struct kefir_ast_context *,
                                              struct kefir_ast_node_base *);
+    kefir_result_t (*evaluate_constant_extension_node)(struct kefir_mem *, const struct kefir_ast_context *,
+                                                       const struct kefir_ast_node_base *,
+                                                       struct kefir_ast_constant_expression_value *);
+    kefir_result_t (*evaluate_constant_pointer_extension_node)(struct kefir_mem *, const struct kefir_ast_context *,
+                                                               const struct kefir_ast_node_base *,
+                                                               struct kefir_ast_constant_expression_pointer *);
     kefir_result_t (*before_node_analysis)(struct kefir_mem *, const struct kefir_ast_context *,
                                            struct kefir_ast_node_base *, struct kefir_ast_visitor *);
     kefir_result_t (*after_node_analysis)(struct kefir_mem *, const struct kefir_ast_context *,

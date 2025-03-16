@@ -241,6 +241,21 @@ static kefir_result_t visit_compound_literal(const struct kefir_ast_visitor *vis
     return KEFIR_OK;
 }
 
+static kefir_result_t visit_extension_node(const struct kefir_ast_visitor *visitor,
+                                           const struct kefir_ast_extension_node *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST extension node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
+
+    REQUIRE(param->context->extensions != NULL &&
+                param->context->extensions->evaluate_constant_pointer_extension_node != NULL,
+            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate lvalue constant reference"));
+    REQUIRE_OK(param->context->extensions->evaluate_constant_pointer_extension_node(
+        param->mem, param->context, KEFIR_AST_NODE_BASE(node), param->pointer));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_constant_expression_value_evaluate_lvalue_reference(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_node_base *node,
     struct kefir_ast_constant_expression_pointer *pointer) {
@@ -257,6 +272,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate_lvalue_reference(
     visitor.array_subscript = visit_array_subscript;
     visitor.struct_indirect_member = visit_struct_indirect_member;
     visitor.compound_literal = visit_compound_literal;
+    visitor.extension_node = visit_extension_node;
 
     struct visitor_param param = {.mem = mem, .context = context, .pointer = pointer};
     REQUIRE_OK(KEFIR_AST_NODE_VISIT(&visitor, node, &param));

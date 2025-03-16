@@ -59,6 +59,21 @@ VISITOR(cast_operator, struct kefir_ast_cast_operator)
 VISITOR(builtin, struct kefir_ast_builtin)
 #undef VISITOR
 
+static kefir_result_t evaluate_extension_node(const struct kefir_ast_visitor *visitor,
+                                              const struct kefir_ast_extension_node *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node"));
+    ASSIGN_DECL_CAST(struct eval_param *, param, payload);
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression parameter"));
+
+    REQUIRE(param->context->extensions != NULL && param->context->extensions->evaluate_constant_extension_node != NULL,
+            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to evaluate extension node"));
+    REQUIRE_OK(param->context->extensions->evaluate_constant_extension_node(param->mem, param->context,
+                                                                            KEFIR_AST_NODE_BASE(node), param->value));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *mem,
                                                             const struct kefir_ast_context *context,
                                                             const struct kefir_ast_node_base *node,
@@ -90,6 +105,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
     visitor.conditional_operator = evaluate_conditional_operator;
     visitor.cast_operator = evaluate_cast_operator;
     visitor.builtin = evaluate_builtin;
+    visitor.extension_node = evaluate_extension_node;
     return KEFIR_AST_NODE_VISIT(&visitor, node, &param);
 }
 

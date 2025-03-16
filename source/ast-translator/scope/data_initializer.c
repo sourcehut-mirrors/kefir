@@ -59,7 +59,11 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
                                                       struct kefir_ast_constant_expression_value *value,
                                                       struct kefir_ir_module *module, struct kefir_ir_data *data,
                                                       kefir_size_t base_slot) {
-    if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
+    if (value->pointer.scoped_id == NULL) {
+        const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);
+        REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR symbol"));
+        REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
+    } else if (value->pointer.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
         switch (value->pointer.scoped_id->object.storage) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN: {
                 const char *literal = kefir_ir_module_symbol(mem, module, value->pointer.base.literal, NULL);

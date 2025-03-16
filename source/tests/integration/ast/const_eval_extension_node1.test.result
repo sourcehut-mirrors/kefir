@@ -1,0 +1,67 @@
+{
+    "identifiers": [
+        {
+            "symbol": "x1",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        },
+        {
+            "symbol": "x2",
+            "type": "global_data",
+            "scope": "export",
+            "visibility": "default",
+            "alias": null
+        }
+    ],
+    "types": [
+        {
+            "identifier": 0,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        },
+        {
+            "identifier": 1,
+            "type": [
+                {
+                    "type": "int"
+                }
+            ]
+        }
+    ],
+    "data": [
+        {
+            "identifier": "x1",
+            "storage": "global",
+            "type": 0,
+            "value": [
+                {
+                    "class": "integer",
+                    "value": 100
+                }
+            ]
+        },
+        {
+            "identifier": "x2",
+            "storage": "global",
+            "type": 1,
+            "value": [
+                {
+                    "class": "integer",
+                    "value": 200
+                }
+            ]
+        }
+    ],
+    "string_literals": [],
+    "function_declarations": [],
+    "functions": [],
+    "inline_assembly": [],
+    "meta_info": {
+        "opcode_rev": 1
+    }
+}
