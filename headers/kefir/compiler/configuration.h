@@ -65,6 +65,8 @@ typedef struct kefir_compiler_runner_configuration {
 
     struct kefir_compiler_profile_configuration target_profile_config;
 
+    const char *extension_lib;
+
     struct {
         const char *target_name;
         kefir_bool_t output_dependencies;

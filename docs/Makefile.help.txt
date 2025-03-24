@@ -20,11 +20,12 @@ Variable                    Description                 Options (*default)
 ============================================================================================
                                    Build profile
 ============================================================================================
-PROFILE                     Build profile               debug | reldebug | devrelease | *release
-USE_SHARED                  Produce shared libraries    *yes | no
-USE_SANITIZER               Compile with UB sanitizer   yes | *no
-USE_VALGRIND                Run tests with Valgrind     yes | *no
-PLATFORM                    Host platform               linux | freebsd | openbsd | netbsd | (*autodetect)
+PROFILE                     Build profile                       debug | reldebug | devrelease | *release
+USE_SHARED                  Produce shared libraries            *yes | no
+USE_SANITIZER               Compile with UB sanitizer           yes | *no
+USE_VALGRIND                Run tests with Valgrind             yes | *no
+USE_EXTENSION_SUPPORT       Build kefir with extension support  yes | *no
+PLATFORM                    Host platform                       linux | freebsd | openbsd | netbsd | (*autodetect)
 ============================================================================================
                                      Tools
 ============================================================================================

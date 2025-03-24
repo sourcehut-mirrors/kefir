@@ -4,6 +4,7 @@ USE_SHARED=yes
 USE_SANITIZER=no
 USE_VALGRIND=no
 USE_GCOV=no
+USE_EXTENSION_SUPPORT=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
@@ -63,6 +64,9 @@ endif
 ifeq ($(USE_GCOV),yes)
 CFLAGS+=-fprofile-arcs -ftest-coverage
 LDFLAGS+=-lgcov --coverage
+endif
+ifeq ($(USE_EXTENSION_SUPPORT),yes)
+CFLAGS+=-DKEFIR_EXTENSION_SUPPORT=1
 endif
 CFLAGS+=$(PROFILE_CFLAGS) $(SANITIZER_FLAGS) $(EXTRA_CFLAGS)
 LDFLAGS+=$(EXTRA_LDFLAGS)

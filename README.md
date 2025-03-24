@@ -237,6 +237,14 @@ defines necessary dependencies for running the whole test suite:
 podman build -t kefir-dev-env -f dist/Dockerfile .
 ```
 
+## Custom extensions
+Kefir has limited support for custom extensions via `-Wextension-lib`
+command-line option. To use that, make sure that kefir has been built with
+`USE_EXTENSION_SUPPORT=yes` Makefile flag. Check out `kefir_compiler_extensions`
+structure (`kefir/compiler/compiler.h` header) to see available hooks, and
+`source/end2end/extensions1/extension.c` for example extension. API stability is
+not guaranteed.
+
 ## Portable Kefir
 Kefir provides scripts to build portable, standalone Kefir distribution package
 that incorporates statically-linked Kefir C compiler, musl libc, and tools from

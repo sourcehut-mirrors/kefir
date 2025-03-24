@@ -21,6 +21,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <locale.h>
+#include <dlfcn.h>
 #include "kefir/platform/input.h"
 #include "kefir/platform/filesystem_source.h"
 #include "kefir/core/util.h"
@@ -103,6 +104,43 @@ static kefir_result_t output_dependencies(
     return KEFIR_OK;
 }
 
+static kefir_result_t load_extension_lib(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options, const struct kefir_compiler_extensions **extensions, void **extension_lib) {
+    if (options->extension_lib == NULL) {
+        *extensions = NULL;
+        *extension_lib = NULL;
+        return KEFIR_OK;
+    }
+
+#ifndef KEFIR_EXTENSION_SUPPORT
+    UNUSED(mem);
+    UNUSED(extensions);
+    UNUSED(extension_lib);
+    return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Extension library loading support has been disabled at compile time");
+#else
+    void *extlib = dlopen(options->extension_lib, RTLD_LAZY | RTLD_LOCAL);
+    REQUIRE(extlib != NULL, KEFIR_SET_OS_ERRORF("Failed to load extension library %s: %s", options->extension_lib, dlerror()));
+
+    *extension_lib = extlib;
+
+    void *entry_sym = dlsym(extlib, KEFIR_COMPILER_EXTENSION_ENTRY);
+    REQUIRE(entry_sym != NULL, KEFIR_SET_OS_ERRORF("Failed to locate entry point of extension library: %s", dlerror()));
+
+    typedef kefir_result_t (*entry_fn_t)(struct kefir_mem *, const struct kefir_compiler_runner_configuration *, const struct kefir_compiler_extensions **);
+    entry_fn_t entry_fn = *(entry_fn_t *) &entry_sym;
+    REQUIRE_OK(entry_fn(mem, options, extensions));
+
+    return KEFIR_OK;
+#endif
+}
+
+static kefir_result_t unload_extension_lib(void *extlib) {
+    if (extlib != NULL) {
+        int res = dlclose(extlib);
+        REQUIRE(res == 0, KEFIR_SET_OS_ERRORF("Failed to unload extension library: %s", dlerror()));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options,
                                        kefir_result_t (*action)(struct kefir_mem *,
                                                                 const struct kefir_compiler_runner_configuration *,
@@ -143,8 +181,12 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
         source_locator = &dependencies_source_locator.locator;
     }
 
+    void *extension_lib = NULL;
+    const struct kefir_compiler_extensions *extensions = NULL;
+    REQUIRE_OK(load_extension_lib(mem, options, &extensions, &extension_lib));
+
     REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile, &options->target_profile_config));
-    REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, NULL));
+    REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, extensions));
 
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
     compiler.preprocessor_configuration.include_next = options->features.include_next;
@@ -231,6 +273,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     REQUIRE_OK(action(mem, options, &compiler, source_id, input.content, input.length, stage_output));
     REQUIRE_OK(kefir_compiler_context_free(mem, &compiler));
+    REQUIRE_OK(unload_extension_lib(extension_lib));
     if (options->dependency_output.output_dependencies) {
         REQUIRE_OK(output_dependencies(options, &dependencies_source_locator, dependency_output));
         REQUIRE_OK(kefir_preprocessor_dependencies_source_locator_free(mem, &dependencies_source_locator));

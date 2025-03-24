@@ -245,6 +245,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            dependency_output.add_phony_targets),
     SIMPLE(0, "dependency-target", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.target_name),
     SIMPLE(0, "dependency-output", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, dependency_output.output_filename),
+    SIMPLE(0, "extension-lib", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, extension_lib),
 
     SIMPLE(0, "unsigned-char", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_PROFILE_CHAR_UNSIGNED,
            target_profile_config.char_signedness),

@@ -39,6 +39,7 @@
 
 typedef struct kefir_compiler_context kefir_compiler_context_t;
 
+#define KEFIR_COMPILER_EXTENSION_ENTRY "kefir_compiler_extension_entry"
 typedef struct kefir_compiler_extensions {
     kefir_result_t (*on_init)(struct kefir_mem *, struct kefir_compiler_context *);
     kefir_result_t (*on_free)(struct kefir_mem *, struct kefir_compiler_context *);
