@@ -34,7 +34,7 @@ tasks:
       make all CC=gcc-12 -j$(nproc)
       make install prefix=$HOME/kefir-install
       make clean
-      make all PROFILE=reldebug CC=$HOME/kefir-install/bin/kefir -j$(nproc)
+      make all PROFILE=reldebug USE_EXTENSION_SUPPORT=yes CC=$HOME/kefir-install/bin/kefir -j$(nproc)
       export CSMITH=$HOME/csmith-install/bin/csmith
       LC_ALL=C.UTF-8 make test USE_EXTENSION_SUPPORT=yes USE_VALGRIND=yes PROFILE=reldebug CC=$HOME/kefir-install/bin/kefir -j$(nproc)
   - build: |
