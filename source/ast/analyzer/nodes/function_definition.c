@@ -277,7 +277,6 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     });
 
     base->properties.type = scoped_id->function.type;
-    base->properties.function_definition.storage = scoped_id->function.storage;
     base->properties.function_definition.scoped_id = scoped_id;
 
     local_context->context.surrounding_function = scoped_id;
@@ -315,12 +314,6 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
                         KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                         "Function definition with empty parameter list shall not contain any declarations"));
             break;
-    }
-
-    if (hash_long_double_params) {
-        REQUIRE_OK(local_context->context.allocate_temporary_value(
-            mem, &local_context->context, kefir_ast_type_long_double(), NULL, &base->source_location,
-            &base->properties.function_definition.temp_identifier));
     }
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->body->block_items); iter != NULL;

@@ -41,7 +41,6 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor,
 
     param->base->properties.category = KEFIR_AST_NODE_CATEGORY_MEMBER_DESIGNATOR;
     param->base->properties.type = field->type;
-    param->base->properties.member_designator.constant = true;
     return KEFIR_OK;
 }
 
@@ -72,7 +71,6 @@ static kefir_result_t visit_struct_member(const struct kefir_ast_visitor *visito
 
     param->base->properties.category = KEFIR_AST_NODE_CATEGORY_MEMBER_DESIGNATOR;
     param->base->properties.type = field->type;
-    param->base->properties.member_designator.constant = member->structure->properties.member_designator.constant;
     return KEFIR_OK;
 }
 
@@ -101,9 +99,6 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     param->base->properties.category = KEFIR_AST_NODE_CATEGORY_MEMBER_DESIGNATOR;
     param->base->properties.type = type;
-    param->base->properties.member_designator.constant =
-        subscript->array->properties.member_designator.constant &&
-        subscript->subscript->properties.expression_props.constant_expression;
     return KEFIR_OK;
 }
 

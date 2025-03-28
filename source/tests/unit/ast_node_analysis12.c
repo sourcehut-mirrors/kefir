@@ -83,11 +83,11 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int()), &func_type);
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, global_context.context.type_bundle, func_type, kefir_ast_type_unsigned_int(),
-        &(kefir_ast_scoped_identifier_storage_t){KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER}));
+        &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER}));
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, global_context.context.type_bundle, func_type,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int()),
-        &(kefir_ast_scoped_identifier_storage_t){KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
+        &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO}));
 
     ASSERT(func->base.properties.category == KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION);
     ASSERT(func->base.properties.function_definition.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
@@ -101,7 +101,6 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(func->base.properties.function_definition.scoped_id->function.storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
     ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition.scoped_id->function.type, type));
-    ASSERT(func->base.properties.function_definition.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
 
     ASSERT(param1->base.properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION);
     ASSIGN_DECL_CAST(struct kefir_ast_declaration *, param1_decl_list, param1->base.self);
@@ -200,7 +199,6 @@ DEFINE_CASE(ast_node_analysis_function_definitions2, "AST node analysis - functi
     ASSERT(func->base.properties.function_definition.scoped_id->function.storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
     ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition.scoped_id->function.type, type));
-    ASSERT(func->base.properties.function_definition.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC);
 
     ASSERT(body->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(body->base.properties.statement_props.target_flow_control_point == NULL);
@@ -306,7 +304,6 @@ DEFINE_CASE(ast_node_analysis_function_definitions3, "AST node analysis - functi
     ASSERT(func->base.properties.function_definition.scoped_id->function.storage ==
            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
     ASSERT(KEFIR_AST_TYPE_SAME(func->base.properties.function_definition.scoped_id->function.type, type));
-    ASSERT(func->base.properties.function_definition.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
 
     ASSERT(param1->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
     ASSERT(param1->properties.expression_props.identifier != NULL);
@@ -392,7 +389,6 @@ DEFINE_CASE(ast_node_analysis_translation_unit1, "AST node analysis - translatio
 
     ASSERT(func1->base.properties.category == KEFIR_AST_NODE_CATEGORY_FUNCTION_DEFINITION);
     ASSERT(strcmp(func1->base.properties.function_definition.identifier, "addx") == 0);
-    ASSERT(func1->base.properties.function_definition.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN);
     ASSERT(func1->base.properties.function_definition.function == KEFIR_AST_FUNCTION_SPECIFIER_NONE);
     ASSERT(func1->base.properties.function_definition.scoped_id != NULL);
 

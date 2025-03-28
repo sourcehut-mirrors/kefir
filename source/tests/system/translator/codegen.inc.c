@@ -29,7 +29,6 @@
 #include "kefir/ast-translator/scope/global_scope_layout.h"
 #include "kefir/ast-translator/scope/local_scope_layout.h"
 #include "kefir/ast-translator/flow_control.h"
-#include "kefir/ast/context_manager.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"

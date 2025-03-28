@@ -30,7 +30,6 @@
 #include "kefir/ast-translator/scope/global_scope_layout.h"
 #include "kefir/ast-translator/scope/local_scope_layout.h"
 #include "kefir/ast-translator/function_definition.h"
-#include "kefir/ast/context_manager.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
@@ -410,8 +409,8 @@ static kefir_result_t generate_ir(struct kefir_mem *mem, struct kefir_ir_module 
     REQUIRE_OK(kefir_ast_translator_global_scope_layout_init(mem, module, &global_scope));
     translator_context.global_scope_layout = &global_scope;
 
-    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, translator_context.module, &global_context, &env, translator_context.debug_entries,
-                                                              &global_scope));
+    REQUIRE_OK(kefir_ast_translator_build_global_scope_layout(mem, translator_context.module, &global_context, &env,
+                                                              translator_context.debug_entries, &global_scope));
     REQUIRE_OK(kefir_ast_translate_unit(mem, KEFIR_AST_NODE_BASE(unit_node), &translator_context));
     REQUIRE_OK(
         kefir_ast_translate_global_scope(mem, &global_context.context, translator_context.module, &global_scope));
