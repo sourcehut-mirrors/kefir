@@ -91,12 +91,12 @@ static kefir_result_t patch_command(struct kefir_irblock *block, kefir_size_t in
     struct kefir_irinstr *instr = kefir_irblock_at(block, index);
     switch (instr->opcode) {
         case KEFIR_IROPCODE_JMP:
-        case KEFIR_IROPCODE_BRANCH8:
-        case KEFIR_IROPCODE_BRANCH16:
-        case KEFIR_IROPCODE_BRANCH32:
-        case KEFIR_IROPCODE_BRANCH64:
         case KEFIR_IROPCODE_PUSHLABEL:
             instr->arg.u64 = value;
+            break;
+
+        case KEFIR_IROPCODE_BRANCH:
+            instr->arg.u64_2[0] = value;
             break;
 
         default:

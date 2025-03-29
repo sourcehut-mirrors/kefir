@@ -33,7 +33,7 @@ DEFINE_CASE(ast_translator_flow_control_point1, "AST Translator - flow control p
     struct kefir_irblock block;
     ASSERT_OK(kefir_irblock_alloc(&kft_mem, 1024, &block));
     ASSERT_OK(kefir_irblock_appendu64(&block, KEFIR_IROPCODE_JMP, 0));
-    ASSERT_OK(kefir_irblock_appendu64(&block, KEFIR_IROPCODE_BRANCH8, 0));
+    ASSERT_OK(kefir_irblock_appendu64_2(&block, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
 
     ASSERT_OK(kefir_ast_translator_flow_control_point_reference(&kft_mem, point1, &block, 0));
     ASSERT_OK(kefir_ast_translator_flow_control_point_reference(&kft_mem, point1, &block, 1));
@@ -41,8 +41,9 @@ DEFINE_CASE(ast_translator_flow_control_point1, "AST Translator - flow control p
     ASSERT(kefir_list_length(&translator_point1->dependents) == 2);
     ASSERT(kefir_irblock_at(&block, 0)->opcode == KEFIR_IROPCODE_JMP);
     ASSERT(kefir_irblock_at(&block, 0)->arg.u64 == 0);
-    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH8);
-    ASSERT(kefir_irblock_at(&block, 1)->arg.u64 == 0);
+    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[0] == 0);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[1] == KEFIR_IR_BRANCH_CONDITION_8BIT);
 
     ASSERT_OK(kefir_irblock_appendu64(&block, KEFIR_IROPCODE_NOP, 0));
     ASSERT_OK(kefir_ast_translator_flow_control_point_resolve(&kft_mem, point1, 2));
@@ -51,24 +52,27 @@ DEFINE_CASE(ast_translator_flow_control_point1, "AST Translator - flow control p
 
     ASSERT(kefir_irblock_at(&block, 0)->opcode == KEFIR_IROPCODE_JMP);
     ASSERT(kefir_irblock_at(&block, 0)->arg.u64 == 2);
-    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH8);
-    ASSERT(kefir_irblock_at(&block, 1)->arg.u64 == 2);
+    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[0] == 2);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[1] == KEFIR_IR_BRANCH_CONDITION_8BIT);
     ASSERT(kefir_irblock_at(&block, 2)->opcode == KEFIR_IROPCODE_NOP);
     ASSERT(kefir_irblock_at(&block, 2)->arg.u64 == 0);
 
-    ASSERT_OK(kefir_irblock_appendu64(&block, KEFIR_IROPCODE_BRANCH64, 0));
+    ASSERT_OK(kefir_irblock_appendu64_2(&block, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_64BIT));
     ASSERT_OK(kefir_irblock_appendu64(&block, KEFIR_IROPCODE_JMP, 0));
     ASSERT_OK(kefir_ast_translator_flow_control_point_reference(&kft_mem, point1, &block, 3));
     ASSERT_OK(kefir_ast_translator_flow_control_point_reference(&kft_mem, point1, &block, 4));
 
     ASSERT(kefir_irblock_at(&block, 0)->opcode == KEFIR_IROPCODE_JMP);
     ASSERT(kefir_irblock_at(&block, 0)->arg.u64 == 2);
-    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH8);
-    ASSERT(kefir_irblock_at(&block, 1)->arg.u64 == 2);
+    ASSERT(kefir_irblock_at(&block, 1)->opcode == KEFIR_IROPCODE_BRANCH);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[0] == 2);
+    ASSERT(kefir_irblock_at(&block, 1)->arg.u64_2[1] == KEFIR_IR_BRANCH_CONDITION_8BIT);
     ASSERT(kefir_irblock_at(&block, 2)->opcode == KEFIR_IROPCODE_NOP);
     ASSERT(kefir_irblock_at(&block, 2)->arg.u64 == 0);
-    ASSERT(kefir_irblock_at(&block, 3)->opcode == KEFIR_IROPCODE_BRANCH64);
-    ASSERT(kefir_irblock_at(&block, 3)->arg.u64 == 2);
+    ASSERT(kefir_irblock_at(&block, 3)->opcode == KEFIR_IROPCODE_BRANCH);
+    ASSERT(kefir_irblock_at(&block, 3)->arg.u64_2[0] == 2);
+    ASSERT(kefir_irblock_at(&block, 3)->arg.u64_2[1] == KEFIR_IR_BRANCH_CONDITION_64BIT);
     ASSERT(kefir_irblock_at(&block, 4)->opcode == KEFIR_IROPCODE_JMP);
     ASSERT(kefir_irblock_at(&block, 4)->arg.u64 == 2);
 

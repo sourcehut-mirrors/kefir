@@ -191,8 +191,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 30
+                    "opcode": "branch",
+                    "arg": 30,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "getlocal",
@@ -255,8 +256,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 11
+                    "opcode": "branch",
+                    "arg": 11,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "getglobal",
@@ -280,8 +282,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "jmp",
@@ -321,8 +324,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushu",

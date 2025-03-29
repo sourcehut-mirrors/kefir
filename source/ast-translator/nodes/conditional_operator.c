@@ -37,19 +37,22 @@ static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_tr
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH16, 0));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_16BIT));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH32, 0));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_32BIT));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -58,13 +61,15 @@ static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_tr
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH64, 0));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_64BIT));
             break;
 
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, type));
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
     }
     return KEFIR_OK;

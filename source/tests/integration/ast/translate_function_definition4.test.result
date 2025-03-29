@@ -192,8 +192,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 36
+                    "opcode": "branch",
+                    "arg": 36,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "getlocal",

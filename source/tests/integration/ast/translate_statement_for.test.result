@@ -295,8 +295,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 22
+                    "opcode": "branch",
+                    "arg": 22,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "invoke",
@@ -437,8 +438,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 34
+                    "opcode": "branch",
+                    "arg": 34,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "invoke",
@@ -451,8 +453,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 23
+                    "opcode": "branch",
+                    "arg": 23,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "jmp",
@@ -544,8 +547,9 @@
                     "opcode": "bnot64"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 10
+                    "opcode": "branch",
+                    "arg": 10,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "invoke",

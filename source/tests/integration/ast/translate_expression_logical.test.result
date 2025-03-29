@@ -224,8 +224,9 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 6
+                    "opcode": "branch",
+                    "arg": 6,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushu",
@@ -261,8 +262,9 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 8
+                    "opcode": "branch",
+                    "arg": 8,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -291,8 +293,9 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 7
+                    "opcode": "branch",
+                    "arg": 7,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -331,8 +334,9 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 8
+                    "opcode": "branch",
+                    "arg": 8,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -368,8 +372,9 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 11
+                    "opcode": "branch",
+                    "arg": 11,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushld",
@@ -411,8 +416,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 7
+                    "opcode": "branch",
+                    "arg": 7,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushu",
@@ -451,8 +457,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -484,8 +491,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 8
+                    "opcode": "branch",
+                    "arg": 8,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -527,8 +535,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -567,8 +576,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 12
+                    "opcode": "branch",
+                    "arg": 12,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushld",

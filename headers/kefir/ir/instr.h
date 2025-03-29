@@ -33,11 +33,17 @@
 
 #define KEFIR_IR_MEMORY_ORDER_SEQ_CST 1
 
+#define KEFIR_IR_BRANCH_CONDITION_8BIT 0
+#define KEFIR_IR_BRANCH_CONDITION_16BIT 1
+#define KEFIR_IR_BRANCH_CONDITION_32BIT 2
+#define KEFIR_IR_BRANCH_CONDITION_64BIT 3
+
 typedef struct kefir_irinstr {
     kefir_iropcode_t opcode;
     union {
         kefir_int64_t i64;
         kefir_uint64_t u64;
+        kefir_uint64_t u64_2[2];
         kefir_int32_t i32[4];
         kefir_uint32_t u32[4];
         kefir_float64_t f64;
@@ -59,6 +65,7 @@ kefir_result_t kefir_irblock_public_labels_iter(const struct kefir_irblock *, st
 kefir_result_t kefir_irblock_public_labels_next(struct kefir_hashtree_node_iterator *, const char **, kefir_size_t *);
 kefir_result_t kefir_irblock_appendi64(struct kefir_irblock *, kefir_iropcode_t, kefir_int64_t);
 kefir_result_t kefir_irblock_appendu64(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t);
+kefir_result_t kefir_irblock_appendu64_2(struct kefir_irblock *, kefir_iropcode_t, kefir_uint64_t, kefir_uint64_t);
 kefir_result_t kefir_irblock_appendi32(struct kefir_irblock *, kefir_iropcode_t, kefir_int32_t, kefir_int32_t);
 kefir_result_t kefir_irblock_appendu32(struct kefir_irblock *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t);
 kefir_result_t kefir_irblock_appendu32_4(struct kefir_irblock *, kefir_iropcode_t, kefir_uint32_t, kefir_uint32_t,

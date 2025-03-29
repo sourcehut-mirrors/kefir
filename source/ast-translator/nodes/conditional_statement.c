@@ -82,7 +82,7 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected condition type");
         }
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BRANCH8, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(
         mem, node->base.properties.statement_props.flow_control_statement->value.conditional.thenBranchEnd,
         builder->block, KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));

@@ -124,8 +124,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 11
+                    "opcode": "branch",
+                    "arg": 11,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -182,8 +183,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 12
+                    "opcode": "branch",
+                    "arg": 12,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -282,8 +284,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 14
+                    "opcode": "branch",
+                    "arg": 14,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -343,8 +346,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 28
+                    "opcode": "branch",
+                    "arg": 28,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushi",
@@ -438,8 +442,9 @@
                     "opcode": "bnot64"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushld",

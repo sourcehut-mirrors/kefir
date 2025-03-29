@@ -95,8 +95,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"
@@ -120,8 +121,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 16
+                    "opcode": "branch",
+                    "arg": 16,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"
@@ -145,8 +147,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 23
+                    "opcode": "branch",
+                    "arg": 23,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"
@@ -349,8 +352,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 9
+                    "opcode": "branch",
+                    "arg": 9,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"
@@ -431,8 +435,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 29
+                    "opcode": "branch",
+                    "arg": 29,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"
@@ -456,8 +461,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 36
+                    "opcode": "branch",
+                    "arg": 36,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pop"

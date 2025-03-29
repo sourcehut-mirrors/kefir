@@ -269,8 +269,8 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
                                                                       &node->base.source_location));
 
         const kefir_size_t successBranch = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_BRANCH8, 0));
-        ;
+        REQUIRE_OK(
+            KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
         if (preserve_fenv) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_FENV_CLEAR, 0));

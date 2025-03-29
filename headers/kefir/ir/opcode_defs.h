@@ -24,15 +24,11 @@
 #define KEFIR_IR_OPCODES_REVISION 1
 // clang-format off
 #define KEFIR_IR_OPCODE_DEFS(OPCODE, SEPARATOR) \
-    OPCODE(RESERVED,    "reserved",     none) SEPARATOR \
     /* Flow control */ \
     OPCODE(NOP,         "nop",          none) SEPARATOR \
     OPCODE(JMP,         "jmp",          coderef) SEPARATOR \
     OPCODE(IJMP,        "ijmp",         none) SEPARATOR \
-    OPCODE(BRANCH8,     "branch8",      coderef) SEPARATOR \
-    OPCODE(BRANCH16,    "branch16",     coderef) SEPARATOR \
-    OPCODE(BRANCH32,    "branch32",     coderef) SEPARATOR \
-    OPCODE(BRANCH64,    "branch64",     coderef) SEPARATOR \
+    OPCODE(BRANCH,      "branch",       branch) SEPARATOR \
     OPCODE(RET,         "ret",          none) SEPARATOR \
     OPCODE(INVOKE,      "invoke",       funcref) SEPARATOR \
     OPCODE(INVOKEV,     "invokev",      funcref) SEPARATOR \

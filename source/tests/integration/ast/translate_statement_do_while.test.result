@@ -216,8 +216,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch32",
-                    "arg": 5
+                    "opcode": "branch",
+                    "arg": 5,
+                    "condition": "32bit"
                 }
             ],
             "public_labels": []
@@ -249,8 +250,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 6
+                    "opcode": "branch",
+                    "arg": 6,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "jmp",
@@ -265,8 +267,9 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 0
+                    "opcode": "branch",
+                    "arg": 0,
+                    "condition": "8bit"
                 }
             ],
             "public_labels": []
@@ -298,8 +301,9 @@
                     "opcode": "bnot8"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 0
+                    "opcode": "branch",
+                    "arg": 0,
+                    "condition": "8bit"
                 }
             ],
             "public_labels": []

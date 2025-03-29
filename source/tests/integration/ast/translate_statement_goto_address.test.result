@@ -172,8 +172,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 23
+                    "opcode": "branch",
+                    "arg": 23,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushlabel",
@@ -273,8 +274,9 @@
                     "opcode": "bnot32"
                 },
                 {
-                    "opcode": "branch8",
-                    "arg": 8
+                    "opcode": "branch",
+                    "arg": 8,
+                    "condition": "8bit"
                 },
                 {
                     "opcode": "pushlabel",
