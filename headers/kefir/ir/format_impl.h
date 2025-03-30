@@ -40,12 +40,6 @@ kefir_result_t kefir_ir_format_instr_u32(struct kefir_json_output *, const struc
                                          const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_immediate(struct kefir_json_output *, const struct kefir_ir_module *,
                                                const struct kefir_irinstr *);
-kefir_result_t kefir_ir_format_instr_f32(struct kefir_json_output *, const struct kefir_ir_module *,
-                                         const struct kefir_irinstr *);
-kefir_result_t kefir_ir_format_instr_f64(struct kefir_json_output *, const struct kefir_ir_module *,
-                                         const struct kefir_irinstr *);
-kefir_result_t kefir_ir_format_instr_ldouble(struct kefir_json_output *, const struct kefir_ir_module *,
-                                             const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_typeref(struct kefir_json_output *, const struct kefir_ir_module *,
                                              const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_overflow_arith(struct kefir_json_output *, const struct kefir_ir_module *,
@@ -54,14 +48,10 @@ kefir_result_t kefir_ir_format_instr_identifier(struct kefir_json_output *, cons
                                                 const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_funcref(struct kefir_json_output *, const struct kefir_ir_module *,
                                              const struct kefir_irinstr *);
-kefir_result_t kefir_ir_format_instr_coderef(struct kefir_json_output *, const struct kefir_ir_module *,
-                                             const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_branch(struct kefir_json_output *, const struct kefir_ir_module *,
                                             const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_compare(struct kefir_json_output *, const struct kefir_ir_module *,
                                              const struct kefir_irinstr *);
-kefir_result_t kefir_ir_format_instr_string(struct kefir_json_output *, const struct kefir_ir_module *,
-                                            const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memflags(struct kefir_json_output *, const struct kefir_ir_module *,
                                               const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *, const struct kefir_ir_module *,
