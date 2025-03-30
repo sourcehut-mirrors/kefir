@@ -166,7 +166,8 @@
                     "arg": 1000
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bnot32"

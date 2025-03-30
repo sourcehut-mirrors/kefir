@@ -289,6 +289,128 @@ kefir_result_t kefir_ir_format_instr_branch(struct kefir_json_output *json, cons
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_instr_compare(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                             const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+    REQUIRE_OK(kefir_json_output_object_key(json, "comparison"));
+    switch (instr->arg.u64) {
+        case KEFIR_IR_COMPARE_INT8_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_lesser"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_lesser"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_lesser"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_lesser"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_above"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_above"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_above"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_ABOVE:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_above"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int8_below"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int16_below"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int32_below"));
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_BELOW:
+            REQUIRE_OK(kefir_json_output_string(json, "int64_below"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float32_lesser"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_EQUALS:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_equals"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_GREATER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_greater"));
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_LESSER:
+            REQUIRE_OK(kefir_json_output_string(json, "float64_lesser"));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR branch instruction condition variant");
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_instr_string(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                             const struct kefir_irinstr *instr) {
     UNUSED(module);

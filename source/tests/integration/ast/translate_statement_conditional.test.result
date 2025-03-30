@@ -278,7 +278,8 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bnot32"
@@ -340,7 +341,8 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bnot32"

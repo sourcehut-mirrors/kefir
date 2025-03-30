@@ -60,8 +60,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_XCHG, 1);       // [C-1, SZ]
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PICK, 1);       // [C-1, SZ, C-1]
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PUSHI64, 0);    // [C-1, SZ, C-1, 0]
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_IEQUALS64, 0);  // [C-1, SZ, C-1==0]
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_BNOT64, 0);     // [C-1, SZ, C-1!=0]
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_SCALAR_COMPARE,
+                                    KEFIR_IR_COMPARE_INT64_EQUALS);               // [C-1, SZ, C-1==0]
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_BNOT64, 0);  // [C-1, SZ, C-1!=0]
     kefir_irbuilder_block_appendu64_2(mem, &func->body, KEFIR_IROPCODE_BRANCH, 0,
                                       KEFIR_IR_BRANCH_CONDITION_8BIT);  // [C-1, SZ]
 

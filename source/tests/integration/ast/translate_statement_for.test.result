@@ -289,7 +289,8 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "bnot32"
@@ -432,7 +433,8 @@
                     "arg": 10
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "bnot32"

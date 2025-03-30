@@ -110,26 +110,7 @@
     OPCODE(IARSHIFT32,  "isar32",       none) SEPARATOR \
     OPCODE(IARSHIFT64,  "isar64",       none) SEPARATOR \
     /* Logics & coditions */ \
-    OPCODE(IEQUALS8,     "iequals8",      none) SEPARATOR \
-    OPCODE(IGREATER8,    "igreater8",     none) SEPARATOR \
-    OPCODE(ILESSER8,     "ilesser8",      none) SEPARATOR \
-    OPCODE(IABOVE8,      "iabove8",       none) SEPARATOR \
-    OPCODE(IBELOW8,      "ibelow8",       none) SEPARATOR \
-    OPCODE(IEQUALS16,    "iequals16",     none) SEPARATOR \
-    OPCODE(IGREATER16,   "igreater16",    none) SEPARATOR \
-    OPCODE(ILESSER16,    "ilesser16",     none) SEPARATOR \
-    OPCODE(IABOVE16,     "iabove16",      none) SEPARATOR \
-    OPCODE(IBELOW16,     "ibelow16",      none) SEPARATOR \
-    OPCODE(IEQUALS32,    "iequals32",     none) SEPARATOR \
-    OPCODE(IGREATER32,   "igreater32",    none) SEPARATOR \
-    OPCODE(ILESSER32,    "ilesser32",     none) SEPARATOR \
-    OPCODE(IABOVE32,     "iabove32",      none) SEPARATOR \
-    OPCODE(IBELOW32,     "ibelow32",      none) SEPARATOR \
-    OPCODE(IEQUALS64,    "iequals64",     none) SEPARATOR \
-    OPCODE(IGREATER64,   "igreater64",    none) SEPARATOR \
-    OPCODE(ILESSER64,    "ilesser64",     none) SEPARATOR \
-    OPCODE(IABOVE64,     "iabove64",      none) SEPARATOR \
-    OPCODE(IBELOW64,     "ibelow64",      none) SEPARATOR \
+    OPCODE(SCALAR_COMPARE, "scalar_compare", compare) SEPARATOR \
     OPCODE(BAND8,        "band8",         none) SEPARATOR \
     OPCODE(BAND16,       "band16",        none) SEPARATOR \
     OPCODE(BAND32,       "band32",        none) SEPARATOR \
@@ -197,12 +178,6 @@
     OPCODE(LDDIV,        "lddiv",       none) SEPARATOR \
     OPCODE(LDNEG,        "ldneg",       none) SEPARATOR \
     /* Floating-point comparison */ \
-    OPCODE(F32EQUALS,    "f32equals",   none) SEPARATOR \
-    OPCODE(F32GREATER,   "f32greater",  none) SEPARATOR \
-    OPCODE(F32LESSER,    "f32lesser",   none) SEPARATOR \
-    OPCODE(F64EQUALS,    "f64equals",   none) SEPARATOR \
-    OPCODE(F64GREATER,   "f64greater",  none) SEPARATOR \
-    OPCODE(F64LESSER,    "f64lesser",   none) SEPARATOR \
     OPCODE(LDEQUALS,     "ldequals",    none) SEPARATOR \
     OPCODE(LDGREATER,    "ldgreater",   none) SEPARATOR \
     OPCODE(LDLESSER,     "ldlesser",    none) SEPARATOR \

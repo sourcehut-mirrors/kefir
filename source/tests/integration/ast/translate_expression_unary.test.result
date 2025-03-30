@@ -788,7 +788,8 @@
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -805,7 +806,8 @@
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -822,7 +824,8 @@
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bnot8"

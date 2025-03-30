@@ -89,7 +89,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -115,7 +116,8 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -141,7 +143,8 @@
                     "arg": 3
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -346,7 +349,8 @@
                     "arg": -1
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -429,7 +433,8 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -455,7 +460,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"

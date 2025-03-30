@@ -186,7 +186,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_greater"
                 },
                 {
                     "opcode": "bnot32"

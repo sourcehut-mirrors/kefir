@@ -203,7 +203,8 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "pushi",
@@ -214,7 +215,8 @@
                     "arg": 90
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "pushi",
@@ -228,7 +230,8 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "pushi",
@@ -239,7 +242,8 @@
                     "arg": 955
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "pushf32",
@@ -253,7 +257,8 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "f32lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_lesser"
                 },
                 {
                     "opcode": "pushf32",
@@ -264,7 +269,8 @@
                     "arg": 0.001000
                 },
                 {
-                    "opcode": "f32lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_lesser"
                 },
                 {
                     "opcode": "pushf32",
@@ -278,7 +284,8 @@
                     "arg": 0.000001
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 },
                 {
                     "opcode": "pushf64",
@@ -295,7 +302,8 @@
                     "opcode": "intcf64"
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 },
                 {
                     "opcode": "pushf64",
@@ -306,7 +314,8 @@
                     "arg": 11.450000
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 }
             ],
             "public_labels": []
@@ -336,14 +345,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -365,14 +376,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -397,14 +410,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -426,14 +441,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ilesser32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -458,14 +475,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f32lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -487,14 +506,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f32lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -519,14 +540,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -554,14 +577,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -583,14 +608,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64lesser"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_lesser"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -612,7 +639,8 @@
                     "arg": 7
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -629,7 +657,8 @@
                     "arg": 100000
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -646,7 +675,8 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -660,7 +690,8 @@
                     "arg": 20000.000000
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -677,7 +708,8 @@
                     "arg": 1100.000000
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -691,7 +723,8 @@
                     "arg": 93871.100010
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -729,7 +762,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -760,7 +794,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -792,7 +827,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bnot8"
@@ -830,7 +866,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "getglobal",
@@ -858,7 +895,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "getlocal",
@@ -887,7 +925,8 @@
                     }
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 }
             ],
             "public_labels": []
@@ -909,7 +948,8 @@
                     "opcode": "extend32"
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "pushi",
@@ -920,7 +960,8 @@
                     "arg": 80
                 },
                 {
-                    "opcode": "igreater32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_greater"
                 },
                 {
                     "opcode": "pushi",
@@ -934,7 +975,8 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "pushi",
@@ -945,7 +987,8 @@
                     "arg": 900
                 },
                 {
-                    "opcode": "igreater32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_greater"
                 },
                 {
                     "opcode": "pushf32",
@@ -959,7 +1002,8 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "f32greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_greater"
                 },
                 {
                     "opcode": "pushf32",
@@ -970,7 +1014,8 @@
                     "arg": 0.007000
                 },
                 {
-                    "opcode": "f32greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_greater"
                 },
                 {
                     "opcode": "pushf32",
@@ -984,7 +1029,8 @@
                     "arg": 0.004000
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 },
                 {
                     "opcode": "pushf64",
@@ -1001,7 +1047,8 @@
                     "opcode": "intcf64"
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 },
                 {
                     "opcode": "pushf64",
@@ -1012,7 +1059,8 @@
                     "arg": 18.002000
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 }
             ],
             "public_labels": []
@@ -1047,7 +1095,8 @@
                     }
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "getlocal",
@@ -1076,7 +1125,8 @@
                     }
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "getglobal",
@@ -1111,14 +1161,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1158,14 +1210,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "ibelow64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_below"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1195,7 +1249,8 @@
                     }
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "getlocal",
@@ -1224,7 +1279,8 @@
                     }
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "getglobal",
@@ -1259,14 +1315,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1306,14 +1364,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1335,7 +1395,8 @@
                     "arg": 67
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "pushi",
@@ -1349,7 +1410,8 @@
                     "arg": 1010
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "pushf32",
@@ -1363,7 +1425,8 @@
                     "opcode": "intcf32"
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "pushf32",
@@ -1374,7 +1437,8 @@
                     "arg": 1.230600
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "pushf32",
@@ -1388,7 +1452,8 @@
                     "arg": 0.077001
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "pushf64",
@@ -1399,7 +1464,8 @@
                     "arg": 3529.001000
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 }
             ],
             "public_labels": []
@@ -1429,14 +1495,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1458,14 +1526,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1490,14 +1560,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "iabove64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_above"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals64"
+                    "opcode": "scalar_compare",
+                    "comparison": "int64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1519,14 +1591,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "igreater32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "iequals32"
+                    "opcode": "scalar_compare",
+                    "comparison": "int32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1551,14 +1625,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f32greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1580,14 +1656,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f32greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f32equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float32_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1612,14 +1690,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1647,14 +1727,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
@@ -1676,14 +1758,16 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "f64greater"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_greater"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 2
                 },
                 {
-                    "opcode": "f64equals"
+                    "opcode": "scalar_compare",
+                    "comparison": "float64_equals"
                 },
                 {
                     "opcode": "bor64"
