@@ -85,7 +85,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
@@ -94,15 +94,15 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 5
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 }
             ],
@@ -114,11 +114,11 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 7.450000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.000000
                 },
                 {
@@ -126,7 +126,7 @@
                     "comparison": "float32_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -134,18 +134,18 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 9
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -160,7 +160,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -172,21 +172,21 @@
                     "condition": "64bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf64"
+                    "opcode": "int_to_float64"
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 12
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 97
                 },
                 {
@@ -195,19 +195,19 @@
                     "condition": "32bit"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.100000
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 12
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 4.510000
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 }
             ],
             "public_labels": []
@@ -218,7 +218,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
@@ -234,11 +234,11 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 6
                 }
             ],

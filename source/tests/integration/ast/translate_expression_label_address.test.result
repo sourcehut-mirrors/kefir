@@ -33,21 +33,21 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 4
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 2
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 0
                 },
                 {

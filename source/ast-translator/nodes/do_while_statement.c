@@ -61,19 +61,19 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, beginning,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, beginning,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_16BIT));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, beginning,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_32BIT));
             break;
 
@@ -82,13 +82,13 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, beginning,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_64BIT));
             break;
 
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, controlling_expr_type));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, beginning,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
     }

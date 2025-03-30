@@ -133,7 +133,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 }
             ],
@@ -145,21 +145,21 @@
             "locals": 3,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 10000000000.000000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 210000.000000
                 }
             ],
@@ -171,21 +171,21 @@
             "locals": 6,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 210000.000000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 66536
                 }
             ],
@@ -197,28 +197,28 @@
             "locals": 9,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 210000.000000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 66536
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000122
                 }
             ],
@@ -230,21 +230,21 @@
             "locals": 12,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 120
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.300000
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 16
                 }
             ],
@@ -256,21 +256,21 @@
             "locals": 15,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 120
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.000560
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 65534
                 },
                 {

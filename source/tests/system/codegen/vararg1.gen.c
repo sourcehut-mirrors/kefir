@@ -80,13 +80,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, printint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, printint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
-    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IROPCODE_GETGLOBAL, result_id);  // 0: [I, R*]
-    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_PICK, 0);               // 1: [I, R*, R*]
-    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IROPCODE_GETGLOBAL, fmt_id);     // 2: [I, R*, R*, F*]
-    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_PICK, 3);  // 3: [I, R*, R*, F*, I]
-    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IROPCODE_INVOKE, sprintf_decl->id);  // 4: [I, R*, O]
-    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_POP, 0);                    // 5: [I, R*]
-    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IROPCODE_RET, 0);                    // 5: [I, R*]
+    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IR_OPCODE_GET_GLOBAL, result_id);  // 0: [I, R*]
+    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IR_OPCODE_PICK, 0);                // 1: [I, R*, R*]
+    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IR_OPCODE_GET_GLOBAL, fmt_id);     // 2: [I, R*, R*, F*]
+    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IR_OPCODE_PICK, 3);  // 3: [I, R*, R*, F*, I]
+    kefir_irbuilder_block_appendu64(mem, &printint->body, KEFIR_IR_OPCODE_INVOKE, sprintf_decl->id);  // 4: [I, R*, O]
+    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IR_OPCODE_POP, 0);                    // 5: [I, R*]
+    kefir_irbuilder_block_appendi64(mem, &printint->body, KEFIR_IR_OPCODE_RETURN, 0);                 // 5: [I, R*]
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sprintf_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sprintf_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));

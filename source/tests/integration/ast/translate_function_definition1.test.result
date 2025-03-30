@@ -145,7 +145,7 @@
             "locals": 5,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 5,
                         "index": 1
@@ -156,13 +156,13 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 5,
                         "index": 0
@@ -173,42 +173,42 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 5,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 5,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []

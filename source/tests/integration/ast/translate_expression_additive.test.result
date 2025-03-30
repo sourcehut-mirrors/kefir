@@ -197,48 +197,48 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 120
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 89
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -99
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -1
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1001
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100500
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 200600
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 }
             ],
             "public_labels": []
@@ -249,122 +249,122 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 16
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 200
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 9
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 42
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 }
             ],
             "public_labels": []
@@ -375,100 +375,100 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 67
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -5
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 101
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 }
             ],
             "public_labels": []
@@ -479,51 +479,51 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 99
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 97
                 },
                 {
-                    "opcode": "isub32"
+                    "opcode": "int32_sub"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -50
                 },
                 {
-                    "opcode": "isub32"
+                    "opcode": "int32_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 123456
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 98765
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 }
             ],
             "public_labels": []
@@ -534,100 +534,100 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 128
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 64
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "idiv64"
+                    "opcode": "int64_div"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1024
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 32
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "idiv64"
+                    "opcode": "int64_div"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 256
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "idiv64"
+                    "opcode": "int64_div"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "isub64"
+                    "opcode": "int64_sub"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "idiv64"
+                    "opcode": "int64_div"
                 }
             ],
             "public_labels": []
@@ -638,102 +638,102 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 69
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 5.004500
                 },
                 {
-                    "opcode": "f32sub"
+                    "opcode": "float32_sub"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 92
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "f32sub"
+                    "opcode": "float32_sub"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 5.110000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 2.030000
                 },
                 {
-                    "opcode": "f32sub"
+                    "opcode": "float32_sub"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2048
                 },
                 {
-                    "opcode": "intcf64"
+                    "opcode": "int_to_float64"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 100000.000000
                 },
                 {
-                    "opcode": "f64sub"
+                    "opcode": "float64_sub"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.000100
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.000020
                 },
                 {
-                    "opcode": "f64sub"
+                    "opcode": "float64_sub"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 6.010000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.300000
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 },
                 {
-                    "opcode": "f64sub"
+                    "opcode": "float64_sub"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.005000
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.004000
                 },
                 {
-                    "opcode": "f64sub"
+                    "opcode": "float64_sub"
                 }
             ],
             "public_labels": []
@@ -744,88 +744,88 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 1.420000
                 },
                 {
-                    "opcode": "f32add"
+                    "opcode": "float32_add"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.763000
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "f32add"
+                    "opcode": "float32_add"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 3.141000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 2.718000
                 },
                 {
-                    "opcode": "f32add"
+                    "opcode": "float32_add"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 100.000100
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "intcf64"
+                    "opcode": "int_to_float64"
                 },
                 {
-                    "opcode": "f64add"
+                    "opcode": "float64_add"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.000100
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 0.020000
                 },
                 {
-                    "opcode": "f64add"
+                    "opcode": "float64_add"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 6492.000540
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 92.315000
                 },
                 {
-                    "opcode": "f64add"
+                    "opcode": "float64_add"
                 }
             ],
             "public_labels": []

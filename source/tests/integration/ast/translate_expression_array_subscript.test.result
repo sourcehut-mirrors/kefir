@@ -85,105 +85,105 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "array1"
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 5
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "array1"
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 11
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 12
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }

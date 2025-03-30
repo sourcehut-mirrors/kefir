@@ -432,11 +432,11 @@ kefir_result_t kefir_ast_translate_inline_assembly(struct kefir_mem *mem, const 
                 kefir_ir_inline_assembly_add_clobber(mem, context->ast_context->symbols, ir_inline_asm, clobber));
         }
 
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_INLINEASM, ir_inline_asm_id));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INLINE_ASSEMBLY, ir_inline_asm_id));
 
         if (!kefir_hashtree_empty(&inline_asm->base.properties.inline_assembly.branching_point->branches)) {
             kefir_size_t patch_index = kefir_irblock_length(builder->block);
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_JMP, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
             struct kefir_hashtree_node_iterator iter;
             for (const struct kefir_hashtree_node *node =
                      kefir_hashtree_iter(&inline_asm->base.properties.inline_assembly.branching_point->branches, &iter);

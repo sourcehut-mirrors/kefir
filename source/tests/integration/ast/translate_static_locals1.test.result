@@ -147,7 +147,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -158,11 +158,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -171,20 +171,20 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "__kefir_function_fn_static_value_0"
                     }
@@ -194,7 +194,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -208,7 +208,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
                     "opcode": "xchg",
@@ -219,7 +219,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -228,19 +228,19 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "__kefir_function_fn_static_value_0"
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []

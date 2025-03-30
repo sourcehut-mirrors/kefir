@@ -41,22 +41,22 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
         start_new_block = false;
 
         switch (instr->opcode) {
-            case KEFIR_IROPCODE_PUSHLABEL:
+            case KEFIR_IR_OPCODE_BLOCK_LABEL:
                 REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, instr->arg.u64));
                 REQUIRE_OK(kefir_opt_constructor_mark_code_block_for_indirect_jump(mem, state, instr->arg.u64));
                 break;
 
-            case KEFIR_IROPCODE_JMP:
-            case KEFIR_IROPCODE_BRANCH:
+            case KEFIR_IR_OPCODE_JUMP:
+            case KEFIR_IR_OPCODE_BRANCH:
                 REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, instr->arg.u64));
                 // Fallthrough
 
-            case KEFIR_IROPCODE_IJMP:
-            case KEFIR_IROPCODE_RET:
+            case KEFIR_IR_OPCODE_IJUMP:
+            case KEFIR_IR_OPCODE_RETURN:
                 start_new_block = true;
                 break;
 
-            case KEFIR_IROPCODE_INLINEASM: {
+            case KEFIR_IR_OPCODE_INLINE_ASSEMBLY: {
                 const struct kefir_ir_inline_assembly *inline_asm =
                     kefir_ir_module_get_inline_assembly(module->ir_module, instr->arg.i64);
                 REQUIRE(inline_asm != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR inline assembly"));
@@ -217,14 +217,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     kefir_opt_instruction_ref_t instr_ref, instr_ref2, instr_ref3, instr_ref4;
     const kefir_opt_block_id_t current_block_id = state->current_block->block_id;
     switch (instr->opcode) {
-        case KEFIR_IROPCODE_JMP: {
+        case KEFIR_IR_OPCODE_JUMP: {
             struct kefir_opt_constructor_code_block_state *jump_target_block = NULL;
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
             REQUIRE_OK(
                 kefir_opt_code_builder_finalize_jump(mem, code, current_block_id, jump_target_block->block_id, NULL));
         } break;
 
-        case KEFIR_IROPCODE_BRANCH: {
+        case KEFIR_IR_OPCODE_BRANCH: {
             struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
             kefir_opt_branch_condition_variant_t condition_variant;
             switch (instr->arg.u64_2[1]) {
@@ -255,12 +255,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                                               NULL));
         } break;
 
-        case KEFIR_IROPCODE_IJMP:
+        case KEFIR_IR_OPCODE_IJUMP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_finalize_indirect_jump(mem, code, current_block_id, instr_ref, NULL));
             break;
 
-        case KEFIR_IROPCODE_RET:
+        case KEFIR_IR_OPCODE_RETURN:
             instr_ref = KEFIR_ID_NONE;
             if (kefir_ir_type_length(state->function->ir_func->declaration->result) > 0) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
@@ -268,87 +268,87 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, code, current_block_id, instr_ref, NULL));
             break;
 
-        case KEFIR_IROPCODE_PUSHI64:
+        case KEFIR_IR_OPCODE_INT_CONST:
             REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, current_block_id, instr->arg.i64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHU64:
+        case KEFIR_IR_OPCODE_UINT_CONST:
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, code, current_block_id, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHF32:
+        case KEFIR_IR_OPCODE_FLOAT32_CONST:
             REQUIRE_OK(
                 kefir_opt_code_builder_float32_constant(mem, code, current_block_id, instr->arg.f32[0], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHF64:
+        case KEFIR_IR_OPCODE_FLOAT64_CONST:
             REQUIRE_OK(
                 kefir_opt_code_builder_float64_constant(mem, code, current_block_id, instr->arg.f64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHLD:
+        case KEFIR_IR_OPCODE_LONG_DOUBLE_CONST:
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(mem, code, current_block_id, instr->arg.long_double,
                                                                    &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHSTRING:
+        case KEFIR_IR_OPCODE_STRING_REF:
             REQUIRE_OK(
                 kefir_opt_code_builder_string_reference(mem, code, current_block_id, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHLABEL: {
+        case KEFIR_IR_OPCODE_BLOCK_LABEL: {
             struct kefir_opt_constructor_code_block_state *block = NULL;
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &block));
             REQUIRE_OK(kefir_opt_code_builder_block_label(mem, code, current_block_id, block->block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_PLACEHI64:
+        case KEFIR_IR_OPCODE_INT_PLACEHOLDER:
             REQUIRE_OK(kefir_opt_code_builder_int_placeholder(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PLACEHF32:
+        case KEFIR_IR_OPCODE_FLOAT32_PLACEHOLDER:
             REQUIRE_OK(kefir_opt_code_builder_float32_placeholder(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PLACEHF64:
+        case KEFIR_IR_OPCODE_FLOAT64_PLACEHOLDER:
             REQUIRE_OK(kefir_opt_code_builder_float64_placeholder(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PICK:
+        case KEFIR_IR_OPCODE_PICK:
             REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_POP:
+        case KEFIR_IR_OPCODE_POP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             break;
 
-        case KEFIR_IROPCODE_XCHG:
+        case KEFIR_IR_OPCODE_XCHG:
             REQUIRE_OK(kefir_opt_constructor_stack_exchange(mem, state, instr->arg.u64));
             break;
 
-        case KEFIR_IROPCODE_GETGLOBAL:
+        case KEFIR_IR_OPCODE_GET_GLOBAL:
             REQUIRE_OK(kefir_opt_code_builder_get_global(mem, code, current_block_id, instr->arg.u64, 0, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_GETTHRLOCAL:
+        case KEFIR_IR_OPCODE_GET_THREAD_LOCAL:
             REQUIRE_OK(
                 kefir_opt_code_builder_get_thread_local(mem, code, current_block_id, instr->arg.u64, 0, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_GETLOCAL:
+        case KEFIR_IR_OPCODE_GET_LOCAL:
             REQUIRE(instr->arg.u32[0] == state->function->locals.type_id,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                     "Expected IR operation type reference to correspond to IR function local type"));
@@ -357,21 +357,21 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_EXTSBITS:
+        case KEFIR_IR_OPCODE_BITS_EXTRACT_SIGNED:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, code, current_block_id, instr_ref2,
                                                                   instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_EXTUBITS:
+        case KEFIR_IR_OPCODE_BITS_EXTRACT_UNSIGNED:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, code, current_block_id, instr_ref2,
                                                                     instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_INSERTBITS:
+        case KEFIR_IR_OPCODE_BITS_INSERT:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_code_builder_bits_insert(mem, code, current_block_id, instr_ref3, instr_ref2,
@@ -379,14 +379,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_BZERO:
+        case KEFIR_IR_OPCODE_ZERO_MEMORY:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_zero_memory(mem, code, current_block_id, instr_ref2, instr->arg.u32[0],
                                                           instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_BCOPY:
+        case KEFIR_IR_OPCODE_COPY_MEMORY:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, code, current_block_id, instr_ref3, instr_ref2,
@@ -394,19 +394,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_VARARG_START:
+        case KEFIR_IR_OPCODE_VARARG_START:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_vararg_start(mem, code, current_block_id, instr_ref2, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_VARARG_END:
+        case KEFIR_IR_OPCODE_VARARG_END:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_vararg_end(mem, code, current_block_id, instr_ref2, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_VARARG_GET:
+        case KEFIR_IR_OPCODE_VARARG_GET:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_vararg_get(mem, code, current_block_id, instr_ref2, instr->arg.u32[0],
                                                          instr->arg.u32[1], &instr_ref));
@@ -414,7 +414,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_VARARG_COPY:
+        case KEFIR_IR_OPCODE_VARARG_COPY:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(
@@ -422,7 +422,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_ALLOCA:
+        case KEFIR_IR_OPCODE_STACK_ALLOC:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_code_builder_stack_alloc(mem, code, current_block_id, instr_ref3, instr_ref2,
@@ -430,19 +430,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_PUSHSCOPE:
+        case KEFIR_IR_OPCODE_SCOPE_PUSH:
             REQUIRE_OK(kefir_opt_code_builder_scope_push(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_POPSCOPE:
+        case KEFIR_IR_OPCODE_SCOPE_POP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_scope_pop(mem, code, current_block_id, instr_ref2, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_INVOKE: {
+        case KEFIR_IR_OPCODE_INVOKE: {
             const struct kefir_ir_function_decl *ir_decl =
                 kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
             REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
@@ -464,7 +464,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             }
         } break;
 
-        case KEFIR_IROPCODE_INVOKEV: {
+        case KEFIR_IR_OPCODE_INVOKE_VIRTUAL: {
             const struct kefir_ir_function_decl *ir_decl =
                 kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
             REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
@@ -488,25 +488,25 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             }
         } break;
 
-        case KEFIR_IROPCODE_NOP:
+        case KEFIR_IR_OPCODE_NOP:
             break;
 
-        case KEFIR_IROPCODE_INLINEASM:
+        case KEFIR_IR_OPCODE_INLINE_ASSEMBLY:
             REQUIRE_OK(construct_inline_asm(mem, module, code, state, instr));
             break;
 
-        case KEFIR_IROPCODE_FENV_SAVE:
+        case KEFIR_IR_OPCODE_FENV_SAVE:
             REQUIRE_OK(kefir_opt_code_builder_fenv_save(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_FENV_CLEAR:
+        case KEFIR_IR_OPCODE_FENV_CLEAR:
             REQUIRE_OK(kefir_opt_code_builder_fenv_clear(mem, code, current_block_id, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IROPCODE_FENV_UPDATE:
+        case KEFIR_IR_OPCODE_FENV_UPDATE:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_fenv_update(mem, code, current_block_id, instr_ref2, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
@@ -519,69 +519,69 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                           \
         break;
 
-            UNARY_OP(int8_not, KEFIR_IROPCODE_INOT8)
-            UNARY_OP(int16_not, KEFIR_IROPCODE_INOT16)
-            UNARY_OP(int32_not, KEFIR_IROPCODE_INOT32)
-            UNARY_OP(int64_not, KEFIR_IROPCODE_INOT64)
-            UNARY_OP(int8_neg, KEFIR_IROPCODE_INEG8)
-            UNARY_OP(int16_neg, KEFIR_IROPCODE_INEG16)
-            UNARY_OP(int32_neg, KEFIR_IROPCODE_INEG32)
-            UNARY_OP(int64_neg, KEFIR_IROPCODE_INEG64)
-            UNARY_OP(int8_bool_not, KEFIR_IROPCODE_BNOT8)
-            UNARY_OP(int16_bool_not, KEFIR_IROPCODE_BNOT16)
-            UNARY_OP(int32_bool_not, KEFIR_IROPCODE_BNOT32)
-            UNARY_OP(int64_bool_not, KEFIR_IROPCODE_BNOT64)
+            UNARY_OP(int8_not, KEFIR_IR_OPCODE_INT8_NOT)
+            UNARY_OP(int16_not, KEFIR_IR_OPCODE_INT16_NOT)
+            UNARY_OP(int32_not, KEFIR_IR_OPCODE_INT32_NOT)
+            UNARY_OP(int64_not, KEFIR_IR_OPCODE_INT64_NOT)
+            UNARY_OP(int8_neg, KEFIR_IR_OPCODE_INT8_NEG)
+            UNARY_OP(int16_neg, KEFIR_IR_OPCODE_INT16_NEG)
+            UNARY_OP(int32_neg, KEFIR_IR_OPCODE_INT32_NEG)
+            UNARY_OP(int64_neg, KEFIR_IR_OPCODE_INT64_NEG)
+            UNARY_OP(int8_bool_not, KEFIR_IR_OPCODE_INT8_BOOL_NOT)
+            UNARY_OP(int16_bool_not, KEFIR_IR_OPCODE_INT16_BOOL_NOT)
+            UNARY_OP(int32_bool_not, KEFIR_IR_OPCODE_INT32_BOOL_NOT)
+            UNARY_OP(int64_bool_not, KEFIR_IR_OPCODE_INT64_BOOL_NOT)
 
-            UNARY_OP(int8_to_bool, KEFIR_IROPCODE_TOBOOL8)
-            UNARY_OP(int16_to_bool, KEFIR_IROPCODE_TOBOOL16)
-            UNARY_OP(int32_to_bool, KEFIR_IROPCODE_TOBOOL32)
-            UNARY_OP(int64_to_bool, KEFIR_IROPCODE_TOBOOL64)
-            UNARY_OP(int64_sign_extend_8bits, KEFIR_IROPCODE_EXTEND8)
-            UNARY_OP(int64_sign_extend_16bits, KEFIR_IROPCODE_EXTEND16)
-            UNARY_OP(int64_sign_extend_32bits, KEFIR_IROPCODE_EXTEND32)
+            UNARY_OP(int8_to_bool, KEFIR_IR_OPCODE_INT8_TO_BOOL)
+            UNARY_OP(int16_to_bool, KEFIR_IR_OPCODE_INT16_TO_BOOL)
+            UNARY_OP(int32_to_bool, KEFIR_IR_OPCODE_INT32_TO_BOOL)
+            UNARY_OP(int64_to_bool, KEFIR_IR_OPCODE_INT64_TO_BOOL)
+            UNARY_OP(int64_sign_extend_8bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS)
+            UNARY_OP(int64_sign_extend_16bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS)
+            UNARY_OP(int64_sign_extend_32bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS)
 
-            UNARY_OP(float32_neg, KEFIR_IROPCODE_F32NEG)
-            UNARY_OP(float64_neg, KEFIR_IROPCODE_F64NEG)
+            UNARY_OP(float32_neg, KEFIR_IR_OPCODE_FLOAT32_NEG)
+            UNARY_OP(float64_neg, KEFIR_IR_OPCODE_FLOAT64_NEG)
 
-            UNARY_OP(float32_to_int, KEFIR_IROPCODE_F32CINT)
-            UNARY_OP(float64_to_int, KEFIR_IROPCODE_F64CINT)
-            UNARY_OP(float32_to_uint, KEFIR_IROPCODE_F32CUINT)
-            UNARY_OP(float64_to_uint, KEFIR_IROPCODE_F64CUINT)
-            UNARY_OP(int_to_float32, KEFIR_IROPCODE_INTCF32)
-            UNARY_OP(int_to_float64, KEFIR_IROPCODE_INTCF64)
-            UNARY_OP(uint_to_float32, KEFIR_IROPCODE_UINTCF32)
-            UNARY_OP(uint_to_float64, KEFIR_IROPCODE_UINTCF64)
-            UNARY_OP(float32_to_float64, KEFIR_IROPCODE_F32CF64)
-            UNARY_OP(float64_to_float32, KEFIR_IROPCODE_F64CF32)
-            UNARY_OP(long_double_to_int, KEFIR_IROPCODE_LDCINT)
-            UNARY_OP(long_double_to_uint, KEFIR_IROPCODE_LDCUINT)
-            UNARY_OP(long_double_to_float32, KEFIR_IROPCODE_LDCF32)
-            UNARY_OP(long_double_to_float64, KEFIR_IROPCODE_LDCF64)
+            UNARY_OP(float32_to_int, KEFIR_IR_OPCODE_FLOAT32_TO_INT)
+            UNARY_OP(float64_to_int, KEFIR_IR_OPCODE_FLOAT64_TO_INT)
+            UNARY_OP(float32_to_uint, KEFIR_IR_OPCODE_FLOAT32_TO_UINT)
+            UNARY_OP(float64_to_uint, KEFIR_IR_OPCODE_FLOAT64_TO_UINT)
+            UNARY_OP(int_to_float32, KEFIR_IR_OPCODE_INT_TO_FLOAT32)
+            UNARY_OP(int_to_float64, KEFIR_IR_OPCODE_INT_TO_FLOAT64)
+            UNARY_OP(uint_to_float32, KEFIR_IR_OPCODE_UINT_TO_FLOAT32)
+            UNARY_OP(uint_to_float64, KEFIR_IR_OPCODE_UINT_TO_FLOAT64)
+            UNARY_OP(float32_to_float64, KEFIR_IR_OPCODE_FLOAT32_TO_FLOAT64)
+            UNARY_OP(float64_to_float32, KEFIR_IR_OPCODE_FLOAT64_TO_FLOAT32)
+            UNARY_OP(long_double_to_int, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_INT)
+            UNARY_OP(long_double_to_uint, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_UINT)
+            UNARY_OP(long_double_to_float32, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT32)
+            UNARY_OP(long_double_to_float64, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_FLOAT64)
 
-            UNARY_OP(long_double_neg, KEFIR_IROPCODE_LDNEG)
-            UNARY_OP(int_to_long_double, KEFIR_IROPCODE_INTCLD)
-            UNARY_OP(uint_to_long_double, KEFIR_IROPCODE_UINTCLD)
-            UNARY_OP(float32_to_long_double, KEFIR_IROPCODE_F32CLD)
-            UNARY_OP(float64_to_long_double, KEFIR_IROPCODE_F64CLD)
+            UNARY_OP(long_double_neg, KEFIR_IR_OPCODE_LONG_DOUBLE_NEG)
+            UNARY_OP(int_to_long_double, KEFIR_IR_OPCODE_INT_TO_LONG_DOUBLE)
+            UNARY_OP(uint_to_long_double, KEFIR_IR_OPCODE_UINT_TO_LONG_DOUBLE)
+            UNARY_OP(float32_to_long_double, KEFIR_IR_OPCODE_FLOAT32_TO_LONG_DOUBLE)
+            UNARY_OP(float64_to_long_double, KEFIR_IR_OPCODE_FLOAT64_TO_LONG_DOUBLE)
 
-            UNARY_OP(complex_float32_real, KEFIR_IROPCODE_CMPF32R)
-            UNARY_OP(complex_float32_imaginary, KEFIR_IROPCODE_CMPF32I)
-            UNARY_OP(complex_float64_real, KEFIR_IROPCODE_CMPF64R)
-            UNARY_OP(complex_float64_imaginary, KEFIR_IROPCODE_CMPF64I)
-            UNARY_OP(complex_long_double_real, KEFIR_IROPCODE_CMPLDR)
-            UNARY_OP(complex_long_double_imaginary, KEFIR_IROPCODE_CMPLDI)
+            UNARY_OP(complex_float32_real, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_REAL)
+            UNARY_OP(complex_float32_imaginary, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_IMAGINARY)
+            UNARY_OP(complex_float64_real, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_REAL)
+            UNARY_OP(complex_float64_imaginary, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_IMAGINARY)
+            UNARY_OP(complex_long_double_real, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_REAL)
+            UNARY_OP(complex_long_double_imaginary, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_IMAGINARY)
 
-            UNARY_OP(complex_float32_truncate_1bit, KEFIR_IROPCODE_CMPF32TRUNC1)
-            UNARY_OP(complex_float64_truncate_1bit, KEFIR_IROPCODE_CMPF64TRUNC1)
-            UNARY_OP(complex_long_double_truncate_1bit, KEFIR_IROPCODE_CMPLDTRUNC1)
+            UNARY_OP(complex_float32_truncate_1bit, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_TRUNCATE_1BIT)
+            UNARY_OP(complex_float64_truncate_1bit, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT)
+            UNARY_OP(complex_long_double_truncate_1bit, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT)
 
-            UNARY_OP(complex_float32_neg, KEFIR_IROPCODE_CMPF32NEG)
-            UNARY_OP(complex_float64_neg, KEFIR_IROPCODE_CMPF64NEG)
-            UNARY_OP(complex_long_double_neg, KEFIR_IROPCODE_CMPLDNEG)
+            UNARY_OP(complex_float32_neg, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_NEG)
+            UNARY_OP(complex_float64_neg, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_NEG)
+            UNARY_OP(complex_long_double_neg, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_NEG)
 
 #undef UNARY_OP
 
-        case KEFIR_IROPCODE_SCALAR_COMPARE: {
+        case KEFIR_IR_OPCODE_SCALAR_COMPARE: {
             kefir_opt_comparison_operation_t compare_op;
             switch (instr->arg.u64) {
                 case KEFIR_IR_COMPARE_INT8_EQUALS:
@@ -708,109 +708,109 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                       \
         break;
 
-            BINARY_OP(int8_add, KEFIR_IROPCODE_IADD8)
-            BINARY_OP(int16_add, KEFIR_IROPCODE_IADD16)
-            BINARY_OP(int32_add, KEFIR_IROPCODE_IADD32)
-            BINARY_OP(int64_add, KEFIR_IROPCODE_IADD64)
-            BINARY_OP(int8_sub, KEFIR_IROPCODE_ISUB8)
-            BINARY_OP(int16_sub, KEFIR_IROPCODE_ISUB16)
-            BINARY_OP(int32_sub, KEFIR_IROPCODE_ISUB32)
-            BINARY_OP(int64_sub, KEFIR_IROPCODE_ISUB64)
-            BINARY_OP(int8_mul, KEFIR_IROPCODE_IMUL8)
-            BINARY_OP(int16_mul, KEFIR_IROPCODE_IMUL16)
-            BINARY_OP(int32_mul, KEFIR_IROPCODE_IMUL32)
-            BINARY_OP(int64_mul, KEFIR_IROPCODE_IMUL64)
-            BINARY_OP(uint8_mul, KEFIR_IROPCODE_UMUL8)
-            BINARY_OP(uint16_mul, KEFIR_IROPCODE_UMUL16)
-            BINARY_OP(uint32_mul, KEFIR_IROPCODE_UMUL32)
-            BINARY_OP(uint64_mul, KEFIR_IROPCODE_UMUL64)
-            BINARY_OP(int8_div, KEFIR_IROPCODE_IDIV8)
-            BINARY_OP(int16_div, KEFIR_IROPCODE_IDIV16)
-            BINARY_OP(int32_div, KEFIR_IROPCODE_IDIV32)
-            BINARY_OP(int64_div, KEFIR_IROPCODE_IDIV64)
-            BINARY_OP(int8_mod, KEFIR_IROPCODE_IMOD8)
-            BINARY_OP(int16_mod, KEFIR_IROPCODE_IMOD16)
-            BINARY_OP(int32_mod, KEFIR_IROPCODE_IMOD32)
-            BINARY_OP(int64_mod, KEFIR_IROPCODE_IMOD64)
-            BINARY_OP(uint8_div, KEFIR_IROPCODE_UDIV8)
-            BINARY_OP(uint16_div, KEFIR_IROPCODE_UDIV16)
-            BINARY_OP(uint32_div, KEFIR_IROPCODE_UDIV32)
-            BINARY_OP(uint64_div, KEFIR_IROPCODE_UDIV64)
-            BINARY_OP(uint8_mod, KEFIR_IROPCODE_UMOD8)
-            BINARY_OP(uint16_mod, KEFIR_IROPCODE_UMOD16)
-            BINARY_OP(uint32_mod, KEFIR_IROPCODE_UMOD32)
-            BINARY_OP(uint64_mod, KEFIR_IROPCODE_UMOD64)
-            BINARY_OP(int8_and, KEFIR_IROPCODE_IAND8)
-            BINARY_OP(int16_and, KEFIR_IROPCODE_IAND16)
-            BINARY_OP(int32_and, KEFIR_IROPCODE_IAND32)
-            BINARY_OP(int64_and, KEFIR_IROPCODE_IAND64)
-            BINARY_OP(int8_or, KEFIR_IROPCODE_IOR8)
-            BINARY_OP(int16_or, KEFIR_IROPCODE_IOR16)
-            BINARY_OP(int32_or, KEFIR_IROPCODE_IOR32)
-            BINARY_OP(int64_or, KEFIR_IROPCODE_IOR64)
-            BINARY_OP(int8_xor, KEFIR_IROPCODE_IXOR8)
-            BINARY_OP(int16_xor, KEFIR_IROPCODE_IXOR16)
-            BINARY_OP(int32_xor, KEFIR_IROPCODE_IXOR32)
-            BINARY_OP(int64_xor, KEFIR_IROPCODE_IXOR64)
-            BINARY_OP(int8_lshift, KEFIR_IROPCODE_ILSHIFT8)
-            BINARY_OP(int16_lshift, KEFIR_IROPCODE_ILSHIFT16)
-            BINARY_OP(int32_lshift, KEFIR_IROPCODE_ILSHIFT32)
-            BINARY_OP(int64_lshift, KEFIR_IROPCODE_ILSHIFT64)
-            BINARY_OP(int8_rshift, KEFIR_IROPCODE_IRSHIFT8)
-            BINARY_OP(int16_rshift, KEFIR_IROPCODE_IRSHIFT16)
-            BINARY_OP(int32_rshift, KEFIR_IROPCODE_IRSHIFT32)
-            BINARY_OP(int64_rshift, KEFIR_IROPCODE_IRSHIFT64)
-            BINARY_OP(int8_arshift, KEFIR_IROPCODE_IARSHIFT8)
-            BINARY_OP(int16_arshift, KEFIR_IROPCODE_IARSHIFT16)
-            BINARY_OP(int32_arshift, KEFIR_IROPCODE_IARSHIFT32)
-            BINARY_OP(int64_arshift, KEFIR_IROPCODE_IARSHIFT64)
-            BINARY_OP(int8_bool_and, KEFIR_IROPCODE_BAND8)
-            BINARY_OP(int16_bool_and, KEFIR_IROPCODE_BAND16)
-            BINARY_OP(int32_bool_and, KEFIR_IROPCODE_BAND32)
-            BINARY_OP(int64_bool_and, KEFIR_IROPCODE_BAND64)
-            BINARY_OP(int8_bool_or, KEFIR_IROPCODE_BOR8)
-            BINARY_OP(int16_bool_or, KEFIR_IROPCODE_BOR16)
-            BINARY_OP(int32_bool_or, KEFIR_IROPCODE_BOR32)
-            BINARY_OP(int64_bool_or, KEFIR_IROPCODE_BOR64)
+            BINARY_OP(int8_add, KEFIR_IR_OPCODE_INT8_ADD)
+            BINARY_OP(int16_add, KEFIR_IR_OPCODE_INT16_ADD)
+            BINARY_OP(int32_add, KEFIR_IR_OPCODE_INT32_ADD)
+            BINARY_OP(int64_add, KEFIR_IR_OPCODE_INT64_ADD)
+            BINARY_OP(int8_sub, KEFIR_IR_OPCODE_INT8_SUB)
+            BINARY_OP(int16_sub, KEFIR_IR_OPCODE_INT16_SUB)
+            BINARY_OP(int32_sub, KEFIR_IR_OPCODE_INT32_SUB)
+            BINARY_OP(int64_sub, KEFIR_IR_OPCODE_INT64_SUB)
+            BINARY_OP(int8_mul, KEFIR_IR_OPCODE_INT8_MUL)
+            BINARY_OP(int16_mul, KEFIR_IR_OPCODE_INT16_MUL)
+            BINARY_OP(int32_mul, KEFIR_IR_OPCODE_INT32_MUL)
+            BINARY_OP(int64_mul, KEFIR_IR_OPCODE_INT64_MUL)
+            BINARY_OP(uint8_mul, KEFIR_IR_OPCODE_UINT8_MUL)
+            BINARY_OP(uint16_mul, KEFIR_IR_OPCODE_UINT16_MUL)
+            BINARY_OP(uint32_mul, KEFIR_IR_OPCODE_UINT32_MUL)
+            BINARY_OP(uint64_mul, KEFIR_IR_OPCODE_UINT64_MUL)
+            BINARY_OP(int8_div, KEFIR_IR_OPCODE_INT8_DIV)
+            BINARY_OP(int16_div, KEFIR_IR_OPCODE_INT16_DIV)
+            BINARY_OP(int32_div, KEFIR_IR_OPCODE_INT32_DIV)
+            BINARY_OP(int64_div, KEFIR_IR_OPCODE_INT64_DIV)
+            BINARY_OP(int8_mod, KEFIR_IR_OPCODE_INT8_MOD)
+            BINARY_OP(int16_mod, KEFIR_IR_OPCODE_INT16_MOD)
+            BINARY_OP(int32_mod, KEFIR_IR_OPCODE_INT32_MOD)
+            BINARY_OP(int64_mod, KEFIR_IR_OPCODE_INT64_MOD)
+            BINARY_OP(uint8_div, KEFIR_IR_OPCODE_UINT8_DIV)
+            BINARY_OP(uint16_div, KEFIR_IR_OPCODE_UINT16_DIV)
+            BINARY_OP(uint32_div, KEFIR_IR_OPCODE_UINT32_DIV)
+            BINARY_OP(uint64_div, KEFIR_IR_OPCODE_UINT64_DIV)
+            BINARY_OP(uint8_mod, KEFIR_IR_OPCODE_UINT8_MOD)
+            BINARY_OP(uint16_mod, KEFIR_IR_OPCODE_UINT16_MOD)
+            BINARY_OP(uint32_mod, KEFIR_IR_OPCODE_UINT32_MOD)
+            BINARY_OP(uint64_mod, KEFIR_IR_OPCODE_UINT64_MOD)
+            BINARY_OP(int8_and, KEFIR_IR_OPCODE_INT8_AND)
+            BINARY_OP(int16_and, KEFIR_IR_OPCODE_INT16_AND)
+            BINARY_OP(int32_and, KEFIR_IR_OPCODE_INT32_AND)
+            BINARY_OP(int64_and, KEFIR_IR_OPCODE_INT64_AND)
+            BINARY_OP(int8_or, KEFIR_IR_OPCODE_INT8_OR)
+            BINARY_OP(int16_or, KEFIR_IR_OPCODE_INT16_OR)
+            BINARY_OP(int32_or, KEFIR_IR_OPCODE_INT32_OR)
+            BINARY_OP(int64_or, KEFIR_IR_OPCODE_INT64_OR)
+            BINARY_OP(int8_xor, KEFIR_IR_OPCODE_INT8_XOR)
+            BINARY_OP(int16_xor, KEFIR_IR_OPCODE_INT16_XOR)
+            BINARY_OP(int32_xor, KEFIR_IR_OPCODE_INT32_XOR)
+            BINARY_OP(int64_xor, KEFIR_IR_OPCODE_INT64_XOR)
+            BINARY_OP(int8_lshift, KEFIR_IR_OPCODE_INT8_LSHIFT)
+            BINARY_OP(int16_lshift, KEFIR_IR_OPCODE_INT16_LSHIFT)
+            BINARY_OP(int32_lshift, KEFIR_IR_OPCODE_INT32_LSHIFT)
+            BINARY_OP(int64_lshift, KEFIR_IR_OPCODE_INT64_LSHIFT)
+            BINARY_OP(int8_rshift, KEFIR_IR_OPCODE_INT8_RSHIFT)
+            BINARY_OP(int16_rshift, KEFIR_IR_OPCODE_INT16_RSHIFT)
+            BINARY_OP(int32_rshift, KEFIR_IR_OPCODE_INT32_RSHIFT)
+            BINARY_OP(int64_rshift, KEFIR_IR_OPCODE_INT64_RSHIFT)
+            BINARY_OP(int8_arshift, KEFIR_IR_OPCODE_INT8_ARSHIFT)
+            BINARY_OP(int16_arshift, KEFIR_IR_OPCODE_INT16_ARSHIFT)
+            BINARY_OP(int32_arshift, KEFIR_IR_OPCODE_INT32_ARSHIFT)
+            BINARY_OP(int64_arshift, KEFIR_IR_OPCODE_INT64_ARSHIFT)
+            BINARY_OP(int8_bool_and, KEFIR_IR_OPCODE_INT8_BOOL_AND)
+            BINARY_OP(int16_bool_and, KEFIR_IR_OPCODE_INT16_BOOL_AND)
+            BINARY_OP(int32_bool_and, KEFIR_IR_OPCODE_INT32_BOOL_AND)
+            BINARY_OP(int64_bool_and, KEFIR_IR_OPCODE_INT64_BOOL_AND)
+            BINARY_OP(int8_bool_or, KEFIR_IR_OPCODE_INT8_BOOL_OR)
+            BINARY_OP(int16_bool_or, KEFIR_IR_OPCODE_INT16_BOOL_OR)
+            BINARY_OP(int32_bool_or, KEFIR_IR_OPCODE_INT32_BOOL_OR)
+            BINARY_OP(int64_bool_or, KEFIR_IR_OPCODE_INT64_BOOL_OR)
 
-            BINARY_OP(float32_add, KEFIR_IROPCODE_F32ADD)
-            BINARY_OP(float32_sub, KEFIR_IROPCODE_F32SUB)
-            BINARY_OP(float32_mul, KEFIR_IROPCODE_F32MUL)
-            BINARY_OP(float32_div, KEFIR_IROPCODE_F32DIV)
-            BINARY_OP(float64_add, KEFIR_IROPCODE_F64ADD)
-            BINARY_OP(float64_sub, KEFIR_IROPCODE_F64SUB)
-            BINARY_OP(float64_mul, KEFIR_IROPCODE_F64MUL)
-            BINARY_OP(float64_div, KEFIR_IROPCODE_F64DIV)
+            BINARY_OP(float32_add, KEFIR_IR_OPCODE_FLOAT32_ADD)
+            BINARY_OP(float32_sub, KEFIR_IR_OPCODE_FLOAT32_SUB)
+            BINARY_OP(float32_mul, KEFIR_IR_OPCODE_FLOAT32_MUL)
+            BINARY_OP(float32_div, KEFIR_IR_OPCODE_FLOAT32_DIV)
+            BINARY_OP(float64_add, KEFIR_IR_OPCODE_FLOAT64_ADD)
+            BINARY_OP(float64_sub, KEFIR_IR_OPCODE_FLOAT64_SUB)
+            BINARY_OP(float64_mul, KEFIR_IR_OPCODE_FLOAT64_MUL)
+            BINARY_OP(float64_div, KEFIR_IR_OPCODE_FLOAT64_DIV)
 
-            BINARY_OP(long_double_equals, KEFIR_IROPCODE_LDEQUALS)
-            BINARY_OP(long_double_greater, KEFIR_IROPCODE_LDGREATER)
-            BINARY_OP(long_double_lesser, KEFIR_IROPCODE_LDLESSER)
+            BINARY_OP(long_double_equals, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS)
+            BINARY_OP(long_double_greater, KEFIR_IR_OPCODE_LONG_DOUBLE_GREATER)
+            BINARY_OP(long_double_lesser, KEFIR_IR_OPCODE_LONG_DOUBLE_LESSER)
 
-            BINARY_OP(long_double_add, KEFIR_IROPCODE_LDADD)
-            BINARY_OP(long_double_sub, KEFIR_IROPCODE_LDSUB)
-            BINARY_OP(long_double_mul, KEFIR_IROPCODE_LDMUL)
-            BINARY_OP(long_double_div, KEFIR_IROPCODE_LDDIV)
+            BINARY_OP(long_double_add, KEFIR_IR_OPCODE_LONG_DOUBLE_ADD)
+            BINARY_OP(long_double_sub, KEFIR_IR_OPCODE_LONG_DOUBLE_SUB)
+            BINARY_OP(long_double_mul, KEFIR_IR_OPCODE_LONG_DOUBLE_MUL)
+            BINARY_OP(long_double_div, KEFIR_IR_OPCODE_LONG_DOUBLE_DIV)
 
-            BINARY_OP(complex_float32_from, KEFIR_IROPCODE_CMPF32)
-            BINARY_OP(complex_float64_from, KEFIR_IROPCODE_CMPF64)
-            BINARY_OP(complex_long_double_from, KEFIR_IROPCODE_CMPLD)
+            BINARY_OP(complex_float32_from, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_FROM)
+            BINARY_OP(complex_float64_from, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM)
+            BINARY_OP(complex_long_double_from, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM)
 
-            BINARY_OP(complex_float32_equals, KEFIR_IROPCODE_CMPF32EQUALS)
-            BINARY_OP(complex_float64_equals, KEFIR_IROPCODE_CMPF64EQUALS)
-            BINARY_OP(complex_long_double_equals, KEFIR_IROPCODE_CMPLDEQUALS)
+            BINARY_OP(complex_float32_equals, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_EQUALS)
+            BINARY_OP(complex_float64_equals, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_EQUALS)
+            BINARY_OP(complex_long_double_equals, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS)
 
-            BINARY_OP(complex_float32_add, KEFIR_IROPCODE_CMPF32ADD)
-            BINARY_OP(complex_float64_add, KEFIR_IROPCODE_CMPF64ADD)
-            BINARY_OP(complex_long_double_add, KEFIR_IROPCODE_CMPLDADD)
-            BINARY_OP(complex_float32_sub, KEFIR_IROPCODE_CMPF32SUB)
-            BINARY_OP(complex_float64_sub, KEFIR_IROPCODE_CMPF64SUB)
-            BINARY_OP(complex_long_double_sub, KEFIR_IROPCODE_CMPLDSUB)
-            BINARY_OP(complex_float32_mul, KEFIR_IROPCODE_CMPF32MUL)
-            BINARY_OP(complex_float64_mul, KEFIR_IROPCODE_CMPF64MUL)
-            BINARY_OP(complex_long_double_mul, KEFIR_IROPCODE_CMPLDMUL)
-            BINARY_OP(complex_float32_div, KEFIR_IROPCODE_CMPF32DIV)
-            BINARY_OP(complex_float64_div, KEFIR_IROPCODE_CMPF64DIV)
-            BINARY_OP(complex_long_double_div, KEFIR_IROPCODE_CMPLDDIV)
+            BINARY_OP(complex_float32_add, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_ADD)
+            BINARY_OP(complex_float64_add, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_ADD)
+            BINARY_OP(complex_long_double_add, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_ADD)
+            BINARY_OP(complex_float32_sub, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_SUB)
+            BINARY_OP(complex_float64_sub, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_SUB)
+            BINARY_OP(complex_long_double_sub, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_SUB)
+            BINARY_OP(complex_float32_mul, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_MUL)
+            BINARY_OP(complex_float64_mul, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_MUL)
+            BINARY_OP(complex_long_double_mul, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_MUL)
+            BINARY_OP(complex_float32_div, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_DIV)
+            BINARY_OP(complex_float64_div, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_DIV)
+            BINARY_OP(complex_long_double_div, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_DIV)
 
 #undef BINARY_OP
 
@@ -828,14 +828,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                  \
     } break;
 
-            ATOMIC_LOAD_OP(atomic_load8, KEFIR_IROPCODE_ATOMIC_LOAD8)
-            ATOMIC_LOAD_OP(atomic_load16, KEFIR_IROPCODE_ATOMIC_LOAD16)
-            ATOMIC_LOAD_OP(atomic_load32, KEFIR_IROPCODE_ATOMIC_LOAD32)
-            ATOMIC_LOAD_OP(atomic_load64, KEFIR_IROPCODE_ATOMIC_LOAD64)
-            ATOMIC_LOAD_OP(atomic_load_long_double, KEFIR_IROPCODE_ATOMIC_LOAD_LONG_DOUBLE)
-            ATOMIC_LOAD_OP(atomic_load_complex_float32, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32)
-            ATOMIC_LOAD_OP(atomic_load_complex_float64, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64)
-            ATOMIC_LOAD_OP(atomic_load_complex_long_double, KEFIR_IROPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE)
+            ATOMIC_LOAD_OP(atomic_load8, KEFIR_IR_OPCODE_ATOMIC_LOAD8)
+            ATOMIC_LOAD_OP(atomic_load16, KEFIR_IR_OPCODE_ATOMIC_LOAD16)
+            ATOMIC_LOAD_OP(atomic_load32, KEFIR_IR_OPCODE_ATOMIC_LOAD32)
+            ATOMIC_LOAD_OP(atomic_load64, KEFIR_IR_OPCODE_ATOMIC_LOAD64)
+            ATOMIC_LOAD_OP(atomic_load_long_double, KEFIR_IR_OPCODE_ATOMIC_LOAD_LONG_DOUBLE)
+            ATOMIC_LOAD_OP(atomic_load_complex_float32, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32)
+            ATOMIC_LOAD_OP(atomic_load_complex_float64, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64)
+            ATOMIC_LOAD_OP(atomic_load_complex_long_double, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE)
 
 #undef ATOMIC_LOAD_OP
 
@@ -857,11 +857,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                         \
     } break;
 
-            ATOMIC_STORE_OP(atomic_store8, KEFIR_IROPCODE_ATOMIC_STORE8)
-            ATOMIC_STORE_OP(atomic_store16, KEFIR_IROPCODE_ATOMIC_STORE16)
-            ATOMIC_STORE_OP(atomic_store32, KEFIR_IROPCODE_ATOMIC_STORE32)
-            ATOMIC_STORE_OP(atomic_store64, KEFIR_IROPCODE_ATOMIC_STORE64)
-            ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IROPCODE_ATOMIC_STORE_LONG_DOUBLE)
+            ATOMIC_STORE_OP(atomic_store8, KEFIR_IR_OPCODE_ATOMIC_STORE8)
+            ATOMIC_STORE_OP(atomic_store16, KEFIR_IR_OPCODE_ATOMIC_STORE16)
+            ATOMIC_STORE_OP(atomic_store32, KEFIR_IR_OPCODE_ATOMIC_STORE32)
+            ATOMIC_STORE_OP(atomic_store64, KEFIR_IR_OPCODE_ATOMIC_STORE64)
+            ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IR_OPCODE_ATOMIC_STORE_LONG_DOUBLE)
 
 #undef ATOMIC_STORE_OP
 
@@ -885,15 +885,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                     \
     } break;
 
-            ATOMIC_CMPXCHG_OP(atomic_compare_exchange8, KEFIR_IROPCODE_ATOMIC_CMPXCHG8)
-            ATOMIC_CMPXCHG_OP(atomic_compare_exchange16, KEFIR_IROPCODE_ATOMIC_CMPXCHG16)
-            ATOMIC_CMPXCHG_OP(atomic_compare_exchange32, KEFIR_IROPCODE_ATOMIC_CMPXCHG32)
-            ATOMIC_CMPXCHG_OP(atomic_compare_exchange64, KEFIR_IROPCODE_ATOMIC_CMPXCHG64)
-            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double, KEFIR_IROPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange8, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG8)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange16, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG16)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange32, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG32)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange64, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG64)
+            ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE)
 
 #undef ATOMIC_CMPXCHG_OP
 
-        case KEFIR_IROPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE: {
+        case KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE: {
             kefir_opt_memory_order_t model;
             switch (instr->arg.i64) {
                 case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
@@ -918,7 +918,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM: {
+        case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             kefir_opt_memory_order_t model;
@@ -936,7 +936,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_ATOMIC_BCOPY_TO: {
+        case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_TO: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             kefir_opt_memory_order_t model;
@@ -954,7 +954,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
         } break;
 
-        case KEFIR_IROPCODE_ATOMIC_CMPXCHG_MEMORY: {
+        case KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_MEMORY: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
@@ -987,14 +987,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                      \
     } break;
 
-            LOAD_OP(int8_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD8)
-            LOAD_OP(int16_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD16)
-            LOAD_OP(int32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD32)
-            LOAD_OP(int64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD64)
-            LOAD_OP(long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOADLD)
-            LOAD_OP(complex_float32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD_CMPF32)
-            LOAD_OP(complex_float64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD_CMPF64)
-            LOAD_OP(complex_long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IROPCODE_LOAD_CMPLD)
+            LOAD_OP(int8_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT8_LOAD)
+            LOAD_OP(int16_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT16_LOAD)
+            LOAD_OP(int32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT32_LOAD)
+            LOAD_OP(int64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_INT64_LOAD)
+            LOAD_OP(long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD)
+            LOAD_OP(complex_float32_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_LOAD)
+            LOAD_OP(complex_float64_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_LOAD)
+            LOAD_OP(complex_long_double_load, KEFIR_OPT_MEMORY_LOAD_NOEXTEND, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_LOAD)
 
 #undef LOAD_OP
 
@@ -1011,14 +1011,14 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
     } break;
 
-            STORE_OP(int8_store, KEFIR_IROPCODE_STORE8)
-            STORE_OP(int16_store, KEFIR_IROPCODE_STORE16)
-            STORE_OP(int32_store, KEFIR_IROPCODE_STORE32)
-            STORE_OP(int64_store, KEFIR_IROPCODE_STORE64)
-            STORE_OP(long_double_store, KEFIR_IROPCODE_STORELD)
-            STORE_OP(complex_float32_store, KEFIR_IROPCODE_STORE_CMPF32)
-            STORE_OP(complex_float64_store, KEFIR_IROPCODE_STORE_CMPF64)
-            STORE_OP(complex_long_double_store, KEFIR_IROPCODE_STORE_CMPLD)
+            STORE_OP(int8_store, KEFIR_IR_OPCODE_INT8_STORE)
+            STORE_OP(int16_store, KEFIR_IR_OPCODE_INT16_STORE)
+            STORE_OP(int32_store, KEFIR_IR_OPCODE_INT32_STORE)
+            STORE_OP(int64_store, KEFIR_IR_OPCODE_INT64_STORE)
+            STORE_OP(long_double_store, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE)
+            STORE_OP(complex_float32_store, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_STORE)
+            STORE_OP(complex_float64_store, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_STORE)
+            STORE_OP(complex_long_double_store, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_STORE)
 
 #undef STORE_OP
 
@@ -1035,11 +1035,26 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                      \
     } break
 
-            OVERFLOW_ARITH(KEFIR_IROPCODE_ADD_OVERFLOW, add);
-            OVERFLOW_ARITH(KEFIR_IROPCODE_SUB_OVERFLOW, sub);
-            OVERFLOW_ARITH(KEFIR_IROPCODE_MUL_OVERFLOW, mul);
+            OVERFLOW_ARITH(KEFIR_IR_OPCODE_ADD_OVERFLOW, add);
+            OVERFLOW_ARITH(KEFIR_IR_OPCODE_SUB_OVERFLOW, sub);
+            OVERFLOW_ARITH(KEFIR_IR_OPCODE_MUL_OVERFLOW, mul);
 
 #undef OVERFLOW_ARITH
+
+        case KEFIR_IR_OPCODE_GET_ARGUMENT:
+        case KEFIR_IR_OPCODE_PHI:
+        case KEFIR_IR_OPCODE_SELECT:
+        case KEFIR_IR_OPCODE_SELECT_COMPARE:
+        case KEFIR_IR_OPCODE_BRANCH_COMPARE:
+        case KEFIR_IR_OPCODE_TAIL_INVOKE:
+        case KEFIR_IR_OPCODE_TAIL_INVOKE_VIRTUAL:
+        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_8BITS:
+        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_16BITS:
+        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_32BITS:
+        case KEFIR_IR_OPCODE_ALLOC_LOCAL:
+        case KEFIR_IR_OPCODE_REF_LOCAL:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                   "Construction of optimizer code from particular opcode is not implemented yet");
     }
     return KEFIR_OK;
 }

@@ -128,7 +128,7 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -139,13 +139,13 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 1
@@ -156,11 +156,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -169,20 +169,20 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
@@ -190,7 +190,7 @@
                     "comparison": "int32_greater"
                 },
                 {
-                    "opcode": "bnot32"
+                    "opcode": "int32_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -198,20 +198,20 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 1
@@ -222,7 +222,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -236,7 +236,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imul32"
+                    "opcode": "int32_mul"
                 },
                 {
                     "opcode": "xchg",
@@ -247,7 +247,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -256,7 +256,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -267,17 +267,17 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -1
                 },
                 {
-                    "opcode": "iadd32"
+                    "opcode": "int32_add"
                 },
                 {
                     "opcode": "xchg",
@@ -288,7 +288,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -297,24 +297,24 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 8
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 4,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []

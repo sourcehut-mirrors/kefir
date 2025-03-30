@@ -233,7 +233,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -244,7 +244,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 3,
                         "index": 0
@@ -255,11 +255,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 0
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -270,18 +270,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 24
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 1
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 5,
                         "index": 0
@@ -292,18 +292,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 72
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 2
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 6,
                         "index": 0
@@ -314,18 +314,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 168
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 3
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 7,
                         "index": 0

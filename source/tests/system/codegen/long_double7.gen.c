@@ -51,7 +51,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
     kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
 
-    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IROPCODE_STORELD, 0);
+    kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 

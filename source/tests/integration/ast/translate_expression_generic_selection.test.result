@@ -33,27 +33,27 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 5
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 7
                 }
             ],

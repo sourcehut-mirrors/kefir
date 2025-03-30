@@ -87,56 +87,56 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "extern_variable1"
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "extern_variable2"
                     }
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "static_variable1"
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 }
             ],

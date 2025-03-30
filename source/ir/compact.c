@@ -196,13 +196,13 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
     for (kefir_size_t i = 0; i < kefir_irblock_length(&function->body); i++) {
         struct kefir_irinstr *instr = kefir_irblock_at(&function->body, i);
         switch (instr->opcode) {
-            case KEFIR_IROPCODE_GETLOCAL:
-            case KEFIR_IROPCODE_BZERO:
-            case KEFIR_IROPCODE_BCOPY:
-            case KEFIR_IROPCODE_VARARG_GET:
-            case KEFIR_IROPCODE_ADD_OVERFLOW:
-            case KEFIR_IROPCODE_SUB_OVERFLOW:
-            case KEFIR_IROPCODE_MUL_OVERFLOW: {
+            case KEFIR_IR_OPCODE_GET_LOCAL:
+            case KEFIR_IR_OPCODE_ZERO_MEMORY:
+            case KEFIR_IR_OPCODE_COPY_MEMORY:
+            case KEFIR_IR_OPCODE_VARARG_GET:
+            case KEFIR_IR_OPCODE_ADD_OVERFLOW:
+            case KEFIR_IR_OPCODE_SUB_OVERFLOW:
+            case KEFIR_IR_OPCODE_MUL_OVERFLOW: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[0];
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
@@ -211,9 +211,9 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 instr->arg.u32[0] = (kefir_uint32_t) type_id;
             } break;
 
-            case KEFIR_IROPCODE_ATOMIC_BCOPY_FROM:
-            case KEFIR_IROPCODE_ATOMIC_BCOPY_TO:
-            case KEFIR_IROPCODE_ATOMIC_CMPXCHG_MEMORY: {
+            case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM:
+            case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_TO:
+            case KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_MEMORY: {
                 kefir_id_t type_id = (kefir_id_t) instr->arg.u32[1];
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
@@ -222,8 +222,8 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 instr->arg.u32[1] = (kefir_uint32_t) type_id;
             } break;
 
-            case KEFIR_IROPCODE_INVOKE:
-            case KEFIR_IROPCODE_INVOKEV: {
+            case KEFIR_IR_OPCODE_INVOKE:
+            case KEFIR_IR_OPCODE_INVOKE_VIRTUAL: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->function_declarations, id, &node));
@@ -234,14 +234,14 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 }
             } break;
 
-            case KEFIR_IROPCODE_GETGLOBAL:
-            case KEFIR_IROPCODE_GETTHRLOCAL: {
+            case KEFIR_IR_OPCODE_GET_GLOBAL:
+            case KEFIR_IR_OPCODE_GET_THREAD_LOCAL: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;
                 const char *symbol = kefir_ir_module_get_named_symbol(module, id);
                 REQUIRE_OK(kefir_queue_push(mem, &params->symbol_scan_queue, (kefir_queue_entry_t) symbol));
             } break;
 
-            case KEFIR_IROPCODE_INLINEASM: {
+            case KEFIR_IR_OPCODE_INLINE_ASSEMBLY: {
                 kefir_id_t id = (kefir_id_t) instr->arg.u64;
                 struct kefir_hashtree_node *node = NULL;
                 REQUIRE_OK(kefir_hashtree_at(&module->inline_assembly, (kefir_hashtree_key_t) id, &node));

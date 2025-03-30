@@ -34,9 +34,9 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor,
 
     struct kefir_ast_type_layout *sublayout = NULL;
     REQUIRE_OK(kefir_ast_type_layout_resolve(param->type_layout, &designator, &sublayout, NULL, NULL));
-    REQUIRE_OK(
-        KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, sublayout->properties.relative_offset));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADD64, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                               sublayout->properties.relative_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     param->type_layout = sublayout;
     return KEFIR_OK;
 }
@@ -55,9 +55,9 @@ static kefir_result_t visit_struct_member(const struct kefir_ast_visitor *visito
 
     struct kefir_ast_type_layout *sublayout = NULL;
     REQUIRE_OK(kefir_ast_type_layout_resolve(param->type_layout, &designator, &sublayout, NULL, NULL));
-    REQUIRE_OK(
-        KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, sublayout->properties.relative_offset));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADD64, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                               sublayout->properties.relative_offset));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     param->type_layout = sublayout;
     return KEFIR_OK;
 }
@@ -76,13 +76,13 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
                                    "Expected designation of array-type element"));
 
     struct kefir_ast_type_layout *sublayout = param->type_layout->array_layout.element_type;
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_PUSHU64, sublayout->properties.size));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_UINT_CONST, sublayout->properties.size));
     REQUIRE_OK(kefir_ast_translate_expression(param->mem, subscript->subscript, param->builder, param->context));
     REQUIRE_OK(kefir_ast_translate_typeconv(
         param->mem, param->context->module, param->builder, param->context->ast_context->type_traits,
         subscript->subscript->properties.type, param->context->ast_context->type_traits->ptrdiff_type));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IMUL64, 0));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_IADD64, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     param->type_layout = sublayout;
     return KEFIR_OK;
 }

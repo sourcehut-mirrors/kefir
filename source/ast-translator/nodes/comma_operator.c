@@ -39,7 +39,7 @@ kefir_result_t kefir_ast_translate_comma_operator_node(struct kefir_mem *mem,
         REQUIRE_OK(kefir_ast_translate_expression(mem, expr, builder, context));
         const struct kefir_ast_type *normalized_type = kefir_ast_translator_normalize_type(expr->properties.type);
         if (iter->next != NULL && normalized_type->tag != KEFIR_AST_TYPE_VOID) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_POP, 0));
         }
     }
     return KEFIR_OK;

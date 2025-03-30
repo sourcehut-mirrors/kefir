@@ -87,7 +87,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 0
                 }
             ],
@@ -99,7 +99,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 1
                 }
             ],
@@ -111,7 +111,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 2
                 }
             ],

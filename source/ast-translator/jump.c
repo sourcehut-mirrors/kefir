@@ -52,8 +52,9 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
                 REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(current_origin_parent, &vla_element));
 
                 REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
             }
         }
         top_origin_block = current_origin_parent->parent_point;
@@ -83,11 +84,11 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
         REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(current_origin_parent, &vla_element));
 
         REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
     }
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_JMP, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_JUMP, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, target_position, builder->block,
                                                                  KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));
 

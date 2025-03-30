@@ -90,12 +90,12 @@ kefir_result_t kefir_ast_translator_flow_control_point_init(
 static kefir_result_t patch_command(struct kefir_irblock *block, kefir_size_t index, kefir_uint64_t value) {
     struct kefir_irinstr *instr = kefir_irblock_at(block, index);
     switch (instr->opcode) {
-        case KEFIR_IROPCODE_JMP:
-        case KEFIR_IROPCODE_PUSHLABEL:
+        case KEFIR_IR_OPCODE_JUMP:
+        case KEFIR_IR_OPCODE_BLOCK_LABEL:
             instr->arg.u64 = value;
             break;
 
-        case KEFIR_IROPCODE_BRANCH:
+        case KEFIR_IR_OPCODE_BRANCH:
             instr->arg.u64_2[0] = value;
             break;
 

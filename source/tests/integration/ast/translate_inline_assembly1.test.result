@@ -152,36 +152,36 @@
             "locals": 1,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "abc"
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 1,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "abc"
                     }
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 4.150000
                 },
                 {
-                    "opcode": "inlineasm",
+                    "opcode": "inline_assembly",
                     "arg": 2
                 }
             ],
@@ -193,47 +193,47 @@
             "locals": 8,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "abc"
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 8,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 8,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "lde"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 4.150000
                 },
                 {
-                    "opcode": "inlineasm",
+                    "opcode": "inline_assembly",
                     "arg": 3
                 },
                 {
-                    "opcode": "inlineasm",
+                    "opcode": "inline_assembly",
                     "arg": 4
                 }
             ],

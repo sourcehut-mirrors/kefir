@@ -62,10 +62,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_result, KEFIR_IR_TYPE_STRUCT, 0, 1));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_result, KEFIR_IR_TYPE_ARRAY, 0, 4));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_result, KEFIR_IR_TYPE_INT64, 0, 0));
-    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IROPCODE_PUSHI64, 3);
-    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IROPCODE_XCHG, 1);
-    kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IROPCODE_INVOKE, addstruct_decl->id);
-    kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INT_CONST, 3);
+    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_XCHG, 1);
+    kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INVOKE, addstruct_decl->id);
+    kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, addstruct_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, addstruct_decl_params, KEFIR_IR_TYPE_STRUCT, 0, 1));

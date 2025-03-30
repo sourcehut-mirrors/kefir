@@ -23,9 +23,10 @@
 const char *kefir_iropcode_mnemonic(kefir_iropcode_t opcode) {
     switch (opcode) {
 #define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _type) \
-    case KEFIR_IROPCODE_##_id:                         \
+    case KEFIR_IR_OPCODE_##_id:                        \
         return _mnemonic;
-        KEFIR_IR_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
+        KEFIR_IR_GENERIC_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
+        KEFIR_IR_SPECIAL_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
 #undef KEFIR_IR_OPCODES_SYMBOL
         default:
             break;

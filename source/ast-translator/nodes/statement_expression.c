@@ -89,8 +89,8 @@ kefir_result_t kefir_ast_translate_statement_expression_node(struct kefir_mem *m
             node->base.properties.expression_props.flow_control_statement, &vla_element));
 
         REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POPSCOPE, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
     }
     return KEFIR_OK;
 }

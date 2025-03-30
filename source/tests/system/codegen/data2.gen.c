@@ -72,18 +72,18 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     ASSIGN_DECL_CAST(const struct kefir_abi_amd64_typeentry_layout *, entry_layout,
                      kefir_vector_at(&type_layout.layout, 2));
 
-    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADD64, 0);
+    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IR_OPCODE_XCHG, 1);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_INT64_ADD, 0);
     entry_layout = kefir_vector_at(&type_layout.layout, 4);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_PUSHU64, entry_layout->relative_offset);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADD64, 0);
-    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IROPCODE_XCHG, 1);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_INT64_ADD, 0);
+    kefir_irbuilder_block_appendi64(mem, &arrptr->body, KEFIR_IR_OPCODE_XCHG, 1);
     entry_layout = kefir_vector_at(&type_layout.layout, 8);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_PUSHU64, entry_layout->size);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IMUL64, 0);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_IADD64, 0);
-    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->size);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_INT64_MUL, 0);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_INT64_ADD, 0);
+    kefir_irbuilder_block_appendu64(mem, &arrptr->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

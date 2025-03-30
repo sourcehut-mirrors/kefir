@@ -49,16 +49,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_INOT64, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PUSHI64, 3);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_ILSHIFT64, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PUSHI64, 5);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_IXOR64, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_IOR64, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_PUSHI64, 2);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_IARSHIFT64, 2);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_IAND64, 0);
-    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_NOT, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT_CONST, 3);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_LSHIFT, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT_CONST, 5);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_XOR, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_OR, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT_CONST, 2);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_ARSHIFT, 2);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_AND, 0);
+    kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 

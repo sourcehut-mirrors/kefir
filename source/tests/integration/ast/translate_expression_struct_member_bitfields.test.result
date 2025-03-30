@@ -420,275 +420,275 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure1"
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load16",
+                    "opcode": "int16_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "extsbits",
+                    "opcode": "bits_extract_signed",
                     "arg": [
                         0,
                         9
                     ]
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure1"
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "extsbits",
+                    "opcode": "bits_extract_signed",
                     "arg": [
                         1,
                         4
                     ]
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure1"
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load16",
+                    "opcode": "int16_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 65535
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "extubits",
+                    "opcode": "bits_extract_unsigned",
                     "arg": [
                         5,
                         6
                     ]
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure2"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "extubits",
+                    "opcode": "bits_extract_unsigned",
                     "arg": [
                         0,
                         3
                     ]
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure2"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "extubits",
+                    "opcode": "bits_extract_unsigned",
                     "arg": [
                         3,
                         1
                     ]
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "structure2"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 5
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "load8",
+                    "opcode": "int8_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 32
                 },
                 {
-                    "opcode": "ishl64"
+                    "opcode": "int64_lshift"
                 },
                 {
                     "opcode": "xchg",
                     "arg": 1
                 },
                 {
-                    "opcode": "load32",
+                    "opcode": "int32_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "ior64"
+                    "opcode": "int64_or"
                 },
                 {
-                    "opcode": "extubits",
+                    "opcode": "bits_extract_unsigned",
                     "arg": [
                         0,
                         33

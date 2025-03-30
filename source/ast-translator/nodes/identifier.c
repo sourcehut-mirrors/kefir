@@ -62,10 +62,10 @@ static kefir_result_t translate_enum_constant(struct kefir_irbuilder_block *buil
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, scoped_identifier->enum_constant.type, &signedness));
 
     if (!signedness) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                    (kefir_uint64_t) scoped_identifier->enum_constant.value.integer));
     } else {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHI64,
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST,
                                                    (kefir_int64_t) scoped_identifier->enum_constant.value.integer));
     }
     return KEFIR_OK;

@@ -50,7 +50,7 @@ kefir_result_t kefir_ast_translate_label_address_node(struct kefir_mem *mem,
         label_parent = label_parent->parent_point != NULL ? label_parent->parent_point->parent : NULL;
     }
 
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PUSHLABEL, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BLOCK_LABEL, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(
         mem, node->base.properties.expression_props.scoped_id->label.point, builder->block,
         KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));

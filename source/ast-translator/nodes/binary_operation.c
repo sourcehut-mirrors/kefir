@@ -75,51 +75,51 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
         REQUIRE_OK(binary_prologue(mem, context, builder, node));
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64ADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32ADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64ADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_FLOAT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32ADD, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_BOOL:
             case KEFIR_AST_TYPE_SCALAR_CHAR:
             case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD16, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD32, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_ADD, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
             case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IADD64, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
                 break;
 
             default:
@@ -151,10 +151,10 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
                                                     node->arg1->properties.type,
                                                     context->ast_context->type_traits->ptrdiff_type));
         }
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                             translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);
@@ -180,51 +180,51 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(arg2_normalized_type)) {
         switch (result_normalized_type->tag) {
             case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDSUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDSUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_FLOAT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_BOOL:
             case KEFIR_AST_TYPE_SCALAR_CHAR:
             case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB16, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB32, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_SUB, 0));
                 break;
 
             case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
             case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
             case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB64, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
                 break;
 
             default:
@@ -250,9 +250,9 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         });
         REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type));
 
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ISUB64, 0));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64, type_info.size));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV64, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, type_info.size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_DIV, 0));
     } else {
         const struct kefir_ast_type *referenced_type = arg1_normalized_type->referenced_type;
         if (context->ast_context->configuration->analysis.ext_pointer_arithmetics &&
@@ -269,10 +269,10 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
         REQUIRE_CHAIN(
             &res, kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                arg2_normalized_type, context->ast_context->type_traits->ptrdiff_type));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                             translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_ISUB64, 0));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
 
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_translator_type_free(mem, translator_type);
@@ -292,70 +292,70 @@ static kefir_result_t translate_multiplication(struct kefir_mem *mem, struct kef
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDMUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64MUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32MUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDMUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64MUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32MUL, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMUL8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (context->ast_context->type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_MUL, 0));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMUL8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_MUL, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMUL16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT16_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMUL32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT32_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMUL64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMUL64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_MUL, 0));
             break;
 
         default:
@@ -373,70 +373,70 @@ static kefir_result_t translate_division(struct kefir_mem *mem, struct kefir_ast
     REQUIRE_OK(binary_prologue(mem, context, builder, node));
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDDIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64DIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32DIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDDIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F64DIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_F32DIV, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UDIV8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (context->ast_context->type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_DIV, 0));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UDIV8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_DIV, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UDIV16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT16_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UDIV32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT32_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UDIV64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_DIV, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IDIV64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_DIV, 0));
             break;
 
         default:
@@ -455,45 +455,45 @@ static kefir_result_t translate_modulo(struct kefir_mem *mem, struct kefir_ast_t
     switch (result_normalized_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMOD8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMOD8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (context->ast_context->type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMOD8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_MOD, 0));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMOD8, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT8_MOD, 0));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMOD16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT16_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMOD16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMOD32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT32_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMOD32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_UMOD64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT64_MOD, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IMOD64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_MOD, 0));
             break;
 
         default:
@@ -516,24 +516,24 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ILSHIFT8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_LSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ILSHIFT16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_LSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ILSHIFT32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_LSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_ILSHIFT64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LSHIFT, 0));
                     break;
 
                 default:
@@ -545,45 +545,45 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
             switch (result_normalized_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_BOOL:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_RSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IARSHIFT8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_ARSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
                     if (context->ast_context->type_traits->character_type_signedness) {
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IARSHIFT8, 0));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_ARSHIFT, 0));
                     } else {
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT8, 0));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_RSHIFT, 0));
                     }
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IARSHIFT16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_ARSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_RSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IARSHIFT32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_ARSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_RSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IARSHIFT64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ARSHIFT, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IRSHIFT64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_RSHIFT, 0));
                     break;
 
                 default:
@@ -597,24 +597,24 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IAND8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_AND, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IAND16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_AND, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IAND32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_AND, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IAND64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     break;
 
                 default:
@@ -628,24 +628,24 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IOR8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_OR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IOR16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_OR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IOR32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_OR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IOR64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_OR, 0));
                     break;
 
                 default:
@@ -659,24 +659,24 @@ static kefir_result_t translate_bitwise(struct kefir_mem *mem, struct kefir_ast_
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IXOR8, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_XOR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IXOR16, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_XOR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IXOR32, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_XOR, 0));
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_IXOR64, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_XOR, 0));
                     break;
 
                 default:
@@ -694,28 +694,28 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type *c
                                                   struct kefir_irbuilder_block *builder) {
     switch (common_type->tag) {
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPLDEQUALS, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_EQUALS, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF64EQUALS, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_EQUALS, 0));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_CMPF32EQUALS, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_EQUALS, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDEQUALS, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT64_EQUALS));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT32_EQUALS));
             break;
 
@@ -724,19 +724,19 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type *c
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_EQUALS));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_EQUALS));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_EQUALS));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT16_EQUALS));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_EQUALS));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT32_EQUALS));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -744,8 +744,8 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type *c
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_EQUALS));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT64_EQUALS));
             break;
 
         default:
@@ -757,7 +757,7 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type *c
 static kefir_result_t translate_relational_not_equals(const struct kefir_ast_type *common_type,
                                                       struct kefir_irbuilder_block *builder) {
     REQUIRE_OK(translate_relational_equals(common_type, builder));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT8, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
     return KEFIR_OK;
 }
 
@@ -766,75 +766,75 @@ static kefir_result_t translate_relational_less(const struct kefir_ast_type_trai
                                                 struct kefir_irbuilder_block *builder) {
     switch (common_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDLESSER, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_LESSER, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT64_LESSER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT32_LESSER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_BELOW));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_BELOW));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_BELOW));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_BELOW));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_LESSER));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_LESSER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                            KEFIR_IR_COMPARE_INT8_LESSER));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                            KEFIR_IR_COMPARE_INT8_BELOW));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_BELOW));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_BELOW));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_LESSER));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT16_LESSER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_BELOW));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_BELOW));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_LESSER));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT32_LESSER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_BELOW));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_BELOW));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_LESSER));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT64_LESSER));
             break;
 
         default:
@@ -848,74 +848,74 @@ static kefir_result_t translate_relational_greater(const struct kefir_ast_type_t
                                                    struct kefir_irbuilder_block *builder) {
     switch (common_type->tag) {
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_LDGREATER, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_GREATER, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT64_GREATER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_FLOAT32_GREATER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_ABOVE));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_ABOVE));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_ABOVE));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_ABOVE));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT8_GREATER));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                       KEFIR_IR_COMPARE_INT8_GREATER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
             if (type_traits->character_type_signedness) {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                            KEFIR_IR_COMPARE_INT8_GREATER));
             } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                            KEFIR_IR_COMPARE_INT8_ABOVE));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_ABOVE));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT16_ABOVE));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_INT16_GREATER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_ABOVE));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT32_ABOVE));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_INT32_GREATER));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
             REQUIRE_OK(
-                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_ABOVE));
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE, KEFIR_IR_COMPARE_INT64_ABOVE));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_SCALAR_COMPARE,
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                        KEFIR_IR_COMPARE_INT64_GREATER));
             break;
 
@@ -983,21 +983,21 @@ static kefir_result_t translate_relational_equality(struct kefir_mem *mem, struc
             break;
 
         case KEFIR_AST_OPERATION_LESS_EQUAL:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 1));
             REQUIRE_OK(translate_relational_less(context->ast_context->type_traits, common_type, builder));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_XCHG, 2));
             REQUIRE_OK(translate_relational_equals(common_type, builder));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
             break;
 
         case KEFIR_AST_OPERATION_GREATER_EQUAL:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 1));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 1));
             REQUIRE_OK(translate_relational_greater(context->ast_context->type_traits, common_type, builder));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 2));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_XCHG, 2));
             REQUIRE_OK(translate_relational_equals(common_type, builder));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
             break;
 
         default:
@@ -1024,27 +1024,27 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
     REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type1));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BNOT8, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     switch (normalized_type2->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BAND8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BAND16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_BOOL_AND, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BAND32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_BOOL_AND, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -1052,12 +1052,12 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BAND64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_AND, 0));
             break;
 
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type2));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BAND8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
             break;
     }
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
@@ -1073,26 +1073,26 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
     REQUIRE_OK(truncate_value(mem, context, builder, node->arg1->properties.type));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_PICK, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 0));
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IROPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
     switch (normalized_type2->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR8, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR16, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_BOOL_OR, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR32, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_BOOL_OR, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
@@ -1100,12 +1100,12 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
             break;
 
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_type2));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_BOR64, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
             break;
     }
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);

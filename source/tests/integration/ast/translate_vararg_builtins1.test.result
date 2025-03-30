@@ -53,7 +53,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 1
@@ -63,7 +63,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 2
@@ -73,7 +73,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -84,10 +84,10 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "placehf32"
+                    "opcode": "float32_placeholder"
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -96,41 +96,41 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "startvarg"
+                    "opcode": "vararg_start"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 2
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "copyvarg"
+                    "opcode": "vararg_copy"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 2
                     }
                 },
                 {
-                    "opcode": "getvarg",
+                    "opcode": "vararg_get",
                     "arg": {
                         "type": 3,
                         "index": 0
@@ -140,24 +140,24 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 1
                     }
                 },
                 {
-                    "opcode": "endvarg"
+                    "opcode": "vararg_end"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 2
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 1
@@ -176,7 +176,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "copyvarg"
+                    "opcode": "vararg_copy"
                 },
                 {
                     "opcode": "pop"

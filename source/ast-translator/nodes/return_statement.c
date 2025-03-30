@@ -52,6 +52,6 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
                                                     node->base.properties.statement_props.return_type));
         }
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_RET, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_RETURN, 0));
     return KEFIR_OK;
 }

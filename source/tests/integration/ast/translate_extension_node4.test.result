@@ -40,25 +40,25 @@
             "name": "func1",
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "global_var1"
                     }
@@ -68,35 +68,35 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "imul64"
+                    "opcode": "int64_mul"
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 }
             ],
             "public_labels": []

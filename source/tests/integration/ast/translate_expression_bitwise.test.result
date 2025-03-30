@@ -97,47 +97,47 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 34
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 39
                 },
                 {
-                    "opcode": "ior32"
+                    "opcode": "int32_or"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 666
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 12
                 },
                 {
-                    "opcode": "ior64"
+                    "opcode": "int64_or"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -1001
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1001
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "ior64"
+                    "opcode": "int64_or"
                 }
             ],
             "public_labels": []
@@ -148,47 +148,47 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 91
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 93
                 },
                 {
-                    "opcode": "iand32"
+                    "opcode": "int32_and"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 87094
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 4294962926
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -736402640
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 71
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 }
             ],
             "public_labels": []
@@ -199,47 +199,47 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 56
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 48
                 },
                 {
-                    "opcode": "ixor32"
+                    "opcode": "int32_xor"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 312
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4294967295
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 304
                 },
                 {
-                    "opcode": "ixor64"
+                    "opcode": "int64_xor"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": -206
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 101
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "ixor64"
+                    "opcode": "int64_xor"
                 }
             ],
             "public_labels": []
@@ -250,40 +250,40 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 88
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "ishl32"
+                    "opcode": "int32_lshift"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1000
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 6
                 },
                 {
-                    "opcode": "ishl32"
+                    "opcode": "int32_lshift"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3405691582
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "ishl64"
+                    "opcode": "int64_lshift"
                 }
             ],
             "public_labels": []
@@ -294,40 +294,40 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 84
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "isar32"
+                    "opcode": "int32_arshift"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 870
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "isar32"
+                    "opcode": "int32_arshift"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 195934910
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 48
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "isar64"
+                    "opcode": "int64_arshift"
                 }
             ],
             "public_labels": []

@@ -81,7 +81,7 @@
             "locals": 1,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 1,
                         "index": 0
@@ -92,11 +92,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "store16",
+                    "opcode": "int16_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -105,7 +105,7 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 1,
                         "index": 0
@@ -116,7 +116,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load16",
+                    "opcode": "int16_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -130,14 +130,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd16"
+                    "opcode": "int16_add"
                 },
                 {
-                    "opcode": "store16",
+                    "opcode": "int16_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -146,23 +146,23 @@
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 1,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load16",
+                    "opcode": "int16_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "extend16"
+                    "opcode": "int64_sign_extend_16bits"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1000
                 },
                 {
@@ -170,7 +170,7 @@
                     "comparison": "int32_equals"
                 },
                 {
-                    "opcode": "bnot32"
+                    "opcode": "int32_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -178,25 +178,25 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 25
                 },
                 {
-                    "opcode": "ijmp"
+                    "opcode": "indirect_jump"
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 5
                 },
                 {
-                    "opcode": "ijmp"
+                    "opcode": "indirect_jump"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 7
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 1,
                         "index": 0
@@ -207,13 +207,13 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load16",
+                    "opcode": "int16_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "extend16"
+                    "opcode": "int64_sign_extend_16bits"
                 },
                 {
                     "opcode": "xchg",
@@ -224,7 +224,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "imod32"
+                    "opcode": "int32_mod"
                 },
                 {
                     "opcode": "xchg",
@@ -235,7 +235,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store16",
+                    "opcode": "int16_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -261,18 +261,18 @@
             "locals": 5,
             "body": [
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 5
                 },
                 {
-                    "opcode": "ijmp"
+                    "opcode": "indirect_jump"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot32"
+                    "opcode": "int32_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -280,22 +280,22 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 8
                 },
                 {
-                    "opcode": "ijmp"
+                    "opcode": "indirect_jump"
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 2
                 },
                 {
-                    "opcode": "pushlabel",
+                    "opcode": "block_label",
                     "arg": 0
                 },
                 {
-                    "opcode": "ijmp"
+                    "opcode": "indirect_jump"
                 }
             ],
             "public_labels": [

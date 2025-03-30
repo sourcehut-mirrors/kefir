@@ -183,7 +183,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -194,7 +194,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 3,
                         "index": 0
@@ -205,11 +205,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 0
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -220,21 +220,21 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 24
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -244,18 +244,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -265,18 +265,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -286,24 +286,24 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 32
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 4
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -313,22 +313,22 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 40
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 65
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -338,18 +338,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 66
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -359,18 +359,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 9
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 66
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -383,21 +383,21 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 56
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 5
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -407,21 +407,21 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 64
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 6
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -431,21 +431,21 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 24
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 8
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -455,24 +455,24 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 32
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 9
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }

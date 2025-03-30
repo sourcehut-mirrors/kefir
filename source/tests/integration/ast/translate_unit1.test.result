@@ -495,19 +495,19 @@
             "locals": 23,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "value_to_add"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "value"
                     }
@@ -517,7 +517,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -531,7 +531,7 @@
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
                     "opcode": "xchg",
@@ -542,7 +542,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -559,19 +559,19 @@
             "locals": 19,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "value"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []
@@ -582,7 +582,7 @@
             "locals": 15,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 15,
                         "index": 0
@@ -593,26 +593,26 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 15,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "value"
                     }
@@ -630,7 +630,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store64",
+                    "opcode": "int64_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -647,13 +647,13 @@
             "locals": 27,
             "body": [
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "value"
                     }
                 },
                 {
-                    "opcode": "load64",
+                    "opcode": "int64_load",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -666,7 +666,7 @@
                     }
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []

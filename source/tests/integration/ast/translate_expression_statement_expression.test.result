@@ -88,7 +88,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 65
                 },
                 {
@@ -103,21 +103,21 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 66
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 67
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 68
                 },
                 {
@@ -132,28 +132,28 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 69
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 70
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 71
                 },
                 {
                     "opcode": "pop"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 72
                 }
             ],

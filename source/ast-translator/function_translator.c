@@ -279,7 +279,7 @@ kefir_result_t kefir_ast_translator_function_context_free(struct kefir_mem *mem,
 }
 
 static kefir_result_t xchg_param_address(struct kefir_irbuilder_block *builder) {
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_XCHG, 1));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_XCHG, 1));
     return KEFIR_OK;
 }
 
@@ -295,7 +295,7 @@ static kefir_result_t translate_variably_modified(const struct kefir_ast_node_ba
     ASSIGN_DECL_CAST(struct vl_modified_param *, param, payload);
 
     REQUIRE_OK(kefir_ast_translate_expression(param->mem, node, param->builder, param->context));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IROPCODE_POP, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(param->builder, KEFIR_IR_OPCODE_POP, 0));
     return KEFIR_OK;
 }
 
@@ -424,7 +424,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
                         kefir_ast_translator_store_value(mem, scoped_id->type, context, builder,
                                                          &function_context->function_definition->base.source_location));
                 } else {
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IROPCODE_POP, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_POP, 0));
                 }
             }
         } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&

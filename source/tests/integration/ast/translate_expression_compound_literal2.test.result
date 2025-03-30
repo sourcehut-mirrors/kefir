@@ -197,7 +197,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -208,7 +208,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 3,
                         "index": 0
@@ -219,11 +219,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 0
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 4,
                         "index": 0
@@ -238,7 +238,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 2
@@ -249,7 +249,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 7,
                         "index": 0
@@ -260,11 +260,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 72
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -274,18 +274,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 101
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -295,18 +295,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 108
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -316,18 +316,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 3
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 108
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -337,18 +337,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "iadd64"
+                    "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 111
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -362,7 +362,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 4
@@ -373,7 +373,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 10,
                         "index": 0
@@ -388,7 +388,7 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 6
@@ -399,7 +399,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 13,
                         "index": 0
@@ -410,11 +410,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 1
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 14,
                         "index": 0

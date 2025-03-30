@@ -53,19 +53,19 @@
             "locals": 1,
             "body": [
                 {
-                    "opcode": "inlineasm",
+                    "opcode": "inline_assembly",
                     "arg": 0
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 4
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 4
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 0
                 }
             ],

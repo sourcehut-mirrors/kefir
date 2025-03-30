@@ -70,8 +70,8 @@ kefir_result_t kefir_ir_format_instr_u64(struct kefir_json_output *json, const s
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_format_instr_bool(struct kefir_json_output *json, const struct kefir_ir_module *module,
-                                          const struct kefir_irinstr *instr) {
+kefir_result_t kefir_ir_format_instr_boolean(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                             const struct kefir_irinstr *instr) {
     UNUSED(module);
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
@@ -99,6 +99,52 @@ kefir_result_t kefir_ir_format_instr_u32(struct kefir_json_output *json, const s
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[0]));
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[1]));
     REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_format_instr_immediate(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                               const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
+    switch (instr->opcode) {
+        case KEFIR_IR_OPCODE_INT_CONST:
+            REQUIRE_OK(kefir_json_output_integer(json, instr->arg.i64));
+            break;
+
+        case KEFIR_IR_OPCODE_UINT_CONST:
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64));
+            break;
+
+        case KEFIR_IR_OPCODE_FLOAT32_CONST:
+            REQUIRE_OK(kefir_json_output_float(json, instr->arg.f32[0]));
+            break;
+
+        case KEFIR_IR_OPCODE_FLOAT64_CONST:
+            REQUIRE_OK(kefir_json_output_float(json, instr->arg.f64));
+            break;
+
+        case KEFIR_IR_OPCODE_LONG_DOUBLE_CONST:
+            REQUIRE_OK(kefir_json_output_long_double(json, instr->arg.long_double));
+            break;
+
+        case KEFIR_IR_OPCODE_STRING_REF:
+            REQUIRE_OK(kefir_json_output_integer(json, instr->arg.i64));
+            break;
+
+        case KEFIR_IR_OPCODE_BLOCK_LABEL:
+            REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR opcode");
+    }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }
@@ -264,26 +310,28 @@ kefir_result_t kefir_ir_format_instr_branch(struct kefir_json_output *json, cons
     REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
     REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
     REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64_2[0]));
-    REQUIRE_OK(kefir_json_output_object_key(json, "condition"));
-    switch (instr->arg.u64_2[1]) {
-        case KEFIR_IR_BRANCH_CONDITION_8BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "8bit"));
-            break;
+    if (instr->opcode != KEFIR_IR_OPCODE_JUMP) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "condition"));
+        switch (instr->arg.u64_2[1]) {
+            case KEFIR_IR_BRANCH_CONDITION_8BIT:
+                REQUIRE_OK(kefir_json_output_string(json, "8bit"));
+                break;
 
-        case KEFIR_IR_BRANCH_CONDITION_16BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "16bit"));
-            break;
+            case KEFIR_IR_BRANCH_CONDITION_16BIT:
+                REQUIRE_OK(kefir_json_output_string(json, "16bit"));
+                break;
 
-        case KEFIR_IR_BRANCH_CONDITION_32BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "32bit"));
-            break;
+            case KEFIR_IR_BRANCH_CONDITION_32BIT:
+                REQUIRE_OK(kefir_json_output_string(json, "32bit"));
+                break;
 
-        case KEFIR_IR_BRANCH_CONDITION_64BIT:
-            REQUIRE_OK(kefir_json_output_string(json, "64bit"));
-            break;
+            case KEFIR_IR_BRANCH_CONDITION_64BIT:
+                REQUIRE_OK(kefir_json_output_string(json, "64bit"));
+                break;
 
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR branch instruction condition variant");
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR branch instruction condition variant");
+        }
     }
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;

@@ -213,11 +213,11 @@
             "locals": 15,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "tobool8"
+                    "opcode": "int8_to_bool"
                 },
                 {
                     "opcode": "pick",
@@ -229,11 +229,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "bor8"
+                    "opcode": "int8_bool_or"
                 }
             ],
             "public_labels": []
@@ -244,11 +244,11 @@
             "locals": 18,
             "body": [
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.400000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.000000
                 },
                 {
@@ -256,7 +256,7 @@
                     "comparison": "float32_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
@@ -268,11 +268,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 55
                 },
                 {
-                    "opcode": "bor32"
+                    "opcode": "int32_bool_or"
                 }
             ],
             "public_labels": []
@@ -283,11 +283,11 @@
             "locals": 21,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 8192
                 },
                 {
-                    "opcode": "tobool64"
+                    "opcode": "int64_to_bool"
                 },
                 {
                     "opcode": "pick",
@@ -299,14 +299,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "bor64"
+                    "opcode": "int64_bool_or"
                 }
             ],
             "public_labels": []
@@ -317,18 +317,18 @@
             "locals": 24,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": -1.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
@@ -340,11 +340,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 200
                 },
                 {
-                    "opcode": "bor32"
+                    "opcode": "int32_bool_or"
                 }
             ],
             "public_labels": []
@@ -355,18 +355,18 @@
             "locals": 27,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 20000000000.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
@@ -378,21 +378,21 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
-                    "opcode": "bor64"
+                    "opcode": "int64_bool_or"
                 }
             ],
             "public_labels": []
@@ -403,18 +403,18 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "tobool8"
+                    "opcode": "int8_to_bool"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -422,11 +422,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "band8"
+                    "opcode": "int8_bool_and"
                 }
             ],
             "public_labels": []
@@ -437,11 +437,11 @@
             "locals": 3,
             "body": [
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.067000
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 0.000000
                 },
                 {
@@ -449,14 +449,14 @@
                     "comparison": "float32_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -464,11 +464,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 67
                 },
                 {
-                    "opcode": "band32"
+                    "opcode": "int32_bool_and"
                 }
             ],
             "public_labels": []
@@ -479,18 +479,18 @@
             "locals": 6,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 4096
                 },
                 {
-                    "opcode": "tobool64"
+                    "opcode": "int64_to_bool"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -498,14 +498,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "band64"
+                    "opcode": "int64_bool_and"
                 }
             ],
             "public_labels": []
@@ -516,25 +516,25 @@
             "locals": 9,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 1.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -542,11 +542,11 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "band32"
+                    "opcode": "int32_bool_and"
                 }
             ],
             "public_labels": []
@@ -557,25 +557,25 @@
             "locals": 12,
             "body": [
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 2.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "pick",
                     "arg": 0
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -583,21 +583,21 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 3.000000
                 },
                 {
-                    "opcode": "pushld",
+                    "opcode": "long_double_const",
                     "arg": 0.000000
                 },
                 {
-                    "opcode": "ldequals"
+                    "opcode": "long_double_equals"
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
-                    "opcode": "band8"
+                    "opcode": "int8_bool_and"
                 }
             ],
             "public_labels": []

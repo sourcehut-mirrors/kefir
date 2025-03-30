@@ -179,7 +179,7 @@
             "locals": 1,
             "body": [
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []
@@ -190,24 +190,24 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 3.140000
                 },
                 {
-                    "opcode": "f64cint"
+                    "opcode": "float64_to_int"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []
@@ -218,27 +218,27 @@
             "locals": 7,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 3.140000
                 },
                 {
-                    "opcode": "f64cf32"
+                    "opcode": "float64_to_float32"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []
@@ -249,7 +249,7 @@
             "locals": 10,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 10,
                         "index": 0
@@ -260,7 +260,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 13,
                         "index": 0
@@ -271,18 +271,18 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushstring",
+                    "opcode": "string_ref",
                     "arg": 0
                 },
                 {
-                    "opcode": "bcopy",
+                    "opcode": "copy_memory",
                     "arg": {
                         "type": 14,
                         "index": 0
                     }
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 }
             ],
             "public_labels": []
@@ -293,11 +293,11 @@
             "locals": 15,
             "body": [
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "bnot8"
+                    "opcode": "int8_bool_not"
                 },
                 {
                     "opcode": "branch",
@@ -305,28 +305,28 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 6.100000
                 },
                 {
-                    "opcode": "f32cint"
+                    "opcode": "float32_to_int"
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 },
                 {
-                    "opcode": "jmp",
+                    "opcode": "jump",
                     "arg": 9
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
-                    "opcode": "ret"
+                    "opcode": "return"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {

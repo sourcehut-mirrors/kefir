@@ -69,7 +69,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
             kefir_id_t id;
             REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
@@ -83,7 +83,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
@@ -91,7 +91,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
             kefir_id_t id;
             REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETTHRLOCAL, id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_THREAD_LOCAL, id));
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL: {
@@ -105,7 +105,7 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE_OK(local_static_identifier(mem, context->module, scoped_identifier->object.defining_function,
                                                    identifier, identifier_data->identifier, &id));
             }
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETTHRLOCAL, id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_THREAD_LOCAL, id));
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
@@ -116,9 +116,10 @@ kefir_result_t kefir_ast_translator_object_lvalue(struct kefir_mem *mem, struct 
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id,
                                                                           identifier_data->layout));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
-                    builder, KEFIR_IROPCODE_PUSHU64, identifier_data->layout->vl_array.array_ptr_relative_offset));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_LOAD64, KEFIR_IR_MEMORY_FLAG_NONE));
+                    builder, KEFIR_IR_OPCODE_UINT_CONST, identifier_data->layout->vl_array.array_ptr_relative_offset));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
             } else {
                 REQUIRE_OK(kefir_ast_translator_resolve_local_type_layout(builder, identifier_data->type_id,
                                                                           identifier_data->layout));
@@ -144,7 +145,7 @@ kefir_result_t kefir_ast_translator_function_lvalue(struct kefir_mem *mem, struc
     kefir_id_t id;
     REQUIRE(kefir_ir_module_symbol(mem, context->module, identifier, &id) != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR module symbol"));
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_GETGLOBAL, id));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
     return KEFIR_OK;
 }
 
@@ -178,10 +179,10 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
                                 mem, context->module, builder, context->ast_context->type_traits,
                                 node->array->properties.type, context->ast_context->type_traits->ptrdiff_type));
     }
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_PUSHU64,
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                         translator_type->object.layout->properties.size));
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IMUL64, 0));
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IROPCODE_IADD64, 0));
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_translator_type_free(mem, translator_type);

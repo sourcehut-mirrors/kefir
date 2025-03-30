@@ -80,7 +80,7 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
     for (const struct kefir_list_entry *iter = kefir_list_tail(&func->args); iter != NULL; iter = iter->prev) {
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, arg, iter->value);
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, &local_translator_context, &builder, arg));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IROPCODE_XCHG, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IR_OPCODE_XCHG, 1));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, arg->properties.type, translator_context, &builder, NULL));
     }
 
@@ -89,7 +89,7 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
     } else {
         REQUIRE_OK(kefir_ast_translate_statement(mem, func->body, &builder, &local_translator_context));
     }
-    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IROPCODE_RET, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(&builder, KEFIR_IR_OPCODE_RETURN, 0));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_FREE(&builder));
 
     REQUIRE_OK(kefir_ast_translator_local_scope_layout_free(mem, &local_scope));

@@ -52,8 +52,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, equals_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, equals_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, equals_func->declaration->result, KEFIR_IR_TYPE_INT, 0, 0);
-    kefir_irbuilder_block_appendi64(mem, &equals_func->body, KEFIR_IROPCODE_LDEQUALS, 0);
-    kefir_irbuilder_block_appendi64(mem, &equals_func->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendi64(mem, &equals_func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS, 0);
+    kefir_irbuilder_block_appendi64(mem, &equals_func->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     struct kefir_ir_type *greater_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *greater_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -71,8 +71,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, greater_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, greater_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, greater_func->declaration->result, KEFIR_IR_TYPE_INT, 0, 0);
-    kefir_irbuilder_block_appendi64(mem, &greater_func->body, KEFIR_IROPCODE_LDGREATER, 0);
-    kefir_irbuilder_block_appendi64(mem, &greater_func->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendi64(mem, &greater_func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_GREATER, 0);
+    kefir_irbuilder_block_appendi64(mem, &greater_func->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     struct kefir_ir_type *lesser_decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *lesser_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -90,8 +90,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_type_append(mem, lesser_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, lesser_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, lesser_func->declaration->result, KEFIR_IR_TYPE_INT, 0, 0);
-    kefir_irbuilder_block_appendi64(mem, &lesser_func->body, KEFIR_IROPCODE_LDLESSER, 0);
-    kefir_irbuilder_block_appendi64(mem, &lesser_func->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_appendi64(mem, &lesser_func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_LESSER, 0);
+    kefir_irbuilder_block_appendi64(mem, &lesser_func->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     struct kefir_ir_type *trunc1_decl_params = kefir_ir_module_new_type(mem, &module, 1, &func_params),
                          *trunc1_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -108,10 +108,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, trunc1_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     kefir_irbuilder_type_append(mem, trunc1_func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     kefir_irbuilder_type_append(mem, trunc1_func->declaration->result, KEFIR_IR_TYPE_INT, 0, 0);
-    kefir_irbuilder_block_append_long_double(mem, &trunc1_func->body, KEFIR_IROPCODE_PUSHLD, 0.0L);
-    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_LDEQUALS, 0);
-    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_BNOT64, 0);
-    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IROPCODE_RET, 0);
+    kefir_irbuilder_block_append_long_double(mem, &trunc1_func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST, 0.0L);
+    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IR_OPCODE_LONG_DOUBLE_EQUALS, 0);
+    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0);
+    kefir_irbuilder_block_appendi64(mem, &trunc1_func->body, KEFIR_IR_OPCODE_RETURN, 0);
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);
 

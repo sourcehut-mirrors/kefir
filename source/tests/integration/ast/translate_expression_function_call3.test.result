@@ -339,26 +339,26 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 4.580000
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "pushu",
+                    "opcode": "uint_const",
                     "arg": 255
                 },
                 {
-                    "opcode": "iand64"
+                    "opcode": "int64_and"
                 },
                 {
                     "opcode": "invoke",
@@ -376,15 +376,15 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 4.580000
                 },
                 {
-                    "opcode": "f32cf64"
+                    "opcode": "float32_to_float64"
                 },
                 {
                     "opcode": "invoke",
@@ -402,15 +402,15 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 101
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 102
                 },
                 {
@@ -444,19 +444,19 @@
             "locals": 0,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 101
                 },
                 {
-                    "opcode": "pushf64",
+                    "opcode": "float64_const",
                     "arg": 9.130000
                 },
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 0,
                         "index": 0
@@ -467,7 +467,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 27,
                         "index": 0

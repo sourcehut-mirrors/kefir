@@ -151,7 +151,7 @@
             "locals": 1,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 10
                 },
                 {
@@ -166,21 +166,21 @@
             "locals": 4,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 1
                 },
                 {
-                    "opcode": "extend32"
+                    "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "intcf32"
+                    "opcode": "int_to_float32"
                 },
                 {
-                    "opcode": "pushf32",
+                    "opcode": "float32_const",
                     "arg": 4.170000
                 },
                 {
-                    "opcode": "f32add"
+                    "opcode": "float32_add"
                 },
                 {
                     "opcode": "pop"
@@ -194,11 +194,11 @@
             "locals": 7,
             "body": [
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 2
                 },
                 {
-                    "opcode": "getglobal",
+                    "opcode": "get_global",
                     "arg": {
                         "data": "variable"
                     }
@@ -216,7 +216,7 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "store32",
+                    "opcode": "int32_store",
                     "memory_flags": {
                         "volatile": false
                     }
@@ -233,7 +233,7 @@
             "locals": 10,
             "body": [
                 {
-                    "opcode": "getlocal",
+                    "opcode": "get_local",
                     "arg": {
                         "type": 10,
                         "index": 0
@@ -244,7 +244,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "bzero",
+                    "opcode": "zero_memory",
                     "arg": {
                         "type": 13,
                         "index": 0
@@ -255,11 +255,11 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pushi",
+                    "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "store8",
+                    "opcode": "int8_store",
                     "memory_flags": {
                         "volatile": false
                     }

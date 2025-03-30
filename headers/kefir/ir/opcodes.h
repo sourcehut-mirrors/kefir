@@ -25,9 +25,9 @@
 #include "kefir/ir/opcode_defs.h"
 
 typedef enum kefir_iropcode {
-#define KEFIR_IR_OPCODES_ENUM(_id, _mnemonic, _type) KEFIR_IROPCODE_##_id
-
-    KEFIR_IR_OPCODE_DEFS(KEFIR_IR_OPCODES_ENUM, COMMA)
+#define KEFIR_IR_OPCODES_ENUM(_id, _mnemonic, _type) KEFIR_IR_OPCODE_##_id
+    KEFIR_IR_GENERIC_OPCODE_DEFS(KEFIR_IR_OPCODES_ENUM, COMMA),
+    KEFIR_IR_SPECIAL_OPCODE_DEFS(KEFIR_IR_OPCODES_ENUM, COMMA)
 #undef KEFIR_IR_OPCODES_ENUM
 } kefir_iropcode_t;
 

@@ -28,11 +28,41 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR module"));
     REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
     switch (instr->opcode) {
-#define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _type) \
-    case KEFIR_IROPCODE_##_id:                         \
+#define KEFIR_IR_OPCODES_SYMBOL_IMPL2(_id, _mnemonic, _type) \
+    case KEFIR_IR_OPCODE_##_id:                              \
         return kefir_ir_format_instr_##_type(json, module, instr);
-        KEFIR_IR_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
-#undef KEFIR_IR_OPCODES_SYMBOL
+#define TYPE_FMT_index u64
+#define TYPE_FMT_u64 u64
+#define TYPE_FMT_phi_ref u64
+#define TYPE_FMT_inline_asm u64
+#define TYPE_FMT_ref1 none
+#define TYPE_FMT_ref2 none
+#define TYPE_FMT_ref3_cond none
+#define TYPE_FMT_ref4_compare compare
+#define TYPE_FMT_compare_ref2 compare
+#define TYPE_FMT_ref_offset i64
+#define TYPE_FMT_typeref typeref
+#define TYPE_FMT_typed_ref1 typeref
+#define TYPE_FMT_typed_ref2 typeref
+#define TYPE_FMT_branch branch
+#define TYPE_FMT_call_ref funcref
+#define TYPE_FMT_immediate immediate
+#define TYPE_FMT_none none
+#define TYPE_FMT_variable identifier
+#define TYPE_FMT_type typeref
+#define TYPE_FMT_load_mem memflags
+#define TYPE_FMT_store_mem memflags
+#define TYPE_FMT_bitfield u32
+#define TYPE_FMT_stack_alloc boolean
+#define TYPE_FMT_atomic_op memory_order
+#define TYPE_FMT_atomic_typeref atomic_typeref
+#define TYPE_FMT_overflow_arith overflow_arith
+// TODO
+#define TYPE_FMT_branch_compare none
+#define KEFIR_IR_OPCODES_SYMBOL_IMPL(_id, _mnemonic, _type) KEFIR_IR_OPCODES_SYMBOL_IMPL2(_id, _mnemonic, _type)
+#define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _type) KEFIR_IR_OPCODES_SYMBOL_IMPL(_id, _mnemonic, TYPE_FMT_##_type)
+        KEFIR_IR_GENERIC_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
+        KEFIR_IR_SPECIAL_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )
     }
     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown opcode");
 }
