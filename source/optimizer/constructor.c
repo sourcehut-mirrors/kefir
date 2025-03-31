@@ -210,11 +210,148 @@ static kefir_result_t construct_inline_asm(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t get_condition_variant(kefir_uint64_t variant,
+                                            kefir_opt_branch_condition_variant_t *condition_variant) {
+    switch (variant) {
+        case KEFIR_IR_BRANCH_CONDITION_8BIT:
+            *condition_variant = KEFIR_OPT_BRANCH_CONDITION_8BIT;
+            break;
+
+        case KEFIR_IR_BRANCH_CONDITION_16BIT:
+            *condition_variant = KEFIR_OPT_BRANCH_CONDITION_16BIT;
+            break;
+
+        case KEFIR_IR_BRANCH_CONDITION_32BIT:
+            *condition_variant = KEFIR_OPT_BRANCH_CONDITION_32BIT;
+            break;
+
+        case KEFIR_IR_BRANCH_CONDITION_64BIT:
+            *condition_variant = KEFIR_OPT_BRANCH_CONDITION_64BIT;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR condition variant");
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t get_comparison_operation(kefir_uint64_t operation, kefir_opt_comparison_operation_t *compare) {
+    switch (operation) {
+        case KEFIR_IR_COMPARE_INT8_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_INT8_EQUALS;
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_INT16_EQUALS;
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_INT32_EQUALS;
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_INT64_EQUALS;
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_INT8_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_INT16_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_INT32_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_INT64_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_INT8_LESSER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_INT16_LESSER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_INT32_LESSER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_INT64_LESSER;
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_ABOVE:
+            *compare = KEFIR_OPT_COMPARISON_INT8_ABOVE;
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_ABOVE:
+            *compare = KEFIR_OPT_COMPARISON_INT16_ABOVE;
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_ABOVE:
+            *compare = KEFIR_OPT_COMPARISON_INT32_ABOVE;
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_ABOVE:
+            *compare = KEFIR_OPT_COMPARISON_INT64_ABOVE;
+            break;
+
+        case KEFIR_IR_COMPARE_INT8_BELOW:
+            *compare = KEFIR_OPT_COMPARISON_INT8_BELOW;
+            break;
+
+        case KEFIR_IR_COMPARE_INT16_BELOW:
+            *compare = KEFIR_OPT_COMPARISON_INT16_BELOW;
+            break;
+
+        case KEFIR_IR_COMPARE_INT32_BELOW:
+            *compare = KEFIR_OPT_COMPARISON_INT32_BELOW;
+            break;
+
+        case KEFIR_IR_COMPARE_INT64_BELOW:
+            *compare = KEFIR_OPT_COMPARISON_INT64_BELOW;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT32_EQUAL;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT32_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT32_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT32_LESSER;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_EQUALS:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT64_EQUAL;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_GREATER:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT64_GREATER;
+            break;
+
+        case KEFIR_IR_COMPARE_FLOAT64_LESSER:
+            *compare = KEFIR_OPT_COMPARISON_FLOAT64_LESSER;
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR scalar comparison operation");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                             struct kefir_opt_code_container *code,
                                             struct kefir_opt_constructor_state *state,
                                             const struct kefir_irinstr *instr) {
-    kefir_opt_instruction_ref_t instr_ref, instr_ref2, instr_ref3, instr_ref4;
+    kefir_opt_instruction_ref_t instr_ref, instr_ref2, instr_ref3, instr_ref4, instr_ref5;
     const kefir_opt_block_id_t current_block_id = state->current_block->block_id;
     switch (instr->opcode) {
         case KEFIR_IR_OPCODE_JUMP: {
@@ -226,33 +363,50 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
         case KEFIR_IR_OPCODE_BRANCH: {
             struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
-            kefir_opt_branch_condition_variant_t condition_variant;
-            switch (instr->arg.u64_2[1]) {
-                case KEFIR_IR_BRANCH_CONDITION_8BIT:
-                    condition_variant = KEFIR_OPT_BRANCH_CONDITION_8BIT;
-                    break;
-
-                case KEFIR_IR_BRANCH_CONDITION_16BIT:
-                    condition_variant = KEFIR_OPT_BRANCH_CONDITION_16BIT;
-                    break;
-
-                case KEFIR_IR_BRANCH_CONDITION_32BIT:
-                    condition_variant = KEFIR_OPT_BRANCH_CONDITION_32BIT;
-                    break;
-
-                case KEFIR_IR_BRANCH_CONDITION_64BIT:
-                    condition_variant = KEFIR_OPT_BRANCH_CONDITION_64BIT;
-                    break;
-
-                default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR branch instruction condition variant");
-            }
+            kefir_opt_branch_condition_variant_t condition_variant = 0;
+            REQUIRE_OK(get_condition_variant(instr->arg.u64_2[1], &condition_variant));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64_2[0], &jump_target_block));
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
             REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, code, current_block_id, condition_variant, instr_ref,
                                                               jump_target_block->block_id, alternative_block->block_id,
                                                               NULL));
+        } break;
+
+        case KEFIR_IR_OPCODE_BRANCH_COMPARE: {
+            struct kefir_opt_constructor_code_block_state *jump_target_block = NULL, *alternative_block = NULL;
+            kefir_opt_comparison_operation_t compare_op = 0;
+            REQUIRE_OK(get_comparison_operation(instr->arg.u64_2[1], &compare_op));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64_2[0], &jump_target_block));
+            REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, state->ir_location + 1, &alternative_block));
+            REQUIRE_OK(kefir_opt_code_builder_finalize_branch_compare(
+                mem, code, current_block_id, compare_op, instr_ref, instr_ref2, jump_target_block->block_id,
+                alternative_block->block_id, NULL));
+        } break;
+
+        case KEFIR_IR_OPCODE_SELECT: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            kefir_opt_branch_condition_variant_t condition_variant;
+            REQUIRE_OK(get_condition_variant(instr->arg.u64, &condition_variant));
+            REQUIRE_OK(kefir_opt_code_builder_select(mem, code, current_block_id, condition_variant, instr_ref2,
+                                                     instr_ref3, instr_ref4, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+        } break;
+
+        case KEFIR_IR_OPCODE_SELECT_COMPARE: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref5));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            kefir_opt_comparison_operation_t compare_op;
+            REQUIRE_OK(get_comparison_operation(instr->arg.u64, &compare_op));
+            REQUIRE_OK(kefir_opt_code_builder_select_compare(mem, code, current_block_id, compare_op, instr_ref2,
+                                                             instr_ref3, instr_ref4, instr_ref5, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
         case KEFIR_IR_OPCODE_IJUMP:
@@ -442,7 +596,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
-        case KEFIR_IR_OPCODE_INVOKE: {
+        case KEFIR_IR_OPCODE_INVOKE:
+        case KEFIR_IR_OPCODE_TAIL_INVOKE: {
             const struct kefir_ir_function_decl *ir_decl =
                 kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
             REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
@@ -450,8 +605,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             kefir_bool_t has_return = kefir_ir_type_children(ir_decl->result) > 0;
 
             kefir_opt_call_id_t call_ref;
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
-                                                         KEFIR_ID_NONE, &call_ref, &instr_ref));
+            if (instr->opcode == KEFIR_IR_OPCODE_INVOKE) {
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
+                                                             KEFIR_ID_NONE, &call_ref, &instr_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_container_new_tail_call(mem, code, current_block_id, ir_decl->id,
+                                                                  num_of_params, KEFIR_ID_NONE, &call_ref, &instr_ref));
+            }
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
@@ -464,7 +624,8 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             }
         } break;
 
-        case KEFIR_IR_OPCODE_INVOKE_VIRTUAL: {
+        case KEFIR_IR_OPCODE_INVOKE_VIRTUAL:
+        case KEFIR_IR_OPCODE_TAIL_INVOKE_VIRTUAL: {
             const struct kefir_ir_function_decl *ir_decl =
                 kefir_ir_module_get_declaration(module->ir_module, (kefir_id_t) instr->arg.u64);
             REQUIRE(ir_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Failed to obtain IR function declaration"));
@@ -473,8 +634,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
             kefir_opt_call_id_t call_ref;
             REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, num_of_params, &instr_ref2));
-            REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
-                                                         instr_ref2, &call_ref, &instr_ref));
+            if (instr->opcode == KEFIR_IR_OPCODE_INVOKE_VIRTUAL) {
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, code, current_block_id, ir_decl->id, num_of_params,
+                                                             instr_ref2, &call_ref, &instr_ref));
+            } else {
+                REQUIRE_OK(kefir_opt_code_container_new_tail_call(mem, code, current_block_id, ir_decl->id,
+                                                                  num_of_params, instr_ref2, &call_ref, &instr_ref));
+            }
             for (kefir_size_t i = 0; i < num_of_params; i++) {
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
                 REQUIRE_OK(
@@ -539,6 +705,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             UNARY_OP(int64_sign_extend_8bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS)
             UNARY_OP(int64_sign_extend_16bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS)
             UNARY_OP(int64_sign_extend_32bits, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS)
+            UNARY_OP(int64_zero_extend_8bits, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_8BITS)
+            UNARY_OP(int64_zero_extend_16bits, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_16BITS)
+            UNARY_OP(int64_zero_extend_32bits, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_32BITS)
 
             UNARY_OP(float32_neg, KEFIR_IR_OPCODE_FLOAT32_NEG)
             UNARY_OP(float64_neg, KEFIR_IR_OPCODE_FLOAT64_NEG)
@@ -583,114 +752,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
         case KEFIR_IR_OPCODE_SCALAR_COMPARE: {
             kefir_opt_comparison_operation_t compare_op;
-            switch (instr->arg.u64) {
-                case KEFIR_IR_COMPARE_INT8_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_INT8_EQUALS;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT16_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_INT16_EQUALS;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT32_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_INT32_EQUALS;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT64_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_INT64_EQUALS;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT8_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT8_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT16_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT16_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT32_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT32_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT64_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT64_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT8_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT8_LESSER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT16_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT16_LESSER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT32_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT32_LESSER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT64_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_INT64_LESSER;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT8_ABOVE:
-                    compare_op = KEFIR_OPT_COMPARISON_INT8_ABOVE;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT16_ABOVE:
-                    compare_op = KEFIR_OPT_COMPARISON_INT16_ABOVE;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT32_ABOVE:
-                    compare_op = KEFIR_OPT_COMPARISON_INT32_ABOVE;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT64_ABOVE:
-                    compare_op = KEFIR_OPT_COMPARISON_INT64_ABOVE;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT8_BELOW:
-                    compare_op = KEFIR_OPT_COMPARISON_INT8_BELOW;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT16_BELOW:
-                    compare_op = KEFIR_OPT_COMPARISON_INT16_BELOW;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT32_BELOW:
-                    compare_op = KEFIR_OPT_COMPARISON_INT32_BELOW;
-                    break;
-
-                case KEFIR_IR_COMPARE_INT64_BELOW:
-                    compare_op = KEFIR_OPT_COMPARISON_INT64_BELOW;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT32_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT32_EQUAL;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT32_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT32_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT32_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT32_LESSER;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT64_EQUALS:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT64_EQUAL;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT64_GREATER:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT64_GREATER;
-                    break;
-
-                case KEFIR_IR_COMPARE_FLOAT64_LESSER:
-                    compare_op = KEFIR_OPT_COMPARISON_FLOAT64_LESSER;
-                    break;
-
-                default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR scalar comparison instruction argument");
-            }
+            REQUIRE_OK(get_comparison_operation(instr->arg.u64, &compare_op));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
             REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, code, current_block_id, compare_op, instr_ref2,
@@ -1041,20 +1103,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef OVERFLOW_ARITH
 
-        case KEFIR_IR_OPCODE_GET_ARGUMENT:
         case KEFIR_IR_OPCODE_PHI:
-        case KEFIR_IR_OPCODE_SELECT:
-        case KEFIR_IR_OPCODE_SELECT_COMPARE:
-        case KEFIR_IR_OPCODE_BRANCH_COMPARE:
-        case KEFIR_IR_OPCODE_TAIL_INVOKE:
-        case KEFIR_IR_OPCODE_TAIL_INVOKE_VIRTUAL:
-        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_8BITS:
-        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_16BITS:
-        case KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_32BITS:
+        case KEFIR_IR_OPCODE_GET_ARGUMENT:
         case KEFIR_IR_OPCODE_ALLOC_LOCAL:
         case KEFIR_IR_OPCODE_REF_LOCAL:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                   "Construction of optimizer code from particular opcode is not implemented yet");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR instruction opcode");
     }
     return KEFIR_OK;
 }

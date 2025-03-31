@@ -50,8 +50,12 @@ kefir_result_t kefir_ir_format_instr_funcref(struct kefir_json_output *, const s
                                              const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_branch(struct kefir_json_output *, const struct kefir_ir_module *,
                                             const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_branch_compare(struct kefir_json_output *, const struct kefir_ir_module *,
+                                                    const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_compare(struct kefir_json_output *, const struct kefir_ir_module *,
                                              const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_condition(struct kefir_json_output *, const struct kefir_ir_module *,
+                                               const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memflags(struct kefir_json_output *, const struct kefir_ir_module *,
                                               const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *, const struct kefir_ir_module *,
