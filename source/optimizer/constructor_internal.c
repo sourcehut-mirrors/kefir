@@ -258,7 +258,8 @@ kefir_result_t kefir_opt_constructor_stack_exchange(struct kefir_mem *mem, struc
 }
 
 kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
-                                                          struct kefir_opt_constructor_state *state, kefir_id_t type_id,
+                                                          struct kefir_opt_constructor_state *state,
+                                                          kefir_uint64_t variable_id, kefir_id_t type_id,
                                                           kefir_size_t type_index,
                                                           kefir_opt_instruction_ref_t *instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -267,7 +268,7 @@ kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid current optimizer code block state"));
     REQUIRE(instr_ref, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to instruction reference"));
 
-    const kefir_hashtree_key_t key = (((kefir_uint64_t) type_id) << 32) | (type_index & ((1ull << 32) - 1));
+    ASSIGN_DECL_CAST(const kefir_hashtree_key_t, key, variable_id);
 
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&state->locals, key, &node);
@@ -280,7 +281,7 @@ kefir_result_t kefir_opt_constructor_get_local_allocation(struct kefir_mem *mem,
                                                       type_id, type_index, &local_ref));
         REQUIRE_OK(kefir_hashtree_insert(mem, &state->locals, key, (kefir_hashtree_value_t) local_ref));
         REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(mem, &state->function->debug_info,
-                                                                                local_ref, type_id, type_index));
+                                                                                local_ref, variable_id));
         *instr_ref = local_ref;
     }
 

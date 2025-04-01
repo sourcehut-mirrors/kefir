@@ -42,6 +42,8 @@ kefir_result_t kefir_irbuilder_block_appendi32(struct kefir_mem *, struct kefir_
                                                kefir_int32_t, kefir_int32_t);
 kefir_result_t kefir_irbuilder_block_appendu32(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
                                                kefir_uint32_t, kefir_uint32_t);
+kefir_result_t kefir_irbuilder_block_appendu32_4(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
+                                                 kefir_uint32_t, kefir_uint32_t, kefir_uint32_t, kefir_uint32_t);
 kefir_result_t kefir_irbuilder_block_appendf64(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,
                                                kefir_float64_t);
 kefir_result_t kefir_irbuilder_block_appendf32(struct kefir_mem *, struct kefir_irblock *, kefir_iropcode_t,

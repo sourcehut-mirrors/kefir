@@ -81,9 +81,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           .general_purpose_register = true, .memory_location = true},
                                                       decl_result, func_returns, 0, 0, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, func_locals_id, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu32_4(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, func_locals_id, 0,
+                                                 func_locals_id, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_INLINE_ASSEMBLY, id1));
-    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, func_locals_id, 0));
+    REQUIRE_OK(kefir_irbuilder_block_appendu32_4(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, func_locals_id, 0,
+                                                 func_locals_id, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_RETURN, func_locals_id, 0));
 #endif
 

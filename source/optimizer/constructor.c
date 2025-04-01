@@ -503,11 +503,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             break;
 
         case KEFIR_IR_OPCODE_GET_LOCAL:
-            REQUIRE(instr->arg.u32[0] == state->function->locals.type_id,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Expected IR operation type reference to correspond to IR function local type"));
-            REQUIRE_OK(kefir_opt_constructor_get_local_allocation(mem, state, instr->arg.u32[0], instr->arg.u32[1],
-                                                                  &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_get_local_allocation(
+                mem, state, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1], instr->arg.u32[2],
+                instr->arg.u32[3], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 

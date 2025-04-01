@@ -103,6 +103,7 @@ typedef struct kefir_ir_debug_entry_attribute {
         kefir_bool_t function_prototyped;
         kefir_size_t code_index;
         struct {
+            kefir_uint64_t variable_id;
             kefir_id_t type_id;
             kefir_size_t type_index;
         } local_variable;
@@ -157,9 +158,10 @@ typedef struct kefir_ir_debug_entries {
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, .code_index = (_index)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(_index) \
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_END, .code_index = (_index)})
-#define KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(_type_id, _type_index)                             \
-    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE, \
-                                              .local_variable = {.type_id = (_type_id), .type_index = (_type_index)}})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(_variable_id, _type_id, _type_index) \
+    ((struct kefir_ir_debug_entry_attribute) {                                        \
+        .tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LOCAL_VARIABLE,                         \
+        .local_variable = {.variable_id = (_variable_id), .type_id = (_type_id), .type_index = (_type_index)}})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_GLOBAL_VARIABLE(_location)                                         \
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_GLOBAL_VARIABLE, \
                                               .global_variable = (_location)})

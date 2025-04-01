@@ -782,10 +782,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -802,10 +801,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -815,10 +813,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -883,10 +880,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -900,10 +896,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -913,10 +908,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1100,10 +1094,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1113,10 +1106,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1177,10 +1169,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1190,10 +1181,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1254,10 +1244,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1267,10 +1256,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1331,10 +1319,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1344,10 +1331,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",

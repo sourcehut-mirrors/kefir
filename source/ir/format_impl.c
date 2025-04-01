@@ -56,6 +56,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
 #define TYPE_FMT_stack_alloc boolean
 #define TYPE_FMT_atomic_op memory_order
 #define TYPE_FMT_atomic_typeref atomic_typeref
+#define TYPE_FMT_localvar localvar
 #define TYPE_FMT_overflow_arith overflow_arith
 #define TYPE_FMT_branch_compare branch_compare
 #define KEFIR_IR_OPCODES_SYMBOL_IMPL(_id, _mnemonic, _type) KEFIR_IR_OPCODES_SYMBOL_IMPL2(_id, _mnemonic, _type)

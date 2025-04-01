@@ -146,10 +146,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 5,
-                        "index": 1
-                    }
+                    "id": 21474836481,
+                    "type": 5,
+                    "type_index": 1
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -163,10 +162,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 5,
-                        "index": 0
-                    }
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -180,10 +178,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 5,
-                        "index": 0
-                    }
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int32_load",
@@ -193,10 +190,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 5,
-                        "index": 1
-                    }
+                    "id": 21474836481,
+                    "type": 5,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",

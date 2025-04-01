@@ -521,8 +521,7 @@ static kefir_result_t generate_local_variable_loclists(struct kefir_mem *mem,
                                                   &attr));
     const struct kefir_opt_code_debug_info_local_variable_refset *allocation_instr_refs;
     kefir_result_t res = kefir_opt_code_debug_info_local_variable_allocation_of(
-        &codegen_function->function->debug_info, attr->local_variable.type_id, attr->local_variable.type_index,
-        &allocation_instr_refs);
+        &codegen_function->function->debug_info, attr->local_variable.variable_id, &allocation_instr_refs);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
 

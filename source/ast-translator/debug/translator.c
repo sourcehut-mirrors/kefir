@@ -883,8 +883,10 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
                         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                             mem, &module->debug_info.entries, &module->symbols, variable_entry_id,
-                            &KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(scoped_identifier_layout->type_id,
-                                                                      scoped_identifier_layout->layout->value)));
+                            &KEFIR_IR_DEBUG_ENTRY_ATTR_LOCAL_VARIABLE(
+                                (((kefir_uint64_t) scoped_identifier_layout->type_id) << 32) |
+                                    (((kefir_uint64_t) scoped_identifier_layout->layout->value) & ((1ull << 32) - 1)),
+                                scoped_identifier_layout->type_id, scoped_identifier_layout->layout->value)));
                         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries,
                                                                       &module->symbols, variable_entry_id,
                                                                       &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(false)));

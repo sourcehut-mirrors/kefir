@@ -1200,10 +1200,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 77,
-                        "index": 0
-                    }
+                    "id": 403726925824,
+                    "type": 77,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1217,10 +1216,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 77,
-                        "index": 0
-                    }
+                    "id": 403726925824,
+                    "type": 77,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int8_load",
@@ -1265,10 +1263,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 81,
-                        "index": 0
-                    }
+                    "id": 420906795008,
+                    "type": 81,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1282,10 +1279,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 81,
-                        "index": 0
-                    }
+                    "id": 420906795008,
+                    "type": 81,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int16_load",
@@ -1330,10 +1326,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 85,
-                        "index": 0
-                    }
+                    "id": 438086664192,
+                    "type": 85,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1347,10 +1342,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 85,
-                        "index": 0
-                    }
+                    "id": 438086664192,
+                    "type": 85,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int32_load",
@@ -1395,10 +1389,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 89,
-                        "index": 0
-                    }
+                    "id": 455266533376,
+                    "type": 89,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1412,10 +1405,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 89,
-                        "index": 0
-                    }
+                    "id": 455266533376,
+                    "type": 89,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1460,10 +1452,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1477,10 +1468,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1494,10 +1484,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",
@@ -1507,10 +1496,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1598,10 +1586,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",
@@ -1611,10 +1598,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1702,10 +1688,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",
@@ -1715,10 +1700,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -1883,10 +1867,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",
@@ -1899,10 +1882,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2067,10 +2049,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 1
-                    }
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
                 },
                 {
                     "opcode": "int32_load",
@@ -2080,10 +2061,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 108,
-                        "index": 0
-                    }
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2129,10 +2109,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -2146,10 +2125,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2189,10 +2167,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2235,10 +2212,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2326,10 +2302,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2414,10 +2389,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 121,
-                        "index": 0
-                    }
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",
@@ -2457,10 +2431,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 2
-                    }
+                    "id": 584115552258,
+                    "type": 136,
+                    "type_index": 2
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -2474,10 +2447,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 0
-                    }
+                    "id": 584115552256,
+                    "type": 136,
+                    "type_index": 0
                 },
                 {
                     "opcode": "uint_const",
@@ -2504,10 +2476,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 3
-                    }
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
                 },
                 {
                     "opcode": "uint_const",
@@ -2522,10 +2493,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 2
-                    }
+                    "id": 584115552258,
+                    "type": 136,
+                    "type_index": 2
                 },
                 {
                     "opcode": "int32_load",
@@ -2541,10 +2511,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 3
-                    }
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
                 },
                 {
                     "opcode": "uint_const",
@@ -2579,10 +2548,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 3
-                    }
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
                 },
                 {
                     "opcode": "uint_const",
@@ -2599,10 +2567,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 3
-                    }
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
                 },
                 {
                     "opcode": "uint_const",
@@ -2645,10 +2612,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 3
-                    }
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
                 },
                 {
                     "opcode": "uint_const",
@@ -2703,10 +2669,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 136,
-                        "index": 0
-                    }
+                    "id": 584115552256,
+                    "type": 136,
+                    "type_index": 0
                 },
                 {
                     "opcode": "uint_const",

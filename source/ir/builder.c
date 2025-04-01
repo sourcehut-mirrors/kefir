@@ -94,8 +94,8 @@ kefir_result_t kefir_irbuilder_block_appendu64_2(struct kefir_mem *mem, struct k
 }
 
 kefir_result_t kefir_irbuilder_block_appendu32_4(struct kefir_mem *mem, struct kefir_irblock *block,
-                                                 kefir_iropcode_t opcode, kefir_uint64_t arg, kefir_uint64_t arg2,
-                                                 kefir_uint64_t arg3, kefir_uint64_t arg4) {
+                                                 kefir_iropcode_t opcode, kefir_uint32_t arg, kefir_uint32_t arg2,
+                                                 kefir_uint32_t arg3, kefir_uint32_t arg4) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(block != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Epected valid IR block"));
     if (kefir_irblock_available(block) == 0) {

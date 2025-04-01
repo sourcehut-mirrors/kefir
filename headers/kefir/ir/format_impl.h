@@ -62,5 +62,7 @@ kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *, co
                                                   const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_atomic_typeref(struct kefir_json_output *, const struct kefir_ir_module *,
                                                     const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_localvar(struct kefir_json_output *, const struct kefir_ir_module *,
+                                              const struct kefir_irinstr *);
 
 #endif

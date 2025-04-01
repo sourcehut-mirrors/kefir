@@ -583,10 +583,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 15,
-                        "index": 0
-                    }
+                    "id": 64424509440,
+                    "type": 15,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -600,10 +599,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 15,
-                        "index": 0
-                    }
+                    "id": 64424509440,
+                    "type": 15,
+                    "type_index": 0
                 },
                 {
                     "opcode": "int64_load",

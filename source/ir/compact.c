@@ -196,7 +196,6 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
     for (kefir_size_t i = 0; i < kefir_irblock_length(&function->body); i++) {
         struct kefir_irinstr *instr = kefir_irblock_at(&function->body, i);
         switch (instr->opcode) {
-            case KEFIR_IR_OPCODE_GET_LOCAL:
             case KEFIR_IR_OPCODE_ZERO_MEMORY:
             case KEFIR_IR_OPCODE_COPY_MEMORY:
             case KEFIR_IR_OPCODE_VARARG_GET:
@@ -209,6 +208,15 @@ static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_mo
                 ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
                 REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
                 instr->arg.u32[0] = (kefir_uint32_t) type_id;
+            } break;
+
+            case KEFIR_IR_OPCODE_GET_LOCAL: {
+                kefir_id_t type_id = (kefir_id_t) instr->arg.u32[2];
+                struct kefir_hashtree_node *node = NULL;
+                REQUIRE_OK(kefir_hashtree_at(&module->named_types, type_id, &node));
+                ASSIGN_DECL_CAST(struct kefir_ir_type *, type, node->value);
+                REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &type, &type_id));
+                instr->arg.u32[2] = (kefir_uint32_t) type_id;
             } break;
 
             case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM:

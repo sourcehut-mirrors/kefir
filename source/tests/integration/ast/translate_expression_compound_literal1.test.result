@@ -172,10 +172,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -207,10 +206,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 1
-                    }
+                    "id": 1,
+                    "type": 0,
+                    "type_index": 1
                 },
                 {
                     "opcode": "vstack_pick",
@@ -313,10 +311,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 6
-                    }
+                    "id": 6,
+                    "type": 0,
+                    "type_index": 6
                 },
                 {
                     "opcode": "vstack_pick",

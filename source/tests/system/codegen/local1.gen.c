@@ -66,10 +66,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     ASSIGN_DECL_CAST(const struct kefir_abi_amd64_typeentry_layout *, entry_layout,
                      kefir_vector_at(&type_layout.layout, 1));
 
-    kefir_irbuilder_block_appendu32(mem, &fill->body, KEFIR_IR_OPCODE_GET_LOCAL, type1_id, 0);  // 0:  [VAL, S*]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);      // 1:  [S*, VAL]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);          // 1:  [S*, VAL, VAL]
-    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_PICK, 2);  // 2:  [S*, VAL, VAL, S*]
+    kefir_irbuilder_block_appendu32_4(mem, &fill->body, KEFIR_IR_OPCODE_GET_LOCAL, type1_id, 0, type1_id,
+                                      0);                                                   // 0:  [VAL, S*]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);  // 1:  [S*, VAL]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);      // 1:  [S*, VAL, VAL]
+    kefir_irbuilder_block_appendi64(mem, &fill->body, KEFIR_IR_OPCODE_VSTACK_PICK, 2);      // 2:  [S*, VAL, VAL, S*]
     kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &fill->body, KEFIR_IR_OPCODE_INT64_ADD,
                                     0);                                                     // 3:  [S*, VAL, VAL, U8*]

@@ -129,15 +129,17 @@ static kefir_result_t inline_operation_ref3_cond(struct do_inline_param *param,
     REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[2], &mapped_ref3));
     REQUIRE_OK(kefir_opt_code_container_new_instruction(
         param->mem, param->dst_code, mapped_block_id,
-        &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
-                                       .parameters = {.refs = {mapped_ref1, mapped_ref2, mapped_ref3}, .condition_variant = instr->operation.parameters.condition_variant}},
+        &(struct kefir_opt_operation) {
+            .opcode = instr->operation.opcode,
+            .parameters = {.refs = {mapped_ref1, mapped_ref2, mapped_ref3},
+                           .condition_variant = instr->operation.parameters.condition_variant}},
         mapped_instr_ref_ptr));
     return KEFIR_OK;
 }
 
 static kefir_result_t inline_operation_ref4_compare(struct do_inline_param *param,
-                                                 const struct kefir_opt_instruction *instr,
-                                                 kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
+                                                    const struct kefir_opt_instruction *instr,
+                                                    kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
@@ -149,7 +151,8 @@ static kefir_result_t inline_operation_ref4_compare(struct do_inline_param *para
     REQUIRE_OK(kefir_opt_code_container_new_instruction(
         param->mem, param->dst_code, mapped_block_id,
         &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
-                                       .parameters = {.comparison = instr->operation.parameters.comparison, .refs = {mapped_ref1, mapped_ref2, mapped_ref3, mapped_ref4}}},
+                                       .parameters = {.comparison = instr->operation.parameters.comparison,
+                                                      .refs = {mapped_ref1, mapped_ref2, mapped_ref3, mapped_ref4}}},
         mapped_instr_ref_ptr));
     return KEFIR_OK;
 }
@@ -881,15 +884,13 @@ static kefir_result_t inline_debug_entries(struct do_inline_param *param) {
 static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param) {
     kefir_result_t res;
     struct kefir_opt_code_debug_info_local_variable_iterator alloc_iter;
-    kefir_id_t type_id;
-    kefir_size_t type_index;
+    kefir_uint64_t variable_id;
     for (res = kefir_opt_code_debug_info_local_variable_allocation_iter(&param->src_function->debug_info, &alloc_iter,
-                                                                        &type_id, &type_index);
-         res == KEFIR_OK;
-         res = kefir_opt_code_debug_info_local_variable_allocation_next(&alloc_iter, &type_id, &type_index)) {
+                                                                        &variable_id);
+         res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_allocation_next(&alloc_iter, &variable_id)) {
         const struct kefir_opt_code_debug_info_local_variable_refset *refset;
-        REQUIRE_OK(kefir_opt_code_debug_info_local_variable_allocation_of(&param->src_function->debug_info, type_id,
-                                                                          type_index, &refset));
+        REQUIRE_OK(kefir_opt_code_debug_info_local_variable_allocation_of(&param->src_function->debug_info, variable_id,
+                                                                          &refset));
 
         struct kefir_hashtreeset_iterator iter;
         for (res = kefir_hashtreeset_iter(&refset->refs, &iter); res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {
@@ -901,7 +902,7 @@ static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param
                 REQUIRE_OK(res);
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_alloc_instr_ref, node2->value);
                 REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(
-                    param->mem, &param->dst_function->debug_info, mapped_alloc_instr_ref, type_id, type_index));
+                    param->mem, &param->dst_function->debug_info, mapped_alloc_instr_ref, variable_id));
             }
         }
         if (res != KEFIR_ITERATOR_END) {

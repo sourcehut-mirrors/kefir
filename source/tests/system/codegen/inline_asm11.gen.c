@@ -68,12 +68,15 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         mem, &module.symbols, inline_asm1, "[one]", decl_params, func_params, 0,
         KEFIR_IR_INLINE_ASSEMBLY_IMMEDIATE_IDENTIFIER_BASED, NULL, 0, 1, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0));
+    REQUIRE_OK(
+        kefir_irbuilder_block_appendu32_4(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_INT64_STORE, 0));
-    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0));
+    REQUIRE_OK(
+        kefir_irbuilder_block_appendu32_4(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_INLINE_ASSEMBLY, id1));
-    REQUIRE_OK(kefir_irbuilder_block_appendu32(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0));
+    REQUIRE_OK(
+        kefir_irbuilder_block_appendu32_4(mem, &func->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_INT64_LOAD, 0));
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &func->body, KEFIR_IR_OPCODE_RETURN, 0));
 #endif

@@ -1364,10 +1364,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 18
-                    }
+                    "id": 343597383698,
+                    "type": 80,
+                    "type_index": 18
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1381,10 +1380,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 3
-                    }
+                    "id": 343597383683,
+                    "type": 80,
+                    "type_index": 3
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1399,10 +1397,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 2
-                    }
+                    "id": 343597383682,
+                    "type": 80,
+                    "type_index": 2
                 },
                 {
                     "opcode": "vstack_exchange",
@@ -1416,10 +1413,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 0
-                    }
+                    "id": 343597383680,
+                    "type": 80,
+                    "type_index": 0
                 },
                 {
                     "opcode": "uint_const",
@@ -1446,10 +1442,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 19
-                    }
+                    "id": 343597383699,
+                    "type": 80,
+                    "type_index": 19
                 },
                 {
                     "opcode": "uint_const",
@@ -1464,10 +1459,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 2
-                    }
+                    "id": 343597383682,
+                    "type": 80,
+                    "type_index": 2
                 },
                 {
                     "opcode": "int64_load",
@@ -1480,10 +1474,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 80,
-                        "index": 19
-                    }
+                    "id": 343597383699,
+                    "type": 80,
+                    "type_index": 19
                 },
                 {
                     "opcode": "uint_const",
@@ -5235,6 +5228,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
+                                    "variable_id": 343597383682,
                                     "type_id": 80,
                                     "type_index": 2
                                 }
@@ -5285,6 +5279,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
+                                    "variable_id": 343597383683,
                                     "type_id": 80,
                                     "type_index": 3
                                 }
@@ -5335,6 +5330,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
+                                    "variable_id": 343597383698,
                                     "type_id": 80,
                                     "type_index": 18
                                 }
@@ -5385,6 +5381,7 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
+                                    "variable_id": 343597383699,
                                     "type_id": 80,
                                     "type_index": 19
                                 }

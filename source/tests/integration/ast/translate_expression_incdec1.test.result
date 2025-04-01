@@ -269,10 +269,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -315,10 +314,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 4
-                    }
+                    "id": 4,
+                    "type": 0,
+                    "type_index": 4
                 },
                 {
                     "opcode": "vstack_pick",
@@ -361,10 +359,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "vstack_pick",
@@ -407,10 +404,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 4
-                    }
+                    "id": 4,
+                    "type": 0,
+                    "type_index": 4
                 },
                 {
                     "opcode": "vstack_pick",
@@ -453,10 +449,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 5
-                    }
+                    "id": 5,
+                    "type": 0,
+                    "type_index": 5
                 },
                 {
                     "opcode": "vstack_pick",
@@ -499,10 +494,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 1
-                    }
+                    "id": 1,
+                    "type": 0,
+                    "type_index": 1
                 },
                 {
                     "opcode": "vstack_pick",
@@ -552,10 +546,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 2
-                    }
+                    "id": 2,
+                    "type": 0,
+                    "type_index": 2
                 },
                 {
                     "opcode": "vstack_pick",
@@ -605,10 +598,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 5
-                    }
+                    "id": 5,
+                    "type": 0,
+                    "type_index": 5
                 },
                 {
                     "opcode": "vstack_pick",
@@ -651,10 +643,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 1
-                    }
+                    "id": 1,
+                    "type": 0,
+                    "type_index": 1
                 },
                 {
                     "opcode": "vstack_pick",
@@ -704,10 +695,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 2
-                    }
+                    "id": 2,
+                    "type": 0,
+                    "type_index": 2
                 },
                 {
                     "opcode": "vstack_pick",
@@ -757,10 +747,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 3
-                    }
+                    "id": 3,
+                    "type": 0,
+                    "type_index": 3
                 },
                 {
                     "opcode": "vstack_pick",
@@ -803,10 +792,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 3
-                    }
+                    "id": 3,
+                    "type": 0,
+                    "type_index": 3
                 },
                 {
                     "opcode": "vstack_pick",

@@ -146,10 +146,9 @@
                 },
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 }
             ],
             "public_labels": []
@@ -161,10 +160,9 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "arg": {
-                        "type": 0,
-                        "index": 0
-                    }
+                    "id": 0,
+                    "type": 0,
+                    "type_index": 0
                 },
                 {
                     "opcode": "branch",

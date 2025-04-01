@@ -507,6 +507,27 @@ kefir_result_t kefir_ir_format_instr_atomic_typeref(struct kefir_json_output *js
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_instr_localvar(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                              const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, (((kefir_uint64_t) instr->arg.u32[0]) << 32) | instr->arg.u32[1]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[2]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[3]));
+
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 struct format_param {
     struct kefir_json_output *json;
     struct kefir_ir_type_visitor *visitor;
@@ -1610,6 +1631,8 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
                 REQUIRE_OK(kefir_json_output_string(json, "local_variable"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_object_begin(json));
+                REQUIRE_OK(kefir_json_output_object_key(json, "variable_id"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable.variable_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "type_id"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->local_variable.type_id));
                 REQUIRE_OK(kefir_json_output_object_key(json, "type_index"));
