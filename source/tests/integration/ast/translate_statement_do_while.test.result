@@ -148,7 +148,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -162,7 +162,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "invoke",
@@ -179,15 +179,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -197,7 +197,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local",
@@ -284,7 +284,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "long_double_const",

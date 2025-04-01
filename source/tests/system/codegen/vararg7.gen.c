@@ -59,8 +59,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(
         kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_PICK, 1);       // 0: [C, V*, C]
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT_CONST, 0);  // 1: [C, V*, C, 0]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 0: [C, V*, C]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT_CONST, 0);    // 1: [C, V*, C, 0]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                     KEFIR_IR_COMPARE_INT64_EQUALS);                          // 2: [C, V*, C==0]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0);  // 3: [C, V*, C!=0]
@@ -68,14 +68,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                       KEFIR_IR_BRANCH_CONDITION_8BIT);                               // 4: [C, V*] ->@7
     kefir_irbuilder_block_appendu32(mem, &getint->body, KEFIR_IR_OPCODE_VARARG_GET, inttype_id, 0);  // 5: [C, V]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_RETURN, 0);                  // 6: [C] return V
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_PICK, 0);                    // 7: [C, V*, V*]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);             // 7: [C, V*, V*]
     kefir_irbuilder_block_appendu32(mem, &getint->body, KEFIR_IR_OPCODE_VARARG_GET, inttype_id, 0);  // 8: [C, V*, V]
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_POP, 0);                     // 9: [C, V*]
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_PICK, 1);                    // 10: [C, V*, C]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_POP, 0);              // 9: [C, V*]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);             // 10: [C, V*, C]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT_CONST, -1);              // 11: [C, V*, C-1]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT64_ADD, 0);               // 12: [C, V*, C-1]
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_XCHG, 2);                    // 13: [C-1, V*, C]
-    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_POP, 0);                     // 14: [C-1, V*]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2);         // 13: [C-1, V*, C]
+    kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_POP, 0);              // 14: [C-1, V*]
     kefir_irbuilder_block_appendu64(mem, &getint->body, KEFIR_IR_OPCODE_JUMP, 0);  // 15: [C-1, V*] -> @0
 
     struct kefir_ir_type *getarg_decl_result = kefir_ir_module_new_type(mem, &module, 2, &func_returns),
@@ -93,7 +93,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_NOP, 0);                   // 0: [C, L*]
     kefir_irbuilder_block_appendu32(mem, &getarg->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0);  // 1: [C, V*]
-    kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_PICK, 0);                  // 2: [C, V*, V*]
+    kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);           // 2: [C, V*, V*]
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_VARARG_START, 0);          // 3: [C, V*]
     kefir_irbuilder_block_appendu64(mem, &getarg->body, KEFIR_IR_OPCODE_INVOKE, getint_decl->id);  // 5: [R]
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_NOP, 0);                   // 6: [R, L*]

@@ -478,16 +478,16 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IR_OPCODE_PICK:
+        case KEFIR_IR_OPCODE_VSTACK_PICK:
             REQUIRE_OK(kefir_opt_constructor_stack_at(mem, state, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IR_OPCODE_POP:
+        case KEFIR_IR_OPCODE_VSTACK_POP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             break;
 
-        case KEFIR_IR_OPCODE_XCHG:
+        case KEFIR_IR_OPCODE_VSTACK_EXCHANGE:
             REQUIRE_OK(kefir_opt_constructor_stack_exchange(mem, state, instr->arg.u64));
             break;
 

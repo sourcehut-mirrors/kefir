@@ -81,7 +81,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -101,14 +101,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 25
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -128,14 +128,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 34
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -155,14 +155,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 43
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -182,15 +182,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -200,7 +200,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -220,15 +220,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -238,7 +238,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -258,15 +258,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -276,7 +276,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -296,15 +296,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -314,7 +314,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -341,7 +341,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -361,14 +361,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 11
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -388,15 +388,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -406,7 +406,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -425,7 +425,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -445,14 +445,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 47
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -472,14 +472,14 @@
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
                     "arg": 38
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -499,15 +499,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -517,7 +517,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
@@ -537,15 +537,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -555,7 +555,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",

@@ -70,24 +70,24 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     ASSIGN_DECL_CAST(const struct kefir_abi_amd64_typeentry_layout *, entry_layout,
                      kefir_vector_at(&type_layout.layout, 1));
 
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT_CONST, 0);  // 0: [S*, 0]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, 0, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT_CONST, 0);    // 0: [S*, 0]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, 0, S*]
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
                                     0);                                              // 2: [S*, 0, U8*]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT8_LOAD, 0);  // 3: [S*, 0, U8]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT_CONST, 0xff);
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_AND, 0);
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, U8, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);    // 4: [S*, U8]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, U8, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 2);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
                                     0);                                              // 2: [S*, U8, I8*]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT8_LOAD, 0);  // 3: [S*, U8, I8]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0);
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8+I8]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, U8+I8, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);    // 4: [S*, U8+I8]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, U8+I8, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 3);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
@@ -95,16 +95,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT16_LOAD, 0);  // 3: [S*, U8+I8, U16]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT_CONST, 0xffff);
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_AND, 0);
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8+I8+U16]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, U8+I8+U16, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);    // 4: [S*, U8+I8+U16]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, U8+I8+U16, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 4);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
                                     0);                                               // 2: [S*, U8+I8+U16, I16*]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT16_LOAD, 0);  // 3: [S*, U8+I8+U16, I16]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0);
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8+I8+U16+I16]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, U8+I8+U16+I16, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);    // 4: [S*, U8+I8+U16+I16]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, U8+I8+U16+I16, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 5);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
@@ -112,8 +112,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT32_LOAD, 0);  // 3: [S*, U8+I8+U16+I16, U32]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT_CONST, 0xffffffffuLL);
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_AND, 0);
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8+I8+U16+I16+U32]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);       // 1: [S*, U8+I8+U16+I16+U32, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);    // 4: [S*, U8+I8+U16+I16+U32]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, U8+I8+U16+I16+U32, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 6);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
@@ -121,7 +121,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT32_LOAD, 0);  // 3: [S*, U8+I8+U16+I16+U32, I32]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS, 0);
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD, 0);  // 4: [S*, U8+I8+U16+I16+U32+I32]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);  // 1: [S*, U8+I8+U16+I16+U32+I32, S*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK,
+                                    1);  // 1: [S*, U8+I8+U16+I16+U32+I32, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 7);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
@@ -129,16 +130,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_LOAD,
                                     0);  // 3: [S*, U8+I8+U16+I16+U32+I32, I64]
     kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
-                                    0);                                         // 4: [S*, U8+I8+U16+I16+U32+I32+I64]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 1);  // 1: [S*, SUM, S*]
+                                    0);  // 4: [S*, U8+I8+U16+I16+U32+I32+I64]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);  // 1: [S*, SUM, S*]
     entry_layout = kefir_vector_at(&type_layout.layout, 8);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_UINT_CONST, entry_layout->relative_offset);
     kefir_irbuilder_block_appendu64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_ADD,
-                                    0);                                                // 2: [S*, VAL, SUM*]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_PICK, 0);         // 1: [S*, VAL, SUM*, SUM*]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_XCHG, 2);         // 1: [S*, SUM*, SUM*, VAL]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_STORE, 0);  // 1: [S*, SUM*]
-    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_RETURN, 0);       // 1: [S*, SUM*]
+                                    0);                                                    // 2: [S*, VAL, SUM*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);      // 1: [S*, VAL, SUM*, SUM*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2);  // 1: [S*, SUM*, SUM*, VAL]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_INT64_STORE, 0);      // 1: [S*, SUM*]
+    kefir_irbuilder_block_appendi64(mem, &sum->body, KEFIR_IR_OPCODE_RETURN, 0);           // 1: [S*, SUM*]
 
     REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

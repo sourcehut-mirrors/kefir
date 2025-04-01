@@ -637,7 +637,7 @@
                     "opcode": "int64_add"
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -668,7 +668,7 @@
                     "opcode": "int64_lshift"
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {

@@ -88,7 +88,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -102,7 +102,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local",
@@ -112,7 +112,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -122,11 +122,11 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -143,7 +143,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "get_local",
@@ -203,7 +203,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -216,22 +216,22 @@
                     "opcode": "int64_sign_extend_16bits"
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 2
                 },
                 {
                     "opcode": "int32_mod"
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -241,7 +241,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": [

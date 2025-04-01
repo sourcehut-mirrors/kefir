@@ -64,7 +64,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {

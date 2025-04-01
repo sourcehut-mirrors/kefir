@@ -222,7 +222,7 @@
                     "arg": 0
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -231,7 +231,7 @@
                     "condition": "32bit"
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",

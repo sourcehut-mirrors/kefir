@@ -149,14 +149,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "long_double_const",
                     "arg": 10000000000.000000
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "float32_const",
@@ -175,14 +175,14 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "float32_const",
                     "arg": 210000.000000
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
@@ -201,21 +201,21 @@
                     "arg": 1
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "float32_const",
                     "arg": 210000.000000
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 66536
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "long_double_const",
@@ -234,14 +234,14 @@
                     "arg": 120
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "float32_const",
                     "arg": 0.300000
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
@@ -260,21 +260,21 @@
                     "arg": 120
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "float64_const",
                     "arg": 0.000560
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "uint_const",
                     "arg": 65534
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": []

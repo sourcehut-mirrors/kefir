@@ -513,7 +513,7 @@
                     }
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 0
                 },
                 {
@@ -523,22 +523,22 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 2
                 },
                 {
                     "opcode": "int64_add"
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -548,7 +548,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": []
@@ -589,7 +589,7 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
@@ -618,15 +618,15 @@
                     }
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "xchg",
+                    "opcode": "vstack_exchange",
                     "arg": 1
                 },
                 {
-                    "opcode": "pick",
+                    "opcode": "vstack_pick",
                     "arg": 1
                 },
                 {
@@ -636,7 +636,7 @@
                     }
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": []

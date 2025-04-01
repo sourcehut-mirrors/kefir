@@ -92,7 +92,7 @@
                     "arg": 65
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": []
@@ -107,21 +107,21 @@
                     "arg": 66
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 67
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 68
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 }
             ],
             "public_labels": []
@@ -136,21 +136,21 @@
                     "arg": 69
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 70
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 71
                 },
                 {
-                    "opcode": "pop"
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",

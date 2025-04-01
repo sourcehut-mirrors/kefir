@@ -50,7 +50,7 @@ kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to obtain normalized expression type"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->init, builder, context));
         if (clause1_type->tag != KEFIR_AST_TYPE_VOID) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_POP, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
         }
     }
 
@@ -120,7 +120,7 @@ kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
                 KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to obtain normalized expression type"));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->tail, builder, context));
         if (tail_type->tag != KEFIR_AST_TYPE_VOID) {
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_POP, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
         }
     }
 

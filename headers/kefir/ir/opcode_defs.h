@@ -29,9 +29,9 @@
 #define KEFIR_IR_SPECIAL_OPCODE_DEFS(OPCODE, SEPARATOR) \
     OPCODE(NOP, "nop", none) SEPARATOR \
     OPCODE(GET_LOCAL, "get_local", typeref) SEPARATOR \
-    OPCODE(POP, "pop", none) SEPARATOR \
-    OPCODE(PICK, "pick", u64) SEPARATOR \
-    OPCODE(XCHG, "xchg", u64)
+    OPCODE(VSTACK_POP, "vstack_pop", none) SEPARATOR \
+    OPCODE(VSTACK_PICK, "vstack_pick", u64) SEPARATOR \
+    OPCODE(VSTACK_EXCHANGE, "vstack_exchange", u64)
 // clang-format on
 
 #endif

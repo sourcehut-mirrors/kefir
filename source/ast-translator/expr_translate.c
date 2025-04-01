@@ -120,7 +120,7 @@ kefir_result_t kefir_ast_translate_expression(struct kefir_mem *mem, const struc
     if (base->properties.expression_props.preserve_after_eval.enabled) {
         REQUIRE_OK(kefir_ast_translator_fetch_temporary(
             mem, context, builder, &base->properties.expression_props.preserve_after_eval.temporary_identifier));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 1));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
         REQUIRE_OK(
             kefir_ast_translator_store_value(mem, base->properties.type, context, builder, &base->source_location));
     }

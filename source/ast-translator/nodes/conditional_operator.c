@@ -110,10 +110,10 @@ kefir_result_t kefir_ast_translate_conditional_operator_node(struct kefir_mem *m
         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmp2Index)->arg.i64 = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     } else {
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->condition, builder, context));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_PICK, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         kefir_size_t jmp1Index;
         REQUIRE_OK(generate_branch(mem, context, builder, unqualified_condition_type, &jmp1Index));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_POP, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->expr2, builder, context));
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_expr2_type)) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,

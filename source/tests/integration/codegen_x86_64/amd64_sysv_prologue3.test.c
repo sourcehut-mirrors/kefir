@@ -65,7 +65,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     for (kefir_size_t i = 0; i < kefir_ir_type_children(decl_params); i++) {
         REQUIRE_OK(kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT_CONST, 0));
-        REQUIRE_OK(kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_XCHG, 1));
+        REQUIRE_OK(kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
         REQUIRE_OK(kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_STORE, 1));
     }
 
