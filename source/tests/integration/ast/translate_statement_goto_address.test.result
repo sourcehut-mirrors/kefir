@@ -78,7 +78,6 @@
         {
             "identifier": 0,
             "name": "goto1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "get_local",
@@ -254,7 +253,6 @@
         {
             "identifier": 1,
             "name": "goto2",
-            "locals": 5,
             "body": [
                 {
                     "opcode": "block_label",

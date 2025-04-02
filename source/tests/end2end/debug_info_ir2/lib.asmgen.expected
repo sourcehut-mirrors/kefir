@@ -571,7 +571,6 @@
         {
             "identifier": 26,
             "name": "test1",
-            "locals": 54,
             "body": [
                 {
                     "opcode": "get_local",

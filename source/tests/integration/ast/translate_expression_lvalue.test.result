@@ -294,7 +294,6 @@
         {
             "identifier": 0,
             "name": "identifier",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",
@@ -338,7 +337,6 @@
         {
             "identifier": 4,
             "name": "indirection",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -353,7 +351,6 @@
         {
             "identifier": 2,
             "name": "struct_field",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",
@@ -380,7 +377,6 @@
         {
             "identifier": 3,
             "name": "struct_field_indirect",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",
@@ -413,7 +409,6 @@
         {
             "identifier": 1,
             "name": "array_subscript",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",

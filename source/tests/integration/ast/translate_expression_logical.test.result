@@ -210,7 +210,6 @@
         {
             "identifier": 5,
             "name": "logical_or1",
-            "locals": 15,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -241,7 +240,6 @@
         {
             "identifier": 6,
             "name": "logical_or2",
-            "locals": 18,
             "body": [
                 {
                     "opcode": "float32_const",
@@ -280,7 +278,6 @@
         {
             "identifier": 7,
             "name": "logical_or3",
-            "locals": 21,
             "body": [
                 {
                     "opcode": "int_const",
@@ -314,7 +311,6 @@
         {
             "identifier": 8,
             "name": "logical_or4",
-            "locals": 24,
             "body": [
                 {
                     "opcode": "long_double_const",
@@ -352,7 +348,6 @@
         {
             "identifier": 9,
             "name": "logical_or5",
-            "locals": 27,
             "body": [
                 {
                     "opcode": "long_double_const",
@@ -400,7 +395,6 @@
         {
             "identifier": 0,
             "name": "logical_and1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -434,7 +428,6 @@
         {
             "identifier": 1,
             "name": "logical_and2",
-            "locals": 3,
             "body": [
                 {
                     "opcode": "float32_const",
@@ -476,7 +469,6 @@
         {
             "identifier": 2,
             "name": "logical_and3",
-            "locals": 6,
             "body": [
                 {
                     "opcode": "int_const",
@@ -513,7 +505,6 @@
         {
             "identifier": 3,
             "name": "logical_and4",
-            "locals": 9,
             "body": [
                 {
                     "opcode": "long_double_const",
@@ -554,7 +545,6 @@
         {
             "identifier": 4,
             "name": "logical_and5",
-            "locals": 12,
             "body": [
                 {
                     "opcode": "long_double_const",

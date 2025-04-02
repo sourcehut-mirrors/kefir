@@ -31,9 +31,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
-    REQUIRE(function->function->locals.type != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR function local type"));
-
     kefir_asmcmp_virtual_register_index_t vreg;
 
     kefir_int64_t offset;
@@ -52,9 +49,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem 
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    REQUIRE(function->function->locals.type != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR function local type"));
 
     kefir_asmcmp_virtual_register_index_t vreg;
 

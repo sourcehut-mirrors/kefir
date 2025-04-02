@@ -1104,7 +1104,6 @@
         {
             "identifier": 36,
             "name": "getA",
-            "locals": 76,
             "body": [
                 {
                     "opcode": "get_global",
@@ -1127,7 +1126,6 @@
         {
             "identifier": 37,
             "name": "getB",
-            "locals": 76,
             "body": [
                 {
                     "opcode": "get_global",
@@ -1150,7 +1148,6 @@
         {
             "identifier": 38,
             "name": "getC",
-            "locals": 76,
             "body": [
                 {
                     "opcode": "get_global",
@@ -1173,7 +1170,6 @@
         {
             "identifier": 39,
             "name": "getD",
-            "locals": 76,
             "body": [
                 {
                     "opcode": "get_global",
@@ -1196,7 +1192,6 @@
         {
             "identifier": 40,
             "name": "setA",
-            "locals": 77,
             "body": [
                 {
                     "opcode": "get_local",
@@ -1259,7 +1254,6 @@
         {
             "identifier": 41,
             "name": "setB",
-            "locals": 81,
             "body": [
                 {
                     "opcode": "get_local",
@@ -1322,7 +1316,6 @@
         {
             "identifier": 42,
             "name": "setC",
-            "locals": 85,
             "body": [
                 {
                     "opcode": "get_local",
@@ -1385,7 +1378,6 @@
         {
             "identifier": 43,
             "name": "setD",
-            "locals": 89,
             "body": [
                 {
                     "opcode": "get_local",
@@ -1448,7 +1440,6 @@
         {
             "identifier": 44,
             "name": "setS",
-            "locals": 108,
             "body": [
                 {
                     "opcode": "get_local",
@@ -2105,7 +2096,6 @@
         {
             "identifier": 45,
             "name": "sumS",
-            "locals": 121,
             "body": [
                 {
                     "opcode": "get_local",
@@ -2427,7 +2417,6 @@
         {
             "identifier": 46,
             "name": "vla_test",
-            "locals": 136,
             "body": [
                 {
                     "opcode": "get_local",

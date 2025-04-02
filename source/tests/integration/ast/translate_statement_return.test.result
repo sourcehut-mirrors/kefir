@@ -176,7 +176,6 @@
         {
             "identifier": 0,
             "name": "return0",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "return"
@@ -187,7 +186,6 @@
         {
             "identifier": 1,
             "name": "return1",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "int_const",
@@ -215,7 +213,6 @@
         {
             "identifier": 2,
             "name": "return2",
-            "locals": 7,
             "body": [
                 {
                     "opcode": "int_const",
@@ -246,7 +243,6 @@
         {
             "identifier": 3,
             "name": "return3",
-            "locals": 10,
             "body": [
                 {
                     "opcode": "get_local",
@@ -289,7 +285,6 @@
         {
             "identifier": 4,
             "name": "return4",
-            "locals": 15,
             "body": [
                 {
                     "opcode": "uint_const",

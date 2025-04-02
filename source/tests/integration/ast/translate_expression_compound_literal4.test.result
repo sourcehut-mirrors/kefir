@@ -230,7 +230,6 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",

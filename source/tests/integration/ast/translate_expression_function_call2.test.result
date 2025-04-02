@@ -278,7 +278,6 @@
         {
             "identifier": 1,
             "name": "call1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -309,7 +308,6 @@
         {
             "identifier": 3,
             "name": "call2",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -328,7 +326,6 @@
         {
             "identifier": 5,
             "name": "call3",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -354,7 +351,6 @@
         {
             "identifier": 7,
             "name": "call4",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",

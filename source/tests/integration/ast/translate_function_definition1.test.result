@@ -142,7 +142,6 @@
         {
             "identifier": 1,
             "name": "sum",
-            "locals": 5,
             "body": [
                 {
                     "opcode": "get_local",

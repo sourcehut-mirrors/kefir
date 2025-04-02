@@ -116,14 +116,12 @@
         {
             "identifier": 0,
             "name": "compound1",
-            "locals": 1,
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 1,
             "name": "compound2",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "get_local",
@@ -396,7 +394,6 @@
         {
             "identifier": 2,
             "name": "compound3",
-            "locals": 9,
             "body": [
                 {
                     "opcode": "int_const",

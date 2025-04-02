@@ -235,7 +235,6 @@
         {
             "identifier": 4,
             "name": "assign_multiply_int_double",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "float64_const",
@@ -297,7 +296,6 @@
         {
             "identifier": 5,
             "name": "assign_divide_int",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -350,7 +348,6 @@
         {
             "identifier": 8,
             "name": "assign_divide_double",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "float32_const",
@@ -406,7 +403,6 @@
         {
             "identifier": 6,
             "name": "assign_divide_ullong",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -462,7 +458,6 @@
         {
             "identifier": 2,
             "name": "assign_multiply_float",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -521,7 +516,6 @@
         {
             "identifier": 9,
             "name": "assign_divide_ullong_double",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "float64_const",
@@ -580,7 +574,6 @@
         {
             "identifier": 3,
             "name": "assign_multiply_double",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "float32_const",
@@ -636,7 +629,6 @@
         {
             "identifier": 1,
             "name": "assign_multiply_ullong",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -692,7 +684,6 @@
         {
             "identifier": 7,
             "name": "assign_divide_float",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -751,7 +742,6 @@
         {
             "identifier": 0,
             "name": "assign_multiply_int",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",

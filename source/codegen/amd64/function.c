@@ -632,6 +632,20 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     return KEFIR_OK;
 }
 
+static kefir_result_t free_type_layout(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                       kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_abi_amd64_type_layout *, type_layout, value);
+    REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 type layout"));
+
+    REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, type_layout));
+    KEFIR_FREE(mem, type_layout);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func,
                                                  struct kefir_codegen_amd64_module *codegen_module,
                                                  const struct kefir_opt_module *module,
@@ -662,6 +676,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->constants, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->locals, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->local_variable_type_layouts, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&func->local_variable_type_layouts, free_type_layout, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
@@ -672,25 +688,6 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
                                                    function->ir_func->declaration, &func->abi_function_declaration));
-    if (function->locals.type != NULL) {
-        kefir_result_t res = kefir_abi_amd64_type_layout(mem, codegen_module->codegen->abi_variant,
-                                                         KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK,
-                                                         function->locals.type, &func->locals_layout);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration);
-            kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame);
-            kefir_opt_code_schedule_free(mem, &func->schedule);
-            kefir_hashtree_free(mem, &func->debug.function_parameters);
-            kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels);
-            kefir_hashtree_free(mem, &func->debug.ir_instructions);
-            kefir_hashtreeset_free(mem, &func->translated_instructions);
-            kefir_hashtree_free(mem, &func->constants);
-            kefir_hashtree_free(mem, &func->instructions);
-            kefir_hashtree_free(mem, &func->virtual_registers);
-            kefir_hashtree_free(mem, &func->labels);
-            kefir_asmcmp_amd64_free(mem, &func->code);
-        });
-    }
 
     return KEFIR_OK;
 }
@@ -699,9 +696,6 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
 
-    if (func->function->locals.type != NULL) {
-        REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &func->locals_layout));
-    }
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
@@ -711,6 +705,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->local_variable_type_layouts));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->locals));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->constants));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->instructions));
@@ -905,6 +900,38 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
     return KEFIR_OK;
 }
 
+static kefir_result_t get_local_variable_type_layout(struct kefir_mem *mem,
+                                                     struct kefir_codegen_amd64_function *function, kefir_id_t type_id,
+                                                     const struct kefir_abi_amd64_type_layout **type_layout_ptr) {
+    struct kefir_hashtree_node *node;
+    kefir_result_t res =
+        kefir_hashtree_at(&function->local_variable_type_layouts, (kefir_hashtree_key_t) type_id, &node);
+    if (res != KEFIR_NOT_FOUND) {
+        REQUIRE_OK(res);
+        *type_layout_ptr = (const struct kefir_abi_amd64_type_layout *) node->value;
+    } else {
+        const struct kefir_ir_type *ir_type = kefir_ir_module_get_named_type(function->module->ir_module, type_id);
+        REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+        struct kefir_abi_amd64_type_layout *type_layout = KEFIR_MALLOC(mem, sizeof(struct kefir_abi_amd64_type_layout));
+        REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate amd64 type"));
+        kefir_result_t res = kefir_abi_amd64_type_layout(
+            mem, function->codegen->abi_variant, KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK, ir_type, type_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, type_layout);
+            return res;
+        });
+        res = kefir_hashtree_insert(mem, &function->local_variable_type_layouts, (kefir_hashtree_key_t) type_id,
+                                    (kefir_hashtree_value_t) type_layout);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_abi_amd64_type_layout_free(mem, type_layout);
+            KEFIR_FREE(mem, type_layout);
+            return res;
+        });
+        *type_layout_ptr = type_layout;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64_function *function,
                                                                   kefir_opt_instruction_ref_t instr_ref,
@@ -929,30 +956,14 @@ kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_m
 
         kefir_size_t entry_size, entry_alignment;
         kefir_int64_t offset;
-        if (instr->operation.parameters.type.type_id == function->function->ir_func->locals_type_id) {
-            const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
-            REQUIRE_OK(kefir_abi_amd64_type_layout_at(&function->locals_layout,
-                                                      instr->operation.parameters.type.type_index, &entry));
-            entry_size = entry->size;
-            entry_alignment = entry->alignment;
-        } else {
-            const struct kefir_ir_type *ir_type =
-                kefir_ir_module_get_named_type(function->module->ir_module, instr->operation.parameters.type.type_id);
-            REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
-            struct kefir_abi_amd64_type_layout type_layout;
-            REQUIRE_OK(kefir_abi_amd64_type_layout(mem, function->codegen->abi_variant,
-                                                   KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_STACK, ir_type, &type_layout));
 
-            const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
-            res = kefir_abi_amd64_type_layout_at(&type_layout, instr->operation.parameters.type.type_index, &entry);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_abi_amd64_type_layout_free(mem, &type_layout);
-                return res;
-            });
-            entry_size = entry->size;
-            entry_alignment = entry->alignment;
-            REQUIRE_OK(kefir_abi_amd64_type_layout_free(mem, &type_layout));
-        }
+        const struct kefir_abi_amd64_type_layout *type_layout = NULL;
+        REQUIRE_OK(
+            get_local_variable_type_layout(mem, function, instr->operation.parameters.type.type_id, &type_layout));
+        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
+        REQUIRE_OK(kefir_abi_amd64_type_layout_at(type_layout, instr->operation.parameters.type.type_index, &entry));
+        entry_size = entry->size;
+        entry_alignment = entry->alignment;
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(&function->stack_frame, entry_size, entry_alignment,
                                                                   &offset));
         REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) instr_ref,

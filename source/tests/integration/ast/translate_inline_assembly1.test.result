@@ -149,7 +149,6 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "get_global",
@@ -189,7 +188,6 @@
         {
             "identifier": 1,
             "name": "inline_asm2",
-            "locals": 8,
             "body": [
                 {
                     "opcode": "get_global",

@@ -106,7 +106,6 @@
         {
             "identifier": 0,
             "name": "while1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "get_local",
@@ -244,7 +243,6 @@
         {
             "identifier": 1,
             "name": "while2",
-            "locals": 6,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -302,7 +300,6 @@
         {
             "identifier": 2,
             "name": "while3",
-            "locals": 9,
             "body": [
                 {
                     "opcode": "long_double_const",

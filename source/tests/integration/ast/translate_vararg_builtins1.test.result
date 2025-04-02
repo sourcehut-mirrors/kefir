@@ -50,7 +50,6 @@
         {
             "identifier": 0,
             "name": "vararg",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",

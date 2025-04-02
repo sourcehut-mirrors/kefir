@@ -130,7 +130,6 @@
         {
             "identifier": 0,
             "name": "comma1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -142,7 +141,6 @@
         {
             "identifier": 1,
             "name": "comma2",
-            "locals": 3,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -168,7 +166,6 @@
         {
             "identifier": 2,
             "name": "comma3",
-            "locals": 6,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -194,7 +191,6 @@
         {
             "identifier": 3,
             "name": "comma4",
-            "locals": 9,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -227,7 +223,6 @@
         {
             "identifier": 4,
             "name": "comma5",
-            "locals": 12,
             "body": [
                 {
                     "opcode": "int_const",
@@ -253,7 +248,6 @@
         {
             "identifier": 5,
             "name": "comma6",
-            "locals": 15,
             "body": [
                 {
                     "opcode": "int_const",

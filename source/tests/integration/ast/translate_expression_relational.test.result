@@ -189,7 +189,6 @@
         {
             "identifier": 4,
             "name": "less_than",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -323,7 +322,6 @@
         {
             "identifier": 5,
             "name": "less_equals",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -628,7 +626,6 @@
         {
             "identifier": 2,
             "name": "non_equality_arithemtical",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -735,7 +732,6 @@
         {
             "identifier": 3,
             "name": "non_equality_pointer",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",
@@ -836,7 +832,6 @@
         {
             "identifier": 1,
             "name": "equality_pointer",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",
@@ -928,7 +923,6 @@
         {
             "identifier": 6,
             "name": "greater_than",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -1062,7 +1056,6 @@
         {
             "identifier": 8,
             "name": "ptr_relational",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_global",
@@ -1370,7 +1363,6 @@
         {
             "identifier": 0,
             "name": "equality_arithemtical",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -1459,7 +1451,6 @@
         {
             "identifier": 7,
             "name": "greater_equal",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",

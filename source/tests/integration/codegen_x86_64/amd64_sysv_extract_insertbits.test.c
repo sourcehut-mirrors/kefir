@@ -45,8 +45,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "extractu", func_params, false, func_returns);
     REQUIRE(extractu_decl != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, extractu_decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
-    struct kefir_ir_function *extractu_func =
-        kefir_ir_module_new_function(mem, &module, extractu_decl, KEFIR_ID_NONE, 1024);
+    struct kefir_ir_function *extractu_func = kefir_ir_module_new_function(mem, &module, extractu_decl, 1024);
     REQUIRE(extractu_func != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &extractu_func->body, KEFIR_IR_OPCODE_INT_CONST, 0));
@@ -173,8 +172,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "extracts", func_params, false, func_returns);
     REQUIRE(extracts_decl != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, extracts_decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
-    struct kefir_ir_function *extracts_func =
-        kefir_ir_module_new_function(mem, &module, extracts_decl, KEFIR_ID_NONE, 1024);
+    struct kefir_ir_function *extracts_func = kefir_ir_module_new_function(mem, &module, extracts_decl, 1024);
     REQUIRE(extracts_func != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &extracts_func->body, KEFIR_IR_OPCODE_INT_CONST, 0));
@@ -297,8 +295,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "insert", func_params, false, func_returns);
     REQUIRE(insert_decl != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, insert_decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
-    struct kefir_ir_function *insert_func =
-        kefir_ir_module_new_function(mem, &module, insert_decl, KEFIR_ID_NONE, 1024);
+    struct kefir_ir_function *insert_func = kefir_ir_module_new_function(mem, &module, insert_decl, 1024);
     REQUIRE(insert_func != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_block_appendu64(mem, &insert_func->body, KEFIR_IR_OPCODE_INT_CONST, 0));

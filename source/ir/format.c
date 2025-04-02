@@ -805,11 +805,6 @@ static kefir_result_t kefir_ir_format_function(struct kefir_json_output *json, c
     REQUIRE_OK(kefir_json_output_object_key(json, "name"));
     REQUIRE_OK(kefir_json_output_string(json, func->name));
 
-    if (func->locals_type_id != KEFIR_ID_NONE) {
-        REQUIRE_OK(kefir_json_output_object_key(json, "locals"));
-        REQUIRE_OK(kefir_json_output_uinteger(json, func->locals_type_id));
-    }
-
     if (func->flags.constructor) {
         REQUIRE_OK(kefir_json_output_object_key(json, "constructor"));
         REQUIRE_OK(kefir_json_output_boolean(json, true));

@@ -106,7 +106,6 @@
         {
             "identifier": 0,
             "name": "conditional1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "get_global",
@@ -165,7 +164,6 @@
         {
             "identifier": 1,
             "name": "conditional2",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "get_global",
@@ -259,7 +257,6 @@
         {
             "identifier": 2,
             "name": "conditional3",
-            "locals": 7,
             "body": [
                 {
                     "opcode": "get_global",
@@ -424,7 +421,6 @@
         {
             "identifier": 3,
             "name": "conditional4",
-            "locals": 10,
             "body": [
                 {
                     "opcode": "long_double_const",

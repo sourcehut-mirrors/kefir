@@ -84,7 +84,6 @@
         {
             "identifier": 0,
             "name": "string_literal1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "string_ref",
@@ -96,7 +95,6 @@
         {
             "identifier": 1,
             "name": "string_literal2",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "string_ref",
@@ -108,7 +106,6 @@
         {
             "identifier": 2,
             "name": "string_literal3",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "string_ref",

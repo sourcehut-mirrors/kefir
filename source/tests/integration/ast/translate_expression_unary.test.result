@@ -287,7 +287,6 @@
         {
             "identifier": 0,
             "name": "plus",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -323,7 +322,6 @@
         {
             "identifier": 1,
             "name": "minus",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -374,7 +372,6 @@
         {
             "identifier": 2,
             "name": "invert",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -418,7 +415,6 @@
         {
             "identifier": 7,
             "name": "alignof",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -502,7 +498,6 @@
         {
             "identifier": 5,
             "name": "sizeof1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -586,7 +581,6 @@
         {
             "identifier": 6,
             "name": "sizeof2",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "uint_const",
@@ -650,7 +644,6 @@
         {
             "identifier": 8,
             "name": "indirection",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -763,7 +756,6 @@
         {
             "identifier": 3,
             "name": "logical_negate",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -854,7 +846,6 @@
         {
             "identifier": 4,
             "name": "logical_negate2",
-            "locals": 13,
             "body": [
                 {
                     "opcode": "long_double_const",

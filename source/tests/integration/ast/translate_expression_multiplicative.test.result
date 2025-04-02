@@ -62,7 +62,6 @@
         {
             "identifier": 1,
             "name": "divide",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -218,7 +217,6 @@
         {
             "identifier": 2,
             "name": "modulo",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -287,7 +285,6 @@
         {
             "identifier": 0,
             "name": "multiply",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",

@@ -226,7 +226,6 @@
         {
             "identifier": 0,
             "name": "for1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "invoke",
@@ -245,7 +244,6 @@
         {
             "identifier": 3,
             "name": "for2",
-            "locals": 8,
             "body": [
                 {
                     "opcode": "get_local",
@@ -355,7 +353,6 @@
         {
             "identifier": 5,
             "name": "for3",
-            "locals": 14,
             "body": [
                 {
                     "opcode": "get_local",
@@ -515,7 +512,6 @@
         {
             "identifier": 8,
             "name": "for4",
-            "locals": 21,
             "body": [
                 {
                     "opcode": "long_double_const",

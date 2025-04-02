@@ -125,7 +125,6 @@
         {
             "identifier": 1,
             "name": "factorial",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "get_local",

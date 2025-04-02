@@ -148,7 +148,6 @@
         {
             "identifier": 0,
             "name": "expr1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "int_const",
@@ -163,7 +162,6 @@
         {
             "identifier": 1,
             "name": "expr2",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "int_const",
@@ -191,7 +189,6 @@
         {
             "identifier": 2,
             "name": "expr3",
-            "locals": 7,
             "body": [
                 {
                     "opcode": "int_const",
@@ -230,7 +227,6 @@
         {
             "identifier": 3,
             "name": "expr4",
-            "locals": 10,
             "body": [
                 {
                     "opcode": "get_local",
@@ -272,7 +268,6 @@
         {
             "identifier": 4,
             "name": "expr5",
-            "locals": 14,
             "body": [],
             "public_labels": []
         }

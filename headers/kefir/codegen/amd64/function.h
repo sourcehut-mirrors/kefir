@@ -40,7 +40,6 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_abi_amd64_function_decl abi_function_declaration;
     struct kefir_asmcmp_amd64 code;
     struct kefir_codegen_amd64_xregalloc xregalloc;
-    struct kefir_abi_amd64_type_layout locals_layout;
     struct kefir_codegen_amd64_stack_frame stack_frame;
 
     struct kefir_hashtreeset translated_instructions;
@@ -49,6 +48,7 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
     struct kefir_hashtree locals;
+    struct kefir_hashtree local_variable_type_layouts;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;

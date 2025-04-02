@@ -94,7 +94,6 @@
         {
             "identifier": 3,
             "name": "or",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -145,7 +144,6 @@
         {
             "identifier": 2,
             "name": "and",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -196,7 +194,6 @@
         {
             "identifier": 4,
             "name": "xor",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -247,7 +244,6 @@
         {
             "identifier": 0,
             "name": "left_shift",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -291,7 +287,6 @@
         {
             "identifier": 1,
             "name": "right_shift",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",

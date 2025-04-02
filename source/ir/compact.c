@@ -191,7 +191,6 @@ static kefir_result_t compact_inline_asm(struct kefir_mem *mem, struct compact_p
 static kefir_result_t compact_function(struct kefir_mem *mem, struct kefir_ir_module *module,
                                        struct compact_params *params, struct kefir_ir_function *function) {
     REQUIRE_OK(compact_function_decl(mem, params, function->declaration));
-    REQUIRE_OK(compact_type(mem, params, (const struct kefir_ir_type **) &function->locals, &function->locals_type_id));
 
     for (kefir_size_t i = 0; i < kefir_irblock_length(&function->body); i++) {
         struct kefir_irinstr *instr = kefir_irblock_at(&function->body, i);

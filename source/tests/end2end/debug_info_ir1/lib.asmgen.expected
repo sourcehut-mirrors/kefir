@@ -1360,7 +1360,6 @@
         {
             "identifier": 27,
             "name": "d2",
-            "locals": 80,
             "body": [
                 {
                     "opcode": "get_local",

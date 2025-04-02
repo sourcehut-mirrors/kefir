@@ -54,8 +54,7 @@ kefir_result_t kefir_ir_function_decl_free(struct kefir_mem *mem, struct kefir_i
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_function_decl *decl,
-                                       struct kefir_ir_type *locals, kefir_id_t locals_type_id, kefir_size_t bodySz,
+kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_function_decl *decl, kefir_size_t bodySz,
                                        struct kefir_ir_function *func) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocation"));
     REQUIRE(decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR function declaration"));
@@ -65,8 +64,6 @@ kefir_result_t kefir_ir_function_alloc(struct kefir_mem *mem, struct kefir_ir_fu
 
     func->name = decl->name;
     func->declaration = decl;
-    func->locals = locals;
-    func->locals_type_id = locals_type_id;
     func->flags.constructor = false;
     func->flags.destructor = false;
     func->flags.inline_function = false;
@@ -84,7 +81,6 @@ kefir_result_t kefir_ir_function_free(struct kefir_mem *mem, struct kefir_ir_fun
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR function pointer"));
     REQUIRE_OK(kefir_ir_function_debug_info_free(mem, &func->debug_info));
     kefir_irblock_free(mem, &func->body);
-    func->locals = NULL;
     func->declaration = NULL;
     return KEFIR_OK;
 }

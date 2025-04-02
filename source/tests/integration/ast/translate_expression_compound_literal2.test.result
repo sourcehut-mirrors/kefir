@@ -194,7 +194,6 @@
         {
             "identifier": 0,
             "name": "compound_literal1",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",
@@ -234,7 +233,6 @@
         {
             "identifier": 1,
             "name": "compound_literal2",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",
@@ -357,7 +355,6 @@
         {
             "identifier": 2,
             "name": "compound_literal3",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",
@@ -382,7 +379,6 @@
         {
             "identifier": 3,
             "name": "compound_literal4",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",

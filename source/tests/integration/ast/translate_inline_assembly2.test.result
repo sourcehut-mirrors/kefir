@@ -50,7 +50,6 @@
         {
             "identifier": 0,
             "name": "inline_asm1",
-            "locals": 1,
             "body": [
                 {
                     "opcode": "inline_assembly",

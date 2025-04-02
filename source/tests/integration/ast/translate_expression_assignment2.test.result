@@ -248,7 +248,6 @@
         {
             "identifier": 1,
             "name": "assign_union",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",
@@ -298,7 +297,6 @@
         {
             "identifier": 0,
             "name": "assign_struct",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "get_local",

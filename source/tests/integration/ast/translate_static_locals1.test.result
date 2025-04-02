@@ -144,7 +144,6 @@
         {
             "identifier": 1,
             "name": "fn",
-            "locals": 4,
             "body": [
                 {
                     "opcode": "get_local",

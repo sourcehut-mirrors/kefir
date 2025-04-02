@@ -78,14 +78,12 @@
         {
             "identifier": 0,
             "name": "statement_expr1",
-            "locals": 0,
             "body": [],
             "public_labels": []
         },
         {
             "identifier": 1,
             "name": "statement_expr2",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -100,7 +98,6 @@
         {
             "identifier": 2,
             "name": "statement_expr3",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",
@@ -129,7 +126,6 @@
         {
             "identifier": 3,
             "name": "statement_expr4",
-            "locals": 0,
             "body": [
                 {
                     "opcode": "int_const",

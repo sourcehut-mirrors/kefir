@@ -108,7 +108,7 @@ kefir_result_t kefir_ir_module_declare_identifier(struct kefir_mem *, struct kef
                                                   const struct kefir_ir_identifier *);
 
 struct kefir_ir_function *kefir_ir_module_new_function(struct kefir_mem *, struct kefir_ir_module *,
-                                                       struct kefir_ir_function_decl *, kefir_id_t, kefir_size_t);
+                                                       struct kefir_ir_function_decl *, kefir_size_t);
 
 struct kefir_ir_data *kefir_ir_module_new_named_data(struct kefir_mem *, struct kefir_ir_module *, const char *,
                                                      kefir_ir_data_storage_t, kefir_id_t);
