@@ -15,7 +15,6 @@ _kefir_func_proxyadd_label0:
     mov %rax, %rdi
     mov QWORD PTR [%rbp - 16], %rsi
     movq [%rbp - 8], %xmm0
-_kefir_func_proxyadd_label1:
     mov %rdi, 7
     mov %rsi, QWORD PTR [%rbp - 16]
     movq %xmm0, [%rbp - 8]

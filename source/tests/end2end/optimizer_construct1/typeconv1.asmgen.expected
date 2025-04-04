@@ -8,34 +8,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 0,
+                        "control_flow": 5,
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                0
-                            ]
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 6,
-                        "code": [
-                            {
-                                "id": 6,
+                                "id": 5,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -45,12 +21,10 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": [
-                                0
-                            ],
-                            "immediate_dominator": 0,
+                            "predecessors": [],
+                            "immediate_dominator": null,
                             "alive_instructions": [
-                                6
+                                5
                             ]
                         }
                     }

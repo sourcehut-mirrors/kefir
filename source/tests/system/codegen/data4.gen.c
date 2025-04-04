@@ -53,11 +53,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *trunc_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "custom_truncate", func_params, false, func_returns);
     REQUIRE(trunc_decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *trunc = kefir_ir_module_new_function(mem, &module, trunc_decl, 1024);
+    kefir_irbuilder_type_append(mem, trunc_decl->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, trunc_decl->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    struct kefir_ir_function *trunc = kefir_ir_module_new_function_with_args(mem, &module, trunc_decl, 1024);
     REQUIRE(trunc != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, trunc_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, trunc->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
-    kefir_irbuilder_type_append(mem, trunc->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
 
     struct kefir_abi_amd64_type_layout type_layout;
     REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,

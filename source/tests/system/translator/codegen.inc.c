@@ -33,6 +33,7 @@
 #include "kefir/ast-translator/context.h"
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/test/codegen.h"
+#include "kefir/test/module_shim.h"
 #include "kefir/ast-translator/value.h"
 #include "codegen.h"
 
@@ -72,8 +73,8 @@ static kefir_result_t translate_function(struct kefir_mem *mem, struct function 
         local_translator_context.debug_entries));
     REQUIRE_OK(kefir_ast_translator_flow_control_tree_init(mem, func->local_context.context.flow_control_tree));
 
-    struct kefir_ir_function *ir_func =
-        kefir_ir_module_new_function(mem, local_translator_context.module, func_declaration->ir_function_decl, 0);
+    struct kefir_ir_function *ir_func = kefir_ir_module_new_function_with_args(mem, local_translator_context.module,
+                                                                               func_declaration->ir_function_decl, 0);
 
     struct kefir_irbuilder_block builder;
     REQUIRE_OK(kefir_irbuilder_block_init(mem, &builder, &ir_func->body));

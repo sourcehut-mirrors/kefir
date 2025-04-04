@@ -42,11 +42,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *decl =
         kefir_ir_module_new_function_declaration(mem, &module, "scope_test", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, 1024);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);      // [C, SZ, SZ]
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_SCOPE_PUSH, 0);       // [C, SZ, SZ, S1]
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);  // [C, SZ, S1, SZ]
@@ -63,7 +63,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                     KEFIR_IR_COMPARE_INT64_EQUALS);                        // [C-1, SZ, C-1==0]
     kefir_irbuilder_block_appendi64(mem, &func->body, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0);  // [C-1, SZ, C-1!=0]
-    kefir_irbuilder_block_appendu64_2(mem, &func->body, KEFIR_IR_OPCODE_BRANCH, 0,
+    kefir_irbuilder_block_appendu64_2(mem, &func->body, KEFIR_IR_OPCODE_BRANCH, 2,
                                       KEFIR_IR_BRANCH_CONDITION_8BIT);  // [C-1, SZ]
 
     KEFIR_CODEGEN_TRANSLATE(mem, &codegen.iface, &module);

@@ -127,6 +127,10 @@
             "name": "factorial",
             "body": [
                 {
+                    "opcode": "get_argument",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869184,
                     "type": 4,
@@ -190,7 +194,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 36,
+                    "arg": 37,
                     "condition": "8bit"
                 },
                 {
@@ -291,7 +295,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 8
+                    "arg": 9
                 },
                 {
                     "opcode": "get_local",

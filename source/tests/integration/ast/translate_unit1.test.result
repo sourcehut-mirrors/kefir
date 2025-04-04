@@ -579,6 +579,10 @@
             "name": "set_value",
             "body": [
                 {
+                    "opcode": "get_argument",
+                    "arg": 0
+                },
+                {
                     "opcode": "get_local",
                     "id": 64424509440,
                     "type": 15,

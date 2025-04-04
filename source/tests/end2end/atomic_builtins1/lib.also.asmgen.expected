@@ -34,13 +34,13 @@ __kefir_text_func_test_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rax
-    lea 16(%rbp), %rcx
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
     movq $0, -8(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -16(%rbp)
     mov $16, %rdi
-    mov %rax, %rsi
+    mov %rcx, %rsi
     leaq -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
@@ -55,16 +55,16 @@ __kefir_text_func_test_atomic_store256_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    lea 16(%rbp), %rcx
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
     movq $0, -40(%rbp)
     movq $0, -24(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -48(%rbp)
-    fldt 16(%rcx)
+    fldt 16(%rax)
     fstpt -32(%rbp)
     mov $32, %rdi
-    mov %rax, %rsi
+    mov %rcx, %rsi
     leaq -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
@@ -79,10 +79,10 @@ __kefir_text_func_test2_atomic_store128_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdi, %rax
-    lea 16(%rbp), %rcx
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
     movq $0, -24(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fstpt -48(%rbp)
@@ -90,7 +90,7 @@ __kefir_text_func_test2_atomic_store128_begin:
     fldt -48(%rbp)
     fstpt -16(%rbp)
     mov $16, %rdi
-    mov %rax, %rsi
+    mov %rcx, %rsi
     leaq -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT
@@ -105,13 +105,13 @@ __kefir_text_func_test2_atomic_store256_begin:
     mov %rsp, %rbp
     sub $112, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %rax
-    lea 16(%rbp), %rcx
+    lea 16(%rbp), %rax
+    mov %rdi, %rcx
     movq $0, -72(%rbp)
     movq $0, -56(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -80(%rbp)
-    fldt 16(%rcx)
+    fldt 16(%rax)
     fstpt -64(%rbp)
     fldt -80(%rbp)
     fstpt -112(%rbp)
@@ -124,7 +124,7 @@ __kefir_text_func_test2_atomic_store256_begin:
     fldt -96(%rbp)
     fstpt -32(%rbp)
     mov $32, %rdi
-    mov %rax, %rsi
+    mov %rcx, %rsi
     leaq -48(%rbp), %rdx
     mov $5, %rcx
     call __atomic_store@PLT

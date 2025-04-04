@@ -137,8 +137,8 @@ __kefir_text_func_add_ld_begin:
     mov %rsp, %rbp
     sub $144, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %r10
     lea 16(%rbp), %rax
+    mov %rdi, %r10
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)
@@ -757,8 +757,8 @@ __kefir_text_func_divide_ld_begin:
     mov %rsp, %rbp
     sub $144, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %r10
     lea 16(%rbp), %rax
+    mov %rdi, %r10
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)
@@ -1071,8 +1071,8 @@ __kefir_text_func_multiply_ld_begin:
     mov %rsp, %rbp
     sub $144, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %r10
     lea 16(%rbp), %rax
+    mov %rdi, %r10
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)
@@ -1155,8 +1155,8 @@ __kefir_text_func_subtract_ld_begin:
     mov %rsp, %rbp
     sub $144, %rsp
     fstcw -8(%rbp)
-    mov %rdi, %r10
     lea 16(%rbp), %rax
+    mov %rdi, %r10
     movq $0, -24(%rbp)
     fldt (%rax)
     fstpt -32(%rbp)

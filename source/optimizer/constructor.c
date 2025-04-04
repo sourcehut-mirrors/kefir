@@ -28,7 +28,7 @@
 
 static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                            struct kefir_opt_constructor_state *state) {
-    kefir_bool_t start_new_block = true;
+    kefir_bool_t start_new_block = false;
     kefir_size_t i = 0;
     REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, (kefir_size_t) -1ll));
     for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
@@ -1101,22 +1101,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef OVERFLOW_ARITH
 
-        case KEFIR_IR_OPCODE_PHI:
         case KEFIR_IR_OPCODE_GET_ARGUMENT:
+            REQUIRE(state->current_block->block_id == state->entry_block->block_id,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                    "Get argument IR instruction can only be used in the entry block"));
+            REQUIRE_OK(kefir_opt_code_builder_get_argument(mem, code, current_block_id, instr->arg.u64, &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IR_OPCODE_PHI:
         case KEFIR_IR_OPCODE_ALLOC_LOCAL:
         case KEFIR_IR_OPCODE_REF_LOCAL:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR instruction opcode");
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t push_function_arguments(struct kefir_mem *mem, struct kefir_opt_constructor_state *state) {
-    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, (kefir_size_t) -1ll));
-    kefir_opt_instruction_ref_t instr_ref;
-    for (kefir_size_t i = 0; i < kefir_ir_type_children(state->function->ir_func->declaration->params); i++) {
-        REQUIRE_OK(kefir_opt_code_builder_get_argument(mem, &state->function->code, state->current_block->block_id, i,
-                                                       &instr_ref));
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
     }
     return KEFIR_OK;
 }
@@ -1126,7 +1122,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
     UNUSED(module);
     state->current_block = NULL;
     state->ir_location = 0;
-    REQUIRE_OK(push_function_arguments(mem, state));
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, (kefir_size_t) -1ll));
     const struct kefir_irblock *ir_block = &state->function->ir_func->body;
     for (; state->ir_location < kefir_irblock_length(ir_block); state->ir_location++) {
         REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));
@@ -1166,8 +1162,18 @@ static kefir_result_t link_blocks_impl(struct kefir_mem *mem, struct kefir_opt_c
          source_iter = source_iter->prev, target_iter = target_iter->prev) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) source_iter->value);
         ASSIGN_DECL_CAST(kefir_opt_phi_id_t, phi_ref, (kefir_uptr_t) target_iter->value);
-        REQUIRE_OK(
-            kefir_opt_code_container_phi_attach(mem, &state->function->code, phi_ref, source_block_id, instr_ref));
+
+        kefir_opt_instruction_ref_t existing_ref;
+        kefir_result_t res =
+            kefir_opt_code_container_phi_link_for(&state->function->code, phi_ref, source_block_id, &existing_ref);
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            REQUIRE(existing_ref == instr_ref,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Mismatch with existing phi link for a source block"));
+        } else {
+            REQUIRE_OK(
+                kefir_opt_code_container_phi_attach(mem, &state->function->code, phi_ref, source_block_id, instr_ref));
+        }
     }
     REQUIRE(target_iter == NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link optimizer block outputs with target block phi nodes"));

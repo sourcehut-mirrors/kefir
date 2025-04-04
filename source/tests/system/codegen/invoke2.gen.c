@@ -41,9 +41,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *proxysum_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "proxysum", func_params, false, func_returns);
     REQUIRE(proxysum_decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *proxysum = kefir_ir_module_new_function(mem, &module, proxysum_decl, 1024);
-    REQUIRE(proxysum != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxysum_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
     struct kefir_ir_type *sumstruct_decl_params = kefir_ir_module_new_type(mem, &module, 4, &func_params),
                          *sumstruct_decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns);
@@ -60,6 +57,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxysum_decl_params, KEFIR_IR_TYPE_ARRAY, 0, 4));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxysum_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxysum_decl_result, KEFIR_IR_TYPE_INT64, 0, 0));
+    struct kefir_ir_function *proxysum = kefir_ir_module_new_function_with_args(mem, &module, proxysum_decl, 1024);
+    REQUIRE(proxysum != NULL, KEFIR_INTERNAL_ERROR);
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxysum_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
     kefir_irbuilder_block_appendi64(mem, &proxysum->body, KEFIR_IR_OPCODE_INT_CONST, 2);
     kefir_irbuilder_block_appendi64(mem, &proxysum->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);
     kefir_irbuilder_block_appendu64(mem, &proxysum->body, KEFIR_IR_OPCODE_INVOKE, sumstruct_decl->id);

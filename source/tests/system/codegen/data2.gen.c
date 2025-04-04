@@ -58,12 +58,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *arrptr_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "arrptr", func_params, false, func_returns);
     REQUIRE(arrptr_decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *arrptr = kefir_ir_module_new_function(mem, &module, arrptr_decl, 5);
+    kefir_irbuilder_type_append(mem, arrptr_decl->params, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, arrptr_decl->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, arrptr_decl->result, KEFIR_IR_TYPE_WORD, 0, 0);
+    struct kefir_ir_function *arrptr = kefir_ir_module_new_function_with_args(mem, &module, arrptr_decl, 5);
     REQUIRE(arrptr != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, arrptr_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, arrptr->declaration->params, KEFIR_IR_TYPE_WORD, 0, 0);
-    kefir_irbuilder_type_append(mem, arrptr->declaration->params, KEFIR_IR_TYPE_LONG, 0, 0);
-    kefir_irbuilder_type_append(mem, arrptr->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
 
     struct kefir_abi_amd64_type_layout type_layout;
     REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,

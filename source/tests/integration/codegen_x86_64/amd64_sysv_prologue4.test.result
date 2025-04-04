@@ -16,7 +16,6 @@ _kefir_func_func1_label0:
     mov QWORD PTR [%rbp - 24], %rsi
     movq [%rbp - 16], %xmm1
     lea %rax, [%rbp + 16]
-_kefir_func_func1_label1:
     mov %rsi, 0
     mov QWORD PTR [%rsi], %rax
     mov %rax, 0

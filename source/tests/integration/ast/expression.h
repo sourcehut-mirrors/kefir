@@ -21,6 +21,8 @@
 #ifndef EXPRESSION_H_
 #define EXPRESSION_H_
 
+#include "kefir/test/module_shim.h"
+
 #define UNARY_NODE(_oper, _node)                                                                                      \
     do {                                                                                                              \
         struct kefir_ast_node_base *node = KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(mem, (_oper), (_node))); \
@@ -46,7 +48,7 @@
         struct kefir_ir_function_decl *func_decl =                                                                 \
             kefir_ir_module_new_function_declaration(mem, &module, (_id), func_params_id, false, func_returns_id); \
         REQUIRE(func_decl != NULL, KEFIR_INTERNAL_ERROR);                                                          \
-        struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, func_decl, 0);                 \
+        struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, func_decl, 0);       \
         REQUIRE_OK(kefir_irbuilder_block_init(mem, &builder, &func->body));                                        \
         _init REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_FREE(&builder));                                                    \
     } while (0)
@@ -69,7 +71,7 @@
         struct kefir_ir_function_decl *func_decl =                                                                   \
             kefir_ir_module_new_function_declaration(mem, &module, (_id), func_params_id, false, func_returns_id);   \
         REQUIRE(func_decl != NULL, KEFIR_INTERNAL_ERROR);                                                            \
-        struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, func_decl, 0);                   \
+        struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, func_decl, 0);         \
         REQUIRE_OK(kefir_irbuilder_block_init(mem, &builder, &func->body));                                          \
         _init REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_FREE(&builder));                                                      \
         REQUIRE_OK(kefir_ast_translator_context_free(mem, &local_translator_context));                               \

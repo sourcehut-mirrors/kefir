@@ -12,7 +12,6 @@ __kefir_text_func_test_begin:
     mov %rsp, %rbp
     sub $112, %rsp
 _kefir_func_test_label0:
-_kefir_func_test_label1:
     movq $1, -112(%rbp)
     movq $3, -96(%rbp)
     movq $100, -72(%rbp)
@@ -24,7 +23,7 @@ _kefir_func_test_label1:
     rep stosb
     movl $1, -24(%rbp)
     movq $2, -16(%rbp)
-    movd _kefir_func_test_label2(%rip), %xmm0
+    movd _kefir_func_test_label1(%rip), %xmm0
     movd %xmm0, -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -32,7 +31,7 @@ _kefir_func_test_label1:
 __kefir_text_func_test_end:
 .section .rodata
     .align 4
-_kefir_func_test_label2:
+_kefir_func_test_label1:
     .long 1077936128
 .section .text
 

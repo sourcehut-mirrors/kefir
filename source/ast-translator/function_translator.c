@@ -393,8 +393,10 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     REQUIRE(decl_func != NULL,
             KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected function definition to have function declarator"));
     kefir_result_t res;
+    kefir_size_t parameter_id = kefir_list_length(&decl_func->parameters);
     for (const struct kefir_list_entry *iter = kefir_list_tail(&decl_func->parameters); iter != NULL;
          iter = iter->prev) {
+        parameter_id--;
 
         ASSIGN_DECL_CAST(struct kefir_ast_node_base *, param, iter->value);
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
@@ -414,6 +416,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             REQUIRE(init_decl->base.properties.type != NULL,
                     KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Function definition parameters shall have definite types"));
             if (init_decl->base.properties.type->tag != KEFIR_AST_TYPE_VOID) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_ARGUMENT, parameter_id));
                 if (param_identifier != NULL && param_identifier->identifier != NULL) {
                     scoped_id = init_decl->base.properties.declaration_props.scoped_id;
                     REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, param_identifier->identifier,
@@ -428,6 +431,8 @@ kefir_result_t kefir_ast_translator_function_context_translate(
             }
         } else if (param->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
                    param->properties.expression_props.identifier != NULL) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_GET_ARGUMENT, parameter_id));
+
             scoped_id = param->properties.expression_props.scoped_id;
             REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
                                                           param->properties.expression_props.identifier, scoped_id));

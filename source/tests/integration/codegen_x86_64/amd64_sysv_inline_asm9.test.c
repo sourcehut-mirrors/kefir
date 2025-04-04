@@ -43,12 +43,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *decl =
         kefir_ir_module_new_function_declaration(mem, &module, "fn1", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
-    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
-    struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, 1024);
-    REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_params, KEFIR_IR_TYPE_LONG, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
+
+    REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
+    struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 1024);
+    REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
 
     kefir_id_t id1;
     struct kefir_ir_inline_assembly *inline_asm1 = kefir_ir_module_new_inline_assembly(mem, &module,

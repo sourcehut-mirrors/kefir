@@ -46,14 +46,14 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *decl =
         kefir_ir_module_new_function_declaration(mem, &module, "long_double_at", params_id, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *func = kefir_ir_module_new_function(mem, &module, decl, 1024);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_STRUCT, 0, 2);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_ARRAY, 0, 8);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_STRUCT, 0, 2);
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_INT32, 0, 0);
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_ARRAY, 0, 8);
-    kefir_irbuilder_type_append(mem, func->declaration->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, func->declaration->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
 
     struct kefir_abi_amd64_type_layout type_layout;
     REQUIRE_OK(kefir_abi_amd64_type_layout(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,

@@ -1362,6 +1362,10 @@
             "name": "d2",
             "body": [
                 {
+                    "opcode": "get_argument",
+                    "arg": 2
+                },
+                {
                     "opcode": "get_local",
                     "id": 343597383698,
                     "type": 80,
@@ -1376,6 +1380,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_argument",
+                    "arg": 1
                 },
                 {
                     "opcode": "get_local",
@@ -1393,6 +1401,10 @@
                         "type": 13,
                         "index": 0
                     }
+                },
+                {
+                    "opcode": "get_argument",
+                    "arg": 0
                 },
                 {
                     "opcode": "get_local",
@@ -1523,29 +1535,29 @@
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 69,
                     "column": 5,
-                    "begin": 9,
-                    "end": 31
+                    "begin": 12,
+                    "end": 34
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 69,
                     "column": 13,
-                    "begin": 20,
-                    "end": 22
+                    "begin": 23,
+                    "end": 25
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 70,
                     "column": 12,
-                    "begin": 31,
-                    "end": 32
+                    "begin": 34,
+                    "end": 35
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
                     "line": 70,
                     "column": 5,
-                    "begin": 31,
-                    "end": 33
+                    "begin": 34,
+                    "end": 36
                 }
             ]
         }
@@ -5119,11 +5131,11 @@
                     },
                     {
                         "tag": "code_begin",
-                        "value": 9
+                        "value": 12
                     },
                     {
                         "tag": "code_end",
-                        "value": 33
+                        "value": 36
                     },
                     {
                         "tag": "external",
@@ -5218,11 +5230,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 9
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 33
+                                "value": 36
                             },
                             {
                                 "tag": "local_variable",
@@ -5269,11 +5281,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 9
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 33
+                                "value": 36
                             },
                             {
                                 "tag": "local_variable",
@@ -5320,11 +5332,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 9
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 33
+                                "value": 36
                             },
                             {
                                 "tag": "local_variable",
@@ -5371,11 +5383,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 9
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 33
+                                "value": 36
                             },
                             {
                                 "tag": "local_variable",
@@ -5422,11 +5434,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 9
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 33
+                                "value": 36
                             },
                             {
                                 "tag": "global_variable",

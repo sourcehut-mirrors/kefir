@@ -130,6 +130,10 @@
             "name": "intat",
             "body": [
                 {
+                    "opcode": "get_argument",
+                    "arg": 1
+                },
+                {
                     "opcode": "get_local",
                     "id": 17179869185,
                     "type": 4,
@@ -144,6 +148,10 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_argument",
+                    "arg": 0
                 },
                 {
                     "opcode": "get_local",

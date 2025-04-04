@@ -26,8 +26,8 @@ __kefir_text_func_add_f32_begin:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -96(%rbp)
+    mov %rdi, %r10
     movq -96(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
@@ -89,9 +89,9 @@ __kefir_text_func_add_f64_begin:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
+    mov %rdi, %r10
     movq -128(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
     movq -120(%rbp), %xmm0
@@ -158,8 +158,8 @@ __kefir_text_func_divide_f32_begin:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -96(%rbp)
+    mov %rdi, %r10
     movq -96(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
@@ -235,9 +235,9 @@ __kefir_text_func_divide_f64_begin:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
+    mov %rdi, %r10
     movq -128(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
     movq -120(%rbp), %xmm0
@@ -326,8 +326,8 @@ __kefir_text_func_multiply_f32_begin:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -96(%rbp)
+    mov %rdi, %r10
     movq -96(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
@@ -394,9 +394,9 @@ __kefir_text_func_multiply_f64_begin:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
+    mov %rdi, %r10
     movq -128(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
     movq -120(%rbp), %xmm0
@@ -475,8 +475,8 @@ __kefir_text_func_subtract_f32_begin:
     mov %rsp, %rbp
     sub $96, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -96(%rbp)
+    mov %rdi, %r10
     movq -96(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
@@ -538,9 +538,9 @@ __kefir_text_func_subtract_f64_begin:
     mov %rsp, %rbp
     sub $128, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r10
     movq %xmm0, -128(%rbp)
     movq %xmm1, -120(%rbp)
+    mov %rdi, %r10
     movq -128(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
     movq -120(%rbp), %xmm0

@@ -13,7 +13,7 @@
                             {
                                 "id": 0,
                                 "opcode": "jump",
-                                "target_block": 1,
+                                "target_block": 6,
                                 "control_next": null,
                                 "ir_instruction": null
                             }
@@ -21,7 +21,7 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                1
+                                6
                             ],
                             "predecessors": [],
                             "immediate_dominator": null,
@@ -31,7 +31,7 @@
                         }
                     },
                     {
-                        "id": 1,
+                        "id": 6,
                         "control_flow": 16,
                         "code": [
                             {
@@ -167,8 +167,8 @@
                             {
                                 "id": 16,
                                 "opcode": "branch",
-                                "target_block": 2,
-                                "alternative_block": 3,
+                                "target_block": 1,
+                                "alternative_block": 2,
                                 "condition": 15,
                                 "condition_variant": "8bit",
                                 "control_next": null,
@@ -178,12 +178,12 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                2,
-                                3
+                                1,
+                                2
                             ],
                             "predecessors": [
                                 0,
-                                6
+                                5
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
@@ -207,7 +207,7 @@
                         }
                     },
                     {
-                        "id": 2,
+                        "id": 1,
                         "control_flow": 39,
                         "code": [
                             {
@@ -222,16 +222,16 @@
                         "properties": {
                             "successors": [],
                             "predecessors": [
-                                1
+                                6
                             ],
-                            "immediate_dominator": 1,
+                            "immediate_dominator": 6,
                             "alive_instructions": [
                                 39
                             ]
                         }
                     },
                     {
-                        "id": 3,
+                        "id": 2,
                         "control_flow": 21,
                         "code": [
                             {
@@ -269,8 +269,8 @@
                             {
                                 "id": 21,
                                 "opcode": "branch",
-                                "target_block": 4,
-                                "alternative_block": 5,
+                                "target_block": 3,
+                                "alternative_block": 4,
                                 "condition": 20,
                                 "condition_variant": "8bit",
                                 "control_next": null,
@@ -280,14 +280,14 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                4,
-                                5
-                            ],
-                            "predecessors": [
-                                1,
+                                3,
                                 4
                             ],
-                            "immediate_dominator": 1,
+                            "predecessors": [
+                                3,
+                                6
+                            ],
+                            "immediate_dominator": 6,
                             "alive_instructions": [
                                 17,
                                 18,
@@ -298,7 +298,7 @@
                         }
                     },
                     {
-                        "id": 4,
+                        "id": 3,
                         "control_flow": 37,
                         "code": [
                             {
@@ -409,8 +409,8 @@
                             {
                                 "id": 37,
                                 "opcode": "branch",
-                                "target_block": 3,
-                                "alternative_block": 6,
+                                "target_block": 2,
+                                "alternative_block": 5,
                                 "condition": 36,
                                 "condition_variant": "32bit",
                                 "control_next": null,
@@ -420,13 +420,13 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                3,
-                                6
+                                2,
+                                5
                             ],
                             "predecessors": [
-                                3
+                                2
                             ],
-                            "immediate_dominator": 3,
+                            "immediate_dominator": 2,
                             "alive_instructions": [
                                 25,
                                 26,
@@ -445,13 +445,13 @@
                         }
                     },
                     {
-                        "id": 6,
+                        "id": 5,
                         "control_flow": 38,
                         "code": [
                             {
                                 "id": 38,
                                 "opcode": "jump",
-                                "target_block": 1,
+                                "target_block": 6,
                                 "control_next": null,
                                 "ir_instruction": 43
                             }
@@ -459,19 +459,19 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                1
+                                6
                             ],
                             "predecessors": [
-                                4
+                                3
                             ],
-                            "immediate_dominator": 4,
+                            "immediate_dominator": 3,
                             "alive_instructions": [
                                 38
                             ]
                         }
                     },
                     {
-                        "id": 5,
+                        "id": 4,
                         "control_flow": 24,
                         "code": [
                             {
@@ -500,9 +500,9 @@
                         "properties": {
                             "successors": [],
                             "predecessors": [
-                                3
+                                2
                             ],
-                            "immediate_dominator": 3,
+                            "immediate_dominator": 2,
                             "alive_instructions": [
                                 22,
                                 23,

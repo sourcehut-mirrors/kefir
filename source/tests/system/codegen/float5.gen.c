@@ -43,11 +43,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *fneg_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "fneg", func_params, false, func_returns);
     REQUIRE(fneg_decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *fneg = kefir_ir_module_new_function(mem, &module, fneg_decl, 1024);
+    kefir_irbuilder_type_append(mem, fneg_decl->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
+    kefir_irbuilder_type_append(mem, fneg_decl->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
+    struct kefir_ir_function *fneg = kefir_ir_module_new_function_with_args(mem, &module, fneg_decl, 1024);
     REQUIRE(fneg != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, fneg_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, fneg->declaration->params, KEFIR_IR_TYPE_FLOAT32, 0, 0);
-    kefir_irbuilder_type_append(mem, fneg->declaration->result, KEFIR_IR_TYPE_FLOAT32, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &fneg->body, KEFIR_IR_OPCODE_FLOAT32_NEG, 0);
     kefir_irbuilder_block_appendi64(mem, &fneg->body, KEFIR_IR_OPCODE_RETURN, 0);
 
@@ -58,11 +58,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *dneg_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "dneg", func_params, false, func_returns);
     REQUIRE(dneg_decl != NULL, KEFIR_INTERNAL_ERROR);
-    struct kefir_ir_function *dneg = kefir_ir_module_new_function(mem, &module, dneg_decl, 1024);
+    kefir_irbuilder_type_append(mem, dneg_decl->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
+    kefir_irbuilder_type_append(mem, dneg_decl->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
+    struct kefir_ir_function *dneg = kefir_ir_module_new_function_with_args(mem, &module, dneg_decl, 1024);
     REQUIRE(dneg != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, dneg_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, dneg->declaration->params, KEFIR_IR_TYPE_FLOAT64, 0, 0);
-    kefir_irbuilder_type_append(mem, dneg->declaration->result, KEFIR_IR_TYPE_FLOAT64, 0, 3);
     kefir_irbuilder_block_appendi64(mem, &dneg->body, KEFIR_IR_OPCODE_FLOAT64_NEG, 0);
     kefir_irbuilder_block_appendi64(mem, &dneg->body, KEFIR_IR_OPCODE_RETURN, 0);
 

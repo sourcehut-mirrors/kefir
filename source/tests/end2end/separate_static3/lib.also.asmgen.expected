@@ -14,7 +14,6 @@ __kefir_text_func_get_real_value_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get_real_value_label0:
-_kefir_func_get_real_value_label1:
     lea real_value(%rip), %rax
     movq (%rax), %rax
     pop %rbp
