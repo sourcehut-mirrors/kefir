@@ -27,3 +27,8 @@ float testsmall(int x) {
 int testlarge(int x) {
     return getlarge(x).x[x];
 }
+
+_Bool testlarge2(int x, int y) {
+    struct large_struct lx = getlarge(x), ly = getlarge(y);
+    return my_memcmp(&lx, &ly, sizeof(lx));
+}

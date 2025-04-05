@@ -22,7 +22,6 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/function_declaration.h"
-#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast-translator/value.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_conv.h"
@@ -160,17 +159,6 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE_VIRTUAL, ir_decl->id));
     } else {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
-    }
-
-    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type) ||
-        KEFIR_AST_TYPE_IS_LONG_DOUBLE(node->base.properties.type)) {
-        REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
-                                                        &node->base.properties.expression_props.temporary_identifier));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_COPY_MEMORY, ir_decl->result_type_id, 0));
-        REQUIRE_OK(
-            kefir_ast_translator_load_value(node->base.properties.type, context->ast_context->type_traits, builder));
     }
     return KEFIR_OK;
 }

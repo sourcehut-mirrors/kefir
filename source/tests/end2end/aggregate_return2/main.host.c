@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <math.h>
+#include <string.h>
 #include "./definitions.h"
 
 struct small_struct getsmall(int x) {
@@ -36,6 +37,10 @@ struct large_struct getlarge(int x) {
     return s;
 }
 
+_Bool my_memcmp(void *x, void *y, unsigned long long sz) {
+    return memcmp(x, y, (size_t) sz) == 0;
+}
+
 int main(void) {
     for (int i = -100; i < 100; i++) {
         float res = testsmall(i);
@@ -43,6 +48,9 @@ int main(void) {
     }
     for (int i = 0; i < 128; i++) {
         assert(testlarge(i) == ~(i + i));
+        for (int j = 0; j < 128; j++) {
+            assert(testlarge2(i, j) == (i == j));
+        }
     }
     return EXIT_SUCCESS;
 }

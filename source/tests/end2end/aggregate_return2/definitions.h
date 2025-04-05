@@ -30,9 +30,11 @@ struct large_struct {
     int x[128];
 };
 
+_Bool my_memcmp(void *, void *, unsigned long long);
 struct small_struct getsmall(int);
 struct large_struct getlarge(int);
 float testsmall(int);
 int testlarge(int);
+_Bool testlarge2(int, int);
 
 #endif

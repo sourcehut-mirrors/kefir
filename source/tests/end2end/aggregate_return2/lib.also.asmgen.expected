@@ -3,10 +3,13 @@
 
 .extern getlarge
 .extern getsmall
+.extern my_memcmp
 .global testlarge
 .type testlarge, @function
 .global testsmall
 .type testsmall, @function
+.global testlarge2
+.type testlarge2, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -14,23 +17,18 @@ testlarge:
 __kefir_text_func_testlarge_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $1040, %rsp
+    sub $528, %rsp
     mov %rdi, %rax
-    movq %rax, -528(%rbp)
+    movq %rax, -16(%rbp)
     mov %rax, %rsi
-    leaq -1040(%rbp), %rcx
+    leaq -528(%rbp), %rcx
     mov %rcx, %rdi
     call getlarge@PLT
-    movq -528(%rbp), %rax
-    leaq -512(%rbp), %rdi
-    leaq -1040(%rbp), %rcx
-    mov %rcx, %rsi
-    cld
-    mov $64, %rcx
-    rep movsq
+    movq -16(%rbp), %rax
     movsx %eax, %rax
     imul $4, %rax, %rax
-    leaq -512(%rbp), %rdi
+    leaq -528(%rbp), %rsi
+    mov %rsi, %rdi
     add %rax, %rdi
     movl (%rdi), %eax
     lea (%rbp), %rsp
@@ -42,27 +40,26 @@ testsmall:
 __kefir_text_func_testsmall_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $32, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rcx
-    movq %rcx, -48(%rbp)
+    movq %rcx, -16(%rbp)
     mov %rcx, %rdi
     call getsmall@PLT
-    movq %rax, -64(%rbp)
-    movq %xmm0, -56(%rbp)
-    movq -48(%rbp), %rcx
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -40(%rbp)
-    movq -40(%rbp), %rdx
-    movq %rdx, -48(%rbp)
+    movq %rax, -32(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -16(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    movq %rdx, -16(%rbp)
     mov %rcx, %rdi
     call getsmall@PLT
-    movq %rax, -64(%rbp)
-    movq %xmm0, -56(%rbp)
-    movq -48(%rbp), %rdx
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -24(%rbp)
-    movl -16(%rbp), %eax
+    movq %rax, -32(%rbp)
+    movq %xmm0, -24(%rbp)
+    movq -16(%rbp), %rdx
+    leaq -32(%rbp), %rcx
+    mov %rcx, %rax
+    add $8, %rax
+    movl (%rax), %eax
     cvtsi2ss %rdx, %xmm0
     movd %eax, %xmm1
     addss %xmm1, %xmm0
@@ -71,6 +68,52 @@ __kefir_text_func_testsmall_begin:
     pop %rbp
     ret
 __kefir_text_func_testsmall_end:
+
+testlarge2:
+__kefir_text_func_testlarge2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $1552, %rsp
+    mov %rsi, %r8
+    mov %rdi, %rdx
+    leaq -1024(%rbp), %rdi
+    xor %eax, %eax
+    mov $512, %rcx
+    rep stosb
+    movq %r8, -1040(%rbp)
+    mov %rdx, %rsi
+    leaq -1552(%rbp), %rax
+    mov %rax, %rdi
+    call getlarge@PLT
+    movq -1040(%rbp), %r8
+    leaq -1024(%rbp), %rdi
+    leaq -1552(%rbp), %rax
+    mov %rax, %rsi
+    cld
+    mov $64, %rcx
+    rep movsq
+    leaq -512(%rbp), %rdi
+    xor %eax, %eax
+    mov $512, %rcx
+    rep stosb
+    mov %r8, %rsi
+    leaq -1552(%rbp), %rax
+    mov %rax, %rdi
+    call getlarge@PLT
+    leaq -512(%rbp), %rdi
+    leaq -1552(%rbp), %rax
+    mov %rax, %rsi
+    cld
+    mov $64, %rcx
+    rep movsq
+    leaq -1024(%rbp), %rdi
+    leaq -512(%rbp), %rsi
+    mov $512, %rdx
+    call my_memcmp@PLT
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_testlarge2_end:
 
 __kefir_text_section_end:
 
