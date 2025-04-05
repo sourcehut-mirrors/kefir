@@ -132,7 +132,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 }
 
 kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
-                                   struct kefir_ast_declaration *declaration) {
+                                                          struct kefir_ast_declaration *declaration) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
@@ -157,9 +157,9 @@ kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem,
         REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declaration->declarator, &identifier));
         if (identifier != NULL && identifier->identifier) {
             if (is_typedef) {
-                REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, &parser->scope, identifier->identifier));
+                REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, parser->scope, identifier->identifier));
             } else {
-                REQUIRE_OK(kefir_parser_scope_declare_variable(mem, &parser->scope, identifier->identifier));
+                REQUIRE_OK(kefir_parser_scope_declare_variable(mem, parser->scope, identifier->identifier));
             }
         }
     }

@@ -52,9 +52,11 @@ typedef struct kefir_parser_extensions {
 typedef struct kefir_parser {
     struct kefir_string_pool *symbols;
     struct kefir_parser_token_cursor *cursor;
-    struct kefir_parser_scope scope;
     struct kefir_parser_ruleset ruleset;
     const struct kefir_parser_configuration *configuration;
+
+    struct kefir_parser_scope local_scope;
+    struct kefir_parser_scope *scope;
 
     const struct kefir_parser_extensions *extensions;
     void *extension_payload;
@@ -70,6 +72,8 @@ kefir_result_t kefir_parser_free(struct kefir_mem *, struct kefir_parser *);
 kefir_result_t kefir_parser_apply(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_node_base **,
                                   kefir_parser_rule_fn_t, void *);
 kefir_result_t kefir_parser_try_invoke(struct kefir_mem *, struct kefir_parser *, kefir_parser_invocable_fn_t, void *);
+
+kefir_result_t kefir_parser_set_scope(struct kefir_parser *, struct kefir_parser_scope *);
 
 #define KEFIR_PARSER_RULE_FN(_parser, _rule) ((_parser)->ruleset.rules[KEFIR_PARSER_RULESET_IDENTIFIER(_rule)])
 #define KEFIR_PARSER_RULE_APPLY(_mem, _parser, _rule, _result) \

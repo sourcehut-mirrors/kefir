@@ -325,7 +325,7 @@ static kefir_result_t scan_enum_field_declaration(struct kefir_mem *mem, struct 
         return res;
     });
 
-    REQUIRE_OK(kefir_parser_scope_declare_variable(mem, &parser->scope, identifier));
+    REQUIRE_OK(kefir_parser_scope_declare_variable(mem, parser->scope, identifier));
     return KEFIR_OK;
 }
 
@@ -526,7 +526,7 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match type specifier"));
         const char *identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
         kefir_bool_t is_typedef;
-        kefir_result_t res = kefir_parser_scope_is_typedef(&parser->scope, identifier, &is_typedef);
+        kefir_result_t res = kefir_parser_scope_is_typedef(parser->scope, identifier, &is_typedef);
         if (res == KEFIR_NOT_FOUND) {
             return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match type specifier");
         } else {

@@ -66,6 +66,7 @@ typedef struct kefir_compiler_context {
     struct kefir_ast_translator_configuration translator_configuration;
     struct kefir_optimizer_configuration optimizer_configuration;
     struct kefir_codegen_configuration codegen_configuration;
+    struct kefir_parser_scope parser_scope;
     const struct kefir_compiler_extensions *extensions;
     void *extension_payload;
 } kefir_compiler_context_t;

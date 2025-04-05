@@ -35,7 +35,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     REQUIRE_OK(kefir_parser_ast_builder_statement_expression(mem, builder));
-    REQUIRE_OK(kefir_parser_scope_push_block(mem, &parser->scope));
+    REQUIRE_OK(kefir_parser_scope_push_block(mem, parser->scope));
 
     while (!PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
         kefir_result_t res =
@@ -59,7 +59,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
                                    "Expected right brace and right parenthese"));
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(PARSER_SHIFT(parser));
-    REQUIRE_OK(kefir_parser_scope_pop_block(mem, &parser->scope));
+    REQUIRE_OK(kefir_parser_scope_pop_block(mem, parser->scope));
     return KEFIR_OK;
 }
 

@@ -134,6 +134,14 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
         kefir_ast_global_context_free(mem, &context->ast_global_context);
         return res;
     });
+    res = kefir_parser_scope_init(mem, &context->parser_scope, &context->ast_global_context.symbols);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_preprocessor_context_free(mem, &context->preprocessor_context);
+        kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context);
+        kefir_ast_global_context_free(mem, &context->ast_global_context);
+        return res;
+    });
+    context->preprocessor_context.parser_scope = &context->parser_scope;
     context->preprocessor_context.preprocessor_config = &context->preprocessor_configuration;
     context->codegen_configuration = KefirCodegenDefaultConfiguration;
     context->preprocessor_context.environment.data_model = profile->data_model;
@@ -168,6 +176,7 @@ kefir_result_t kefir_compiler_context_free(struct kefir_mem *mem, struct kefir_c
         context->extension_payload = NULL;
     }
 
+    REQUIRE_OK(kefir_parser_scope_free(mem, &context->parser_scope));
     REQUIRE_OK(kefir_optimizer_configuration_free(mem, &context->optimizer_configuration));
     REQUIRE_OK(kefir_preprocessor_context_free(mem, &context->preprocessor_context));
     REQUIRE_OK(kefir_preprocessor_ast_context_free(mem, &context->preprocessor_ast_context));
@@ -386,7 +395,8 @@ kefir_result_t kefir_compiler_parse(struct kefir_mem *mem, struct kefir_compiler
                                  context->extensions != NULL ? context->extensions->parser : NULL));
     parser.configuration = &context->parser_configuration;
     struct kefir_ast_node_base *node = NULL;
-    kefir_result_t res = KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node);
+    kefir_result_t res = kefir_parser_set_scope(&parser, &context->parser_scope);
+    REQUIRE_CHAIN(&res, KEFIR_PARSER_NEXT_TRANSLATION_UNIT(mem, &parser, &node));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_parser_free(mem, &parser);
         return res;

@@ -48,9 +48,10 @@ kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *par
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token cursor"));
 
     REQUIRE_OK(kefir_parser_ruleset_init(&parser->ruleset));
-    REQUIRE_OK(kefir_parser_scope_init(mem, &parser->scope, symbols));
+    REQUIRE_OK(kefir_parser_scope_init(mem, &parser->local_scope, symbols));
     parser->symbols = symbols;
     parser->cursor = cursor;
+    parser->scope = &parser->local_scope;
     parser->extensions = extensions;
     parser->extension_payload = NULL;
     parser->configuration = &DefaultConfiguration;
@@ -58,7 +59,7 @@ kefir_result_t kefir_parser_init(struct kefir_mem *mem, struct kefir_parser *par
     kefir_result_t res;
     KEFIR_RUN_EXTENSION0(&res, mem, parser, on_init);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_parser_scope_free(mem, &parser->scope);
+        kefir_parser_scope_free(mem, &parser->local_scope);
         return res;
     });
     return KEFIR_OK;
@@ -72,7 +73,7 @@ kefir_result_t kefir_parser_free(struct kefir_mem *mem, struct kefir_parser *par
     KEFIR_RUN_EXTENSION0(&res, mem, parser, on_free);
     REQUIRE_OK(res);
 
-    REQUIRE_OK(kefir_parser_scope_free(mem, &parser->scope));
+    REQUIRE_OK(kefir_parser_scope_free(mem, &parser->local_scope));
     parser->cursor = NULL;
     parser->symbols = NULL;
     return KEFIR_OK;
@@ -115,6 +116,17 @@ kefir_result_t kefir_parser_try_invoke(struct kefir_mem *mem, struct kefir_parse
         return res;
     } else {
         REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_parser_set_scope(struct kefir_parser *parser, struct kefir_parser_scope *scope) {
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+
+    if (scope != NULL) {
+        parser->scope = scope;
+    } else {
+        parser->scope = &parser->local_scope;
     }
     return KEFIR_OK;
 }

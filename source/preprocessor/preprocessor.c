@@ -57,6 +57,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_hashtreeset_init(&context->builltin_prefixes, &kefir_hashtree_str_ops));
     context->source_locator = locator;
     context->ast_context = ast_context;
+    context->parser_scope = NULL;
 
     // Predefined macros
     context->environment.timestamp = time(NULL);
@@ -521,6 +522,7 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
         kefir_token_buffer_free(mem, &tokens);
         return res;
     });
+    res = kefir_parser_set_scope(&parser, preprocessor->context->parser_scope);
 
     res = KEFIR_PARSER_NEXT_EXPRESSION(mem, &parser, &expression);
     REQUIRE_ELSE(res == KEFIR_OK, {

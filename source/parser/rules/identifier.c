@@ -28,7 +28,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(identifier)(struct kefir_mem *mem, st
     REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected identifier token"));
     kefir_bool_t is_typedef = false;
     kefir_result_t res =
-        kefir_parser_scope_is_typedef(&parser->scope, PARSER_CURSOR(parser, 0)->identifier, &is_typedef);
+        kefir_parser_scope_is_typedef(parser->scope, PARSER_CURSOR(parser, 0)->identifier, &is_typedef);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
     }
