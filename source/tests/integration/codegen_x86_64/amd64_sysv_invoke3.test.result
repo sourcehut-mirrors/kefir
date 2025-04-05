@@ -10,7 +10,7 @@ proxyadd:
 __kefir_text_func_proxyadd_begin:
     push %rbp
     mov %rbp, %rsp
-    sub %rsp, 32
+    sub %rsp, 16
 _kefir_func_proxyadd_label0:
     mov %rax, %rdi
     mov QWORD PTR [%rbp - 16], %rsi
@@ -19,9 +19,8 @@ _kefir_func_proxyadd_label0:
     mov %rsi, QWORD PTR [%rbp - 16]
     movq %xmm0, [%rbp - 8]
     call %rax
-    mov QWORD PTR [%rbp - 32], %rax
-    movq [%rbp - 24], %xmm0
-    lea %rax, QWORD PTR [%rbp - 32]
+    mov QWORD PTR [%rbp - 16], %rax
+    movq [%rbp - 8], %xmm0
     xor %rax, %rax
     pxor %xmm0, %xmm0
     lea %rsp, [%rbp]

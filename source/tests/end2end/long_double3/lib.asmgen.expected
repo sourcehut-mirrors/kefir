@@ -11,7 +11,7 @@ sum_progression:
 __kefir_text_func_sum_progression_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $416, %rsp
+    sub $400, %rsp
     fstcw -8(%rbp)
 _kefir_func_sum_progression_label0:
     lea 32(%rbp), %rax
@@ -198,10 +198,9 @@ _kefir_func_sum_progression_label0:
     fldt -400(%rbp)
     fstpt 144(%rsp)
     call sum10@PLT
-    fstpt -416(%rbp)
-    lea -416(%rbp), %rax
+    fstpt -400(%rbp)
     add $160, %rsp
-    movdqu (%rax), %xmm0
+    movdqu -400(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     fldt -32(%rbp)
     fstpt -400(%rbp)

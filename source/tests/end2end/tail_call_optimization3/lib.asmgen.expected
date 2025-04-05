@@ -217,10 +217,12 @@ __kefir_text_func_test11_begin:
     sub $272, %rsp
     movq %rdi, -144(%rbp)
     add $1, %esi
-    leaq -272(%rbp), %rdi
+    leaq -272(%rbp), %rax
+    mov %rax, %rdi
     call test11
-    leaq (%rax), %rsi
     leaq -128(%rbp), %rdi
+    leaq -272(%rbp), %rax
+    mov %rax, %rsi
     cld
     mov $16, %rcx
     rep movsq
@@ -244,8 +246,7 @@ __kefir_text_func_test12_begin:
     call test12
     movq %rax, -32(%rbp)
     movq %rdx, -24(%rbp)
-    leaq -32(%rbp), %rax
-    movdqu (%rax), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx

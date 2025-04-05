@@ -1,0 +1,76 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern getlarge
+.extern getsmall
+.global testlarge
+.type testlarge, @function
+.global testsmall
+.type testsmall, @function
+
+.section .text
+__kefir_text_section_begin:
+testlarge:
+__kefir_text_func_testlarge_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $1040, %rsp
+    mov %rdi, %rax
+    movq %rax, -528(%rbp)
+    mov %rax, %rsi
+    leaq -1040(%rbp), %rcx
+    mov %rcx, %rdi
+    call getlarge@PLT
+    movq -528(%rbp), %rax
+    leaq -512(%rbp), %rdi
+    leaq -1040(%rbp), %rcx
+    mov %rcx, %rsi
+    cld
+    mov $64, %rcx
+    rep movsq
+    movsx %eax, %rax
+    imul $4, %rax, %rax
+    leaq -512(%rbp), %rdi
+    add %rax, %rdi
+    movl (%rdi), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_testlarge_end:
+
+testsmall:
+__kefir_text_func_testsmall_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    stmxcsr -8(%rbp)
+    mov %rdi, %rcx
+    movq %rcx, -48(%rbp)
+    mov %rcx, %rdi
+    call getsmall@PLT
+    movq %rax, -64(%rbp)
+    movq %xmm0, -56(%rbp)
+    movq -48(%rbp), %rcx
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -40(%rbp)
+    movq -40(%rbp), %rdx
+    movq %rdx, -48(%rbp)
+    mov %rcx, %rdi
+    call getsmall@PLT
+    movq %rax, -64(%rbp)
+    movq %xmm0, -56(%rbp)
+    movq -48(%rbp), %rdx
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -24(%rbp)
+    movl -16(%rbp), %eax
+    cvtsi2ss %rdx, %xmm0
+    movd %eax, %xmm1
+    addss %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_testsmall_end:
+
+__kefir_text_section_end:
+
