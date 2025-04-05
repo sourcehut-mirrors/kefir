@@ -28,7 +28,6 @@
 #define KEFIR_PARSER_BUILTIN_VA_END "__builtin_va_end"
 #define KEFIR_PARSER_BUILTIN_VA_ARG "__builtin_va_arg"
 #define KEFIR_PARSER_BUILTIN_VA_COPY "__builtin_va_copy"
-#define KEFIR_PARSER_BUILTIN_VA_LIST "__builtin_va_list"
 #define KEFIR_PARSER_BUILTIN_ALLOCA "__builtin_alloca"
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN "__builtin_alloca_with_align"
 #define KEFIR_PARSER_BUILTIN_ALLOCA_WITH_ALIGN_AND_MAX "__builtin_alloca_with_align_and_max"

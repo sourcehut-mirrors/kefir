@@ -55,7 +55,7 @@
                                 "id": 4,
                                 "opcode": "alloc_local",
                                 "type_id": 56,
-                                "type_index": 2,
+                                "type_index": 7,
                                 "control_next": null,
                                 "ir_instruction": 6
                             },

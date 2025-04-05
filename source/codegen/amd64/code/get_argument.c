@@ -175,7 +175,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_LONG:
                 case KEFIR_IR_TYPE_WORD:
                 case KEFIR_IR_TYPE_BITS:
-                case KEFIR_IR_TYPE_BUILTIN:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
                     REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(

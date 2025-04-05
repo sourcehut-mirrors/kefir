@@ -24,7 +24,6 @@ PRINT_BUILTIN(__builtin_va_start);
 PRINT_BUILTIN(__builtin_va_end);
 PRINT_BUILTIN(__builtin_va_arg);
 PRINT_BUILTIN(__builtin_va_copy);
-PRINT_BUILTIN(__builtin_va_list);
 PRINT_BUILTIN(__builtin_alloca);
 PRINT_BUILTIN(__builtin_alloca_with_align);
 PRINT_BUILTIN(__builtin_alloca_with_align_and_max);

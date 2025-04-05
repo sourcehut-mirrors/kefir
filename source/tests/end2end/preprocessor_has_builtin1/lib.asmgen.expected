@@ -3,7 +3,6 @@ __builtin_va_start = 1;
 __builtin_va_end = 1;
 __builtin_va_arg = 1;
 __builtin_va_copy = 1;
-__builtin_va_list = 1;
 __builtin_alloca = 1;
 __builtin_alloca_with_align = 1;
 __builtin_alloca_with_align_and_max = 1;

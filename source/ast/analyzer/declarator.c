@@ -630,20 +630,6 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
             break;
 
-        case KEFIR_AST_TYPE_SPECIFIER_VA_LIST:
-            REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "Cannot combine va_list type specifier with others"));
-            REQUIRE(*base_type == NULL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "va_list type specifier cannot be combined with others"));
-            REQUIRE(*real_class == REAL_SCALAR,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "va_list type specifier cannot be combined with complex type specifier"));
-            *base_type = kefir_ast_type_va_list();
-            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
-            break;
-
         case KEFIR_AST_TYPE_SPECIFIER_TYPEOF: {
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -733,7 +719,6 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_ARRAY:
                 case KEFIR_AST_TYPE_FUNCTION:
                 case KEFIR_AST_TYPE_QUALIFIED:
-                case KEFIR_AST_TYPE_VA_LIST:
                 case KEFIR_AST_TYPE_AUTO:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                                   "Signed type specifier cannot be applied to the type");
@@ -787,7 +772,6 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_ARRAY:
                 case KEFIR_AST_TYPE_FUNCTION:
                 case KEFIR_AST_TYPE_QUALIFIED:
-                case KEFIR_AST_TYPE_VA_LIST:
                 case KEFIR_AST_TYPE_AUTO:
                     return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                                   "Unsigned type specifier cannot be applied to the type");

@@ -51,8 +51,6 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_BITS,
     // Platform-dependent complex numbers
     KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE,
-    // Built-ins
-    KEFIR_IR_TYPE_BUILTIN,
     // > 64-bit scalars are not supported yet
     KEFIR_IR_TYPE_NONE,
     KEFIR_IR_TYPE_COUNT,  // Auxilary

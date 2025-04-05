@@ -20,7 +20,6 @@
 
 #include "kefir/ir/format.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/ir/builtins.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/ir/mnemonic.h"
@@ -595,9 +594,6 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
             return "complex_long_double";
 
-        case KEFIR_IR_TYPE_BUILTIN:
-            return "builtin";
-
         case KEFIR_IR_TYPE_NONE:
             return "none";
 
@@ -684,28 +680,6 @@ static kefir_result_t format_type_array(const struct kefir_ir_type *type, kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t format_type_builtin(const struct kefir_ir_type *type, kefir_size_t index,
-                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-    ASSIGN_DECL_CAST(struct format_param *, param, payload);
-
-    REQUIRE_OK(kefir_json_output_object_key(param->json, "type"));
-    REQUIRE_OK(kefir_json_output_string(param->json, "builtin"));
-    REQUIRE_OK(kefir_json_output_object_key(param->json, "class"));
-    switch (typeentry->param) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            REQUIRE_OK(kefir_json_output_string(param->json, "vararg"));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid built-in type code");
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_type_prehook(const struct kefir_ir_type *type, kefir_size_t index,
                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(type);
@@ -744,7 +718,6 @@ kefir_result_t kefir_ir_format_type_json(struct kefir_json_output *json, const s
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = format_type_struct_union;
     visitor.visit[KEFIR_IR_TYPE_UNION] = format_type_struct_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = format_type_array;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = format_type_builtin;
     visitor.prehook = format_type_prehook;
     visitor.posthook = format_type_posthook;
 

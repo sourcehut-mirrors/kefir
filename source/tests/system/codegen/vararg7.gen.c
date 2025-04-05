@@ -24,11 +24,11 @@
 #include "kefir/ir/function.h"
 #include "kefir/ir/module.h"
 #include "kefir/ir/builder.h"
-#include "kefir/ir/builtins.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/test/codegen.h"
 #include "kefir/test/module_shim.h"
+#include "vararg.inc.c"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -53,8 +53,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(
-        kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
     struct kefir_ir_function *getint = kefir_ir_module_new_function_with_args(mem, &module, getint_decl, 1024);
     REQUIRE(getint != NULL, KEFIR_INTERNAL_ERROR);
@@ -90,7 +89,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, getarg_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
+    REQUIRE_OK(generate_va_list_type(mem, getarg_locals));
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_NOP, 0);  // 0: [C, L*]
     kefir_irbuilder_block_appendu32_4(mem, &getarg->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id,
                                       0);                                                          // 1: [C, V*]

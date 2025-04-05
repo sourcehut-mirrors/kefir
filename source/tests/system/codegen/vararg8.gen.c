@@ -24,11 +24,11 @@
 #include "kefir/ir/function.h"
 #include "kefir/ir/module.h"
 #include "kefir/ir/builder.h"
-#include "kefir/ir/builtins.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
 #include "kefir/test/codegen.h"
 #include "kefir/test/module_shim.h"
+#include "vararg.inc.c"
 
 kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_test_codegen codegen;
@@ -52,8 +52,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_decl_result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
-    REQUIRE_OK(
-        kefir_irbuilder_type_append(mem, sumldouble_locals, KEFIR_IR_TYPE_BUILTIN, 0, KEFIR_IR_TYPE_BUILTIN_VARARG));
+    REQUIRE_OK(generate_va_list_type(mem, sumldouble_locals));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     struct kefir_ir_function *sumldouble = kefir_ir_module_new_function_with_args(mem, &module, sumldouble_decl, 1024);
     REQUIRE(sumldouble != NULL, KEFIR_INTERNAL_ERROR);

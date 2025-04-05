@@ -24,7 +24,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/mem.h"
-#include "kefir/ir/builtins.h"
 #include <string.h>
 
 kefir_size_t kefir_abi_amd64_num_of_general_purpose_parameter_registers(kefir_abi_amd64_variant_t variant) {
@@ -116,7 +115,7 @@ kefir_result_t kefir_abi_amd64_function_parameters_classify(
             payload->parameter_type = parameter_type;
             payload->parameter_layout = parameter_layout;
             payload->sysv.allocation_length = kefir_ir_type_slots(parameter_type);
-            payload->sysv.location = (struct kefir_abi_sysv_amd64_parameter_location){0};
+            payload->sysv.location = (struct kefir_abi_sysv_amd64_parameter_location) {0};
             payload->sysv.allocation = KEFIR_MALLOC(
                 mem, sizeof(struct kefir_abi_sysv_amd64_parameter_allocation) * payload->sysv.allocation_length);
             REQUIRE_ELSE(payload->sysv.allocation != NULL, {

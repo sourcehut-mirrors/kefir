@@ -174,7 +174,6 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_enum(struct kefi
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typedef(struct kefir_mem *, struct kefir_string_pool *,
                                                                         const char *);
 
-struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_va_list(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_typeof(struct kefir_mem *, kefir_bool_t,
                                                                        struct kefir_ast_node_base *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_auto_type(struct kefir_mem *);

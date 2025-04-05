@@ -163,13 +163,13 @@ kefir_result_t kefir_ast_type_traits_init(const struct kefir_data_model_descript
     REQUIRE(data_model != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid data model"));
     REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST type traits"));
 
-    *type_traits = (struct kefir_ast_type_traits){.integral_type_fits = default_integral_type_fits,
-                                                  .pointer_type_fits = default_pointer_type_fits,
-                                                  .bitfield_promotion = default_bitfield_promotion,
-                                                  .underlying_enumeration_type = kefir_ast_type_signed_int(),
-                                                  .incomplete_type_substitute = kefir_ast_type_char(),
-                                                  .character_type_signedness = true,
-                                                  .payload = (kefir_uptr_t) data_model};
+    *type_traits = (struct kefir_ast_type_traits) {.integral_type_fits = default_integral_type_fits,
+                                                   .pointer_type_fits = default_pointer_type_fits,
+                                                   .bitfield_promotion = default_bitfield_promotion,
+                                                   .underlying_enumeration_type = kefir_ast_type_signed_int(),
+                                                   .incomplete_type_substitute = kefir_ast_type_char(),
+                                                   .character_type_signedness = true,
+                                                   .payload = (kefir_uptr_t) data_model};
 
     switch (data_model->model) {
         case KEFIR_DATA_MODEL_LP64:
@@ -358,8 +358,6 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_UNION_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_ARRAY) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_ARRAY_TYPE_CLASS;
-    } else if (type->tag == KEFIR_AST_TYPE_VA_LIST) {
-        *klass_ptr = __KEFIR_IMPL_TYPECLASS_LANG_TYPE_CLASS;
     } else {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_NO_TYPE_CLASS;
     }

@@ -24,7 +24,6 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/mem.h"
-#include "kefir/ir/builtins.h"
 #include <string.h>
 
 const kefir_asm_amd64_xasmgen_register_t KEFIR_ABI_SYSV_AMD64_PARAMETER_INTEGER_REGISTERS[] = {
@@ -291,29 +290,6 @@ static kefir_result_t assign_nested_array(const struct kefir_ir_type *type, kefi
     return KEFIR_OK;
 }
 
-static kefir_result_t assign_nested_builtin(const struct kefir_ir_type *type, kefir_size_t index,
-                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    struct recursive_aggregate_allocation *info = (struct recursive_aggregate_allocation *) payload;
-    struct kefir_abi_sysv_amd64_parameter_allocation *allocation = &info->allocation[(*info->slot)++];
-    kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
-    allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_NESTED;
-    allocation->klass = KEFIR_AMD64_SYSV_PARAM_NO_CLASS;
-    allocation->index = index;
-    switch (builtin) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container,
-                                                        KEFIR_AMD64_SYSV_PARAM_INTEGER, KEFIR_AMD64_ABI_QWORD,
-                                                        KEFIR_AMD64_ABI_QWORD, &allocation->container_reference));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type");
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t aggregate_disown(struct kefir_mem *mem, struct kefir_abi_sysv_amd64_parameter_allocation *alloc) {
     REQUIRE_OK(kefir_abi_amd64_sysv_qwords_free(&alloc->container, mem));
     alloc->type = KEFIR_AMD64_SYSV_INPUT_PARAM_CONTAINER;
@@ -364,7 +340,6 @@ static kefir_result_t nested_visitor_init(struct kefir_ir_type_visitor *visitor)
     visitor->visit[KEFIR_IR_TYPE_STRUCT] = assign_nested_struct;
     visitor->visit[KEFIR_IR_TYPE_ARRAY] = assign_nested_array;
     visitor->visit[KEFIR_IR_TYPE_UNION] = assign_nested_union;
-    visitor->visit[KEFIR_IR_TYPE_BUILTIN] = assign_nested_builtin;
     return KEFIR_OK;
 }
 
@@ -401,7 +376,7 @@ static kefir_result_t immediate_struct_unwrap(struct kefir_mem *mem, const struc
 
 static kefir_result_t calculate_qword_requirements(struct kefir_abi_sysv_amd64_parameter_allocation *allocation,
                                                    const struct kefir_abi_amd64_typeentry_layout *layout) {
-    allocation->requirements = (const struct kefir_abi_sysv_amd64_parameter_location_requirements){0};
+    allocation->requirements = (const struct kefir_abi_sysv_amd64_parameter_location_requirements) {0};
     if (allocation->klass == KEFIR_AMD64_SYSV_PARAM_MEMORY) {
         allocation->requirements.memory.size = layout->size;
         allocation->requirements.memory.alignment = layout->alignment;
@@ -638,27 +613,6 @@ static kefir_result_t assign_immediate_union(const struct kefir_ir_type *type, k
     return calculate_qword_requirements(allocation, layout);
 }
 
-static kefir_result_t assign_immediate_builtin(const struct kefir_ir_type *type, kefir_size_t index,
-                                               const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-    struct input_allocation *info = (struct input_allocation *) payload;
-    struct kefir_abi_sysv_amd64_parameter_allocation *allocation = &info->allocation[info->slot++];
-    kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
-    allocation->index = index;
-    switch (builtin) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            allocation->type = KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE;
-            allocation->klass = KEFIR_AMD64_SYSV_PARAM_INTEGER;
-            allocation->requirements.integer = 1;
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type");
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, const struct kefir_ir_type *type,
                                                        const struct kefir_abi_amd64_type_layout *layout,
                                                        struct kefir_abi_sysv_amd64_parameter_allocation *allocation) {
@@ -668,7 +622,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
         entry->type = KEFIR_AMD64_SYSV_INPUT_PARAM_SKIP;
         entry->klass = KEFIR_AMD64_SYSV_PARAM_NO_CLASS;
         entry->index = 0;
-        entry->requirements = (const struct kefir_abi_sysv_amd64_parameter_location_requirements){0};
+        entry->requirements = (const struct kefir_abi_sysv_amd64_parameter_location_requirements) {0};
         entry->location.integer_register = KEFIR_AMD64_SYSV_PARAMETER_LOCATION_NONE;
         entry->location.sse_register = KEFIR_AMD64_SYSV_PARAMETER_LOCATION_NONE;
         entry->location.stack_offset = KEFIR_AMD64_SYSV_PARAMETER_LOCATION_NONE;
@@ -683,7 +637,6 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = assign_immediate_struct;
     visitor.visit[KEFIR_IR_TYPE_UNION] = assign_immediate_union;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = assign_immediate_array;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = assign_immediate_builtin;
     struct input_allocation info = {.mem = mem, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &info, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
@@ -949,53 +902,6 @@ static kefir_result_t aggregate_allocate_return(const struct kefir_ir_type *type
     return KEFIR_OK;
 }
 
-static kefir_result_t builtin_allocate(const struct kefir_ir_type *type, kefir_size_t index,
-                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    struct allocation_state *state = (struct allocation_state *) payload;
-    kefir_size_t slot;
-    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
-    struct kefir_abi_sysv_amd64_parameter_allocation *alloc = &state->allocation[slot];
-    kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
-
-    switch (builtin) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            if (state->current->integer_register + 1 <= ABI_INTEGER_REGS) {
-                alloc->location.integer_register = state->current->integer_register++;
-            } else {
-                const kefir_size_t alignment = MAX(alloc->requirements.memory.alignment, KEFIR_AMD64_ABI_QWORD);
-                state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
-                alloc->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
-                alloc->location.stack_offset = state->current->stack_offset;
-                state->current->stack_offset += KEFIR_AMD64_ABI_QWORD;
-            }
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type");
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t builtin_allocate_return(const struct kefir_ir_type *type, kefir_size_t index,
-                                              const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    UNUSED(payload);
-    kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
-
-    switch (builtin) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            // Intentionally left blank
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type");
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, const struct kefir_ir_type *type,
                                                        const struct kefir_abi_amd64_type_layout *layout,
                                                        struct kefir_abi_sysv_amd64_parameter_allocation *allocation,
@@ -1015,7 +921,6 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_allocate;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;
@@ -1040,7 +945,6 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate_return(
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_UNION] = aggregate_allocate_return;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_allocate_return;
     struct allocation_state state = {.mem = mem, .current = location, .layout = layout, .allocation = allocation};
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &state, 0, kefir_ir_type_children(type)));
     return KEFIR_OK;

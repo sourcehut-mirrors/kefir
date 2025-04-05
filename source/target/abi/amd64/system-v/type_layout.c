@@ -26,7 +26,6 @@
 #include "kefir/target/abi/amd64/system-v/data.h"
 #include "kefir/target/abi/amd64/system-v/qwords.h"
 #include "kefir/target/abi/amd64/system-v/type_layout.h"
-#include "kefir/ir/builtins.h"
 
 static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_typeentry *typeentry,
                                                           kefir_size_t *size_ptr, kefir_size_t *alignment_ptr) {
@@ -253,26 +252,6 @@ static kefir_result_t calculate_array_layout(const struct kefir_ir_type *type, k
     return update_compound_type_layout(compound_type_layout, data, typeentry);
 }
 
-static kefir_result_t calculate_builtin_layout(const struct kefir_ir_type *type, kefir_size_t index,
-                                               const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    struct compound_type_layout *compound_type_layout = (struct compound_type_layout *) payload;
-    ASSIGN_DECL_CAST(struct kefir_abi_amd64_typeentry_layout *, data,
-                     kefir_vector_at(compound_type_layout->vector, index));
-    kefir_ir_builtin_type_t builtin = (kefir_ir_builtin_type_t) typeentry->param;
-    switch (builtin) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            data->aligned = true;
-            data->size = 3 * KEFIR_AMD64_ABI_QWORD;
-            data->alignment = KEFIR_AMD64_ABI_QWORD;
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unknown built-in type");
-    }
-    return update_compound_type_layout(compound_type_layout, data, typeentry);
-}
-
 static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_abi_amd64_type_layout_context_t context,
                                        kefir_size_t index, kefir_size_t count, struct kefir_vector *vector) {
     struct kefir_ir_type_visitor visitor;
@@ -293,7 +272,6 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_a
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = calculate_array_layout;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = calculate_builtin_layout;
     visitor.visit[KEFIR_IR_TYPE_NONE] = calculate_integer_layout;
     return kefir_ir_type_visitor_list_nodes(type, &visitor, (void *) &compound_type_layout, index, count);
 }

@@ -515,10 +515,6 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_AUTO_TYPE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         specifier = kefir_ast_type_specifier_auto_type(mem);
-    } else if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) &&
-               strcmp(PARSER_CURSOR(parser, 0)->identifier, KEFIR_PARSER_BUILTIN_VA_LIST) == 0) {
-        REQUIRE_OK(PARSER_SHIFT(parser));
-        specifier = kefir_ast_type_specifier_va_list(mem);
     } else {
         kefir_bool_t has_specs = false;
         REQUIRE_OK(has_type_specifiers(specifiers, &has_specs));

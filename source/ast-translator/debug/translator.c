@@ -618,12 +618,6 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
             }
             break;
 
-        case KEFIR_AST_TYPE_VA_LIST:
-            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
-            REQUIRE_OK(KEFIR_IR_TARGET_PLATFORM_BUILTIN_VA_LIST_DEBUG_INFO(mem, translator_env->target_platform,
-                                                                           &module->debug_info.entries, entry_id_ptr));
-            break;
-
         case KEFIR_AST_TYPE_QUALIFIED: {
             kefir_ir_debug_entry_id_t entry_type_id;
             REQUIRE_OK(kefir_ast_translate_debug_type(mem, context, translator_env, module, debug_entries,

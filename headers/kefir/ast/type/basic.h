@@ -53,8 +53,6 @@ COMPLEX_TYPE(double);
 COMPLEX_TYPE(long_double);
 #undef COMPLEX_TYPE
 
-const struct kefir_ast_type *kefir_ast_type_va_list(void);
-
 #define KEFIR_AST_TYPE_IS_CHARACTER(base)                                                             \
     ((base)->tag == KEFIR_AST_TYPE_SCALAR_CHAR || (base)->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR || \
      (base)->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR)

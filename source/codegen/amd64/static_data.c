@@ -26,7 +26,6 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/vector.h"
-#include "kefir/ir/builtins.h"
 
 struct static_data_param {
     struct kefir_codegen_amd64 *codegen;
@@ -661,30 +660,6 @@ static kefir_result_t array_static_data(const struct kefir_ir_type *type, kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t builtin_static_data(const struct kefir_ir_type *type, kefir_size_t index,
-                                          const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(typeentry);
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-
-    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
-    param->slot++;
-
-    switch ((kefir_ir_builtin_type_t) typeentry->param) {
-        case KEFIR_IR_TYPE_BUILTIN_VARARG:
-            REQUIRE_OK(align_offset(layout, param));
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_ZERODATA(&param->codegen->xasmgen, layout->size));
-            param->offset += layout->size;
-            break;
-
-        case KEFIR_IR_TYPE_BUILTIN_COUNT:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected built-in type");
-    }
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen,
                                                const struct kefir_ir_module *module, const struct kefir_ir_data *data,
                                                const char *identifier) {
@@ -706,7 +681,6 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = array_static_data;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = struct_static_data;
     visitor.visit[KEFIR_IR_TYPE_UNION] = union_static_data;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = builtin_static_data;
 
     struct static_data_param param = {
         .codegen = codegen, .module = module, .data = data, .visitor = &visitor, .slot = 0, .offset = 0};

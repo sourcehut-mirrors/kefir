@@ -749,32 +749,6 @@ static kefir_result_t vararg_visit_aggregate(const struct kefir_ir_type *type, k
     return KEFIR_OK;
 }
 
-static kefir_result_t vararg_visit_builtin(const struct kefir_ir_type *type, kefir_size_t index,
-                                           const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    UNUSED(index);
-    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type entry"));
-    ASSIGN_DECL_CAST(struct vararg_get_param *, param, payload);
-    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vararg visitor payload"));
-
-    switch (typeentry->param) {
-        case KEFIR_IR_TYPE_BUILTIN: {
-            kefir_asmcmp_virtual_register_index_t valist_vreg, result_vreg;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-            REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(
-                param->function, param->instruction->operation.parameters.refs[0], &valist_vreg));
-
-            REQUIRE_OK(vararg_load_int(param->mem, param->function, valist_vreg, result_vreg));
-
-            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(param->mem, param->function, param->instruction->id,
-                                                                result_vreg));
-        } break;
-    }
-
-    return KEFIR_OK;
-}
-
 static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                       const struct kefir_opt_instruction *instruction) {
     const kefir_id_t type_id = (kefir_id_t) instruction->operation.parameters.type.type_id;
@@ -790,7 +764,6 @@ static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codege
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
-    visitor.visit[KEFIR_IR_TYPE_BUILTIN] = vararg_visit_builtin;
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_aggregate;
 
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(

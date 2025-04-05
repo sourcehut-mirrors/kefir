@@ -46,7 +46,6 @@ DEFINE_CASE(ast_type_variably_modified1, "AST types - variably modified types #1
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_float()));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_double()));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_long_double()));
-    ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_va_list()));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_pointer(&kft_mem, &type_bundle, kefir_ast_type_void())));
     ASSERT(!kefir_ast_type_is_variably_modified(kefir_ast_type_qualified(
         &kft_mem, &type_bundle, kefir_ast_type_char(), (struct kefir_ast_type_qualification) {.constant = true})));

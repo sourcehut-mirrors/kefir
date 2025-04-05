@@ -122,12 +122,5 @@
             ],
             "attributes": []
         }
-    ],
-    [
-        {
-            "class": "type_specifier",
-            "specifier": "va_list",
-            "attributes": []
-        }
     ]
 ]

@@ -438,7 +438,6 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
         case KEFIR_AST_TYPE_FUNCTION:
-        case KEFIR_AST_TYPE_VA_LIST:
             // Intentionally left blank
             break;
 
@@ -544,7 +543,6 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
         case KEFIR_AST_TYPE_FUNCTION:
-        case KEFIR_AST_TYPE_VA_LIST:
             *atomic_aggregate = true;
             break;
 
@@ -661,10 +659,6 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
         case KEFIR_AST_TYPE_QUALIFIED:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
 
-        case KEFIR_AST_TYPE_VA_LIST:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_COPY, 0));
-            break;
-
         case KEFIR_AST_TYPE_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
@@ -761,10 +755,6 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         case KEFIR_AST_TYPE_QUALIFIED:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
 
-        case KEFIR_AST_TYPE_VA_LIST:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_COPY, 0));
-            break;
-
         case KEFIR_AST_TYPE_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
@@ -853,10 +843,6 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
 
         case KEFIR_AST_TYPE_QUALIFIED:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_VA_LIST:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VARARG_COPY, 0));
-            break;
 
         case KEFIR_AST_TYPE_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");

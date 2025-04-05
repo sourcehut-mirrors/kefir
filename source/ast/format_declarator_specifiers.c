@@ -195,10 +195,6 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, specifier->type_specifier.value.type_name));
                     break;
 
-                case KEFIR_AST_TYPE_SPECIFIER_VA_LIST:
-                    REQUIRE_OK(kefir_json_output_string(json, "va_list"));
-                    break;
-
                 case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
                     REQUIRE_OK(kefir_json_output_string(json, "typeof"));
                     REQUIRE_OK(kefir_json_output_object_key(json, "qualified"));

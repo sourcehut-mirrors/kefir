@@ -29,7 +29,6 @@ __builtin_bswap64
 __builtin_clrsbll
 __builtin_parityl
 __builtin_va_copy
-__builtin_va_list
 __atomic_clear
 __atomic_store
 __builtin_FILE

@@ -165,7 +165,6 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_LONG:
                     case KEFIR_IR_TYPE_WORD:
                     case KEFIR_IR_TYPE_BITS:
-                    case KEFIR_IR_TYPE_BUILTIN:
                     case KEFIR_IR_TYPE_LONG_DOUBLE:
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
@@ -561,7 +560,6 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_LONG:
                     case KEFIR_IR_TYPE_WORD:
                     case KEFIR_IR_TYPE_BITS:
-                    case KEFIR_IR_TYPE_BUILTIN:
                         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
                                                           kefir_asmcmp_context_instr_tail(&function->code.context),
                                                           &KEFIR_ASMCMP_MAKE_VREG64(argument_placement_vreg),

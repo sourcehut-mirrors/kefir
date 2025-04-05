@@ -68,6 +68,13 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __CHAR8_TYPE__ unsigned char
 #define __CHAR16_TYPE__ unsigned short int
 #define __CHAR32_TYPE__ unsigned int
+
+        typedef struct {
+    __UINT32_TYPE__ gp_offset;
+    __UINT32_TYPE__ fp_offset;
+    void *overflow_arg_area;
+    void *reg_save_area;
+} __builtin_va_list[1];
 #endif
 
 #define __FLOAT_WORD_ORDER__ __BYTE_ORDER__
@@ -463,8 +470,8 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __sync_lock_test_and_set(_ptr, _value, ...) __atomic_exchange_n((_ptr), (_value), __ATOMIC_ACQUIRE)
 #define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
 
-    // Builtin functions
-    extern _Noreturn void __kefir_builtin_trap(void);
+// Builtin functions
+extern _Noreturn void __kefir_builtin_trap(void);
 extern void *__kefir_builtin_return_address(int);
 extern void *__kefir_builtin_frame_address(int);
 

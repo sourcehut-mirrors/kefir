@@ -59,8 +59,6 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_SEMICOLON, &TOKENS[counter++]));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_RIGHT_BRACE, &TOKENS[counter++]));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_SEMICOLON, &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "__builtin_va_list", &TOKENS[counter++]));
-    REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_SEMICOLON, &TOKENS[counter++]));
 
     REQUIRE_OK(kefir_parser_token_cursor_init_direct(&cursor, TOKENS, counter));
     REQUIRE_OK(kefir_parser_init(mem, &parser, &symbols, &cursor, NULL));
