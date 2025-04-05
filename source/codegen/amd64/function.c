@@ -356,6 +356,60 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
     }
+    if (func->vararg_area != KEFIR_ASMCMP_INDEX_NONE) {
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->vararg_area, NULL));
+
+        kefir_asmcmp_label_index_t save_int_label;
+        switch (func->codegen->abi_variant) {
+            case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+                REQUIRE_OK(
+                    kefir_asmcmp_context_new_label(mem, &func->code.context, KEFIR_ASMCMP_INDEX_NONE, &save_int_label));
+                REQUIRE_OK(kefir_asmcmp_amd64_test(
+                    mem, &func->code, func->prologue_tail, &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_AL),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_AL), &func->prologue_tail));
+                REQUIRE_OK(kefir_asmcmp_amd64_je(mem, &func->code, func->prologue_tail,
+                                                 &KEFIR_ASMCMP_MAKE_INTERNAL_LABEL(save_int_label),
+                                                 &func->prologue_tail));
+                for (kefir_size_t i = 0; i < 8; i++) {
+                    REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                        mem, &func->code, func->prologue_tail,
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 48 + i * 16,
+                                                            KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                        &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_XMM0 + i), &func->prologue_tail));
+                }
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RDI), &func->prologue_tail));
+                REQUIRE_OK(
+                    kefir_asmcmp_context_bind_label(mem, &func->code.context, func->prologue_tail, save_int_label));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 8, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RSI), &func->prologue_tail));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 16, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RDX), &func->prologue_tail));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 24, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_RCX), &func->prologue_tail));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 32, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_R8), &func->prologue_tail));
+                REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                    mem, &func->code, func->prologue_tail,
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(func->vararg_area, 40, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                    &KEFIR_ASMCMP_MAKE_PHREG(KEFIR_AMD64_XASMGEN_REGISTER_R9), &func->prologue_tail));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unknown amd64 abi variant");
+        }
+    }
 
     REQUIRE_OK(kefir_asmcmp_amd64_noop(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), NULL));
     return KEFIR_OK;
@@ -664,7 +718,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
                                                    .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
                                                    .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
                                                    .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
-                                                   .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE};
+                                                   .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
+                                                   .vararg_area = KEFIR_ASMCMP_INDEX_NONE};
 
     const struct kefir_ir_identifier *ir_identifier;
     REQUIRE_OK(kefir_ir_module_get_identifier(module->ir_module, function->ir_func->name, &ir_identifier));

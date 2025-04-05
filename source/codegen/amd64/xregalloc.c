@@ -190,7 +190,6 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_VARARG_SAVE_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                     // Intentionally left blank
                     break;
