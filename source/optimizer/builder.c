@@ -694,17 +694,17 @@ kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *mem, struct 
 
 kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                  kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t source_ref,
-                                                 kefir_id_t type_id, kefir_size_t type_index,
-                                                 kefir_opt_instruction_ref_t *instr_id_ptr) {
+                                                 kefir_opt_instruction_ref_t allocation_ref, kefir_id_t type_id,
+                                                 kefir_size_t type_index, kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
     REQUIRE_OK(instr_exists(code, block_id, source_ref, false));
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {
-            .opcode = KEFIR_OPT_OPCODE_VARARG_GET,
-            .parameters = {.refs = {source_ref}, .type = {.type_id = type_id, .type_index = type_index}}},
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_VARARG_GET,
+                                       .parameters = {.refs = {source_ref, allocation_ref},
+                                                      .type = {.type_id = type_id, .type_index = type_index}}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }

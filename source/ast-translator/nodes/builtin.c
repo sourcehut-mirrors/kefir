@@ -24,6 +24,7 @@
 #include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast-translator/layout.h"
 #include "kefir/ast-translator/type.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
@@ -66,6 +67,12 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         case KEFIR_AST_BUILTIN_VA_ARG: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, vararg, iter->value);
             REQUIRE_OK(resolve_vararg(mem, context, builder, vararg));
+            if (node->base.properties.expression_props.temporary_identifier.scoped_id != NULL) {
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+                    mem, context, builder, &node->base.properties.expression_props.temporary_identifier));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_NULL_REF, 0));
+            }
 
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type_arg, iter->value);

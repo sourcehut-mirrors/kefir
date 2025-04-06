@@ -72,20 +72,21 @@
                             {
                                 "id": 7,
                                 "opcode": "vararg_get",
-                                "ref": 4,
+                                "target": 4,
+                                "source": null,
                                 "type": {
                                     "id": 58,
                                     "index": 0
                                 },
                                 "control_next": 8,
-                                "ir_instruction": 14
+                                "ir_instruction": 15
                             },
                             {
                                 "id": 8,
                                 "opcode": "vararg_end",
                                 "arg": 3,
                                 "control_next": 9,
-                                "ir_instruction": 17
+                                "ir_instruction": 18
                             },
                             {
                                 "id": 9,

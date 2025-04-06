@@ -63,11 +63,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                     KEFIR_IR_COMPARE_INT64_EQUALS);                          // 2: [C, V*, C==0]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0);  // 3: [C, V*, C!=0]
-    kefir_irbuilder_block_appendu64_2(mem, &getint->body, KEFIR_IR_OPCODE_BRANCH, 9,
-                                      KEFIR_IR_BRANCH_CONDITION_8BIT);                               // 4: [C, V*] ->@7
+    kefir_irbuilder_block_appendu64_2(mem, &getint->body, KEFIR_IR_OPCODE_BRANCH, 10,
+                                      KEFIR_IR_BRANCH_CONDITION_8BIT);  // 4: [C, V*] ->@7
+    kefir_irbuilder_block_appendu64(mem, &getint->body, KEFIR_IR_OPCODE_NULL_REF, 0);
     kefir_irbuilder_block_appendu32(mem, &getint->body, KEFIR_IR_OPCODE_VARARG_GET, inttype_id, 0);  // 5: [C, V]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_RETURN, 0);                  // 6: [C] return V
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_PICK, 0);             // 7: [C, V*, V*]
+    kefir_irbuilder_block_appendu64(mem, &getint->body, KEFIR_IR_OPCODE_NULL_REF, 0);
     kefir_irbuilder_block_appendu32(mem, &getint->body, KEFIR_IR_OPCODE_VARARG_GET, inttype_id, 0);  // 8: [C, V*, V]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_POP, 0);              // 9: [C, V*]
     kefir_irbuilder_block_appendi64(mem, &getint->body, KEFIR_IR_OPCODE_VSTACK_PICK, 1);             // 10: [C, V*, C]

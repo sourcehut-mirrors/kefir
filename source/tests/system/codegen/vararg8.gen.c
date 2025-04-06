@@ -70,10 +70,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IR_OPCODE_INT_CONST, 0);          // 6: [C, C, 0]
     kefir_irbuilder_block_appendi64(mem, &sumldouble->body, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                     KEFIR_IR_COMPARE_INT64_EQUALS);  // 7: [C, C==0]
-    kefir_irbuilder_block_appendu64_2(mem, &sumldouble->body, KEFIR_IR_OPCODE_BRANCH, 22,
+    kefir_irbuilder_block_appendu64_2(mem, &sumldouble->body, KEFIR_IR_OPCODE_BRANCH, 23,
                                       KEFIR_IR_BRANCH_CONDITION_8BIT);  // 8: [C] -> @21
     kefir_irbuilder_block_appendu32_4(mem, &sumldouble->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id,
                                       0);  // 9: [C, V*]
+    kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IR_OPCODE_NULL_REF, 0);
     kefir_irbuilder_block_appendu32(mem, &sumldouble->body, KEFIR_IR_OPCODE_VARARG_GET, ldouble_type_id,
                                     0);                                                            // 10: [C, ARG*]
     kefir_irbuilder_block_appendu64(mem, &sumldouble->body, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD, 0);  // 11: [C, LD1]

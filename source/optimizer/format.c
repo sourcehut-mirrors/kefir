@@ -476,22 +476,6 @@ static kefir_result_t format_operation_bitfield(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_typed_ref1(struct kefir_json_output *json,
-                                                  const struct kefir_opt_code_container *code,
-                                                  const struct kefir_opt_operation *oper) {
-    UNUSED(code);
-    REQUIRE_OK(kefir_json_output_object_key(json, "ref"));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
-    REQUIRE_OK(kefir_json_output_object_key(json, "type"));
-    REQUIRE_OK(kefir_json_output_object_begin(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "id"));
-    REQUIRE_OK(id_format(json, oper->parameters.type.type_id));
-    REQUIRE_OK(kefir_json_output_object_key(json, "index"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.type.type_index));
-    REQUIRE_OK(kefir_json_output_object_end(json));
-    return KEFIR_OK;
-}
-
 static kefir_result_t format_operation_typed_ref2(struct kefir_json_output *json,
                                                   const struct kefir_opt_code_container *code,
                                                   const struct kefir_opt_operation *oper) {

@@ -121,8 +121,9 @@ kefir_result_t kefir_opt_code_builder_bits_insert(struct kefir_mem *, struct kef
                                                   kefir_opt_instruction_ref_t *);
 
 kefir_result_t kefir_opt_code_builder_vararg_get(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t, kefir_id_t,
-                                                 kefir_size_t, kefir_opt_instruction_ref_t *);
+                                                 kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
+                                                 kefir_opt_instruction_ref_t, kefir_id_t, kefir_size_t,
+                                                 kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_stack_alloc(struct kefir_mem *, struct kefir_opt_code_container *,
                                                   kefir_opt_block_id_t, kefir_opt_instruction_ref_t,
                                                   kefir_opt_instruction_ref_t, kefir_bool_t,

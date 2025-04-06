@@ -92,6 +92,14 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE(!KEFIR_AST_TYPE_IS_INCOMPLETE(type->properties.type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type->source_location, "Expected complete type"));
             base->properties.type = type->properties.type;
+
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type->properties.type);
+            if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) ||
+                KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type)) {
+                REQUIRE_OK(context->allocate_temporary_value(mem, context, unqualified_type, NULL,
+                                                             &base->source_location,
+                                                             &base->properties.expression_props.temporary_identifier));
+            }
         } break;
 
         case KEFIR_AST_BUILTIN_VA_COPY: {

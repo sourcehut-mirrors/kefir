@@ -354,6 +354,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     kefir_opt_instruction_ref_t instr_ref, instr_ref2, instr_ref3, instr_ref4, instr_ref5;
     const kefir_opt_block_id_t current_block_id = state->current_block->block_id;
     switch (instr->opcode) {
+        case KEFIR_IR_OPCODE_NULL_REF:
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, KEFIR_ID_NONE));
+            break;
+
         case KEFIR_IR_OPCODE_JUMP: {
             struct kefir_opt_constructor_code_block_state *jump_target_block = NULL;
             REQUIRE_OK(kefir_opt_constructor_find_code_block_for(state, instr->arg.u64, &jump_target_block));
@@ -560,8 +564,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
         case KEFIR_IR_OPCODE_VARARG_GET:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            REQUIRE_OK(kefir_opt_code_builder_vararg_get(mem, code, current_block_id, instr_ref2, instr->arg.u32[0],
-                                                         instr->arg.u32[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_vararg_get(mem, code, current_block_id, instr_ref3, instr_ref2,
+                                                         instr->arg.u32[0], instr->arg.u32[1], &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
