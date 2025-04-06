@@ -173,10 +173,13 @@ static kefir_result_t generate_local_variable_simple_location(struct kefir_mem *
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL,
                                                        ir_identifier->symbol, range_end_label))));
 
-        kefir_int64_t offset;
-        kefir_result_t res = kefir_codegen_amd64_function_local_variable_offset(mem, codegen_function,
-                                                                                allocation_instr_ref, false, &offset);
+        kefir_id_t local_var_id;
+        kefir_result_t res = kefir_codegen_amd64_function_local_variable(mem, codegen_function, allocation_instr_ref,
+                                                                         false, &local_var_id);
         if (res != KEFIR_NOT_FOUND) {
+            kefir_int64_t offset;
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(&codegen_function->stack_frame,
+                                                                             local_var_id, &offset));
             offset += codegen_function->stack_frame.offsets.local_area;
             REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
                                                  1 + kefir_amd64_dwarf_sleb128_length(offset)));
@@ -427,7 +430,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
             REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
         } break;
 
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_STACK_FRAME_POINTER: {
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE: {
             REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_LLE_start_end)));
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &codegen_function->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -448,15 +451,10 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&codegen_function->code.context, vreg, &virtual_reg));
 
             kefir_int64_t offset;
-            switch (virtual_reg->parameters.stack_frame.base) {
-                case KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA:
-                    offset =
-                        virtual_reg->parameters.stack_frame.offset + codegen_function->stack_frame.offsets.local_area;
-                    break;
+            REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
+                &codegen_function->stack_frame, virtual_reg->parameters.local_variable.identifier, &offset));
+            offset += virtual_reg->parameters.local_variable.offset + codegen_function->stack_frame.offsets.local_area;
 
-                default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected stack frame pointer base");
-            }
             REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
                                                  1 + kefir_amd64_dwarf_sleb128_length(offset)));
             REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));

@@ -181,7 +181,7 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
                     REQUIRE_OK(kefir_json_output_string(json, value->indirect.base.external_label));
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
                     REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
                     REQUIRE_OK(kefir_json_output_string(json, "local_var"));
                     break;

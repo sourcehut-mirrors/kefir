@@ -139,7 +139,7 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                         value->indirect.offset);
                     break;
 
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
                     base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
                         &arg_state->base_operands[0],
                         kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
@@ -382,7 +382,7 @@ static kefir_bool_t same_operands(const struct kefir_asmcmp_value *arg1, const s
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     return arg1->indirect.base.spill_index == arg2->indirect.base.spill_index;
 
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
                     return true;
             }
             break;

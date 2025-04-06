@@ -32,6 +32,8 @@ kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_s
 
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
     REQUIRE_OK(kefir_hashtreeset_init(&frame->requirements.used_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&frame->requirements.locals, &kefir_hashtree_uint_ops));
+    frame->next_local_id = 0;
     return KEFIR_OK;
 }
 
@@ -41,6 +43,7 @@ kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *mem,
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &frame->requirements.used_registers));
+    REQUIRE_OK(kefir_hashtree_free(mem, &frame->requirements.locals));
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
     return KEFIR_OK;
 }
@@ -95,19 +98,41 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_codegen_amd64_stack_frame *frame,
+kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_stack_frame *frame,
                                                               kefir_size_t size, kefir_size_t alignment,
-                                                              kefir_int64_t *offset) {
+                                                              kefir_id_t *local_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
-    REQUIRE(offset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to offset"));
+    REQUIRE(local_id_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable identifier"));
 
+    kefir_int64_t offset = frame->requirements.local_area_size;
     if (alignment > 1) {
-        frame->requirements.local_area_size =
-            kefir_target_abi_pad_aligned(frame->requirements.local_area_size, alignment);
+        offset = kefir_target_abi_pad_aligned(offset, alignment);
     }
-    *offset = frame->requirements.local_area_size;
-    frame->requirements.local_area_size += size;
+    REQUIRE_OK(kefir_hashtree_insert(mem, &frame->requirements.locals, (kefir_hashtree_key_t) frame->next_local_id,
+                                     (kefir_hashtree_value_t) offset));
+    frame->requirements.local_area_size = offset + size;
     frame->requirements.local_area_alignment = MAX(frame->requirements.local_area_alignment, alignment);
+    *local_id_ptr = frame->next_local_id++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(
+    const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t local_id, kefir_int64_t *offset_ptr) {
+    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
+    REQUIRE(offset_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&frame->requirements.locals, (kefir_hashtree_key_t) local_id, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find local variable in stack frame");
+    }
+    REQUIRE_OK(res);
+
+    *offset_ptr = (kefir_int64_t) node->value;
     return KEFIR_OK;
 }
 

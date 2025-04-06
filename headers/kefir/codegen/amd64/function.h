@@ -91,10 +91,8 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_asmcmp_label_index_t *,
                                                                    kefir_asmcmp_label_index_t *);
 
-kefir_result_t kefir_codegen_amd64_function_local_variable_offset(struct kefir_mem *,
-                                                                  struct kefir_codegen_amd64_function *,
-                                                                  kefir_opt_instruction_ref_t, kefir_bool_t,
-                                                                  kefir_int64_t *);
+kefir_result_t kefir_codegen_amd64_function_local_variable(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                           kefir_opt_instruction_ref_t, kefir_bool_t, kefir_id_t *);
 kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_asmcmp_virtual_register_index_t);
 

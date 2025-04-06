@@ -33,11 +33,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
 
     kefir_asmcmp_virtual_register_index_t vreg;
 
-    kefir_int64_t offset;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, instruction->id, true, &offset));
+    kefir_id_t local_var_id;
+    REQUIRE_OK(kefir_codegen_amd64_function_local_variable(mem, function, instruction->id, true, &local_var_id));
 
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(
-        mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, local_var_id, 0, &vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;
@@ -56,12 +55,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem 
     REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0],
                                               &location_instr));
 
-    kefir_int64_t offset;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable_offset(mem, function, location_instr->id, true, &offset));
-    offset += instruction->operation.parameters.offset;
+    kefir_id_t local_var_id;
+    REQUIRE_OK(kefir_codegen_amd64_function_local_variable(mem, function, location_instr->id, true, &local_var_id));
 
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_stack_frame_pointer(
-        mem, &function->code.context, KEFIR_ASMCMP_STACK_FRAME_POINTER_LOCAL_AREA, offset, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, local_var_id,
+                                                                instruction->operation.parameters.offset, &vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;
