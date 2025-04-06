@@ -192,11 +192,6 @@ kefir_result_t kefir_asmcmp_value_format(struct kefir_json_output *json, const s
                     REQUIRE_OK(kefir_json_output_object_key(json, "index"));
                     REQUIRE_OK(kefir_json_output_uinteger(json, value->indirect.base.spill_index));
                     break;
-
-                case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
-                    REQUIRE_OK(kefir_json_output_object_key(json, "basis"));
-                    REQUIRE_OK(kefir_json_output_string(json, "temporary_area"));
-                    break;
             }
             REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
             REQUIRE_OK(kefir_json_output_integer(json, value->indirect.offset));

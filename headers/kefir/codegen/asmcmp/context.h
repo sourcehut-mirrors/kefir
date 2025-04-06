@@ -78,8 +78,7 @@ typedef enum kefir_asmcmp_indirect_basis_type {
     KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS,
     KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS,
     KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS,
-    KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS,
-    KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS
+    KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS
 } kefir_asmcmp_indirect_basis_type_t;
 
 typedef struct kefir_asmcmp_stash {
@@ -241,10 +240,6 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
                                                .base.spill_index = (_index),                   \
                                                .offset = (_offset),                            \
                                                .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_TEMPORARY(_offset, _variant) \
-    ((struct kefir_asmcmp_value) {                              \
-        .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,               \
-        .indirect = {.type = KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS, .offset = (_offset), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_RIP_INDIRECT_INTERNAL(_base, _variant) \
     ((struct kefir_asmcmp_value) {                               \
         .type = KEFIR_ASMCMP_VALUE_TYPE_RIP_INDIRECT_INTERNAL,   \

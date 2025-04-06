@@ -48,7 +48,6 @@ static kefir_result_t collect_labels(struct kefir_mem *mem, const struct kefir_a
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_VAR_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_TEMPORARY_AREA_BASIS:
                     // Intentionally left blank
                     break;
             }
