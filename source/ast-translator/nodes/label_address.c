@@ -40,14 +40,14 @@ kefir_result_t kefir_ast_translate_label_address_node(struct kefir_mem *mem,
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST identifier node"));
 
     struct kefir_ast_flow_control_structure *label_parent =
-        node->base.properties.expression_props.scoped_id->label.point->parent;
+        node->base.properties.expression_props.scoped_id->label.point->self;
     while (label_parent != NULL) {
         if (label_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
             REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(label_parent),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                            "None of blocks enclosing the label can contain VLAs"));
         }
-        label_parent = label_parent->parent_point != NULL ? label_parent->parent_point->parent : NULL;
+        label_parent = kefir_ast_flow_control_structure_parent(label_parent);
     }
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BLOCK_LABEL, 0));

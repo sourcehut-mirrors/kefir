@@ -162,6 +162,9 @@ static kefir_result_t flow_control_tree_init(struct kefir_mem *mem, struct kefir
         ASSIGN_DECL_CAST(struct kefir_ast_flow_control_structure *, stmt, node->value);
         switch (stmt->type) {
             case KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK:
+            case KEFIR_AST_FLOW_CONTROL_POINT:
+            case KEFIR_AST_FLOW_CONTROL_BRANCHING_POINT:
+            case KEFIR_AST_FLOW_CONTROL_VL_ARRAY:
                 // Intentionally left blank
                 break;
 

@@ -108,13 +108,13 @@ DEFINE_CASE(ast_label_scope3, "AST ordinary scope - label scope #3") {
     struct kefir_ast_global_context global_context;
     struct kefir_ast_local_context context;
 
-#define ASSERT_LABEL(_mem, _context, _label, _parent, _defined)                                               \
-    do {                                                                                                      \
-        const struct kefir_ast_scoped_identifier *scoped_id = NULL;                                           \
-        ASSERT_OK((_context)->reference_label((_mem), (_context), (_label), (_parent), NULL, &scoped_id));    \
-        ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);                                         \
-        ASSERT((_defined) ? scoped_id->label.point->parent != NULL : scoped_id->label.point->parent == NULL); \
-        ASSERT(scoped_id->label.point != NULL);                                                               \
+#define ASSERT_LABEL(_mem, _context, _label, _parent, _defined)                                            \
+    do {                                                                                                   \
+        const struct kefir_ast_scoped_identifier *scoped_id = NULL;                                        \
+        ASSERT_OK((_context)->reference_label((_mem), (_context), (_label), (_parent), NULL, &scoped_id)); \
+        ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);                                      \
+        ASSERT((_defined) ? scoped_id->label.point->self != NULL : scoped_id->label.point->self == NULL);  \
+        ASSERT(scoped_id->label.point != NULL);                                                            \
     } while (0)
 
 #define ASSERT_LABEL_NOK(_mem, _context, _label, _parent)                                             \
@@ -255,22 +255,22 @@ DEFINE_CASE(ast_label_scope4, "AST ordinary scope - label scope #4") {
     ASSERT_OK(context.context.resolve_label_identifier(&context.context, "label1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);
     ASSERT(scoped_id->label.point != NULL);
-    ASSERT(scoped_id->label.point->parent != NULL);
+    ASSERT(scoped_id->label.point->self != NULL);
 
     ASSERT_OK(context.context.resolve_label_identifier(&context.context, "label2", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);
     ASSERT(scoped_id->label.point != NULL);
-    ASSERT(scoped_id->label.point->parent != NULL);
+    ASSERT(scoped_id->label.point->self != NULL);
 
     ASSERT_OK(context.context.resolve_label_identifier(&context.context, "label3", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);
     ASSERT(scoped_id->label.point != NULL);
-    ASSERT(scoped_id->label.point->parent == NULL);
+    ASSERT(scoped_id->label.point->self == NULL);
 
     ASSERT_OK(context.context.resolve_label_identifier(&context.context, "label4", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_LABEL);
     ASSERT(scoped_id->label.point != NULL);
-    ASSERT(scoped_id->label.point->parent != NULL);
+    ASSERT(scoped_id->label.point->self != NULL);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));

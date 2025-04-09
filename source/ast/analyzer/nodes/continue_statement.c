@@ -45,6 +45,11 @@ static kefir_result_t resolve_loop(const struct kefir_ast_flow_control_structure
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_DO:
             *result = true;
             break;
+
+        case KEFIR_AST_FLOW_CONTROL_POINT:
+        case KEFIR_AST_FLOW_CONTROL_BRANCHING_POINT:
+        case KEFIR_AST_FLOW_CONTROL_VL_ARRAY:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST flow control structure");
     }
 
     return KEFIR_OK;

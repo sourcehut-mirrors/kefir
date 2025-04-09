@@ -49,7 +49,7 @@ kefir_result_t kefir_ast_translate_goto_statement_node(struct kefir_mem *mem,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                "None of blocks enclosing the address goto can contain VLAs"));
             }
-            goto_parent = goto_parent->parent_point != NULL ? goto_parent->parent_point->parent : NULL;
+            goto_parent = kefir_ast_flow_control_structure_parent(goto_parent);
         }
 
         REQUIRE_OK(kefir_ast_translate_expression(mem, node->target, builder, context));

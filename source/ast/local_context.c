@@ -291,9 +291,9 @@ static kefir_result_t kefir_ast_local_context_define_label(struct kefir_mem *mem
         });
     } else {
         REQUIRE_OK(res);
-        REQUIRE(label_id->label.point != NULL && label_id->label.point->parent == NULL,
+        REQUIRE(label_id->label.point != NULL && label_id->label.point->self == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine a label"));
-        REQUIRE_OK(kefir_ast_flow_control_point_bind(mem, label_id->label.point, parent));
+        REQUIRE_OK(kefir_ast_flow_control_point_bind(mem, &context->flow_control_tree, label_id->label.point, parent));
     }
 
     ASSIGN_PTR(scoped_id, label_id);

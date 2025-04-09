@@ -137,7 +137,8 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
     ASSERT(body->base.properties.statement_props.flow_control_statement != NULL);
     ASSERT(body->base.properties.statement_props.flow_control_statement->type ==
            KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK);
-    ASSERT(body->base.properties.statement_props.flow_control_statement->parent_point == NULL);
+    ASSERT(kefir_ast_flow_control_structure_parent(body->base.properties.statement_props.flow_control_statement) ==
+           NULL);
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
@@ -205,7 +206,8 @@ DEFINE_CASE(ast_node_analysis_function_definitions2, "AST node analysis - functi
     ASSERT(body->base.properties.statement_props.flow_control_statement != NULL);
     ASSERT(body->base.properties.statement_props.flow_control_statement->type ==
            KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK);
-    ASSERT(body->base.properties.statement_props.flow_control_statement->parent_point == NULL);
+    ASSERT(kefir_ast_flow_control_structure_parent(body->base.properties.statement_props.flow_control_statement) ==
+           NULL);
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
@@ -315,7 +317,8 @@ DEFINE_CASE(ast_node_analysis_function_definitions3, "AST node analysis - functi
     ASSERT(body->base.properties.statement_props.flow_control_statement != NULL);
     ASSERT(body->base.properties.statement_props.flow_control_statement->type ==
            KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK);
-    ASSERT(body->base.properties.statement_props.flow_control_statement->parent_point == NULL);
+    ASSERT(kefir_ast_flow_control_structure_parent(body->base.properties.statement_props.flow_control_statement) ==
+           NULL);
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
