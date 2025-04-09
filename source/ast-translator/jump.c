@@ -62,31 +62,41 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
             current_origin_parent->parent_point != NULL ? current_origin_parent->parent_point->parent : NULL;
     }
 
-    const struct kefir_list_entry *top_target_block_iter = top_target_block->parent_vl_arrays.head;
-    const struct kefir_list_entry *top_origin_block_iter = top_origin_block->parent_vl_arrays.head;
-    for (; top_target_block_iter != NULL;
-         kefir_list_next(&top_target_block_iter), kefir_list_next(&top_origin_block_iter)) {
-        REQUIRE(top_origin_block_iter == top_target_block_iter,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
-                                       "Cannot jump in the scope with uninitialized VLA variables"));
+    REQUIRE(top_target_block != top_origin_block && top_target_block->parent != NULL &&
+                top_origin_block->parent != NULL && top_target_block->parent == top_origin_block->parent &&
+                top_target_block->parent == common_parent,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST flow control structure"));
 
-        if (top_target_block_iter == top_target_block->parent_vl_arrays.tail) {
-            kefir_list_next(&top_origin_block_iter);
-            break;
+    kefir_bool_t found_origin_first = false, found_target_first = false;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&common_parent->control_points); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const struct kefir_ast_flow_control_point *, point, iter->value);
+        if (found_origin_first) {
+            if (point == top_target_block) {
+                break;
+            } else {
+                REQUIRE(point->type != KEFIR_AST_FLOW_CONTROL_POINT_VL_ARRAY,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
+                                               "Cannot jump in the scope with uninitialized VLA variables"));
+            }
+        } else if (found_target_first) {
+            if (point == top_origin_block) {
+                break;
+            } else if (point->type == KEFIR_AST_FLOW_CONTROL_POINT_VL_ARRAY) {
+                REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, point->value.vl_array_id));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
+                break;
+            }
+        } else if (point == top_origin_block) {
+            found_origin_first = true;
+        } else if (point == top_target_block) {
+            found_target_first = true;
         }
-        REQUIRE(top_origin_block_iter != top_origin_block->parent_vl_arrays.tail,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
-                                       "Cannot jump in the scope with uninitialized VLA variables"));
     }
-
-    if (top_origin_block_iter != NULL) {
-        kefir_id_t vla_element;
-        REQUIRE_OK(kefir_ast_flow_control_block_vl_array_head(current_origin_parent, &vla_element));
-
-        REQUIRE_OK(kefir_ast_translator_resolve_vla_element(mem, context, builder, vla_element));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, KEFIR_IR_MEMORY_FLAG_NONE));
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCOPE_POP, 0));
-    }
+    REQUIRE(found_origin_first || found_target_first,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST flow control structure"));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_JUMP, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, target_position, builder->block,

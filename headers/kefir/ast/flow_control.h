@@ -28,6 +28,8 @@
 
 typedef struct kefir_ast_flow_control_structure kefir_ast_flow_control_structure_t;
 typedef struct kefir_ast_flow_control_point kefir_ast_flow_control_point_t;
+typedef struct kefir_ast_flow_control_branching_point kefir_ast_flow_control_branching_point_t;
+typedef struct kefir_ast_flow_control_tree kefir_ast_flow_control_tree_t;
 
 #define KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE (sizeof(kefir_uptr_t) * 4)
 
@@ -36,29 +38,38 @@ typedef struct kefir_ast_flow_control_point_cleanup {
     void *payload;
 } kefir_ast_flow_control_point_cleanup_t;
 
+typedef enum kefir_ast_flow_control_point_type {
+    KEFIR_AST_FLOW_CONTROL_POINT_GENERIC,
+    KEFIR_AST_FLOW_CONTROL_POINT_BRANCHING_POINT,
+    KEFIR_AST_FLOW_CONTROL_POINT_CONTROL_STRUCTURE,
+    KEFIR_AST_FLOW_CONTROL_POINT_VL_ARRAY
+} kefir_ast_flow_control_point_type_t;
+
 typedef struct kefir_ast_flow_control_point {
     struct kefir_ast_flow_control_structure *parent;
-    struct {
-        const struct kefir_list_entry *head;
-        const struct kefir_list_entry *tail;
-    } parent_vl_arrays;
+    kefir_ast_flow_control_point_type_t type;
+    union {
+        struct kefir_ast_flow_control_branching_point *branching_point;
+        struct kefir_ast_flow_control_structure *control_struct;
+        kefir_id_t vl_array_id;
+    } value;
+
     unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
     void *ptr;
     struct kefir_ast_flow_control_point_cleanup cleanup;
 } kefir_ast_flow_control_point_t;
 
 struct kefir_ast_flow_control_point *kefir_ast_flow_control_point_alloc(struct kefir_mem *,
+                                                                        struct kefir_ast_flow_control_tree *,
                                                                         struct kefir_ast_flow_control_structure *);
-kefir_result_t kefir_ast_flow_control_point_free(struct kefir_mem *, struct kefir_ast_flow_control_point *);
-kefir_result_t kefir_ast_flow_control_point_bound(struct kefir_ast_flow_control_point *);
+kefir_result_t kefir_ast_flow_control_point_bind(struct kefir_mem *, struct kefir_ast_flow_control_point *,
+                                                 struct kefir_ast_flow_control_structure *);
 
 typedef struct kefir_ast_flow_control_branching_point {
+    struct kefir_ast_flow_control_point *control_point;
     struct kefir_hashtree branches;
 } kefir_ast_flow_control_branching_point_t;
 
-kefir_result_t kefir_ast_flow_control_branching_point_init(struct kefir_ast_flow_control_branching_point *);
-kefir_result_t kefir_ast_flow_control_branching_point_free(struct kefir_mem *,
-                                                           struct kefir_ast_flow_control_branching_point *);
 kefir_result_t kefir_ast_flow_control_branching_point_append(struct kefir_mem *,
                                                              struct kefir_ast_flow_control_branching_point *,
                                                              const char *, struct kefir_ast_flow_control_point *);
@@ -85,18 +96,11 @@ typedef struct kefir_ast_flow_control_structure_associated_scopes {
 typedef struct kefir_ast_flow_control_structure {
     struct kefir_ast_flow_control_point *parent_point;
     kefir_ast_flow_control_structure_type_t type;
-    struct kefir_ast_flow_control_structure_cleanup cleanup;
-    struct {
-        unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
-        void *ptr;
-    } payload;
+
+    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    struct kefir_list control_points;
 
     union {
-        struct {
-            struct kefir_list vl_arrays;
-            struct kefir_list branching_points;
-        } block;
-
         struct {
             struct kefir_ast_flow_control_point *thenBranchEnd;
             struct kefir_ast_flow_control_point *elseBranchEnd;
@@ -116,12 +120,17 @@ typedef struct kefir_ast_flow_control_structure {
         } loop;
     } value;
 
-    struct kefir_ast_flow_control_structure_associated_scopes associated_scopes;
+    struct kefir_ast_flow_control_structure_cleanup cleanup;
+    struct {
+        unsigned char content[KEFIR_AST_FLOW_CONTROL_PAYLOAD_SIZE];
+        void *ptr;
+    } payload;
 } kefir_ast_flow_control_structure_t;
 
 typedef struct kefir_ast_flow_control_tree {
     struct kefir_tree_node root;
     struct kefir_tree_node *current;
+    struct kefir_list control_points;
 } kefir_ast_flow_control_tree_t;
 
 #define KEFIR_AST_FLOW_CONTROL_SET_CLEANUP(_flow_control, _callback, _payload) \
@@ -144,13 +153,14 @@ kefir_result_t kefir_ast_flow_control_tree_traverse(struct kefir_ast_flow_contro
                                                                        void *, kefir_bool_t *),
                                                     void *, struct kefir_ast_flow_control_structure **);
 
-kefir_result_t kefir_ast_flow_control_block_add_vl_array(struct kefir_mem *, struct kefir_ast_flow_control_structure *,
-                                                         kefir_id_t);
+kefir_result_t kefir_ast_flow_control_block_add_vl_array(struct kefir_mem *, struct kefir_ast_flow_control_tree *,
+                                                         struct kefir_ast_flow_control_structure *, kefir_id_t);
 kefir_result_t kefir_ast_flow_control_block_vl_array_head(const struct kefir_ast_flow_control_structure *,
                                                           kefir_id_t *);
 kefir_bool_t kefir_ast_flow_control_block_contains_vl_arrays(const struct kefir_ast_flow_control_structure *);
 
 kefir_result_t kefir_ast_flow_control_block_add_branching_point(struct kefir_mem *,
+                                                                struct kefir_ast_flow_control_tree *,
                                                                 struct kefir_ast_flow_control_structure *,
                                                                 struct kefir_ast_flow_control_branching_point **);
 

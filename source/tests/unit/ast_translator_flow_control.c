@@ -22,7 +22,10 @@
 #include "kefir/test/unit_test.h"
 
 DEFINE_CASE(ast_translator_flow_control_point1, "AST Translator - flow control points #1") {
-    struct kefir_ast_flow_control_point *point1 = kefir_ast_flow_control_point_alloc(&kft_mem, NULL);
+    struct kefir_ast_flow_control_tree flow_control_tree;
+    REQUIRE_OK(kefir_ast_flow_control_tree_init(&flow_control_tree));
+    struct kefir_ast_flow_control_point *point1 =
+        kefir_ast_flow_control_point_alloc(&kft_mem, &flow_control_tree, NULL);
     ASSERT(point1 != NULL);
 
     struct kefir_ast_translator_flow_control_point *translator_point1 = NULL;
@@ -80,6 +83,6 @@ DEFINE_CASE(ast_translator_flow_control_point1, "AST Translator - flow control p
     ASSERT_NOK(kefir_ast_translator_flow_control_point_reference(&kft_mem, point1, &block, 5));
 
     ASSERT_OK(kefir_irblock_free(&kft_mem, &block));
-    ASSERT_OK(kefir_ast_flow_control_point_free(&kft_mem, point1));
+    REQUIRE_OK(kefir_ast_flow_control_tree_free(&kft_mem, &flow_control_tree));
 }
 END_CASE

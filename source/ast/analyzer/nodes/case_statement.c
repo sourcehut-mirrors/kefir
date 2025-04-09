@@ -82,7 +82,8 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
                                        "Expected AST case label range to be non-empty"));
-        struct kefir_ast_flow_control_point *point = kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        struct kefir_ast_flow_control_point *point =
+            kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
         kefir_ast_constant_expression_int_t begin = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer;
@@ -94,21 +95,18 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
             end = tmp;
         }
 
-        kefir_result_t res = kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.cases,
-                                                   (kefir_hashtree_key_t) begin, (kefir_hashtree_value_t) point);
-        REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_ranges,
-                                                  (kefir_hashtree_key_t) begin, (kefir_hashtree_key_t) end));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_flow_control_point_free(mem, point);
-            return res;
-        });
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.cases,
+                                         (kefir_hashtree_key_t) begin, (kefir_hashtree_value_t) point));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_ranges,
+                                         (kefir_hashtree_key_t) begin, (kefir_hashtree_key_t) end));
         base->properties.statement_props.target_flow_control_point = point;
     } else if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->expression, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
-        struct kefir_ast_flow_control_point *point = kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        struct kefir_ast_flow_control_point *point =
+            kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
         kefir_result_t res = kefir_hashtree_insert(
             mem, &switch_statement->value.switchStatement.cases,
@@ -118,16 +116,14 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
             res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                          "Cannot duplicate case statement constants");
         }
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_flow_control_point_free(mem, point);
-            return res;
-        });
+        REQUIRE_OK(res);
         base->properties.statement_props.target_flow_control_point = point;
     } else {
         REQUIRE(switch_statement->value.switchStatement.defaultCase == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                        "Switch statement cannot have multiple default labels"));
-        switch_statement->value.switchStatement.defaultCase = kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        switch_statement->value.switchStatement.defaultCase =
+            kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(switch_statement->value.switchStatement.defaultCase != NULL,
                 KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
         base->properties.statement_props.target_flow_control_point =

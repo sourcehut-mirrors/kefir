@@ -251,7 +251,7 @@ static kefir_result_t kefir_ast_local_context_reference_label(struct kefir_mem *
     struct kefir_ast_scoped_identifier *label_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->label_scope, label, &label_id);
     if (res == KEFIR_NOT_FOUND) {
-        label_id = kefir_ast_context_allocate_scoped_label(mem, NULL, location);
+        label_id = kefir_ast_context_allocate_scoped_label(mem, &context->flow_control_tree, NULL, location);
         REQUIRE(label_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->label_scope, label, label_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -282,7 +282,7 @@ static kefir_result_t kefir_ast_local_context_define_label(struct kefir_mem *mem
     struct kefir_ast_scoped_identifier *label_id = NULL;
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->label_scope, label, &label_id);
     if (res == KEFIR_NOT_FOUND) {
-        label_id = kefir_ast_context_allocate_scoped_label(mem, parent, location);
+        label_id = kefir_ast_context_allocate_scoped_label(mem, &context->flow_control_tree, parent, location);
         REQUIRE(label_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST scoped identifier"));
         res = kefir_ast_identifier_flat_scope_insert(mem, &context->label_scope, label, label_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -293,8 +293,7 @@ static kefir_result_t kefir_ast_local_context_define_label(struct kefir_mem *mem
         REQUIRE_OK(res);
         REQUIRE(label_id->label.point != NULL && label_id->label.point->parent == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine a label"));
-        label_id->label.point->parent = parent;
-        REQUIRE_OK(kefir_ast_flow_control_point_bound(label_id->label.point));
+        REQUIRE_OK(kefir_ast_flow_control_point_bind(mem, label_id->label.point, parent));
     }
 
     ASSIGN_PTR(scoped_id, label_id);
@@ -438,28 +437,11 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
     struct kefir_ast_flow_control_structure *current_flow_control_stmt = NULL;
     REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &current_flow_control_stmt));
 
-    *point = kefir_ast_flow_control_point_alloc(mem, current_flow_control_stmt);
+    *point = kefir_ast_flow_control_point_alloc(mem, &local_ctx->flow_control_tree, current_flow_control_stmt);
     REQUIRE(*point != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-    kefir_result_t res = kefir_list_insert_after(mem, &local_ctx->flow_control_points,
-                                                 kefir_list_tail(&local_ctx->flow_control_points), *point);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_flow_control_point_free(mem, *point);
-        *point = NULL;
-        return res;
-    });
-    return KEFIR_OK;
-}
-
-static kefir_result_t free_flow_control_point(struct kefir_mem *mem, struct kefir_list *points,
-                                              struct kefir_list_entry *entry, void *payload) {
-    UNUSED(points);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
-    ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, point, entry->value);
-
-    REQUIRE_OK(kefir_ast_flow_control_point_free(mem, point));
+    REQUIRE_OK(kefir_list_insert_after(mem, &local_ctx->flow_control_points,
+                                       kefir_list_tail(&local_ctx->flow_control_points), *point));
     return KEFIR_OK;
 }
 
@@ -482,7 +464,6 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
                                                           kefir_ast_context_free_scoped_identifier, NULL));
     REQUIRE_OK(kefir_ast_flow_control_tree_init(&context->flow_control_tree));
     REQUIRE_OK(kefir_list_init(&context->flow_control_points));
-    REQUIRE_OK(kefir_list_on_remove(&context->flow_control_points, free_flow_control_point, NULL));
 
     context->context.resolve_ordinary_identifier = context_resolve_ordinary_identifier;
     context->context.resolve_tag_identifier = context_resolve_tag_identifier;
@@ -952,7 +933,7 @@ static kefir_result_t register_vla(struct kefir_mem *mem, struct kefir_ast_local
     if (res != KEFIR_NOT_FOUND && block != NULL) {
         REQUIRE_OK(res);
         kefir_id_t vl_array = context->vl_arrays.next_id++;
-        REQUIRE_OK(kefir_ast_flow_control_block_add_vl_array(mem, block, vl_array));
+        REQUIRE_OK(kefir_ast_flow_control_block_add_vl_array(mem, &context->flow_control_tree, block, vl_array));
         scoped_id->object.vl_array = vl_array;
     }
     return KEFIR_OK;

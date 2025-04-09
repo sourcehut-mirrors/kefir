@@ -68,7 +68,8 @@ kefir_result_t kefir_ast_analyze_switch_statement_node(struct kefir_mem *mem, co
     REQUIRE_OK(kefir_ast_flow_control_tree_push(mem, context->flow_control_tree,
                                                 KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes, &stmt));
     stmt->value.switchStatement.controlling_expression_type = controlling_expr_type;
-    stmt->value.switchStatement.end = kefir_ast_flow_control_point_alloc(mem, direct_parent);
+    stmt->value.switchStatement.end =
+        kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
     REQUIRE(stmt->value.switchStatement.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 

@@ -62,10 +62,11 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
 
             if (param->parameter->properties.expression_props.scoped_id != NULL &&
                 param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props.scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
+                param->parameter->properties.expression_props.scoped_id->object.storage ==
+                    KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
                 param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
                 param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
-            }            
+            }
         }
 
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->inputs); iter != NULL;
@@ -78,7 +79,8 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
 
             if (param->parameter->properties.expression_props.scoped_id != NULL &&
                 param->parameter->properties.expression_props.scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
-                param->parameter->properties.expression_props.scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
+                param->parameter->properties.expression_props.scoped_id->object.storage ==
+                    KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER &&
                 param->parameter->properties.expression_props.scoped_id->object.asm_label != NULL) {
                 param->explicit_register = param->parameter->properties.expression_props.scoped_id->object.asm_label;
             }
@@ -96,7 +98,7 @@ kefir_result_t kefir_ast_analyze_inline_assembly_node(struct kefir_mem *mem, con
         REQUIRE_OK(context->current_flow_control_point(mem, context,
                                                        &base->properties.inline_assembly.origin_flow_control_point));
 
-        REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(mem, block,
+        REQUIRE_OK(kefir_ast_flow_control_block_add_branching_point(mem, context->flow_control_tree, block,
                                                                     &base->properties.inline_assembly.branching_point));
         for (const struct kefir_list_entry *iter = kefir_list_head(&node->jump_labels); iter != NULL;
              kefir_list_next(&iter)) {

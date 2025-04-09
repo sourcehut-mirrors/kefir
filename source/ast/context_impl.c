@@ -46,7 +46,6 @@ kefir_result_t kefir_ast_context_free_scoped_identifier(struct kefir_mem *mem,
 
         case KEFIR_AST_SCOPE_IDENTIFIER_LABEL:
             if (scoped_id->label.point != NULL) {
-                REQUIRE_OK(kefir_ast_flow_control_point_free(mem, scoped_id->label.point));
                 scoped_id->label.point = NULL;
             }
             break;
@@ -284,8 +283,8 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
 }
 
 struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
-    struct kefir_mem *mem, struct kefir_ast_flow_control_structure *parent,
-    const struct kefir_source_location *source_location) {
+    struct kefir_mem *mem, struct kefir_ast_flow_control_tree *flow_control_tree,
+    struct kefir_ast_flow_control_structure *parent, const struct kefir_source_location *source_location) {
     struct kefir_ast_scoped_identifier *scoped_id = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_scoped_identifier));
     scoped_id->klass = KEFIR_AST_SCOPE_IDENTIFIER_LABEL;
     scoped_id->cleanup.callback = NULL;
@@ -302,7 +301,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
     memset(scoped_id->payload.content, 0, KEFIR_AST_SCOPED_IDENTIFIER_PAYLOAD_SIZE);
     scoped_id->payload.ptr = scoped_id->payload.content;
     scoped_id->payload.cleanup = &scoped_id->cleanup;
-    scoped_id->label.point = kefir_ast_flow_control_point_alloc(mem, parent);
+    scoped_id->label.point = kefir_ast_flow_control_point_alloc(mem, flow_control_tree, parent);
     scoped_id->label.public_label = NULL;
     REQUIRE_ELSE(scoped_id->label.point != NULL, {
         KEFIR_FREE(mem, scoped_id);

@@ -51,12 +51,12 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
                                                 &base->properties.statement_props.flow_control_statement));
 
     base->properties.statement_props.flow_control_statement->value.loop.continuation =
-        kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
     REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.continuation != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
     base->properties.statement_props.flow_control_statement->value.loop.end =
-        kefir_ast_flow_control_point_alloc(mem, direct_parent);
+        kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
     REQUIRE(base->properties.statement_props.flow_control_statement->value.loop.end != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 

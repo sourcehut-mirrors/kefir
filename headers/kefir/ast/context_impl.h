@@ -61,9 +61,9 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
 kefir_ast_function_specifier_t kefir_ast_context_merge_function_specifiers(kefir_ast_function_specifier_t,
                                                                            kefir_ast_function_specifier_t);
 
-struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(struct kefir_mem *,
-                                                                            struct kefir_ast_flow_control_structure *,
-                                                                            const struct kefir_source_location *);
+struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_label(
+    struct kefir_mem *, struct kefir_ast_flow_control_tree *flow_control_tree,
+    struct kefir_ast_flow_control_structure *, const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefir_ast_alignment **,
                                                  struct kefir_ast_alignment *);
