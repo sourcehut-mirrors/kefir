@@ -479,6 +479,17 @@ DEFINE_CASE(ast_flow_control_tree6, "AST Flow control tree - flow control value 
 }
 END_CASE
 
+static kefir_size_t count_vl_arrays(const struct kefir_ast_flow_control_structure *control_struct) {
+    kefir_size_t count = 0;
+    while (control_struct != NULL) {
+        if (control_struct->type == KEFIR_AST_FLOW_CONTROL_VL_ARRAY) {
+            count++;
+        }
+        control_struct = kefir_ast_flow_control_structure_next_sibling(control_struct);
+    }
+    return count;
+}
+
 DEFINE_CASE(ast_flow_control_tree_vl_arrays1, "AST Flow control tree - data elements #1") {
     const struct kefir_ast_type_traits *type_traits = kefir_util_default_type_traits();
     struct kefir_ast_global_context global_context;
@@ -500,46 +511,46 @@ DEFINE_CASE(ast_flow_control_tree_vl_arrays1, "AST Flow control tree - data elem
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &stmt));
 
     ASSERT(kefir_ast_flow_control_structure_parent(stmt) == NULL);
-    // ASSERT(kefir_list_length(&stmt->control_points) == 0);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt)) == 0);
 
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt, 0));
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt, 1));
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt, 2));
 
-    // ASSERT(kefir_list_length(&stmt->control_points) == 3);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt)) == 3);
 
     struct kefir_ast_flow_control_structure *stmt2 = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &stmt2));
 
     ASSERT(kefir_ast_flow_control_structure_parent(stmt2) == stmt);
-    // ASSERT(kefir_list_length(&stmt2->control_points) == 0);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt2)) == 0);
 
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt2, 3));
-    // ASSERT(kefir_list_length(&stmt2->control_points) == 1);
-    // ASSERT(kefir_list_length(&stmt->control_points) == 3);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt2)) == 1);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt)) == 3);
 
     ASSERT_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));
 
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt, 4));
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt, 5));
 
-    // ASSERT(kefir_list_length(&stmt2->control_points) == 1);
-    // ASSERT(kefir_list_length(&stmt->control_points) == 5);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt2)) == 1);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt)) == 5);
 
     struct kefir_ast_flow_control_structure *stmt3 = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK, &associated_scopes, &stmt3));
 
     ASSERT(kefir_ast_flow_control_structure_parent(stmt3) == stmt);
-    // ASSERT(kefir_list_length(&stmt3->control_points) == 0);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt3)) == 0);
 
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt3, 6));
     ASSERT_OK(kefir_ast_flow_control_block_add_vl_array(&kft_mem, &local_context.flow_control_tree, stmt3, 7));
 
-    // ASSERT(kefir_list_length(&stmt3->control_points) == 2);
-    // ASSERT(kefir_list_length(&stmt2->control_points) == 1);
-    // ASSERT(kefir_list_length(&stmt->control_points) == 5);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt3)) == 2);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt2)) == 1);
+    ASSERT(count_vl_arrays(kefir_ast_flow_control_structure_first_child(stmt)) == 5);
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &local_context));
     ASSERT_OK(kefir_ast_global_context_free(&kft_mem, &global_context));
