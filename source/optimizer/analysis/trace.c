@@ -134,6 +134,7 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
                                   const struct kefir_opt_code_container_tracer *tracer,
                                   kefir_opt_instruction_ref_t instr_ref, struct kefir_queue *instr_queue,
                                   struct kefir_hashtreeset *traced_blocks, struct kefir_hashtreeset *traced_instr,
+                                  struct kefir_hashtreeset *pending_block_labels, kefir_bool_t *has_indirect_jumps,
                                   struct kefir_hashtree *pending_instr) {
     REQUIRE(!kefir_hashtreeset_has(traced_instr, (kefir_hashtreeset_entry_t) instr_ref), KEFIR_OK);
     REQUIRE_OK(kefir_hashtreeset_add(mem, traced_instr, (kefir_hashtreeset_entry_t) instr_ref));
@@ -143,8 +144,13 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
 
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_BLOCK_LABEL:
-            REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.imm.block_ref, instr_queue, traced_blocks,
-                                   pending_instr));
+            if (*has_indirect_jumps) {
+                REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.imm.block_ref, instr_queue, traced_blocks,
+                                       pending_instr));
+            } else {
+                REQUIRE_OK(kefir_hashtreeset_add(
+                    mem, pending_block_labels, (kefir_hashtreeset_entry_t) instr->operation.parameters.imm.block_ref));
+            }
             break;
 
         case KEFIR_OPT_OPCODE_BRANCH:
@@ -159,6 +165,22 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
             REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.branch.target_block, instr_queue,
                                    traced_blocks, pending_instr));
             break;
+
+        case KEFIR_OPT_OPCODE_IJUMP: {
+            *has_indirect_jumps = true;
+
+            kefir_size_t total_block_count;
+            REQUIRE_OK(kefir_opt_code_container_block_count(code, &total_block_count));
+            for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
+                const struct kefir_opt_code_block *block;
+                REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
+                if (!kefir_hashtreeset_empty(&block->public_labels) ||
+                    kefir_hashtreeset_has(pending_block_labels, (kefir_hashtreeset_entry_t) block_id)) {
+                    REQUIRE_OK(trace_block(mem, code, block_id, instr_queue, traced_blocks, pending_instr));
+                }
+            }
+            REQUIRE_OK(kefir_hashtreeset_clean(mem, pending_block_labels));
+        } break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
             const struct kefir_opt_inline_assembly_node *inline_asm = NULL;
@@ -196,23 +218,18 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
 static kefir_result_t trace_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                  const struct kefir_opt_code_container_tracer *tracer, struct kefir_queue *instr_queue,
                                  struct kefir_hashtreeset *traced_blocks, struct kefir_hashtreeset *traced_instr,
-                                 struct kefir_hashtree *pending_instr) {
+                                 struct kefir_hashtree *pending_instr, struct kefir_hashtreeset *pending_block_labels) {
     kefir_size_t total_block_count;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &total_block_count));
     REQUIRE_OK(trace_block(mem, code, code->entry_point, instr_queue, traced_blocks, pending_instr));
-    for (kefir_opt_block_id_t block_id = 0; block_id < total_block_count; block_id++) {
-        const struct kefir_opt_code_block *block;
-        REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
-        if (!kefir_hashtreeset_empty(&block->public_labels)) {
-            REQUIRE_OK(trace_block(mem, code, block_id, instr_queue, traced_blocks, pending_instr));
-        }
-    }
 
+    kefir_bool_t has_indirect_jumps = false;
     while (!kefir_queue_is_empty(instr_queue)) {
         kefir_queue_entry_t entry;
         REQUIRE_OK(kefir_queue_pop_first(mem, instr_queue, &entry));
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
-        REQUIRE_OK(trace_instr(mem, code, tracer, instr_ref, instr_queue, traced_blocks, traced_instr, pending_instr));
+        REQUIRE_OK(trace_instr(mem, code, tracer, instr_ref, instr_queue, traced_blocks, traced_instr,
+                               pending_block_labels, &has_indirect_jumps, pending_instr));
     }
 
     return KEFIR_OK;
@@ -228,13 +245,25 @@ kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *mem, const struc
     struct kefir_hashtreeset traced_blocks;
     struct kefir_hashtreeset traced_instr;
     struct kefir_hashtree pending_instr;
+    struct kefir_hashtreeset pending_block_labels;
     REQUIRE_OK(kefir_queue_init(&instr_queue));
     REQUIRE_OK(kefir_hashtreeset_init(&traced_blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&traced_instr, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&pending_block_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&pending_instr, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&pending_instr, free_pending_instructions, NULL));
 
-    kefir_result_t res = trace_impl(mem, code, tracer, &instr_queue, &traced_blocks, &traced_instr, &pending_instr);
+    kefir_result_t res = trace_impl(mem, code, tracer, &instr_queue, &traced_blocks, &traced_instr, &pending_instr,
+                                    &pending_block_labels);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &pending_block_labels);
+        kefir_queue_free(mem, &instr_queue);
+        kefir_hashtreeset_free(mem, &traced_blocks);
+        kefir_hashtreeset_free(mem, &traced_instr);
+        kefir_hashtree_free(mem, &pending_instr);
+        return res;
+    });
+    res = kefir_hashtreeset_free(mem, &pending_block_labels);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_queue_free(mem, &instr_queue);
         kefir_hashtreeset_free(mem, &traced_blocks);
