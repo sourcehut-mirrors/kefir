@@ -260,18 +260,6 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -615,18 +603,6 @@ factorial:
 #                "source_location": null
 #            },
 #            {
-#                "opcode": "touch_virtual_register",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 4,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": [],
-#                "source_location": null
-#            },
-#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -686,7 +662,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
+#                        "index": 13,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -897,7 +873,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
+#                        "index": 13,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1249,7 +1225,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 4,
+#                        "index": 13,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1744,8 +1720,8 @@ __kefir_debug_info_section_entry_5:
     .byte 0
 __kefir_debug_info_section_entry_6:
     .byte 5
-    .quad _kefir_func_factorial_label11
-    .quad _kefir_func_factorial_label38 - _kefir_func_factorial_label11
+    .quad _kefir_func_factorial_label14
+    .quad _kefir_func_factorial_label38 - _kefir_func_factorial_label14
     .byte 0
 __kefir_debug_info_section_entry_7:
     .byte 5

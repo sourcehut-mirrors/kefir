@@ -296,24 +296,18 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     if (compiler_config->features.declare_atomic_support) {
         compiler_config->features.declare_atomic_support = config->flags.enable_atomics;
     }
-    switch (config->compiler.optimization_level) {
-        case 0:
-            compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
-            compiler_config->codegen.pipeline_spec = NULL;
-            break;
+    if (config->compiler.optimization_level > 0) {
+        compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
+        if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
+            compiler_config->codegen.omit_frame_pointer = true;
+        }
 
-        default:
-            if (config->compiler.optimization_level > 0) {
-                compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_FULL_SPEC;
-                if (config->flags.omit_frame_pointer == KEFIR_DRIVER_FRAME_POINTER_OMISSION_UNSPECIFIED) {
-                    compiler_config->codegen.omit_frame_pointer = true;
-                }
-
-                if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
-                    compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC;
-                }
-            }
-            break;
+        if (config->target.arch == KEFIR_DRIVER_TARGET_ARCH_X86_64) {
+            compiler_config->codegen.pipeline_spec = KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC;
+        }
+    } else {
+        compiler_config->optimizer_pipeline_spec = KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC;
+        compiler_config->codegen.pipeline_spec = NULL;
     }
 
     switch (config->assembler.target) {
