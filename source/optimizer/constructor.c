@@ -28,7 +28,7 @@
 
 static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                            struct kefir_opt_constructor_state *state) {
-    kefir_bool_t start_new_block = false;
+    kefir_bool_t start_new_block = true;
     kefir_size_t i = 0;
     REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, (kefir_size_t) -1ll));
     for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
@@ -1107,9 +1107,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 #undef OVERFLOW_ARITH
 
         case KEFIR_IR_OPCODE_GET_ARGUMENT:
-            REQUIRE(state->current_block->block_id == state->entry_block->block_id,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                    "Get argument IR instruction can only be used in the entry block"));
             REQUIRE_OK(kefir_opt_code_builder_get_argument(mem, code, current_block_id, instr->arg.u64, &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;

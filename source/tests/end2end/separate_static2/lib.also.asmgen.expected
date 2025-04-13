@@ -14,6 +14,7 @@ __kefir_text_func_gety_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_gety_label0:
+_kefir_func_gety_label1:
     movq $0, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
@@ -37,6 +38,7 @@ __kefir_text_func_setx_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_setx_label0:
+_kefir_func_setx_label1:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
     lea value(%rip), %rcx

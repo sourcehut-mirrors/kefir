@@ -12,6 +12,7 @@ __kefir_text_func_proxyadd_begin:
     mov %rbp, %rsp
     sub %rsp, 16
 _kefir_func_proxyadd_label0:
+_kefir_func_proxyadd_label1:
     mov %rax, %rdi
     mov QWORD PTR [%rbp - 16], %rsi
     movq [%rbp - 8], %xmm0

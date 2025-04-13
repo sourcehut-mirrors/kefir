@@ -11,6 +11,7 @@ __kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
 _kefir_func_func1_label0:
+_kefir_func_func1_label1:
     mov %rdi, 0
     mov %rax, 0
     mov %rcx, 1

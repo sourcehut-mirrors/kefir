@@ -14,6 +14,7 @@ __kefir_text_func_getb_begin:
     sub $224, %rsp
     movq %rdi, -224(%rbp)
 _kefir_func_getb_label0:
+_kefir_func_getb_label1:
     movl %esi, -208(%rbp)
     leaq -204(%rbp), %rdi
     mov $0, %rax

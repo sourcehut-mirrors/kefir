@@ -340,17 +340,17 @@ __kefir_debug_loclist_section_entry_2:
     .byte 0
 __kefir_debug_loclist_section_entry_3:
     .byte 7
-    .quad _kefir_func_factorial64_label6
-    .quad _kefir_func_factorial64_label15
-    .byte 2
-    .byte 144
-    .byte 2
-    .byte 7
     .quad _kefir_func_factorial64_label9
     .quad _kefir_func_factorial64_label13
     .byte 2
     .byte 144
     .byte 5
+    .byte 7
+    .quad _kefir_func_factorial64_label6
+    .quad _kefir_func_factorial64_label15
+    .byte 2
+    .byte 144
+    .byte 2
     .byte 7
     .quad _kefir_func_factorial64_label9
     .quad _kefir_func_factorial64_label10
