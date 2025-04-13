@@ -381,7 +381,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
         kefir_opt_instruction_ref_t instr_id;
         const struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
 
-        for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
+        for (kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
 
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
             const kefir_opt_block_id_t block_id = instr->block_id;
@@ -505,14 +505,14 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
 
                         REQUIRE_OK(replace_references(state, replacement_ref, instr_id));
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
 
                         REQUIRE_OK(kefir_opt_code_debug_info_set_instruction_location_cursor(
                             &state->func->debug_info, KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE));
                     } else {
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
                     }
                     break;
 
@@ -544,19 +544,19 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                         }
 
                         kefir_opt_instruction_ref_t prev_instr_id = instr_id;
-                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, instr_id));
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
 
                         REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(
                             state->mem, &state->func->debug_info, addr_instr_ref, replacement_ref));
                     } else {
-                        REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                        REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
                     }
                     break;
 
                 default:
-                    REQUIRE_OK(kefir_opt_instruction_next_sibling(&state->func->code, instr_id, &instr_id));
+                    REQUIRE_OK(kefir_opt_instruction_next_control(&state->func->code, instr_id, &instr_id));
                     break;
             }
         }
