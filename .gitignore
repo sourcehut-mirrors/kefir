@@ -59,6 +59,7 @@ compile_commands.json
 .vscode
 *.core
 callgrind.out.*
+.clangd
 
 # GCC Torture
 test.s
