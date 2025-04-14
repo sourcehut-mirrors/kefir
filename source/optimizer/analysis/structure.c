@@ -450,6 +450,11 @@ kefir_result_t kefir_opt_code_structure_block_exclusive_direct_predecessor(
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
+    if (successor_block_id == structure->code->entry_point) {
+        *result_ptr = false;
+        return KEFIR_OK;
+    }
+
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(structure->code, &num_of_blocks));
     REQUIRE(block_id < num_of_blocks,
