@@ -18,7 +18,6 @@ __kefir_text_func_make_s1_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_make_s1_label0:
-_kefir_func_make_s1_label1:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
     lea -4(%rbp), %rdi
@@ -38,7 +37,6 @@ __kefir_text_func_cast_int_begin:
     mov %rsp, %rbp
     sub $32, %rsp
 _kefir_func_cast_int_label0:
-_kefir_func_cast_int_label1:
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
     movq -16(%rbp), %rax
@@ -59,7 +57,6 @@ __kefir_text_func_sum3_one_begin:
     mov %rsp, %rbp
     sub $48, %rsp
 _kefir_func_sum3_one_label0:
-_kefir_func_sum3_one_label1:
     movq %rdx, -32(%rbp)
     movq %rsi, -24(%rbp)
     movq %rdi, -16(%rbp)
@@ -91,7 +88,6 @@ __kefir_text_func_unwrap_s1_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_unwrap_s1_label0:
-_kefir_func_unwrap_s1_label1:
     movq %rdi, -16(%rbp)
     movl -16(%rbp), %eax
     movl %eax, -8(%rbp)

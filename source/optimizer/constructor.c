@@ -30,7 +30,6 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
                                            struct kefir_opt_constructor_state *state) {
     kefir_bool_t start_new_block = true;
     kefir_size_t i = 0;
-    REQUIRE_OK(kefir_opt_constructor_start_code_block_at(mem, state, (kefir_size_t) -1ll));
     for (; i < kefir_irblock_length(&state->function->ir_func->body); i++) {
         const struct kefir_irinstr *instr = kefir_irblock_at(&state->function->ir_func->body, i);
         REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid IR instruction to be returned"));
@@ -1124,7 +1123,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, const struct kefir_o
     UNUSED(module);
     state->current_block = NULL;
     state->ir_location = 0;
-    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, (kefir_size_t) -1ll));
+    REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, (kefir_size_t) 0));
     const struct kefir_irblock *ir_block = &state->function->ir_func->body;
     for (; state->ir_location < kefir_irblock_length(ir_block); state->ir_location++) {
         REQUIRE_OK(kefir_opt_constructor_update_current_code_block(mem, state, state->ir_location));

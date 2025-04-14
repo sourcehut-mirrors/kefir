@@ -15,7 +15,6 @@ __kefir_text_func_sumall_begin:
     push %r13
     sub $40, %rsp
 _kefir_func_sumall_label0:
-_kefir_func_sumall_label1:
     movq %rdi, -40(%rbp)
     movq %xmm0, -32(%rbp)
     movq -40(%rbp), %rax
@@ -78,7 +77,7 @@ _kefir_func_sumall_label1:
     imul $8, %rdi, %rdi
     add %rdi, %rsi
     movq (%rsi), %rsi
-    movq _kefir_func_sumall_label2(%rip), %xmm0
+    movq _kefir_func_sumall_label1(%rip), %xmm0
     lea -32(%rbp), %rdi
     movq %rdi, -64(%rbp)
     movq %r8, %xmm1
@@ -115,7 +114,7 @@ addsd -48(%rbp), %xmm0
 __kefir_text_func_sumall_end:
 .section .rodata
     .align 8
-_kefir_func_sumall_label2:
+_kefir_func_sumall_label1:
     .quad 0
 .section .text
 

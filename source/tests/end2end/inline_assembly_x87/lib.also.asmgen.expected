@@ -17,7 +17,6 @@ __kefir_text_func_discriminant_begin:
     sub $64, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminant_label0:
-_kefir_func_discriminant_label1:
     movq %xmm2, -40(%rbp)
     movq %xmm1, -32(%rbp)
     movq %xmm0, -24(%rbp)
@@ -62,7 +61,6 @@ __kefir_text_func_discriminantf_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminantf_label0:
-_kefir_func_discriminantf_label1:
     movd %xmm2, -24(%rbp)
     movd %xmm1, -20(%rbp)
     movd %xmm0, -16(%rbp)
@@ -107,7 +105,6 @@ __kefir_text_func_discriminantl_begin:
     sub $144, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminantl_label0:
-_kefir_func_discriminantl_label1:
     lea 48(%rbp), %rax
     lea 32(%rbp), %rcx
     lea 16(%rbp), %rdx

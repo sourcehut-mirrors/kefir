@@ -29,7 +29,6 @@ __kefir_text_func_sub_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_sub_label0:
-_kefir_func_sub_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
@@ -57,7 +56,6 @@ __kefir_text_func_subf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_subf_label0:
-_kefir_func_subf_label1:
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
@@ -85,7 +83,6 @@ __kefir_text_func_subl_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
 _kefir_func_subl_label0:
-_kefir_func_subl_label1:
     lea 32(%rbp), %rax
     lea 16(%rbp), %rcx
     movq $0, -40(%rbp)
@@ -119,7 +116,6 @@ __kefir_text_func_mydiv_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydiv_label0:
-_kefir_func_mydiv_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
@@ -147,7 +143,6 @@ __kefir_text_func_mydivf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivf_label0:
-_kefir_func_mydivf_label1:
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
@@ -175,7 +170,6 @@ __kefir_text_func_mydivl_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivl_label0:
-_kefir_func_mydivl_label1:
     lea 32(%rbp), %rax
     lea 16(%rbp), %rcx
     movq $0, -40(%rbp)
@@ -209,7 +203,6 @@ __kefir_text_func_mydivr_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivr_label0:
-_kefir_func_mydivr_label1:
     movq %xmm1, -24(%rbp)
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
@@ -237,7 +230,6 @@ __kefir_text_func_mydivrf_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivrf_label0:
-_kefir_func_mydivrf_label1:
     movd %xmm1, -16(%rbp)
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
@@ -265,7 +257,6 @@ __kefir_text_func_mydivrl_begin:
     sub $80, %rsp
     fstcw -8(%rbp)
 _kefir_func_mydivrl_label0:
-_kefir_func_mydivrl_label1:
     lea 32(%rbp), %rax
     lea 16(%rbp), %rcx
     movq $0, -40(%rbp)

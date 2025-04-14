@@ -8,34 +8,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 0,
+                        "control_flow": 15,
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                0
-                            ]
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 16,
-                        "code": [
-                            {
-                                "id": 16,
+                                "id": 15,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -45,12 +21,10 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": [
-                                0
-                            ],
-                            "immediate_dominator": 0,
+                            "predecessors": [],
+                            "immediate_dominator": null,
                             "alive_instructions": [
-                                16
+                                15
                             ]
                         }
                     }
@@ -68,34 +42,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 0,
+                        "control_flow": 2,
                         "code": [
                             {
                                 "id": 0,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                0
-                            ]
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 3,
-                        "code": [
-                            {
-                                "id": 5,
                                 "opcode": "alloc_local",
                                 "type_id": 64,
                                 "type_index": 0,
@@ -103,25 +53,25 @@
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 2,
+                                "id": 1,
                                 "opcode": "long_double_const",
                                 "value": 4.281000,
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 3,
+                                "id": 2,
                                 "opcode": "long_double_store",
-                                "location": 5,
-                                "value": 2,
+                                "location": 0,
+                                "value": 1,
                                 "flags": {
                                     "volatile": false
                                 },
-                                "control_next": 4,
+                                "control_next": 3,
                                 "ir_instruction": 3
                             },
                             {
-                                "id": 4,
+                                "id": 3,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -131,15 +81,13 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": [
-                                0
-                            ],
-                            "immediate_dominator": 0,
+                            "predecessors": [],
+                            "immediate_dominator": null,
                             "alive_instructions": [
+                                0,
+                                1,
                                 2,
-                                3,
-                                4,
-                                5
+                                3
                             ]
                         }
                     }
@@ -157,76 +105,52 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 0,
+                        "control_flow": 5,
                         "code": [
                             {
                                 "id": 0,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                0
-                            ]
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 6,
-                        "code": [
-                            {
-                                "id": 1,
                                 "opcode": "long_double_const",
                                 "value": 1.000000,
                                 "control_next": null,
                                 "ir_instruction": 0
                             },
                             {
-                                "id": 2,
+                                "id": 1,
                                 "opcode": "long_double_const",
                                 "value": 0.000000,
                                 "control_next": null,
                                 "ir_instruction": 1
                             },
                             {
-                                "id": 3,
+                                "id": 2,
                                 "opcode": "long_double_equals",
                                 "args": [
-                                    1,
-                                    2
+                                    0,
+                                    1
                                 ],
                                 "control_next": null,
                                 "ir_instruction": 2
                             },
                             {
-                                "id": 4,
+                                "id": 3,
                                 "opcode": "int8_bool_not",
-                                "arg": 3,
+                                "arg": 2,
                                 "control_next": null,
                                 "ir_instruction": 3
                             },
                             {
-                                "id": 5,
+                                "id": 4,
                                 "opcode": "int64_bool_not",
-                                "arg": 4,
+                                "arg": 3,
                                 "control_next": null,
                                 "ir_instruction": 4
                             },
                             {
-                                "id": 6,
+                                "id": 5,
                                 "opcode": "branch",
-                                "target_block": 2,
-                                "alternative_block": 2,
-                                "condition": 5,
+                                "target_block": 1,
+                                "alternative_block": 1,
+                                "condition": 4,
                                 "condition_variant": "8bit",
                                 "control_next": null,
                                 "ir_instruction": 5
@@ -235,29 +159,27 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [
-                                2,
-                                2
+                                1,
+                                1
                             ],
-                            "predecessors": [
-                                0
-                            ],
-                            "immediate_dominator": 0,
+                            "predecessors": [],
+                            "immediate_dominator": null,
                             "alive_instructions": [
+                                0,
                                 1,
                                 2,
                                 3,
                                 4,
-                                5,
-                                6
+                                5
                             ]
                         }
                     },
                     {
-                        "id": 2,
-                        "control_flow": 13,
+                        "id": 1,
+                        "control_flow": 12,
                         "code": [
                             {
-                                "id": 13,
+                                "id": 12,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -268,12 +190,12 @@
                         "properties": {
                             "successors": [],
                             "predecessors": [
-                                1,
-                                1
+                                0,
+                                0
                             ],
-                            "immediate_dominator": 1,
+                            "immediate_dominator": 0,
                             "alive_instructions": [
-                                13
+                                12
                             ]
                         }
                     }
@@ -291,34 +213,10 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 0,
+                        "control_flow": 8,
                         "code": [
                             {
-                                "id": 0,
-                                "opcode": "jump",
-                                "target_block": 1,
-                                "control_next": null,
-                                "ir_instruction": null
-                            }
-                        ],
-                        "public_labels": [],
-                        "properties": {
-                            "successors": [
-                                1
-                            ],
-                            "predecessors": [],
-                            "immediate_dominator": null,
-                            "alive_instructions": [
-                                0
-                            ]
-                        }
-                    },
-                    {
-                        "id": 1,
-                        "control_flow": 9,
-                        "code": [
-                            {
-                                "id": 9,
+                                "id": 8,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -328,12 +226,10 @@
                         "public_labels": [],
                         "properties": {
                             "successors": [],
-                            "predecessors": [
-                                0
-                            ],
-                            "immediate_dominator": 0,
+                            "predecessors": [],
+                            "immediate_dominator": null,
                             "alive_instructions": [
-                                9
+                                8
                             ]
                         }
                     }

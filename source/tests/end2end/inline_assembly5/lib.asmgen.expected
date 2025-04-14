@@ -26,7 +26,6 @@ __kefir_text_func_set8_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set8_label0:
-_kefir_func_set8_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %al, %al
@@ -44,7 +43,6 @@ __kefir_text_func_set16_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set16_label0:
-_kefir_func_set16_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %ax, %ax
@@ -62,7 +60,6 @@ __kefir_text_func_set32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set32_label0:
-_kefir_func_set32_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %eax, %eax
@@ -80,7 +77,6 @@ __kefir_text_func_set64_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_set64_label0:
-_kefir_func_set64_label1:
     movq %rdi, -8(%rbp)
     leaq -8(%rbp), %rcx
 xor %rax, %rax
@@ -98,7 +94,6 @@ __kefir_text_func_clear8_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear8_label0:
-_kefir_func_clear8_label1:
     movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
@@ -117,7 +112,6 @@ __kefir_text_func_clear16_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear16_label0:
-_kefir_func_clear16_label1:
     movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
@@ -136,7 +130,6 @@ __kefir_text_func_clear32_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear32_label0:
-_kefir_func_clear32_label1:
     movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)
@@ -155,7 +148,6 @@ __kefir_text_func_clear64_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_clear64_label0:
-_kefir_func_clear64_label1:
     movq %rdi, -8(%rbp)
     lea -8(%rbp), %rax
     movq %rax, -16(%rbp)

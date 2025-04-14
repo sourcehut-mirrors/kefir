@@ -33,7 +33,7 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     kefir_opt_block_id_t code_block_id;
     REQUIRE(!kefir_hashtree_has(&state->code_blocks, (kefir_hashtree_key_t) ir_location), KEFIR_OK);
-    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == (kefir_size_t) -1ll,
+    REQUIRE_OK(kefir_opt_code_container_new_block(mem, &state->function->code, ir_location == (kefir_size_t) 0,
                                                   &code_block_id));
 
     struct kefir_opt_constructor_code_block_state *block_state =
@@ -66,7 +66,7 @@ kefir_result_t kefir_opt_constructor_start_code_block_at(struct kefir_mem *mem,
 
     REQUIRE_OK(kefir_hashtree_insert(mem, &state->code_block_index, (kefir_hashtree_key_t) code_block_id,
                                      (kefir_hashtree_value_t) block_state));
-    if (ir_location == (kefir_size_t) -1ll) {
+    if (ir_location == (kefir_size_t) 0) {
         state->entry_block = block_state;
     }
     return KEFIR_OK;

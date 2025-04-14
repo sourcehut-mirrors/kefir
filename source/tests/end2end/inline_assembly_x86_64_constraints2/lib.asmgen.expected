@@ -18,7 +18,6 @@ __kefir_text_func_test1_begin:
     sub $56, %rsp
     stmxcsr -48(%rbp)
 _kefir_func_test1_label0:
-_kefir_func_test1_label1:
     movq %xmm0, -64(%rbp)
     movq %rdi, -56(%rbp)
     movq -56(%rbp), %rsi
@@ -43,7 +42,7 @@ _kefir_func_test1_label1:
     movq %r10, -56(%rbp)
     movq -64(%rbp), %r10
     movq %r10, -80(%rbp)
-    movq _kefir_func_test1_label2(%rip), %xmm0
+    movq _kefir_func_test1_label1(%rip), %xmm0
     movq -80(%rbp), %xmm5
     addsd %xmm0, %xmm5
     movq %xmm5, -64(%rbp)
@@ -97,7 +96,7 @@ _kefir_func_test1_label1:
 __kefir_text_func_test1_end:
 .section .rodata
     .align 8
-_kefir_func_test1_label2:
+_kefir_func_test1_label1:
     .quad 4607182418800017408
 .section .text
 

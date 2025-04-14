@@ -11,7 +11,6 @@ __kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
 _kefir_func_func1_label0:
-_kefir_func_func1_label1:
     mov %rax, QWORD PTR [%rbp + 16]
     mov %r10, QWORD PTR [%rbp + 24]
     mov %r11, 0
