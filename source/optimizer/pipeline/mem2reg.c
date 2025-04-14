@@ -194,6 +194,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
         for (kefir_opt_code_block_instr_head(&state->func->code, block, &instr_ref); instr_ref != KEFIR_ID_NONE;
              kefir_opt_instruction_next_sibling(&state->func->code, instr_ref, &instr_ref)) {
 
+            kefir_bool_t is_control_flow;
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
 
             switch (instr->operation.opcode) {
@@ -205,6 +206,10 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT16_LOAD:
                 case KEFIR_OPT_OPCODE_INT32_LOAD:
                 case KEFIR_OPT_OPCODE_INT64_LOAD:
+                    REQUIRE_OK(
+                        kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
+                    REQUIRE(is_control_flow, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                             "Expected load instruction to be a part of control flow"));
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
@@ -221,6 +226,11 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT16_STORE:
                 case KEFIR_OPT_OPCODE_INT32_STORE:
                 case KEFIR_OPT_OPCODE_INT64_STORE:
+                    REQUIRE_OK(
+                        kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
+                    REQUIRE(is_control_flow,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                            "Expected store instruction to be a part of control flow"));
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
@@ -381,7 +391,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
         kefir_opt_instruction_ref_t instr_id;
         const struct kefir_opt_instruction *instr = NULL, *addr_instr = NULL;
 
-        for (kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_id); instr_id != KEFIR_ID_NONE;) {
+        for (kefir_opt_code_block_instr_control_head(&state->func->code, block, &instr_id);
+             instr_id != KEFIR_ID_NONE;) {
 
             REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
             const kefir_opt_block_id_t block_id = instr->block_id;
