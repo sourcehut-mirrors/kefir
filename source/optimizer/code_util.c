@@ -24,6 +24,7 @@
 #include "kefir/core/queue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 #define INPUT_CALLBACK(_ref, _callback, _payload)         \
     do {                                                  \
@@ -714,20 +715,46 @@ struct move_instrs_param {
     struct kefir_opt_code_container *code;
     kefir_opt_block_id_t source_block_id;
     kefir_opt_block_id_t target_block_id;
+    struct kefir_list move_queue;
     kefir_opt_instruction_ref_t moved_instr_ref;
 };
 
-static kefir_result_t move_instr_to(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+static kefir_result_t do_move_scan_deps(kefir_opt_instruction_ref_t instr_ref, void *payload) {
     ASSIGN_DECL_CAST(struct move_instrs_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(param->code, instr_ref, &instr));
     REQUIRE(instr->block_id == param->source_block_id, KEFIR_OK);
+    REQUIRE_OK(kefir_list_insert_after(param->mem, &param->move_queue, kefir_list_tail(&param->move_queue),
+                                       (void *) (kefir_uptr_t) instr_ref));
+    return KEFIR_OK;
+}
 
-    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, move_instr_to, payload));
-    REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, instr_ref, param->target_block_id,
-                                          &param->moved_instr_ref));
+static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
+    for (struct kefir_list_entry *iter = kefir_list_head(&param->move_queue); iter != NULL;
+         iter = kefir_list_head(&param->move_queue)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);
+        REQUIRE_OK(kefir_list_pop(param->mem, &param->move_queue, iter));
+
+        const struct kefir_opt_instruction *instr;
+        kefir_result_t res = kefir_opt_code_container_instr(param->code, instr_ref, &instr);
+        if (res == KEFIR_NOT_FOUND) {
+            continue;
+        }
+        REQUIRE_OK(res);
+
+        REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, do_move_scan_deps, param));
+
+        if (instr->block_id == param->source_block_id) {
+            kefir_opt_instruction_ref_t moved_instr_ref;
+            REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, instr_ref, param->target_block_id,
+                                                  &moved_instr_ref));
+            if (param->moved_instr_ref == KEFIR_ID_NONE) {
+                param->moved_instr_ref = moved_instr_ref;
+            }
+        }
+    }
     return KEFIR_OK;
 }
 
@@ -747,7 +774,17 @@ kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_m
                                       .source_block_id = instr->block_id,
                                       .target_block_id = target_block_id,
                                       .moved_instr_ref = KEFIR_ID_NONE};
-    REQUIRE_OK(move_instr_to(instr_ref, &param));
+    REQUIRE_OK(kefir_list_init(&param.move_queue));
+
+    kefir_result_t res = kefir_list_insert_after(mem, &param.move_queue, kefir_list_tail(&param.move_queue),
+                                                 (void *) (kefir_uptr_t) instr_ref);
+    REQUIRE_CHAIN(&res, do_move_with_deps(&param));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &param.move_queue);
+        return res;
+    });
+    REQUIRE_OK(kefir_list_free(mem, &param.move_queue));
+
     ASSIGN_PTR(moved_instr_ref_ptr, param.moved_instr_ref);
     return KEFIR_OK;
 }
