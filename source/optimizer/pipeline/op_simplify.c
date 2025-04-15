@@ -3235,11 +3235,12 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, struct kefir
                     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
                     REQUIRE_OK(
                         kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_id));
-                    if (instr->control_flow.prev != KEFIR_ID_NONE || instr->control_flow.next != KEFIR_ID_NONE) {
-                        const struct kefir_opt_instruction *replacement_instr = NULL;
-                        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, replacement_ref, &replacement_instr));
-                        if (replacement_instr->control_flow.prev == KEFIR_ID_NONE &&
-                            replacement_instr->control_flow.next == KEFIR_ID_NONE) {
+                    kefir_bool_t is_control_flow, is_replacement_control_flow;
+                    REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, instr_id, &is_control_flow));
+                    if (is_control_flow) {
+                        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, replacement_ref,
+                                                                              &is_replacement_control_flow));
+                        if (!is_replacement_control_flow) {
                             REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block->id, instr_id,
                                                                                replacement_ref));
                         }
