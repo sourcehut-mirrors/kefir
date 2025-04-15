@@ -39,4 +39,9 @@ kefir_result_t kefir_ast_translator_resolve_local_type_layout(struct kefir_irbui
 kefir_result_t kefir_ast_translator_resolve_vla_element(struct kefir_mem *, struct kefir_ast_translator_context *,
                                                         struct kefir_irbuilder_block *, kefir_id_t);
 
+kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(struct kefir_mem *,
+                                                                     struct kefir_ast_translator_context *,
+                                                                     struct kefir_irbuilder_block *,
+                                                                     const struct kefir_ast_identifier_flat_scope *);
+
 #endif

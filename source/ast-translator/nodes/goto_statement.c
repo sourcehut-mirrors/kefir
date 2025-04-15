@@ -20,9 +20,8 @@
 
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
-#include "kefir/ast-translator/flow_control.h"
-#include "kefir/ast-translator/util.h"
 #include "kefir/ast-translator/jump.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/core/source_error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -42,12 +41,16 @@ kefir_result_t kefir_ast_translate_goto_statement_node(struct kefir_mem *mem,
             node->base.properties.statement_props.target_flow_control_point, &node->base.source_location));
     } else {
         struct kefir_ast_flow_control_structure *goto_parent =
-            node->base.properties.statement_props.flow_control_statement;
+            node->base.properties.statement_props.origin_flow_control_point->self;
         while (goto_parent != NULL) {
             if (goto_parent->type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_BLOCK) {
                 REQUIRE(!kefir_ast_flow_control_block_contains_vl_arrays(goto_parent),
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                                "None of blocks enclosing the address goto can contain VLAs"));
+            }
+            if (goto_parent->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+                REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                    mem, context, builder, goto_parent->associated_scopes.ordinary_scope));
             }
             goto_parent = kefir_ast_flow_control_structure_parent(goto_parent);
         }

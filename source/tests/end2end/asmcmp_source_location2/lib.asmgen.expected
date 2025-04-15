@@ -260,6 +260,18 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -603,6 +615,18 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "virtual_block_end",
 #                "args": [],
 #                "labels": [],
@@ -662,7 +686,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -873,7 +897,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1225,7 +1249,7 @@ factorial:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 13,
+#                        "index": 4,
 #                        "variant": "default"
 #                    }
 #                ],

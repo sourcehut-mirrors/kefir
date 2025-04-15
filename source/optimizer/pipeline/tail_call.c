@@ -189,23 +189,32 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
 
-    kefir_opt_instruction_ref_t tail_instr_ref, tail_prev_instr_ref;
+    kefir_opt_instruction_ref_t tail_instr_ref, call_instr_ref, prev_tail_instr_ref;
     REQUIRE_OK(kefir_opt_code_block_instr_control_tail(&func->code, block, &tail_instr_ref));
     REQUIRE(tail_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
 
-    const struct kefir_opt_instruction *tail_instr, *tail_prev_instr;
+    const struct kefir_opt_instruction *tail_instr, *call_instr, *prev_tail_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, tail_instr_ref, &tail_instr));
     REQUIRE(tail_instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN, KEFIR_OK);
-    REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, tail_instr_ref, &tail_prev_instr_ref));
-    REQUIRE(tail_prev_instr_ref != KEFIR_ID_NONE && tail_prev_instr_ref == tail_instr->operation.parameters.refs[0],
-            KEFIR_OK);
-    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, tail_prev_instr_ref, &tail_prev_instr));
-    REQUIRE(tail_prev_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
-                tail_prev_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL,
-            KEFIR_OK);
+
+    call_instr_ref = KEFIR_ID_NONE;
+    REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, tail_instr_ref, &prev_tail_instr_ref));
+    for (; call_instr_ref == KEFIR_ID_NONE;) {
+        REQUIRE(prev_tail_instr_ref != KEFIR_ID_NONE, KEFIR_OK);
+        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, prev_tail_instr_ref, &prev_tail_instr));
+        if (prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+            prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
+            REQUIRE(prev_tail_instr_ref == tail_instr->operation.parameters.refs[0], KEFIR_OK);
+            call_instr_ref = prev_tail_instr_ref;
+            call_instr = prev_tail_instr;
+        } else {
+            REQUIRE(prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK, KEFIR_OK);
+            REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, prev_tail_instr_ref, &prev_tail_instr_ref));
+        }
+    }
 
     kefir_opt_instruction_ref_t sole_use_ref;
-    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, tail_prev_instr_ref, &sole_use_ref));
+    REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, call_instr_ref, &sole_use_ref));
     REQUIRE(sole_use_ref == tail_instr_ref, KEFIR_OK);
 
     struct escape_analysis_param param = {.mem = mem, .module = module, .func = func, .tail_call_possible = true};
@@ -227,7 +236,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &param.no_escapes));
     REQUIRE(param.tail_call_possible, KEFIR_OK);
 
-    const kefir_opt_call_id_t call_ref = tail_prev_instr->operation.parameters.function_call.call_ref;
+    const kefir_opt_call_id_t call_ref = call_instr->operation.parameters.function_call.call_ref;
     const struct kefir_opt_call_node *call_node;
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
 
@@ -235,7 +244,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     kefir_opt_instruction_ref_t tail_call_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_new_tail_call(
         mem, &func->code, block_id, call_node->function_declaration_id, call_node->argument_count,
-        tail_prev_instr->operation.parameters.function_call.indirect_ref, &tail_call_ref, &tail_call_instr_ref));
+        call_instr->operation.parameters.function_call.indirect_ref, &tail_call_ref, &tail_call_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
 
     for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
@@ -244,9 +253,9 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     }
 
     REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, tail_instr_ref));
-    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, tail_prev_instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, call_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_instr_ref));
-    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_prev_instr_ref));
+    REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, call_instr_ref));
 
     REQUIRE_OK(kefir_opt_code_container_add_control(&func->code, block_id, tail_call_instr_ref));
 

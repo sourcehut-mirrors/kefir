@@ -90,6 +90,27 @@
                             },
                             {
                                 "id": 9,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 10,
+                                "ir_instruction": 20
+                            },
+                            {
+                                "id": 10,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 11,
+                                "ir_instruction": 22
+                            },
+                            {
+                                "id": 11,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 12,
+                                "ir_instruction": 24
+                            },
+                            {
+                                "id": 12,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -111,7 +132,10 @@
                                 6,
                                 7,
                                 8,
-                                9
+                                9,
+                                10,
+                                11,
+                                12
                             ]
                         }
                     }
@@ -182,6 +206,13 @@
                             },
                             {
                                 "id": 6,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 7,
+                                "ir_instruction": 9
+                            },
+                            {
+                                "id": 7,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -200,7 +231,8 @@
                                 3,
                                 4,
                                 5,
-                                6
+                                6,
+                                7
                             ]
                         }
                     }

@@ -230,6 +230,8 @@
                             "alive_instructions": [
                                 1,
                                 4,
+                                7,
+                                10,
                                 20,
                                 21,
                                 22
@@ -240,6 +242,34 @@
                         "id": 3,
                         "control_flow": 37,
                         "code": [
+                            {
+                                "id": 37,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 38,
+                                "ir_instruction": 40
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 10,
+                                "control_next": 39,
+                                "ir_instruction": 42
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 7,
+                                "control_next": 40,
+                                "ir_instruction": 44
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 4,
+                                "control_next": 41,
+                                "ir_instruction": 46
+                            },
                             {
                                 "id": 35,
                                 "opcode": "phi",
@@ -264,11 +294,11 @@
                                 "ir_instruction": 38
                             },
                             {
-                                "id": 37,
+                                "id": 41,
                                 "opcode": "return",
                                 "arg": 36,
                                 "control_next": null,
-                                "ir_instruction": 39
+                                "ir_instruction": 47
                             }
                         ],
                         "public_labels": [],
@@ -280,9 +310,17 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
+                                1,
+                                4,
+                                7,
+                                10,
                                 35,
                                 36,
-                                37
+                                37,
+                                38,
+                                39,
+                                40,
+                                41
                             ]
                         }
                     },
@@ -309,7 +347,7 @@
                                 "ir_instruction": 30
                             },
                             {
-                                "id": 39,
+                                "id": 47,
                                 "opcode": "phi",
                                 "links": [
                                     {
@@ -351,11 +389,13 @@
                             "alive_instructions": [
                                 1,
                                 4,
+                                7,
+                                10,
                                 23,
                                 24,
                                 25,
                                 26,
-                                39
+                                47
                             ]
                         }
                     },
@@ -369,11 +409,11 @@
                                 "links": [
                                     {
                                         "block_id": 4,
-                                        "instr_ref": 39
+                                        "instr_ref": 47
                                     },
                                     {
                                         "block_id": 6,
-                                        "instr_ref": 40
+                                        "instr_ref": 48
                                     }
                                 ],
                                 "control_next": null,
@@ -424,6 +464,10 @@
                             ],
                             "immediate_dominator": 4,
                             "alive_instructions": [
+                                1,
+                                4,
+                                7,
+                                10,
                                 31,
                                 32,
                                 33,
@@ -469,12 +513,12 @@
                                 "ir_instruction": 36
                             },
                             {
-                                "id": 40,
+                                "id": 48,
                                 "opcode": "phi",
                                 "links": [
                                     {
                                         "block_id": 4,
-                                        "instr_ref": 39
+                                        "instr_ref": 47
                                     }
                                 ],
                                 "control_next": null,
@@ -499,11 +543,14 @@
                             "immediate_dominator": 4,
                             "alive_instructions": [
                                 1,
+                                4,
+                                7,
+                                10,
                                 27,
                                 28,
                                 29,
                                 30,
-                                40
+                                48
                             ]
                         }
                     },
@@ -565,6 +612,7 @@
                                 1,
                                 4,
                                 7,
+                                10,
                                 16,
                                 17,
                                 18,
@@ -777,6 +825,7 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
+                                1,
                                 3,
                                 6,
                                 17,
@@ -787,25 +836,46 @@
                     },
                     {
                         "id": 5,
-                        "control_flow": 23,
+                        "control_flow": 26,
                         "code": [
                             {
-                                "id": 23,
+                                "id": 26,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 27,
+                                "ir_instruction": 35
+                            },
+                            {
+                                "id": 27,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 28,
+                                "ir_instruction": 37
+                            },
+                            {
+                                "id": 28,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 29,
+                                "ir_instruction": 39
+                            },
+                            {
+                                "id": 29,
                                 "opcode": "int64_load",
                                 "location": 6,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 24,
-                                "ir_instruction": 29
+                                "control_next": 30,
+                                "ir_instruction": 41
                             },
                             {
-                                "id": 24,
+                                "id": 30,
                                 "opcode": "indirect_jump",
-                                "arg": 23,
+                                "arg": 29,
                                 "control_next": null,
-                                "ir_instruction": 30
+                                "ir_instruction": 42
                             }
                         ],
                         "public_labels": [],
@@ -819,29 +889,55 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
+                                1,
+                                3,
                                 6,
-                                23,
-                                24
+                                26,
+                                27,
+                                28,
+                                29,
+                                30
                             ]
                         }
                     },
                     {
                         "id": 1,
-                        "control_flow": 26,
+                        "control_flow": 32,
                         "code": [
                             {
-                                "id": 25,
+                                "id": 32,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 33,
+                                "ir_instruction": 45
+                            },
+                            {
+                                "id": 33,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 34,
+                                "ir_instruction": 47
+                            },
+                            {
+                                "id": 34,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 35,
+                                "ir_instruction": 49
+                            },
+                            {
+                                "id": 31,
                                 "opcode": "int_const",
                                 "value": 1,
                                 "control_next": null,
-                                "ir_instruction": 31
+                                "ir_instruction": 43
                             },
                             {
-                                "id": 26,
+                                "id": 35,
                                 "opcode": "return",
-                                "arg": 25,
+                                "arg": 31,
                                 "control_next": null,
-                                "ir_instruction": 32
+                                "ir_instruction": 50
                             }
                         ],
                         "public_labels": [
@@ -851,33 +947,59 @@
                             "successors": [],
                             "predecessors": [
                                 5,
-                                6,
-                                7
+                                6
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                25,
-                                26
+                                1,
+                                3,
+                                6,
+                                31,
+                                32,
+                                33,
+                                34,
+                                35
                             ]
                         }
                     },
                     {
                         "id": 2,
-                        "control_flow": 28,
+                        "control_flow": 37,
                         "code": [
                             {
-                                "id": 27,
+                                "id": 37,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 38,
+                                "ir_instruction": 53
+                            },
+                            {
+                                "id": 38,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 39,
+                                "ir_instruction": 55
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 40,
+                                "ir_instruction": 57
+                            },
+                            {
+                                "id": 36,
                                 "opcode": "int_const",
                                 "value": 2,
                                 "control_next": null,
-                                "ir_instruction": 33
+                                "ir_instruction": 51
                             },
                             {
-                                "id": 28,
+                                "id": 40,
                                 "opcode": "return",
-                                "arg": 27,
+                                "arg": 36,
                                 "control_next": null,
-                                "ir_instruction": 34
+                                "ir_instruction": 58
                             }
                         ],
                         "public_labels": [
@@ -891,8 +1013,14 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
-                                27,
-                                28
+                                1,
+                                3,
+                                6,
+                                36,
+                                37,
+                                38,
+                                39,
+                                40
                             ]
                         }
                     },
@@ -902,21 +1030,42 @@
                         "code": [
                             {
                                 "id": 20,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 21,
+                                "ir_instruction": 25
+                            },
+                            {
+                                "id": 21,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 22,
+                                "ir_instruction": 27
+                            },
+                            {
+                                "id": 22,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 6,
+                                "control_next": 23,
+                                "ir_instruction": 29
+                            },
+                            {
+                                "id": 23,
                                 "opcode": "int64_load",
                                 "location": 3,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 21,
-                                "ir_instruction": 25
+                                "control_next": 24,
+                                "ir_instruction": 31
                             },
                             {
-                                "id": 21,
+                                "id": 24,
                                 "opcode": "indirect_jump",
-                                "arg": 20,
+                                "arg": 23,
                                 "control_next": null,
-                                "ir_instruction": 26
+                                "ir_instruction": 32
                             }
                         ],
                         "public_labels": [],
@@ -930,9 +1079,14 @@
                             ],
                             "immediate_dominator": 3,
                             "alive_instructions": [
+                                1,
                                 3,
+                                6,
                                 20,
-                                21
+                                21,
+                                22,
+                                23,
+                                24
                             ]
                         }
                     },
@@ -987,6 +1141,7 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
+                                1,
                                 3,
                                 6,
                                 13,

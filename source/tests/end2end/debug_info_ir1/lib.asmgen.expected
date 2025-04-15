@@ -1543,7 +1543,79 @@
                     "arg": 0.000000
                 },
                 {
+                    "opcode": "get_local",
+                    "id": 343597383682,
+                    "type": 80,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383683,
+                    "type": 80,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383698,
+                    "type": 80,
+                    "type_index": 18
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383699,
+                    "type": 80,
+                    "type_index": 19
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383682,
+                    "type": 80,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383683,
+                    "type": 80,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383698,
+                    "type": 80,
+                    "type_index": 18
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 343597383699,
+                    "type": 80,
+                    "type_index": 19
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": [],
@@ -1575,7 +1647,7 @@
                     "line": 70,
                     "column": 5,
                     "begin": 34,
-                    "end": 36
+                    "end": 44
                 }
             ]
         }
@@ -5104,7 +5176,7 @@
                     },
                     {
                         "tag": "code_end",
-                        "value": 36
+                        "value": 44
                     },
                     {
                         "tag": "external",
@@ -5203,7 +5275,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 36
+                                "value": 44
                             },
                             {
                                 "tag": "local_variable",
@@ -5254,7 +5326,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 36
+                                "value": 44
                             },
                             {
                                 "tag": "local_variable",
@@ -5305,7 +5377,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 36
+                                "value": 44
                             },
                             {
                                 "tag": "local_variable",
@@ -5356,7 +5428,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 36
+                                "value": 44
                             },
                             {
                                 "tag": "local_variable",
@@ -5407,7 +5479,7 @@
                             },
                             {
                                 "tag": "code_end",
-                                "value": 36
+                                "value": 44
                             },
                             {
                                 "tag": "global_variable",

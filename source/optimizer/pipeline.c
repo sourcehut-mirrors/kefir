@@ -47,6 +47,7 @@ kefir_result_t kefir_optimizer_pass_resolve(const char *name, const struct kefir
     PASS(LocalAllocSink);
     PASS(BlockMerge);
     PASS(DCE);
+    PASS(DeadAlloc);
     PASS(InlineFunc);
     PASS(TailCalls);
 #undef PASS

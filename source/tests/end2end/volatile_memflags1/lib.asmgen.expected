@@ -1251,6 +1251,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 403726925824,
+                    "type": 77,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -1317,6 +1326,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 420906795008,
+                    "type": 81,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -1383,6 +1401,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 438086664192,
+                    "type": 85,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -1449,6 +1476,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 455266533376,
+                    "type": 89,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -2113,6 +2149,24 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -2437,7 +2491,25 @@
                     "opcode": "int64_add"
                 },
                 {
+                    "opcode": "get_local",
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "return"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -2716,6 +2788,24 @@
                 },
                 {
                     "opcode": "scope_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 584115552258,
+                    "type": 136,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []

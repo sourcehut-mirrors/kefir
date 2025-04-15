@@ -222,6 +222,21 @@ kefir_result_t kefir_opt_code_builder_get_argument(struct kefir_mem *mem, struct
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_code_builder_local_lifetime_mark(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                          kefir_opt_block_id_t block_id,
+                                                          kefir_opt_instruction_ref_t ref,
+                                                          kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK,
+                                       .parameters.refs = {ref, KEFIR_ID_NONE, KEFIR_ID_NONE, KEFIR_ID_NONE}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_opt_code_builder_int_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                    kefir_opt_block_id_t block_id, kefir_int64_t value,
                                                    kefir_opt_instruction_ref_t *instr_id_ptr) {

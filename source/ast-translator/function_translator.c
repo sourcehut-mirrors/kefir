@@ -25,8 +25,8 @@
 #include "kefir/ast-translator/value.h"
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/ast-translator/typeconv.h"
-#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast-translator/debug/translator.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
@@ -580,6 +580,7 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         associated_ordinary_scope, subprogram_entry_id, function_begin_index, function_end_index));
     REQUIRE_OK(
         kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, &function_context->local_translator_context));
+    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
 
     return KEFIR_OK;
 }

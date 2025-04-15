@@ -62,6 +62,7 @@ DECLARE_PASS(BlockMerge);
 DECLARE_PASS(DCE);
 DECLARE_PASS(InlineFunc);
 DECLARE_PASS(TailCalls);
+DECLARE_PASS(DeadAlloc);
 #undef DECLARE_PASS
 #endif
 

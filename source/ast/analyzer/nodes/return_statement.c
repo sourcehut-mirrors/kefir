@@ -70,5 +70,12 @@ kefir_result_t kefir_ast_analyze_return_statement_node(struct kefir_mem *mem, co
                                                 "Returned value shall be assignable to the function return type"));
     }
     base->properties.statement_props.return_type = function_return_type;
+
+    struct kefir_ast_flow_control_structure *top_control_struct;
+    REQUIRE_OK(kefir_ast_flow_control_tree_top(context->flow_control_tree, &top_control_struct));
+    base->properties.statement_props.origin_flow_control_point =
+        kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, top_control_struct);
+    REQUIRE(base->properties.statement_props.origin_flow_control_point != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate AST flow control point"));
     return KEFIR_OK;
 }

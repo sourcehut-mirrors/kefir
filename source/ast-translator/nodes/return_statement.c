@@ -20,10 +20,9 @@
 
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
-#include "kefir/ast-translator/flow_control.h"
 #include "kefir/ast-translator/util.h"
 #include "kefir/ast-translator/typeconv.h"
-#include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -52,6 +51,16 @@ kefir_result_t kefir_ast_translate_return_statement_node(struct kefir_mem *mem,
                                                     node->base.properties.statement_props.return_type));
         }
     }
+
+    struct kefir_ast_flow_control_structure *control_struct =
+        node->base.properties.statement_props.origin_flow_control_point->self;
+    for (; control_struct != NULL; control_struct = kefir_ast_flow_control_structure_parent(control_struct)) {
+        if (control_struct->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                mem, context, builder, control_struct->associated_scopes.ordinary_scope));
+        }
+    }
+
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_RETURN, 0));
     return KEFIR_OK;
 }

@@ -170,12 +170,30 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 22,
+                    "arg": 24,
                     "condition": "8bit"
                 },
                 {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "jump",
-                    "arg": 23
+                    "arg": 27
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "jump",
@@ -231,6 +249,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []

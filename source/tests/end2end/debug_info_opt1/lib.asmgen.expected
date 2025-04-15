@@ -8,7 +8,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 53,
+                        "control_flow": 62,
                         "code": [
                             {
                                 "id": 0,
@@ -119,11 +119,11 @@
                                 "ir_instruction": 95
                             },
                             {
-                                "id": 53,
+                                "id": 62,
                                 "opcode": "return",
                                 "arg": 48,
                                 "control_next": null,
-                                "ir_instruction": 110
+                                "ir_instruction": 128
                             }
                         ],
                         "public_labels": [],
@@ -144,7 +144,7 @@
                                 40,
                                 44,
                                 48,
-                                53
+                                62
                             ]
                         }
                     }

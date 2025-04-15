@@ -142,7 +142,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions1, "AST node analysis - functi
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(stmt1->properties.statement_props.origin_flow_control_point == NULL);
+    ASSERT(stmt1->properties.statement_props.origin_flow_control_point != NULL);
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(global_context.context.resolve_ordinary_identifier(&global_context.context, "fn1", &scoped_id));
@@ -211,7 +211,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions2, "AST node analysis - functi
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(stmt1->properties.statement_props.origin_flow_control_point == NULL);
+    ASSERT(stmt1->properties.statement_props.origin_flow_control_point != NULL);
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(global_context.context.resolve_ordinary_identifier(&global_context.context, "pi", &scoped_id));
@@ -322,7 +322,7 @@ DEFINE_CASE(ast_node_analysis_function_definitions3, "AST node analysis - functi
 
     ASSERT(stmt1->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(stmt1->properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(stmt1->properties.statement_props.origin_flow_control_point == NULL);
+    ASSERT(stmt1->properties.statement_props.origin_flow_control_point != NULL);
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(global_context.context.resolve_ordinary_identifier(&global_context.context, "fn1", &scoped_id));

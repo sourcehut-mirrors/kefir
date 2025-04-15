@@ -25,10 +25,6 @@ _kefir_func_test_label0:
     ret
 _kefir_func_test_label1:
 _kefir_local_public_label_test_L1:
-    movq -8(%rbp), %rax
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
 __kefir_text_func_test_end:
 
 test2:

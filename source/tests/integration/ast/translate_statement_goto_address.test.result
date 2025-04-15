@@ -170,15 +170,33 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 23,
+                    "arg": 25,
                     "condition": "8bit"
                 },
                 {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "block_label",
-                    "arg": 25
+                    "arg": 29
                 },
                 {
                     "opcode": "indirect_jump"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "block_label",
@@ -237,6 +255,15 @@
                 },
                 {
                     "opcode": "vstack_pop"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": [
@@ -246,7 +273,7 @@
                 },
                 {
                     "label": "_kefir_local_public_label_goto1_end",
-                    "location": 25
+                    "location": 29
                 }
             ]
         },

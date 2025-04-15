@@ -100,6 +100,17 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
     REQUIRE(found_origin_first || found_target_first,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected AST flow control structure"));
 
+    for (struct kefir_ast_flow_control_structure *origin_block = original_position->self; origin_block != NULL;
+         origin_block = kefir_ast_flow_control_structure_parent(origin_block)) {
+        if (origin_block->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                mem, context, builder, origin_block->associated_scopes.ordinary_scope));
+        }
+        if (origin_block == common_parent) {
+            break;
+        }
+    }
+
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_JUMP, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, target_position, builder->block,
                                                                  KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder) - 1));

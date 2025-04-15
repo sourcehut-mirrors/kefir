@@ -112,6 +112,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(int_placeholder, KEFIR_OPT_OPCODE_INT_PLACEHOLDER) _separator \
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER) _separator \
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER) _separator \
+    _def(local_lifetime_mark, KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) _separator \
     _def(alloc_local, KEFIR_OPT_OPCODE_ALLOC_LOCAL) _separator \
     _def(ref_local, KEFIR_OPT_OPCODE_REF_LOCAL) _separator \
     _def(get_global, KEFIR_OPT_OPCODE_GET_GLOBAL) _separator \

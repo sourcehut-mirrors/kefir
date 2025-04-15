@@ -236,6 +236,15 @@
                 {
                     "opcode": "jump",
                     "arg": 5
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []

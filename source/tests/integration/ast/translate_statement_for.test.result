@@ -346,6 +346,15 @@
                 {
                     "opcode": "jump",
                     "arg": 5
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 34359738368,
+                    "type": 8,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []
@@ -432,7 +441,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 34,
+                    "arg": 38,
                     "condition": "8bit"
                 },
                 {
@@ -447,20 +456,38 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 23,
+                    "arg": 25,
                     "condition": "8bit"
                 },
                 {
-                    "opcode": "jump",
-                    "arg": 24
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 24
+                    "arg": 28
                 },
                 {
                     "opcode": "jump",
-                    "arg": 34
+                    "arg": 28
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "jump",
+                    "arg": 38
                 },
                 {
                     "opcode": "get_local",
@@ -505,6 +532,15 @@
                 {
                     "opcode": "jump",
                     "arg": 12
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 }
             ],
             "public_labels": []

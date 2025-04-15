@@ -76,6 +76,13 @@
                                 "ir_instruction": 8
                             },
                             {
+                                "id": 10,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 11,
+                                "ir_instruction": 13
+                            },
+                            {
                                 "id": 7,
                                 "opcode": "uint_const",
                                 "value": 65535,
@@ -103,11 +110,11 @@
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 10,
+                                "id": 11,
                                 "opcode": "return",
                                 "arg": 9,
                                 "control_next": null,
-                                "ir_instruction": 12
+                                "ir_instruction": 14
                             }
                         ],
                         "public_labels": [],
@@ -126,7 +133,8 @@
                                 7,
                                 8,
                                 9,
-                                10
+                                10,
+                                11
                             ]
                         }
                     }
@@ -212,6 +220,13 @@
                                 "ir_instruction": 8
                             },
                             {
+                                "id": 10,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 11,
+                                "ir_instruction": 13
+                            },
+                            {
                                 "id": 7,
                                 "opcode": "uint_const",
                                 "value": 65535,
@@ -239,11 +254,11 @@
                                 "ir_instruction": 11
                             },
                             {
-                                "id": 10,
+                                "id": 11,
                                 "opcode": "return",
                                 "arg": 9,
                                 "control_next": null,
-                                "ir_instruction": 12
+                                "ir_instruction": 14
                             }
                         ],
                         "public_labels": [],
@@ -262,7 +277,8 @@
                                 7,
                                 8,
                                 9,
-                                10
+                                10,
+                                11
                             ]
                         }
                     }
@@ -443,6 +459,20 @@
                             },
                             {
                                 "id": 17,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 1,
+                                "control_next": 18,
+                                "ir_instruction": 30
+                            },
+                            {
+                                "id": 18,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 3,
+                                "control_next": 19,
+                                "ir_instruction": 32
+                            },
+                            {
+                                "id": 19,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -472,7 +502,9 @@
                                 14,
                                 15,
                                 16,
-                                17
+                                17,
+                                18,
+                                19
                             ]
                         }
                     }

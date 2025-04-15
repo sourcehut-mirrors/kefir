@@ -23,10 +23,10 @@
 #include "kefir/ast-translator/flow_control.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/util.h"
+#include "kefir/ast-translator/misc.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
-#include "kefir/core/source_error.h"
 
 kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
                                                       struct kefir_ast_translator_context *context,
@@ -141,6 +141,7 @@ kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
         associated_ordinary_scope, lexical_block_entry_id, begin, statement_end_index));
     REQUIRE_OK(kefir_ast_translator_context_pop_debug_hierarchy_entry(mem, context));
+    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
 
     return KEFIR_OK;
 }

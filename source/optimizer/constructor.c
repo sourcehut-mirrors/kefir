@@ -412,6 +412,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
         } break;
 
+        case KEFIR_IR_OPCODE_LOCAL_LIFETIME_MARK:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_local_lifetime_mark(mem, code, current_block_id, instr_ref2, &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            break;
+
         case KEFIR_IR_OPCODE_IJUMP:
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             REQUIRE_OK(kefir_opt_code_builder_finalize_indirect_jump(mem, code, current_block_id, instr_ref, NULL));

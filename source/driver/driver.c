@@ -45,11 +45,12 @@
     "constant-fold," \
     "op-simplify," \
     "dead-code-elimination," \
+    "dead-alloc," \
     "op-simplify," \
     "block-merge," \
     "dead-code-elimination," \
     "tail-calls"
-#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-func,local-alloc-sink"
+#define KEFIR_OPTIMIZER_PIPELINE_MINI_SPEC "inline-func,local-alloc-sink,dead-code-elimination,dead-alloc"
 
 #define KEFIR_CODEGEN_AMD64_PIPELINE_FULL_SPEC \
     "amd64-drop-virtual,amd64-propagate-jump,amd64-eliminate-label,amd64-peephole"

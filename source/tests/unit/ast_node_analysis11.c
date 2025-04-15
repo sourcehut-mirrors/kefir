@@ -744,7 +744,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(return1)));
     ASSERT(return1->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(return1->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(return1->base.properties.statement_props.origin_flow_control_point == NULL);
+    ASSERT(return1->base.properties.statement_props.origin_flow_control_point != NULL);
     ASSERT(return1->base.properties.statement_props.flow_control_statement == NULL);
     ASSERT(return1->expression == NULL);
     ASSERT(KEFIR_AST_TYPE_SAME(return1->base.properties.statement_props.return_type, kefir_ast_type_void()));
@@ -761,7 +761,7 @@ DEFINE_CASE(ast_node_analysis_return_statements1, "AST node analysis - return st
     ASSERT_OK(kefir_ast_analyze_node(&kft_mem, context, KEFIR_AST_NODE_BASE(return2)));
     ASSERT(return2->base.properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT);
     ASSERT(return2->base.properties.statement_props.target_flow_control_point == NULL);
-    ASSERT(return2->base.properties.statement_props.origin_flow_control_point == NULL);
+    ASSERT(return2->base.properties.statement_props.origin_flow_control_point != NULL);
     ASSERT(return2->base.properties.statement_props.flow_control_statement == NULL);
     ASSERT(return2->expression != NULL);
     ASSERT(return2->expression->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION);
