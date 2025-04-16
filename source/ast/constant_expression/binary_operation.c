@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/constant_expression_impl.h"
+#include "kefir/core/basic-types.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -382,45 +383,158 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 value->floating_point = as_float(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)) /
                                         as_float(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
             } else if (common_type_signed_integer) {
-                REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer != 0,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
-                                               "Expected non-zero divisor in constant expression"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), /,
-                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                switch (type_info.size) {
+#define DIV_CASE(_width)                                                                                \
+    do {                                                                                                \
+        const kefir_int##_width##_t arg1 =                                                              \
+            (kefir_int##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->integer;      \
+        const kefir_int##_width##_t arg2 =                                                              \
+            (kefir_int##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer;      \
+        REQUIRE(arg2 != 0, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,     \
+                                                  "Expected non-zero divisor in constant expression")); \
+        if (arg1 == KEFIR_INT##_width##_MIN && arg2 == -1) {                                            \
+            value->integer = arg1;                                                                      \
+        } else {                                                                                        \
+            value->integer = arg1 / arg2;                                                               \
+        }                                                                                               \
+    } while (0)
+
+                    case 1:
+                        DIV_CASE(8);
+                        break;
+
+                    case 2:
+                        DIV_CASE(16);
+                        break;
+
+                    case 3:
+                    case 4:
+                        DIV_CASE(32);
+                        break;
+
+                    default:
+                        DIV_CASE(64);
+                        break;
+#undef DIV_CASE
+                }
             } else {
-                REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer != 0,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
-                                               "Expected non-zero divisor in constant expression"));
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                APPLY_UNSIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), /,
-                                  KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                switch (type_info.size) {
+#define DIV_CASE(_width)                                                                                \
+    do {                                                                                                \
+        const kefir_uint##_width##_t arg1 =                                                             \
+            (kefir_uint##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->uinteger;    \
+        const kefir_uint##_width##_t arg2 =                                                             \
+            (kefir_uint##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->uinteger;    \
+        REQUIRE(arg2 != 0, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,     \
+                                                  "Expected non-zero divisor in constant expression")); \
+        value->integer = arg1 / arg2;                                                                   \
+    } while (0)
+
+                    case 1:
+                        DIV_CASE(8);
+                        break;
+
+                    case 2:
+                        DIV_CASE(16);
+                        break;
+
+                    case 3:
+                    case 4:
+                        DIV_CASE(32);
+                        break;
+
+                    default:
+                        DIV_CASE(64);
+                        break;
+#undef DIV_CASE
+                }
             }
             break;
 
         case KEFIR_AST_OPERATION_MODULO:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer != 0,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,
-                                           "Expected non-zero divisor in constant expression"));
             if (common_type_signed_integer) {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), %,
-                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                switch (type_info.size) {
+#define MOD_CASE(_width)                                                                                \
+    do {                                                                                                \
+        const kefir_int##_width##_t arg1 =                                                              \
+            (kefir_int##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->integer;      \
+        const kefir_int##_width##_t arg2 =                                                              \
+            (kefir_int##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer;      \
+        REQUIRE(arg2 != 0, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,     \
+                                                  "Expected non-zero divisor in constant expression")); \
+        if (arg1 == KEFIR_INT##_width##_MIN && arg2 == -1) {                                            \
+            value->integer = 0;                                                                         \
+        } else {                                                                                        \
+            value->integer = arg1 % arg2;                                                               \
+        }                                                                                               \
+    } while (0)
+
+                    case 1:
+                        MOD_CASE(8);
+                        break;
+
+                    case 2:
+                        MOD_CASE(16);
+                        break;
+
+                    case 3:
+                    case 4:
+                        MOD_CASE(32);
+                        break;
+
+                    default:
+                        MOD_CASE(64);
+                        break;
+#undef MOD_CASE
+                }
             } else {
+                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                APPLY_UNSIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), %,
-                                  KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                switch (type_info.size) {
+#define DIV_CASE(_width)                                                                                \
+    do {                                                                                                \
+        const kefir_uint##_width##_t arg1 =                                                             \
+            (kefir_uint##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->uinteger;    \
+        const kefir_uint##_width##_t arg2 =                                                             \
+            (kefir_uint##_width##_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->uinteger;    \
+        REQUIRE(arg2 != 0, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg2->source_location,     \
+                                                  "Expected non-zero divisor in constant expression")); \
+        value->integer = arg1 % arg2;                                                                   \
+    } while (0)
+
+                    case 1:
+                        DIV_CASE(8);
+                        break;
+
+                    case 2:
+                        DIV_CASE(16);
+                        break;
+
+                    case 3:
+                    case 4:
+                        DIV_CASE(32);
+                        break;
+
+                    default:
+                        DIV_CASE(64);
+                        break;
+#undef DIV_CASE
+                }
             }
             break;
 
@@ -432,8 +546,34 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
             if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer >= (kefir_int64_t) type_info.size * 8) {
                 value->integer = 0;
             } else if (common_type_signed_integer) {
-                APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), <<,
-                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->integer ==
+                    (kefir_int64_t) type_info.size * 8 - 1) {
+                    if ((KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->integer & 1) == 1) {
+                        switch (type_info.size) {
+                            case 1:
+                                value->integer = KEFIR_INT8_MIN;
+                                break;
+
+                            case 2:
+                                value->integer = KEFIR_INT16_MIN;
+                                break;
+
+                            case 3:
+                            case 4:
+                                value->integer = KEFIR_INT32_MIN;
+                                break;
+
+                            default:
+                                value->integer = KEFIR_INT64_MIN;
+                                break;
+                        }
+                    } else {
+                        value->integer = 0;
+                    }
+                } else {
+                    APPLY_SIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), <<,
+                                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
+                }
             } else {
                 APPLY_UNSIGNED_OP(type_info.size, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1), <<,
                                   KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2));
