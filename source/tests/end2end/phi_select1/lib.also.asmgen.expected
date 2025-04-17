@@ -216,8 +216,8 @@ select9:
 __kefir_text_func_select9_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $272, %rsp
-    movq %rdi, -272(%rbp)
+    sub $256, %rsp
+    mov %rdi, %r9
     lea 144(%rbp), %rax
     lea 16(%rbp), %rdx
     mov %rsi, %r8
@@ -235,7 +235,7 @@ __kefir_text_func_select9_begin:
     leaq -256(%rbp), %rdi
     test %r8d, %r8d
     cmovz %rdi, %rcx
-    movq -272(%rbp), %rax
+    mov %r9, %rax
     mov %rax, %rdi
     mov %rcx, %rsi
     cld

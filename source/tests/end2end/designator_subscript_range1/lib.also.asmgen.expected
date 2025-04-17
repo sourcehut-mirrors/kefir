@@ -12,8 +12,8 @@ getb:
 __kefir_text_func_getb_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $224, %rsp
-    movq %rdi, -224(%rbp)
+    sub $208, %rsp
+    mov %rdi, %rdx
 _kefir_func_getb_label0:
     leaq -204(%rbp), %rdi
     mov $0, %rax
@@ -219,7 +219,7 @@ _kefir_func_getb_label0:
     leaq -204(%rbp), %rdi
     add $196, %rdi
     movl %eax, (%rdi)
-    movq -224(%rbp), %rax
+    mov %rdx, %rax
     mov %rax, %rdi
     leaq -204(%rbp), %rsi
     cld

@@ -33,13 +33,13 @@ _kefir_func_sub_label0:
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
-    movq %rcx, -48(%rbp)
+    mov %rcx, -48(%rbp)
     movq %rax, %xmm0
     movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fsubp
-    movq -48(%rbp), %rax
+    mov -48(%rbp), %rax
     fstpl (%rax)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
@@ -60,13 +60,13 @@ _kefir_func_subf_label0:
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, -32(%rbp)
     movd %eax, %xmm0
     movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fsubp
-    movq -32(%rbp), %rax
+    mov -32(%rbp), %rax
     fstps (%rax)
     movl -12(%rbp), %eax
     movq %rax, %xmm0
@@ -94,11 +94,11 @@ _kefir_func_subl_label0:
     fldt -48(%rbp)
     fstpt -80(%rbp)
     lea -32(%rbp), %rax
-    movq %rax, -64(%rbp)
+    mov %rax, -64(%rbp)
     fldt -80(%rbp)
     fldt -32(%rbp)
 fsubp
-    movq -64(%rbp), %rax
+    mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -32(%rbp)
     fstpt -80(%rbp)
@@ -120,13 +120,13 @@ _kefir_func_mydiv_label0:
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
-    movq %rcx, -48(%rbp)
+    mov %rcx, -48(%rbp)
     movq %rax, %xmm0
     movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fdivp
-    movq -48(%rbp), %rax
+    mov -48(%rbp), %rax
     fstpl (%rax)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
@@ -147,13 +147,13 @@ _kefir_func_mydivf_label0:
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, -32(%rbp)
     movd %eax, %xmm0
     movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fdivp
-    movq -32(%rbp), %rax
+    mov -32(%rbp), %rax
     fstps (%rax)
     movl -12(%rbp), %eax
     movq %rax, %xmm0
@@ -181,11 +181,11 @@ _kefir_func_mydivl_label0:
     fldt -48(%rbp)
     fstpt -80(%rbp)
     lea -32(%rbp), %rax
-    movq %rax, -64(%rbp)
+    mov %rax, -64(%rbp)
     fldt -80(%rbp)
     fldt -32(%rbp)
 fdivp
-    movq -64(%rbp), %rax
+    mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -32(%rbp)
     fstpt -80(%rbp)
@@ -207,13 +207,13 @@ _kefir_func_mydivr_label0:
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %rax
     lea -16(%rbp), %rcx
-    movq %rcx, -48(%rbp)
+    mov %rcx, -48(%rbp)
     movq %rax, %xmm0
     movq %xmm0, -40(%rbp)
     fldl -40(%rbp)
     fldl -16(%rbp)
 fdivrp
-    movq -48(%rbp), %rax
+    mov -48(%rbp), %rax
     fstpl (%rax)
     movq -16(%rbp), %rax
     movq %rax, %xmm0
@@ -234,13 +234,13 @@ _kefir_func_mydivrf_label0:
     movd %xmm0, -12(%rbp)
     movl -16(%rbp), %eax
     lea -12(%rbp), %rcx
-    movq %rcx, -32(%rbp)
+    mov %rcx, -32(%rbp)
     movd %eax, %xmm0
     movd %xmm0, -24(%rbp)
     flds -24(%rbp)
     flds -12(%rbp)
 fdivrp
-    movq -32(%rbp), %rax
+    mov -32(%rbp), %rax
     fstps (%rax)
     movl -12(%rbp), %eax
     movq %rax, %xmm0
@@ -268,11 +268,11 @@ _kefir_func_mydivrl_label0:
     fldt -48(%rbp)
     fstpt -80(%rbp)
     lea -32(%rbp), %rax
-    movq %rax, -64(%rbp)
+    mov %rax, -64(%rbp)
     fldt -80(%rbp)
     fldt -32(%rbp)
 fdivrp
-    movq -64(%rbp), %rax
+    mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -32(%rbp)
     fstpt -80(%rbp)

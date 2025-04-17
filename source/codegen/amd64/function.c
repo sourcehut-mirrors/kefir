@@ -18,6 +18,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/codegen/amd64/asmcmp.h"
+#include "kefir/codegen/asmcmp/context.h"
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/module.h"
@@ -265,15 +267,15 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         &func->abi_function_declaration, &implicit_parameter_present, &implicit_parameter_reg));
     if (implicit_parameter_present) {
         kefir_asmcmp_virtual_register_index_t implicit_param_vreg, implicit_param_placement_vreg;
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &func->code.context, 1, 1,
-                                                                                   &implicit_param_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+            mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(
             mem, &func->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_param_placement_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &func->code, implicit_param_placement_vreg,
                                                                       implicit_parameter_reg));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context),
-                                          &KEFIR_ASMCMP_MAKE_VREG64(implicit_param_vreg),
-                                          &KEFIR_ASMCMP_MAKE_VREG64(implicit_param_placement_vreg), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &func->code,
+                                                             kefir_asmcmp_context_instr_tail(&func->code.context),
+                                                             implicit_param_vreg, implicit_param_placement_vreg, NULL));
         func->return_address_vreg = implicit_param_vreg;
     }
 

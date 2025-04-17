@@ -18,13 +18,13 @@ _kefir_func_circle_area_label0:
     movl -8(%rbp), %eax
     movd _kefir_func_circle_area_label2(%rip), %xmm2
     lea -4(%rbp), %rcx
-    movq %rcx, -16(%rbp)
+    mov %rcx, -16(%rbp)
     movd -4(%rbp), %xmm0
     movq %rax, %xmm1
 movdqu %xmm1, %xmm0
 mulss %xmm2, %xmm0
 addss %xmm0, %xmm0
-    movq -16(%rbp), %rax
+    mov -16(%rbp), %rax
     movd %xmm0, (%rax)
     movl -4(%rbp), %eax
     movq %rax, %xmm0

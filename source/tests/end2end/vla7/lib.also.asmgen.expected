@@ -12,15 +12,14 @@ test:
 __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    movq $0, -80(%rbp)
+    sub $64, %rsp
+    mov $0, %rsi
 _kefir_func_test_label0:
     movl %edi, -64(%rbp)
-    movq -80(%rbp), %rax
+    mov %rsi, %rax
     sub $16, %rsp
-    movq -80(%rbp), %rcx
-    movq %rcx, (%rsp)
-    movq %rsp, -80(%rbp)
+    movq %rsi, (%rsp)
+    mov %rsp, %rsi
     mov $0, %rdx
     imul $8, %rdx, %rcx
     leaq -48(%rbp), %rdx
@@ -95,15 +94,14 @@ test2:
 __kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    movq $0, -80(%rbp)
+    sub $64, %rsp
+    mov $0, %rsi
 _kefir_func_test2_label0:
     movl %edi, -64(%rbp)
-    movq -80(%rbp), %rax
+    mov %rsi, %rax
     sub $16, %rsp
-    movq -80(%rbp), %rcx
-    movq %rcx, (%rsp)
-    movq %rsp, -80(%rbp)
+    movq %rsi, (%rsp)
+    mov %rsp, %rsi
     mov $0, %rdx
     imul $8, %rdx, %rcx
     leaq -48(%rbp), %rdx
@@ -128,11 +126,10 @@ _kefir_func_test2_label0:
     mov %rsp, %rcx
     movq %rcx, (%rax)
 _kefir_func_test2_label1:
-    movq -80(%rbp), %rax
+    mov %rsi, %rax
     sub $16, %rsp
-    movq -80(%rbp), %rcx
-    movq %rcx, (%rsp)
-    movq %rsp, -80(%rbp)
+    movq %rsi, (%rsp)
+    mov %rsp, %rsi
     mov $1, %rdx
     imul $8, %rdx, %rcx
     leaq -48(%rbp), %rdx
@@ -161,11 +158,10 @@ _kefir_func_test2_label1:
     leaq -48(%rbp), %rcx
     add %rax, %rcx
     movq (%rcx), %rax
-    cmpq $0, -80(%rbp)
+    cmp $0, %rsi
     jz _kefir_func_test2_label2
-    movq -80(%rbp), %rsp
-    movq (%rsp), %rax
-    movq %rax, -80(%rbp)
+    mov %rsi, %rsp
+    movq (%rsp), %rsi
     add $16, %rsp
 _kefir_func_test2_label2:
     jmp _kefir_func_test2_label1

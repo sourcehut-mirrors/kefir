@@ -18,6 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/codegen/amd64/asmcmp.h"
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/core/error.h"
@@ -182,9 +183,9 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, vreg,
                                                                               KEFIR_AMD64_XASMGEN_REGISTER_RAX));
-                REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_VREG64(vreg), &KEFIR_ASMCMP_MAKE_VREG64(function->return_address_vreg), NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg,
+                    function->return_address_vreg, NULL));
 
                 if (return_vreg != KEFIR_ID_NONE) {
                     const struct kefir_abi_amd64_type_layout *return_layout;

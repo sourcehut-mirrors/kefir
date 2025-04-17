@@ -26,7 +26,7 @@ _kefir_func_discriminant_label0:
     movq -32(%rbp), %rcx
     movq -16(%rbp), %rdx
     lea -8(%rbp), %rsi
-    movq %rsi, -64(%rbp)
+    mov %rsi, -64(%rbp)
     movq %rax, %xmm11
     movq %rcx, %xmm1
     movq %rdx, %xmm7
@@ -36,7 +36,7 @@ mulsd %xmm7, %xmm0
 addsd %xmm0, %xmm0
 addsd %xmm0, %xmm0
 subsd %xmm0, %xmm11
-    movq -64(%rbp), %rax
+    mov -64(%rbp), %rax
     movq %xmm11, (%rax)
     movq -8(%rbp), %rax
     movq %rax, %xmm0

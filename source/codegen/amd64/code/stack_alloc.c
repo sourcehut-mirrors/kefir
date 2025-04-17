@@ -18,16 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "kefir/codegen/asmcmp/context.h"
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
-#include "kefir/codegen/amd64/symbolic_labels.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
 static kefir_result_t ensure_dynamic_scope_vreg(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function) {
     if (function->dynamic_scope_vreg == KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(mem, &function->code.context, 1, 1,
-                                                                                   &function->dynamic_scope_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
+                                                     &function->dynamic_scope_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, function->prologue_tail,
                                           &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
                                           &KEFIR_ASMCMP_MAKE_UINT(0), &function->prologue_tail));

@@ -12,7 +12,7 @@ __kefir_text_func_getb_begin:
     push %rbp
     mov %rsp, %rbp
     sub $224, %rsp
-    movq %rdi, -224(%rbp)
+    mov %rdi, %rdx
 _kefir_func_getb_label0:
     movl %esi, -208(%rbp)
     leaq -204(%rbp), %rdi
@@ -20,7 +20,9 @@ _kefir_func_getb_label0:
     mov $200, %rcx
     rep stosb
     movl -208(%rbp), %edi
+    movq %rdx, -224(%rbp)
     call getinteger@PLT
+    movq -224(%rbp), %rdx
     movl %eax, -4(%rbp)
     movl %eax, -204(%rbp)
     movl -4(%rbp), %eax
@@ -219,7 +221,7 @@ _kefir_func_getb_label0:
     leaq -204(%rbp), %rdi
     add $196, %rdi
     movl %eax, (%rdi)
-    movq -224(%rbp), %rax
+    mov %rdx, %rax
     mov %rax, %rdi
     leaq -204(%rbp), %rsi
     cld

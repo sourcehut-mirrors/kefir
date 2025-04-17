@@ -21,12 +21,11 @@ __kefir_text_func_eval2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    movq $0, -32(%rbp)
-    movq -32(%rbp), %rax
+    xor %edx, %edx
+    mov %rdx, %rax
     sub $16, %rsp
-    movq -32(%rbp), %rcx
-    movq %rcx, (%rsp)
-    movq %rsp, -32(%rbp)
+    movq %rdx, (%rsp)
+    mov %rsp, %rdx
     movq %rax, -24(%rbp)
     movsx %edi, %rax
     imul $8, %rax, %rax
@@ -42,11 +41,10 @@ __kefir_text_func_eval2_begin:
     movq %rax, -16(%rbp)
     movq -8(%rbp), %rcx
     movq -24(%rbp), %rax
-    cmpq $0, -32(%rbp)
+    cmp $0, %rdx
     jz _kefir_func_eval2_label1
-    movq -32(%rbp), %rsp
-    movq (%rsp), %rax
-    movq %rax, -32(%rbp)
+    mov %rdx, %rsp
+    movq (%rsp), %rdx
     add $16, %rsp
 _kefir_func_eval2_label1:
     movsx %edi, %rax

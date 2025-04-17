@@ -10,11 +10,8 @@ func1:
 __kefir_text_func_func1_begin:
     push %rbp
     mov %rbp, %rsp
-    sub %rsp, 16
-    mov QWORD PTR [%rbp - 16], %rdi
 _kefir_func_func1_label0:
-    mov %rax, QWORD PTR [%rbp - 16]
-    lea %rsp, [%rbp]
+    mov %rax, %rdi
     pop %rbp
     ret
 __kefir_text_func_func1_end:

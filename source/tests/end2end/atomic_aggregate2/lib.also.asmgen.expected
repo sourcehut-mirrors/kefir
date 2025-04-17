@@ -13,12 +13,14 @@ __kefir_text_func_load_buffer_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    movq %rdi, -80(%rbp)
+    mov %rdi, %r8
+    movq %r8, -80(%rbp)
     leaq -64(%rbp), %rdx
     mov $64, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -80(%rbp), %rax
+    movq -80(%rbp), %r8
+    mov %r8, %rax
     movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movdqu -48(%rbp), %xmm0
