@@ -654,7 +654,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
             kefir_target_abi_pad_aligned(return_layout->alignment, KEFIR_AMD64_ABI_QWORD);
 
         kefir_asmcmp_virtual_register_index_t implicit_vreg, result_vreg;
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
             mem, &function->code.context, result_size / KEFIR_AMD64_ABI_QWORD, result_alignment / KEFIR_AMD64_ABI_QWORD,
             &result_vreg));
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
@@ -763,7 +763,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             const kefir_size_t result_alignment =
                 kefir_target_abi_pad_aligned(return_layout->alignment, KEFIR_AMD64_ABI_QWORD);
 
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                 mem, &function->code.context, result_size / KEFIR_AMD64_ABI_QWORD,
                 result_alignment / KEFIR_AMD64_ABI_QWORD, &return_vreg));
 
@@ -848,7 +848,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                 mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
                 kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &return_vreg));
 
@@ -860,7 +860,7 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_COMPLEX_X87:
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                 mem, &function->code.context,
                 kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant),
                 kefir_abi_amd64_complex_long_double_qword_alignment(function->codegen->abi_variant), &return_vreg));

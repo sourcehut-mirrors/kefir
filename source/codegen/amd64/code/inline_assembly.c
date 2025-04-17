@@ -268,7 +268,7 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
         entry->type = param_type;
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT;
     } else {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1,
                                                                                      &entry->allocation_vreg));
 
         entry->type = param_type;
@@ -472,7 +472,7 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
              ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE ||
              ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE) &&
             entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT) {
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                 mem, &function->code.context, 1, 1, &entry->output_address_vreg));
         } else {
             entry->output_address_vreg = KEFIR_ASMCMP_INDEX_NONE;
@@ -738,7 +738,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
     switch (param_type->typecode) {
         case KEFIR_IR_TYPE_FLOAT32:
             if (entry->direct_value) {
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                     mem, &function->code.context, kefir_abi_amd64_float_qword_size(function->codegen->abi_variant),
                     kefir_abi_amd64_float_qword_alignment(function->codegen->abi_variant), &tmp_vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_movd(
@@ -758,7 +758,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
 
         case KEFIR_IR_TYPE_FLOAT64:
             if (entry->direct_value) {
-                REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                     mem, &function->code.context, kefir_abi_amd64_double_qword_size(function->codegen->abi_variant),
                     kefir_abi_amd64_double_qword_alignment(function->codegen->abi_variant), &tmp_vreg));
                 REQUIRE_OK(kefir_asmcmp_amd64_movq(

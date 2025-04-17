@@ -786,7 +786,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
             // Intentionally left blank
             break;
 
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
@@ -798,7 +798,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+kefir_result_t kefir_asmcmp_virtual_register_new_spill_space(
     struct kefir_mem *mem, struct kefir_asmcmp_context *context, kefir_size_t length, kefir_size_t alignment,
     kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -811,7 +811,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation
     REQUIRE(reg_alloc_idx != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
 
-    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE, reg_alloc_idx));
+    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE, reg_alloc_idx));
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
     reg_alloc->parameters.spill_space_allocation.length = length;
     reg_alloc->parameters.spill_space_allocation.alignment = alignment;
@@ -888,7 +888,7 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
 
     struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[reg_idx];
-    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE,
+    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE,
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type mismatch"));
 
     vreg->parameters.spill_space_allocation.length = length;
@@ -981,7 +981,7 @@ kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *mem, struct kef
 
     kefir_result_t res = kefir_hashtreeset_init(&stash->stashed_physical_regs, &kefir_hashtree_uint_ops);
     REQUIRE_CHAIN(&res, kefir_hashtreeset_init(&stash->excluded_virtual_regs, &kefir_hashtree_uint_ops));
-    REQUIRE_CHAIN(&res, kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, context, 0, 1,
+    REQUIRE_CHAIN(&res, kefir_asmcmp_virtual_register_new_spill_space(mem, context, 0, 1,
                                                                                           &stash->stash_area_vreg));
     REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &context->stashes, (kefir_hashtree_key_t) stash->index,
                                               (kefir_hashtree_value_t) stash));

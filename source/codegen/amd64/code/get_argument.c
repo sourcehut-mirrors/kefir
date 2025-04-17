@@ -79,7 +79,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
             kefir_size_t qwords;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context,
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context,
                                                                                          qwords, 1, &vreg));
 
             for (kefir_size_t i = 0; i < qwords; i++) {

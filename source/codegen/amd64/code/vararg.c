@@ -67,7 +67,7 @@ static kefir_result_t vararg_start_impl(struct kefir_mem *mem, struct kefir_code
                                &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg), NULL));
 
     if (function->vararg_area == KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
             mem, &function->code.context,
             kefir_abi_amd64_num_of_general_purpose_parameter_registers(function->codegen->abi_variant) +
                 kefir_abi_amd64_num_of_sse_parameter_registers(function->codegen->abi_variant) * 2,

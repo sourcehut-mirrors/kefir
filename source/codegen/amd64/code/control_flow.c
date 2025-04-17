@@ -142,8 +142,8 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                                                                  &target_vreg_idx));
                     break;
 
-                case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
-                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                         mem, &function->code.context, source_vreg->parameters.spill_space_allocation.length,
                         source_vreg->parameters.spill_space_allocation.alignment, &target_vreg_idx));
                     break;

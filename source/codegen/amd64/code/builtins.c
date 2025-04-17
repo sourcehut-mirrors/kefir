@@ -1144,7 +1144,7 @@ static kefir_result_t translate_flt_rounds(struct kefir_mem *mem, struct kefir_c
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected no arguments for __kefir_builtin_flt_rounds"));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_indirect_spill_space_allocation(mem, &function->code.context, 1, 1,
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1,
                                                                                  &tmp_area_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_stmxcsr(
