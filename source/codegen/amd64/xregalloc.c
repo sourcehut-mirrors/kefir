@@ -708,13 +708,6 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
                                             xregalloc->available_registers.num_of_floating_point_registers, 2));
             break;
 
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_DIRECT_SPILL_SPACE:
-            REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
-            REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length,
-                                           asmcmp_vreg->parameters.spill_space_allocation.alignment));
-            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT;
-            break;
-
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_INDIRECT_SPILL_SPACE:
             REQUIRE_OK(build_active_virtual_registers(mem, code, xregalloc, state, vreg));
             REQUIRE_OK(allocate_spill_area(mem, state, vreg, asmcmp_vreg->parameters.spill_space_allocation.length,
