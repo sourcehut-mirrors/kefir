@@ -270,6 +270,7 @@ static kefir_result_t extract_inputs_call_ref(const struct kefir_opt_code_contai
     for (kefir_size_t i = 0; i < call->argument_count; i++) {
         INPUT_CALLBACK(call->arguments[i], callback, payload);
     }
+    INPUT_CALLBACK(call->return_space, callback, payload);
     return KEFIR_OK;
 }
 

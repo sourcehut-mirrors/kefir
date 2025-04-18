@@ -1,0 +1,170 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern call1
+.extern call2
+.extern call3
+.extern call4
+.extern call5
+.extern call6
+.extern call7
+.extern call8
+.global call1_proxy
+.type call1_proxy, @function
+.global call2_proxy
+.type call2_proxy, @function
+.global call3_proxy
+.type call3_proxy, @function
+.global call4_proxy
+.type call4_proxy, @function
+.global call5_proxy
+.type call5_proxy, @function
+.global call6_proxy
+.type call6_proxy, @function
+.global call7_proxy
+.type call7_proxy, @function
+.global call8_proxy
+.type call8_proxy, @function
+
+.section .text
+__kefir_text_section_begin:
+call1_proxy:
+__kefir_text_func_call1_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call1_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call1@PLT
+    movb %al, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call1_proxy_end:
+
+call2_proxy:
+__kefir_text_func_call2_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call2_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call2@PLT
+    movw %ax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call2_proxy_end:
+
+call3_proxy:
+__kefir_text_func_call3_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call3_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call3@PLT
+    movw %ax, -8(%rbp)
+    shr $16, %eax
+    movb %al, -6(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call3_proxy_end:
+
+call4_proxy:
+__kefir_text_func_call4_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call4_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call4@PLT
+    movl %eax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call4_proxy_end:
+
+call5_proxy:
+__kefir_text_func_call5_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call5_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call5@PLT
+    movl %eax, -8(%rbp)
+    shr $32, %rax
+    movb %al, -4(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call5_proxy_end:
+
+call6_proxy:
+__kefir_text_func_call6_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call6_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call6@PLT
+    movl %eax, -8(%rbp)
+    shr $32, %rax
+    movw %ax, -4(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call6_proxy_end:
+
+call7_proxy:
+__kefir_text_func_call7_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call7_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call7@PLT
+    movl %eax, -8(%rbp)
+    shr $32, %rax
+    movw %ax, -4(%rbp)
+    shr $16, %rax
+    movb %al, -2(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call7_proxy_end:
+
+call8_proxy:
+__kefir_text_func_call8_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_call8_proxy_label0:
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rdi
+    call call8@PLT
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_call8_proxy_end:
+
+__kefir_text_section_end:
+

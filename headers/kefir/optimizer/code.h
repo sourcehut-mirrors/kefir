@@ -317,6 +317,7 @@ typedef struct kefir_opt_call_node {
 
     kefir_size_t argument_count;
     kefir_opt_instruction_ref_t *arguments;
+    kefir_opt_instruction_ref_t return_space;
 
     struct {
         kefir_opt_call_id_t prev;
@@ -452,6 +453,8 @@ kefir_result_t kefir_opt_code_container_call_set_argument(struct kefir_mem *, st
                                                           kefir_opt_instruction_ref_t);
 kefir_result_t kefir_opt_code_container_call_get_argument(const struct kefir_opt_code_container *, kefir_opt_call_id_t,
                                                           kefir_size_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_container_call_set_return_space(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                              kefir_opt_call_id_t, kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_opt_code_container_new_inline_assembly(struct kefir_mem *, struct kefir_opt_code_container *,
                                                             kefir_opt_block_id_t, kefir_id_t, kefir_size_t,

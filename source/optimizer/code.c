@@ -864,6 +864,10 @@ kefir_result_t kefir_opt_code_container_copy_instruction(struct kefir_mem *mem, 
                 REQUIRE_OK(
                     kefir_opt_code_container_call_set_argument(mem, code, call_ref, i, src_call_node->arguments[i]));
             }
+            if (src_call_node->return_space != KEFIR_ID_NONE) {
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_return_space(mem, code, call_ref, src_call_node->return_space));
+            }
         } break;
 
         case KEFIR_OPT_OPCODE_TAIL_INVOKE:
@@ -882,6 +886,10 @@ kefir_result_t kefir_opt_code_container_copy_instruction(struct kefir_mem *mem, 
             for (kefir_size_t i = 0; i < src_call_node->argument_count; i++) {
                 REQUIRE_OK(
                     kefir_opt_code_container_call_set_argument(mem, code, call_ref, i, src_call_node->arguments[i]));
+            }
+            if (src_call_node->return_space != KEFIR_ID_NONE) {
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_return_space(mem, code, call_ref, src_call_node->return_space));
             }
         } break;
 
@@ -1255,6 +1263,13 @@ static kefir_result_t kefir_opt_code_container_drop_call(struct kefir_mem *mem,
         REQUIRE_OK(
             kefir_hashtreeset_delete(mem, &use_entry->instruction, (kefir_hashtreeset_entry_t) call_node->output_ref));
     }
+    if (call_node->return_space != KEFIR_ID_NONE) {
+        struct kefir_hashtree_node *node2;
+        REQUIRE_OK(kefir_hashtree_at(&code->uses, (kefir_hashtree_key_t) call_node->return_space, &node2));
+        ASSIGN_DECL_CAST(struct instruction_use_entry *, use_entry, node2->value);
+        REQUIRE_OK(
+            kefir_hashtreeset_delete(mem, &use_entry->instruction, (kefir_hashtreeset_entry_t) call_node->output_ref));
+    }
     return KEFIR_OK;
 }
 
@@ -1479,6 +1494,7 @@ static kefir_result_t new_call_impl(struct kefir_mem *mem, struct kefir_opt_code
     } else {
         call_node->arguments = NULL;
     }
+    call_node->return_space = KEFIR_ID_NONE;
 
     kefir_result_t res = kefir_hashtree_insert(mem, &code->call_nodes, (kefir_hashtree_key_t) call_node->node_id,
                                                (kefir_hashtree_value_t) call_node);
@@ -1608,6 +1624,21 @@ kefir_result_t kefir_opt_code_container_call_get_argument(const struct kefir_opt
     REQUIRE(argument_index < call_node->argument_count,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Requested argument is out of call node bounds"));
     *argument_ref = call_node->arguments[argument_index];
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_call_set_return_space(struct kefir_mem *mem,
+                                                              struct kefir_opt_code_container *code,
+                                                              kefir_opt_call_id_t call_ref,
+                                                              kefir_opt_instruction_ref_t return_space_ref) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    struct kefir_opt_call_node *call_node = NULL;
+    REQUIRE_OK(code_container_call_mutable(code, call_ref, &call_node));
+    call_node->return_space = return_space_ref;
+
+    REQUIRE_OK(add_used_instructions(mem, code, call_node->output_ref, return_space_ref));
     return KEFIR_OK;
 }
 
@@ -2534,6 +2565,7 @@ kefir_result_t kefir_opt_code_container_replace_references(struct kefir_mem *mem
             for (kefir_size_t i = 0; i < call->argument_count; i++) {
                 REPLACE_REF(&call->arguments[i], to_ref, from_ref);
             }
+            REPLACE_REF(&call->return_space, to_ref, from_ref);
         } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INLINE_ASSEMBLY) {
             struct kefir_opt_inline_assembly_node *inline_asm = NULL;
             REQUIRE_OK(

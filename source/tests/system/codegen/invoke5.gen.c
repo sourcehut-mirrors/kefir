@@ -62,6 +62,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *proxyadd = kefir_ir_module_new_function_with_args(mem, &module, proxyadd_decl, 1024);
     REQUIRE(proxyadd != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxyadd_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
+    kefir_irbuilder_block_appendu32_4(mem, &proxyadd->body, KEFIR_IR_OPCODE_GET_LOCAL, addstruct_decl->result_type_id,
+                                      0, addstruct_decl->result_type_id, 0);
+    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);
     kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INT_CONST, 7);
     kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);
     kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INVOKE, addstruct_decl->id);

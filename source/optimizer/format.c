@@ -573,6 +573,8 @@ static kefir_result_t format_operation_call_ref(struct kefir_json_output *json,
     }
 
     REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "return_space"));
+    REQUIRE_OK(id_format(json, call->return_space));
     REQUIRE_OK(kefir_json_output_object_key(json, "indirect_ref"));
     REQUIRE_OK(id_format(json, oper->parameters.function_call.indirect_ref));
     return KEFIR_OK;

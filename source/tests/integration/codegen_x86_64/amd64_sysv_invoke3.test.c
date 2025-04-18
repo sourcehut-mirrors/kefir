@@ -25,6 +25,7 @@
 #include "kefir/ir/module.h"
 #include "kefir/core/mem.h"
 #include "kefir/core/util.h"
+#include "kefir/ir/opcodes.h"
 #include "kefir/test/codegen.h"
 #include "kefir/test/module_shim.h"
 
@@ -64,8 +65,12 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(proxyadd != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, proxyadd_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
+    kefir_irbuilder_block_appendu32_4(mem, &proxyadd->body, KEFIR_IR_OPCODE_GET_LOCAL, addstruct_decl->result_type_id,
+                                      0, addstruct_decl->result_type_id, 0);
+    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2);
     kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INT_CONST, 7);
     kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1);
+    kefir_irbuilder_block_appendi64(mem, &proxyadd->body, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2);
     kefir_irbuilder_block_appendu64(mem, &proxyadd->body, KEFIR_IR_OPCODE_INVOKE_VIRTUAL, addstruct_decl->id);
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, addstruct_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));

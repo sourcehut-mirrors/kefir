@@ -224,6 +224,11 @@ static kefir_result_t inline_operation_call_ref(struct do_inline_param *param,
         REQUIRE_OK(
             kefir_opt_code_container_call_set_argument(param->mem, param->dst_code, dst_call_ref, i, mapped_ref1));
     }
+    if (src_call_node->return_space != KEFIR_ID_NONE) {
+        REQUIRE_OK(get_instr_ref_mapping(param, src_call_node->return_space, &mapped_ref1));
+        REQUIRE_OK(
+            kefir_opt_code_container_call_set_return_space(param->mem, param->dst_code, dst_call_ref, mapped_ref1));
+    }
     return KEFIR_OK;
 }
 

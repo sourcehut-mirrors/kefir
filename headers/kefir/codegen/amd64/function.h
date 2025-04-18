@@ -354,6 +354,30 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *, struct 
                                                      const struct kefir_opt_instruction *, kefir_bool_t *,
                                                      kefir_asmcmp_virtual_register_index_t *);
 
+kefir_result_t kefir_codegen_amd64_load_general_purpose_register(struct kefir_mem *,
+                                                                 struct kefir_codegen_amd64_function *,
+                                                                 kefir_asmcmp_instruction_index_t,
+                                                                 kefir_asmcmp_instruction_index_t, kefir_size_t,
+                                                                 kefir_int64_t);
+kefir_result_t kefir_codegen_amd64_load_floating_point_register(struct kefir_mem *,
+                                                                struct kefir_codegen_amd64_function *,
+                                                                kefir_asmcmp_instruction_index_t,
+                                                                kefir_asmcmp_instruction_index_t, kefir_size_t,
+                                                                kefir_int64_t);
+kefir_result_t kefir_codegen_amd64_store_general_purpose_register(struct kefir_mem *,
+                                                                  struct kefir_codegen_amd64_function *,
+                                                                  kefir_asmcmp_instruction_index_t,
+                                                                  kefir_asmcmp_instruction_index_t, kefir_size_t,
+                                                                  kefir_int64_t);
+kefir_result_t kefir_codegen_amd64_store_floating_point_register(struct kefir_mem *,
+                                                                 struct kefir_codegen_amd64_function *,
+                                                                 kefir_asmcmp_instruction_index_t,
+                                                                 kefir_asmcmp_instruction_index_t, kefir_size_t,
+                                                                 kefir_int64_t);
+
+kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                      kefir_opt_call_id_t, kefir_bool_t *);
+
 #endif
 
 #endif

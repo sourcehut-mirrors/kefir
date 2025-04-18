@@ -19,7 +19,6 @@
 */
 
 #include "kefir/optimizer/pipeline.h"
-#include "kefir/optimizer/builder.h"
 #include "kefir/optimizer/code_util.h"
 #include "kefir/optimizer/structure.h"
 #include "kefir/core/error.h"
@@ -111,6 +110,8 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
                         break;
                 }
             }
+            // Despite being part of call node, return space does not escape per se (i.e. for callee it is legal to use
+            // only as long as the function does not return, thus no escape can happen).
         } break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
@@ -246,6 +247,10 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         mem, &func->code, block_id, call_node->function_declaration_id, call_node->argument_count,
         call_instr->operation.parameters.function_call.indirect_ref, &tail_call_ref, &tail_call_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_call(&func->code, call_ref, &call_node));
+    if (call_node->return_space != KEFIR_ID_NONE) {
+        REQUIRE_OK(
+            kefir_opt_code_container_call_set_return_space(mem, &func->code, tail_call_ref, call_node->return_space));
+    }
 
     for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
         REQUIRE_OK(

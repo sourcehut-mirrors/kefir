@@ -22,7 +22,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
 #include "kefir/ast-translator/function_declaration.h"
-#include "kefir/ast-translator/value.h"
+#include "kefir/ast-translator/temporaries.h"
 #include "kefir/ast/runtime.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast-translator/util.h"
@@ -90,6 +90,11 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
                 function_name != NULL,
                 KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert generated function name into symbol table"));
         }
+    }
+
+    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(node->base.properties.type)) {
+        REQUIRE_OK(kefir_ast_translator_fetch_temporary(mem, context, builder,
+                                                        &node->base.properties.expression_props.temporary_identifier));
     }
 
     struct kefir_ir_function_decl *ir_decl = NULL;

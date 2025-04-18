@@ -143,6 +143,50 @@ static kefir_result_t collect_translated_instructions(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+struct scheduler_schedule_param {
+    struct kefir_mem *mem;
+    struct kefir_codegen_amd64_function *func;
+};
+
+kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *mem,
+                                                      struct kefir_codegen_amd64_function *function,
+                                                      kefir_opt_call_id_t call_ref,
+                                                      kefir_bool_t *tail_call_possible_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+    REQUIRE(tail_call_possible_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    const struct kefir_opt_call_node *call_node;
+    REQUIRE_OK(kefir_opt_code_container_call(&function->function->code, call_ref, &call_node));
+
+    const struct kefir_ir_function_decl *ir_func_decl =
+        kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+    REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
+
+    struct kefir_abi_amd64_function_decl abi_func_decl;
+    REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, function->codegen->abi_variant, ir_func_decl, &abi_func_decl));
+
+    struct kefir_abi_amd64_function_parameter_requirements reqs, return_reqs;
+    const struct kefir_abi_amd64_function_parameters *parameters;
+    const struct kefir_abi_amd64_function_parameters *return_parameters;
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_decl_parameters(&abi_func_decl, &parameters));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_parameters_requirements(parameters, &reqs));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_decl_returns(&abi_func_decl, &return_parameters));
+    REQUIRE_CHAIN(&res, kefir_abi_amd64_function_parameters_requirements(return_parameters, &return_reqs));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_abi_amd64_function_decl_free(mem, &abi_func_decl);
+        return KEFIR_OK;
+    });
+    REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &abi_func_decl));
+
+    *tail_call_possible_ptr =
+        reqs.stack == 0 && return_reqs.stack == 0 && !ir_func_decl->returns_twice && !ir_func_decl->vararg;
+    return KEFIR_OK;
+}
+
 static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
                                          kefir_opt_code_instruction_scheduler_dependency_callback_t dependency_callback,
                                          void *dependency_callback_payload, kefir_bool_t *schedule_instruction,
@@ -152,12 +196,14 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction dependency scheduler callback"));
     REQUIRE(schedule_instruction != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer instruction scheduler flag"));
-    ASSIGN_DECL_CAST(const struct kefir_opt_code_container *, code, payload);
-    REQUIRE(code != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code container"));
+    ASSIGN_DECL_CAST(struct scheduler_schedule_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer scheduler parameter"));
 
     const struct kefir_opt_instruction *instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr_ref, &instr));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
+        return KEFIR_OK;
+    }
     if ((instr->operation.opcode == KEFIR_OPT_OPCODE_BRANCH_COMPARE &&
          (instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_EQUAL ||
           instr->operation.parameters.branch.comparison.operation == KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL ||
@@ -196,7 +242,8 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
           instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER ||
           instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL))) {
         const struct kefir_opt_instruction *arg2_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(code, instr->operation.parameters.refs[1], &arg2_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr->operation.parameters.refs[1],
+                                                  &arg2_instr));
         if (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST ||
             arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
             REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[0], dependency_callback_payload));
@@ -214,7 +261,8 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER ||
          instr->operation.parameters.comparison == KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL)) {
         const struct kefir_opt_instruction *arg1_instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(code, instr->operation.parameters.refs[0], &arg1_instr));
+        REQUIRE_OK(kefir_opt_code_container_instr(&param->func->function->code, instr->operation.parameters.refs[0],
+                                                  &arg1_instr));
         if (arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT32_CONST ||
             arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_FLOAT64_CONST) {
             REQUIRE_OK(dependency_callback(instr->operation.parameters.refs[1], dependency_callback_payload));
@@ -222,17 +270,45 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
             return KEFIR_OK;
         }
     }
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+        instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+        const struct kefir_opt_call_node *call_node;
+        REQUIRE_OK(kefir_opt_code_container_call(&param->func->function->code,
+                                                 instr->operation.parameters.function_call.call_ref, &call_node));
 
-    REQUIRE_OK(
-        kefir_opt_instruction_extract_inputs(code, instr, true, dependency_callback, dependency_callback_payload));
+        kefir_bool_t tail_call_possible;
+        REQUIRE_OK(
+            kefir_codegen_amd64_tail_call_possible(param->mem, param->func, call_node->node_id, &tail_call_possible));
+
+        if (call_node->return_space != KEFIR_ID_NONE && !tail_call_possible) {
+            REQUIRE_OK(dependency_callback(call_node->return_space, dependency_callback_payload));
+        }
+
+        if (instr->operation.parameters.function_call.indirect_ref != KEFIR_ID_NONE) {
+            REQUIRE_OK(dependency_callback(instr->operation.parameters.function_call.indirect_ref,
+                                           dependency_callback_payload));
+        }
+        for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
+            if (call_node->arguments[i] != KEFIR_ID_NONE) {
+                REQUIRE_OK(dependency_callback(call_node->arguments[i], dependency_callback_payload));
+            }
+        }
+
+        *schedule_instruction = true;
+        return KEFIR_OK;
+    }
+
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(&param->func->function->code, instr, true, dependency_callback,
+                                                    dependency_callback_payload));
     *schedule_instruction = true;
     return KEFIR_OK;
 }
 
 static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen_amd64_function *func) {
     // Schedule code
+    struct scheduler_schedule_param scheduler_param = {.mem = mem, .func = func};
     struct kefir_opt_code_instruction_scheduler scheduler = {.try_schedule = scheduler_schedule,
-                                                             .payload = (void *) &func->function->code};
+                                                             .payload = &scheduler_param};
     REQUIRE_OK(
         kefir_opt_code_schedule_run(mem, &func->schedule, &func->function->code, &func->function_analysis, &scheduler));
 

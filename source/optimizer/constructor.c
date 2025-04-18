@@ -626,6 +626,22 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                     kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
             }
 
+            const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_decl->result, 0);
+            if (return_typeentry != NULL) {
+                switch (return_typeentry->typecode) {
+                    case KEFIR_IR_TYPE_STRUCT:
+                    case KEFIR_IR_TYPE_ARRAY:
+                    case KEFIR_IR_TYPE_UNION:
+                        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, call_ref, instr_ref2));
+                        break;
+
+                    default:
+                        // Intentionally left blank
+                        break;
+                }
+            }
+
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             if (has_return) {
                 REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
@@ -655,6 +671,21 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                     kefir_opt_code_container_call_set_argument(mem, code, call_ref, num_of_params - i - 1, instr_ref2));
             }
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_decl->result, 0);
+            if (return_typeentry != NULL) {
+                switch (return_typeentry->typecode) {
+                    case KEFIR_IR_TYPE_STRUCT:
+                    case KEFIR_IR_TYPE_ARRAY:
+                    case KEFIR_IR_TYPE_UNION:
+                        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+                        REQUIRE_OK(kefir_opt_code_container_call_set_return_space(mem, code, call_ref, instr_ref2));
+                        break;
+
+                    default:
+                        // Intentionally left blank
+                        break;
+                }
+            }
 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             if (has_return) {

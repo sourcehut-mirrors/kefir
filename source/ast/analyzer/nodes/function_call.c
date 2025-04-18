@@ -119,5 +119,10 @@ kefir_result_t kefir_ast_analyze_function_call_node(struct kefir_mem *mem, const
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &return_type, return_type));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     base->properties.type = return_type;
+
+    if (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(return_type)) {
+        REQUIRE_OK(context->allocate_temporary_value(mem, context, return_type, NULL, &base->source_location,
+                                                     &base->properties.expression_props.temporary_identifier));
+    }
     return KEFIR_OK;
 }

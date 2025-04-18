@@ -1,0 +1,63 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern call1
+.extern call2
+.extern call3
+.global call1_proxy
+.type call1_proxy, @function
+.global call2_proxy
+.type call2_proxy, @function
+.global call3_proxy
+.type call3_proxy, @function
+
+.section .text
+__kefir_text_section_begin:
+call1_proxy:
+__kefir_text_func_call1_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %xmm0, -16(%rbp)
+    movl -16(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movd -4(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp call1@PLT
+__kefir_text_func_call1_proxy_end:
+
+call2_proxy:
+__kefir_text_func_call2_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %xmm0, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %xmm0
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp call2@PLT
+__kefir_text_func_call2_proxy_end:
+
+call3_proxy:
+__kefir_text_func_call3_proxy_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movq %xmm0, -32(%rbp)
+    movq %xmm1, -24(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -12(%rbp)
+    movl -24(%rbp), %eax
+    movl %eax, -4(%rbp)
+    movq -12(%rbp), %xmm0
+    movd -4(%rbp), %xmm1
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp call3@PLT
+__kefir_text_func_call3_proxy_end:
+
+__kefir_text_section_end:
+
