@@ -178,16 +178,16 @@ _kefir_func_fn2_label3:
     movq 88(%rbp), %r15
 _kefir_func_fn2_label4:
     movq 80(%rbp), %rax
-    movq %rax, -80(%rbp)
+    mov %rax, -80(%rbp)
 _kefir_func_fn2_label5:
     movq 72(%rbp), %rax
-    movq %rax, -72(%rbp)
+    mov %rax, -72(%rbp)
 _kefir_func_fn2_label6:
     movq 64(%rbp), %rax
-    movq %rax, -64(%rbp)
+    mov %rax, -64(%rbp)
 _kefir_func_fn2_label7:
     movq 56(%rbp), %rax
-    movq %rax, -56(%rbp)
+    mov %rax, -56(%rbp)
 _kefir_func_fn2_label8:
     movq 48(%rbp), %rax
 _kefir_func_fn2_label9:
@@ -287,14 +287,10 @@ _kefir_func_fn3_label5:
     movq 56(%rbp), %xmm15
 _kefir_func_fn3_label6:
     movq 48(%rbp), %rax
-    movq %rax, -48(%rbp)
-    movq 56(%rbp), %rax
-    movq %rax, -40(%rbp)
+    mov %rax, -48(%rbp)
 _kefir_func_fn3_label7:
     movq 40(%rbp), %rax
-    movq %rax, -32(%rbp)
-    movq 48(%rbp), %rax
-    movq %rax, -24(%rbp)
+    mov %rax, -32(%rbp)
 _kefir_func_fn3_label8:
     movq 32(%rbp), %xmm8
 _kefir_func_fn3_label9:

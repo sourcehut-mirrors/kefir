@@ -1256,6 +1256,29 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
             break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+            switch (reg_alloc2->type) {
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
+                    // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                    if (reg_alloc1->spill_area.index != reg_alloc2->spill_area.index) {
+                        const kefir_size_t length = MIN(reg_alloc1->spill_area.length, reg_alloc2->spill_area.length);
+                        REQUIRE_OK(copy_spill_area(mem, state, instr_idx, reg_alloc2->spill_area.index,
+                                                   reg_alloc1->spill_area.index, length));
+                    }
+                    do_link = false;
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected allocated virtual register");
+            }
+            break;
+
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
             if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT ||
                 reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT) {
