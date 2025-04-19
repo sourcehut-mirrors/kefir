@@ -181,9 +181,9 @@ __kefir_text_func_f32_store_begin:
     movq -32(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
+    movq %xmm0, -24(%rbp)
     mov %rdi, %rsi
-    leaq -32(%rbp), %rcx
+    leaq -24(%rbp), %rcx
     mov %rcx, %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -198,13 +198,13 @@ f64_store:
 __kefir_text_func_f64_store_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm0, -48(%rbp)
-    movq %xmm1, -40(%rbp)
-    movq -48(%rbp), %xmm0
+    movq %xmm0, -64(%rbp)
+    movq %xmm1, -56(%rbp)
+    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -40(%rbp), %xmm0
+    movq -56(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %xmm0
     movq %xmm0, -48(%rbp)
@@ -232,9 +232,9 @@ __kefir_text_func_str1_set_a_begin:
     movq -32(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
+    movq %xmm0, -24(%rbp)
     mov %rdi, %rsi
-    leaq -32(%rbp), %rcx
+    leaq -24(%rbp), %rcx
     mov %rcx, %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -249,13 +249,13 @@ str1_set_b:
 __kefir_text_func_str1_set_b_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm0, -48(%rbp)
-    movq %xmm1, -40(%rbp)
-    movq -48(%rbp), %xmm0
+    movq %xmm0, -64(%rbp)
+    movq %xmm1, -56(%rbp)
+    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -40(%rbp), %xmm0
+    movq -56(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %xmm0
     movq %xmm0, -48(%rbp)
@@ -385,12 +385,12 @@ __kefir_text_func_f32_store_index_begin:
     movq -32(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -16(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
+    movq %xmm0, -24(%rbp)
     mov %esi, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    leaq -32(%rbp), %rax
+    leaq -24(%rbp), %rax
     mov %rax, %rdx
     mov $8, %rdi
     mov $5, %rcx
@@ -425,7 +425,7 @@ f64_store_index:
 __kefir_text_func_f64_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $64, %rsp
     stmxcsr -8(%rbp)
     movq %xmm0, -48(%rbp)
     movq %xmm1, -40(%rbp)
@@ -434,14 +434,14 @@ __kefir_text_func_f64_store_index_begin:
     movq -40(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
     movq -24(%rbp), %xmm0
-    movq %xmm0, -48(%rbp)
+    movq %xmm0, -64(%rbp)
     movq -16(%rbp), %xmm0
-    movq %xmm0, -40(%rbp)
+    movq %xmm0, -56(%rbp)
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    leaq -48(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdx
     mov $16, %rdi
     mov $5, %rcx

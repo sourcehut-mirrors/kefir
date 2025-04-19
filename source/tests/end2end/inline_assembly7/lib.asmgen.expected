@@ -86,17 +86,17 @@ unwrap_s1:
 __kefir_text_func_unwrap_s1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $32, %rsp
 _kefir_func_unwrap_s1_label0:
-    movq %rdi, -16(%rbp)
-    movl -16(%rbp), %eax
+    movq %rdi, -32(%rbp)
+    movl -32(%rbp), %eax
     movl %eax, -8(%rbp)
     movl $0, -4(%rbp)
     lea -4(%rbp), %rax
-    mov %rax, -16(%rbp)
+    mov %rax, -24(%rbp)
     mov -8(%rbp), %eax
 
-    mov -16(%rbp), %rcx
+    mov -24(%rbp), %rcx
     mov %eax, (%rcx)
     movl -4(%rbp), %eax
     lea (%rbp), %rsp

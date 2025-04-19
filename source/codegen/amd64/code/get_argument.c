@@ -79,8 +79,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
             kefir_size_t qwords;
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_length(&function_parameter, &qwords));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context,
-                                                                                         qwords, 1, &vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1, &vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(mem, &function->code, function->argument_touch_instr,
+                                                                 vreg, &function->argument_touch_instr));
+            REQUIRE_OK(kefir_hashtreeset_add(mem, &function->vregs_alive_at_end, (kefir_hashtreeset_entry_t) vreg));
 
             for (kefir_size_t i = 0; i < qwords; i++) {
                 struct kefir_abi_amd64_function_parameter subparam;

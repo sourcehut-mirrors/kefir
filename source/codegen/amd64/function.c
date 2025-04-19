@@ -426,6 +426,16 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), block_id, NULL));
     }
 
+    struct kefir_hashtreeset_iterator iter;
+    for (res = kefir_hashtreeset_iter(&func->vregs_alive_at_end, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
+        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
     if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
             mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->return_address_vreg, NULL));
@@ -805,6 +815,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->local_variable_type_layouts, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&func->local_variable_type_layouts, free_type_layout, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&func->vregs_alive_at_end, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
@@ -830,6 +841,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &func->vregs_alive_at_end));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->local_variable_type_layouts));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->locals));
