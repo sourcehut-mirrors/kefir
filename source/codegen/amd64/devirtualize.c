@@ -1255,18 +1255,15 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
             break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
-            if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT ||
-                reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT) {
-                const kefir_size_t length = MIN(reg_alloc1->spill_area.length, reg_alloc2->spill_area.length);
-                if (reg_alloc1->spill_area.index != reg_alloc2->spill_area.index) {
-                    REQUIRE_OK(copy_spill_area(mem, state, instr_idx, reg_alloc2->spill_area.index,
-                                               reg_alloc1->spill_area.index, length));
-                }
-                do_link = false;
-            } else {
-                REQUIRE(reg_alloc2->type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register allocation type"));
+            REQUIRE(reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT &&
+                        reg_alloc1->spill_area.length == reg_alloc2->spill_area.length,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Indirect spill area virtual register can only be linked to "
+                                                         "another such virtual register of equal length"));
+            if (reg_alloc1->spill_area.index != reg_alloc2->spill_area.index) {
+                REQUIRE_OK(copy_spill_area(mem, state, instr_idx, reg_alloc2->spill_area.index,
+                                           reg_alloc1->spill_area.index, reg_alloc1->spill_area.length));
             }
+            do_link = false;
             break;
     }
 
