@@ -1176,6 +1176,9 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link memory pointer virtual register");
 
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link local variable virtual register");
+
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
             switch (reg_alloc2->type) {
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
@@ -1265,16 +1268,6 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected register allocation type"));
             }
             break;
-
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE: {
-            const struct kefir_asmcmp_virtual_register *vreg1, *vreg2;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[0].vreg.index, &vreg1));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg2));
-            REQUIRE(reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE &&
-                        vreg1->parameters.local_variable.identifier == vreg2->parameters.local_variable.identifier &&
-                        vreg1->parameters.local_variable.offset == vreg2->parameters.local_variable.offset,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Linking local variable virtual registers is not supported"));
-        } break;
     }
 
     if (do_link) {
