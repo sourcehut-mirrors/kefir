@@ -160,9 +160,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
-                    REQUIRE_OK(kefir_asmcmp_amd64_lea(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                        &KEFIR_ASMCMP_MAKE_VREG64(vreg2), &KEFIR_ASMCMP_MAKE_VREG(vreg), NULL));
+                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
+                        NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
@@ -179,9 +179,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_BITS:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
-                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
-                        NULL));
+                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_VREG(vreg2),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
@@ -189,9 +190,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_FLOAT64:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &vreg2));
-                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
-                        NULL));
+                    REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_VREG(vreg2),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 

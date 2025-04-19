@@ -12,7 +12,7 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movq 32(%rbp), %rcx
+    mov 32(%rbp), %rcx
     mov %rcx, %rdx
 _kefir_func_test1_label1:
     movq %rcx, -16(%rbp)

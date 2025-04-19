@@ -155,10 +155,8 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
-                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_memory_pointer(
-                        mem, &function->code.context, source_vreg->parameters.memory.base_reg,
-                        source_vreg->parameters.memory.offset, &target_vreg_idx));
-                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &target_vreg_idx));
                     break;
             }
 
