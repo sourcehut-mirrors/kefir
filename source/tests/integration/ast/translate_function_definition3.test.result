@@ -184,6 +184,15 @@
             "name": "sum",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 21474836480,
+                    "type": 5,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },

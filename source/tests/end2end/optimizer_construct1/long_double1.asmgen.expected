@@ -42,7 +42,7 @@
                 "blocks": [
                     {
                         "id": 0,
-                        "control_flow": 2,
+                        "control_flow": 1,
                         "code": [
                             {
                                 "id": 0,
@@ -54,31 +54,38 @@
                             },
                             {
                                 "id": 1,
-                                "opcode": "long_double_const",
-                                "value": 4.281000,
-                                "control_next": null,
-                                "ir_instruction": 2
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 3,
+                                "ir_instruction": 1
                             },
                             {
                                 "id": 2,
-                                "opcode": "long_double_store",
-                                "location": 0,
-                                "value": 1,
-                                "flags": {
-                                    "volatile": false
-                                },
-                                "control_next": 3,
-                                "ir_instruction": 3
+                                "opcode": "long_double_const",
+                                "value": 4.281000,
+                                "control_next": null,
+                                "ir_instruction": 4
                             },
                             {
                                 "id": 3,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 0,
+                                "opcode": "long_double_store",
+                                "location": 0,
+                                "value": 2,
+                                "flags": {
+                                    "volatile": false
+                                },
                                 "control_next": 4,
-                                "ir_instruction": 6
+                                "ir_instruction": 5
                             },
                             {
                                 "id": 4,
+                                "opcode": "local_lifetime_mark",
+                                "arg": 0,
+                                "control_next": 5,
+                                "ir_instruction": 8
+                            },
+                            {
+                                "id": 5,
                                 "opcode": "return",
                                 "arg": null,
                                 "control_next": null,
@@ -95,7 +102,8 @@
                                 1,
                                 2,
                                 3,
-                                4
+                                4,
+                                5
                             ]
                         }
                     }

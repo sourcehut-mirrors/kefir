@@ -1194,6 +1194,15 @@
             "name": "setA",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 403726925824,
+                    "type": 77,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -1268,6 +1277,15 @@
             "identifier": 41,
             "name": "setB",
             "body": [
+                {
+                    "opcode": "get_local",
+                    "id": 420906795008,
+                    "type": 81,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
                 {
                     "opcode": "get_argument",
                     "arg": 0
@@ -1344,6 +1362,15 @@
             "name": "setC",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 438086664192,
+                    "type": 85,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -1419,6 +1446,15 @@
             "name": "setD",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 455266533376,
+                    "type": 89,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -1493,6 +1529,24 @@
             "identifier": 44,
             "name": "setS",
             "body": [
+                {
+                    "opcode": "get_local",
+                    "id": 472446402560,
+                    "type": 108,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 472446402561,
+                    "type": 108,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
                 {
                     "opcode": "get_argument",
                     "arg": 1
@@ -2176,6 +2230,15 @@
             "name": "sumS",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 528280977408,
+                    "type": 121,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -2519,6 +2582,15 @@
             "name": "vla_test",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 584115552258,
+                    "type": 136,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -2537,6 +2609,15 @@
                     "memory_flags": {
                         "volatile": false
                     }
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 584115552259,
+                    "type": 136,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local",

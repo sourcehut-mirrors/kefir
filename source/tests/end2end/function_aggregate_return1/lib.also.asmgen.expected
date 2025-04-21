@@ -30,45 +30,45 @@ _kefir_func_get1_label0:
     test %edx, %edx
     jz _kefir_func_get1_label3
 _kefir_func_get1_label1:
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     mov $0, %rax
     mov $64, %rcx
     rep stosb
     movq -136(%rbp), %rax
-    movq %rax, -64(%rbp)
+    movq %rax, -128(%rbp)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $8, %rdi
     not %rax
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $16, %rdi
     mov $1, %rdx
     movsx %edx, %rcx
     add %rcx, %rax
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $24, %rdi
     neg %rax
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $32, %rdi
     mov $1, %rdx
     movsx %edx, %rcx
     sub %rcx, %rax
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $40, %rdi
     mov $2, %rdx
     movsx %edx, %rcx
     imul %rcx, %rax
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $48, %rdi
     mov $2, %rdx
     movsx %edx, %rcx
@@ -76,14 +76,14 @@ _kefir_func_get1_label1:
     idiv %rcx
     movq %rax, (%rdi)
     movq -136(%rbp), %rax
-    leaq -64(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     add $56, %rdi
     movabs $3405691582, %rcx
     movabs $4294967295, %rdx
     and %rdx, %rcx
     xor %rcx, %rax
     movq %rax, (%rdi)
-    leaq -64(%rbp), %rcx
+    leaq -128(%rbp), %rcx
 _kefir_func_get1_label2:
     mov %r8, %rax
     movdqu (%rcx), %xmm0
@@ -100,11 +100,11 @@ _kefir_func_get1_label2:
 _kefir_func_get1_label3:
     movq %r8, -160(%rbp)
     movq %rcx, -152(%rbp)
-    leaq -128(%rbp), %rdi
+    leaq -64(%rbp), %rdi
     call empty1@PLT
     movq -160(%rbp), %r8
     movq -152(%rbp), %rcx
-    leaq -128(%rbp), %rcx
+    leaq -64(%rbp), %rcx
     jmp _kefir_func_get1_label2
 __kefir_text_func_get1_end:
 

@@ -579,6 +579,15 @@
             "name": "set_value",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 64424509440,
+                    "type": 15,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },

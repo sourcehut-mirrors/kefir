@@ -86,6 +86,15 @@
                     "type_index": 0
                 },
                 {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 4294967296,
+                    "type": 1,
+                    "type_index": 0
+                },
+                {
                     "opcode": "vstack_pick",
                     "arg": 0
                 },
@@ -170,7 +179,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 25,
+                    "arg": 27,
                     "condition": "8bit"
                 },
                 {
@@ -184,7 +193,7 @@
                 },
                 {
                     "opcode": "block_label",
-                    "arg": 29
+                    "arg": 31
                 },
                 {
                     "opcode": "indirect_jump"
@@ -200,7 +209,7 @@
                 },
                 {
                     "opcode": "block_label",
-                    "arg": 5
+                    "arg": 7
                 },
                 {
                     "opcode": "indirect_jump"
@@ -269,11 +278,11 @@
             "public_labels": [
                 {
                     "label": "_kefir_local_public_label_goto1_begin",
-                    "location": 5
+                    "location": 7
                 },
                 {
                     "label": "_kefir_local_public_label_goto1_end",
-                    "location": 29
+                    "location": 31
                 }
             ]
         },

@@ -388,6 +388,13 @@ kefir_result_t kefir_ast_translator_function_context_translate(
         REQUIRE_OK(generate_debug_info(mem, function_context, subprogram_entry_id));
     }
 
+    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
+        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
+    REQUIRE(associated_ordinary_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                            "Expected AST flow control statement to have an associated ordinary scope"));
+    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+
     const struct kefir_ast_declarator_function *decl_func = NULL;
     REQUIRE_OK(kefir_ast_declarator_unpack_function(function->declarator, &decl_func));
     REQUIRE(decl_func != NULL,
@@ -570,11 +577,6 @@ kefir_result_t kefir_ast_translator_function_context_translate(
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
                                                   subprogram_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(function_end_index)));
-    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
-        function->body->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
-    REQUIRE(associated_ordinary_scope != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                            "Expected AST flow control statement to have an associated ordinary scope"));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
         associated_ordinary_scope, subprogram_entry_id, function_begin_index, function_end_index));

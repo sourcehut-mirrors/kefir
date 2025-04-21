@@ -37,6 +37,13 @@ kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST for statement node"));
 
+    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
+        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
+    REQUIRE(associated_ordinary_scope != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                            "Expected AST flow control statement to have an associated ordinary scope"));
+    REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(mem, context, builder, associated_ordinary_scope));
+
     if (node->init != NULL && (node->init->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
                                node->init->properties.category == KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR)) {
         REQUIRE_OK(kefir_ast_translate_declaration(mem, node->init, builder, context));
@@ -132,11 +139,6 @@ kefir_result_t kefir_ast_translate_for_statement_node(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &context->module->debug_info.entries, &context->module->symbols,
                                                   lexical_block_entry_id,
                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_CODE_END(statement_end_index)));
-    const struct kefir_ast_identifier_flat_scope *associated_ordinary_scope =
-        node->base.properties.statement_props.flow_control_statement->associated_scopes.ordinary_scope;
-    REQUIRE(associated_ordinary_scope != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                            "Expected AST flow control statement to have an associated ordinary scope"));
     REQUIRE_OK(kefir_ast_translator_generate_object_scope_debug_information(
         mem, context->ast_context, context->environment, context->module, context->debug_entries,
         associated_ordinary_scope, lexical_block_entry_id, begin, statement_end_index));

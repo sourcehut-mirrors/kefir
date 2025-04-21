@@ -573,6 +573,42 @@
             "name": "test1",
             "body": [
                 {
+                    "opcode": "get_local",
+                    "id": 231928233984,
+                    "type": 54,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233985,
+                    "type": 54,
+                    "type_index": 1
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233986,
+                    "type": 54,
+                    "type_index": 2
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233987,
+                    "type": 54,
+                    "type_index": 3
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
                     "opcode": "get_argument",
                     "arg": 0
                 },
@@ -675,8 +711,26 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 44,
+                    "arg": 58,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233988,
+                    "type": 54,
+                    "type_index": 4
+                },
+                {
+                    "opcode": "local_lifetime_mark"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233989,
+                    "type": 54,
+                    "type_index": 5
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local",
@@ -726,8 +780,17 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 39,
+                    "arg": 53,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233990,
+                    "type": 54,
+                    "type_index": 6
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local",
@@ -749,7 +812,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 30
+                    "arg": 42
                 },
                 {
                     "opcode": "get_local",
@@ -771,7 +834,16 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 48
+                    "arg": 64
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 231928233991,
+                    "type": 54,
+                    "type_index": 7
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local",
@@ -878,113 +950,113 @@
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 22,
                     "column": 5,
-                    "begin": 4,
-                    "end": 9
+                    "begin": 12,
+                    "end": 17
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 23,
                     "column": 5,
-                    "begin": 9,
-                    "end": 14
+                    "begin": 17,
+                    "end": 22
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 24,
                     "column": 5,
-                    "begin": 14,
-                    "end": 19
+                    "begin": 22,
+                    "end": 27
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 9,
-                    "begin": 19,
-                    "end": 21
+                    "begin": 27,
+                    "end": 29
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 25,
                     "column": 5,
-                    "begin": 19,
-                    "end": 48
+                    "begin": 27,
+                    "end": 64
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 25,
+                    "column": 12,
+                    "begin": 31,
+                    "end": 57
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 26,
                     "column": 9,
-                    "begin": 23,
-                    "end": 28
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 25,
-                    "column": 12,
-                    "begin": 23,
-                    "end": 43
+                    "begin": 35,
+                    "end": 40
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 27,
                     "column": 9,
-                    "begin": 28,
-                    "end": 30
+                    "begin": 40,
+                    "end": 42
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 16,
-                    "begin": 30,
-                    "end": 32
+                    "begin": 42,
+                    "end": 44
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 9,
-                    "begin": 30,
-                    "end": 39
-                },
-                {
-                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 29,
-                    "column": 13,
-                    "begin": 34,
-                    "end": 36
+                    "begin": 42,
+                    "end": 53
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 28,
                     "column": 19,
-                    "begin": 34,
-                    "end": 38
+                    "begin": 46,
+                    "end": 52
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
-                    "line": 32,
-                    "column": 9,
-                    "begin": 44,
-                    "end": 46
+                    "line": 29,
+                    "column": 13,
+                    "begin": 48,
+                    "end": 50
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 31,
                     "column": 12,
-                    "begin": 44,
-                    "end": 48
+                    "begin": 58,
+                    "end": 64
+                },
+                {
+                    "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
+                    "line": 32,
+                    "column": 9,
+                    "begin": 60,
+                    "end": 62
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 12,
-                    "begin": 48,
-                    "end": 49
+                    "begin": 64,
+                    "end": 65
                 },
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir2\/lib.kefir.asmgen.c",
                     "line": 34,
                     "column": 5,
-                    "begin": 48,
-                    "end": 58
+                    "begin": 64,
+                    "end": 74
                 }
             ]
         }
@@ -2401,11 +2473,11 @@
                     },
                     {
                         "tag": "code_begin",
-                        "value": 4
+                        "value": 12
                     },
                     {
                         "tag": "code_end",
-                        "value": 58
+                        "value": 74
                     },
                     {
                         "tag": "external",
@@ -2454,11 +2526,11 @@
                         "attributes": [
                             {
                                 "tag": "code_begin",
-                                "value": 19
+                                "value": 27
                             },
                             {
                                 "tag": "code_end",
-                                "value": 48
+                                "value": 64
                             }
                         ],
                         "children": [
@@ -2468,11 +2540,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 23
+                                        "value": 31
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 39
+                                        "value": 53
                                     }
                                 ],
                                 "children": [
@@ -2482,11 +2554,11 @@
                                         "attributes": [
                                             {
                                                 "tag": "code_begin",
-                                                "value": 30
+                                                "value": 42
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 39
+                                                "value": 53
                                             }
                                         ],
                                         "children": [
@@ -2496,11 +2568,11 @@
                                                 "attributes": [
                                                     {
                                                         "tag": "code_begin",
-                                                        "value": 34
+                                                        "value": 46
                                                     },
                                                     {
                                                         "tag": "code_end",
-                                                        "value": 36
+                                                        "value": 50
                                                     }
                                                 ],
                                                 "children": [
@@ -2518,11 +2590,11 @@
                                                             },
                                                             {
                                                                 "tag": "code_begin",
-                                                                "value": 34
+                                                                "value": 46
                                                             },
                                                             {
                                                                 "tag": "code_end",
-                                                                "value": 36
+                                                                "value": 50
                                                             },
                                                             {
                                                                 "tag": "local_variable",
@@ -2573,11 +2645,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 23
+                                                "value": 31
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 39
+                                                "value": 53
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -2624,11 +2696,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 23
+                                                "value": 31
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 39
+                                                "value": 53
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -2669,11 +2741,11 @@
                                 "attributes": [
                                     {
                                         "tag": "code_begin",
-                                        "value": 44
+                                        "value": 58
                                     },
                                     {
                                         "tag": "code_end",
-                                        "value": 46
+                                        "value": 62
                                     }
                                 ],
                                 "children": [
@@ -2691,11 +2763,11 @@
                                             },
                                             {
                                                 "tag": "code_begin",
-                                                "value": 44
+                                                "value": 58
                                             },
                                             {
                                                 "tag": "code_end",
-                                                "value": 46
+                                                "value": 62
                                             },
                                             {
                                                 "tag": "local_variable",
@@ -2746,11 +2818,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 4
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 58
+                                "value": 74
                             },
                             {
                                 "tag": "local_variable",
@@ -2797,11 +2869,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 4
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 58
+                                "value": 74
                             },
                             {
                                 "tag": "local_variable",
@@ -2848,11 +2920,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 4
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 58
+                                "value": 74
                             },
                             {
                                 "tag": "local_variable",
@@ -2899,11 +2971,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 4
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 58
+                                "value": 74
                             },
                             {
                                 "tag": "local_variable",
@@ -2950,11 +3022,11 @@
                             },
                             {
                                 "tag": "code_begin",
-                                "value": 4
+                                "value": 12
                             },
                             {
                                 "tag": "code_end",
-                                "value": 58
+                                "value": 74
                             },
                             {
                                 "tag": "global_variable",
