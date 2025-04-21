@@ -12,14 +12,14 @@ __kefir_text_func_discriminant_begin:
     mov %rsp, %rbp
     sub $64, %rsp
 _kefir_func_discriminant_label0:
-    movq %xmm2, -56(%rbp)
+    movq %xmm2, -40(%rbp)
     movq %xmm1, -48(%rbp)
-    movq %xmm0, -40(%rbp)
-    movq -40(%rbp), %rax
+    movq %xmm0, -56(%rbp)
+    movq -56(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -24(%rbp)
-    movq -56(%rbp), %rax
+    movq -40(%rbp), %rax
     movq %rax, -16(%rbp)
     movq %xmm0, -8(%rbp)
     movq -48(%rbp), %rax

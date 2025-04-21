@@ -25,6 +25,7 @@
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/xregalloc.h"
 #include "kefir/codegen/amd64/stack_frame.h"
+#include "kefir/codegen/variable_allocator.h"
 #include "kefir/optimizer/schedule.h"
 #include "kefir/target/abi/amd64/function.h"
 #include "kefir/optimizer/module.h"
@@ -41,13 +42,13 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_asmcmp_amd64 code;
     struct kefir_codegen_amd64_xregalloc xregalloc;
     struct kefir_codegen_amd64_stack_frame stack_frame;
+    struct kefir_codegen_local_variable_allocator variable_allocator;
 
     struct kefir_hashtreeset translated_instructions;
     struct kefir_hashtree instructions;
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
-    struct kefir_hashtree locals;
     struct kefir_hashtree local_variable_type_layouts;
     struct kefir_hashtreeset vregs_alive_at_end;
     kefir_asmcmp_instruction_index_t argument_touch_instr;
@@ -92,8 +93,6 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_asmcmp_label_index_t *,
                                                                    kefir_asmcmp_label_index_t *);
 
-kefir_result_t kefir_codegen_amd64_function_local_variable(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                           kefir_opt_instruction_ref_t, kefir_bool_t, kefir_id_t *);
 kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                         kefir_asmcmp_virtual_register_index_t);
 

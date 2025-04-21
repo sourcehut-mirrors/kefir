@@ -67,6 +67,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -92,6 +93,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -313,6 +315,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -670,7 +673,8 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "offset": 4,
+#                        "identifier": 2,
+#                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
 #                    {
@@ -743,6 +747,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -965,7 +970,8 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "offset": 4,
+#                        "identifier": 2,
+#                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -1066,6 +1072,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -1091,7 +1098,8 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "offset": 4,
+#                        "identifier": 2,
+#                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -1154,7 +1162,8 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
-#                        "offset": 4,
+#                        "identifier": 2,
+#                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
 #                    {
@@ -1183,6 +1192,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }
@@ -1246,6 +1256,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    },
@@ -1333,6 +1344,7 @@ factorial:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "local_var",
+#                        "identifier": 0,
 #                        "offset": 0,
 #                        "variant": "32bit"
 #                    }

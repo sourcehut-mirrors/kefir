@@ -127,6 +127,7 @@ typedef struct kefir_asmcmp_value {
                     const char *external_label;
                 };
                 kefir_size_t spill_index;
+                kefir_id_t local_variable_id;
             } base;
             kefir_int64_t offset;
             kefir_asmcmp_operand_variant_t variant;
@@ -225,10 +226,10 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
                                                .base.external_label = (_label),                    \
                                                .offset = (_offset),                                \
                                                .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(_offset, _variant) \
+#define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(_var, _offset, _variant) \
     ((struct kefir_asmcmp_value) {                               \
         .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                \
-        .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS, .offset = (_offset), .variant = (_variant)}})
+        .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS, .base.local_variable_id = (_var), .offset = (_offset), .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(_index, _offset, _variant)                            \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                    \
                                   .indirect = {.type = KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS, \

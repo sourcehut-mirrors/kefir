@@ -30,6 +30,7 @@ kefir_result_t kefir_opt_code_analysis_init(struct kefir_opt_code_analysis *anal
 
     REQUIRE_OK(kefir_opt_code_structure_init(&analysis->structure));
     REQUIRE_OK(kefir_opt_code_liveness_init(&analysis->liveness));
+    REQUIRE_OK(kefir_opt_code_variable_conflicts_init(&analysis->variable_conflicts));
     return KEFIR_OK;
 }
 
@@ -45,6 +46,7 @@ kefir_result_t kefir_opt_code_analyze(struct kefir_mem *mem, const struct kefir_
 
     REQUIRE_OK(kefir_opt_code_structure_build(mem, &analysis->structure, code));
     REQUIRE_OK(kefir_opt_code_liveness_build(mem, &analysis->liveness, &analysis->structure));
+    REQUIRE_OK(kefir_opt_code_variable_conflicts_build(mem, &analysis->variable_conflicts, &analysis->liveness));
     REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, &analysis->structure));
     return KEFIR_OK;
 }
@@ -53,6 +55,7 @@ kefir_result_t kefir_opt_code_analysis_free(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(analysis != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code analysis"));
 
+    REQUIRE_OK(kefir_opt_code_variable_conflicts_free(mem, &analysis->variable_conflicts));
     REQUIRE_OK(kefir_opt_code_liveness_free(mem, &analysis->liveness));
     REQUIRE_OK(kefir_opt_code_structure_free(mem, &analysis->structure));
     return KEFIR_OK;

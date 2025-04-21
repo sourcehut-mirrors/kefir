@@ -12,17 +12,17 @@ __kefir_text_func_custom_hypot_begin:
     mov %rsp, %rbp
     sub $48, %rsp
 _kefir_func_custom_hypot_label0:
-    movq %xmm1, -24(%rbp)
-    movq %xmm0, -16(%rbp)
+    movq %xmm1, -16(%rbp)
+    movq %xmm0, -24(%rbp)
     movq %xmm0, -8(%rbp)
     lea -8(%rbp), %rax
     mov %rax, -48(%rbp)
-    lea -16(%rbp), %rax
-    mov %rax, -40(%rbp)
     lea -24(%rbp), %rax
+    mov %rax, -40(%rbp)
+    lea -16(%rbp), %rax
     mov %rax, -32(%rbp)
-    movq -16(%rbp), %xmm1
-    movq -24(%rbp), %xmm2
+    movq -24(%rbp), %xmm1
+    movq -16(%rbp), %xmm2
 mulsd %xmm0, %xmm0
 mulsd %xmm1, %xmm1
 movq %xmm1, %xmm2

@@ -657,6 +657,20 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                 "Mismatch between inlined function argument count and call site arguments"));
         mapped_instr_ref = call_node->arguments[instr->operation.parameters.index];
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
+        // Ignore local lifetime marks in inlined function, thus making respective variables alive for the complete duration of enclosing function
+        REQUIRE_OK(kefir_opt_code_builder_int_placeholder(param->mem, param->dst_code, mapped_block_id, &mapped_instr_ref));
+
+        kefir_bool_t is_control_flow;
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&param->src_function->code, instr_ref, &is_control_flow));
+        if (is_control_flow) {
+            kefir_opt_instruction_ref_t control_prev;
+            REQUIRE_OK(kefir_opt_instruction_prev_control(&param->src_function->code, instr_ref, &control_prev));
+            kefir_opt_instruction_ref_t mapped_control_prev;
+            REQUIRE_OK(get_instr_ref_mapping(param, control_prev, &mapped_control_prev));
+            REQUIRE_OK(kefir_opt_code_container_insert_control(param->dst_code, mapped_block_id, mapped_control_prev,
+                                                               mapped_instr_ref));
+        }
     } else {
         switch (instr->operation.opcode) {
 #define OPCODE_DEF(_id, _symbolic, _class)                                      \

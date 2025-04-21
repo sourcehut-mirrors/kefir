@@ -22,6 +22,7 @@
 #define KEFIR_CODEGEN_AMD64_STACK_FRAME_H_
 
 #include "kefir/codegen/amd64/codegen.h"
+#include "kefir/codegen/variable_allocator.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/target/asm/amd64/xasmgen.h"
 
@@ -49,19 +50,18 @@ typedef struct kefir_codegen_amd64_stack_frame {
         kefir_size_t spill_area_slots;
         struct kefir_hashtreeset used_registers;
         kefir_size_t num_of_used_registers;
-        kefir_size_t local_area_size;
-        kefir_size_t local_area_alignment;
         kefir_bool_t reset_stack_pointer;
         kefir_bool_t x87_control_word_save;
         kefir_bool_t mxcsr_save;
         kefir_bool_t frame_pointer;
-        struct kefir_hashtree locals;
     } requirements;
+
+    const struct kefir_codegen_local_variable_allocator *local_variables;
 
     kefir_id_t next_local_id;
 } kefir_codegen_amd64_stack_frame_t;
 
-kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *);
+kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *, const struct kefir_codegen_local_variable_allocator *);
 kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *, struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_ensure_spill_area(struct kefir_codegen_amd64_stack_frame *,
@@ -73,11 +73,8 @@ kefir_result_t kefir_codegen_amd64_stack_frame_varying_stack_pointer(struct kefi
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_x87_control_word(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_mxcsr(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefir_codegen_amd64_stack_frame *);
-kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_mem *,
-                                                              struct kefir_codegen_amd64_stack_frame *, kefir_size_t,
-                                                              kefir_size_t, kefir_id_t *);
-kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *,
-                                                                     kefir_id_t, kefir_int64_t *);
+
+kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *, kefir_id_t, kefir_int64_t *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
                                                          struct kefir_codegen_amd64_stack_frame *);

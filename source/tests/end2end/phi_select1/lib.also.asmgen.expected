@@ -65,15 +65,15 @@ __kefir_text_func_select5_begin:
     sub $64, %rsp
     lea 32(%rbp), %rax
     lea 16(%rbp), %rcx
-    movq $0, -24(%rbp)
-    fldt (%rax)
-    fstpt -32(%rbp)
     movq $0, -8(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -16(%rbp)
+    movq $0, -24(%rbp)
+    fldt (%rcx)
+    fstpt -32(%rbp)
     test %edi, %edi
     jz _kefir_func_select5_label3
-    fldt -16(%rbp)
+    fldt -32(%rbp)
     fstpt -64(%rbp)
 _kefir_func_select5_label2:
     fldt -64(%rbp)
@@ -81,7 +81,7 @@ _kefir_func_select5_label2:
     pop %rbp
     ret
 _kefir_func_select5_label3:
-    fldt -32(%rbp)
+    fldt -16(%rbp)
     fstpt -48(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -64(%rbp)
@@ -99,12 +99,12 @@ __kefir_text_func_select6_begin:
     movq %xmm1, -48(%rbp)
     movq %xmm0, -40(%rbp)
     movq -48(%rbp), %xmm0
-    movq %xmm0, -24(%rbp)
-    movq -40(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
+    movq -40(%rbp), %xmm0
+    movq %xmm0, -24(%rbp)
     test %edi, %edi
     jz _kefir_func_select6_label3
-    movq -16(%rbp), %xmm0
+    movq -24(%rbp), %xmm0
     movq %xmm0, -64(%rbp)
 _kefir_func_select6_label2:
     movq -64(%rbp), %xmm0
@@ -113,7 +113,7 @@ _kefir_func_select6_label2:
     pop %rbp
     ret
 _kefir_func_select6_label3:
-    movq -24(%rbp), %xmm0
+    movq -16(%rbp), %xmm0
     movq %xmm0, -56(%rbp)
     movq -56(%rbp), %rdi
     movq %rdi, -64(%rbp)
@@ -131,18 +131,18 @@ __kefir_text_func_select7_begin:
     movq %xmm0, -64(%rbp)
     movq %xmm1, -56(%rbp)
     movq -80(%rbp), %xmm0
-    movq %xmm0, -40(%rbp)
-    movq -72(%rbp), %xmm0
-    movq %xmm0, -32(%rbp)
-    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -56(%rbp), %xmm0
+    movq -72(%rbp), %xmm0
     movq %xmm0, -16(%rbp)
+    movq -64(%rbp), %xmm0
+    movq %xmm0, -40(%rbp)
+    movq -56(%rbp), %xmm0
+    movq %xmm0, -32(%rbp)
     test %edi, %edi
     jz _kefir_func_select7_label3
-    movq -24(%rbp), %xmm0
+    movq -40(%rbp), %xmm0
     movq %xmm0, -112(%rbp)
-    movq -16(%rbp), %xmm0
+    movq -32(%rbp), %xmm0
     movq %xmm0, -104(%rbp)
 _kefir_func_select7_label2:
     movq -112(%rbp), %xmm0
@@ -152,9 +152,9 @@ _kefir_func_select7_label2:
     pop %rbp
     ret
 _kefir_func_select7_label3:
-    movq -40(%rbp), %xmm0
+    movq -24(%rbp), %xmm0
     movq %xmm0, -96(%rbp)
-    movq -32(%rbp), %xmm0
+    movq -16(%rbp), %xmm0
     movq %xmm0, -88(%rbp)
     movq -96(%rbp), %rdi
     movq %rdi, -112(%rbp)
@@ -171,23 +171,23 @@ __kefir_text_func_select8_begin:
     stmxcsr -8(%rbp)
     lea 48(%rbp), %rax
     lea 16(%rbp), %rcx
-    movq $0, -72(%rbp)
-    movq $0, -56(%rbp)
-    fldt (%rax)
-    fstpt -80(%rbp)
-    fldt 16(%rax)
-    fstpt -64(%rbp)
     movq $0, -40(%rbp)
     movq $0, -24(%rbp)
-    fldt (%rcx)
+    fldt (%rax)
     fstpt -48(%rbp)
-    fldt 16(%rcx)
+    fldt 16(%rax)
     fstpt -32(%rbp)
+    movq $0, -72(%rbp)
+    movq $0, -56(%rbp)
+    fldt (%rcx)
+    fstpt -80(%rbp)
+    fldt 16(%rcx)
+    fstpt -64(%rbp)
     test %edi, %edi
     jz _kefir_func_select8_label3
-    fldt -48(%rbp)
+    fldt -80(%rbp)
     fstpt -144(%rbp)
-    fldt -32(%rbp)
+    fldt -64(%rbp)
     fstpt -128(%rbp)
 _kefir_func_select8_label2:
     fldt -128(%rbp)
@@ -197,9 +197,9 @@ _kefir_func_select8_label2:
     pop %rbp
     ret
 _kefir_func_select8_label3:
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fstpt -112(%rbp)
-    fldt -64(%rbp)
+    fldt -32(%rbp)
     fstpt -96(%rbp)
     movq -112(%rbp), %rax
     movq %rax, -144(%rbp)
@@ -221,18 +221,18 @@ __kefir_text_func_select9_begin:
     lea 144(%rbp), %rax
     lea 16(%rbp), %rdx
     mov %rsi, %r8
-    leaq -256(%rbp), %rdi
+    leaq -128(%rbp), %rdi
     mov %rax, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    leaq -128(%rbp), %rdi
+    leaq -256(%rbp), %rdi
     mov %rdx, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    leaq -128(%rbp), %rcx
-    leaq -256(%rbp), %rdi
+    leaq -256(%rbp), %rcx
+    leaq -128(%rbp), %rdi
     test %r8d, %r8d
     cmovz %rdi, %rcx
     mov %r9, %rax

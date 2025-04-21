@@ -57,16 +57,16 @@ __kefir_text_func_sum3_one_begin:
     mov %rsp, %rbp
     sub $48, %rsp
 _kefir_func_sum3_one_label0:
-    movq %rdx, -32(%rbp)
+    movq %rdx, -16(%rbp)
     movq %rsi, -24(%rbp)
-    movq %rdi, -16(%rbp)
+    movq %rdi, -32(%rbp)
     movq $0, -8(%rbp)
-    movq -16(%rbp), %rsi
+    movq -32(%rbp), %rsi
     movq -24(%rbp), %rdi
-    movq -32(%rbp), %rdx
+    movq -16(%rbp), %rdx
     lea -8(%rbp), %rax
     mov %rax, -48(%rbp)
-    lea -32(%rbp), %rax
+    lea -16(%rbp), %rax
     mov %rax, -40(%rbp)
     mov $1, %rcx
 add %rsi, %rcx

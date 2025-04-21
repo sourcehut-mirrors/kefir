@@ -12,19 +12,19 @@ __kefir_text_func_test_begin:
     mov %rsp, %rbp
     sub $112, %rsp
 _kefir_func_test_label0:
-    movq $1, -112(%rbp)
-    movq $3, -96(%rbp)
-    movq $100, -72(%rbp)
-    movq $-1000, -40(%rbp)
-    movl $-314159, -32(%rbp)
-    leaq -24(%rbp), %rdi
+    movq $1, -80(%rbp)
+    movq $3, -64(%rbp)
+    movq $100, -40(%rbp)
+    movq $-1000, -8(%rbp)
+    movl $-314159, -112(%rbp)
+    leaq -104(%rbp), %rdi
     mov $0, %rax
     mov $24, %rcx
     rep stosb
-    movl $1, -24(%rbp)
-    movq $2, -16(%rbp)
+    movl $1, -104(%rbp)
+    movq $2, -96(%rbp)
     movd _kefir_func_test_label1(%rip), %xmm0
-    movd %xmm0, -8(%rbp)
+    movd %xmm0, -88(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

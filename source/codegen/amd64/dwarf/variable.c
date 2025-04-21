@@ -142,6 +142,7 @@ static kefir_result_t generate_local_variable_simple_location(struct kefir_mem *
                                                               struct kefir_codegen_amd64_function *codegen_function,
                                                               kefir_ir_debug_entry_id_t variable_entry_id,
                                                               kefir_opt_instruction_ref_t allocation_instr_ref) {
+    UNUSED(mem);
     const struct kefir_ir_debug_entry_attribute *attr;
     REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&codegen_function->module->ir_module->debug_info.entries,
                                                   variable_entry_id, KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CODE_BEGIN, &attr));
@@ -173,13 +174,10 @@ static kefir_result_t generate_local_variable_simple_location(struct kefir_mem *
                 kefir_asm_amd64_xasmgen_helpers_format(&codegen_function->codegen->xasmgen_helpers, KEFIR_AMD64_LABEL,
                                                        ir_identifier->symbol, range_end_label))));
 
-        kefir_id_t local_var_id;
-        kefir_result_t res = kefir_codegen_amd64_function_local_variable(mem, codegen_function, allocation_instr_ref,
-                                                                         false, &local_var_id);
+        kefir_int64_t offset;
+        kefir_result_t res = kefir_codegen_amd64_stack_frame_local_variable_offset(&codegen_function->stack_frame, (kefir_id_t) allocation_instr_ref,
+                                                                         &offset);
         if (res != KEFIR_NOT_FOUND) {
-            kefir_int64_t offset;
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(&codegen_function->stack_frame,
-                                                                             local_var_id, &offset));
             offset += codegen_function->stack_frame.offsets.local_area;
             REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
                                                  1 + kefir_amd64_dwarf_sleb128_length(offset)));
@@ -451,14 +449,15 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&codegen_function->code.context, vreg, &virtual_reg));
 
             kefir_int64_t offset;
-            REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
-                &codegen_function->stack_frame, virtual_reg->parameters.local_variable.identifier, &offset));
-            offset += virtual_reg->parameters.local_variable.offset + codegen_function->stack_frame.offsets.local_area;
-
-            REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                 1 + kefir_amd64_dwarf_sleb128_length(offset)));
-            REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
-            REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+            kefir_result_t res = kefir_codegen_amd64_stack_frame_local_variable_offset(&codegen_function->stack_frame, virtual_reg->parameters.local_variable.identifier, &offset);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                offset += virtual_reg->parameters.local_variable.offset + codegen_function->stack_frame.offsets.local_area;
+                REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
+                                                    1 + kefir_amd64_dwarf_sleb128_length(offset)));
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg)));
+                REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, offset));
+            }
         } break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER: {

@@ -12,9 +12,9 @@ __kefir_text_func_test_begin:
     mov %rsp, %rbp
     sub $16, %rsp
 _kefir_func_test_label0:
-    movl %esi, -12(%rbp)
+    movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
-    movl $0, -4(%rbp)
+    movl $0, -12(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

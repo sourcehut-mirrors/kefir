@@ -15,10 +15,10 @@ __kefir_text_func_greater_or_equalsf_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_greater_or_equalsf_label0:
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %ecx
-    movl -16(%rbp), %edx
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %ecx
+    movl -12(%rbp), %edx
     mov $0, %rax
     movd %ecx, %xmm0
     movd %edx, %xmm1
@@ -37,10 +37,10 @@ __kefir_text_func_less_or_equalsf_begin:
     sub $16, %rsp
     stmxcsr -8(%rbp)
 _kefir_func_less_or_equalsf_label0:
-    movd %xmm1, -16(%rbp)
-    movd %xmm0, -12(%rbp)
-    movl -12(%rbp), %ecx
-    movl -16(%rbp), %edx
+    movd %xmm1, -12(%rbp)
+    movd %xmm0, -16(%rbp)
+    movl -16(%rbp), %ecx
+    movl -12(%rbp), %edx
     mov $0, %rax
     movd %edx, %xmm0
     movd %ecx, %xmm1

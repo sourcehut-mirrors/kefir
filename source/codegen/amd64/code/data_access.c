@@ -41,12 +41,11 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
+    kefir_id_t variable_id;
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(mem, &function->variable_allocator, instruction->id, &variable_id));
+
     kefir_asmcmp_virtual_register_index_t vreg;
-
-    kefir_id_t local_var_id;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable(mem, function, instruction->id, true, &local_var_id));
-
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, local_var_id, 0, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, variable_id, 0, &vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;
@@ -59,17 +58,12 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ref_local)(struct kefir_mem 
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
+    kefir_id_t variable_id;
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_alive(mem, &function->variable_allocator, instruction->operation.parameters.refs[0], &variable_id));
+
     kefir_asmcmp_virtual_register_index_t vreg;
-
-    const struct kefir_opt_instruction *location_instr;
-    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0],
-                                              &location_instr));
-
-    kefir_id_t local_var_id;
-    REQUIRE_OK(kefir_codegen_amd64_function_local_variable(mem, function, location_instr->id, true, &local_var_id));
-
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context, local_var_id,
-                                                                instruction->operation.parameters.offset, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_local_variable(mem, &function->code.context,
+        variable_id, instruction->operation.parameters.offset, &vreg));
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg));
 
     return KEFIR_OK;

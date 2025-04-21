@@ -17,13 +17,13 @@ __kefir_text_func_discriminant_begin:
     sub $64, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminant_label0:
-    movq %xmm2, -40(%rbp)
+    movq %xmm2, -24(%rbp)
     movq %xmm1, -32(%rbp)
-    movq %xmm0, -24(%rbp)
+    movq %xmm0, -40(%rbp)
     movq %xmm0, -16(%rbp)
-    movq -24(%rbp), %rax
+    movq -40(%rbp), %rax
     movq -32(%rbp), %rcx
-    movq -40(%rbp), %rdx
+    movq -24(%rbp), %rdx
     lea -16(%rbp), %rsi
     mov %rsi, -64(%rbp)
     movq %rdx, %xmm0
@@ -61,13 +61,13 @@ __kefir_text_func_discriminantf_begin:
     sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_discriminantf_label0:
-    movd %xmm2, -24(%rbp)
+    movd %xmm2, -16(%rbp)
     movd %xmm1, -20(%rbp)
-    movd %xmm0, -16(%rbp)
+    movd %xmm0, -24(%rbp)
     movd %xmm0, -12(%rbp)
-    movl -16(%rbp), %eax
+    movl -24(%rbp), %eax
     movl -20(%rbp), %ecx
-    movl -24(%rbp), %edx
+    movl -16(%rbp), %edx
     lea -12(%rbp), %rsi
     mov %rsi, -48(%rbp)
     movd %edx, %xmm0
@@ -108,20 +108,20 @@ _kefir_func_discriminantl_label0:
     lea 48(%rbp), %rax
     lea 32(%rbp), %rcx
     lea 16(%rbp), %rdx
-    movq $0, -72(%rbp)
+    movq $0, -40(%rbp)
     fldt (%rax)
-    fstpt -80(%rbp)
+    fstpt -48(%rbp)
     movq $0, -56(%rbp)
     fldt (%rcx)
     fstpt -64(%rbp)
-    movq $0, -40(%rbp)
+    movq $0, -72(%rbp)
     fldt (%rdx)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
+    fstpt -80(%rbp)
+    fldt -80(%rbp)
     fstpt -144(%rbp)
     fldt -64(%rbp)
     fstpt -128(%rbp)
-    fldt -80(%rbp)
+    fldt -48(%rbp)
     fstpt -112(%rbp)
     lea -32(%rbp), %rax
     mov %rax, -96(%rbp)

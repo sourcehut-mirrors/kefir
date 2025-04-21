@@ -27,12 +27,12 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *frame) {
+kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *frame, const struct kefir_codegen_local_variable_allocator *local_variables) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 stack frame"));
 
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
     REQUIRE_OK(kefir_hashtreeset_init(&frame->requirements.used_registers, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&frame->requirements.locals, &kefir_hashtree_uint_ops));
+    frame->local_variables = local_variables;
     frame->next_local_id = 0;
     return KEFIR_OK;
 }
@@ -43,7 +43,6 @@ kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *mem,
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &frame->requirements.used_registers));
-    REQUIRE_OK(kefir_hashtree_free(mem, &frame->requirements.locals));
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
     return KEFIR_OK;
 }
@@ -98,41 +97,10 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_allocate_local(struct kefir_mem *mem,
-                                                              struct kefir_codegen_amd64_stack_frame *frame,
-                                                              kefir_size_t size, kefir_size_t alignment,
-                                                              kefir_id_t *local_id_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t variable_id, kefir_int64_t *offset_ptr) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
-    REQUIRE(local_id_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable identifier"));
 
-    kefir_int64_t offset = frame->requirements.local_area_size;
-    if (alignment > 1) {
-        offset = kefir_target_abi_pad_aligned(offset, alignment);
-    }
-    REQUIRE_OK(kefir_hashtree_insert(mem, &frame->requirements.locals, (kefir_hashtree_key_t) frame->next_local_id,
-                                     (kefir_hashtree_value_t) offset));
-    frame->requirements.local_area_size = offset + size;
-    frame->requirements.local_area_alignment = MAX(frame->requirements.local_area_alignment, alignment);
-    *local_id_ptr = frame->next_local_id++;
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(
-    const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t local_id, kefir_int64_t *offset_ptr) {
-    REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
-    REQUIRE(offset_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
-
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&frame->requirements.locals, (kefir_hashtree_key_t) local_id, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find local variable in stack frame");
-    }
-    REQUIRE_OK(res);
-
-    *offset_ptr = (kefir_int64_t) node->value;
+    REQUIRE_OK(kefir_codegen_local_variable_allocation_of(frame->local_variables, (kefir_opt_instruction_ref_t) variable_id, offset_ptr));
     return KEFIR_OK;
 }
 
@@ -148,8 +116,8 @@ static kefir_result_t calculate_sizes(kefir_abi_amd64_variant_t abi_variant,
         }
     }
 
-    frame->sizes.local_area = frame->requirements.local_area_size;
-    frame->sizes.local_area_alignment = frame->requirements.local_area_alignment;
+    frame->sizes.local_area = frame->local_variables->total_size;
+    frame->sizes.local_area_alignment = frame->local_variables->total_alignment;
     frame->sizes.spill_area = frame->requirements.spill_area_slots * KEFIR_AMD64_ABI_QWORD;
 
     return KEFIR_OK;

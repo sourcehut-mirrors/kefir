@@ -639,7 +639,7 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
                     REQUIRE_OK(kefir_json_output_object_key(&json, "identifier"));
                     REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.local_variable.identifier));
                     REQUIRE_OK(kefir_json_output_object_key(&json, "offset"));
-                    REQUIRE_OK(kefir_json_output_uinteger(&json, vreg->parameters.local_variable.offset));
+                    REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.local_variable.offset));
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
@@ -717,6 +717,29 @@ static kefir_result_t propagate_virtual_register_hints(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t get_local_variable_type_layout(struct kefir_mem *,
+    struct kefir_codegen_amd64_function *, kefir_id_t,
+    const struct kefir_abi_amd64_type_layout **);
+
+struct variable_allocator_type_layout_param {
+    struct kefir_mem *mem;
+    struct kefir_codegen_amd64_function *func;
+};
+
+static kefir_result_t variable_allocator_type_layout(kefir_id_t type_id, kefir_size_t type_index, kefir_size_t *size_ptr, kefir_size_t *alignment_ptr, void *payload) {
+    ASSIGN_DECL_CAST(struct variable_allocator_type_layout_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator hook parameter"));
+    
+    const struct kefir_abi_amd64_type_layout *type_layout = NULL;
+    const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
+    REQUIRE_OK(get_local_variable_type_layout(param->mem, param->func, type_id, &type_layout));
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(type_layout, type_index, &typeentry_layout));
+
+    ASSIGN_PTR(size_ptr, typeentry_layout->size);
+    ASSIGN_PTR(alignment_ptr, typeentry_layout->alignment);
+    return KEFIR_OK;
+}
+
 static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64 *codegen,
                                                                   struct kefir_codegen_amd64_function *func) {
@@ -736,6 +759,13 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     }
     REQUIRE_OK(kefir_opt_code_analyze(mem, &func->function->code, &func->function_analysis));
     REQUIRE_OK(translate_code(mem, func));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_run(mem, &func->variable_allocator, &func->function->code, &(struct kefir_codegen_local_variable_allocator_hooks) {
+        .type_layout = variable_allocator_type_layout,
+        .payload = &(struct variable_allocator_type_layout_param) {
+            .mem = mem,
+            .func = func
+        }
+    }, &func->function_analysis.variable_conflicts));
     REQUIRE_OK(kefir_opt_code_analysis_clear(mem, &func->function_analysis));
     REQUIRE_OK(propagate_virtual_register_hints(mem, func));
     REQUIRE_OK(
@@ -811,7 +841,6 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->constants, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func->locals, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->local_variable_type_layouts, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&func->local_variable_type_layouts, free_type_layout, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
@@ -821,7 +850,8 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_opt_code_analysis_init(&func->function_analysis));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
-    REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_init(&func->variable_allocator));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_init(&func->stack_frame, &func->variable_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_init(&func->xregalloc));
     REQUIRE_OK(kefir_abi_amd64_function_decl_alloc(mem, codegen_module->codegen->abi_variant,
                                                    function->ir_func->declaration, &func->abi_function_declaration));
@@ -834,6 +864,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
 
     REQUIRE_OK(kefir_abi_amd64_function_decl_free(mem, &func->abi_function_declaration));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_free(mem, &func->variable_allocator));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_free(mem, &func->xregalloc));
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_free(mem, &func->stack_frame));
     REQUIRE_OK(kefir_opt_code_schedule_free(mem, &func->schedule));
@@ -844,7 +875,6 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->vregs_alive_at_end));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->local_variable_type_layouts));
-    REQUIRE_OK(kefir_hashtree_free(mem, &func->locals));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->constants));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->virtual_registers));
@@ -1070,43 +1100,3 @@ static kefir_result_t get_local_variable_type_layout(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_function_local_variable(struct kefir_mem *mem,
-                                                           struct kefir_codegen_amd64_function *function,
-                                                           kefir_opt_instruction_ref_t instr_ref, kefir_bool_t allocate,
-                                                           kefir_id_t *local_var_id_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
-    REQUIRE(local_var_id_ptr != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable identifier"));
-
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&function->locals, (kefir_hashtree_key_t) instr_ref, &node);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        *local_var_id_ptr = (kefir_id_t) node->value;
-    } else {
-        REQUIRE(allocate, KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested local variable"));
-
-        const struct kefir_opt_instruction *instr;
-        REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instr_ref, &instr));
-        REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
-                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected local variable allocation instruction"));
-
-        kefir_size_t entry_size, entry_alignment;
-        kefir_id_t local_var_id;
-
-        const struct kefir_abi_amd64_type_layout *type_layout = NULL;
-        REQUIRE_OK(
-            get_local_variable_type_layout(mem, function, instr->operation.parameters.type.type_id, &type_layout));
-        const struct kefir_abi_amd64_typeentry_layout *entry = NULL;
-        REQUIRE_OK(kefir_abi_amd64_type_layout_at(type_layout, instr->operation.parameters.type.type_index, &entry));
-        entry_size = entry->size;
-        entry_alignment = entry->alignment;
-        REQUIRE_OK(kefir_codegen_amd64_stack_frame_allocate_local(mem, &function->stack_frame, entry_size,
-                                                                  entry_alignment, &local_var_id));
-        REQUIRE_OK(kefir_hashtree_insert(mem, &function->locals, (kefir_hashtree_key_t) instr_ref,
-                                         (kefir_hashtree_value_t) local_var_id));
-        *local_var_id_ptr = local_var_id;
-    }
-    return KEFIR_OK;
-}
