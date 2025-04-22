@@ -36,6 +36,7 @@ struct do_inline_param {
     kefir_opt_instruction_ref_t original_call_instr_ref;
     kefir_opt_phi_id_t result_phi_ref;
     kefir_opt_instruction_ref_t result_phi_instr;
+    kefir_bool_t skip_local_allocation_marks;
 
     struct kefir_hashtree block_mapping;
     struct kefir_hashtree instr_mapping;
@@ -678,7 +679,7 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                 "Mismatch between inlined function argument count and call site arguments"));
         mapped_instr_ref = call_node->arguments[instr->operation.parameters.index];
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK && param->skip_local_allocation_marks) {
         // Ignore local lifetime marks in inlined function, thus making respective variables alive for the complete
         // duration of enclosing function
         REQUIRE_OK(
@@ -974,6 +975,10 @@ static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param
 }
 
 static kefir_result_t do_inline_impl(struct do_inline_param *param) {
+    const struct kefir_opt_call_node *call_node;
+    REQUIRE_OK(kefir_opt_code_container_call(param->dst_code, param->original_call_ref, &call_node));
+    param->skip_local_allocation_marks = call_node->return_space != KEFIR_ID_NONE;
+
     REQUIRE_OK(inline_blocks(param));
     REQUIRE_OK(map_inlined_phis(param));
     REQUIRE_OK(link_inlined_entry_block(param));
@@ -1001,7 +1006,8 @@ static kefir_result_t do_inline(struct kefir_mem *mem, const struct kefir_opt_mo
                                     .original_call_ref = original_call_ref,
                                     .original_call_instr_ref = original_call_instr_ref,
                                     .result_phi_ref = KEFIR_ID_NONE,
-                                    .result_phi_instr = KEFIR_ID_NONE};
+                                    .result_phi_instr = KEFIR_ID_NONE,
+                                    .skip_local_allocation_marks = false};
     REQUIRE_OK(kefir_hashtree_init(&param.block_mapping, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&param.instr_mapping, &kefir_hashtree_uint_ops));
 
