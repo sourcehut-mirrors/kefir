@@ -10,7 +10,7 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $224, %rsp
+    sub $192, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rdx
     movq $0, (%rdx)
@@ -22,50 +22,50 @@ __kefir_text_func_test1_begin:
     add $16, %rdi
     movq _kefir_func_test1_label2(%rip), %xmm0
     movq %xmm0, (%rdi)
-    leaq -192(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
     mov %rdx, %rdi
     add $32, %rdi
+    fldt _kefir_func_test1_label3(%rip)
+    fstpt -192(%rbp)
     movq $0, 8(%rdi)
     fldt -192(%rbp)
     fstpt (%rdi)
     mov %rdx, %rdi
     add $48, %rdi
-    movd _kefir_func_test1_label3(%rip), %xmm0
-    movd %xmm0, -224(%rbp)
-    movd %xmm0, -220(%rbp)
-    movq -224(%rbp), %xmm0
+    movd _kefir_func_test1_label4(%rip), %xmm0
+    movd %xmm0, -192(%rbp)
+    movd %xmm0, -188(%rbp)
+    movq -192(%rbp), %xmm0
     movq %xmm0, (%rdi)
     mov %rdx, %rdi
     add $56, %rdi
-    movq _kefir_func_test1_label4(%rip), %xmm0
-    movq %xmm0, -216(%rbp)
-    movq %xmm0, -208(%rbp)
-    movq -216(%rbp), %xmm0
+    movq _kefir_func_test1_label5(%rip), %xmm0
+    movq %xmm0, -192(%rbp)
+    movq %xmm0, -184(%rbp)
+    movq -192(%rbp), %xmm0
     movq %xmm0, (%rdi)
-    movq -208(%rbp), %xmm0
+    movq -184(%rbp), %xmm0
     movq %xmm0, 8(%rdi)
-    leaq -176(%rbp), %rdi
-    xor %eax, %eax
-    mov $32, %rcx
-    rep stosb
     mov %rdx, %rdi
     add $80, %rdi
+    fldt _kefir_func_test1_label6(%rip)
+    fstpt -192(%rbp)
+    fldt -192(%rbp)
+    fldt -192(%rbp)
+    fstpt -160(%rbp)
+    fstpt -176(%rbp)
     movq $0, 8(%rdi)
     movq $0, 24(%rdi)
     fldt -176(%rbp)
     fstpt (%rdi)
     fldt -160(%rbp)
     fstpt 16(%rdi)
-    leaq -144(%rbp), %rdi
+    leaq -136(%rbp), %rdi
     xor %eax, %eax
     mov $128, %rcx
     rep stosb
     mov %rdx, %rdi
     add $112, %rdi
-    leaq -144(%rbp), %rsi
+    leaq -136(%rbp), %rsi
     cld
     mov $16, %rcx
     rep movsq
@@ -81,11 +81,19 @@ _kefir_func_test1_label1:
     .align 8
 _kefir_func_test1_label2:
     .quad 0
-    .align 4
+    .align 8
 _kefir_func_test1_label3:
+    .quad 0
+    .quad 0
+    .align 4
+_kefir_func_test1_label4:
     .long 0
     .align 8
-_kefir_func_test1_label4:
+_kefir_func_test1_label5:
+    .quad 0
+    .align 8
+_kefir_func_test1_label6:
+    .quad 0
     .quad 0
 .section .text
 

@@ -537,12 +537,11 @@ static kefir_result_t inline_operation_index(struct do_inline_param *param, cons
     return KEFIR_OK;
 }
 
-static kefir_result_t generate_placeholder(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                           struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,
+static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_opt_block_id_t block_id,
                                            kefir_id_t type_id, kefir_size_t type_index,
                                            kefir_opt_instruction_ref_t insert_after,
                                            kefir_opt_instruction_ref_t *instr_ref_ptr) {
-    const struct kefir_ir_type *ir_type = kefir_ir_module_get_named_type(module->ir_module, type_id);
+    const struct kefir_ir_type *ir_type = kefir_ir_module_get_named_type(param->module->ir_module, type_id);
     REQUIRE(ir_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type"));
     const struct kefir_ir_typeentry *ir_typeentry = kefir_ir_type_at(ir_type, type_index);
     REQUIRE(ir_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
@@ -559,35 +558,57 @@ static kefir_result_t generate_placeholder(struct kefir_mem *mem, const struct k
         case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_LONG:
         case KEFIR_IR_TYPE_WORD:
-            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, code, block_id, 0, instr_ref_ptr));
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(param->mem, param->dst_code, block_id, 0, instr_ref_ptr));
             break;
 
         case KEFIR_IR_TYPE_FLOAT32:
-            REQUIRE_OK(kefir_opt_code_builder_float32_constant(mem, code, block_id, 0.0f, instr_ref_ptr));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float32_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
             break;
 
         case KEFIR_IR_TYPE_FLOAT64:
-            REQUIRE_OK(kefir_opt_code_builder_float64_constant(mem, code, block_id, 0.0f, instr_ref_ptr));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float64_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
+            break;
+
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
+            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(param->mem, param->dst_code, block_id, 0.0L,
+                                                                   instr_ref_ptr));
             break;
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
-            REQUIRE_OK(kefir_opt_code_builder_float32_constant(mem, code, block_id, 0.0f, instr_ref_ptr));
-            REQUIRE_OK(kefir_opt_code_builder_complex_float32_from(mem, code, block_id, *instr_ref_ptr, *instr_ref_ptr,
-                                                                   instr_ref_ptr));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float32_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
+            REQUIRE_OK(kefir_opt_code_builder_complex_float32_from(param->mem, param->dst_code, block_id,
+                                                                   *instr_ref_ptr, *instr_ref_ptr, instr_ref_ptr));
             break;
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
-            REQUIRE_OK(kefir_opt_code_builder_float64_constant(mem, code, block_id, 0.0f, instr_ref_ptr));
-            REQUIRE_OK(kefir_opt_code_builder_complex_float64_from(mem, code, block_id, *instr_ref_ptr, *instr_ref_ptr,
-                                                                   instr_ref_ptr));
+            REQUIRE_OK(
+                kefir_opt_code_builder_float64_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
+            REQUIRE_OK(kefir_opt_code_builder_complex_float64_from(param->mem, param->dst_code, block_id,
+                                                                   *instr_ref_ptr, *instr_ref_ptr, instr_ref_ptr));
             break;
 
-        default:
-            REQUIRE_OK(kefir_opt_code_builder_alloc_local(mem, code, block_id, type_id, 0, instr_ref_ptr));
-            REQUIRE_OK(
-                kefir_opt_code_builder_zero_memory(mem, code, block_id, *instr_ref_ptr, type_id, 0, &zero_instr_ref));
-            REQUIRE_OK(kefir_opt_code_container_insert_control(code, block_id, insert_after, zero_instr_ref));
+        case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(kefir_opt_code_builder_long_double_constant(param->mem, param->dst_code, block_id, 0.0L,
+                                                                   instr_ref_ptr));
+            REQUIRE_OK(kefir_opt_code_builder_complex_long_double_from(param->mem, param->dst_code, block_id,
+                                                                       *instr_ref_ptr, *instr_ref_ptr, instr_ref_ptr));
             break;
+
+        default: {
+            const struct kefir_opt_call_node *original_call;
+            REQUIRE_OK(
+                kefir_opt_code_container_call(&param->dst_function->code, param->original_call_ref, &original_call));
+            REQUIRE(original_call->return_space != KEFIR_ID_NONE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid return space for inlined call site"));
+            *instr_ref_ptr = original_call->return_space;
+            REQUIRE_OK(kefir_opt_code_builder_zero_memory(param->mem, param->dst_code, block_id, *instr_ref_ptr,
+                                                          type_id, 0, &zero_instr_ref));
+            REQUIRE_OK(
+                kefir_opt_code_container_insert_control(param->dst_code, block_id, insert_after, zero_instr_ref));
+        } break;
     }
 
     return KEFIR_OK;
@@ -613,7 +634,7 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
         } else {
             const struct kefir_opt_code_block *mapped_block;
             REQUIRE_OK(kefir_opt_code_container_block(param->dst_code, mapped_block_id, &mapped_block));
-            REQUIRE_OK(generate_placeholder(param->mem, param->module, param->dst_code, mapped_block_id,
+            REQUIRE_OK(generate_placeholder(param, mapped_block_id,
                                             param->src_function->ir_func->declaration->result_type_id, 0,
                                             mapped_block->control_flow.tail, mapped_instr_ref));
         }
@@ -658,8 +679,10 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
                                 "Mismatch between inlined function argument count and call site arguments"));
         mapped_instr_ref = call_node->arguments[instr->operation.parameters.index];
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
-        // Ignore local lifetime marks in inlined function, thus making respective variables alive for the complete duration of enclosing function
-        REQUIRE_OK(kefir_opt_code_builder_int_placeholder(param->mem, param->dst_code, mapped_block_id, &mapped_instr_ref));
+        // Ignore local lifetime marks in inlined function, thus making respective variables alive for the complete
+        // duration of enclosing function
+        REQUIRE_OK(
+            kefir_opt_code_builder_int_placeholder(param->mem, param->dst_code, mapped_block_id, &mapped_instr_ref));
 
         kefir_bool_t is_control_flow;
         REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&param->src_function->code, instr_ref, &is_control_flow));

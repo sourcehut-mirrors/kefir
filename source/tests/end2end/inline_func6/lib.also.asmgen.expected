@@ -1,0 +1,30 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern s1
+.global init_s1
+.type init_s1, @function
+
+.section .text
+__kefir_text_section_begin:
+init_s1:
+__kefir_text_func_init_s1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $512, %rsp
+    leaq -512(%rbp), %rdi
+    xor %eax, %eax
+    mov $512, %rcx
+    rep stosb
+    movq s1@GOTPCREL(%rip), %rdi
+    leaq -512(%rbp), %rsi
+    cld
+    mov $64, %rcx
+    rep movsq
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_init_s1_end:
+
+__kefir_text_section_end:
+
