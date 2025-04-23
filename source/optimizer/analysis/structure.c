@@ -104,7 +104,7 @@ kefir_result_t kefir_opt_code_structure_drop_sequencing_cache(struct kefir_mem *
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
 
     structure->next_seq_number = 0;
-    REQUIRE_OK(kefir_bucketset_free(mem, &structure->sequenced_before));
+    REQUIRE_OK(kefir_bucketset_clean(mem, &structure->sequenced_before));
     REQUIRE_OK(kefir_hashtree_clean(mem, &structure->sequence_numbering));
     return KEFIR_OK;
 }
