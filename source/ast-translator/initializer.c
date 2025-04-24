@@ -245,7 +245,9 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
                                              &param.translator_type, &initializer->source_location));
 
     kefir_result_t res = KEFIR_OK;
-    if (!nested && KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type)) {
+    if (!nested && KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) &&
+        (initializer->type != KEFIR_AST_INITIALIZER_EXPRESSION ||
+         !KEFIR_AST_TYPE_SAME(unqualified_type, initializer->expression->properties.type))) {
         res = zero_type(builder, param.translator_type->object.ir_type_id, param.translator_type->object.layout);
     }
 
