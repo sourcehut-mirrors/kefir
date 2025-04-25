@@ -70,28 +70,18 @@ testlarge2:
 __kefir_text_func_testlarge2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $2064, %rsp
+    sub $1040, %rsp
     mov %rsi, %rax
-    movq %rax, -2064(%rbp)
+    movq %rax, -1040(%rbp)
     mov %rdi, %rsi
     leaq -1024(%rbp), %rdi
     call getlarge@PLT
-    movq -2064(%rbp), %rax
-    leaq -2048(%rbp), %rdi
-    leaq -1024(%rbp), %rsi
-    cld
-    mov $64, %rcx
-    rep movsq
+    movq -1040(%rbp), %rax
     mov %rax, %rsi
     leaq -512(%rbp), %rdi
     call getlarge@PLT
-    leaq -1536(%rbp), %rdi
+    leaq -1024(%rbp), %rdi
     leaq -512(%rbp), %rsi
-    cld
-    mov $64, %rcx
-    rep movsq
-    leaq -2048(%rbp), %rdi
-    leaq -1536(%rbp), %rsi
     mov $512, %rdx
     call my_memcmp@PLT
     lea (%rbp), %rsp

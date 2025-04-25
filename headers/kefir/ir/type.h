@@ -86,6 +86,9 @@ kefir_size_t kefir_ir_type_slots_of(const struct kefir_ir_type *, kefir_size_t);
 kefir_size_t kefir_ir_type_slots(const struct kefir_ir_type *);
 kefir_result_t kefir_ir_type_slot_of(const struct kefir_ir_type *, kefir_size_t, kefir_size_t *);
 
+kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *, const struct kefir_ir_typeentry *);
+kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *, kefir_size_t, const struct kefir_ir_type *, kefir_size_t, kefir_bool_t *);
+
 typedef kefir_result_t (*kefir_ir_type_visitor_callback_t)(const struct kefir_ir_type *, kefir_size_t,
                                                            const struct kefir_ir_typeentry *, void *);
 

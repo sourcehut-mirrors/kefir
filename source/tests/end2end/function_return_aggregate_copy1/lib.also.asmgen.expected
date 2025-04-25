@@ -1,0 +1,68 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern get
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+
+.section .text
+__kefir_text_section_begin:
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $272, %rsp
+    mov %rsi, %rax
+    movq %rax, -272(%rbp)
+    mov %rdi, %rsi
+    leaq -256(%rbp), %rdi
+    call get@PLT
+    movq -272(%rbp), %rax
+    movsx %eax, %rax
+    imul $4, %rax, %rax
+    leaq -256(%rbp), %rdi
+    add %rax, %rdi
+    movl (%rdi), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $528, %rsp
+    mov %rsi, %rax
+    lea ptr(%rip), %rcx
+    lea -512(%rbp), %rsi
+    movq %rsi, (%rcx)
+    movq %rax, -528(%rbp)
+    mov %rdi, %rsi
+    leaq -256(%rbp), %rdi
+    call get@PLT
+    movq -528(%rbp), %rax
+    leaq -512(%rbp), %rdi
+    leaq -256(%rbp), %rsi
+    cld
+    mov $32, %rcx
+    rep movsq
+    movsx %eax, %rax
+    imul $4, %rax, %rax
+    leaq -512(%rbp), %rdi
+    add %rax, %rdi
+    movl (%rdi), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get3_end:
+
+__kefir_text_section_end:
+
+.section .bss
+    .align 8
+ptr:
+    .skip 8
+

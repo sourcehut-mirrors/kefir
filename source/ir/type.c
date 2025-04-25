@@ -325,3 +325,69 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *type
     }
     return KEFIR_OK;
 }
+
+kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *typeentry1, const struct kefir_ir_typeentry *typeentry2) {
+    if (typeentry1 == NULL && typeentry2 == NULL) {
+        return 0;
+    } else if (typeentry1 == NULL) {
+        return  -1;
+    } else if (typeentry2 == NULL) {
+        return 1;
+    }
+
+    if ((kefir_int64_t) typeentry1->typecode < (kefir_int64_t) typeentry2->typecode) {
+        return -1;
+    } else if ((kefir_int64_t) typeentry1->typecode > (kefir_int64_t) typeentry2->typecode) {
+        return 1;
+    }
+
+    if (typeentry1->alignment < typeentry2->alignment) {
+        return -1;
+    } else if (typeentry1->alignment > typeentry2->alignment) {
+        return 1;
+    }
+
+    if (typeentry1->param < typeentry2->param) {
+        return -1;
+    } else if (typeentry1->param > typeentry2->param) {
+        return 1;
+    }
+
+    if (!typeentry1->atomic && typeentry2->atomic) {
+        return -1;
+    } else if (typeentry1->atomic && !typeentry2->atomic) {
+        return 1;
+    }
+
+    return 0;
+}
+
+kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *type1, kefir_size_t index1, const struct kefir_ir_type *type2, kefir_size_t index2, kefir_bool_t *same_ptr) {
+    REQUIRE(type1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    REQUIRE(type2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
+    REQUIRE(index1 < kefir_ir_type_length(type1), KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
+    REQUIRE(index2 < kefir_ir_type_length(type2), KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided IR type index is out of bounds"));
+    REQUIRE(same_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean"));
+
+    kefir_size_t type1_length = kefir_ir_type_length_of(type1, index1);
+    if (index2 + type1_length > kefir_ir_type_length(type2)) {
+        *same_ptr = false;
+        return KEFIR_OK;
+    }
+    
+    for (kefir_size_t i = 0; i < type1_length; i++) {
+        const struct kefir_ir_typeentry *typeentry1 = kefir_ir_type_at(type1, index1 + i);
+        const struct kefir_ir_typeentry *typeentry2 = kefir_ir_type_at(type2, index2 + i);
+        REQUIRE(typeentry1 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
+        REQUIRE(typeentry2 != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
+
+        const kefir_int_t typeentry_compare = kefir_ir_typeentry_compare(typeentry1, typeentry2);
+        if (typeentry_compare != 0) {
+            *same_ptr = false;
+            return KEFIR_OK;
+        }
+    }
+
+    *same_ptr = true;
+    return KEFIR_OK;
+}

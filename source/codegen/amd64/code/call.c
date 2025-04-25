@@ -703,9 +703,6 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
             REQUIRE(implicit_parameter_alloc_vreg != KEFIR_ASMCMP_INDEX_NONE,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected implicit parameter allocation virtual register"));
-            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                implicit_parameter_alloc_vreg, NULL));
             *result_vreg = implicit_parameter_alloc_vreg;
             break;
 

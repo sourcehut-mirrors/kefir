@@ -84,29 +84,9 @@ static kefir_int_t ir_type_compare(kefir_hashtree_key_t key1, kefir_hashtree_key
     for (kefir_size_t i = 0; i < len1; i++) {
         const struct kefir_ir_typeentry *typeentry1 = kefir_ir_type_at(type1, i);
         const struct kefir_ir_typeentry *typeentry2 = kefir_ir_type_at(type2, i);
-
-        if ((kefir_int64_t) typeentry1->typecode < (kefir_int64_t) typeentry2->typecode) {
-            return -1;
-        } else if ((kefir_int64_t) typeentry1->typecode > (kefir_int64_t) typeentry2->typecode) {
-            return 1;
-        }
-
-        if (typeentry1->alignment < typeentry2->alignment) {
-            return -1;
-        } else if (typeentry1->alignment > typeentry2->alignment) {
-            return 1;
-        }
-
-        if (typeentry1->param < typeentry2->param) {
-            return -1;
-        } else if (typeentry1->param > typeentry2->param) {
-            return 1;
-        }
-
-        if (!typeentry1->atomic && typeentry2->atomic) {
-            return -1;
-        } else if (typeentry1->atomic && !typeentry2->atomic) {
-            return 1;
+        kefir_int_t typeeentry_compare = kefir_ir_typeentry_compare(typeentry1, typeentry2);
+        if (typeeentry_compare != 0) {
+            return typeeentry_compare;
         }
     }
     return 0;
