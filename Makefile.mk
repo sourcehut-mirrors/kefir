@@ -5,6 +5,7 @@ USE_SANITIZER=no
 USE_VALGRIND=no
 USE_GCOV=no
 USE_EXTENSION_SUPPORT=no
+KEFIR_GENERATE_COMPILE_COMMANDS?=no
 PLATFORM := $(shell uname | tr '[:upper:]' '[:lower:]')
 
 # Tools
@@ -98,6 +99,7 @@ KEFIR_CC1_EXE=$(KEFIR_BIN_DIR)/kefir-cc1
 KEFIR_JS=$(KEFIR_BIN_DIR)/kefir.js
 HEXDUMP_EXE=$(KEFIR_BIN_DIR)/hexdump
 COVERAGE_HTML=$(KEFIR_BIN_DIR)/coverage/index.html
+COMPILE_COMMANDS_JSON=$(KEFIR_BIN_DIR)/compile_commands.json
 
 COMPILE_DEPS :=
 DEPENDENCIES :=
@@ -140,6 +142,10 @@ $(KEFIR_BIN_DIR)/%.o: $(SOURCE_DIR)/%.c $(KEFIR_BIN_DIR)/%.d $(KEFIR_BIN_DIR)/%.
 	@mkdir -p $(shell dirname "$@")
 	@echo "Building $@"
 	@$(CC) $(CFLAGS) -I$(HEADERS_DIR) -include "$(KEFIR_HOST_ENV_CONFIG_HEADER)" $$(cat $(subst .o,.deps,$@)) -c $< -o $@
+	@echo "$(shell pwd)" > "$@.cmd"
+	@echo "$<" >> "$@.cmd"
+	@echo "$@" >> "$@.cmd"
+	@echo "$(CC) $(CFLAGS) -I$(HEADERS_DIR) -include $(KEFIR_HOST_ENV_CONFIG_HEADER) $$(cat $(subst .o,.deps,$@)) -c $< -o $@" >> "$@.cmd"
 
 $(KEFIR_BIN_DIR)/%.s.o: $(SOURCE_DIR)/%.s
 	@mkdir -p $(shell dirname "$@")
@@ -155,3 +161,9 @@ $(COVERAGE_HTML):
 	@mkdir -p $(shell dirname "$@")
 	@echo "Generating gcov report $@..."
 	@$(GCOVR) --root $(realpath $(ROOT)) --html --html-details --output "$@"
+
+COMPILE_COMMANDS_JSON_CMD_FILES=$(shell "$(SCRIPTS_DIR)/gen_compile_commands.py" --cmd-files --build-dir "$(KEFIR_BIN_DIR)")
+$(COMPILE_COMMANDS_JSON): $(COMPILE_COMMANDS_JSON_CMD_FILES)
+	@echo "Generating $@..."
+	@"$(SCRIPTS_DIR)/gen_compile_commands.py" --compile-commands --build-dir "$(KEFIR_BIN_DIR)" > "$@.tmp"
+	@mv "$@.tmp" "$@"

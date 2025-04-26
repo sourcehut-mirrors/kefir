@@ -32,11 +32,17 @@ endif
 .WEBAPP: $(WEBAPP)
 .MAN_PAGES: $(MAN_PAGES)
 
-all: .BINARIES .MAN_PAGES
+ifeq ($(KEFIR_GENERATE_COMPILE_COMMANDS),yes)
+.COMPILE_COMMANDS_JSON: $(COMPILE_COMMANDS_JSON)
+else
+.COMPILE_COMMANDS_JSON:
+endif
+
+all: .BINARIES .MAN_PAGES .WAIT .COMPILE_COMMANDS_JSON
 
 generate_test_artifacts: .TEST_ARTIFACTS
 
-test: .TESTS
+test: .TESTS .WAIT .COMPILE_COMMANDS_JSON
 	@echo "Tests succeeded"
 
 csmith_test: .CSMITH_TESTS
@@ -70,9 +76,11 @@ clean:
 help:
 	@cat $(DOCS_DIR)/Makefile.help.txt
 
+compile_commands: $(COMPILE_COMMANDS_JSON)
+
 .NOTPARALLEL: .EXTERNAL_TESTS_SUITE .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE $(EXTERNAL_TESTS_BASE_SUITE) $(EXTERNAL_TESTS_FAST_SUITE) $(EXTERNAL_TESTS_SLOW_SUITE) $(EXTERNAL_TESTS_EXTRA_SUITE)
 
-.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap \
+.PHONY: all test generate_test_artifacts bootstrap_test web webapp coverage clean help torture_test csmith_test external_test external_extra_test portable portable_bootstrap compile_commands \
         .DEPENDENCIES .COMPILE_DEPS .TEST_ARTIFACTS .ASM_FILES .OBJECT_FILES .BINARIES .TEST_BINARIES .TEST_RESULTS .TESTS .EXTERNAL_TESTS_BASE_SUITE .EXTERNAL_TESTS_FAST_SUITE .EXTERNAL_TESTS_SLOW_SUITE .EXTERNAL_TESTS_EXTRA_SUITE .EXTERNAL_TESTS_SUITE .BOOTSTRAP .MAN_PAGES
 
 .DEFAULT_GOAL := all
