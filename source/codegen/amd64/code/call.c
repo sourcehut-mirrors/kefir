@@ -804,6 +804,8 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+
     if (tail_call) {
         kefir_bool_t tail_call_possible;
         REQUIRE_OK(kefir_codegen_amd64_tail_call_possible(
@@ -815,7 +817,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
             return KEFIR_OK;
         }
     }
-
+    
     kefir_size_t stack_increment;
     REQUIRE_OK(prepare_stack(mem, function, abi_func_decl, &stack_increment));
 

@@ -302,6 +302,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+
     const struct kefir_opt_code_block *target_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
@@ -328,6 +330,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(jump)(struct kefir_mem *mem,
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch_compare)(struct kefir_mem *mem,
                                                                     struct kefir_codegen_amd64_function *function,
                                                                     const struct kefir_opt_instruction *instruction) {
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
@@ -771,6 +775,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(branch)(struct kefir_mem *me
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+
     const struct kefir_opt_code_block *target_block, *alternative_block, *source_block;
     REQUIRE_OK(kefir_opt_code_container_block(&function->function->code,
                                               instruction->operation.parameters.branch.target_block, &target_block));
@@ -886,6 +892,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t target_vreg_idx;
     REQUIRE_OK(

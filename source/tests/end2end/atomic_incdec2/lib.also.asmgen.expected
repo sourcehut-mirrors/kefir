@@ -82,9 +82,9 @@ _kefir_func_postdec_ld_label1:
     call __atomic_load@PLT
     movq -96(%rbp), %r10
     fldt _kefir_func_postdec_ld_label4(%rip)
-    fstpt -96(%rbp)
-    fldt -96(%rbp)
     fldt -64(%rbp)
+    fld %st(0)
+    fstpt -64(%rbp)
     faddp
     fstpt -96(%rbp)
     movq %r10, -16(%rbp)
@@ -168,9 +168,9 @@ _kefir_func_postinc_ld_label1:
     call __atomic_load@PLT
     movq -96(%rbp), %r10
     fldt _kefir_func_postinc_ld_label4(%rip)
-    fstpt -96(%rbp)
-    fldt -96(%rbp)
     fldt -64(%rbp)
+    fld %st(0)
+    fstpt -64(%rbp)
     faddp
     fstpt -96(%rbp)
     movq %r10, -16(%rbp)

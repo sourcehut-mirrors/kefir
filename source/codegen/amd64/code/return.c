@@ -30,6 +30,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+
     kefir_asmcmp_virtual_register_index_t vreg = KEFIR_ASMCMP_INDEX_NONE;
     if (kefir_ir_type_length(function->function->ir_func->declaration->result) > 0) {
         const struct kefir_abi_amd64_function_parameters *function_returns;

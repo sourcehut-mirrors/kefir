@@ -16,7 +16,7 @@ fn1:
 __kefir_text_func_fn1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $1664, %rsp
+    sub $1648, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
 _kefir_func_fn1_label6:
@@ -71,18 +71,15 @@ _kefir_func_fn1_label20:
     addsd %xmm2, %xmm0
 .loc 0 30 13
 _kefir_func_fn1_label21:
-    movq %xmm0, -1664(%rbp)
-    fldl -1664(%rbp)
-    fstpt -1648(%rbp)
+    movq %xmm0, -1648(%rbp)
+    fldl -1648(%rbp)
 .loc 0 30 13
 _kefir_func_fn1_label22:
     movq $0, -824(%rbp)
-    fldt -1648(%rbp)
     fstpt -832(%rbp)
 .loc 0 31 28
 _kefir_func_fn1_label23:
     fldt -832(%rbp)
-    fstpt -1664(%rbp)
 .loc 0 32 24
 _kefir_func_fn1_label24:
     movsx %r8d, %rax
@@ -100,16 +97,13 @@ _kefir_func_fn1_label27:
 _kefir_func_fn1_label28:
     movq %xmm1, -1648(%rbp)
     fldl -1648(%rbp)
-    fstpt -1648(%rbp)
 .loc 0 31 24
 _kefir_func_fn1_label29:
-    fldt -1664(%rbp)
-    fldt -1648(%rbp)
+    fxch %st(1)
+    fxch %st(1)
     fsubp
-    fstpt -1664(%rbp)
 .loc 0 31 13
 _kefir_func_fn1_label30:
-    fldt -1664(%rbp)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
 .loc 0 32 20

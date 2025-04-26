@@ -38,15 +38,15 @@ _kefir_func_temp_label3:
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    fstpt -48(%rbp)
 .loc 0 31 5
 _kefir_func_temp_label4:
     fldt _kefir_func_temp_label5(%rip)
-    fstpt -32(%rbp)
 .loc 0 31 5
 _kefir_func_temp_label6:
-    fldt -48(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
     fldt -32(%rbp)
+    fldt -48(%rbp)
     fstpt -32(%rbp)
     fstpt -48(%rbp)
 .loc 0 31 5

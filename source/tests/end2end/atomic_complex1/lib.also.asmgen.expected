@@ -204,7 +204,8 @@ __kefir_text_func_neg_ld_begin:
     push %rbp
     mov %rsp, %rbp
     sub $80, %rsp
-    stmxcsr -8(%rbp)
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
     movq ld_1@GOTPCREL(%rip), %rsi
     lea -80(%rbp), %rdx
     mov $32, %rdi
@@ -218,7 +219,8 @@ __kefir_text_func_neg_ld_begin:
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fldt -48(%rbp)
-    ldmxcsr -8(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -30,7 +30,7 @@ inc:
 __kefir_text_func_inc_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     fstcw -8(%rbp)
 _kefir_func_inc_label0:
     lea 16(%rbp), %rax
@@ -38,14 +38,11 @@ _kefir_func_inc_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -64(%rbp)
     fldt _kefir_func_inc_label1(%rip)
+    fxch %st(1)
+    faddp
     fstpt -48(%rbp)
     fldt -48(%rbp)
-    fldt -64(%rbp)
-    faddp
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -70,8 +67,6 @@ _kefir_func_neg_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
     fchs
     fstpt -48(%rbp)
     fldt -48(%rbp)
@@ -144,7 +139,7 @@ ldcf32:
 __kefir_text_func_ldcf32_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
 _kefir_func_ldcf32_label0:
@@ -153,8 +148,6 @@ _kefir_func_ldcf32_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
     fstps -4(%rsp)
     movd -4(%rsp), %xmm0
     ldmxcsr -16(%rbp)
@@ -168,7 +161,7 @@ ldcf64:
 __kefir_text_func_ldcf64_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
 _kefir_func_ldcf64_label0:
@@ -177,8 +170,6 @@ _kefir_func_ldcf64_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
     fstpl -8(%rsp)
     movq -8(%rsp), %xmm0
     ldmxcsr -16(%rbp)
@@ -200,8 +191,6 @@ _kefir_func_ldcint_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
     fnstcww -48(%rbp)
     movzxw -48(%rbp), %eax
     or $3072, %eax
@@ -228,10 +217,8 @@ _kefir_func_ldcuint_label0:
     fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
-    fstpt -64(%rbp)
-    fldt -64(%rbp)
     flds __kefir_constant_long_double_to_uint(%rip)
-    fstp %st(2)
+    fxch %st(1)
     fcomi %st(1)
     jnb _kefir_func_ldcuint_label1
     fstp %st(1)

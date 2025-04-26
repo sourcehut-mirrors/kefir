@@ -898,6 +898,7 @@ static kefir_result_t load_inputs(struct kefir_mem *mem, struct kefir_codegen_am
 
 static kefir_result_t prepare_state(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                     struct inline_assembly_context *context) {
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
     REQUIRE_OK(kefir_asmcmp_amd64_activate_stash(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), context->stash_idx, NULL));
 

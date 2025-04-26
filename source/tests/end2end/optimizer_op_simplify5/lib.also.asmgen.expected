@@ -28,17 +28,23 @@ _kefir_func_less_or_equalsld_label0:
     fldt (%rcx)
     fstpt -48(%rbp)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
     fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -80(%rbp)
+    fld %st(0)
     fstpt -64(%rbp)
-    fldt -80(%rbp)
-    fldt -64(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
     fldt -80(%rbp)
     fldt -64(%rbp)
+    fld %st(1)
+    fstpt -80(%rbp)
+    fld %st(0)
+    fstpt -64(%rbp)
     mov $0, %rcx
     mov $0, %rdx
     fucomip %st(1)
@@ -114,17 +120,22 @@ _kefir_func_greater_or_equalsld_label0:
     fldt (%rcx)
     fstpt -48(%rbp)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
     fldt -32(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -80(%rbp)
+    fld %st(0)
     fstpt -64(%rbp)
-    fldt -64(%rbp)
-    fldt -80(%rbp)
     mov $0, %rax
     fcomip %st(1)
     fstp %st(0)
     seta %al
-    fldt -80(%rbp)
     fldt -64(%rbp)
+    fldt -80(%rbp)
+    fld %st(1)
+    fstpt -64(%rbp)
+    fld %st(0)
+    fstpt -80(%rbp)
     mov $0, %rcx
     mov $0, %rdx
     fucomip %st(1)

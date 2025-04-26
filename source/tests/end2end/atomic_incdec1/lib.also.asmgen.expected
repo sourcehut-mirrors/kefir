@@ -83,9 +83,9 @@ _kefir_func_predec_ld_label1:
     call __atomic_load@PLT
     movq -80(%rbp), %r10
     fldt _kefir_func_predec_ld_label4(%rip)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldt -96(%rbp)
+    fld %st(0)
+    fstpt -96(%rbp)
     faddp
     fstpt -64(%rbp)
     movq %r10, -16(%rbp)
@@ -170,9 +170,9 @@ _kefir_func_preinc_ld_label1:
     call __atomic_load@PLT
     movq -80(%rbp), %r10
     fldt _kefir_func_preinc_ld_label4(%rip)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldt -96(%rbp)
+    fld %st(0)
+    fstpt -96(%rbp)
     faddp
     fstpt -64(%rbp)
     movq %r10, -16(%rbp)

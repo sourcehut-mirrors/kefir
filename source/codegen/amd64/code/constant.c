@@ -234,6 +234,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_const)(
     REQUIRE_OK(kefir_hashtree_insert(mem, &function->constants, (kefir_hashtree_key_t) label,
                                      (kefir_hashtree_value_t) instruction->id));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
     if (function->codegen->config->position_independent_code) {
         REQUIRE_OK(kefir_asmcmp_amd64_fld(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -243,10 +244,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(long_double_const)(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_INDIRECT_INTERNAL_LABEL(label, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
     }
-
-    REQUIRE_OK(kefir_asmcmp_amd64_fstp(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;

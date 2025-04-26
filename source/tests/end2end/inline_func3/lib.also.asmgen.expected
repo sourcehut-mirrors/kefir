@@ -10,8 +10,9 @@ test1:
 __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $192, %rsp
-    stmxcsr -8(%rbp)
+    sub $208, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
     mov %rdi, %rdx
     movq $0, (%rdx)
     mov %rdx, %rdi
@@ -25,32 +26,30 @@ __kefir_text_func_test1_begin:
     mov %rdx, %rdi
     add $32, %rdi
     fldt _kefir_func_test1_label3(%rip)
-    fstpt -192(%rbp)
     movq $0, 8(%rdi)
-    fldt -192(%rbp)
     fstpt (%rdi)
     mov %rdx, %rdi
     add $48, %rdi
     movd _kefir_func_test1_label4(%rip), %xmm0
-    movd %xmm0, -192(%rbp)
-    movd %xmm0, -188(%rbp)
-    movq -192(%rbp), %xmm0
+    movd %xmm0, -208(%rbp)
+    movd %xmm0, -204(%rbp)
+    movq -208(%rbp), %xmm0
     movq %xmm0, (%rdi)
     mov %rdx, %rdi
     add $56, %rdi
     movq _kefir_func_test1_label5(%rip), %xmm0
+    movq %xmm0, -200(%rbp)
     movq %xmm0, -192(%rbp)
-    movq %xmm0, -184(%rbp)
-    movq -192(%rbp), %xmm0
+    movq -200(%rbp), %xmm0
     movq %xmm0, (%rdi)
-    movq -184(%rbp), %xmm0
+    movq -192(%rbp), %xmm0
     movq %xmm0, 8(%rdi)
     mov %rdx, %rdi
     add $80, %rdi
     fldt _kefir_func_test1_label6(%rip)
-    fstpt -192(%rbp)
-    fldt -192(%rbp)
-    fldt -192(%rbp)
+    fstpt -208(%rbp)
+    fldt -208(%rbp)
+    fldt -208(%rbp)
     fstpt -160(%rbp)
     fstpt -176(%rbp)
     movq $0, 8(%rdi)
@@ -59,17 +58,18 @@ __kefir_text_func_test1_begin:
     fstpt (%rdi)
     fldt -160(%rbp)
     fstpt 16(%rdi)
-    leaq -136(%rbp), %rdi
+    leaq -144(%rbp), %rdi
     xor %eax, %eax
     mov $128, %rcx
     rep stosb
     mov %rdx, %rdi
     add $112, %rdi
-    leaq -136(%rbp), %rsi
+    leaq -144(%rbp), %rsi
     cld
     mov $16, %rcx
     rep movsq
-    ldmxcsr -8(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

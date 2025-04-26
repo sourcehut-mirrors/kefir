@@ -132,6 +132,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_real)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
@@ -159,6 +160,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_imaginar
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
@@ -247,6 +249,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_from)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;
 
@@ -410,6 +414,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_equals)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg, tmp_vreg, tmp2_vreg, tmp3_vreg;
 
@@ -591,6 +596,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_truncate
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, tmp_vreg, tmp2_vreg;
 
@@ -803,6 +809,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_add_sub)
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;
 
@@ -1287,6 +1294,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_mul)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;
 
@@ -1352,6 +1360,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_div)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
     function->codegen_module->constants.complex_long_double_div = true;
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg, arg2_vreg;
@@ -1644,6 +1653,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_neg)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
     function->codegen_module->constants.complex_float64_neg = true;
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
@@ -1761,6 +1772,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_load)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
@@ -1863,6 +1876,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_store)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&function->stack_frame));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t location_vreg, value_vreg;
 
