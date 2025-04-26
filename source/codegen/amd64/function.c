@@ -353,6 +353,8 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
                                                              kefir_asmcmp_context_instr_tail(&func->code.context),
                                                              implicit_param_vreg, implicit_param_placement_vreg, NULL));
         func->return_address_vreg = implicit_param_vreg;
+        REQUIRE_OK(
+            kefir_hashtreeset_add(mem, &func->preserve_vregs, (kefir_hashtreeset_entry_t) func->return_address_vreg));
     }
 
     // Translate blocks
@@ -427,7 +429,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     }
 
     struct kefir_hashtreeset_iterator iter;
-    for (res = kefir_hashtreeset_iter(&func->vregs_alive_at_end, &iter); res == KEFIR_OK;
+    for (res = kefir_hashtreeset_iter(&func->preserve_vregs, &iter); res == KEFIR_OK;
          res = kefir_hashtreeset_next(&iter)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg, iter.entry);
         REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
@@ -436,18 +438,7 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
     }
-    if (func->return_address_vreg != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->return_address_vreg, NULL));
-    }
-    if (func->dynamic_scope_vreg != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->dynamic_scope_vreg, NULL));
-    }
     if (func->vararg_area != KEFIR_ASMCMP_INDEX_NONE) {
-        REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
-            mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), func->vararg_area, NULL));
-
         kefir_asmcmp_label_index_t save_int_label;
         switch (func->codegen->abi_variant) {
             case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
@@ -717,19 +708,21 @@ static kefir_result_t propagate_virtual_register_hints(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t get_local_variable_type_layout(struct kefir_mem *,
-    struct kefir_codegen_amd64_function *, kefir_id_t,
-    const struct kefir_abi_amd64_type_layout **);
+static kefir_result_t get_local_variable_type_layout(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                     kefir_id_t, const struct kefir_abi_amd64_type_layout **);
 
 struct variable_allocator_type_layout_param {
     struct kefir_mem *mem;
     struct kefir_codegen_amd64_function *func;
 };
 
-static kefir_result_t variable_allocator_type_layout(kefir_id_t type_id, kefir_size_t type_index, kefir_size_t *size_ptr, kefir_size_t *alignment_ptr, void *payload) {
+static kefir_result_t variable_allocator_type_layout(kefir_id_t type_id, kefir_size_t type_index,
+                                                     kefir_size_t *size_ptr, kefir_size_t *alignment_ptr,
+                                                     void *payload) {
     ASSIGN_DECL_CAST(struct variable_allocator_type_layout_param *, param, payload);
-    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator hook parameter"));
-    
+    REQUIRE(param != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator hook parameter"));
+
     const struct kefir_abi_amd64_type_layout *type_layout = NULL;
     const struct kefir_abi_amd64_typeentry_layout *typeentry_layout = NULL;
     REQUIRE_OK(get_local_variable_type_layout(param->mem, param->func, type_id, &type_layout));
@@ -759,13 +752,12 @@ static kefir_result_t kefir_codegen_amd64_function_translate_impl(struct kefir_m
     }
     REQUIRE_OK(kefir_opt_code_analyze(mem, &func->function->code, &func->function_analysis));
     REQUIRE_OK(translate_code(mem, func));
-    REQUIRE_OK(kefir_codegen_local_variable_allocator_run(mem, &func->variable_allocator, &func->function->code, &(struct kefir_codegen_local_variable_allocator_hooks) {
-        .type_layout = variable_allocator_type_layout,
-        .payload = &(struct variable_allocator_type_layout_param) {
-            .mem = mem,
-            .func = func
-        }
-    }, &func->function_analysis.variable_conflicts));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_run(
+        mem, &func->variable_allocator, &func->function->code,
+        &(struct kefir_codegen_local_variable_allocator_hooks) {
+            .type_layout = variable_allocator_type_layout,
+            .payload = &(struct variable_allocator_type_layout_param) {.mem = mem, .func = func}},
+        &func->function_analysis.variable_conflicts));
     REQUIRE_OK(kefir_opt_code_analysis_clear(mem, &func->function_analysis));
     REQUIRE_OK(propagate_virtual_register_hints(mem, func));
     REQUIRE_OK(
@@ -837,14 +829,13 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
 
     REQUIRE_OK(kefir_asmcmp_amd64_init(ir_identifier->symbol, codegen_module->codegen->abi_variant,
                                        codegen_module->codegen->config->position_independent_code, &func->code));
-    REQUIRE_OK(kefir_hashtree_init(&func->instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->virtual_registers, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->constants, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&func->local_variable_type_layouts, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&func->local_variable_type_layouts, free_type_layout, NULL));
+    REQUIRE_OK(kefir_hashtree_init(&func->type_layouts, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&func->type_layouts, free_type_layout, NULL));
     REQUIRE_OK(kefir_hashtreeset_init(&func->translated_instructions, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&func->vregs_alive_at_end, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&func->preserve_vregs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
@@ -872,11 +863,10 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &func->vregs_alive_at_end));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &func->preserve_vregs));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
-    REQUIRE_OK(kefir_hashtree_free(mem, &func->local_variable_type_layouts));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->type_layouts));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->constants));
-    REQUIRE_OK(kefir_hashtree_free(mem, &func->instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->virtual_registers));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->labels));
     REQUIRE_OK(kefir_asmcmp_amd64_free(mem, &func->code));
@@ -1072,8 +1062,7 @@ static kefir_result_t get_local_variable_type_layout(struct kefir_mem *mem,
                                                      struct kefir_codegen_amd64_function *function, kefir_id_t type_id,
                                                      const struct kefir_abi_amd64_type_layout **type_layout_ptr) {
     struct kefir_hashtree_node *node;
-    kefir_result_t res =
-        kefir_hashtree_at(&function->local_variable_type_layouts, (kefir_hashtree_key_t) type_id, &node);
+    kefir_result_t res = kefir_hashtree_at(&function->type_layouts, (kefir_hashtree_key_t) type_id, &node);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
         *type_layout_ptr = (const struct kefir_abi_amd64_type_layout *) node->value;
@@ -1088,7 +1077,7 @@ static kefir_result_t get_local_variable_type_layout(struct kefir_mem *mem,
             KEFIR_FREE(mem, type_layout);
             return res;
         });
-        res = kefir_hashtree_insert(mem, &function->local_variable_type_layouts, (kefir_hashtree_key_t) type_id,
+        res = kefir_hashtree_insert(mem, &function->type_layouts, (kefir_hashtree_key_t) type_id,
                                     (kefir_hashtree_value_t) type_layout);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_abi_amd64_type_layout_free(mem, type_layout);
@@ -1099,4 +1088,3 @@ static kefir_result_t get_local_variable_type_layout(struct kefir_mem *mem,
     }
     return KEFIR_OK;
 }
-

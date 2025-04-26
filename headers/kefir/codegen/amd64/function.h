@@ -43,21 +43,20 @@ typedef struct kefir_codegen_amd64_function {
     struct kefir_codegen_amd64_xregalloc xregalloc;
     struct kefir_codegen_amd64_stack_frame stack_frame;
     struct kefir_codegen_local_variable_allocator variable_allocator;
+    struct kefir_opt_code_schedule schedule;
 
     struct kefir_hashtreeset translated_instructions;
-    struct kefir_hashtree instructions;
     struct kefir_hashtree labels;
     struct kefir_hashtree virtual_registers;
     struct kefir_hashtree constants;
-    struct kefir_hashtree local_variable_type_layouts;
-    struct kefir_hashtreeset vregs_alive_at_end;
+    struct kefir_hashtree type_layouts;
+    struct kefir_hashtreeset preserve_vregs;
+
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
     kefir_asmcmp_virtual_register_index_t return_address_vreg;
     kefir_asmcmp_virtual_register_index_t dynamic_scope_vreg;
     kefir_asmcmp_virtual_register_index_t vararg_area;
-
-    struct kefir_opt_code_schedule schedule;
 
     struct {
         struct kefir_hashtree opt_instruction_location_labels;

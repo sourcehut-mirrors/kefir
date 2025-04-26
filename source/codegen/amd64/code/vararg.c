@@ -72,6 +72,8 @@ static kefir_result_t vararg_start_impl(struct kefir_mem *mem, struct kefir_code
             kefir_abi_amd64_num_of_general_purpose_parameter_registers(function->codegen->abi_variant) +
                 kefir_abi_amd64_num_of_sse_parameter_registers(function->codegen->abi_variant) * 2,
             2, &function->vararg_area));
+        REQUIRE_OK(
+            kefir_hashtreeset_add(mem, &function->preserve_vregs, (kefir_hashtreeset_entry_t) function->vararg_area));
     }
     REQUIRE_OK(kefir_asmcmp_amd64_lea(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

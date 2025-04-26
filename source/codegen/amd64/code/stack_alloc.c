@@ -29,6 +29,8 @@ static kefir_result_t ensure_dynamic_scope_vreg(struct kefir_mem *mem, struct ke
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE,
                                                      &function->dynamic_scope_vreg));
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &function->preserve_vregs,
+                                         (kefir_hashtreeset_entry_t) function->dynamic_scope_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, function->prologue_tail,
                                           &KEFIR_ASMCMP_MAKE_VREG64(function->dynamic_scope_vreg),
                                           &KEFIR_ASMCMP_MAKE_UINT(0), &function->prologue_tail));
