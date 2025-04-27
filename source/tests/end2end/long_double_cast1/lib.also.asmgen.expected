@@ -1,0 +1,261 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global inc
+.type inc, @function
+.global neg
+.type neg, @function
+.global f32cld
+.type f32cld, @function
+.global f64cld
+.type f64cld, @function
+.global intcld
+.type intcld, @function
+.global ldcf32
+.type ldcf32, @function
+.global ldcf64
+.type ldcf64, @function
+.global ldcint
+.type ldcint, @function
+.global ldcuint
+.type ldcuint, @function
+.global uintcld
+.type uintcld, @function
+.global imp_cast
+.type imp_cast, @function
+
+.section .text
+__kefir_text_section_begin:
+inc:
+__kefir_text_func_inc_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fldt _kefir_func_inc_label1(%rip)
+    fxch %st(1)
+    faddp
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inc_end:
+.section .rodata
+    .align 8
+_kefir_func_inc_label1:
+    .quad 9223372036854775808
+    .quad 16383
+.section .text
+
+neg:
+__kefir_text_func_neg_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fchs
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neg_end:
+
+f32cld:
+__kefir_text_func_f32cld_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    movq %xmm0, -48(%rbp)
+    flds -48(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f32cld_end:
+
+f64cld:
+__kefir_text_func_f64cld_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    movq %xmm0, -48(%rbp)
+    fldl -48(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_f64cld_end:
+
+intcld:
+__kefir_text_func_intcld_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    movsx %edi, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_intcld_end:
+
+ldcf32:
+__kefir_text_func_ldcf32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    fldt 16(%rbp)
+    fstps -4(%rsp)
+    movd -4(%rsp), %xmm0
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_ldcf32_end:
+
+ldcf64:
+__kefir_text_func_ldcf64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
+    fldt 16(%rbp)
+    fstpl -8(%rsp)
+    movq -8(%rsp), %xmm0
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_ldcf64_end:
+
+ldcint:
+__kefir_text_func_ldcint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fnstcww -32(%rbp)
+    movzxw -32(%rbp), %eax
+    or $3072, %eax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -24(%rbp)
+    mov -24(%rbp), %rax
+    fldcww -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_ldcint_end:
+
+ldcuint:
+__kefir_text_func_ldcuint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    flds __kefir_constant_long_double_to_uint(%rip)
+    fxch %st(1)
+    fcomi %st(1)
+    jnb _kefir_func_ldcuint_label1
+    fstp %st(1)
+    fnstcww -32(%rbp)
+    movzxw -32(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -32(%rbp)
+    jmp _kefir_func_ldcuint_label2
+_kefir_func_ldcuint_label1:
+    fnstcww -32(%rbp)
+    fsubp
+    movzxw -32(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -32(%rbp)
+    btc $63, %rax
+_kefir_func_ldcuint_label2:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_ldcuint_end:
+
+uintcld:
+__kefir_text_func_uintcld_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    mov %edi, %eax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    test %rax, %rax
+    jns _kefir_func_uintcld_label1
+    fadds __kefir_constant_uint_to_long_double(%rip)
+_kefir_func_uintcld_label1:
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uintcld_end:
+
+imp_cast:
+__kefir_text_func_imp_cast_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    movsx %edi, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_imp_cast_end:
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 4
+__kefir_constant_long_double_to_uint:
+    .long 1593835520
+    .align 16
+__kefir_constant_uint_to_long_double:
+    .long 1602224128

@@ -154,7 +154,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_STRUCT:
                 case KEFIR_IR_TYPE_ARRAY:
                 case KEFIR_IR_TYPE_UNION:
-                case KEFIR_IR_TYPE_LONG_DOUBLE:
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                 case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
@@ -164,6 +163,18 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg2, vreg,
                         NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
+                    break;
+
+                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
+                        mem, &function->code.context,
+                        kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
+                        kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &vreg2));
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
+                    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+                    REQUIRE_OK(kefir_asmcmp_amd64_fld(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
                     break;
 
                 case KEFIR_IR_TYPE_INT8:

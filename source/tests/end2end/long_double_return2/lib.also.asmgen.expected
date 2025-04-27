@@ -1,0 +1,80 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global pnanl
+.type pnanl, @function
+.extern mysignbit
+
+.section .text
+__kefir_text_section_begin:
+minus:
+__kefir_text_func_minus_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 16(%rbp)
+    fchs
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_minus_end:
+
+pnanl:
+__kefir_text_func_pnanl_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt _kefir_func_pnanl_label3(%rip)
+    fldt _kefir_func_pnanl_label4(%rip)
+    fxch %st(1)
+    fdivp
+    fstpt -48(%rbp)
+    sub $16, %rsp
+    fldt -48(%rbp)
+    fstpt (%rsp)
+    call mysignbit@PLT
+    add $16, %rsp
+    test %eax, %eax
+    jnz _kefir_func_pnanl_label1
+_kefir_func_pnanl_label5:
+    movq -48(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -24(%rbp)
+    jmp _kefir_func_pnanl_label2
+_kefir_func_pnanl_label1:
+    sub $16, %rsp
+    fldt -48(%rbp)
+    fstpt (%rsp)
+    call minus
+    fstpt -48(%rbp)
+    add $16, %rsp
+    movq -48(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -24(%rbp)
+_kefir_func_pnanl_label2:
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_pnanl_end:
+.section .rodata
+    .align 8
+_kefir_func_pnanl_label3:
+    .quad 0
+    .quad 0
+    .align 8
+_kefir_func_pnanl_label4:
+    .quad 0
+    .quad 0
+.section .text
+
+__kefir_text_section_end:
+

@@ -1,0 +1,58 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global init_s
+.type init_s, @function
+
+.section .text
+__kefir_text_section_begin:
+init_s:
+__kefir_text_func_init_s_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $80, %rsp
+    fstcw -8(%rbp)
+    mov %rdi, %r8
+    leaq -64(%rbp), %rdi
+    xor %eax, %eax
+    mov $48, %rcx
+    rep stosb
+    movsx %esi, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    movq $0, -56(%rbp)
+    fstpt -64(%rbp)
+    mov %edx, %eax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    test %rax, %rax
+    jns _kefir_func_init_s_label1
+    fadds __kefir_constant_uint_to_long_double(%rip)
+_kefir_func_init_s_label1:
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    movq %xmm0, -80(%rbp)
+    fldl -80(%rbp)
+    movq $0, -24(%rbp)
+    fstpt -32(%rbp)
+    mov %r8, %rax
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 32(%rax)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_init_s_end:
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 16
+__kefir_constant_uint_to_long_double:
+    .long 1602224128

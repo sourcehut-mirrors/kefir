@@ -1,0 +1,53 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern mul
+.extern sum
+.global my_hypot
+.type my_hypot, @function
+
+.section .text
+__kefir_text_section_begin:
+my_hypot:
+__kefir_text_func_my_hypot_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    sub $32, %rsp
+    fldt -48(%rbp)
+    fstpt (%rsp)
+    fldt -48(%rbp)
+    fstpt 16(%rsp)
+    call mul@PLT
+    fstpt -48(%rbp)
+    add $32, %rsp
+    sub $32, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    fldt -32(%rbp)
+    fstpt 16(%rsp)
+    call mul@PLT
+    fstpt -32(%rbp)
+    add $32, %rsp
+    sub $32, %rsp
+    fldt -48(%rbp)
+    fstpt (%rsp)
+    fldt -32(%rbp)
+    fstpt 16(%rsp)
+    call sum@PLT
+    fstpt -48(%rbp)
+    add $32, %rsp
+    fldt -48(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_my_hypot_end:
+
+__kefir_text_section_end:
+

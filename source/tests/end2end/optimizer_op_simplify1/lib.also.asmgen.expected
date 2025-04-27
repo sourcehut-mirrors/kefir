@@ -111,9 +111,8 @@ __kefir_text_func_dnotld_begin:
     sub $32, %rsp
     fstcw -8(%rbp)
 _kefir_func_dnotld_label0:
-    lea 16(%rbp), %rax
+    fldt 16(%rbp)
     movq $0, -24(%rbp)
-    fldt (%rax)
     fstpt -32(%rbp)
     fldt -32(%rbp)
     fldt _kefir_func_dnotld_label3(%rip)

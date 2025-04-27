@@ -1,0 +1,47 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global increment
+.type increment, @function
+.global LAST_VALUE
+.type LAST_VALUE, @object
+
+.section .text
+__kefir_text_section_begin:
+increment:
+__kefir_text_func_increment_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    call *%rdi
+    fstpt -32(%rbp)
+    movq LAST_VALUE@GOTPCREL(%rip), %rax
+    movq $0, 8(%rax)
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    fstpt (%rax)
+    mov $1, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_increment_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+LAST_VALUE:
+    .quad 0, 0
+

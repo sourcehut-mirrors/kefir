@@ -379,10 +379,15 @@ kefir_result_t kefir_codegen_amd64_store_floating_point_register(struct kefir_me
 kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                       kefir_opt_call_id_t, kefir_bool_t *);
 
-kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *, kefir_size_t, kefir_size_t);
-kefir_result_t kefir_codegen_amd64_function_x87_push(struct kefir_mem *, struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_load(struct kefir_mem *, struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t);
-kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *, struct kefir_codegen_amd64_function *, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                       kefir_size_t, kefir_size_t);
+kefir_result_t kefir_codegen_amd64_function_x87_push(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                     kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_function_x87_pop(struct kefir_mem *, struct kefir_codegen_amd64_function *);
+kefir_result_t kefir_codegen_amd64_function_x87_load(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                     kefir_opt_instruction_ref_t);
+kefir_result_t kefir_codegen_amd64_function_x87_consume_by(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                           kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_x87_flush(struct kefir_mem *, struct kefir_codegen_amd64_function *);
 
 #endif

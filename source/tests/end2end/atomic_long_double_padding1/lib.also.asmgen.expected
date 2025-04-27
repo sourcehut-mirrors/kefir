@@ -20,11 +20,9 @@ __kefir_text_func_add_ld1_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     fstcw -8(%rbp)
-    lea 16(%rbp), %rax
-    movq $0, -56(%rbp)
-    fldt (%rax)
-    fstpt -64(%rbp)
+    fldt 16(%rbp)
     movq ld1@GOTPCREL(%rip), %rsi
+    fstpt -64(%rbp)
     mov $16, %rdi
     leaq -32(%rbp), %rdx
     mov $2, %rcx

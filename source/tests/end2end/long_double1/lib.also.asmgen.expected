@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global hypot_sq
+.type hypot_sq, @function
+
+.section .text
+__kefir_text_section_begin:
+hypot_sq:
+__kefir_text_func_hypot_sq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fld %st(0)
+    fmulp
+    fxch %st(1)
+    fld %st(0)
+    fmulp
+    fxch %st(1)
+    faddp
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_hypot_sq_end:
+
+__kefir_text_section_end:
+

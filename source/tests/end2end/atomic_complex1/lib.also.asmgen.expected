@@ -123,8 +123,6 @@ __kefir_text_func_div_ld_begin:
     fxch %st(1)
 _kefir_func_div_ld_label2:
     fxch %st(1)
-    fxch %st(1)
-    fxch %st(1)
     jmp _kefir_func_div_ld_label4
 _kefir_func_div_ld_label3:
     fxch %st(1)

@@ -1,0 +1,175 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global eq
+.type eq, @function
+.global ge
+.type ge, @function
+.global gr
+.type gr, @function
+.global le
+.type le, @function
+.global lt
+.type lt, @function
+.global neq
+.type neq, @function
+
+.section .text
+__kefir_text_section_begin:
+eq:
+__kefir_text_func_eq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    xor %eax, %eax
+    xor %ecx, %ecx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %al
+    cmovne %rcx, %rax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_eq_end:
+
+ge:
+__kefir_text_func_ge_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fld %st(0)
+    fstpt -48(%rbp)
+    fld %st(1)
+    fstpt -32(%rbp)
+    xor %eax, %eax
+    fcomip %st(1)
+    fstp %st(0)
+    seta %al
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    fld %st(1)
+    fstpt -48(%rbp)
+    xor %ecx, %ecx
+    xor %edx, %edx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rdx, %rcx
+    or %rcx, %rax
+    setne %al
+    movzx %al, %rax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_ge_end:
+
+gr:
+__kefir_text_func_gr_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    xor %eax, %eax
+    fcomip %st(1)
+    fstp %st(0)
+    seta %al
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_gr_end:
+
+le:
+__kefir_text_func_le_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fxch %st(1)
+    fld %st(0)
+    fstpt -48(%rbp)
+    fld %st(1)
+    fstpt -32(%rbp)
+    xor %eax, %eax
+    fcomip %st(1)
+    fstp %st(0)
+    seta %al
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fld %st(0)
+    fstpt -48(%rbp)
+    fld %st(1)
+    fstpt -32(%rbp)
+    xor %ecx, %ecx
+    xor %edx, %edx
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rdx, %rcx
+    or %rcx, %rax
+    setne %al
+    movzx %al, %rax
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_le_end:
+
+lt:
+__kefir_text_func_lt_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fxch %st(1)
+    xor %eax, %eax
+    fcomip %st(1)
+    fstp %st(0)
+    seta %al
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_lt_end:
+
+neq:
+__kefir_text_func_neq_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    xor %ecx, %ecx
+    xor %eax, %eax
+    fucomip %st(1)
+    fstp %st(0)
+    setnp %cl
+    cmovne %rax, %rcx
+    xor %eax, %eax
+    test %cl, %cl
+    sete %al
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neq_end:
+
+__kefir_text_section_end:
+
