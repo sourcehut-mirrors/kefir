@@ -487,10 +487,12 @@ kefir_result_t kefir_opt_code_structure_block_exclusive_direct_predecessor(
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem, struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t sequence_point_instr_ref, kefir_bool_t *all_uses_after) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
-    REQUIRE(all_uses_after != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *mem, struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t sequence_point_instr_ref, kefir_bool_t *all_uses_after, struct kefir_hashtreeset *visited) {
+    if (kefir_hashtreeset_has(visited, (kefir_hashtreeset_entry_t) instr_ref)) {
+        *all_uses_after = true;
+        return KEFIR_OK;
+    }
+    REQUIRE_OK(kefir_hashtreeset_add(mem, visited, (kefir_hashtreeset_entry_t) instr_ref));
 
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
@@ -536,7 +538,7 @@ kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem
             }
 
             kefir_bool_t uses_sequenced_after;
-            REQUIRE_OK(kefir_opt_check_all_control_flow_uses_after(mem, structure, use_instr->id, sequence_point_instr_ref, &uses_sequenced_after));
+            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, structure, use_instr->id, sequence_point_instr_ref, &uses_sequenced_after, visited));
             if (!uses_sequenced_after) {
                 *all_uses_after = false;
                 return KEFIR_OK;
@@ -548,5 +550,22 @@ kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem
     }
 
     *all_uses_after = true;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem, struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t sequence_point_instr_ref, kefir_bool_t *all_uses_after) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(all_uses_after != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    struct kefir_hashtreeset visited;
+    REQUIRE_OK(kefir_hashtreeset_init(&visited, &kefir_hashtree_uint_ops));
+    kefir_result_t res = check_all_control_flow_uses_after_impl(mem, structure, instr_ref, sequence_point_instr_ref, all_uses_after, &visited);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &visited);
+        return res;
+    });
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &visited));
+
     return KEFIR_OK;
 }

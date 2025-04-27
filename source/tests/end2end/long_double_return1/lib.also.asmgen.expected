@@ -24,16 +24,16 @@ __kefir_text_func_my_hypot_begin:
     fldt -48(%rbp)
     fstpt 16(%rsp)
     call mul@PLT
-    fstpt -48(%rbp)
     add $32, %rsp
+    fstpt -48(%rbp)
     sub $32, %rsp
     fldt -32(%rbp)
     fstpt (%rsp)
     fldt -32(%rbp)
     fstpt 16(%rsp)
     call mul@PLT
-    fstpt -32(%rbp)
     add $32, %rsp
+    fstpt -32(%rbp)
     sub $32, %rsp
     fldt -48(%rbp)
     fstpt (%rsp)

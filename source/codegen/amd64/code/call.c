@@ -519,7 +519,8 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 }
 
 static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                   const struct kefir_opt_call_node *call_node,
+                                   const struct kefir_opt_instruction *instruction,
+                                    const struct kefir_opt_call_node *call_node,
                                    struct kefir_abi_amd64_function_decl *abi_func_decl,
                                    kefir_asmcmp_stash_index_t stash_idx,
                                    kefir_asmcmp_virtual_register_index_t implicit_parameter_alloc_vreg,
@@ -711,9 +712,13 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                 mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
                 kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &return_vreg));
 
-            REQUIRE_OK(kefir_asmcmp_amd64_fstp(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
+            if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE || instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
+                REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+            } else {
+                REQUIRE_OK(kefir_asmcmp_amd64_fstp(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));    
+            }
             *result_vreg = return_vreg;
             REQUIRE_OK(kefir_asmcmp_register_stash_exclude(mem, &function->code.context, stash_idx, return_vreg));
             break;
@@ -860,7 +865,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     }
 
     if (kefir_ir_type_length(ir_func_decl->result) > 0) {
-        REQUIRE_OK(save_returns(mem, function, call_node, abi_func_decl, stash_idx, implicit_parameter_alloc_vreg,
+        REQUIRE_OK(save_returns(mem, function, instruction, call_node, abi_func_decl, stash_idx, implicit_parameter_alloc_vreg,
                                 result_vreg));
     }
     REQUIRE_OK(restore_regs(mem, function, stash_idx));

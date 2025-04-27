@@ -50,8 +50,8 @@ _kefir_func_pnanl_label1:
     fldt -48(%rbp)
     fstpt (%rsp)
     call minus
-    fstpt -48(%rbp)
     add $16, %rsp
+    fstpt -48(%rbp)
     movq -48(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -40(%rbp), %rax

@@ -194,9 +194,7 @@ _kefir_func_sum_progression_label0:
     fldt -240(%rbp)
     fstpt 144(%rsp)
     call sum10@PLT
-    fstpt -240(%rbp)
     add $160, %rsp
-    fldt -240(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
