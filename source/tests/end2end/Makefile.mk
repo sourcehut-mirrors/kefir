@@ -42,11 +42,9 @@ $(KEFIR_END2END_BIN_PATH)/%.test: $$(KEFIR_END2END_TEST_HOST_OBJECT_FILES) $$(KE
 
 $(KEFIR_END2END_BIN_PATH)/%.test.done: $(KEFIR_END2END_BIN_PATH)/%.test
 	@echo "Running $<"
-ifeq ($(USE_VALGRIND),yes)
-	@valgrind $(VALGRIND_TEST_OPTIONS) $<
-else
-	$<
-endif
+	@VALGRIND_TEST_OPTIONS="$(VALGRIND_TEST_OPTIONS)" \
+	 USE_VALGRIND="$(USE_VALGRIND)" \
+	 	$(SOURCE_DIR)/tests/end2end/run.sh "$(patsubst %.test.done,$(SOURCE_DIR)/tests/end2end/%/run.profile,$(notdir $@))" $<
 	@touch $@
 
 $(KEFIR_END2END_BIN_PATH)/%.asmgen.output: $(SOURCE_DIR)/tests/end2end/%.kefir.asmgen.c $(KEFIR_BIN_DIR)/kefir

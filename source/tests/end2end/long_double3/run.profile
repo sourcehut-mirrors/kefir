@@ -1,0 +1,1 @@
+export USE_VALGRIND=no # the test uses fdecstp instruction which is not supported by Valgrind

@@ -481,6 +481,7 @@
         KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_FPU_STACK_MEMORY) _separator \
     _instr1(fild, "fild", , KEFIR_AMD64_INSTRDB_NONE, \
         KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_MEMORY16 | KEFIR_AMD64_INSTRDB_MEMORY32 | KEFIR_AMD64_INSTRDB_MEMORY64) _separator \
+    _instr0(fdecstp, "fdecstp", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(fldz, "fldz", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr0(fld1, "fld1", , KEFIR_AMD64_INSTRDB_NONE) _separator \
     _instr1(fistp, "fistp", , KEFIR_AMD64_INSTRDB_NONE, \
