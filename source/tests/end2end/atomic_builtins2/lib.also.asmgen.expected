@@ -39,18 +39,14 @@ test2_atomic_load128:
 __kefir_text_func_test2_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    fstcw -8(%rbp)
+    sub $16, %rsp
     mov %rdi, %rax
     mov $16, %rdi
     mov %rax, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
+    fldt -16(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -110,18 +106,14 @@ test_atomic_load128:
 __kefir_text_func_test_atomic_load128_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    fstcw -8(%rbp)
+    sub $16, %rsp
     mov %rdi, %rax
     mov $16, %rdi
     mov %rax, %rsi
-    leaq -32(%rbp), %rdx
+    leaq -16(%rbp), %rdx
     mov $5, %rcx
     call __atomic_load@PLT
-    fldt -32(%rbp)
-    fstpt -48(%rbp)
-    fldt -48(%rbp)
-    fldcw -8(%rbp)
+    fldt -16(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

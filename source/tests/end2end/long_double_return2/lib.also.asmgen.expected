@@ -11,12 +11,10 @@ minus:
 __kefir_text_func_minus_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     fstcw -8(%rbp)
     fldt 16(%rbp)
     fchs
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

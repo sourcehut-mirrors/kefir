@@ -30,8 +30,6 @@ __kefir_text_func_increment_begin:
     fld %st(0)
     fstpt -32(%rbp)
     faddp
-    fstpt -32(%rbp)
-    fldt -32(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

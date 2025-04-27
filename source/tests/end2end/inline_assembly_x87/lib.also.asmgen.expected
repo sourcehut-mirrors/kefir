@@ -140,8 +140,6 @@ fsubp
     mov -96(%rbp), %rax
     fstpt (%rax)
     fldt -32(%rbp)
-    fstpt -144(%rbp)
-    fldt -144(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

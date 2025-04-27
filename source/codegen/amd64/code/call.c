@@ -817,7 +817,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
             return KEFIR_OK;
         }
     }
-    
+
     kefir_size_t stack_increment;
     REQUIRE_OK(prepare_stack(mem, function, abi_func_decl, &stack_increment));
 
@@ -944,7 +944,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(tail_invoke)(struct kefir_me
     kefir_bool_t tail_call_done;
     REQUIRE_OK(do_invoke(mem, function, instruction, true, &result_vreg, &tail_call_done));
     if (!tail_call_done) {
-        REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, result_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, KEFIR_ID_NONE, result_vreg));
     }
 
     return KEFIR_OK;

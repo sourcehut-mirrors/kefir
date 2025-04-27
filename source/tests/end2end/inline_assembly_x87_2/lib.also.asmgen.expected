@@ -100,8 +100,6 @@ fsubp
     mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -186,8 +184,6 @@ fdivp
     mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -272,8 +268,6 @@ fdivrp
     mov -64(%rbp), %rax
     fstpt (%rax)
     fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -80(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

@@ -95,6 +95,7 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(const struct 
                                                                    kefir_asmcmp_label_index_t *);
 
 kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, struct kefir_codegen_amd64_function *,
+                                                        kefir_opt_instruction_ref_t,
                                                         kefir_asmcmp_virtual_register_index_t);
 
 // clang-format off
