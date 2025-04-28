@@ -977,7 +977,7 @@ static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param
 static kefir_result_t do_inline_impl(struct do_inline_param *param) {
     const struct kefir_opt_call_node *call_node;
     REQUIRE_OK(kefir_opt_code_container_call(param->dst_code, param->original_call_ref, &call_node));
-    param->skip_local_allocation_marks = call_node->return_space != KEFIR_ID_NONE;
+    param->skip_local_allocation_marks = true;
 
     REQUIRE_OK(inline_blocks(param));
     REQUIRE_OK(map_inlined_phis(param));

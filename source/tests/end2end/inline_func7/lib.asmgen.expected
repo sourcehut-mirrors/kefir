@@ -30,17 +30,16 @@
                                 "control_next": 42
                             },
                             {
+                                "id": 42,
+                                "opcode": "int_placeholder",
+                                "control_next": 43
+                            },
+                            {
                                 "id": 46,
                                 "opcode": "alloc_local",
                                 "type_id": 56,
                                 "type_index": 0,
                                 "control_next": null
-                            },
-                            {
-                                "id": 42,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 46,
-                                "control_next": 43
                             },
                             {
                                 "id": 43,
@@ -54,8 +53,7 @@
                             },
                             {
                                 "id": 44,
-                                "opcode": "local_lifetime_mark",
-                                "arg": 46,
+                                "opcode": "int_placeholder",
                                 "control_next": 53
                             },
                             {
