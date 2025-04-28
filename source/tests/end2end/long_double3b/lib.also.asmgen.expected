@@ -1,0 +1,182 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern sum10
+.global sum_progression
+.type sum_progression, @function
+
+.section .text
+__kefir_text_section_begin:
+sum_progression:
+__kefir_text_func_sum_progression_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $176, %rsp
+    fstcw -8(%rbp)
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    fld %st(1)
+    fstpt -144(%rbp)
+    faddp
+    mov $2, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -144(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    mov $3, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -144(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    mov $4, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -144(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    mov $5, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -144(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    mov $6, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fld %st(1)
+    fstpt -144(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fld %st(0)
+    fstpt -32(%rbp)
+    faddp
+    mov $7, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fldt -144(%rbp)
+    fxch %st(1)
+    fstpt -176(%rbp)
+    fld %st(0)
+    fstpt -144(%rbp)
+    fldt -176(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fstpt -176(%rbp)
+    fldt -176(%rbp)
+    fstpt -32(%rbp)
+    fldt -176(%rbp)
+    faddp
+    mov $8, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fdecstp
+    fstpt -48(%rbp)
+    fldt -144(%rbp)
+    fxch %st(1)
+    fstpt -176(%rbp)
+    fld %st(0)
+    fstpt -144(%rbp)
+    fldt -176(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fstpt -176(%rbp)
+    fldt -176(%rbp)
+    fstpt -32(%rbp)
+    fldt -176(%rbp)
+    faddp
+    mov $9, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fdecstp
+    fstpt -176(%rbp)
+    fldt -144(%rbp)
+    fxch %st(1)
+    fstpt -160(%rbp)
+    fld %st(0)
+    fstpt -144(%rbp)
+    fldt -160(%rbp)
+    fmulp
+    fldt -32(%rbp)
+    fstpt -160(%rbp)
+    fldt -160(%rbp)
+    fstpt -32(%rbp)
+    fldt -160(%rbp)
+    faddp
+    fstpt -160(%rbp)
+    fstpt -144(%rbp)
+    fstpt -128(%rbp)
+    fstpt -112(%rbp)
+    fstpt -96(%rbp)
+    fstpt -80(%rbp)
+    fstpt -64(%rbp)
+    sub $160, %rsp
+    fldt -32(%rbp)
+    fstpt (%rsp)
+    fldt -48(%rbp)
+    fstpt 16(%rsp)
+    fldt -176(%rbp)
+    fstpt 32(%rsp)
+    fldt -64(%rbp)
+    fstpt 48(%rsp)
+    fldt -80(%rbp)
+    fstpt 64(%rsp)
+    fldt -96(%rbp)
+    fstpt 80(%rsp)
+    fldt -112(%rbp)
+    fstpt 96(%rsp)
+    fldt -128(%rbp)
+    fstpt 112(%rsp)
+    fldt -144(%rbp)
+    fstpt 128(%rsp)
+    fldt -160(%rbp)
+    fstpt 144(%rsp)
+    call sum10@PLT
+    fstpt -176(%rbp)
+    add $160, %rsp
+    fldt -176(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sum_progression_end:
+
+__kefir_text_section_end:
+

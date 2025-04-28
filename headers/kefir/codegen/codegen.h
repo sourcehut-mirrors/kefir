@@ -35,6 +35,7 @@ typedef struct kefir_codegen_configuration {
     const char *print_details;
     const char *pipeline_spec;
     kefir_bool_t debug_info;
+    kefir_bool_t valgrind_compatible_x87;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {

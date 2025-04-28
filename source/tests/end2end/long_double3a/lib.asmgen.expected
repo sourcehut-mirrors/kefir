@@ -1,0 +1,331 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern sum10
+.global sum_progression
+.type sum_progression, @function
+
+.section .text
+__kefir_text_section_begin:
+sum_progression:
+__kefir_text_func_sum_progression_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $256, %rsp
+    fstcw -8(%rbp)
+_kefir_func_sum_progression_label0:
+    fldt 32(%rbp)
+    fldt 16(%rbp)
+    movq $0, -24(%rbp)
+    fxch %st(1)
+    fstpt -32(%rbp)
+    movq $0, -40(%rbp)
+    fstpt -48(%rbp)
+    fldt -48(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -64(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -144(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -256(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -128(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -240(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -112(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -224(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -96(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -208(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -80(%rbp)
+    fldt -48(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -192(%rbp)
+    fldt -32(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -176(%rbp)
+    fldt -256(%rbp)
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -160(%rbp)
+    fldt -144(%rbp)
+    faddp
+    mov $2, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -144(%rbp)
+    fldt -240(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -128(%rbp)
+    faddp
+    mov $3, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -128(%rbp)
+    fldt -224(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -112(%rbp)
+    faddp
+    mov $4, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -112(%rbp)
+    fldt -208(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -96(%rbp)
+    faddp
+    mov $5, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -256(%rbp)
+    fldt -192(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -80(%rbp)
+    faddp
+    mov $6, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -240(%rbp)
+    fldt -160(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -176(%rbp)
+    faddp
+    mov $7, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -224(%rbp)
+    fldt -128(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -144(%rbp)
+    faddp
+    mov $8, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -128(%rbp)
+    fldt -256(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -112(%rbp)
+    faddp
+    mov $9, %rcx
+    movsx %ecx, %rax
+    push %rax
+    fildq (%rsp)
+    add $8, %rsp
+    fxch %st(1)
+    fxch %st(2)
+    fxch %st(3)
+    fxch %st(4)
+    fxch %st(5)
+    fxch %st(6)
+    fxch %st(7)
+    fstpt -256(%rbp)
+    fldt -224(%rbp)
+    fxch %st(1)
+    fmulp
+    fldt -240(%rbp)
+    faddp
+    fstpt -240(%rbp)
+    fstpt -224(%rbp)
+    fstpt -208(%rbp)
+    fstpt -192(%rbp)
+    fstpt -176(%rbp)
+    fstpt -160(%rbp)
+    fstpt -144(%rbp)
+    sub $160, %rsp
+    fldt -64(%rbp)
+    fstpt (%rsp)
+    fldt -128(%rbp)
+    fstpt 16(%rsp)
+    fldt -256(%rbp)
+    fstpt 32(%rsp)
+    fldt -144(%rbp)
+    fstpt 48(%rsp)
+    fldt -160(%rbp)
+    fstpt 64(%rsp)
+    fldt -176(%rbp)
+    fstpt 80(%rsp)
+    fldt -192(%rbp)
+    fstpt 96(%rsp)
+    fldt -208(%rbp)
+    fstpt 112(%rsp)
+    fldt -224(%rbp)
+    fstpt 128(%rsp)
+    fldt -240(%rbp)
+    fstpt 144(%rsp)
+    call sum10@PLT
+    add $160, %rsp
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sum_progression_end:
+
+__kefir_text_section_end:
+

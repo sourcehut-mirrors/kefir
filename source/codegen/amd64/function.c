@@ -1110,8 +1110,15 @@ kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *mem,
 
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
 
-        REQUIRE_OK(kefir_asmcmp_amd64_fdecstp(mem, &function->code,
-                                              kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+        if (function->codegen->config->valgrind_compatible_x87) {
+            for (kefir_size_t i = 1; i < kefir_list_length(&function->x87_stack); i++) {
+                REQUIRE_OK(kefir_asmcmp_amd64_fxch(mem, &function->code,
+                                                    kefir_asmcmp_context_instr_tail(&function->code.context), &KEFIR_ASMCMP_MAKE_X87(i), NULL));
+            }
+        } else {
+            REQUIRE_OK(kefir_asmcmp_amd64_fdecstp(mem, &function->code,
+                                                kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+        }
         REQUIRE_OK(kefir_asmcmp_amd64_fstp(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
             &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
