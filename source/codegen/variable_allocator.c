@@ -11,6 +11,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_init(struct kefir_codegen_
     REQUIRE_OK(kefir_bucketset_init(&allocator->alive_variables, &kefir_bucketset_uint_ops));
     allocator->total_size = 0;
     allocator->total_alignment = 0;
+    allocator->all_global = false;
     return KEFIR_OK;
 }
 
@@ -89,6 +90,11 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
         node != NULL;
         node = kefir_hashtree_next(&local_iter)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, node->key);
+        if (state->allocator->all_global) {
+            REQUIRE_OK(do_allocate_var(state, instr_ref));
+            continue;
+        }
+
         ASSIGN_DECL_CAST(const struct kefir_opt_code_variable_local_conflicts *, conflicts, node->value);
         if (!kefir_bucketset_has(&state->allocator->alive_variables, (kefir_bucketset_entry_t) instr_ref)) {
             continue;
@@ -141,6 +147,13 @@ kefir_result_t kefir_codegen_local_variable_allocator_mark_alive(struct kefir_me
 
     REQUIRE_OK(kefir_bucketset_add(mem, &allocator->alive_variables, (kefir_bucketset_entry_t) instr_ref));
     ASSIGN_PTR(id_ptr, (kefir_id_t) instr_ref);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_local_variable_allocator_mark_all_global(struct kefir_codegen_local_variable_allocator *allocator) {
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
+
+    allocator->all_global = true;
     return KEFIR_OK;
 }
 

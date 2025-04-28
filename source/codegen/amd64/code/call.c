@@ -862,6 +862,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     if (ir_func_decl->returns_twice) {
         REQUIRE_OK(kefir_asmcmp_amd64_preserve_active_virtual_registers(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
     }
 
     if (kefir_ir_type_length(ir_func_decl->result) > 0) {
