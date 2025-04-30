@@ -1,0 +1,137 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global process
+.type process, @function
+
+.section .text
+__kefir_text_section_begin:
+process:
+__kefir_text_func_process_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $256, %rsp
+    test %al, %al
+    je _kefir_func_process_label8
+    movdqu %xmm0, -208(%rbp)
+    movdqu %xmm1, -192(%rbp)
+    movdqu %xmm2, -176(%rbp)
+    movdqu %xmm3, -160(%rbp)
+    movdqu %xmm4, -144(%rbp)
+    movdqu %xmm5, -128(%rbp)
+    movdqu %xmm6, -112(%rbp)
+    movdqu %xmm7, -96(%rbp)
+_kefir_func_process_label8:
+    mov %rdi, -256(%rbp)
+    mov %rsi, -248(%rbp)
+    mov %rdx, -240(%rbp)
+    mov %rcx, -232(%rbp)
+    mov %r8, -224(%rbp)
+    mov %r9, -216(%rbp)
+    mov $0, %r8
+_kefir_func_process_label0:
+    movl %esi, -56(%rbp)
+    movq %rdi, -24(%rbp)
+    movl $16, -48(%rbp)
+    movl $48, -44(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -40(%rbp)
+    lea -256(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movl -56(%rbp), %eax
+    mov $0, %rcx
+    cmp $0, %eax
+    setg %cl
+    mov $0, %rax
+    test %ecx, %ecx
+    sete %al
+    test %al, %al
+    jz _kefir_func_process_label2
+_kefir_func_process_label1:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_process_label2:
+    mov %r8, %rax
+    sub $16, %rsp
+    movq %r8, (%rsp)
+    mov %rsp, %r8
+    mov $0, %rdx
+    imul $8, %rdx, %rcx
+    leaq -64(%rbp), %rdx
+    add %rcx, %rdx
+    movq %rax, (%rdx)
+    movl -56(%rbp), %eax
+    leaq -16(%rbp), %rcx
+    add $8, %rcx
+    movsx %eax, %rax
+    mov $4, %rdx
+    imul %rax, %rdx
+    movq %rdx, (%rcx)
+    leaq -16(%rbp), %rax
+    add $0, %rax
+    sub %rdx, %rsp
+    mov $16, %rcx
+    cmp $4, %rcx
+    mov $4, %rdx
+    cmovl %rdx, %rcx
+    neg %rcx
+    and %rcx, %rsp
+    mov %rsp, %rcx
+    movq %rcx, (%rax)
+    movl $0, -52(%rbp)
+_kefir_func_process_label3:
+    movl -52(%rbp), %eax
+    movl -56(%rbp), %ecx
+    mov $0, %rdx
+    cmp %ecx, %eax
+    setl %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func_process_label5
+_kefir_func_process_label4:
+    movq -24(%rbp), %rax
+    leaq -16(%rbp), %rcx
+    add $0, %rcx
+    movq (%rcx), %rdi
+    movl -56(%rbp), %esi
+    movq %r8, -80(%rbp)
+    call *%rax
+    movq -80(%rbp), %r8
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_process_label5:
+    movl -48(%rbp), %eax
+    cmp $48, %eax
+    jae _kefir_func_process_label6
+    lea 8(%rax), %rax
+    movl %eax, -48(%rbp)
+    add -32(%rbp), %rax
+    mov -8(%rax), %rax
+    jmp _kefir_func_process_label7
+_kefir_func_process_label6:
+    mov -40(%rbp), %rax
+    lea 8(%rax), %rax
+    mov %rax, -40(%rbp)
+    mov -8(%rax), %rax
+_kefir_func_process_label7:
+    leaq -16(%rbp), %rcx
+    add $0, %rcx
+    movq (%rcx), %rcx
+    movl -52(%rbp), %edx
+    movsx %edx, %rdx
+    imul $4, %rdx, %rdx
+    add %rdx, %rcx
+    movl %eax, (%rcx)
+    movl -52(%rbp), %eax
+    add $1, %eax
+    movl %eax, -52(%rbp)
+    jmp _kefir_func_process_label3
+__kefir_text_func_process_end:
+
+__kefir_text_section_end:
+
