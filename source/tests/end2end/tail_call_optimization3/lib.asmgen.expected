@@ -214,20 +214,23 @@ test11:
 __kefir_text_func_test11_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
+    push %rbx
+    sub $136, %rsp
     mov %rdi, %rdx
     add $1, %esi
+    leaq -136(%rbp), %rbx
     movq %rdx, -144(%rbp)
-    leaq -128(%rbp), %rdi
+    mov %rbx, %rdi
     call test11
     movq -144(%rbp), %rdx
     mov %rdx, %rax
     mov %rax, %rdi
-    leaq -128(%rbp), %rsi
+    mov %rbx, %rsi
     cld
     mov $16, %rcx
     rep movsq
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_test11_end:

@@ -13,19 +13,22 @@ get2:
 __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $272, %rsp
+    push %rbx
+    sub $264, %rsp
     mov %rsi, %rax
+    leaq -264(%rbp), %rbx
     movq %rax, -272(%rbp)
     mov %rdi, %rsi
-    leaq -256(%rbp), %rdi
+    mov %rbx, %rdi
     call get@PLT
     movq -272(%rbp), %rax
     movsx %eax, %rax
     imul $4, %rax, %rax
-    leaq -256(%rbp), %rdi
-    add %rax, %rdi
-    movl (%rdi), %eax
-    lea (%rbp), %rsp
+    leaq -264(%rbp), %rbx
+    add %rax, %rbx
+    movl (%rbx), %eax
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_get2_end:
@@ -34,27 +37,30 @@ get3:
 __kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $528, %rsp
+    push %rbx
+    sub $520, %rsp
     mov %rsi, %rax
     lea ptr(%rip), %rcx
-    lea -512(%rbp), %rsi
+    lea -520(%rbp), %rsi
     movq %rsi, (%rcx)
+    leaq -264(%rbp), %rbx
     movq %rax, -528(%rbp)
     mov %rdi, %rsi
-    leaq -256(%rbp), %rdi
+    mov %rbx, %rdi
     call get@PLT
     movq -528(%rbp), %rax
-    leaq -512(%rbp), %rdi
-    leaq -256(%rbp), %rsi
+    leaq -520(%rbp), %rdi
+    mov %rbx, %rsi
     cld
     mov $32, %rcx
     rep movsq
     movsx %eax, %rax
     imul $4, %rax, %rax
-    leaq -512(%rbp), %rdi
+    leaq -520(%rbp), %rdi
     add %rax, %rdi
     movl (%rdi), %eax
-    lea (%rbp), %rsp
+    lea -8(%rbp), %rsp
+    pop %rbx
     pop %rbp
     ret
 __kefir_text_func_get3_end:

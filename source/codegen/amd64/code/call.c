@@ -45,11 +45,29 @@ static kefir_result_t prepare_stack(struct kefir_mem *mem, struct kefir_codegen_
 }
 
 static kefir_result_t preserve_regs(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                    kefir_asmcmp_stash_index_t *stash_idx) {
+                                    const struct kefir_opt_call_node *call_node, kefir_asmcmp_stash_index_t *stash_idx,
+                                    kefir_asmcmp_virtual_register_index_t *return_space_vreg) {
     const kefir_size_t num_of_preserved_gp_regs =
         kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(function->codegen->abi_variant);
     const kefir_size_t num_of_preserved_sse_regs =
         kefir_abi_amd64_num_of_caller_preserved_sse_registers(function->codegen->abi_variant);
+
+    if (call_node->return_space != KEFIR_ID_NONE) {
+        kefir_asmcmp_virtual_register_index_t return_space;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->return_space, &return_space));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, return_space_vreg));
+        kefir_asm_amd64_xasmgen_register_t return_space_placement;
+        REQUIRE_OK(kefir_abi_amd64_get_callee_preserved_general_purpose_register(function->codegen->abi_variant, 0,
+                                                                                 &return_space_placement));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, *return_space_vreg,
+                                                                      return_space_placement));
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             *return_space_vreg, return_space, NULL));
+    } else {
+        *return_space_vreg = KEFIR_ASMCMP_INDEX_NONE;
+    }
 
     REQUIRE_OK(kefir_asmcmp_register_stash_new(mem, &function->code.context, stash_idx));
 
@@ -88,10 +106,8 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                          const struct kefir_opt_call_node *call_node,
                                          const struct kefir_ir_function_decl *ir_func_decl,
                                          struct kefir_abi_amd64_function_decl *abi_func_decl,
-                                         struct kefir_hashtree *argument_placement,
-                                         kefir_asmcmp_virtual_register_index_t *implicit_parameter_allocation_vreg,
-                                         kefir_bool_t tail_call) {
-    *implicit_parameter_allocation_vreg = KEFIR_ASMCMP_INDEX_NONE;
+                                         kefir_asmcmp_virtual_register_index_t return_space_vreg,
+                                         struct kefir_hashtree *argument_placement, kefir_bool_t tail_call) {
     const struct kefir_abi_amd64_function_parameters *parameters;
     REQUIRE_OK(kefir_abi_amd64_function_decl_parameters(abi_func_decl, &parameters));
 
@@ -468,11 +484,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
     REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(abi_func_decl, &implicit_parameter_present,
                                                                         &implicit_parameter_reg));
     if (!tail_call && implicit_parameter_present) {
-        kefir_asmcmp_virtual_register_index_t implicit_vreg, result_vreg;
-        REQUIRE(call_node->return_space != KEFIR_ID_NONE,
+        kefir_asmcmp_virtual_register_index_t implicit_vreg;
+        REQUIRE(return_space_vreg != KEFIR_ID_NONE,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                 "Expected valid return space to be defined for call with implicit parameter"));
-        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->return_space, &result_vreg));
 
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_vreg));
@@ -480,10 +495,9 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                       implicit_parameter_reg));
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                             implicit_vreg, result_vreg, NULL));
+                                                             implicit_vreg, return_space_vreg, NULL));
         REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count++,
                                          (kefir_hashtree_value_t) implicit_vreg));
-        *implicit_parameter_allocation_vreg = result_vreg;
     }
 
     kefir_bool_t sse_reqs_parameter;
@@ -520,10 +534,9 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
 static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                    const struct kefir_opt_instruction *instruction,
-                                    const struct kefir_opt_call_node *call_node,
                                    struct kefir_abi_amd64_function_decl *abi_func_decl,
                                    kefir_asmcmp_stash_index_t stash_idx,
-                                   kefir_asmcmp_virtual_register_index_t implicit_parameter_alloc_vreg,
+                                   kefir_asmcmp_virtual_register_index_t return_space_vreg,
                                    kefir_asmcmp_virtual_register_index_t *result_vreg) {
     const struct kefir_abi_amd64_function_parameters *return_parameters;
     REQUIRE_OK(kefir_abi_amd64_function_decl_returns(abi_func_decl, &return_parameters));
@@ -595,10 +608,14 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                 case KEFIR_IR_TYPE_ARRAY:
                 case KEFIR_IR_TYPE_UNION:
                     REQUIRE(
-                        call_node->return_space != KEFIR_ID_NONE,
+                        return_space_vreg != KEFIR_ID_NONE,
                         KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                         "Expected return space to be defined for call with multiple register return"));
-                    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->return_space, &return_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_vreg));
+                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
+                        return_space_vreg, NULL));
                     break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
@@ -699,12 +716,19 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             }
 
             *result_vreg = return_vreg;
+            REQUIRE_OK(kefir_asmcmp_register_stash_exclude(mem, &function->code.context, stash_idx, return_vreg));
         } break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
-            REQUIRE(implicit_parameter_alloc_vreg != KEFIR_ASMCMP_INDEX_NONE,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected implicit parameter allocation virtual register"));
-            *result_vreg = implicit_parameter_alloc_vreg;
+            REQUIRE(return_space_vreg != KEFIR_ID_NONE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                    "Expected return space to be defined for call with multiple register return"));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
+                return_space_vreg, NULL));
+            *result_vreg = return_vreg;
             break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
@@ -712,12 +736,13 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                 mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
                 kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &return_vreg));
 
-            if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE || instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
+            if (instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+                instruction->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
                 REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
             } else {
                 REQUIRE_OK(kefir_asmcmp_amd64_fstp(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));    
+                    &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(return_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
             }
             *result_vreg = return_vreg;
             REQUIRE_OK(kefir_asmcmp_register_stash_exclude(mem, &function->code.context, stash_idx, return_vreg));
@@ -758,11 +783,8 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
     const struct kefir_ir_function_decl *ir_func_decl =
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
     REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
-    kefir_asmcmp_virtual_register_index_t implicit_parameter_alloc_vreg;
-    REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement,
-                                  &implicit_parameter_alloc_vreg, true));
-    REQUIRE(implicit_parameter_alloc_vreg == KEFIR_ASMCMP_INDEX_NONE,
-            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected implicit parameter allocation virtual register"));
+    REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, KEFIR_ASMCMP_INDEX_NONE,
+                                  argument_placement, true));
 
     kefir_asmcmp_virtual_register_index_t indirect_call_idx;
     if (instruction->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
@@ -827,11 +849,11 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     REQUIRE_OK(prepare_stack(mem, function, abi_func_decl, &stack_increment));
 
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    kefir_asmcmp_virtual_register_index_t return_space_vreg;
+    REQUIRE_OK(preserve_regs(mem, function, call_node, &stash_idx, &return_space_vreg));
 
-    kefir_asmcmp_virtual_register_index_t implicit_parameter_alloc_vreg;
-    REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, argument_placement,
-                                  &implicit_parameter_alloc_vreg, false));
+    REQUIRE_OK(prepare_parameters(mem, function, call_node, ir_func_decl, abi_func_decl, return_space_vreg,
+                                  argument_placement, false));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_require_frame_pointer(&function->stack_frame));
 
@@ -866,8 +888,7 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     }
 
     if (kefir_ir_type_length(ir_func_decl->result) > 0) {
-        REQUIRE_OK(save_returns(mem, function, instruction, call_node, abi_func_decl, stash_idx, implicit_parameter_alloc_vreg,
-                                result_vreg));
+        REQUIRE_OK(save_returns(mem, function, instruction, abi_func_decl, stash_idx, return_space_vreg, result_vreg));
     }
     REQUIRE_OK(restore_regs(mem, function, stash_idx));
     if (stack_increment > 0) {
