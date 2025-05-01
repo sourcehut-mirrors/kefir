@@ -632,6 +632,23 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
 
         if (instr->operation.parameters.refs[0] != KEFIR_ID_NONE) {
             REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], mapped_instr_ref));
+
+            const struct kefir_opt_call_node *call_node;
+            REQUIRE_OK(kefir_opt_code_container_call(param->dst_code, param->original_call_ref, &call_node));
+            if (call_node->return_space != KEFIR_ID_NONE) {
+                kefir_opt_instruction_ref_t copy_instr_ref;
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(
+                    param->mem, param->dst_code, mapped_block_id, call_node->return_space, *mapped_instr_ref,
+                    param->src_function->ir_func->declaration->result_type_id, 0, &copy_instr_ref));
+
+                const struct kefir_opt_code_block *mapped_block;
+                REQUIRE_OK(kefir_opt_code_container_block(param->dst_code, mapped_block_id, &mapped_block));
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(param->dst_code, mapped_block_id,
+                                                                   mapped_block->control_flow.tail, copy_instr_ref));
+
+                *mapped_instr_ref = call_node->return_space;
+            }
         } else {
             const struct kefir_opt_code_block *mapped_block;
             REQUIRE_OK(kefir_opt_code_container_block(param->dst_code, mapped_block_id, &mapped_block));

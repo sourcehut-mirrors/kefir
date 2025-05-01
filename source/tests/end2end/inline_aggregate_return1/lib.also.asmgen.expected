@@ -1,0 +1,80 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global gets1
+.type gets1, @function
+
+.section .text
+__kefir_text_section_begin:
+gets1:
+__kefir_text_func_gets1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $320, %rsp
+    mov %rdi, %rdx
+    mov %rsi, %r8
+    leaq -320(%rbp), %rdi
+    xor %eax, %eax
+    mov $64, %rcx
+    rep stosb
+    movl $0, -320(%rbp)
+    movdqu -320(%rbp), %xmm0
+    movdqu %xmm0, -256(%rbp)
+    movdqu -304(%rbp), %xmm0
+    movdqu %xmm0, -240(%rbp)
+    movdqu -288(%rbp), %xmm0
+    movdqu %xmm0, -224(%rbp)
+    movdqu -272(%rbp), %xmm0
+    movdqu %xmm0, -208(%rbp)
+    movdqu -256(%rbp), %xmm0
+    movdqu %xmm0, -192(%rbp)
+    movdqu -240(%rbp), %xmm0
+    movdqu %xmm0, -176(%rbp)
+    movdqu -224(%rbp), %xmm0
+    movdqu %xmm0, -160(%rbp)
+    movdqu -208(%rbp), %xmm0
+    movdqu %xmm0, -144(%rbp)
+    movsx %r8d, %rax
+    imul $4, %rax, %rax
+    leaq -192(%rbp), %rcx
+    add %rax, %rcx
+    mov %r8, %rsi
+    not %esi
+    movl %esi, (%rcx)
+    movdqu -192(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu -176(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movdqu -160(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movdqu -144(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    movsx %r8d, %rax
+    imul $4, %rax, %rax
+    leaq -128(%rbp), %rcx
+    add %rax, %rcx
+    movl %r8d, (%rcx)
+    mov %rdx, %rax
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, 32(%rax)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, 48(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_gets1_end:
+
+__kefir_text_section_end:
+

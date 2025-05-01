@@ -487,7 +487,12 @@ kefir_result_t kefir_opt_code_structure_block_exclusive_direct_predecessor(
     return KEFIR_OK;
 }
 
-static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *mem, struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t sequence_point_instr_ref, kefir_bool_t *all_uses_after, struct kefir_hashtreeset *visited) {
+static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *mem,
+                                                             struct kefir_opt_code_structure *structure,
+                                                             kefir_opt_instruction_ref_t instr_ref,
+                                                             kefir_opt_instruction_ref_t sequence_point_instr_ref,
+                                                             kefir_bool_t *all_uses_after,
+                                                             struct kefir_hashtreeset *visited) {
     if (kefir_hashtreeset_has(visited, (kefir_hashtreeset_entry_t) instr_ref)) {
         *all_uses_after = true;
         return KEFIR_OK;
@@ -497,8 +502,7 @@ static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *m
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
     for (res = kefir_opt_code_container_instruction_use_instr_iter(structure->code, instr_ref, &use_iter);
-         res == KEFIR_OK;
-         res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
+         res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(structure->code, use_iter.use_instr_ref, &use_instr));
 
@@ -510,9 +514,10 @@ static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *m
                         *all_uses_after = false;
                         return KEFIR_OK;
                     }
-    
+
                     const struct kefir_opt_call_node *call_node;
-                    REQUIRE_OK(kefir_opt_code_container_call(structure->code, use_instr->operation.parameters.function_call.call_ref, &call_node));
+                    REQUIRE_OK(kefir_opt_code_container_call(
+                        structure->code, use_instr->operation.parameters.function_call.call_ref, &call_node));
                     for (kefir_size_t i = 0; i < call_node->argument_count; i++) {
                         if (call_node->arguments[i] == instr_ref) {
                             *all_uses_after = false;
@@ -525,12 +530,21 @@ static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *m
                     // Intentionally left blank
                     break;
             }
+
+            kefir_bool_t uses_sequenced_after;
+            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, structure, use_instr->id, sequence_point_instr_ref,
+                                                              &uses_sequenced_after, visited));
+            if (!uses_sequenced_after) {
+                *all_uses_after = false;
+                return KEFIR_OK;
+            }
         } else if (use_instr->operation.opcode != KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) {
             kefir_bool_t is_control_flow;
             REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(structure->code, use_instr->id, &is_control_flow));
             if (is_control_flow) {
                 kefir_bool_t sequenced_before;
-                REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, sequence_point_instr_ref, use_instr->id, &sequenced_before));
+                REQUIRE_OK(kefir_opt_code_structure_is_sequenced_before(mem, structure, sequence_point_instr_ref,
+                                                                        use_instr->id, &sequenced_before));
                 if (!sequenced_before) {
                     *all_uses_after = false;
                     return KEFIR_OK;
@@ -538,7 +552,8 @@ static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *m
             }
 
             kefir_bool_t uses_sequenced_after;
-            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, structure, use_instr->id, sequence_point_instr_ref, &uses_sequenced_after, visited));
+            REQUIRE_OK(check_all_control_flow_uses_after_impl(mem, structure, use_instr->id, sequence_point_instr_ref,
+                                                              &uses_sequenced_after, visited));
             if (!uses_sequenced_after) {
                 *all_uses_after = false;
                 return KEFIR_OK;
@@ -553,14 +568,19 @@ static kefir_result_t check_all_control_flow_uses_after_impl(struct kefir_mem *m
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem, struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref, kefir_opt_instruction_ref_t sequence_point_instr_ref, kefir_bool_t *all_uses_after) {
+kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *mem,
+                                                           struct kefir_opt_code_structure *structure,
+                                                           kefir_opt_instruction_ref_t instr_ref,
+                                                           kefir_opt_instruction_ref_t sequence_point_instr_ref,
+                                                           kefir_bool_t *all_uses_after) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
     REQUIRE(all_uses_after != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     struct kefir_hashtreeset visited;
     REQUIRE_OK(kefir_hashtreeset_init(&visited, &kefir_hashtree_uint_ops));
-    kefir_result_t res = check_all_control_flow_uses_after_impl(mem, structure, instr_ref, sequence_point_instr_ref, all_uses_after, &visited);
+    kefir_result_t res = check_all_control_flow_uses_after_impl(mem, structure, instr_ref, sequence_point_instr_ref,
+                                                                all_uses_after, &visited);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &visited);
         return res;
