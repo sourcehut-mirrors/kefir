@@ -51,7 +51,7 @@ $(KEFIR_EXTERNAL_TEST_OPENSSH_DIR)/%.test.log: $(KEFIR_EXTERNAL_TEST_OPENSSH_SOU
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		$(MAKE) $(patsubst %.test.log,%,$(notdir $@)) | tee "../$(notdir $@).tmp"
+		bash -c 'set -o pipefail; $(MAKE) $(patsubst %.test.log,%,$(notdir $@)) | tee "../$(notdir $@).tmp"'
 	@mv "$@.tmp" "$@"
 
 .NOTPARALLEL: $(KEFIR_EXTERNAL_TESTS_DIR)/openssh.test.done
