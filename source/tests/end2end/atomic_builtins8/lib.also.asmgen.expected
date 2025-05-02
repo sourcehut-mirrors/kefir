@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global exchange_ptr
+.type exchange_ptr, @function
+
+.section .text
+__kefir_text_section_begin:
+exchange_ptr:
+__kefir_text_func_exchange_ptr_begin:
+    xchgq (%rdi), %rsi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_exchange_ptr_end:
+
+__kefir_text_section_end:
+
