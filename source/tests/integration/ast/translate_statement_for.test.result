@@ -459,7 +459,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 40,
+                    "arg": 44,
                     "condition": "8bit"
                 },
                 {
@@ -474,7 +474,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 27,
+                    "arg": 29,
                     "condition": "8bit"
                 },
                 {
@@ -487,12 +487,30 @@
                     "opcode": "local_lifetime_mark"
                 },
                 {
-                    "opcode": "jump",
-                    "arg": 30
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 30
+                    "arg": 34
+                },
+                {
+                    "opcode": "jump",
+                    "arg": 34
+                },
+                {
+                    "opcode": "get_local",
+                    "id": 60129542144,
+                    "type": 14,
+                    "type_index": 0
+                },
+                {
+                    "opcode": "local_lifetime_mark"
                 },
                 {
                     "opcode": "get_local",
@@ -505,7 +523,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 40
+                    "arg": 44
                 },
                 {
                     "opcode": "get_local",

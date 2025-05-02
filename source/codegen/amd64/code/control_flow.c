@@ -894,6 +894,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(ijump)(struct kefir_mem *mem
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
+    REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_all_global(&function->variable_allocator));
 
     kefir_asmcmp_virtual_register_index_t target_vreg_idx;
     REQUIRE_OK(

@@ -110,6 +110,16 @@ static kefir_result_t perform_jump(struct kefir_mem *mem, struct kefir_ast_trans
             break;
         }
     }
+    for (struct kefir_ast_flow_control_structure *target_block = target_position->self; target_block != NULL;
+         target_block = kefir_ast_flow_control_structure_parent(target_block)) {
+        if (target_block->type != KEFIR_AST_FLOW_CONTROL_POINT) {
+            REQUIRE_OK(kefir_ast_translator_mark_flat_scope_objects_lifetime(
+                mem, context, builder, target_block->associated_scopes.ordinary_scope));
+        }
+        if (target_block == common_parent) {
+            break;
+        }
+    }
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_JUMP, 0));
     REQUIRE_OK(kefir_ast_translator_flow_control_point_reference(mem, target_position, builder->block,
