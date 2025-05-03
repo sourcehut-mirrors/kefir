@@ -1,0 +1,23 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    lea -8(%rbp), %rax
+    movl %eax, -4(%rbp)
+    movl -4(%rbp), %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+
