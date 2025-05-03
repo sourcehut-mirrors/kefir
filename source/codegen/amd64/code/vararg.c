@@ -588,7 +588,8 @@ static kefir_result_t vararg_register_aggregate_load(
     struct kefir_abi_amd64_function_parameter *parameter, kefir_asmcmp_virtual_register_index_t valist_vreg,
     kefir_asmcmp_virtual_register_index_t result_vreg, kefir_asmcmp_virtual_register_index_t tmp_vreg,
     kefir_asmcmp_virtual_register_index_t tmp2_vreg, kefir_asmcmp_label_index_t overflow_area_end_label,
-    kefir_size_t integer_qwords, kefir_size_t sse_qwords) {
+    kefir_size_t integer_qwords, kefir_size_t sse_qwords,
+    const struct kefir_abi_amd64_typeentry_layout *parameter_layout) {
     if (integer_qwords > 0) {
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -612,18 +613,29 @@ static kefir_result_t vararg_register_aggregate_load(
             REQUIRE_OK(kefir_abi_amd64_function_parameter_multireg_at(parameter, i, &subparam));
             switch (subparam.location) {
                 case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_GENERAL_PURPOSE_REGISTER:
-                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg),
-                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, integer_offset * KEFIR_AMD64_ABI_QWORD,
-                                                            KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                        NULL));
+                    if (i + 1 < length) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, integer_offset * KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            NULL));
 
-                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
-                                                            KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), NULL));
+                    } else {
+                        kefir_size_t reg_size = parameter_layout->size % KEFIR_AMD64_ABI_QWORD;
+                        if (reg_size == 0) {
+                            reg_size = KEFIR_AMD64_ABI_QWORD;
+                        }
+                        REQUIRE_OK(kefir_codegen_amd64_load_general_purpose_register(
+                            mem, function, tmp2_vreg, tmp_vreg, reg_size, integer_offset * KEFIR_AMD64_ABI_QWORD));
+                        REQUIRE_OK(kefir_codegen_amd64_store_general_purpose_register(
+                            mem, function, result_vreg, tmp2_vreg, reg_size, i * KEFIR_AMD64_ABI_QWORD));
+                    }
 
                     integer_offset++;
                     break;
@@ -671,18 +683,29 @@ static kefir_result_t vararg_register_aggregate_load(
                     break;
 
                 case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_SSE_REGISTER:
-                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg),
-                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, sse_offset * 2 * KEFIR_AMD64_ABI_QWORD,
-                                                            KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                        NULL));
+                    if (i + 1 < length) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, sse_offset * 2 * KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            NULL));
 
-                    REQUIRE_OK(kefir_asmcmp_amd64_mov(
-                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
-                                                            KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                        &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            &KEFIR_ASMCMP_MAKE_VREG64(tmp2_vreg), NULL));
+                    } else {
+                        kefir_size_t reg_size = parameter_layout->size % KEFIR_AMD64_ABI_QWORD;
+                        if (reg_size == 0) {
+                            reg_size = KEFIR_AMD64_ABI_QWORD;
+                        }
+                        REQUIRE_OK(kefir_codegen_amd64_load_general_purpose_register(
+                            mem, function, tmp2_vreg, tmp_vreg, reg_size, sse_offset * 2 * KEFIR_AMD64_ABI_QWORD));
+                        REQUIRE_OK(kefir_codegen_amd64_store_general_purpose_register(
+                            mem, function, result_vreg, tmp2_vreg, reg_size, i * KEFIR_AMD64_ABI_QWORD));
+                    }
 
                     sse_offset++;
                     break;
@@ -735,7 +758,8 @@ static kefir_result_t vararg_visit_register_aggregate(struct kefir_mem *mem,
                                                          kefir_asmcmp_context_instr_tail(&function->code.context),
                                                          result_vreg, allocation_vreg, NULL));
     REQUIRE_OK(vararg_register_aggregate_load(mem, function, parameter, valist_vreg, result_vreg, tmp_vreg, tmp2_vreg,
-                                              overflow_area_end_label, required_integers, required_sse));
+                                              overflow_area_end_label, required_integers, required_sse,
+                                              parameter_layout));
 
     REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &function->code.context, overflow_area_label));
     REQUIRE_OK(vararg_visit_memory_aggregate_impl(mem, function, parameter_layout, valist_vreg, result_vreg, tmp_vreg));
