@@ -11,18 +11,18 @@ test2:
 __kefir_text_func_test2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     mov %rdi, %rcx
     movl $1, -20(%rbp)
     movl $2, -16(%rbp)
-    movl %ecx, -28(%rbp)
-    movq %rcx, -48(%rbp)
+    movl %ecx, -12(%rbp)
+    movq %rcx, -32(%rbp)
     mov $2, %rdi
     leaq -20(%rbp), %rsi
     leaq -16(%rbp), %rdx
     xor %eax, %eax
     call test@PLT
-    movq -48(%rbp), %rcx
+    movq -32(%rbp), %rcx
     xor %eax, %eax
     test %ecx, %ecx
     sete %al
