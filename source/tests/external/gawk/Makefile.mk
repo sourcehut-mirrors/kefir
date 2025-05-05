@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_GAWK_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GAWK_SOURCE_DIR
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		$(MAKE) check | tee "$(shell realpath $@.tmp)"
+		bash -c 'set -o pipefail; $(MAKE) check | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/gawk.test.done: $(KEFIR_EXTERNAL_TEST_GAWK_DIR)/tests.log

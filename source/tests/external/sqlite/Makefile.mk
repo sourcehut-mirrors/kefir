@@ -41,7 +41,7 @@ $(KEFIR_EXTERNAL_TEST_SQLITE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE
 	@cd "$(KEFIR_EXTERNAL_TEST_SQLITE_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		$(MAKE) tcltest | tee "../$(notdir $@)"
+		bash -c 'set -o pipefail; $(MAKE) tcltest | tee "../$(notdir $@)"'
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/sqlite.test.done: $(KEFIR_EXTERNAL_TEST_SQLITE_DIR)/tests.log
 	@"$(SOURCE_DIR)/tests/external/sqlite/validate.sh" $(KEFIR_EXTERNAL_TEST_SQLITE_DIR)/tests.log

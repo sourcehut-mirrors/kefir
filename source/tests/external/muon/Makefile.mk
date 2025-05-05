@@ -48,7 +48,7 @@ $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/muon: $(KEFIR_EXTERNAL_TEST_MUON_S
 $(KEFIR_EXTERNAL_TEST_MUON_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)/build2/muon
 	@echo "Testing muon $(KEFIR_EXTERNAL_TEST_MUON_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_MUON_SOURCE_DIR)" && \
-		build2/muon -C build2 test 2>&1 | tee "$(shell realpath $@.tmp)"
+		bash -c 'set -o pipefail; build2/muon -C build2 test 2>&1 | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/muon.test.done: $(KEFIR_EXTERNAL_TEST_MUON_DIR)/tests.log

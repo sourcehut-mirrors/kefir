@@ -39,7 +39,7 @@ $(KEFIR_EXTERNAL_TEST_SLIMCC_DIR)/test.log: $(KEFIR_EXTERNAL_TEST_SLIMCC_SOURCE_
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		$(MAKE) test | tee "$(shell realpath $@.tmp)"
+		bash -c 'set -o pipefail; $(MAKE) test | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/slimcc.test.done: $(KEFIR_EXTERNAL_TEST_SLIMCC_DIR)/test.log

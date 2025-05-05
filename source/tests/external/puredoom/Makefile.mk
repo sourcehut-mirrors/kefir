@@ -42,7 +42,7 @@ $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/pd_tests: $(KEFI
 $(KEFIR_EXTERNAL_TEST_PUREDOOM_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)/examples/Tests/build/pd_tests
 	@echo "Testing PureDOOM $(KEFIR_EXTERNAL_TEST_PUREDOOM_VERSION)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_PUREDOOM_SOURCE_DIR)" && \
-		examples/Tests/build/pd_tests | tee "$(shell realpath $@.tmp)"
+		bash -c 'set -o pipefail; examples/Tests/build/pd_tests | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/PureDOOM.test.done: $(KEFIR_EXTERNAL_TEST_PUREDOOM_DIR)/tests.log

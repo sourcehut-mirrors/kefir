@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR
 	@cd "$(KEFIR_EXTERNAL_TEST_PERL_SOURCE_DIR)" && \
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
-		$(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"
+		bash -c 'set -o pipefail; $(MAKE) test 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/perl.test.done: $(KEFIR_EXTERNAL_TEST_PERL_DIR)/tests.log

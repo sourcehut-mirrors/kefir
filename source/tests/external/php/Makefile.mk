@@ -64,7 +64,7 @@ $(KEFIR_EXTERNAL_TEST_PHP_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_PHP_SOURCE_DIR)/
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
 		SKIP_IO_CAPTURE_TESTS=1 \
-		bash -c "ulimit -s unlimited && set -o pipefail; $(MAKE) test NO_INTERACTION=1 2>&1" | tee "$(shell realpath "$@.tmp")"
+		bash -c 'ulimit -s unlimited && set -o pipefail; $(MAKE) test NO_INTERACTION=1 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/php.test.done: $(KEFIR_EXTERNAL_TEST_PHP_DIR)/tests.log

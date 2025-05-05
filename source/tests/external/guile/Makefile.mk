@@ -45,7 +45,7 @@ $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_GUILE_SOURCE_D
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		$(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/guile.test.done: $(KEFIR_EXTERNAL_TEST_GUILE_DIR)/tests.log

@@ -44,7 +44,7 @@ $(KEFIR_EXTERNAL_TEST_YASM_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_YASM_SOURCE_DIR
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
-		$(MAKE) check -j1 | tee "$(shell realpath $@.tmp)"
+		bash -c 'set -o pipefail; $(MAKE) check -j1 | tee "$(shell realpath $@.tmp)"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/yasm.test.done: $(KEFIR_EXTERNAL_TEST_YASM_DIR)/tests.log
