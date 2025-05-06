@@ -838,6 +838,7 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_init(&func->debug.opt_instruction_location_labels, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.ir_instructions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&func->debug.function_parameters, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&func->debug.occupied_x87_stack_slots, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_list_init(&func->x87_stack));
     REQUIRE_OK(kefir_opt_code_analysis_init(&func->function_analysis));
     REQUIRE_OK(kefir_opt_code_schedule_init(&func->schedule));
@@ -864,6 +865,7 @@ kefir_result_t kefir_codegen_amd64_function_free(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.function_parameters));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.ir_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.opt_instruction_location_labels));
+    REQUIRE_OK(kefir_hashtree_free(mem, &func->debug.occupied_x87_stack_slots));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->preserve_vregs));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &func->translated_instructions));
     REQUIRE_OK(kefir_hashtree_free(mem, &func->type_layouts));
@@ -922,6 +924,15 @@ kefir_result_t kefir_codegen_amd64_function_generate_debug_instruction_locations
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
     REQUIRE(function->codegen->config->debug_info, KEFIR_OK);
+
+    kefir_size_t x87_stack_index = 0;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&function->x87_stack); iter != NULL;
+         kefir_list_next(&iter), x87_stack_index++) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, stack_instr_ref, (kefir_uptr_t) iter->value);
+        const kefir_hashtree_key_t key = (((kefir_uint64_t) stack_instr_ref) << 32) | ((kefir_uint32_t) instr_ref);
+        REQUIRE_OK(kefir_hashtree_insert(mem, &function->debug.occupied_x87_stack_slots, key,
+                                         (kefir_hashtree_value_t) x87_stack_index));
+    }
 
     kefir_size_t instruction_location;
     REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instr_ref,
@@ -1056,6 +1067,23 @@ kefir_result_t kefir_codegen_amd64_function_find_code_range_labels(
         }
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_find_instruction_linear_index_label(
+    const struct kefir_codegen_amd64_function *function, kefir_size_t linear_index,
+    kefir_asmcmp_label_index_t *label_ptr) {
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen function"));
+    REQUIRE(label_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp label"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&function->debug.opt_instruction_location_labels, linear_index, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find label for requested schedule linear index");
+    }
+    REQUIRE_OK(res);
+
+    *label_ptr = (kefir_asmcmp_label_index_t) node->value;
     return KEFIR_OK;
 }
 
@@ -1269,5 +1297,60 @@ kefir_result_t kefir_codegen_amd64_function_x87_flush(struct kefir_mem *mem,
         REQUIRE_OK(kefir_list_pop(mem, &function->x87_stack, iter));
     }
 
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_x87_locations_iter(
+    const struct kefir_codegen_amd64_function *function, kefir_opt_instruction_ref_t instr_ref,
+    struct kefir_codegen_amd64_function_x87_locations_iterator *iter, kefir_opt_instruction_ref_t *location_instr_ref,
+    kefir_size_t *x87_stack_index) {
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 code generator function"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                          "Expected valid amd64 code generator function x87 locations iterator"));
+
+    kefir_result_t res =
+        kefir_hashtree_lower_bound(&function->debug.occupied_x87_stack_slots,
+                                   (kefir_hashtree_key_t) (((kefir_uint64_t) instr_ref) << 32), &iter->node);
+    if (res == KEFIR_NOT_FOUND) {
+        REQUIRE_OK(kefir_hashtree_min(&function->debug.occupied_x87_stack_slots, &iter->node));
+    } else {
+        REQUIRE_OK(res);
+    }
+
+    for (; iter->node != NULL;
+         iter->node = kefir_hashtree_next_node(&function->debug.occupied_x87_stack_slots, iter->node)) {
+        const kefir_opt_instruction_ref_t stack_instr_ref = ((kefir_uint64_t) iter->node->key) >> 32;
+        if (stack_instr_ref == instr_ref) {
+            break;
+        } else if (stack_instr_ref > instr_ref) {
+            iter->node = NULL;
+        }
+    }
+
+    REQUIRE(iter->node != NULL, KEFIR_ITERATOR_END);
+    iter->x87_slots = &function->debug.occupied_x87_stack_slots;
+    iter->instr_ref = instr_ref;
+    ASSIGN_PTR(location_instr_ref, ((kefir_uint64_t) iter->node->key) & ((1ull << 32) - 1));
+    ASSIGN_PTR(x87_stack_index, iter->node->value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_function_x87_locations_next(
+    struct kefir_codegen_amd64_function_x87_locations_iterator *iter, kefir_opt_instruction_ref_t *location_instr_ref,
+    kefir_size_t *x87_stack_index) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                          "Expected valid amd64 code generator function x87 locations iterator"));
+
+    iter->node = kefir_hashtree_next_node(iter->x87_slots, iter->node);
+    if (iter->node != NULL) {
+        const kefir_opt_instruction_ref_t stack_instr_ref = ((kefir_uint64_t) iter->node->key) >> 32;
+        if (stack_instr_ref > iter->instr_ref) {
+            iter->node = NULL;
+        }
+    }
+
+    REQUIRE(iter->node != NULL, KEFIR_ITERATOR_END);
+    ASSIGN_PTR(location_instr_ref, ((kefir_uint64_t) iter->node->key) & ((1ull << 32) - 1));
+    ASSIGN_PTR(x87_stack_index, iter->node->value);
     return KEFIR_OK;
 }

@@ -1455,6 +1455,12 @@ __kefir_debug_loclist_section_entry_5:
     .byte 0
     .byte 0
 __kefir_debug_loclist_section_entry_6:
+    .byte 7
+    .quad _kefir_func_fn1_label27
+    .quad _kefir_func_fn1_label28
+    .byte 2
+    .byte 144
+    .byte 33
     .byte 0
 __kefir_debug_loclist_section_entry_7:
     .byte 7
