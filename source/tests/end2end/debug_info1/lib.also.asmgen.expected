@@ -338,6 +338,13 @@ __kefir_debug_loclist_section_entry_2:
     .byte 144
     .byte 0
     .byte 7
+    .quad _kefir_func_factorial64_label8
+    .quad _kefir_func_factorial64_label8
+    .byte 3
+    .byte 158
+    .byte 1
+    .byte 1
+    .byte 7
     .quad _kefir_func_factorial64_label10
     .quad _kefir_func_factorial64_label11
     .byte 2
