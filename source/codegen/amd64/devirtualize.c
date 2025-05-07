@@ -64,7 +64,7 @@ static kefir_result_t collect_live_vregs(struct kefir_mem *mem, struct devirtual
         const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, vreg_idx, &asmcmp_vreg));
         if (asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE ||
-            asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
+            asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
             continue;
         }
         REQUIRE_OK(
@@ -116,7 +116,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                     case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
                     case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                     case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
-                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                    case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                     case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                         // Intentionally left blank
                         break;
@@ -148,7 +148,7 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
                             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
-                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                                 // Intentionally left blank
                                 break;
@@ -213,7 +213,7 @@ static kefir_result_t rebuild_alive_physical_regs(struct kefir_mem *mem, struct 
                 break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
-            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                 // Intentionally left blank
                 break;
@@ -454,9 +454,9 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     *value = KEFIR_ASMCMP_MAKE_PHREG(phreg);
                     break;
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, value->vreg.index, &vreg));
-                    *value = vreg->parameters.immediate_value;
+                    *value = KEFIR_ASMCMP_MAKE_INT(vreg->parameters.immediate_int);
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE: {
@@ -587,13 +587,14 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                                                                       value->indirect.offset, value->indirect.variant);
                             break;
 
-                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context,
                                                                          value->indirect.base.vreg, &vreg));
                             REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg, TEMPORARY_REGISTER_GP));
                             REQUIRE_OK(kefir_asmcmp_amd64_mov(
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                                &KEFIR_ASMCMP_MAKE_PHREG(phreg), &vreg->parameters.immediate_value, &new_position));
+                                &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_INT(vreg->parameters.immediate_int),
+                                &new_position));
                             *value = KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(phreg, value->indirect.offset,
                                                                          value->indirect.variant);
                             REQUIRE_OK(
@@ -1197,7 +1198,7 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected allocated virtual register");
 
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link immediate value virtual register");
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
@@ -1209,7 +1210,7 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
             switch (reg_alloc2->type) {
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                     // Intentionally left blank
@@ -1258,7 +1259,7 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
             switch (reg_alloc2->type) {
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:

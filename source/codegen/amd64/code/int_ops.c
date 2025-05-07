@@ -63,12 +63,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                              result_vreg, arg1_vreg, NULL));                           \
         const struct kefir_asmcmp_virtual_register *vreg2;                                                             \
         REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg2_vreg, &vreg2));                     \
-        if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE &&                                            \
-            ((vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER &&                             \
-              vreg2->parameters.immediate_value.int_immediate >= 0 &&                                                  \
-              vreg2->parameters.immediate_value.int_immediate <= KEFIR_INT8_MAX) ||                                    \
-             (vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_UINTEGER &&                            \
-              vreg2->parameters.immediate_value.uint_immediate <= KEFIR_INT8_MAX))) {                                  \
+        if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER &&                                          \
+            (vreg2->parameters.immediate_int >= 0 && vreg2->parameters.immediate_int <= KEFIR_INT8_MAX)) {             \
             REQUIRE_OK(kefir_asmcmp_amd64_##_op(                                                                       \
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),                        \
                 &KEFIR_ASMCMP_MAKE_VREG##_variant(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg2_vreg), NULL));           \
@@ -185,9 +181,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
             const struct kefir_asmcmp_virtual_register *vreg2;
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg2_vreg, &vreg2));
-            if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE &&
-                (vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER ||
-                 vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_UINTEGER)) {
+            if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                 REQUIRE_OK(kefir_asmcmp_amd64_imul3(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                     &KEFIR_ASMCMP_MAKE_VREG32(result_vreg), &KEFIR_ASMCMP_MAKE_VREG32(arg1_vreg),
@@ -215,9 +209,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_arithmetics)(struct kefi
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
             const struct kefir_asmcmp_virtual_register *vreg2;
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg2_vreg, &vreg2));
-            if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE &&
-                (vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER ||
-                 vreg2->parameters.immediate_value.type == KEFIR_ASMCMP_VALUE_TYPE_UINTEGER)) {
+            if (vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                 REQUIRE_OK(kefir_asmcmp_amd64_imul3(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                     &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg1_vreg),

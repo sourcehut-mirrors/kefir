@@ -398,7 +398,7 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_instruction_location(
 
     switch (reg_allocation->type) {
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
             // Intentionally left blank
             break;
 

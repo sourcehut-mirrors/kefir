@@ -36,9 +36,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_const)(struct kefir_mem 
 
     if (instruction->operation.parameters.imm.integer >= KEFIR_INT32_MIN &&
         instruction->operation.parameters.imm.integer <= KEFIR_INT32_MAX) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate(
-            mem, &function->code.context, &KEFIR_ASMCMP_MAKE_INT(instruction->operation.parameters.imm.integer),
-            &result_vreg));
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate_integer(
+            mem, &function->code.context, instruction->operation.parameters.imm.integer, &result_vreg));
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
@@ -63,8 +62,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(uint_const)(struct kefir_mem
 
     const kefir_int64_t value = (kefir_int64_t) instruction->operation.parameters.imm.uinteger;
     if (value >= KEFIR_INT32_MIN && value <= KEFIR_INT32_MAX) {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate(mem, &function->code.context,
-                                                               &KEFIR_ASMCMP_MAKE_INT(value), &result_vreg));
+        REQUIRE_OK(
+            kefir_asmcmp_virtual_register_new_immediate_integer(mem, &function->code.context, value, &result_vreg));
     } else {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
@@ -258,8 +257,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_placeholder)(struct kefi
 
     kefir_asmcmp_virtual_register_index_t result_vreg;
 
-    REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate(mem, &function->code.context, &KEFIR_ASMCMP_MAKE_INT(0),
-                                                           &result_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_immediate_integer(mem, &function->code.context, 0, &result_vreg));
 
     REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), result_vreg, NULL));

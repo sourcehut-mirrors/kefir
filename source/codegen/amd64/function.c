@@ -632,12 +632,11 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
                     REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.local_variable.offset));
                     break;
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                     REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
-                    REQUIRE_OK(kefir_json_output_string(&json, "immediate"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "immediate_int"));
                     REQUIRE_OK(kefir_json_output_object_key(&json, "value"));
-                    REQUIRE_OK(
-                        kefir_asmcmp_value_format(&json, &func->code.context, &vreg->parameters.immediate_value));
+                    REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.immediate_int));
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:

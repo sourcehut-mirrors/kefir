@@ -127,7 +127,7 @@ static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, const
                                                     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
     const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, vreg_idx, &asmcmp_vreg));
-    REQUIRE(asmcmp_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE &&
+    REQUIRE(asmcmp_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER &&
                 asmcmp_vreg->type != KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE,
             KEFIR_OK);
     REQUIRE_OK(kefir_bucketset_add(mem, &block_data->virtual_registers, (kefir_bucketset_entry_t) vreg_idx));
@@ -333,7 +333,7 @@ static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
             struct kefir_codegen_amd64_xregalloc_virtual_register *vreg1 = &xregalloc->virtual_registers[vreg1_idx];
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg1_idx, &asmcmp_vreg1));
             if (asmcmp_vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE ||
-                asmcmp_vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
+                asmcmp_vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                 continue;
             }
             for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter2, &vreg2_idx);
@@ -343,7 +343,7 @@ static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
                 }
                 REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg2_idx, &asmcmp_vreg2));
                 if (asmcmp_vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE ||
-                    asmcmp_vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE) {
+                    asmcmp_vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
                     continue;
                 }
                 struct kefir_codegen_amd64_xregalloc_virtual_register *vreg2 = &xregalloc->virtual_registers[vreg2_idx];
@@ -492,7 +492,7 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
                                                         interfere_vreg->allocation.spill_area.length, true));
             } break;
 
-            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE:
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                 // Intentionally left blank
@@ -719,8 +719,8 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE;
             break;
 
-        case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE:
-            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_VALUE;
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
+            vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER;
             break;
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:

@@ -51,7 +51,7 @@ typedef enum kefir_asmcmp_virtual_register_type {
     KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE,
-    KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE,
+    KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER,
     KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY
 } kefir_asmcmp_virtual_register_type_t;
 
@@ -226,10 +226,12 @@ typedef struct kefir_asmcmp_inline_assembly_fragment {
                                                .base.external_label = (_label),                    \
                                                .offset = (_offset),                                \
                                                .variant = (_variant)}})
-#define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(_var, _offset, _variant) \
-    ((struct kefir_asmcmp_value) {                               \
-        .type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                \
-        .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS, .base.local_variable_id = (_var), .offset = (_offset), .variant = (_variant)}})
+#define KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(_var, _offset, _variant)                         \
+    ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                    \
+                                  .indirect = {.type = KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS, \
+                                               .base.local_variable_id = (_var),               \
+                                               .offset = (_offset),                            \
+                                               .variant = (_variant)}})
 #define KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(_index, _offset, _variant)                            \
     ((struct kefir_asmcmp_value) {.type = KEFIR_ASMCMP_VALUE_TYPE_INDIRECT,                    \
                                   .indirect = {.type = KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS, \
@@ -303,7 +305,7 @@ typedef struct kefir_asmcmp_virtual_register {
             kefir_id_t identifier;
             kefir_int64_t offset;
         } local_variable;
-        struct kefir_asmcmp_value immediate_value;
+        kefir_int64_t immediate_int;
     } parameters;
 } kefir_asmcmp_virtual_register_t;
 
@@ -413,15 +415,15 @@ kefir_result_t kefir_asmcmp_virtual_register_new_direct_spill_space_allocation(s
                                                                                struct kefir_asmcmp_context *,
                                                                                kefir_size_t, kefir_size_t,
                                                                                kefir_asmcmp_virtual_register_index_t *);
-kefir_result_t kefir_asmcmp_virtual_register_new_spill_space(
-    struct kefir_mem *, struct kefir_asmcmp_context *, kefir_size_t, kefir_size_t,
-    kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_new_spill_space(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                             kefir_size_t, kefir_size_t,
+                                                             kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_local_variable(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                                 kefir_id_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);
-kefir_result_t kefir_asmcmp_virtual_register_new_immediate(struct kefir_mem *, struct kefir_asmcmp_context *,
-                                                           const struct kefir_asmcmp_value *,
-                                                           kefir_asmcmp_virtual_register_index_t *);
+kefir_result_t kefir_asmcmp_virtual_register_new_immediate_integer(struct kefir_mem *, struct kefir_asmcmp_context *,
+                                                                   kefir_int64_t,
+                                                                   kefir_asmcmp_virtual_register_index_t *);
 kefir_result_t kefir_asmcmp_virtual_register_new_memory_pointer(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                                 kefir_asmcmp_physical_register_index_t, kefir_int64_t,
                                                                 kefir_asmcmp_virtual_register_index_t *);

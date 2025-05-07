@@ -149,7 +149,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
                     break;
 
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
-                case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_VALUE:
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &target_vreg_idx));
                     break;
