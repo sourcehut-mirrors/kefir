@@ -382,6 +382,8 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
 static kefir_result_t replace_references(struct mem2reg_state *state, kefir_opt_instruction_ref_t to_ref,
                                          kefir_opt_instruction_ref_t from_ref) {
     REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code, to_ref, from_ref));
+    REQUIRE_OK(
+        kefir_opt_code_debug_info_replace_local_variable(state->mem, &state->func->debug_info, from_ref, to_ref));
 
     struct kefir_hashtree_node_iterator iter1, iter2;
     for (struct kefir_hashtree_node *node1 = kefir_hashtree_iter(&state->local_regs, &iter1); node1 != NULL;

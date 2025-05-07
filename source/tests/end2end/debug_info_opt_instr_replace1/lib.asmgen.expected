@@ -1,0 +1,132 @@
+{
+    "functions": [
+        {
+            "id": 28,
+            "name": "test2",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 44,
+                        "code": [
+                            {
+                                "id": 4,
+                                "opcode": "get_argument",
+                                "index": 0,
+                                "control_next": null,
+                                "ir_instruction": 4
+                            },
+                            {
+                                "id": 39,
+                                "opcode": "int32_bool_not",
+                                "arg": 4,
+                                "control_next": null,
+                                "ir_instruction": 44
+                            },
+                            {
+                                "id": 40,
+                                "opcode": "int_const",
+                                "value": 3,
+                                "control_next": null,
+                                "ir_instruction": 66
+                            },
+                            {
+                                "id": 41,
+                                "opcode": "int32_not",
+                                "arg": 4,
+                                "control_next": null,
+                                "ir_instruction": 66
+                            },
+                            {
+                                "id": 42,
+                                "opcode": "select",
+                                "variant": "8bit",
+                                "args": [
+                                    39,
+                                    40,
+                                    41
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 66
+                            },
+                            {
+                                "id": 43,
+                                "opcode": "int32_add",
+                                "args": [
+                                    4,
+                                    42
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 66
+                            },
+                            {
+                                "id": 45,
+                                "opcode": "int32_add",
+                                "args": [
+                                    4,
+                                    43
+                                ],
+                                "control_next": null,
+                                "ir_instruction": 19
+                            },
+                            {
+                                "id": 44,
+                                "opcode": "return",
+                                "arg": 45,
+                                "control_next": null,
+                                "ir_instruction": 24
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                4,
+                                39,
+                                40,
+                                41,
+                                42,
+                                43,
+                                44,
+                                45
+                            ]
+                        }
+                    }
+                ],
+                "debug": {
+                    "local_variables": [
+                        {
+                            "variable": 0,
+                            "refs": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable": 2,
+                            "refs": [
+                                43
+                            ]
+                        },
+                        {
+                            "variable": 34,
+                            "refs": [
+                                4
+                            ]
+                        },
+                        {
+                            "variable": 35,
+                            "refs": [
+                                40,
+                                41,
+                                42
+                            ]
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

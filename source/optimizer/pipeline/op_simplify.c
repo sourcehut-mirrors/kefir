@@ -2887,6 +2887,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LOAD &&
                instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
                use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS &&
@@ -2898,6 +2900,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
                instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
                use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS &&
@@ -2909,6 +2913,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_LOAD &&
                instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
                use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS &&
@@ -2920,6 +2926,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
                instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
                use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS &&
@@ -2931,6 +2939,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_LOAD &&
                instr->operation.parameters.memory_access.flags.load_extension == KEFIR_OPT_MEMORY_LOAD_NOEXTEND &&
                use_instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS &&
@@ -2942,6 +2952,8 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
                 .volatile_access = instr->operation.parameters.memory_access.flags.volatile_access},
             replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, *replacement_ref, use_instr_ref));
+        REQUIRE_OK(
+            kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, use_instr_ref, *replacement_ref));
     }
 
     return KEFIR_OK;
@@ -3064,12 +3076,12 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     }
 
     if (move_link1) {
-        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, link_ref1, phi_instr_block_id,
-                                                                      &link_ref1));
+        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref1,
+                                                                      phi_instr_block_id, &link_ref1));
     }
     if (move_link2) {
-        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, link_ref2, phi_instr_block_id,
-                                                                      &link_ref2));
+        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref2,
+                                                                      phi_instr_block_id, &link_ref2));
     }
 
     if (!comparison) {
@@ -3084,13 +3096,15 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     return KEFIR_OK;
 }
 
-static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct kefir_opt_module *module, struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
-                                    const struct kefir_opt_instruction *copy_instr,
-                                    kefir_opt_instruction_ref_t *replacement_ref) {
+static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                           struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
+                                           const struct kefir_opt_instruction *copy_instr,
+                                           kefir_opt_instruction_ref_t *replacement_ref) {
     UNUSED(replacement_ref);
     const kefir_opt_instruction_ref_t copy_instr_ref = copy_instr->id;
 
-    const struct kefir_ir_type *copy_instr_type = kefir_ir_module_get_named_type(module->ir_module, copy_instr->operation.parameters.type.type_id);
+    const struct kefir_ir_type *copy_instr_type =
+        kefir_ir_module_get_named_type(module->ir_module, copy_instr->operation.parameters.type.type_id);
     REQUIRE(copy_instr_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type"));
 
     kefir_bool_t is_control_flow;
@@ -3103,30 +3117,39 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
 
     const struct kefir_opt_instruction *copy_source_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, copy_source_instr_ref, &copy_source_instr));
-    if (copy_source_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE || copy_source_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
+    if (copy_source_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+        copy_source_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
         const struct kefir_opt_call_node *call_node;
-        REQUIRE_OK(kefir_opt_code_container_call(&func->code, copy_source_instr->operation.parameters.function_call.call_ref, &call_node));
+        REQUIRE_OK(kefir_opt_code_container_call(
+            &func->code, copy_source_instr->operation.parameters.function_call.call_ref, &call_node));
         REQUIRE(call_node->return_space != KEFIR_ID_NONE, KEFIR_OK);
 
         const struct kefir_opt_instruction *return_space_instr, *copy_target_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, call_node->return_space, &return_space_instr));
-        REQUIRE_OK(kefir_opt_code_container_instr(&func->code, copy_instr->operation.parameters.refs[0], &copy_target_instr));
+        REQUIRE_OK(
+            kefir_opt_code_container_instr(&func->code, copy_instr->operation.parameters.refs[0], &copy_target_instr));
         REQUIRE(return_space_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL, KEFIR_OK);
         REQUIRE(copy_target_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL, KEFIR_OK);
 
-        const struct kefir_ir_function_decl *ir_func_decl = kefir_ir_module_get_declaration(module->ir_module, call_node->function_declaration_id);
+        const struct kefir_ir_function_decl *ir_func_decl =
+            kefir_ir_module_get_declaration(module->ir_module, call_node->function_declaration_id);
         REQUIRE(ir_func_decl != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR function declaration"));
         REQUIRE(ir_func_decl->result != NULL, KEFIR_OK);
 
         kefir_bool_t same_type;
-        REQUIRE_OK(kefir_ir_type_same(ir_func_decl->result, 0, copy_instr_type, copy_instr->operation.parameters.type.type_index, &same_type));
+        REQUIRE_OK(kefir_ir_type_same(ir_func_decl->result, 0, copy_instr_type,
+                                      copy_instr->operation.parameters.type.type_index, &same_type));
         REQUIRE(same_type, KEFIR_OK);
 
         kefir_bool_t call_sequenced_before_other_uses;
-        REQUIRE_OK(kefir_opt_check_all_control_flow_uses_after(mem, structure, copy_target_instr->id, copy_source_instr_ref, &call_sequenced_before_other_uses));
+        REQUIRE_OK(kefir_opt_check_all_control_flow_uses_after(
+            mem, structure, copy_target_instr->id, copy_source_instr_ref, &call_sequenced_before_other_uses));
         REQUIRE(call_sequenced_before_other_uses, KEFIR_OK);
 
-        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, copy_target_instr->id, return_space_instr->id));
+        REQUIRE_OK(kefir_opt_code_container_replace_references(mem, &func->code, copy_target_instr->id,
+                                                               return_space_instr->id));
+        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, return_space_instr->id,
+                                                                    copy_target_instr->id));
 
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, copy_instr_ref));
         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, copy_instr_ref));
@@ -3135,7 +3158,8 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
-static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module, struct kefir_opt_function *func,
+static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
     struct kefir_opt_code_container_iterator iter;
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
@@ -3303,6 +3327,8 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
                     REQUIRE_OK(
                         kefir_opt_code_container_replace_references(mem, &func->code, replacement_ref, instr_id));
+                    REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, &func->debug_info, instr_id,
+                                                                                replacement_ref));
                     kefir_bool_t is_control_flow, is_replacement_control_flow;
                     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(&func->code, instr_id, &is_control_flow));
                     if (is_control_flow) {

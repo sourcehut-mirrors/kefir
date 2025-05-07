@@ -59,6 +59,7 @@ kefir_result_t kefir_opt_move_isolated_instruction(struct kefir_mem *, struct ke
                                                    kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
                                                    kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                                  struct kefir_opt_code_debug_info *,
                                                                   kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
                                                                   kefir_opt_instruction_ref_t *);
 
@@ -71,6 +72,8 @@ kefir_result_t kefir_opt_can_move_instruction_with_local_dependencies(
     struct kefir_mem *, const struct kefir_opt_code_structure *, kefir_opt_instruction_ref_t, kefir_opt_block_id_t,
     const struct kefir_opt_can_move_instruction_ignore_use *, kefir_bool_t *);
 
-kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *, struct kefir_opt_code_structure *, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_bool_t *);
+kefir_result_t kefir_opt_check_all_control_flow_uses_after(struct kefir_mem *, struct kefir_opt_code_structure *,
+                                                           kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,
+                                                           kefir_bool_t *);
 
 #endif

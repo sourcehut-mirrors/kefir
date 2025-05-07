@@ -122,7 +122,8 @@ typedef enum kefir_dwarf_operation {
     KEFIR_DWARF(DW_OP_regx) = 0x90,
     KEFIR_DWARF(DW_OP_fbreg) = 0x91,
     KEFIR_DWARF(DW_OP_bregx) = 0x92,
-    KEFIR_DWARF(DW_OP_form_tls_address) = 0x9b
+    KEFIR_DWARF(DW_OP_form_tls_address) = 0x9b,
+    KEFIR_DWARF(DW_OP_implicit_value) = 0x9e
 } kefir_dwarf_operation_t;
 
 typedef enum kefir_dwarf_language { KEFIR_DWARF(DW_LANG_C11) = 0x1d } kefir_dwarf_language_t;

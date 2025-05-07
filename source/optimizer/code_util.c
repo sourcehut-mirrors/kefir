@@ -399,6 +399,7 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
             REQUIRE_OK(kefir_opt_code_container_add_control(code, target_block_id, replacement_ref));
         }
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
     }
     REQUIRE_OK(res);
 
@@ -411,6 +412,7 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
             REQUIRE_OK(
                 copy_instruction_resolve_phi(mem, code, debug_info, instr_ref, target_block_id, &replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+            REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
         }
     }
     REQUIRE_OK(res);
@@ -533,6 +535,7 @@ static kefir_result_t split_block_after_impl(struct kefir_mem *mem, struct kefir
         }
         REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, new_block_id, instr_ref, &replacement_ref));
         REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, replacement_ref, instr_ref));
+        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, replacement_ref));
         if (is_control_flow) {
             REQUIRE_OK(kefir_opt_code_container_add_control(code, new_block_id, replacement_ref));
             REQUIRE_OK(kefir_opt_code_container_drop_control(code, instr_ref));
@@ -691,12 +694,11 @@ kefir_result_t kefir_opt_instruction_get_sole_use(const struct kefir_opt_code_co
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                          kefir_opt_instruction_ref_t instr_ref, kefir_opt_block_id_t target_block_id,
-                                          kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
-
+static kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                 struct kefir_opt_code_debug_info *debug_info,
+                                                 kefir_opt_instruction_ref_t instr_ref,
+                                                 kefir_opt_block_id_t target_block_id,
+                                                 kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
     kefir_bool_t is_control_flow;
     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
     REQUIRE(!is_control_flow,
@@ -705,6 +707,7 @@ kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_op
     kefir_opt_instruction_ref_t moved_instr_ref;
     REQUIRE_OK(kefir_opt_code_container_copy_instruction(mem, code, target_block_id, instr_ref, &moved_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_replace_references(mem, code, moved_instr_ref, instr_ref));
+    REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(mem, debug_info, instr_ref, moved_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, code, instr_ref));
     ASSIGN_PTR(moved_instr_ref_ptr, moved_instr_ref);
 
@@ -714,6 +717,7 @@ kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_op
 struct move_instrs_param {
     struct kefir_mem *mem;
     struct kefir_opt_code_container *code;
+    struct kefir_opt_code_debug_info *debug;
     kefir_opt_block_id_t source_block_id;
     kefir_opt_block_id_t target_block_id;
     struct kefir_list move_queue;
@@ -749,8 +753,8 @@ static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
 
         if (instr->block_id == param->source_block_id) {
             kefir_opt_instruction_ref_t moved_instr_ref;
-            REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, instr_ref, param->target_block_id,
-                                                  &moved_instr_ref));
+            REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, param->debug, instr_ref,
+                                                  param->target_block_id, &moved_instr_ref));
             if (param->moved_instr_ref == KEFIR_ID_NONE) {
                 param->moved_instr_ref = moved_instr_ref;
             }
@@ -761,17 +765,20 @@ static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
 
 kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_mem *mem,
                                                                   struct kefir_opt_code_container *code,
+                                                                  struct kefir_opt_code_debug_info *debug,
                                                                   kefir_opt_instruction_ref_t instr_ref,
                                                                   kefir_opt_block_id_t target_block_id,
                                                                   kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(debug != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code debug information"));
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
 
     struct move_instrs_param param = {.mem = mem,
                                       .code = code,
+                                      .debug = debug,
                                       .source_block_id = instr->block_id,
                                       .target_block_id = target_block_id,
                                       .moved_instr_ref = KEFIR_ID_NONE};

@@ -109,6 +109,8 @@ static kefir_result_t trace_instruction_impl(kefir_opt_instruction_ref_t instr_r
     REQUIRE_OK(kefir_opt_code_container_new_instruction(param->mem, &param->func->code, closest_dominator, &operation,
                                                         &new_instr));
     REQUIRE_OK(kefir_opt_code_container_replace_references(param->mem, &param->func->code, new_instr, instr_ref));
+    REQUIRE_OK(
+        kefir_opt_code_debug_info_replace_local_variable(param->mem, &param->func->debug_info, instr_ref, new_instr));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(param->mem, &param->func->code, instr_ref));
     REQUIRE_OK(
         kefir_opt_code_debug_info_replace_local_variable(param->mem, &param->func->debug_info, instr_ref, new_instr));

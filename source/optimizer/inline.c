@@ -797,6 +797,8 @@ static kefir_result_t link_inlined_entry_block(struct do_inline_param *param) {
     if (param->result_phi_instr != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_opt_code_container_replace_references(param->mem, param->dst_code, param->result_phi_instr,
                                                                tail_instr_ref));
+        REQUIRE_OK(kefir_opt_code_debug_info_replace_local_variable(param->mem, &param->dst_function->debug_info,
+                                                                    tail_instr_ref, param->result_phi_instr));
     }
     REQUIRE_OK(kefir_opt_code_container_drop_control(param->dst_code, tail_instr_ref));
     REQUIRE_OK(kefir_opt_code_container_drop_instr(param->mem, param->dst_code, tail_instr_ref));
@@ -921,14 +923,23 @@ static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param
         for (res = kefir_hashtreeset_iter(&refset->refs, &iter); res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alloc_instr_ref, iter.entry);
 
+            kefir_opt_instruction_ref_t mapped_alloc_instr_ref;
             struct kefir_hashtree_node *node2;
             res = kefir_hashtree_at(&param->instr_mapping, (kefir_hashtree_key_t) alloc_instr_ref, &node2);
             if (res != KEFIR_NOT_FOUND) {
                 REQUIRE_OK(res);
-                ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_alloc_instr_ref, node2->value);
-                REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(
-                    param->mem, &param->dst_function->debug_info, mapped_alloc_instr_ref, variable_id));
+                mapped_alloc_instr_ref = node2->value;
+            } else {
+                kefir_opt_block_id_t mapped_block_id;
+                REQUIRE_OK(map_block(param, param->src_function->code.entry_point, &mapped_block_id));
+                REQUIRE_OK(kefir_opt_code_builder_int_placeholder(param->mem, param->dst_code, mapped_block_id,
+                                                                  &mapped_alloc_instr_ref));
+                REQUIRE_OK(kefir_hashtree_insert(param->mem, &param->instr_mapping,
+                                                 (kefir_hashtree_key_t) alloc_instr_ref, mapped_alloc_instr_ref));
             }
+
+            REQUIRE_OK(kefir_opt_code_debug_info_register_local_variable_allocation(
+                param->mem, &param->dst_function->debug_info, mapped_alloc_instr_ref, variable_id));
         }
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
@@ -943,12 +954,19 @@ static kefir_result_t inline_debug_allocation_info(struct do_inline_param *param
                                                              &alloc_instr_ref);
          res == KEFIR_OK; res = kefir_opt_code_debug_info_local_variable_next(&alloc_iter, &alloc_instr_ref)) {
         struct kefir_hashtree_node *node;
+        kefir_opt_instruction_ref_t mapped_alloc_instr_ref;
         res = kefir_hashtree_at(&param->instr_mapping, (kefir_hashtree_key_t) alloc_instr_ref, &node);
-        if (res == KEFIR_NOT_FOUND) {
-            continue;
+        if (res != KEFIR_NOT_FOUND) {
+            REQUIRE_OK(res);
+            mapped_alloc_instr_ref = node->value;
+        } else {
+            kefir_opt_block_id_t mapped_block_id;
+            REQUIRE_OK(map_block(param, param->src_function->code.entry_point, &mapped_block_id));
+            REQUIRE_OK(kefir_opt_code_builder_int_placeholder(param->mem, param->dst_code, mapped_block_id,
+                                                              &mapped_alloc_instr_ref));
+            REQUIRE_OK(kefir_hashtree_insert(param->mem, &param->instr_mapping, (kefir_hashtree_key_t) alloc_instr_ref,
+                                             mapped_alloc_instr_ref));
         }
-        REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, mapped_alloc_instr_ref, node->value);
 
         kefir_opt_instruction_ref_t ref;
         struct kefir_opt_code_debug_info_local_variable_ref_iterator ref_iter;
