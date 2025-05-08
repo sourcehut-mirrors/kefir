@@ -752,7 +752,7 @@ static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
         REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, do_move_scan_deps, param));
 
         if (instr->block_id == param->source_block_id) {
-            kefir_opt_instruction_ref_t moved_instr_ref;
+            kefir_opt_instruction_ref_t moved_instr_ref = KEFIR_ID_NONE;
             REQUIRE_OK(kefir_opt_move_instruction(param->mem, param->code, param->debug, instr_ref,
                                                   param->target_block_id, &moved_instr_ref));
             if (param->moved_instr_ref == KEFIR_ID_NONE) {
