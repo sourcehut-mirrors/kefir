@@ -448,6 +448,10 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
                                                          kefir_asmcmp_virtual_register_index_t, kefir_size_t,
                                                          kefir_size_t);
 
+kefir_size_t kefir_asmcmp_virtual_register_pair_at(const struct kefir_asmcmp_context *,
+                                                   kefir_asmcmp_virtual_register_index_t, kefir_size_t,
+                                                   kefir_asmcmp_virtual_register_index_t *);
+
 kefir_result_t kefir_asmcmp_register_stash_new(struct kefir_mem *, struct kefir_asmcmp_context *,
                                                kefir_asmcmp_stash_index_t *);
 kefir_result_t kefir_asmcmp_register_stash_add(struct kefir_mem *, struct kefir_asmcmp_context *,

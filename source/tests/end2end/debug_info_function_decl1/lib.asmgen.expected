@@ -87,14 +87,11 @@ _kefir_func_temp_label11:
 _kefir_func_temp_label12:
     movd _kefir_func_temp_label13(%rip), %xmm2
 .loc 0 34 5
-_kefir_func_temp_label14:
-    movd %xmm1, -48(%rbp)
-    movd %xmm2, -44(%rbp)
-.loc 0 34 5
 _kefir_func_temp_label15:
+_kefir_func_temp_label14:
     mov $1, %rdi
     mov $2, %rsi
-    movq -48(%rbp), %xmm1
+    insertps $16, %xmm2, %xmm1
     mov $5, %rdx
     mov $6, %rcx
     mov $7, %r8

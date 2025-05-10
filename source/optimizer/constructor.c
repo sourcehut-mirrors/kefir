@@ -963,6 +963,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store32, KEFIR_IR_OPCODE_ATOMIC_STORE32)
             ATOMIC_STORE_OP(atomic_store64, KEFIR_IR_OPCODE_ATOMIC_STORE64)
             ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IR_OPCODE_ATOMIC_STORE_LONG_DOUBLE)
+            ATOMIC_STORE_OP(atomic_store_complex_float32, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32)
 
 #undef ATOMIC_STORE_OP
 
@@ -994,30 +995,40 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef ATOMIC_CMPXCHG_OP
 
-        case KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE: {
-            kefir_opt_memory_order_t model;
-            switch (instr->arg.i64) {
-                case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
-                    model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;
-                    break;
+#define ATOMIC_CMPXCHG_COMPLEX_OP(_id, _opcode, _enfoce_load)                                                          \
+    case (_opcode): {                                                                                                  \
+        kefir_opt_memory_order_t model;                                                                                \
+        switch (instr->arg.i64) {                                                                                      \
+            case KEFIR_IR_MEMORY_ORDER_SEQ_CST:                                                                        \
+                model = KEFIR_OPT_MEMORY_ORDER_SEQ_CST;                                                                \
+                break;                                                                                                 \
+                                                                                                                       \
+            default:                                                                                                   \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");                           \
+        }                                                                                                              \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                          \
+        if ((_enfoce_load)) {                                                                                          \
+            const struct kefir_opt_instruction *expected_value_instr;                                                  \
+            REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, instr_ref3, &expected_value_instr));     \
+            REQUIRE(expected_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE &&      \
+                        expected_value_instr->operation.parameters.refs[0] == instr_ref2,                              \
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Atomic compare-exchange operation for complex long double "  \
+                                                         "shall be preceeded by atomic load from the same location")); \
+        }                                                                                                              \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4,       \
+                                                model, &instr_ref));                                                   \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                             \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                           \
+    } break
 
-                default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unknown IR atomic model flag");
-            }
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
-            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
-            const struct kefir_opt_instruction *expected_value_instr;
-            REQUIRE_OK(kefir_opt_code_container_instr(&state->function->code, instr_ref3, &expected_value_instr));
-            REQUIRE(expected_value_instr->operation.opcode == KEFIR_OPT_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE &&
-                        expected_value_instr->operation.parameters.refs[0] == instr_ref2,
-                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Atomic compare-exchange operation for complex long double "
-                                                         "shall be preceeded by atomic load from the same location"));
-            REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange_complex_long_double(
-                mem, code, current_block_id, instr_ref2, instr_ref3, instr_ref4, model, &instr_ref));
-            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
-            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
-        } break;
+            ATOMIC_CMPXCHG_COMPLEX_OP(atomic_compare_exchange_complex_float32,
+                                      KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT32, false);
+            ATOMIC_CMPXCHG_COMPLEX_OP(atomic_compare_exchange_complex_long_double,
+                                      KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE, true);
+
+#undef ATOMIC_CMPXCHG_COMPLEX_OP
 
         case KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM: {
             REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));

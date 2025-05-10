@@ -266,6 +266,7 @@
     OPCODE(ATOMIC_STORE32, "atomic_store32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE64, "atomic_store64", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_STORE_LONG_DOUBLE, "atomic_store_long_double", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_STORE_COMPLEX_FLOAT32, "atomic_store_complex_float32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_COPY_MEMORY_FROM, "atomic_copy_memory_from", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_COPY_MEMORY_TO, "atomic_copy_memory_to", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG8, "atomic_cmpxchg8", atomic_op) SEPARATOR \
@@ -273,6 +274,7 @@
     OPCODE(ATOMIC_CMPXCHG32, "atomic_cmpxchg32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG64, "atomic_cmpxchg64", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_LONG_DOUBLE, "atomic_cmpxchg_long_double", atomic_op) SEPARATOR \
+    OPCODE(ATOMIC_CMPXCHG_COMPLEX_FLOAT32, "atomic_cmpxchg_complex_float32", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE, "atomic_cmpxchg_complex_long_double", atomic_op) SEPARATOR \
     OPCODE(ATOMIC_CMPXCHG_MEMORY, "atomic_cmpxchg_memory", atomic_op) SEPARATOR \
     /* Overflow arithmetics */ \

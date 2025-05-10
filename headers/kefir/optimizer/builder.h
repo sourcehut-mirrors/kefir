@@ -372,6 +372,7 @@ ATOMIC_STORE_OP(atomic_store16);
 ATOMIC_STORE_OP(atomic_store32);
 ATOMIC_STORE_OP(atomic_store64);
 ATOMIC_STORE_OP(atomic_store_long_double);
+ATOMIC_STORE_OP(atomic_store_complex_float32);
 
 #undef ATOMIC_STORE_OP
 
@@ -386,6 +387,7 @@ ATOMIC_CMPXCHG_OP(atomic_compare_exchange16);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange32);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange64);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_long_double);
+ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_float32);
 ATOMIC_CMPXCHG_OP(atomic_compare_exchange_complex_long_double);
 
 #undef ATOMIC_CMPXCHG_OP

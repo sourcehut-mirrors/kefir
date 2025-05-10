@@ -650,7 +650,7 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
                     REQUIRE_OK(kefir_json_output_object_key(&json, "pair_type"));
                     switch (vreg->parameters.pair.type) {
                         case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                            REQUIRE_OK(kefir_json_output_object_key(&json, "float_single"));
+                            REQUIRE_OK(kefir_json_output_string(&json, "float_single"));
                             break;
                     }
                     REQUIRE_OK(kefir_json_output_object_key(&json, "virtual_register"));

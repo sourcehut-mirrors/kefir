@@ -874,7 +874,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new_pair(struct kefir_mem *mem, str
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected virtual register pair type");
     }
 
-    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE, reg_alloc_idx));
+    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR, reg_alloc_idx));
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
     reg_alloc->parameters.pair.type = type;
     reg_alloc->parameters.pair.virtual_registers[0] = first;
@@ -935,6 +935,25 @@ kefir_result_t kefir_asmcmp_virtual_set_spill_space_size(const struct kefir_asmc
 
     vreg->parameters.spill_space_allocation.length = length;
     vreg->parameters.spill_space_allocation.alignment = alignment;
+    return KEFIR_OK;
+}
+
+kefir_size_t kefir_asmcmp_virtual_register_pair_at(const struct kefir_asmcmp_context *context,
+                                                   kefir_asmcmp_virtual_register_index_t pair_vreg_idx,
+                                                   kefir_size_t index,
+                                                   kefir_asmcmp_virtual_register_index_t *vreg_idx_ptr) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(VALID_VREG_IDX(context, pair_vreg_idx),
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen virtual register index"));
+    REQUIRE(index < 2, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Invalid virtual register pair index"));
+    REQUIRE(vreg_idx_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmcmp virtual register index"));
+
+    struct kefir_asmcmp_virtual_register *const vreg = &context->virtual_registers[pair_vreg_idx];
+    REQUIRE(vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR,
+            KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Virtual register type mismatch"));
+
+    *vreg_idx_ptr = vreg->parameters.pair.virtual_registers[index];
     return KEFIR_OK;
 }
 

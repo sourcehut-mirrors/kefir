@@ -633,10 +633,14 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE: {
             struct kefir_ast_translator_type *translator_type = NULL;
@@ -814,6 +818,11 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
         case KEFIR_AST_TYPE_ENUMERATION:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
 
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT32,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE,
                                                        atomic_memory_order));
@@ -822,7 +831,6 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
         case KEFIR_AST_TYPE_COMPLEX_DOUBLE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,

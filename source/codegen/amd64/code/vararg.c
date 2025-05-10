@@ -456,6 +456,47 @@ static kefir_result_t vararg_visit_long_double(const struct kefir_ir_type *type,
     return KEFIR_OK;
 }
 
+static kefir_result_t vararg_visit_complex_float32(const struct kefir_ir_type *type, kefir_size_t index,
+                                                   const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(type);
+    UNUSED(index);
+    UNUSED(typeentry);
+    ASSIGN_DECL_CAST(struct vararg_get_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid vararg visitor payload"));
+
+    REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_mxcsr(&param->function->stack_frame));
+
+    kefir_asmcmp_virtual_register_index_t valist_vreg, value_vreg, result_vreg, result_real_vreg, result_imag_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &value_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_real_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(param->mem, &param->function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_imag_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(param->mem, &param->function->code.context,
+                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE, result_real_vreg,
+                                                      result_imag_vreg, &result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(param->function, param->instruction->operation.parameters.refs[0],
+                                                    &valist_vreg));
+
+    REQUIRE_OK(vararg_load_sse(param->mem, param->function, valist_vreg, value_vreg));
+    REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        &KEFIR_ASMCMP_MAKE_VREG(result_imag_vreg), &KEFIR_ASMCMP_MAKE_VREG(value_vreg), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_shufps(param->mem, &param->function->code,
+                                         kefir_asmcmp_context_instr_tail(&param->function->code.context),
+                                         &KEFIR_ASMCMP_MAKE_VREG(result_imag_vreg),
+                                         &KEFIR_ASMCMP_MAKE_VREG(result_imag_vreg), &KEFIR_ASMCMP_MAKE_UINT(1), NULL));
+    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+        param->mem, &param->function->code, kefir_asmcmp_context_instr_tail(&param->function->code.context),
+        result_real_vreg, value_vreg, NULL));
+
+    REQUIRE_OK(
+        kefir_codegen_amd64_function_assign_vreg(param->mem, param->function, param->instruction->id, result_vreg));
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t vararg_visit_memory_aggregate_impl(struct kefir_mem *mem,
                                                          struct kefir_codegen_amd64_function *function,
                                                          const struct kefir_abi_amd64_typeentry_layout *param_layout,
@@ -846,6 +887,7 @@ static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codege
     visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_long_double;
+    visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = vararg_visit_complex_float32;
 
     REQUIRE_OK(kefir_ir_type_visitor_list_nodes(
         type, &visitor,

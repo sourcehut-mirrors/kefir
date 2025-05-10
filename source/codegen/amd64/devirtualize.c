@@ -1323,12 +1323,13 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
                                 &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                                &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg), NULL));
+                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg), NULL));
                             REQUIRE_OK(kefir_asmcmp_amd64_movd(
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
                                 &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 4,
                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                                &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg), NULL));
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg), NULL));
+                            do_link = false;
                             break;
                     }
                 } break;
@@ -1370,14 +1371,30 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                         REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
                             state->xregalloc, vreg2->parameters.pair.virtual_registers[1], &second_alloc2));
 
-                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc2->direct_reg), NULL));
-                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc2->direct_reg), NULL));
+                        kefir_asm_amd64_xasmgen_register_t second_alloc2_reg = second_alloc2->direct_reg;
+                        if (first_alloc->direct_reg == second_alloc2->direct_reg) {
+                            REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &second_alloc2_reg,
+                                                                 TEMPORARY_REGISTER_SSE));
+                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2_reg),
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2->direct_reg), NULL));
+                        }
+
+                        if (first_alloc->direct_reg != first_alloc2->direct_reg) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
+                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc2->direct_reg), NULL));
+                        }
+
+                        if (second_alloc->direct_reg != second_alloc2_reg) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2_reg), NULL));
+                        }
+                        do_link = false;
                     } break;
                 }
             } else if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
@@ -1389,16 +1406,17 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                                                                  "single precision floating-point registers"));
                         REQUIRE_OK(kefir_asmcmp_amd64_movd(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
                                                               KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                             NULL));
                         REQUIRE_OK(kefir_asmcmp_amd64_movd(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 4,
                                                               KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
                             NULL));
+                        do_link = false;
                         break;
                 }
             } else {

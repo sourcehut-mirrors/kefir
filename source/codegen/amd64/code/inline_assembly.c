@@ -268,8 +268,8 @@ static kefir_result_t allocate_memory_parameter(struct kefir_mem *mem, struct ke
         entry->type = param_type;
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT;
     } else {
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1,
-                                                                                     &entry->allocation_vreg));
+        REQUIRE_OK(
+            kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1, &entry->allocation_vreg));
 
         entry->type = param_type;
         entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY;
@@ -472,8 +472,8 @@ static kefir_result_t allocate_parameters(struct kefir_mem *mem, struct kefir_co
              ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD_STORE ||
              ir_asm_param->klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ_STORE) &&
             entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT) {
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
-                mem, &function->code.context, 1, 1, &entry->output_address_vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, 1, 1,
+                                                                     &entry->output_address_vreg));
         } else {
             entry->output_address_vreg = KEFIR_ASMCMP_INDEX_NONE;
         }
@@ -578,7 +578,6 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
         case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_FLOAT32:
         case KEFIR_IR_TYPE_FLOAT64:
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
                     if (entry->direct_value) {
@@ -660,6 +659,115 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR type code");
             }
             break;
+
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT32: {
+            kefir_asmcmp_virtual_register_index_t packed_vreg;
+
+            if (entry->direct_value) {
+                kefir_asmcmp_virtual_register_index_t real_vreg, imaginary_vreg, tmp_vreg;
+                REQUIRE_OK(
+                    kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 0, &real_vreg));
+                REQUIRE_OK(
+                    kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 1, &imaginary_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                             KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &packed_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_movd2(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG32(tmp_vreg), &KEFIR_ASMCMP_MAKE_VREG(real_vreg), NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_movd2(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG32(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(imaginary_vreg), NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_shl(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), &KEFIR_ASMCMP_MAKE_UINT(32), NULL));
+                REQUIRE_OK(kefir_asmcmp_amd64_or(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg), NULL));
+            }
+
+            switch (entry->allocation_type) {
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
+                    if (entry->direct_value) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            entry->allocation_vreg, packed_vreg, NULL));
+                        *has_read = true;
+                    } else if (!kefir_hashtreeset_has(&context->directly_read_vregs,
+                                                      (kefir_hashtreeset_entry_t) entry->allocation_vreg)) {
+                        REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg, entry->parameter_props.size,
+                                                      &vreg_variant_value));
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &vreg_variant_value,
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                        *has_read = true;
+                    }
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
+                    if (entry->direct_value) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            entry->allocation_vreg, packed_vreg, NULL));
+                        *has_read = true;
+                    } else if (!kefir_hashtreeset_has(&context->directly_read_vregs,
+                                                      (kefir_hashtreeset_entry_t) entry->allocation_vreg)) {
+                        if (entry->parameter_props.size <= KEFIR_AMD64_ABI_QWORD / 2) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        } else if (entry->parameter_props.size <= KEFIR_AMD64_ABI_QWORD) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        } else {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        }
+                        *has_read = true;
+                    }
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
+                    REQUIRE(!entry->direct_value,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY: {
+                    if (entry->direct_value) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->allocation_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_VREG(packed_vreg), NULL));
+                    } else {
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->allocation_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                    }
+                    *has_read = true;
+                } break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_X87_STACK:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR type code");
+            }
+        } break;
 
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_STRUCT:
