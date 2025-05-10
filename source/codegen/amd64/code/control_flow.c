@@ -78,6 +78,15 @@ static kefir_result_t new_virtual_register_of_type(struct kefir_mem *mem, struct
             REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                          KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, new_vreg_idx));
             break;
+
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR: {
+            kefir_asmcmp_virtual_register_index_t first, second;
+            REQUIRE_OK(new_virtual_register_of_type(mem, function, vreg->parameters.pair.virtual_registers[0], &first));
+            REQUIRE_OK(
+                new_virtual_register_of_type(mem, function, vreg->parameters.pair.virtual_registers[1], &second));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context, vreg->parameters.pair.type,
+                                                              first, second, new_vreg_idx));
+        } break;
     }
 
     return KEFIR_OK;

@@ -643,6 +643,22 @@ static kefir_result_t output_asm(struct kefir_codegen_amd64 *codegen, struct kef
                     REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
                     REQUIRE_OK(kefir_json_output_string(&json, "memory_pointer"));
                     break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "type"));
+                    REQUIRE_OK(kefir_json_output_string(&json, "pair"));
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "pair_type"));
+                    switch (vreg->parameters.pair.type) {
+                        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                            REQUIRE_OK(kefir_json_output_object_key(&json, "float_single"));
+                            break;
+                    }
+                    REQUIRE_OK(kefir_json_output_object_key(&json, "virtual_register"));
+                    REQUIRE_OK(kefir_json_output_array_begin(&json));
+                    REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.pair.virtual_registers[0]));
+                    REQUIRE_OK(kefir_json_output_integer(&json, vreg->parameters.pair.virtual_registers[1]));
+                    REQUIRE_OK(kefir_json_output_array_end(&json));
+                    break;
             }
             REQUIRE_OK(kefir_json_output_object_end(&json));
         }

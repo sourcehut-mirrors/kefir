@@ -788,6 +788,7 @@ kefir_result_t kefir_asmcmp_virtual_register_new(struct kefir_mem *mem, struct k
 
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE:
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_EXTERNAL_MEMORY:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
@@ -837,6 +838,47 @@ kefir_result_t kefir_asmcmp_virtual_register_new_local_variable(struct kefir_mem
     struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
     reg_alloc->parameters.local_variable.identifier = variable_id;
     reg_alloc->parameters.local_variable.offset = offset;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_asmcmp_virtual_register_new_pair(struct kefir_mem *mem, struct kefir_asmcmp_context *context,
+                                                      kefir_asmcmp_virtual_register_pair_type_t type,
+                                                      kefir_asmcmp_virtual_register_index_t first,
+                                                      kefir_asmcmp_virtual_register_index_t second,
+                                                      kefir_asmcmp_virtual_register_index_t *reg_alloc_idx) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid asmgen context"));
+    REQUIRE(reg_alloc_idx != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to asmgen register allocation index"));
+
+    const struct kefir_asmcmp_virtual_register *vreg1, *vreg2;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, first, &vreg1));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, second, &vreg2));
+
+    switch (type) {
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+            REQUIRE(vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                    "Expected floating-point virtual register as floating-point pair element"));
+            REQUIRE(vreg2->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                    "Expected floating-point virtual register as floating-point pair element"));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected virtual register pair type");
+    }
+
+    REQUIRE_OK(new_virtual_register(mem, context, KEFIR_ASMCMP_VIRTUAL_REGISTER_LOCAL_VARIABLE, reg_alloc_idx));
+    struct kefir_asmcmp_virtual_register *reg_alloc = &context->virtual_registers[*reg_alloc_idx];
+    reg_alloc->parameters.pair.type = type;
+    reg_alloc->parameters.pair.virtual_registers[0] = first;
+    reg_alloc->parameters.pair.virtual_registers[1] = second;
     return KEFIR_OK;
 }
 

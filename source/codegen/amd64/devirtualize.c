@@ -59,6 +59,12 @@ static kefir_result_t mark_alive_virtual_reg(struct kefir_mem *mem, struct devir
         asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_IMMEDIATE_INTEGER) {
         return KEFIR_OK;
     }
+    if (asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR) {
+        REQUIRE_OK(
+            mark_alive_virtual_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[0], linear_position));
+        REQUIRE_OK(
+            mark_alive_virtual_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[1], linear_position));
+    }
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, &lifetime_begin, &lifetime_end));
     if (linear_position >= lifetime_begin && linear_position <= lifetime_end) {
         REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.virtual_regs, (kefir_hashtreeset_entry_t) vreg_idx));
@@ -104,6 +110,15 @@ static kefir_result_t update_live_virtual_reg(struct kefir_mem *mem, struct devi
                 REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
                                                  (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
                 break;
+
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
+                const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
+                REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, vreg_idx, &asmcmp_vreg));
+                REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position,
+                                                   asmcmp_vreg->parameters.pair.virtual_registers[0]));
+                REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position,
+                                                   asmcmp_vreg->parameters.pair.virtual_registers[1]));
+            } break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
@@ -188,6 +203,13 @@ static kefir_result_t rebuild_alive_physical_reg(struct kefir_mem *mem, struct d
             REQUIRE_OK(kefir_bitset_set_consecutive(&state->alive.spill_area, reg_alloc->spill_area.index,
                                                     reg_alloc->spill_area.length, true));
             break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
+            const struct kefir_asmcmp_virtual_register *asmcmp_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, vreg_idx, &asmcmp_vreg));
+            REQUIRE_OK(rebuild_alive_physical_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[0]));
+            REQUIRE_OK(rebuild_alive_physical_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[1]));
+        } break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
@@ -389,6 +411,9 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register allocation");
 
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to devirtualize pair of virtual registers");
+
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                     switch (value->vreg.variant) {
                         case KEFIR_ASMCMP_OPERAND_VARIANT_8BIT:
@@ -556,6 +581,10 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
                             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                                    "Unallocated amd64 virtual register allocation");
+
+                        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                   "Unable to devirtualize pair of virtual registers");
 
                         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                             *value = KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(reg_alloc->direct_reg, value->indirect.offset,
@@ -1247,6 +1276,10 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected allocated virtual register");
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                           "Unable to link a pair of virtual register into a single register");
             }
             break;
 
@@ -1269,6 +1302,37 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                     do_link = false;
                     break;
 
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
+                    const struct kefir_asmcmp_virtual_register *vreg;
+                    REQUIRE_OK(
+                        kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg));
+
+                    const struct kefir_codegen_amd64_register_allocation *first_alloc, *second_alloc;
+                    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                        state->xregalloc, vreg->parameters.pair.virtual_registers[0], &first_alloc));
+                    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                        state->xregalloc, vreg->parameters.pair.virtual_registers[1], &second_alloc));
+
+                    switch (vreg->parameters.pair.type) {
+                        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                            REQUIRE(reg_alloc1->spill_area.length >= 1,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                    "Direct spill area is too small for linking a pair of single "
+                                                    "precision floating-point registers"));
+                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg), NULL));
+                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 4,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg), NULL));
+                            break;
+                    }
+                } break;
+
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected allocated virtual register");
             }
@@ -1285,6 +1349,63 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
             }
             do_link = false;
             break;
+
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
+            const struct kefir_asmcmp_virtual_register *vreg, *vreg2;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[0].vreg.index, &vreg));
+            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg2));
+
+            const struct kefir_codegen_amd64_register_allocation *first_alloc, *second_alloc;
+            REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                state->xregalloc, vreg->parameters.pair.virtual_registers[0], &first_alloc));
+            REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                state->xregalloc, vreg->parameters.pair.virtual_registers[1], &second_alloc));
+
+            if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
+                switch (vreg->parameters.pair.type) {
+                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE: {
+                        const struct kefir_codegen_amd64_register_allocation *first_alloc2, *second_alloc2;
+                        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                            state->xregalloc, vreg2->parameters.pair.virtual_registers[0], &first_alloc2));
+                        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
+                            state->xregalloc, vreg2->parameters.pair.virtual_registers[1], &second_alloc2));
+
+                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc2->direct_reg), NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc2->direct_reg), NULL));
+                    } break;
+                }
+            } else if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
+                switch (vreg->parameters.pair.type) {
+                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                        REQUIRE(
+                            reg_alloc2->spill_area.length >= 1,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Direct spill area is too small for linking a pair of "
+                                                                 "single precision floating-point registers"));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_VREG(first_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_VREG(second_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 4,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            NULL));
+                        break;
+                }
+            } else {
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                       "Unexpected virtual register linking into a pair of virtual registers");
+            }
+        } break;
     }
 
     if (do_link) {
