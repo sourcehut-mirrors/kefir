@@ -29,6 +29,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_P
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \
 		LC_ALL=C.UTF-8 \
 		./configure
 
@@ -38,6 +39,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_SOURCE_DIR)/src/bin/psql: $(KEFIR_EXTERNAL_TEST
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \
 		LC_ALL=C.UTF-8 \
 		$(MAKE) -f Makefile
 
@@ -47,6 +49,7 @@ $(KEFIR_EXTERNAL_TEST_POSTGRESQL_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_POSTGRESQ
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/postgresql/include -O1 -g -fPIC" \
 		LC_ALL=C.UTF-8 \
 		bash -c 'set -o pipefail; $(MAKE) -f Makefile check 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
