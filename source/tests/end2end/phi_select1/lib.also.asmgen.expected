@@ -85,36 +85,20 @@ select6:
 __kefir_text_func_select6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
-    stmxcsr -8(%rbp)
+    sub $16, %rsp
     movaps %xmm1, %xmm2
     shufps $1, %xmm2, %xmm2
     movaps %xmm0, %xmm3
     shufps $1, %xmm3, %xmm3
-    movd %xmm1, -16(%rbp)
-    movd %xmm2, -12(%rbp)
-    movd %xmm0, -24(%rbp)
-    movd %xmm3, -20(%rbp)
     test %edi, %edi
-    jz _kefir_func_select6_label3
-    movd -24(%rbp), %xmm0
-    movd -20(%rbp), %xmm1
-    movaps %xmm1, %xmm3
-    movaps %xmm0, %xmm1
-    movaps %xmm3, %xmm2
-_kefir_func_select6_label2:
-    movq %xmm1, %xmm0
-    insertps $16, %xmm2, %xmm0
-    ldmxcsr -8(%rbp)
+    jnz _kefir_func_select6_label1
+    movaps %xmm1, %xmm0
+    movaps %xmm2, %xmm3
+_kefir_func_select6_label1:
+    insertps $16, %xmm3, %xmm0
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_select6_label3:
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm3
-    movaps %xmm0, %xmm1
-    movaps %xmm3, %xmm2
-    jmp _kefir_func_select6_label2
 __kefir_text_func_select6_end:
 
 select7:

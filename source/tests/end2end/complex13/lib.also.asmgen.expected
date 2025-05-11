@@ -1,0 +1,81 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sum32
+.type sum32, @function
+
+.section .text
+__kefir_text_section_begin:
+sum32:
+__kefir_text_func_sum32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $208, %rsp
+    stmxcsr -8(%rbp)
+    movd 40(%rbp), %xmm8
+    movd %xmm8, -112(%rbp)
+    movd 44(%rbp), %xmm8
+    movd %xmm8, -96(%rbp)
+    movd 32(%rbp), %xmm8
+    movd %xmm8, -80(%rbp)
+    movd 36(%rbp), %xmm8
+    movd %xmm8, -64(%rbp)
+    movd 24(%rbp), %xmm13
+    movd 28(%rbp), %xmm14
+    movd 16(%rbp), %xmm15
+    movd 20(%rbp), %xmm8
+    movd %xmm8, -208(%rbp)
+    movaps %xmm7, -192(%rbp)
+    movdqu -192(%rbp), %xmm8
+    shufps $1, -192(%rbp), %xmm8
+    movdqu %xmm8, -192(%rbp)
+    movaps %xmm6, -176(%rbp)
+    movdqu -176(%rbp), %xmm8
+    shufps $1, -176(%rbp), %xmm8
+    movdqu %xmm8, -176(%rbp)
+    movaps %xmm5, -160(%rbp)
+    movdqu -160(%rbp), %xmm8
+    shufps $1, -160(%rbp), %xmm8
+    movdqu %xmm8, -160(%rbp)
+    movaps %xmm4, %xmm8
+    shufps $1, %xmm8, %xmm8
+    movaps %xmm3, %xmm9
+    shufps $1, %xmm9, %xmm9
+    movaps %xmm2, %xmm10
+    shufps $1, %xmm10, %xmm10
+    movaps %xmm1, %xmm11
+    shufps $1, %xmm11, %xmm11
+    movaps %xmm0, %xmm12
+    shufps $1, %xmm12, %xmm12
+    addss %xmm1, %xmm0
+    addss %xmm11, %xmm12
+    movq %xmm12, %xmm1
+    addss %xmm2, %xmm0
+    addss %xmm10, %xmm1
+    addss %xmm3, %xmm0
+    addss %xmm9, %xmm1
+    addss %xmm4, %xmm0
+    addss %xmm8, %xmm1
+    addss %xmm5, %xmm0
+    addss -160(%rbp), %xmm1
+    addss %xmm6, %xmm0
+    addss -176(%rbp), %xmm1
+    addss %xmm7, %xmm0
+    addss -192(%rbp), %xmm1
+    addss %xmm15, %xmm0
+    addss -208(%rbp), %xmm1
+    addss %xmm13, %xmm0
+    addss %xmm14, %xmm1
+    addss -80(%rbp), %xmm0
+    addss -64(%rbp), %xmm1
+    addss -112(%rbp), %xmm0
+    addss -96(%rbp), %xmm1
+    insertps $16, %xmm1, %xmm0
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sum32_end:
+
+__kefir_text_section_end:
+

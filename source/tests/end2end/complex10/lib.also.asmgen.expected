@@ -1,0 +1,43 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test32
+.type test32, @function
+
+.section .text
+__kefir_text_section_begin:
+test32:
+__kefir_text_func_test32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $40, %rsp
+    stmxcsr -16(%rbp)
+    movaps %xmm0, %xmm1
+    shufps $1, %xmm1, %xmm1
+    lea -24(%rbp), %rax
+    mov %rax, -40(%rbp)
+    movd %xmm0, %eax
+    movd %xmm1, %ecx
+    shl $32, %rcx
+    or %rax, %rcx
+mov %rcx, %rbx
+mov %rcx, %rax
+shr $32, %rax
+shl $32, %rbx
+or %rbx, %rax
+
+    mov -40(%rbp), %rcx
+    mov %rax, (%rcx)
+    movd -24(%rbp), %xmm0
+    movd -20(%rbp), %xmm1
+    insertps $16, %xmm1, %xmm0
+    ldmxcsr -16(%rbp)
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test32_end:
+
+__kefir_text_section_end:
+

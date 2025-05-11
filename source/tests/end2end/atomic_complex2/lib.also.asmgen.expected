@@ -181,22 +181,16 @@ f32_store:
 __kefir_text_func_f32_store_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    stmxcsr -8(%rbp)
+    sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    movd %xmm0, -16(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm1
     mov %rdi, %rsi
-    movd %xmm0, -24(%rbp)
-    movd %xmm1, -20(%rbp)
-    lea -24(%rbp), %rdx
+    movd %xmm0, -8(%rbp)
+    movd %xmm1, -4(%rbp)
+    lea -8(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -234,22 +228,16 @@ str1_set_a:
 __kefir_text_func_str1_set_a_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    stmxcsr -8(%rbp)
+    sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    movd %xmm0, -16(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm1
     mov %rdi, %rsi
-    movd %xmm0, -24(%rbp)
-    movd %xmm1, -20(%rbp)
-    lea -24(%rbp), %rdx
+    movd %xmm0, -8(%rbp)
+    movd %xmm1, -4(%rbp)
+    lea -8(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -395,25 +383,19 @@ f32_store_index:
 __kefir_text_func_f32_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
-    stmxcsr -8(%rbp)
+    sub $16, %rsp
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
-    movd %xmm0, -16(%rbp)
-    movd %xmm1, -12(%rbp)
-    movd -16(%rbp), %xmm0
-    movd -12(%rbp), %xmm1
     mov %esi, %eax
     imul $8, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    movd %xmm0, -32(%rbp)
-    movd %xmm1, -28(%rbp)
-    lea -32(%rbp), %rdx
+    movd %xmm0, -8(%rbp)
+    movd %xmm1, -4(%rbp)
+    lea -8(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
