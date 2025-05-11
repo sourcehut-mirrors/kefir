@@ -28,3 +28,12 @@ _Complex float test32(_Complex float x) {
                  : "x"(x));
     return y;
 }
+
+_Complex double test64(_Complex double x) {
+    _Complex double y;
+    asm volatile("movapd %1, %0\n"
+                 "shufpd $1, %0, %0"
+                 : "=x"(y)
+                 : "x"(x));
+    return y;
+}

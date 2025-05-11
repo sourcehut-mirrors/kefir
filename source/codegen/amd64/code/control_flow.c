@@ -1160,6 +1160,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
             result_imag_vreg;
         switch (arg1_asmcmp_vreg->parameters.pair.type) {
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
                 complex_float_select = true;
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                              KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
@@ -1172,10 +1173,10 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &result_imag_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(
-                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE,
-                    arg2_placement_real_vreg, arg2_placement_imag_vreg, &arg2_placement_vreg));
+                    mem, &function->code.context, arg1_asmcmp_vreg->parameters.pair.type, arg2_placement_real_vreg,
+                    arg2_placement_imag_vreg, &arg2_placement_vreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
-                                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE,
+                                                                  arg1_asmcmp_vreg->parameters.pair.type,
                                                                   result_real_vreg, result_imag_vreg, &result_vreg));
                 break;
         }

@@ -3,6 +3,8 @@
 
 .global test32
 .type test32, @function
+.global test64
+.type test64, @function
 
 .section .text
 __kefir_text_section_begin:
@@ -33,6 +35,32 @@ shufps $1, %xmm0, %xmm0
     pop %rbp
     ret
 __kefir_text_func_test32_end:
+
+test64:
+__kefir_text_func_test64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    stmxcsr -8(%rbp)
+    movq %xmm0, -40(%rbp)
+    movq %xmm1, -32(%rbp)
+    movq -40(%rbp), %xmm0
+    movq -32(%rbp), %xmm2
+    lea -24(%rbp), %rax
+    mov %rax, -48(%rbp)
+    movaps %xmm0, %xmm1
+    shufpd $0, %xmm2, %xmm1
+movapd %xmm1, %xmm0
+shufpd $1, %xmm0, %xmm0
+    mov -48(%rbp), %rax
+    movdqu %xmm0, (%rax)
+    movq -24(%rbp), %xmm0
+    movq -16(%rbp), %xmm1
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test64_end:
 
 __kefir_text_section_end:
 

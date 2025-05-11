@@ -81,10 +81,25 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 kefir_ir_type_at(function->function->ir_func->declaration->params, param_type_index);
             REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch IR type entry"));
             kefir_bool_t complex_float32_multireg = false;
+            kefir_bool_t complex_float64_multireg = false;
+            kefir_asmcmp_virtual_register_index_t complex_float64_vreg = KEFIR_ASMCMP_INDEX_NONE;
             switch (typeentry->typecode) {
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                     complex_float32_multireg = true;
                     break;
+
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
+                    complex_float64_multireg = true;
+
+                    kefir_asmcmp_virtual_register_index_t real_vreg, imag_vreg;
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &real_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &imag_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
+                                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE,
+                                                                      real_vreg, imag_vreg, &complex_float64_vreg));
+                } break;
 
                 default:
                     // Intentionally left blank
@@ -159,6 +174,21 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                             REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                 real_vreg, arg_vreg, NULL));
+                        } else if (complex_float64_multireg) {
+                            REQUIRE(i < 2,
+                                    KEFIR_SET_ERROR(
+                                        KEFIR_INVALID_STATE,
+                                        "Unexpected length of multiple-register complex floating-point return value"));
+
+                            vreg = complex_float64_vreg;
+
+                            kefir_asmcmp_virtual_register_index_t part_vreg;
+                            REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context,
+                                                                             complex_float64_vreg, i, &part_vreg));
+
+                            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                part_vreg, arg_vreg, NULL));
                         } else {
                             REQUIRE_OK(kefir_asmcmp_amd64_movq(
                                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -197,7 +227,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_STRUCT:
                 case KEFIR_IR_TYPE_ARRAY:
                 case KEFIR_IR_TYPE_UNION:
-                case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
                 case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
@@ -237,6 +266,29 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                         &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
                         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, KEFIR_AMD64_ABI_QWORD / 2,
+                                                            KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                        NULL));
+                    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
+                } break;
+
+                case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
+                    kefir_asmcmp_virtual_register_index_t real_vreg, imag_vreg;
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &real_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                        mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT, &imag_vreg));
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_pair(mem, &function->code.context,
+                                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE,
+                                                                      real_vreg, imag_vreg, &vreg2));
+
+                    REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_VREG(real_vreg),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+                    REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                        &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
+                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(vreg, KEFIR_AMD64_ABI_QWORD,
                                                             KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                         NULL));
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));

@@ -22,5 +22,6 @@
 #define DEFINITIONS_H_
 
 _Complex float test32(_Complex float);
+_Complex double test64(_Complex double);
 
 #endif

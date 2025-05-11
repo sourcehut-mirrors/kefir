@@ -30,7 +30,7 @@ static kefir_result_t obtain_real_part(struct kefir_irbuilder_block *builder, co
         *origin = kefir_ast_type_corresponding_real_type(*origin);
         REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
     } else if ((*origin)->tag == KEFIR_AST_TYPE_COMPLEX_DOUBLE) {
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_LOAD, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_REAL, 0));
         *origin = kefir_ast_type_corresponding_real_type(*origin);
         REQUIRE(*origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to obtain corresponding real type"));
     } else if ((*origin)->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE) {

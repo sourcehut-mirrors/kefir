@@ -37,11 +37,8 @@ __kefir_text_func_test1_begin:
     mov %rdx, %rdi
     add $56, %rdi
     movq _kefir_func_test1_label5(%rip), %xmm0
-    movq %xmm0, -192(%rbp)
-    movq %xmm0, -184(%rbp)
-    movq -192(%rbp), %xmm0
-    movq %xmm0, (%rdi)
-    movq -184(%rbp), %xmm0
+    movq %xmm0, %xmm1
+    movq %xmm1, (%rdi)
     movq %xmm0, 8(%rdi)
     mov %rdx, %rdi
     add $80, %rdi

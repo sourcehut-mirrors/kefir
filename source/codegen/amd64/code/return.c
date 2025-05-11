@@ -80,6 +80,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
 
             case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MULTIPLE_REGISTERS: {
                 kefir_bool_t complex_float32_return = false;
+                kefir_bool_t complex_float64_return = false;
                 const struct kefir_ir_typeentry *return_typeentry =
                     kefir_ir_type_at(function->function->ir_func->declaration->result, 0);
                 REQUIRE(return_typeentry != NULL,
@@ -87,6 +88,10 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                 switch (return_typeentry->typecode) {
                     case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
                         complex_float32_return = true;
+                        break;
+
+                    case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
+                        complex_float64_return = true;
                         break;
 
                     default:
@@ -147,6 +152,16 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                         &KEFIR_ASMCMP_MAKE_VREG(vreg), &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
                                         &KEFIR_ASMCMP_MAKE_UINT(0x10), NULL));
+                                } else if (complex_float64_return) {
+                                    REQUIRE(i < 2, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                                   "Unexpected length of multiple-register complex "
+                                                                   "floating-point return value"));
+                                    kefir_asmcmp_virtual_register_index_t part_vreg;
+                                    REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context,
+                                                                                     return_vreg, i, &part_vreg));
+                                    REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                                        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                        vreg, part_vreg, NULL));
                                 } else {
                                     REQUIRE_OK(kefir_asmcmp_amd64_movq(
                                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),

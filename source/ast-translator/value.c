@@ -638,10 +638,14 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
                                                        atomic_memory_order));
             break;
 
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
         case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
@@ -823,6 +827,11 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
                                                        atomic_memory_order));
             break;
 
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT64,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE,
                                                        atomic_memory_order));
@@ -830,8 +839,7 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
 
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE: {
+        case KEFIR_AST_TYPE_ARRAY: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
                                                      type, 0, &translator_type, source_location));

@@ -769,11 +769,96 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
             }
         } break;
 
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
+            switch (entry->allocation_type) {
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER:
+                    if (entry->direct_value) {
+                        return KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Unable to read complex floating-point value as a direct inline assembly parameter");
+                    } else if (!kefir_hashtreeset_has(&context->directly_read_vregs,
+                                                      (kefir_hashtreeset_entry_t) entry->allocation_vreg)) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                        *has_read = true;
+                    }
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER:
+                    if (entry->direct_value) {
+                        kefir_asmcmp_virtual_register_index_t real_vreg, imag_vreg;
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 0,
+                                                                         &real_vreg));
+                        REQUIRE_OK(kefir_asmcmp_virtual_register_pair_at(&function->code.context, location_vreg, 1,
+                                                                         &imag_vreg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg), &KEFIR_ASMCMP_MAKE_VREG(real_vreg), NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_shufpd(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg), &KEFIR_ASMCMP_MAKE_VREG(imag_vreg),
+                            &KEFIR_ASMCMP_MAKE_UINT(0), NULL));
+                    } else if (!kefir_hashtreeset_has(&context->directly_read_vregs,
+                                                      (kefir_hashtreeset_entry_t) entry->allocation_vreg)) {
+                        if (entry->parameter_props.size <= KEFIR_AMD64_ABI_QWORD / 2) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        } else if (entry->parameter_props.size <= KEFIR_AMD64_ABI_QWORD) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        } else {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0,
+                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                NULL));
+                        }
+                        *has_read = true;
+                    }
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT:
+                    REQUIRE(!entry->direct_value,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter properties"));
+                    break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY: {
+                    if (entry->direct_value) {
+                        return KEFIR_SET_ERROR(
+                            KEFIR_INVALID_STATE,
+                            "Unable to read complex floating-point value as a direct inline assembly parameter");
+                    } else {
+                        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->allocation_vreg, 0,
+                                                                KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                    }
+                    *has_read = true;
+                } break;
+
+                case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_X87_STACK:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR type code");
+            }
+        } break;
+
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
             switch (entry->allocation_type) {
                 case INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER: {
@@ -1475,20 +1560,38 @@ static kefir_result_t store_register_aggregate_outputs(struct kefir_mem *mem,
             continue;
         }
 
-        struct kefir_asmcmp_value value;
-        REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg, entry->parameter_props.size, &value));
+        if (entry->parameter_props.size == 2 * KEFIR_AMD64_ABI_QWORD) {
+            kefir_asmcmp_virtual_register_index_t tmp_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+                                              &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->output_address_vreg, 0,
+                                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                              NULL));
 
-        kefir_asmcmp_virtual_register_index_t tmp_vreg;
-        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->output_address_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-            NULL));
-        REQUIRE_OK(kefir_asmcmp_amd64_mov(
-            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), &value, NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                &KEFIR_ASMCMP_MAKE_VREG(entry->allocation_vreg), NULL));
+        } else {
+            struct kefir_asmcmp_value value;
+            REQUIRE_OK(match_vreg_to_size(entry->allocation_vreg, entry->parameter_props.size, &value));
+
+            kefir_asmcmp_virtual_register_index_t tmp_vreg;
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code,
+                                              kefir_asmcmp_context_instr_tail(&function->code.context),
+                                              &KEFIR_ASMCMP_MAKE_VREG(tmp_vreg),
+                                              &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(entry->output_address_vreg, 0,
+                                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                              NULL));
+            REQUIRE_OK(kefir_asmcmp_amd64_mov(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), &value, NULL));
+        }
     }
     return KEFIR_OK;
 }

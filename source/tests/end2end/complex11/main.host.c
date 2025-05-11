@@ -26,15 +26,21 @@
 #include "./definitions.h"
 
 #define EPSILON_F 1e-3
+#define EPSILON_D 1e-6
 
 int main(void) {
     for (double a = -10.0; a < 10.0; a += 0.1) {
         for (double b = -10.0; b < 10.0; b += 0.1) {
             _Complex float f32 = (float) a + (float) b * I;
+            _Complex double f64 = (double) a + (double) b * I;
 
             _Complex float f32res = test32(f32);
             assert(fabs(crealf(f32res) - cimagf(f32)) < EPSILON_F);
             assert(fabs(cimagf(f32res) - crealf(f32)) < EPSILON_F);
+
+            _Complex double f64res = test64(f64);
+            assert(fabs(creal(f64res) - cimag(f64)) < EPSILON_D);
+            assert(fabs(cimag(f64res) - creal(f64)) < EPSILON_D);
         }
     }
     return EXIT_SUCCESS;

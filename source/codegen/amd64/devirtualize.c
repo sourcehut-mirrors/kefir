@@ -1322,12 +1322,31 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                             REQUIRE_OK(kefir_asmcmp_amd64_movd(
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
                                 &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                 &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg), NULL));
                             REQUIRE_OK(kefir_asmcmp_amd64_movd(
                                 mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 4,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index,
+                                                                  KEFIR_AMD64_ABI_QWORD / 2,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg), NULL));
+                            do_link = false;
+                            break;
+
+                        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+                            REQUIRE(reg_alloc1->spill_area.length >= 2,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                                    "Direct spill area is too small for linking a pair of single "
+                                                    "precision floating-point registers"));
+                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg), NULL));
+                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD,
+                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                                 &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg), NULL));
                             do_link = false;
                             break;
@@ -1364,7 +1383,8 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
 
             if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
                 switch (vreg->parameters.pair.type) {
-                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE: {
+                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE: {
                         const struct kefir_codegen_amd64_register_allocation *first_alloc2, *second_alloc2;
                         REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
                             state->xregalloc, vreg2->parameters.pair.virtual_registers[0], &first_alloc2));
@@ -1408,13 +1428,33 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
                             &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                             NULL));
                         REQUIRE_OK(kefir_asmcmp_amd64_movd(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
                             &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 4,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                        do_link = false;
+                        break;
+
+                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+                        REQUIRE(
+                            reg_alloc2->spill_area.length >= 2,
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Direct spill area is too small for linking a pair of "
+                                                                 "single precision floating-point registers"));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
+                            NULL));
+                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
+                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
+                            &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
                             NULL));
                         do_link = false;
                         break;

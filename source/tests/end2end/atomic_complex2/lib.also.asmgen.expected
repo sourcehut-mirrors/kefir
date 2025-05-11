@@ -202,19 +202,14 @@ __kefir_text_func_f64_store_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm0, -64(%rbp)
-    movq %xmm1, -56(%rbp)
-    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -56(%rbp), %xmm0
-    movq %xmm0, -16(%rbp)
+    movq %xmm1, -16(%rbp)
     movq -24(%rbp), %xmm0
-    movq %xmm0, -48(%rbp)
-    movq -16(%rbp), %xmm0
-    movq %xmm0, -40(%rbp)
+    movq -16(%rbp), %xmm1
     mov %rdi, %rsi
-    leaq -48(%rbp), %rcx
-    mov %rcx, %rdx
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -249,20 +244,15 @@ __kefir_text_func_str1_set_b_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm0, -64(%rbp)
-    movq %xmm1, -56(%rbp)
-    movq -64(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -56(%rbp), %xmm0
-    movq %xmm0, -16(%rbp)
+    movq %xmm1, -16(%rbp)
     movq -24(%rbp), %xmm0
-    movq %xmm0, -48(%rbp)
-    movq -16(%rbp), %xmm0
-    movq %xmm0, -40(%rbp)
+    movq -16(%rbp), %xmm1
     add $16, %rdi
     mov %rdi, %rsi
-    leaq -48(%rbp), %rcx
-    mov %rcx, %rdx
+    movq %xmm0, -48(%rbp)
+    movq %xmm1, -40(%rbp)
+    lea -48(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
@@ -427,22 +417,17 @@ __kefir_text_func_f64_store_index_begin:
     mov %rsp, %rbp
     sub $64, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm0, -48(%rbp)
-    movq %xmm1, -40(%rbp)
-    movq -48(%rbp), %xmm0
     movq %xmm0, -24(%rbp)
-    movq -40(%rbp), %xmm0
-    movq %xmm0, -16(%rbp)
+    movq %xmm1, -16(%rbp)
     movq -24(%rbp), %xmm0
-    movq %xmm0, -64(%rbp)
-    movq -16(%rbp), %xmm0
-    movq %xmm0, -56(%rbp)
+    movq -16(%rbp), %xmm1
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    leaq -64(%rbp), %rax
-    mov %rax, %rdx
+    movq %xmm0, -64(%rbp)
+    movq %xmm1, -56(%rbp)
+    lea -64(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT

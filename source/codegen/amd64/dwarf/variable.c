@@ -475,6 +475,7 @@ static kefir_result_t generate_location_of_virtual_register(struct kefir_codegen
             REQUIRE_OK(generate_lle_start_end(codegen_function, ir_identifier, range_begin_label, range_end_label));
             switch (asmcmp_vreg->parameters.pair.type) {
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
                     REQUIRE(first_allocation->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER,
                             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register allocation type"));
                     REQUIRE(second_allocation->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER,
