@@ -142,6 +142,22 @@ kefir_result_t kefir_asmcmp_amd64_free(struct kefir_mem *mem, struct kefir_asmcm
 kefir_result_t kefir_asmcmp_amd64_register_allocation_same_as(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *target,
                                                               kefir_asmcmp_virtual_register_index_t vreg_idx,
                                                               kefir_asmcmp_virtual_register_index_t other_vreg_idx) {
+    const struct kefir_asmcmp_virtual_register *asmcmp_vreg, *asmcmp_other_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&target->context, vreg_idx, &asmcmp_vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&target->context, other_vreg_idx, &asmcmp_other_vreg));
+
+    if (asmcmp_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR &&
+        asmcmp_other_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR &&
+        asmcmp_vreg->parameters.pair.type == asmcmp_other_vreg->parameters.pair.type) {
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_same_as(
+            mem, target, asmcmp_vreg->parameters.pair.virtual_registers[0],
+            asmcmp_other_vreg->parameters.pair.virtual_registers[0]));
+        REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_same_as(
+            mem, target, asmcmp_vreg->parameters.pair.virtual_registers[1],
+            asmcmp_other_vreg->parameters.pair.virtual_registers[1]));
+        return KEFIR_OK;
+    }
+
     PREALLOCATION_IMPL(
         mem, target, vreg_idx,
         {
