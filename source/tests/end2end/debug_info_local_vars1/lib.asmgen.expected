@@ -273,10 +273,10 @@ _kefir_func_fn3_label5:
     movq 56(%rbp), %xmm15
 _kefir_func_fn3_label6:
     movq 48(%rbp), %xmm8
-    movdqu %xmm8, -48(%rbp)
+    movq %xmm8, -48(%rbp)
 _kefir_func_fn3_label7:
     movq 40(%rbp), %xmm8
-    movdqu %xmm8, -32(%rbp)
+    movq %xmm8, -32(%rbp)
 _kefir_func_fn3_label8:
     movq 32(%rbp), %xmm8
 _kefir_func_fn3_label9:

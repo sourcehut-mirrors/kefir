@@ -936,7 +936,7 @@ static kefir_result_t devirtualize_instr_arg(struct kefir_mem *mem, struct devir
                         if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_SINGLE)) {
                             REQUIRE_OK(kefir_asmcmp_amd64_movd(mem, state->target, instr_idx, &original,
                                                                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
-                        } else if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_SINGLE)) {
+                        } else if (DEVIRT_HAS_FLAG(op_flags, KEFIR_AMD64_INSTRDB_XMM_REGISTER_DOUBLE)) {
                             REQUIRE_OK(kefir_asmcmp_amd64_movq(mem, state->target, instr_idx, &original,
                                                                &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), tail_instr_idx));
                         } else {
