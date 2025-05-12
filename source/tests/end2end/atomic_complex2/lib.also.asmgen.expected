@@ -200,20 +200,14 @@ f64_store:
 __kefir_text_func_f64_store_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    stmxcsr -8(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq -24(%rbp), %xmm0
-    movq -16(%rbp), %xmm1
+    sub $32, %rsp
     mov %rdi, %rsi
-    movq %xmm0, -48(%rbp)
-    movq %xmm1, -40(%rbp)
-    lea -48(%rbp), %rdx
+    movq %xmm0, -16(%rbp)
+    movq %xmm1, -8(%rbp)
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -242,21 +236,15 @@ str1_set_b:
 __kefir_text_func_str1_set_b_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    stmxcsr -8(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq -24(%rbp), %xmm0
-    movq -16(%rbp), %xmm1
+    sub $32, %rsp
     add $16, %rdi
     mov %rdi, %rsi
-    movq %xmm0, -48(%rbp)
-    movq %xmm1, -40(%rbp)
-    lea -48(%rbp), %rdx
+    movq %xmm0, -16(%rbp)
+    movq %xmm1, -8(%rbp)
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -415,23 +403,17 @@ f64_store_index:
 __kefir_text_func_f64_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    stmxcsr -8(%rbp)
-    movq %xmm0, -24(%rbp)
-    movq %xmm1, -16(%rbp)
-    movq -24(%rbp), %xmm0
-    movq -16(%rbp), %xmm1
+    sub $32, %rsp
     mov %esi, %eax
     imul $16, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    movq %xmm0, -64(%rbp)
-    movq %xmm1, -56(%rbp)
-    lea -64(%rbp), %rdx
+    movq %xmm0, -16(%rbp)
+    movq %xmm1, -8(%rbp)
+    lea -16(%rbp), %rdx
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

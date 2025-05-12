@@ -105,31 +105,15 @@ select7:
 __kefir_text_func_select7_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    stmxcsr -8(%rbp)
-    movq %xmm2, -24(%rbp)
-    movq %xmm3, -16(%rbp)
-    movq %xmm0, -40(%rbp)
-    movq %xmm1, -32(%rbp)
+    sub $32, %rsp
     test %edi, %edi
-    jz _kefir_func_select7_label3
-    movq -40(%rbp), %xmm0
-    movq -32(%rbp), %xmm1
-    movaps %xmm0, %xmm2
-    movaps %xmm1, %xmm3
-_kefir_func_select7_label2:
-    movq %xmm2, %xmm0
-    movq %xmm3, %xmm1
-    ldmxcsr -8(%rbp)
+    jnz _kefir_func_select7_label1
+    movaps %xmm2, %xmm0
+    movaps %xmm3, %xmm1
+_kefir_func_select7_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func_select7_label3:
-    movq -24(%rbp), %xmm0
-    movq -16(%rbp), %xmm1
-    movaps %xmm0, %xmm2
-    movaps %xmm1, %xmm3
-    jmp _kefir_func_select7_label2
 __kefir_text_func_select7_end:
 
 select8:

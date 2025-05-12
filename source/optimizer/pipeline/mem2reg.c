@@ -135,6 +135,7 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
         case KEFIR_IR_TYPE_FLOAT64:
         case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
             REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->scalar_local_candidates,
                                              (kefir_hashtreeset_entry_t) instr_ref));
             break;
@@ -143,7 +144,6 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
         case KEFIR_IR_TYPE_BITS:
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
@@ -208,6 +208,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT64_LOAD:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+                case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
                     REQUIRE_OK(
                         kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
                     REQUIRE(is_control_flow, KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
@@ -230,6 +231,7 @@ static kefir_result_t mem2reg_scan(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT64_STORE:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
                     REQUIRE_OK(
                         kefir_opt_code_instruction_is_control_flow(&state->func->code, instr_ref, &is_control_flow));
                     REQUIRE(is_control_flow,
@@ -376,11 +378,19 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
                                                                    zero_instr_ref, zero_instr_ref, instr_ref));
         } break;
 
+        case KEFIR_IR_TYPE_COMPLEX_FLOAT64: {
+            kefir_opt_instruction_ref_t zero_instr_ref;
+            REQUIRE_OK(kefir_opt_code_builder_float64_constant(state->mem, &state->func->code, source_block_ref, 0.0,
+                                                               &zero_instr_ref));
+
+            REQUIRE_OK(kefir_opt_code_builder_complex_float64_from(state->mem, &state->func->code, source_block_ref,
+                                                                   zero_instr_ref, zero_instr_ref, instr_ref));
+        } break;
+
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
         case KEFIR_IR_TYPE_BITS:
-        case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
@@ -442,6 +452,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT64_LOAD:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_LOAD:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_LOAD:
+                case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_LOAD:
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
@@ -573,6 +584,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                 case KEFIR_OPT_OPCODE_INT64_STORE:
                 case KEFIR_OPT_OPCODE_LONG_DOUBLE_STORE:
                 case KEFIR_OPT_OPCODE_COMPLEX_FLOAT32_STORE:
+                case KEFIR_OPT_OPCODE_COMPLEX_FLOAT64_STORE:
                     REQUIRE_OK(kefir_opt_code_container_instr(
                         &state->func->code, instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF],
                         &addr_instr));
