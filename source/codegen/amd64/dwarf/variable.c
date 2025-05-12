@@ -475,32 +475,68 @@ static kefir_result_t generate_location_of_virtual_register(struct kefir_codegen
             REQUIRE_OK(generate_lle_start_end(codegen_function, ir_identifier, range_begin_label, range_end_label));
             switch (asmcmp_vreg->parameters.pair.type) {
                 case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                    REQUIRE(first_allocation->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register allocation type"));
-                    REQUIRE(second_allocation->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register allocation type"));
+                case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE: {
+                    const kefir_size_t piece_size =
+                        asmcmp_vreg->parameters.pair.type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE
+                            ? KEFIR_AMD64_ABI_QWORD / 2
+                            : KEFIR_AMD64_ABI_QWORD;
+
+                    kefir_size_t first_entry_length = 0, second_entry_length = 0;
+                    kefir_int64_t first_spill_offset = 0, second_spill_offset = 0;
+#define MATCH_ALLOC_TYPE(_alloc, _entry_length, _spill_offset)                                              \
+    do {                                                                                                    \
+        switch ((_alloc)->type) {                                                                           \
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:                                  \
+                *(_entry_length) = 2;                                                                       \
+                break;                                                                                      \
+                                                                                                            \
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:                         \
+                *(_spill_offset) = (_alloc)->spill_area.index * KEFIR_AMD64_ABI_QWORD +                     \
+                                   codegen_function->stack_frame.offsets.spill_area;                        \
+                *(_entry_length) = kefir_amd64_dwarf_sleb128_length(*(_spill_offset)) + 1;                  \
+                break;                                                                                      \
+                                                                                                            \
+            default:                                                                                        \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register allocation type"); \
+        }                                                                                                   \
+    } while (0)
+
+                    MATCH_ALLOC_TYPE(first_allocation, &first_entry_length, &first_spill_offset);
+                    MATCH_ALLOC_TYPE(second_allocation, &second_entry_length, &second_spill_offset);
+#undef MATCH_ALLOC_TYPE
 
                     REQUIRE_OK(
                         KEFIR_AMD64_DWARF_ULEB128(&codegen_function->codegen->xasmgen,
-                                                  6 + kefir_amd64_dwarf_sleb128_length(KEFIR_AMD64_ABI_QWORD / 2) * 2));
+                                                  first_entry_length + second_entry_length + 2 +
+                                                      kefir_amd64_dwarf_sleb128_length(KEFIR_AMD64_ABI_QWORD / 2) * 2));
 
-                    REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(first_allocation->direct_reg, &reg));
-                    REQUIRE_OK(register_to_dwarf_op(reg, &regnum));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_regx)));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, regnum));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_piece)));
-                    REQUIRE_OK(
-                        KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, KEFIR_AMD64_ABI_QWORD / 2));
+#define MATCH_ALLOC_TYPE(_alloc, _spill_offset, _piece_size)                                                       \
+    do {                                                                                                           \
+        switch ((_alloc)->type) {                                                                                  \
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:                                         \
+                REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest((_alloc)->direct_reg, &reg));                   \
+                REQUIRE_OK(register_to_dwarf_op(reg, &regnum));                                                    \
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_regx)));  \
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, regnum));                   \
+                break;                                                                                             \
+                                                                                                                   \
+            case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:                                \
+                REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_fbreg))); \
+                REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, (_spill_offset)));       \
+                break;                                                                                             \
+                                                                                                                   \
+            default:                                                                                               \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register allocation type");        \
+        }                                                                                                          \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_piece)));         \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, (_piece_size)));                 \
+    } while (0)
 
-                    REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(second_allocation->direct_reg, &reg));
-                    REQUIRE_OK(register_to_dwarf_op(reg, &regnum));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_regx)));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, regnum));
-                    REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen_function->codegen->xasmgen, KEFIR_DWARF(DW_OP_piece)));
-                    REQUIRE_OK(
-                        KEFIR_AMD64_DWARF_SLEB128(&codegen_function->codegen->xasmgen, KEFIR_AMD64_ABI_QWORD / 2));
-                    break;
+                    MATCH_ALLOC_TYPE(first_allocation, first_spill_offset, piece_size);
+                    MATCH_ALLOC_TYPE(second_allocation, second_spill_offset, piece_size);
+
+#undef MATCH_ALLOC_TYPE
+                } break;
             }
         } break;
     }
