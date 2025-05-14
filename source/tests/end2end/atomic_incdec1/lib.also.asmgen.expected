@@ -250,7 +250,7 @@ _kefir_func_predec_f32_label1:
     stmxcsr -48(%rbp)
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -297,7 +297,7 @@ _kefir_func_predec_f64_label1:
     stmxcsr -48(%rbp)
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -420,7 +420,7 @@ _kefir_func_preinc_f32_label1:
     stmxcsr -48(%rbp)
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -467,7 +467,7 @@ _kefir_func_preinc_f64_label1:
     stmxcsr -48(%rbp)
     orl %eax, -48(%rbp)
     ldmxcsr -48(%rbp)
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

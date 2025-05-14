@@ -42,7 +42,7 @@ __kefir_text_func_test64_begin:
     mov %rsp, %rbp
     sub $48, %rsp
     stmxcsr -8(%rbp)
-    movq %xmm1, %xmm2
+    movaps %xmm1, %xmm2
     lea -24(%rbp), %rax
     mov %rax, -32(%rbp)
     movaps %xmm0, %xmm1

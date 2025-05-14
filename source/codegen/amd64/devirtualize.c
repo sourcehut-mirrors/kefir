@@ -1232,26 +1232,44 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
             switch (reg_alloc2->type) {
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                     // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc1->direct_reg) &&
+                        kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc2->direct_reg)) {
+                        if (reg_alloc1->direct_reg != reg_alloc2->direct_reg) {
+                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
+                                mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
+                                &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc2->direct_reg), tail_idx));
+                        }
+                        do_link = false;
+                    }
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
+                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc1->direct_reg)) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                            mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+                            tail_idx));
+                        do_link = false;
+                    }
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER: {
                     const struct kefir_asmcmp_virtual_register *vreg;
                     REQUIRE_OK(
                         kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg));
-                    kefir_size_t new_position;
                     REQUIRE_OK(kefir_asmcmp_amd64_lea(
-                        mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                        &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
+                        mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
                         &KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(vreg->parameters.memory.base_reg,
                                                              vreg->parameters.memory.offset,
                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                        &new_position));
-                    REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, instr_idx));
+                        tail_idx));
                     do_link = false;
                 } break;
 
@@ -1261,15 +1279,11 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                         kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg));
                     const kefir_int64_t offset = vreg->parameters.local_variable.offset;
                     if (offset >= KEFIR_INT16_MIN && offset <= KEFIR_INT16_MAX) {
-                        kefir_size_t new_position;
                         REQUIRE_OK(kefir_asmcmp_amd64_lea(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
+                            mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, offset,
                                                                    KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                            &new_position));
-                        REQUIRE_OK(
-                            kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, instr_idx));
+                            tail_idx));
                         do_link = false;
                     }
                 } break;
@@ -1285,12 +1299,22 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
             switch (reg_alloc2->type) {
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_IMMEDIATE_INTEGER:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_LOCAL_VARIABLE:
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_MEMORY_POINTER:
                     // Intentionally left blank
+                    break;
+
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
+                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc2->direct_reg)) {
+                        REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
+                            mem, state->target, *tail_idx,
+                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                              KEFIR_ASMCMP_OPERAND_VARIANT_128BIT),
+                            &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc2->direct_reg), tail_idx));
+                        do_link = false;
+                    }
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
@@ -1302,56 +1326,8 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                     do_link = false;
                     break;
 
-                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
-                    const struct kefir_asmcmp_virtual_register *vreg;
-                    REQUIRE_OK(
-                        kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg));
-
-                    const struct kefir_codegen_amd64_register_allocation *first_alloc, *second_alloc;
-                    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                        state->xregalloc, vreg->parameters.pair.virtual_registers[0], &first_alloc));
-                    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                        state->xregalloc, vreg->parameters.pair.virtual_registers[1], &second_alloc));
-
-                    switch (vreg->parameters.pair.type) {
-                        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                            REQUIRE(reg_alloc1->spill_area.length >= 1,
-                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                                    "Direct spill area is too small for linking a pair of single "
-                                                    "precision floating-point registers"));
-                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg), NULL));
-                            REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index,
-                                                                  KEFIR_AMD64_ABI_QWORD / 2,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg), NULL));
-                            do_link = false;
-                            break;
-
-                        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                            REQUIRE(reg_alloc1->spill_area.length >= 2,
-                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                                    "Direct spill area is too small for linking a pair of single "
-                                                    "precision floating-point registers"));
-                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg), NULL));
-                            REQUIRE_OK(kefir_asmcmp_amd64_movq(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD,
-                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg), NULL));
-                            do_link = false;
-                            break;
-                    }
-                } break;
+                case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register pair");
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_UNALLOCATED:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected allocated virtual register");
@@ -1370,112 +1346,168 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
             do_link = false;
             break;
 
-        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
-            const struct kefir_asmcmp_virtual_register *vreg, *vreg2;
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[0].vreg.index, &vreg));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg2));
-
-            const struct kefir_codegen_amd64_register_allocation *first_alloc, *second_alloc;
-            REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                state->xregalloc, vreg->parameters.pair.virtual_registers[0], &first_alloc));
-            REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                state->xregalloc, vreg->parameters.pair.virtual_registers[1], &second_alloc));
-
-            if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
-                switch (vreg->parameters.pair.type) {
-                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE: {
-                        const struct kefir_codegen_amd64_register_allocation *first_alloc2, *second_alloc2;
-                        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                            state->xregalloc, vreg2->parameters.pair.virtual_registers[0], &first_alloc2));
-                        REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(
-                            state->xregalloc, vreg2->parameters.pair.virtual_registers[1], &second_alloc2));
-
-                        kefir_asm_amd64_xasmgen_register_t second_alloc2_reg = second_alloc2->direct_reg;
-                        if (first_alloc->direct_reg == second_alloc2->direct_reg) {
-                            REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &second_alloc2_reg,
-                                                                 TEMPORARY_REGISTER_SSE));
-                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2_reg),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2->direct_reg), NULL));
-                        }
-
-                        if (first_alloc->direct_reg != first_alloc2->direct_reg) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
-                                &KEFIR_ASMCMP_MAKE_PHREG(first_alloc2->direct_reg), NULL));
-                        }
-
-                        if (second_alloc->direct_reg != second_alloc2_reg) {
-                            REQUIRE_OK(kefir_asmcmp_amd64_movaps(
-                                mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
-                                &KEFIR_ASMCMP_MAKE_PHREG(second_alloc2_reg), NULL));
-                        }
-                        do_link = false;
-                    } break;
-                }
-            } else if (reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
-                switch (vreg->parameters.pair.type) {
-                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
-                        REQUIRE(
-                            reg_alloc2->spill_area.length >= 1,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Direct spill area is too small for linking a pair of "
-                                                                 "single precision floating-point registers"));
-                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            NULL));
-                        REQUIRE_OK(kefir_asmcmp_amd64_movd(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            NULL));
-                        do_link = false;
-                        break;
-
-                    case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
-                        REQUIRE(
-                            reg_alloc2->spill_area.length >= 2,
-                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Direct spill area is too small for linking a pair of "
-                                                                 "single precision floating-point registers"));
-                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_PHREG(first_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            NULL));
-                        REQUIRE_OK(kefir_asmcmp_amd64_movq(
-                            mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-                            &KEFIR_ASMCMP_MAKE_PHREG(second_alloc->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD,
-                                                              KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            NULL));
-                        do_link = false;
-                        break;
-                }
-            } else {
-                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                       "Unexpected virtual register linking into a pair of virtual registers");
-            }
-        } break;
+        case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register pair");
     }
 
     if (do_link) {
         REQUIRE_OK(devirtualize_instr2(mem, state, instr_idx, instr, original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
                                        KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                                           KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_DOUBLE,
+                                           KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
                                        KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
-                                           KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_DOUBLE |
+                                           KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL |
                                            KEFIR_AMD64_INSTRDB_IMMEDIATE));
     } else {
         instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t do_link_virtual_registers(struct kefir_mem *mem, struct devirtualize_state *state,
+                                                kefir_size_t instr_idx, struct kefir_asmcmp_instruction *instr,
+                                                struct kefir_asmcmp_instruction *original_instr,
+                                                kefir_size_t *tail_idx) {
+    REQUIRE(instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER &&
+                instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_VIRTUAL_REGISTER,
+            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected virtual register link arguments"));
+
+    const struct kefir_asmcmp_virtual_register *vreg, *vreg2;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[0].vreg.index, &vreg));
+    REQUIRE_OK(kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg2));
+
+    const struct kefir_codegen_amd64_register_allocation *reg_alloc1, *reg_alloc2;
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, instr->args[0].vreg.index, &reg_alloc1));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, instr->args[1].vreg.index, &reg_alloc2));
+
+    if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR &&
+        reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
+        struct kefir_asmcmp_instruction link_part_instr[2];
+        switch (vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                    reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                break;
+
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
+                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                    reg_alloc2->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                break;
+        }
+        REQUIRE_OK(devirtualize_instr2(
+            mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
+            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+        REQUIRE_OK(devirtualize_instr2(
+            mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
+            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
+                                                           tail_idx));
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
+                                                           tail_idx));
+        instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
+    } else if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT &&
+               reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
+        struct kefir_asmcmp_instruction link_part_instr[2];
+        switch (vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
+                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
+                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                    reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD / 2, KEFIR_ASMCMP_OPERAND_VARIANT_FP_SINGLE);
+                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                break;
+
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
+                link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
+                                                                              KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+                link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+
+                link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movq);
+                link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(
+                    reg_alloc1->spill_area.index, KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE);
+                link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+                link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+                break;
+        }
+        REQUIRE_OK(devirtualize_instr2(
+            mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
+            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+        REQUIRE_OK(devirtualize_instr2(
+            mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx, KEFIR_AMD64_INSTRDB_NONE,
+            KEFIR_AMD64_INSTRDB_WRITE | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL,
+            KEFIR_AMD64_INSTRDB_READ | KEFIR_AMD64_INSTRDB_GP_REGISTER_MEMORY |
+                KEFIR_AMD64_INSTRDB_XMM_REGISTER_MEMORY_FULL | KEFIR_AMD64_INSTRDB_IMMEDIATE));
+
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
+                                                           tail_idx));
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
+                                                           tail_idx));
+        instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
+    } else if (reg_alloc1->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR &&
+               reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
+        struct kefir_asmcmp_instruction link_part_instr[2];
+        link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+        link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
+        link_part_instr[0].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[0]);
+        link_part_instr[0].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+        link_part_instr[1].opcode = KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link);
+        link_part_instr[1].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[1]);
+        link_part_instr[1].args[1] = KEFIR_ASMCMP_MAKE_VREG(vreg2->parameters.pair.virtual_registers[1]);
+        link_part_instr[1].args[2].type = KEFIR_ASMCMP_VALUE_TYPE_NONE;
+        REQUIRE_OK(link_virtual_registers(mem, state, instr_idx, &link_part_instr[0], original_instr, tail_idx));
+        REQUIRE_OK(link_virtual_registers(mem, state, instr_idx, &link_part_instr[1], original_instr, tail_idx));
+
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[0],
+                                                           tail_idx));
+        REQUIRE_OK(kefir_asmcmp_context_instr_insert_after(mem, &state->target->context, *tail_idx, &link_part_instr[1],
+                                                           tail_idx));
+        instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(noop);
+    } else {
+        REQUIRE(reg_alloc1->type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                "Unexpected virtual register linking into a pair of virtual registers"));
+        REQUIRE(reg_alloc2->type != KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                "Unexpected pair of virtual registers linking into a virtual register"));
+        REQUIRE_OK(link_virtual_registers(mem, state, instr_idx, instr, original_instr, tail_idx));
+    }
+
     return KEFIR_OK;
 }
 
@@ -1536,7 +1568,8 @@ static kefir_result_t devirtualize_impl(struct kefir_mem *mem, struct devirtuali
 #undef DEF_OPCODE3
 
             case KEFIR_ASMCMP_AMD64_OPCODE(virtual_register_link):
-                REQUIRE_OK(link_virtual_registers(mem, state, idx, &devirtualized_instr, &original_instr, &tail_idx));
+                REQUIRE_OK(
+                    do_link_virtual_registers(mem, state, idx, &devirtualized_instr, &original_instr, &tail_idx));
                 break;
 
             case KEFIR_ASMCMP_AMD64_OPCODE(stash_activate):

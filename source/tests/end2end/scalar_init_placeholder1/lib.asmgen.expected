@@ -47,13 +47,13 @@ __kefir_text_func_test3_begin:
     ja _kefir_func_test3_label2
 _kefir_func_test3_label1:
 _kefir_func_test3_label4:
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_test3_label2:
-    movq %xmm0, %xmm1
+    movaps %xmm0, %xmm1
     jmp _kefir_func_test3_label1
 __kefir_text_func_test3_end:
 .section .rodata
@@ -73,13 +73,13 @@ __kefir_text_func_test4_begin:
     ja _kefir_func_test4_label2
 _kefir_func_test4_label1:
 _kefir_func_test4_label4:
-    movq %xmm1, %xmm0
+    movaps %xmm1, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_test4_label2:
-    movq %xmm0, %xmm1
+    movaps %xmm0, %xmm1
     jmp _kefir_func_test4_label1
 __kefir_text_func_test4_end:
 .section .rodata

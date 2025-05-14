@@ -53,8 +53,8 @@ _kefir_func_f32_predec_label1:
     movd -108(%rbp), %xmm1
     movd _kefir_func_f32_predec_label4(%rip), %xmm2
     movd _kefir_func_f32_predec_label5(%rip), %xmm3
-    movq %xmm0, %xmm4
-    movq %xmm1, %xmm5
+    movaps %xmm0, %xmm4
+    movaps %xmm1, %xmm5
     addss %xmm2, %xmm4
     addss %xmm3, %xmm5
     movq %r10, -96(%rbp)
@@ -108,7 +108,7 @@ _kefir_func_f32_predec_label2:
     stmxcsr -80(%rbp)
     orl %eax, -80(%rbp)
     ldmxcsr -80(%rbp)
-    movq %xmm4, %xmm0
+    movaps %xmm4, %xmm0
     insertps $16, %xmm5, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -169,8 +169,8 @@ _kefir_func_f32_preinc_label1:
     movd -108(%rbp), %xmm1
     movd _kefir_func_f32_preinc_label4(%rip), %xmm2
     movd _kefir_func_f32_preinc_label5(%rip), %xmm3
-    movq %xmm0, %xmm4
-    movq %xmm1, %xmm5
+    movaps %xmm0, %xmm4
+    movaps %xmm1, %xmm5
     addss %xmm2, %xmm4
     addss %xmm3, %xmm5
     movq %r10, -96(%rbp)
@@ -224,7 +224,7 @@ _kefir_func_f32_preinc_label2:
     stmxcsr -80(%rbp)
     orl %eax, -80(%rbp)
     ldmxcsr -80(%rbp)
-    movq %xmm4, %xmm0
+    movaps %xmm4, %xmm0
     insertps $16, %xmm5, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -285,8 +285,8 @@ _kefir_func_f64_predec_label1:
     movq -152(%rbp), %xmm1
     movq _kefir_func_f64_predec_label4(%rip), %xmm2
     movq _kefir_func_f64_predec_label5(%rip), %xmm3
-    movq %xmm0, %xmm4
-    movq %xmm1, %xmm5
+    movaps %xmm0, %xmm4
+    movaps %xmm1, %xmm5
     addsd %xmm2, %xmm4
     addsd %xmm3, %xmm5
     movq %r10, -64(%rbp)
@@ -340,8 +340,8 @@ _kefir_func_f64_predec_label2:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -401,8 +401,8 @@ _kefir_func_f64_preinc_label1:
     movq -152(%rbp), %xmm1
     movq _kefir_func_f64_preinc_label4(%rip), %xmm2
     movq _kefir_func_f64_preinc_label5(%rip), %xmm3
-    movq %xmm0, %xmm4
-    movq %xmm1, %xmm5
+    movaps %xmm0, %xmm4
+    movaps %xmm1, %xmm5
     addsd %xmm2, %xmm4
     addsd %xmm3, %xmm5
     movq %r10, -64(%rbp)
@@ -456,8 +456,8 @@ _kefir_func_f64_preinc_label2:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -517,8 +517,8 @@ _kefir_func_f32_postdec_label1:
     movd -108(%rbp), %xmm5
     movd _kefir_func_f32_postdec_label4(%rip), %xmm1
     movd _kefir_func_f32_postdec_label5(%rip), %xmm2
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm3
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm3
     addss %xmm1, %xmm0
     addss %xmm2, %xmm3
     movq %r10, -96(%rbp)
@@ -572,7 +572,7 @@ _kefir_func_f32_postdec_label2:
     stmxcsr -80(%rbp)
     orl %eax, -80(%rbp)
     ldmxcsr -80(%rbp)
-    movq %xmm4, %xmm0
+    movaps %xmm4, %xmm0
     insertps $16, %xmm5, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -633,8 +633,8 @@ _kefir_func_f32_postinc_label1:
     movd -108(%rbp), %xmm5
     movd _kefir_func_f32_postinc_label4(%rip), %xmm1
     movd _kefir_func_f32_postinc_label5(%rip), %xmm2
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm3
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm3
     addss %xmm1, %xmm0
     addss %xmm2, %xmm3
     movq %r10, -96(%rbp)
@@ -688,7 +688,7 @@ _kefir_func_f32_postinc_label2:
     stmxcsr -80(%rbp)
     orl %eax, -80(%rbp)
     ldmxcsr -80(%rbp)
-    movq %xmm4, %xmm0
+    movaps %xmm4, %xmm0
     insertps $16, %xmm5, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
@@ -749,8 +749,8 @@ _kefir_func_f64_postdec_label1:
     movq -152(%rbp), %xmm5
     movq _kefir_func_f64_postdec_label4(%rip), %xmm2
     movq _kefir_func_f64_postdec_label5(%rip), %xmm3
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     addsd %xmm2, %xmm0
     addsd %xmm3, %xmm1
     movq %r10, -64(%rbp)
@@ -804,8 +804,8 @@ _kefir_func_f64_postdec_label2:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -865,8 +865,8 @@ _kefir_func_f64_postinc_label1:
     movq -152(%rbp), %xmm5
     movq _kefir_func_f64_postinc_label4(%rip), %xmm2
     movq _kefir_func_f64_postinc_label5(%rip), %xmm3
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     addsd %xmm2, %xmm0
     addsd %xmm3, %xmm1
     movq %r10, -64(%rbp)
@@ -920,8 +920,8 @@ _kefir_func_f64_postinc_label2:
     stmxcsr -128(%rbp)
     orl %eax, -128(%rbp)
     ldmxcsr -128(%rbp)
-    movq %xmm4, %xmm0
-    movq %xmm5, %xmm1
+    movaps %xmm4, %xmm0
+    movaps %xmm5, %xmm1
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

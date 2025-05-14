@@ -101,9 +101,9 @@ _kefir_func_fn1_label28:
 .loc 0 32 20
 _kefir_func_fn1_label29:
     cvtsi2sd %rcx, %xmm1
-.loc 0 32 20
 _kefir_func_fn1_label30:
-    movq %xmm0, %xmm2
+    movaps %xmm0, %xmm2
+.loc 0 32 20
     mulsd %xmm1, %xmm2
 .loc 0 32 34
 _kefir_func_fn1_label31:
@@ -124,9 +124,9 @@ _kefir_func_fn1_label4:
 _kefir_func_fn1_label36:
 _kefir_func_fn1_label35:
     cvtsi2sd %rax, %xmm1
-.loc 0 32 20
 _kefir_func_fn1_label37:
-    movq %xmm2, %xmm0
+    movaps %xmm2, %xmm0
+.loc 0 32 20
     addsd %xmm1, %xmm0
 .loc 0 32 13
 _kefir_func_fn1_label38:

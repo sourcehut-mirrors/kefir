@@ -49,7 +49,7 @@ __kefir_text_func_sum32_begin:
     shufps $1, %xmm12, %xmm12
     addss %xmm1, %xmm0
     addss %xmm11, %xmm12
-    movq %xmm12, %xmm1
+    movaps %xmm12, %xmm1
     addss %xmm2, %xmm0
     addss %xmm10, %xmm1
     addss %xmm3, %xmm0

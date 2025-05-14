@@ -480,7 +480,7 @@ __kefir_text_func_mul_f32_begin:
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
     insertps $16, %xmm1, %xmm0
-    movq %xmm2, %xmm1
+    movaps %xmm2, %xmm1
     insertps $16, %xmm3, %xmm1
     movaps %xmm1, %xmm2
     shufps $160, %xmm1, %xmm2
