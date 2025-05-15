@@ -1250,7 +1250,8 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
-                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc1->direct_reg)) {
+                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc1->direct_reg) &&
+                        reg_alloc2->spill_area.length >= 2) {
                         REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
                             mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
                             &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc2->spill_area.index, 0,
@@ -1307,7 +1308,8 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                     break;
 
                 case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc2->direct_reg)) {
+                    if (kefir_asm_amd64_xasmgen_register_is_floating_point(reg_alloc2->direct_reg) &&
+                        reg_alloc1->spill_area.length >= 2) {
                         REQUIRE_OK(kefir_asmcmp_amd64_movdqu(
                             mem, state->target, *tail_idx,
                             &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
