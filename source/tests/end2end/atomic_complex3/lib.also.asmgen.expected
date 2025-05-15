@@ -270,7 +270,8 @@ __kefir_text_func_divide_f64_begin:
     push %rbp
     mov %rsp, %rbp
     sub $208, %rsp
-    stmxcsr -8(%rbp)
+    fstcw -8(%rbp)
+    stmxcsr -16(%rbp)
     movaps %xmm0, %xmm4
     movaps %xmm1, %xmm5
     mov %rdi, %r10
@@ -359,7 +360,8 @@ _kefir_func_divide_f64_label1:
     stmxcsr -208(%rbp)
     orl %eax, -208(%rbp)
     ldmxcsr -208(%rbp)
-    ldmxcsr -8(%rbp)
+    ldmxcsr -16(%rbp)
+    fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret

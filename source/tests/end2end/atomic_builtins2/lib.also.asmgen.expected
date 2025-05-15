@@ -58,7 +58,6 @@ __kefir_text_func_test2_atomic_load256_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
     mov %rdi, %rax
     mov $32, %rdi
     mov %rax, %rsi
@@ -71,7 +70,6 @@ __kefir_text_func_test2_atomic_load256_begin:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
@@ -125,7 +123,6 @@ __kefir_text_func_test_atomic_load256_begin:
     mov %rsp, %rbp
     sub $80, %rsp
     fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
     mov %rdi, %rax
     mov $32, %rdi
     mov %rax, %rsi
@@ -138,7 +135,6 @@ __kefir_text_func_test_atomic_load256_begin:
     fstpt -64(%rbp)
     fldt -64(%rbp)
     fldt -80(%rbp)
-    ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
