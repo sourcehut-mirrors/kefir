@@ -150,29 +150,11 @@ ld_store:
 __kefir_text_func_ld_store_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
-    lea 16(%rbp), %rax
-    movq $0, -40(%rbp)
-    movq $0, -24(%rbp)
-    fldt (%rax)
-    fstpt -48(%rbp)
-    fldt 16(%rax)
-    fstpt -32(%rbp)
-    fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -32(%rbp)
-    fstpt -64(%rbp)
+    lea 16(%rbp), %rdx
     mov %rdi, %rsi
-    leaq -80(%rbp), %rax
-    mov %rax, %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -16(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_ld_store_end:
@@ -254,30 +236,12 @@ str1_set_c:
 __kefir_text_func_str1_set_c_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
-    lea 16(%rbp), %rax
-    movq $0, -40(%rbp)
-    movq $0, -24(%rbp)
-    fldt (%rax)
-    fstpt -48(%rbp)
-    fldt 16(%rax)
-    fstpt -32(%rbp)
-    fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -32(%rbp)
-    fstpt -64(%rbp)
+    lea 16(%rbp), %rdx
     add $32, %rdi
     mov %rdi, %rsi
-    leaq -80(%rbp), %rax
-    mov %rax, %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -16(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_str1_set_c_end:
@@ -327,32 +291,14 @@ ld_store_index:
 __kefir_text_func_ld_store_index_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $80, %rsp
-    fstcw -8(%rbp)
-    stmxcsr -16(%rbp)
-    lea 16(%rbp), %rax
-    movq $0, -40(%rbp)
-    movq $0, -24(%rbp)
-    fldt (%rax)
-    fstpt -48(%rbp)
-    fldt 16(%rax)
-    fstpt -32(%rbp)
-    fldt -48(%rbp)
-    fstpt -80(%rbp)
-    fldt -32(%rbp)
-    fstpt -64(%rbp)
+    lea 16(%rbp), %rdx
     mov %esi, %eax
     imul $32, %rax, %rax
     add %rax, %rdi
     mov %rdi, %rsi
-    leaq -80(%rbp), %rax
-    mov %rax, %rdx
     mov $32, %rdi
     mov $5, %rcx
     call __atomic_store@PLT
-    ldmxcsr -16(%rbp)
-    fldcw -8(%rbp)
-    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_ld_store_index_end:

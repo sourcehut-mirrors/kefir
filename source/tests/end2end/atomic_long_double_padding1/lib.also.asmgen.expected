@@ -59,61 +59,55 @@ add_cld1:
 __kefir_text_func_add_cld1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $176, %rsp
+    sub $112, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    lea 16(%rbp), %rax
-    movq $0, -104(%rbp)
-    movq $0, -88(%rbp)
-    fldt (%rax)
-    fstpt -112(%rbp)
-    fldt 16(%rax)
-    fstpt -96(%rbp)
+    lea 16(%rbp), %r10
     movq cld1@GOTPCREL(%rip), %rsi
+    movq %r10, -112(%rbp)
     mov $32, %rdi
     leaq -48(%rbp), %rdx
     mov $2, %rcx
     call __atomic_load@PLT
+    movq -112(%rbp), %r10
     fldt -48(%rbp)
-    fstpt -176(%rbp)
+    fstpt -112(%rbp)
     fldt -32(%rbp)
-    fstpt -160(%rbp)
+    fstpt -96(%rbp)
     movq $0, -72(%rbp)
     movq $0, -56(%rbp)
-    fldt -176(%rbp)
+    fldt -112(%rbp)
     fstpt -80(%rbp)
-    fldt -160(%rbp)
+    fldt -96(%rbp)
     fstpt -64(%rbp)
 _kefir_func_add_cld1_label1:
     fldt -80(%rbp)
-    fstpt -176(%rbp)
+    fstpt -112(%rbp)
     fldt -64(%rbp)
-    fstpt -160(%rbp)
+    fstpt -96(%rbp)
+    fldt (%r10)
     fldt -112(%rbp)
-    fstpt -144(%rbp)
+    faddp
+    fldt 16(%r10)
     fldt -96(%rbp)
-    fstpt -128(%rbp)
-    fldt -144(%rbp)
-    fldt -176(%rbp)
     faddp
-    fldt -128(%rbp)
-    fldt -160(%rbp)
-    faddp
-    fstpt -160(%rbp)
-    fstpt -176(%rbp)
+    fstpt -96(%rbp)
+    fstpt -112(%rbp)
     movq $0, -40(%rbp)
     movq $0, -24(%rbp)
-    fldt -176(%rbp)
+    fldt -112(%rbp)
     fstpt -48(%rbp)
-    fldt -160(%rbp)
+    fldt -96(%rbp)
     fstpt -32(%rbp)
     movq cld1@GOTPCREL(%rip), %rsi
+    movq %r10, -112(%rbp)
     mov $32, %rdi
     leaq -80(%rbp), %rdx
     leaq -48(%rbp), %rcx
     mov $5, %r8
     mov $2, %r9
     call __atomic_compare_exchange@PLT
+    movq -112(%rbp), %r10
     test %al, %al
     setne %al
     movzx %al, %rax
