@@ -30,7 +30,7 @@ cleanup () {
 
 trap cleanup EXIT HUP INT QUIT PIPE TERM
 
-"$SCRIPT_DIR/run_gcc_torture_suite.sh" 2>&1 | tee "$TMP_FILE"
+"$SCRIPT_DIR/run_gcc_torture_suite.sh" 2>&1 | tee -i "$TMP_FILE"
 "$SCRIPT_DIR/validate.sh" "$TMP_FILE"
 
 mv "$TMP_FILE" "$OUT_FILE"
