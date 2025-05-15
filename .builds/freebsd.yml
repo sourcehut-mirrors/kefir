@@ -26,6 +26,10 @@ tasks:
       cd kefir
       gmake clean
       gmake all PROFILE=reldebug CC=clang
+  - gcc_torture: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      gmake bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
   - lua_tests: |
       cd kefir
       export LC_ALL=C.UTF-8
@@ -34,10 +38,6 @@ tasks:
       cd kefir
       export LC_ALL=C.UTF-8
       gmake bin/tests/external/c-testsuite.test.done KEFIR_EXTERNAL_TEST_C_TESTSUITE_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
-  - gcc_torture: |
-      cd kefir
-      export LC_ALL=C.UTF-8
-      gmake bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie -D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
   - bootstrap: |
       cd kefir
       gmake clean
