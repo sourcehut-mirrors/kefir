@@ -137,7 +137,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_real)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
@@ -146,14 +145,13 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_real)(
         mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg1_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_fstp(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
@@ -165,7 +163,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_imaginar
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     REQUIRE_OK(kefir_codegen_amd64_stack_frame_preserve_x87_control_word(&function->stack_frame));
-    REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
 
     kefir_asmcmp_virtual_register_index_t result_vreg, arg1_vreg;
 
@@ -174,15 +171,14 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(complex_long_double_imaginar
         mem, &function->code.context, kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
         kefir_abi_amd64_long_double_qword_alignment(function->codegen->abi_variant), &result_vreg));
 
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_x87_push(mem, function, instruction->id));
+
     REQUIRE_OK(kefir_asmcmp_amd64_fld(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg1_vreg, 2 * KEFIR_AMD64_ABI_QWORD, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),
         NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_fstp(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
 
-    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
 }
 
