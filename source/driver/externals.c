@@ -21,6 +21,7 @@
 #include "kefir/driver/externals.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
 static void set_if_null(const char **target, const char *value) {
     if (*target == NULL) {
@@ -47,6 +48,9 @@ kefir_result_t kefir_driver_external_resources_init_from_env(struct kefir_mem *m
     externals->tmpfile_manager = tmpmgr;
 
     externals->default_target = getenv("KEFIR_TARGET");
+
+    const char *driver_cli_quiet = getenv_nonzero("KEFIR_DRIVER_CLI_QUIET");
+    externals->driver_cli_quiet =  driver_cli_quiet != NULL && strcmp(driver_cli_quiet, "yes") == 0;
 
     externals->assembler_path_explicit = false;
     externals->assembler_path = getenv_nonzero("KEFIR_AS");

@@ -341,7 +341,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     REQUIRE_CHAIN(&res,
                   kefir_parse_cli_options(mem, symbols, compiler_config, &positional_args,
                                           KefirCompilerConfigurationOptions, KefirCompilerConfigurationOptionCount,
-                                          extra_args_buf.array, extra_args_buf.length, stderr));
+                                          extra_args_buf.array, extra_args_buf.length, externals->driver_cli_quiet ? NULL : stderr));
     REQUIRE_CHAIN_SET(
         &res, positional_args == extra_args_buf.length,
         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Passing positional arguments directly to compiler is not permitted"));

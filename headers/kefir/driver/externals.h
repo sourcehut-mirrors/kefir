@@ -34,6 +34,9 @@ typedef struct kefir_driver_external_resources {
     // Default target
     const char *default_target;
 
+    // Driver
+    kefir_bool_t driver_cli_quiet;
+
     // Tools
     kefir_bool_t assembler_path_explicit;
     const char *assembler_path;
