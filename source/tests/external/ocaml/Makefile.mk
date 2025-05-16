@@ -1,0 +1,54 @@
+KEFIR_EXTERNAL_TEST_OCAML_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/ocaml
+
+KEFIR_EXTERNAL_TEST_OCAML_VERSION := 5.3.0
+KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_FILENAME := ocaml-$(KEFIR_EXTERNAL_TEST_OCAML_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE := $(KEFIR_EXTERNAL_TEST_OCAML_DIR)/$(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_OCAML_DIR)/ocaml-$(KEFIR_EXTERNAL_TEST_OCAML_VERSION)
+KEFIR_EXTERNAL_TEST_OCAML_URL := https://github.com/ocaml/ocaml/releases/download/$(KEFIR_EXTERNAL_TEST_OCAML_VERSION)/$(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_SHA256 := 22c1dd9de21bf43b62d1909041fb5fad648905227bf69550a6a6bef31e654f38
+
+$(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_OCAML_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_OCAML_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_OCAML_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/config.log: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure CC="$(realpath $(KEFIR_EXE))" --enable-ocamltest --disable-ocamldoc --disable-debugger --disable-native-compiler
+
+$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/ocaml: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/config.log
+	@echo "Building ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_OCAML_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)/ocaml
+	@echo "Testing ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_OCAML_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		KEFIR_DRIVER_CLI_QUIET=yes \
+		bash -c 'set -o pipefail; $(MAKE) tests 2>&1 | tee "$(shell realpath $@.tmp)"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/ocaml.test.done: $(KEFIR_EXTERNAL_TEST_OCAML_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/ocaml/validate.sh "$(KEFIR_EXTERNAL_TEST_OCAML_DIR)/tests.log"
+	@touch "$@"
+	@echo "Successfully tested ocaml $(KEFIR_EXTERNAL_TEST_OCAML_VERSION)"
+
+EXTERNAL_TESTS_SLOW_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/ocaml.test.done
