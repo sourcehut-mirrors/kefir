@@ -30,7 +30,7 @@
 #include "kefir/core/string_buffer.h"
 
 static const struct kefir_preprocessor_configuration DefaultConfiguration = {
-    .named_macro_vararg = false, .include_next = false, .va_args_concat = false};
+    .named_macro_vararg = false, .include_next = false, .va_args_concat = false, .assembly_mode = false};
 
 kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *config) {
     REQUIRE(config != NULL,
@@ -148,7 +148,9 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor context"));
 
     preprocessor->context = preprocessor_context;
-    REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, symbols, cursor, context,
+    const kefir_lexer_mode_t lexer_mode =
+        preprocessor->context->preprocessor_config->assembly_mode ? KEFIR_LEXER_ASSEMBLY_MODE : KEFIR_LEXER_C_MODE;
+    REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, lexer_mode, symbols, cursor, context,
                                 extensions != NULL ? extensions->lexer_extensions : NULL));
     kefir_result_t res = kefir_preprocessor_directive_scanner_init(&preprocessor->directive_scanner,
                                                                    &preprocessor->lexer, preprocessor->context);

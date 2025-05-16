@@ -371,6 +371,10 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
                 compiler_config->input_filepath = argument->value;
                 compiler_config->source_id = argument->value;
             }
+
+            if (argument->type == KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY) {
+                compiler_config->preprocessor_assembly_mode = true;
+            }
             break;
 
         case KEFIR_DRIVER_ARGUMENT_LINKER_FLAG_LINK_LIBRARY:

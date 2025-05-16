@@ -55,7 +55,7 @@ struct match_payload {
 };
 
 kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
-                                                      struct kefir_string_pool *symbols,
+                                                      kefir_lexer_mode_t mode, struct kefir_string_pool *symbols,
                                                       const struct kefir_trie *keywords, struct kefir_token *token) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source cursor"));
@@ -66,7 +66,7 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, str
     REQUIRE_OK(scan_identifier_nondigit(cursor, &identifier[0]));
 
     kefir_size_t length = 1;
-    kefir_bool_t scan_identifier = true;
+    kefir_bool_t scan_identifier = mode != KEFIR_LEXER_ASSEMBLY_MODE || identifier[0] != U'$';
     for (; scan_identifier;) {
         kefir_char32_t chr;
         kefir_result_t res = scan_identifier_digit(cursor, &chr);
@@ -91,7 +91,7 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, str
             if (sz == (size_t) -1) {
                 *mb_identifier_ptr = (char) identifier[i];
                 sz = 1;
-                mbstate = (mbstate_t){0};
+                mbstate = (mbstate_t) {0};
             }
             mb_identifier_ptr += sz;
         }
@@ -109,7 +109,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
     ASSIGN_DECL_CAST(struct match_payload *, param, payload);
 
-    REQUIRE_OK(kefir_lexer_scan_identifier_or_keyword(mem, lexer->cursor, lexer->symbols,
+    REQUIRE_OK(kefir_lexer_scan_identifier_or_keyword(mem, lexer->cursor, lexer->mode, lexer->symbols,
                                                       param->map_keywords ? &lexer->keywords : NULL, param->token));
     return KEFIR_OK;
 }

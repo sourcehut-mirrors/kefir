@@ -39,7 +39,8 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, src->identifier, strlen(src->identifier), ""));
             cursor.location = src->source_location;
 
-            REQUIRE_OK(kefir_lexer_scan_identifier_or_keyword(mem, &cursor, preprocessor->lexer.symbols,
+            REQUIRE_OK(kefir_lexer_scan_identifier_or_keyword(mem, &cursor, preprocessor->lexer.mode,
+                                                              preprocessor->lexer.symbols,
                                                               &preprocessor->lexer.keywords, dst));
             REQUIRE_ELSE(cursor.index == cursor.length, {
                 kefir_token_free(mem, dst);

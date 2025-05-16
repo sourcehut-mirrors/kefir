@@ -61,6 +61,13 @@ Maximum depth of function inlining (5 by default).
 .It Fl \-optimizer-max-inlines-per-func Ar inlines
 Maximum number of inlined functions (10 by default).
 .\"
+.It Fl \-preprocessor-assembly-mode
+Enable assembly preprocessing mode (default for .S files). In this mode,
+leading '$' characters are not treated as identifier part.
+.\"
+.It Fl \-preprocessor-normal-mode
+Disable assembly preprocessing mode (default).
+.\"
 .It Fl \-dump-dependencies
 Output a make rule describing the dependencies of source file.
 .\"

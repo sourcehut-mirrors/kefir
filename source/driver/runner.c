@@ -104,7 +104,9 @@ static kefir_result_t output_dependencies(
     return KEFIR_OK;
 }
 
-static kefir_result_t load_extension_lib(struct kefir_mem *mem, const struct kefir_compiler_runner_configuration *options, const struct kefir_compiler_extensions **extensions, void **extension_lib) {
+static kefir_result_t load_extension_lib(struct kefir_mem *mem,
+                                         const struct kefir_compiler_runner_configuration *options,
+                                         const struct kefir_compiler_extensions **extensions, void **extension_lib) {
     if (options->extension_lib == NULL) {
         *extensions = NULL;
         *extension_lib = NULL;
@@ -118,14 +120,16 @@ static kefir_result_t load_extension_lib(struct kefir_mem *mem, const struct kef
     return KEFIR_SET_ERROR(KEFIR_NOT_SUPPORTED, "Extension library loading support has been disabled at compile time");
 #else
     void *extlib = dlopen(options->extension_lib, RTLD_LAZY | RTLD_LOCAL);
-    REQUIRE(extlib != NULL, KEFIR_SET_OS_ERRORF("Failed to load extension library %s: %s", options->extension_lib, dlerror()));
+    REQUIRE(extlib != NULL,
+            KEFIR_SET_OS_ERRORF("Failed to load extension library %s: %s", options->extension_lib, dlerror()));
 
     *extension_lib = extlib;
 
     void *entry_sym = dlsym(extlib, KEFIR_COMPILER_EXTENSION_ENTRY);
     REQUIRE(entry_sym != NULL, KEFIR_SET_OS_ERRORF("Failed to locate entry point of extension library: %s", dlerror()));
 
-    typedef kefir_result_t (*entry_fn_t)(struct kefir_mem *, const struct kefir_compiler_runner_configuration *, const struct kefir_compiler_extensions **);
+    typedef kefir_result_t (*entry_fn_t)(struct kefir_mem *, const struct kefir_compiler_runner_configuration *,
+                                         const struct kefir_compiler_extensions **);
     entry_fn_t entry_fn = *(entry_fn_t *) &entry_sym;
     REQUIRE_OK(entry_fn(mem, options, extensions));
 
@@ -188,6 +192,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile, &options->target_profile_config));
     REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, extensions));
 
+    compiler.preprocessor_configuration.assembly_mode = options->preprocessor_assembly_mode;
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
     compiler.preprocessor_configuration.include_next = options->features.include_next;
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;

@@ -83,6 +83,7 @@ typedef struct kefir_preprocessor_configuration {
     kefir_bool_t named_macro_vararg;
     kefir_bool_t include_next;
     kefir_bool_t va_args_concat;
+    kefir_bool_t assembly_mode;
 } kefir_preprocessor_configuration_t;
 
 kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *);

@@ -49,6 +49,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .default_pp_timestamp = true,
         .debug_info = false,
         .verbose = false,
+        .preprocessor_assembly_mode = false,
         .features = {false, .precise_bitfield_load_store = true, .declare_atomic_support = true},
         .codegen = {.emulated_tls = false,
                     .position_independent_code = false,
@@ -58,10 +59,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .print_details = NULL,
                     .pipeline_spec = NULL},
         .optimizer_pipeline_spec = NULL,
-        .optimizer = {
-            .max_inline_depth = 5,
-            .max_inlines_per_function = 10
-        },
+        .optimizer = {.max_inline_depth = 5, .max_inlines_per_function = 10},
         .dependency_output = {.target_name = NULL,
                               .output_filename = NULL,
                               .output_system_deps = true,

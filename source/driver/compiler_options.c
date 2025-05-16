@@ -259,8 +259,10 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     CUSTOM(0, "quote-include-dir", true, quote_include_hook),
     CUSTOM(0, "include", true, include_file_hook),
 
-    SIMPLE(0, "optimizer-max-inline-depth", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, optimizer.max_inline_depth),
-    SIMPLE(0, "optimizer-max-inlines-per-func", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0, optimizer.max_inlines_per_function),
+    SIMPLE(0, "optimizer-max-inline-depth", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0,
+           optimizer.max_inline_depth),
+    SIMPLE(0, "optimizer-max-inlines-per-func", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_UINTARG, 0,
+           optimizer.max_inlines_per_function),
 
     FEATURE("non-strict-qualifiers", features.non_strict_qualifiers),
     FEATURE("signed-enums", features.signed_enum_type),
@@ -282,6 +284,11 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     FEATURE("va-args-comma-concat", features.va_args_concat),
     FEATURE("switch-case-ranges", features.switch_case_ranges),
     FEATURE("designator-subscript-ranges", features.designator_subscript_ranges),
+
+    SIMPLE(0, "preprocessor-assembly-mode", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
+           preprocessor_assembly_mode),
+    SIMPLE(0, "preprocessor-normal-mode", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false,
+           preprocessor_assembly_mode),
 
     SIMPLE(0, "precise-bitfield-load-store", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true,
            features.precise_bitfield_load_store),
