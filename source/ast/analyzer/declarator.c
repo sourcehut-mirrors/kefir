@@ -1431,12 +1431,6 @@ static kefir_result_t analyze_declaration_specifiers_impl(
 
     if (alignment != NULL) {
         if (alignment_specifier > 0) {
-            kefir_size_t natural_alignment = 0;
-            REQUIRE_OK(type_alignment(mem, context, base_type, &natural_alignment, NULL, source_location));
-            REQUIRE(natural_alignment <= alignment_specifier,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR,
-                                           kefir_ast_declarator_specifier_list_source_location(specifiers),
-                                           "Specified alignment shall be at least as strict as natural"));
             *alignment = MAX(*alignment, alignment_specifier);
         }
     }
