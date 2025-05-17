@@ -143,7 +143,7 @@ kefir_result_t kefir_driver_apply_target_compiler_configuration(
 
     struct kefir_compiler_profile profile;
     REQUIRE_OK(
-        kefir_compiler_profile(&profile, compiler_config->target_profile, &compiler_config->target_profile_config));
+        kefir_compiler_profile(mem, &profile, compiler_config->target_profile, &compiler_config->target_profile_config));
     if (!profile.type_traits.character_type_signedness) {
         REQUIRE_OK(kefir_compiler_runner_configuration_define(mem, compiler_config, "__CHAR_UNSIGNED__", "1"));
     }

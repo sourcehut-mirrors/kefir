@@ -43,6 +43,7 @@ typedef struct kefir_data_model_descriptor {
     kefir_data_model_tag_t model;
     kefir_byte_order_t byte_order;
     struct {
+        kefir_size_t bool_bits;
         kefir_size_t char_bits;
         kefir_size_t short_bits;
         kefir_size_t int_bits;

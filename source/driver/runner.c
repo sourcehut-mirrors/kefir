@@ -189,7 +189,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     const struct kefir_compiler_extensions *extensions = NULL;
     REQUIRE_OK(load_extension_lib(mem, options, &extensions, &extension_lib));
 
-    REQUIRE_OK(kefir_compiler_profile(&profile, options->target_profile, &options->target_profile_config));
+    REQUIRE_OK(kefir_compiler_profile(mem, &profile, options->target_profile, &options->target_profile_config));
     REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, extensions));
 
     compiler.preprocessor_configuration.assembly_mode = options->preprocessor_assembly_mode;

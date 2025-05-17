@@ -27,6 +27,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include <string.h>
 
 typedef struct kefir_abi_sysv_amd64_type {
     const struct kefir_ir_type *ir_type;
@@ -201,11 +202,22 @@ static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
 static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_target_platform *platform) {
     UNUSED(mem);
     REQUIRE(platform != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target platform"));
-    platform->typeentry_info = NULL;
-    platform->free = NULL;
-    platform->payload = NULL;
+    memset(platform, 0, sizeof(struct kefir_ir_target_platform));
     return KEFIR_OK;
 }
+
+
+static const struct kefir_data_model_descriptor AMD64_SYSV_DATA_MODEL_DESCRIPTOR = {
+    .model = KEFIR_DATA_MODEL_LP64,
+    .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
+    .scalar_width = {.bool_bits = 8, .char_bits = 8,
+                        .short_bits = 16,
+                        .int_bits = 32,
+                        .long_bits = 64,
+                        .long_long_bits = 64,
+                        .float_bits = 32,
+                        .double_bits = 64,
+                        .long_double_bits = 128}};
 
 kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant,
                                                struct kefir_ir_target_platform *platform) {
@@ -214,6 +226,7 @@ kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant
 
     switch (variant) {
         case KEFIR_ABI_AMD64_VARIANT_SYSTEM_V:
+            platform->data_model = &AMD64_SYSV_DATA_MODEL_DESCRIPTOR;
             platform->get_type = amd64_sysv_get_type;
             platform->free_type = amd64_sysv_free_type;
             platform->typeentry_info = amd64_sysv_typeentry_info;

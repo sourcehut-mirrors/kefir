@@ -51,7 +51,7 @@ typedef struct kefir_compiler_profile_configuration {
     kefir_compiler_profile_char_signedness_t char_signedness;
 } kefir_compiler_profile_configuration_t;
 
-kefir_result_t kefir_compiler_profile(struct kefir_compiler_profile *, const char *,
+kefir_result_t kefir_compiler_profile(struct kefir_mem *, struct kefir_compiler_profile *, const char *,
                                       const struct kefir_compiler_profile_configuration *);
 
 #endif

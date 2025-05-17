@@ -50,7 +50,7 @@ const struct kefir_data_model_descriptor *kefir_util_default_data_model(void) {
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
-        .scalar_width = {.char_bits = 8,
+        .scalar_width = {.bool_bits = 8, .char_bits = 8,
                          .short_bits = 16,
                          .int_bits = 32,
                          .long_bits = 64,

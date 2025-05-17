@@ -41,6 +41,7 @@ typedef struct kefir_ir_target_platform_typeentry_info {
 } kefir_ir_target_platform_typeentry_info_t;
 
 typedef struct kefir_ir_target_platform {
+    const struct kefir_data_model_descriptor *data_model;
     kefir_result_t (*get_type)(struct kefir_mem *, const struct kefir_ir_target_platform *,
                                const struct kefir_ir_type *, kefir_ir_target_platform_type_handle_t *);
     kefir_result_t (*free_type)(struct kefir_mem *, kefir_ir_target_platform_type_handle_t);
