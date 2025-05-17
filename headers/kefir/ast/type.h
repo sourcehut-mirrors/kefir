@@ -50,10 +50,8 @@ typedef struct kefir_ast_type_ops {
 
 typedef struct kefir_ast_type {
     kefir_ast_type_tag_t tag;
-    kefir_bool_t basic;
     struct kefir_ast_type_ops ops;
     union {
-        struct kefir_ast_basic_type_properties basic_type;
         const struct kefir_ast_type *referenced_type;
         struct kefir_ast_enum_type enumeration_type;
         struct kefir_ast_struct_type structure_type;
@@ -64,6 +62,8 @@ typedef struct kefir_ast_type {
 } kefir_ast_type_t;
 
 typedef struct kefir_ast_type_traits {
+    kefir_result_t (*integral_type_rank)(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
+                                         kefir_size_t *);
     kefir_result_t (*integral_type_fits)(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
                                          const struct kefir_ast_type *, kefir_bool_t *);
     kefir_result_t (*pointer_type_fits)(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,

@@ -153,7 +153,6 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_enumeration(struct kefir_
         });
     }
     type->tag = KEFIR_AST_TYPE_ENUMERATION;
-    type->basic = false;
     type->ops.same = same_enumeration_type;
     type->ops.compatible = compatible_enumeration_types;
     type->ops.composite = composite_enum_types;
@@ -265,7 +264,6 @@ const struct kefir_ast_type *kefir_ast_type_enumeration(struct kefir_mem *mem,
         });
     }
     type->tag = KEFIR_AST_TYPE_ENUMERATION;
-    type->basic = false;
     type->ops.same = same_enumeration_type;
     type->ops.compatible = compatible_enumeration_types;
     type->ops.composite = composite_enum_types;

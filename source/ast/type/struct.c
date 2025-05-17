@@ -301,7 +301,6 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
         });
     }
     type->tag = KEFIR_AST_TYPE_STRUCTURE;
-    type->basic = false;
     type->ops.same = same_structure_type;
     type->ops.compatible = compatible_structure_types;
     type->ops.composite = composite_struct_types;
@@ -333,7 +332,6 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
         });
     }
     type->tag = KEFIR_AST_TYPE_UNION;
-    type->basic = false;
     type->ops.same = same_union_type;
     type->ops.compatible = compatible_union_types;
     type->ops.composite = composite_union_types;
@@ -488,7 +486,6 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
         });
     }
     type->tag = KEFIR_AST_TYPE_STRUCTURE;
-    type->basic = false;
     type->ops.same = same_structure_type;
     type->ops.compatible = compatible_structure_types;
     type->ops.composite = composite_struct_types;
@@ -540,7 +537,6 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
         });
     }
     type->tag = KEFIR_AST_TYPE_UNION;
-    type->basic = false;
     type->ops.same = same_union_type;
     type->ops.compatible = compatible_union_types;
     type->ops.composite = composite_union_types;

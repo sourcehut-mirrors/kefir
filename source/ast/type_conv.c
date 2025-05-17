@@ -39,7 +39,15 @@ const struct kefir_ast_type *kefir_ast_type_int_promotion(const struct kefir_ast
 
     const struct kefir_ast_type *SIGNED_INT = kefir_ast_type_signed_int();
     const struct kefir_ast_type *UNSIGNED_INT = kefir_ast_type_unsigned_int();
-    if (type->basic_type.rank < SIGNED_INT->basic_type.rank) {
+
+    kefir_size_t type_rank, signed_int_rank;
+    if (type_traits->integral_type_rank(type_traits, type, &type_rank) != KEFIR_OK) {
+        return NULL;
+    }
+    if (type_traits->integral_type_rank(type_traits, SIGNED_INT, &signed_int_rank) != KEFIR_OK) {
+        return NULL;
+    }
+    if (type_rank < signed_int_rank) {
         kefir_bool_t fits = false;
         if (type_traits->integral_type_fits(type_traits, type, SIGNED_INT, &fits) == KEFIR_OK && fits) {
             return SIGNED_INT;
@@ -118,8 +126,16 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     REQUIRE(kefir_ast_type_is_signed(type_traits, type1, &type1_sign) == KEFIR_OK, NULL);
     REQUIRE(kefir_ast_type_is_signed(type_traits, type2, &type2_sign) == KEFIR_OK, NULL);
 
+    kefir_size_t type1_rank, type2_rank;
+    if (type_traits->integral_type_rank(type_traits, type1, &type1_rank) != KEFIR_OK) {
+        return NULL;
+    }
+    if (type_traits->integral_type_rank(type_traits, type2, &type2_rank) != KEFIR_OK) {
+        return NULL;
+    }
+
     if (type1_sign == type2_sign) {
-        if (type1->basic_type.rank > type2->basic_type.rank) {
+        if (type1_rank > type2_rank) {
             return type1;
         } else {
             return type2;
@@ -127,10 +143,10 @@ const struct kefir_ast_type *kefir_ast_type_common_arithmetic(const struct kefir
     }
     kefir_bool_t fits = false;
     if (!type1_sign) {
-        if (type1->basic_type.rank >= type2->basic_type.rank) {
+        if (type1_rank >= type2_rank) {
             return type1;
         }
-    } else if (type2->basic_type.rank >= type1->basic_type.rank) {
+    } else if (type2_rank >= type1_rank) {
         return type2;
     }
     if (type1_sign) {

@@ -42,10 +42,9 @@ kefir_result_t kefir_ast_type_function_get_parameter(const struct kefir_ast_func
 }
 
 kefir_result_t kefir_ast_type_function_named_parameter(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
-                                                 struct kefir_ast_function_type *function_type,
-                                                 const char *identifier,
-                                                 const struct kefir_ast_type *type,
-                                                 const kefir_ast_scoped_identifier_storage_t *storage) {
+                                                       struct kefir_ast_function_type *function_type,
+                                                       const char *identifier, const struct kefir_ast_type *type,
+                                                       const kefir_ast_scoped_identifier_storage_t *storage) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type storage"));
     REQUIRE(function_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST finction type"));
@@ -267,7 +266,6 @@ const struct kefir_ast_type *kefir_ast_type_function(struct kefir_mem *mem, stru
         });
     }
     type->tag = KEFIR_AST_TYPE_FUNCTION;
-    type->basic = false;
     type->ops.same = same_function_type;
     type->ops.compatible = compatible_function_types;
     type->ops.composite = composite_function_types;

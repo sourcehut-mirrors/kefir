@@ -65,7 +65,6 @@ static kefir_result_t free_nothing(struct kefir_mem *mem, const struct kefir_ast
 }
 
 static const struct kefir_ast_type SCALAR_VOID = {.tag = KEFIR_AST_TYPE_VOID,
-                                                  .basic = false,
                                                   .ops = {.same = same_basic_type,
                                                           .compatible = compatible_basic_types,
                                                           .composite = composite_basic_types,
@@ -76,7 +75,6 @@ const struct kefir_ast_type *kefir_ast_type_void(void) {
 }
 
 static const struct kefir_ast_type AUTO_TYPE = {.tag = KEFIR_AST_TYPE_AUTO,
-                                                .basic = false,
                                                 .ops = {.same = same_basic_type,
                                                         .compatible = compatible_basic_types,
                                                         .composite = composite_basic_types,
@@ -86,40 +84,37 @@ const struct kefir_ast_type *kefir_ast_type_auto(void) {
     return &AUTO_TYPE;
 }
 
-#define SCALAR_TYPE(id, _tag, _rank)                                                                        \
+#define SCALAR_TYPE(id, _tag)                                                                               \
     static const struct kefir_ast_type DEFAULT_SCALAR_##id = {.tag = (_tag),                                \
-                                                              .basic = true,                                \
                                                               .ops = {.same = same_basic_type,              \
                                                                       .compatible = compatible_basic_types, \
                                                                       .composite = composite_basic_types,   \
-                                                                      .free = free_nothing},                \
-                                                              .basic_type = {.rank = (_rank)}};             \
+                                                                      .free = free_nothing}};               \
                                                                                                             \
     const struct kefir_ast_type *kefir_ast_type_##id(void) {                                                \
         return &DEFAULT_SCALAR_##id;                                                                        \
     }
 
-SCALAR_TYPE(boolean, KEFIR_AST_TYPE_SCALAR_BOOL, 0)
-SCALAR_TYPE(char, KEFIR_AST_TYPE_SCALAR_CHAR, 1)
-SCALAR_TYPE(unsigned_char, KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR, 1)
-SCALAR_TYPE(signed_char, KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR, 1)
-SCALAR_TYPE(unsigned_short, KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT, 2)
-SCALAR_TYPE(signed_short, KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT, 2)
-SCALAR_TYPE(unsigned_int, KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT, 3)
-SCALAR_TYPE(signed_int, KEFIR_AST_TYPE_SCALAR_SIGNED_INT, 3)
-SCALAR_TYPE(unsigned_long, KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG, 4)
-SCALAR_TYPE(signed_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG, 4)
-SCALAR_TYPE(unsigned_long_long, KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG, 4)
-SCALAR_TYPE(signed_long_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG, 4)
-SCALAR_TYPE(float, KEFIR_AST_TYPE_SCALAR_FLOAT, 5)
-SCALAR_TYPE(double, KEFIR_AST_TYPE_SCALAR_DOUBLE, 6)
-SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE, 7)
+SCALAR_TYPE(boolean, KEFIR_AST_TYPE_SCALAR_BOOL)
+SCALAR_TYPE(char, KEFIR_AST_TYPE_SCALAR_CHAR)
+SCALAR_TYPE(unsigned_char, KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR)
+SCALAR_TYPE(signed_char, KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR)
+SCALAR_TYPE(unsigned_short, KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT)
+SCALAR_TYPE(signed_short, KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT)
+SCALAR_TYPE(unsigned_int, KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT)
+SCALAR_TYPE(signed_int, KEFIR_AST_TYPE_SCALAR_SIGNED_INT)
+SCALAR_TYPE(unsigned_long, KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG)
+SCALAR_TYPE(signed_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG)
+SCALAR_TYPE(unsigned_long_long, KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG)
+SCALAR_TYPE(signed_long_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG)
+SCALAR_TYPE(float, KEFIR_AST_TYPE_SCALAR_FLOAT)
+SCALAR_TYPE(double, KEFIR_AST_TYPE_SCALAR_DOUBLE)
+SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
 
 #undef SCALAR_TYPE
 
-#define COMPLEX_TYPE(id, _tag, _rank)                                                                        \
+#define COMPLEX_TYPE(id, _tag)                                                                               \
     static const struct kefir_ast_type DEFAULT_COMPLEX_##id = {.tag = (_tag),                                \
-                                                               .basic = true,                                \
                                                                .ops = {.same = same_basic_type,              \
                                                                        .compatible = compatible_basic_types, \
                                                                        .composite = composite_basic_types,   \
@@ -129,9 +124,9 @@ SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE, 7)
         return &DEFAULT_COMPLEX_##id;                                                                        \
     }
 
-COMPLEX_TYPE(float, KEFIR_AST_TYPE_COMPLEX_FLOAT, 5)
-COMPLEX_TYPE(double, KEFIR_AST_TYPE_COMPLEX_DOUBLE, 6)
-COMPLEX_TYPE(long_double, KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE, 7)
+COMPLEX_TYPE(float, KEFIR_AST_TYPE_COMPLEX_FLOAT)
+COMPLEX_TYPE(double, KEFIR_AST_TYPE_COMPLEX_DOUBLE)
+COMPLEX_TYPE(long_double, KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE)
 
 #undef COMPLEX_TYPE
 

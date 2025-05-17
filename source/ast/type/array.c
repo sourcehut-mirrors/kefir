@@ -158,7 +158,6 @@ static struct kefir_ast_type *kefir_ast_type_array_impl(struct kefir_mem *mem,
         });
     }
     type->tag = KEFIR_AST_TYPE_ARRAY;
-    type->basic = false;
     type->ops.same = same_array_type;
     type->ops.compatible = compatbile_array_types;
     type->ops.composite = composite_array_types;

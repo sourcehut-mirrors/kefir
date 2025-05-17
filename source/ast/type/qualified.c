@@ -99,7 +99,6 @@ const struct kefir_ast_type *kefir_ast_type_qualified(struct kefir_mem *mem, str
         base_type = base_type->qualified_type.type;
     }
     type->tag = KEFIR_AST_TYPE_QUALIFIED;
-    type->basic = false;
     type->ops.same = same_qualified_type;
     type->ops.compatible = compatbile_qualified_types;
     type->ops.composite = composite_qualified_types;

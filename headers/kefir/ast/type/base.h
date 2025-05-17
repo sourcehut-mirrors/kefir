@@ -26,6 +26,7 @@
 
 typedef struct kefir_ast_type kefir_ast_type_t;
 typedef struct kefir_ast_type_bundle kefir_ast_type_bundle_t;
+typedef struct kefir_ast_type_traits kefir_ast_type_traits_t;
 
 typedef enum kefir_ast_type_tag {
     KEFIR_AST_TYPE_VOID,

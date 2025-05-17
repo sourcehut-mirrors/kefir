@@ -23,10 +23,6 @@
 
 #include "kefir/ast/type/base.h"
 
-typedef struct kefir_ast_basic_type_properties {
-    kefir_size_t rank;
-} kefir_ast_basic_type_properties_t;
-
 #define SCALAR_TYPE(id) const struct kefir_ast_type *kefir_ast_type_##id(void)
 SCALAR_TYPE(void);
 SCALAR_TYPE(auto);

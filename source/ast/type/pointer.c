@@ -75,7 +75,6 @@ const struct kefir_ast_type *kefir_ast_type_pointer(struct kefir_mem *mem, struc
         });
     }
     type->tag = KEFIR_AST_TYPE_SCALAR_POINTER;
-    type->basic = false;
     type->ops.same = same_pointer_type;
     type->ops.compatible = compatible_pointer_types;
     type->ops.composite = composite_pointer_types;
