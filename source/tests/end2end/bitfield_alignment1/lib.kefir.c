@@ -1,0 +1,37 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#include "./definitions.h"
+
+struct S3 {
+    int : 24;
+};
+
+struct S4 {
+    int : 12, : 12;
+};
+
+struct __attribute__((packed)) S6 {
+    int : 24;
+};
+
+int sz_align[] = {sizeof(struct S1), _Alignof(struct S1), sizeof(struct S2), _Alignof(struct S2),
+                  sizeof(struct S3), _Alignof(struct S3), sizeof(struct S4), _Alignof(struct S4),
+                  sizeof(struct S5), _Alignof(struct S5), sizeof(struct S6), _Alignof(struct S6)};

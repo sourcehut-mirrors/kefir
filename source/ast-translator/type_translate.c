@@ -312,7 +312,7 @@ static kefir_result_t set_packed(const struct kefir_ir_type *type, kefir_size_t 
     UNUSED(payload);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR type"));
 
-    if (kefir_ir_type_at(type, index)->alignment == 0) {
+    if (kefir_ir_type_at(type, index)->alignment == 0 || typeentry->typecode == KEFIR_IR_TYPE_BITS /* Bit-fields cannot have user-defined alignment, and the default aligment can be overriden by packed attribute */) {
         kefir_ir_type_at(type, index)->alignment = 1;
     }
     return KEFIR_OK;
