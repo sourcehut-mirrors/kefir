@@ -36,102 +36,61 @@ static kefir_result_t default_integral_type_rank(const struct kefir_ast_type_tra
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid integral AST type"));
     REQUIRE(rank_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST type rank"));
 
+    ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
     switch (type->tag) {
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            *rank_ptr = 0;
+            *rank_ptr = 1;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
-            *rank_ptr = 1;
+            *rank_ptr = data_model->scalar_width.char_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            *rank_ptr = 1;
+            *rank_ptr = data_model->scalar_width.char_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            *rank_ptr = 1;
+            *rank_ptr = data_model->scalar_width.char_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            *rank_ptr = 2;
+            *rank_ptr = data_model->scalar_width.short_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            *rank_ptr = 2;
+            *rank_ptr = data_model->scalar_width.short_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            *rank_ptr = 3;
+            *rank_ptr = data_model->scalar_width.int_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            *rank_ptr = 3;
+            *rank_ptr = data_model->scalar_width.int_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            *rank_ptr = 4;
+            *rank_ptr = data_model->scalar_width.long_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            *rank_ptr = 4;
+            *rank_ptr = data_model->scalar_width.long_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            *rank_ptr = 4;
+            *rank_ptr = data_model->scalar_width.long_long_bits;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            *rank_ptr = 4;
+            *rank_ptr = data_model->scalar_width.long_long_bits;
             break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected scalar AST type");
     }
     return KEFIR_OK;
-}
-
-static kefir_size_t default_integral_type_fit_rank(const struct kefir_ast_type *type,
-                                                   kefir_data_model_tag_t data_model) {
-    switch (type->tag) {
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            return 1;
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            if (data_model == KEFIR_DATA_MODEL_SILP64) {
-                return 8;
-            } else {
-                return 2;
-            }
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            if (data_model == KEFIR_DATA_MODEL_SILP64 || data_model == KEFIR_DATA_MODEL_ILP64) {
-                return 8;
-            } else {
-                return 4;
-            }
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            if (data_model == KEFIR_DATA_MODEL_ILP32 || data_model == KEFIR_DATA_MODEL_LLP64) {
-                return 4;
-            } else {
-                return 8;
-            }
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            return 8;
-
-        default:
-            return 0;
-    }
 }
 
 static kefir_result_t default_integral_type_fits(const struct kefir_ast_type_traits *type_traits,
@@ -145,20 +104,19 @@ static kefir_result_t default_integral_type_fits(const struct kefir_ast_type_tra
                 (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(dest) || dest->tag == KEFIR_AST_TYPE_SCALAR_BOOL),
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected both source and destination to be basic types"));
 
-    ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
-
-    kefir_size_t source_fit = default_integral_type_fit_rank(source, data_model->model);
-    kefir_size_t dest_fit = default_integral_type_fit_rank(dest, data_model->model);
-    REQUIRE(source_fit != 0 && dest_fit != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integral type"));
+    kefir_size_t source_rank = 0, destination_rank = 0;
+    REQUIRE_OK(default_integral_type_rank(type_traits, source, &source_rank));
+    REQUIRE_OK(default_integral_type_rank(type_traits, dest, &destination_rank));
+    REQUIRE(source_rank != 0 && destination_rank != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integral type"));
 
     kefir_bool_t src_sign, dst_sign;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, source, &src_sign));
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, dest, &dst_sign));
 
     if (src_sign == dst_sign || (src_sign && !dst_sign)) {
-        *result = source_fit <= dest_fit;
+        *result = source_rank <= destination_rank;
     } else if (!src_sign && dst_sign) {
-        *result = source_fit < dest_fit;
+        *result = source_rank < destination_rank;
     } else {
         *result = false;
     }
