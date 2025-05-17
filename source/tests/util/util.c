@@ -50,9 +50,14 @@ const struct kefir_data_model_descriptor *kefir_util_default_data_model(void) {
     static const struct kefir_data_model_descriptor DATA_MODEL_DESCRIPTOR = {
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
-        .int_width = {.short_int = 16, .integer = 32, .long_int = 64, .long_long_int = 64},
-        .floating_point = {.float_bits = 32, .double_bits = 64, .long_double_bits = 128},
-        .char_bit = 8};
+        .scalar_width = {.char_bits = 8,
+                         .short_bits = 16,
+                         .int_bits = 32,
+                         .long_bits = 64,
+                         .long_long_bits = 64,
+                         .float_bits = 32,
+                         .double_bits = 64,
+                         .long_double_bits = 128}};
     return &DATA_MODEL_DESCRIPTOR;
 }
 

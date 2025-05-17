@@ -43,17 +43,15 @@ typedef struct kefir_data_model_descriptor {
     kefir_data_model_tag_t model;
     kefir_byte_order_t byte_order;
     struct {
-        kefir_size_t short_int;
-        kefir_size_t integer;
-        kefir_size_t long_int;
-        kefir_size_t long_long_int;
-    } int_width;
-    kefir_size_t char_bit;
-    struct {
+        kefir_size_t char_bits;
+        kefir_size_t short_bits;
+        kefir_size_t int_bits;
+        kefir_size_t long_bits;
+        kefir_size_t long_long_bits;
         kefir_size_t float_bits;
         kefir_size_t double_bits;
         kefir_size_t long_double_bits;
-    } floating_point;
+    } scalar_width;
 } kefir_data_model_descriptor_t;
 
 #endif

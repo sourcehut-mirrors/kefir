@@ -79,11 +79,12 @@ kefir_result_t kefir_lexer_context_integral_width_from_data_model(
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to parser context"));
     REQUIRE(data_model != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid data model"));
 
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.integer, true, &context->integer_max_value));
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.integer, false, &context->uinteger_max_value));
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.long_int, true, &context->long_max_value));
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.long_int, false, &context->ulong_max_value));
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.long_long_int, true, &context->long_long_max_value));
-    REQUIRE_OK(match_max_value_by_width(data_model->int_width.long_long_int, false, &context->ulong_long_max_value));
+    REQUIRE_OK(match_max_value_by_width(data_model->scalar_width.int_bits, true, &context->integer_max_value));
+    REQUIRE_OK(match_max_value_by_width(data_model->scalar_width.int_bits, false, &context->uinteger_max_value));
+    REQUIRE_OK(match_max_value_by_width(data_model->scalar_width.long_bits, true, &context->long_max_value));
+    REQUIRE_OK(match_max_value_by_width(data_model->scalar_width.long_bits, false, &context->ulong_max_value));
+    REQUIRE_OK(match_max_value_by_width(data_model->scalar_width.long_long_bits, true, &context->long_long_max_value));
+    REQUIRE_OK(
+        match_max_value_by_width(data_model->scalar_width.long_long_bits, false, &context->ulong_long_max_value));
     return KEFIR_OK;
 }
