@@ -28,6 +28,7 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __FUNCTION__ __func__
 #define __thread _Thread_local
 #define __extension__
+#define __label__ void *
 
 #define __USER_LABEL_PREFIX__
 
@@ -77,8 +78,39 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 } __builtin_va_list[1];
 #endif
 
+// Floating-point
 #define __FLOAT_WORD_ORDER__ __BYTE_ORDER__
-#define __label__ void *
+#define __FLT_RADIX__ 2
+#define __FLT_MANT_DIG__ 24
+#define __DBL_MANT_DIG__ 53
+#define __LDBL_MANT_DIG__ 64
+#define __FLT_DIG__ 6
+#define __DBL_DIG__ 15
+#define __LDBL_DIG__ 18
+#define __FLT_DECIMAL_DIG__ 9
+#define __DBL_DECIMAL_DIG__ 17
+#define __LDBL_DECIMAL_DIG__ 21
+#define __FLT_MIN_EXP__ (-125)
+#define __DBL_MIN_EXP__ (-1021)
+#define __LDBL_MIN_EXP__ (-16381)
+#define __FLT_MIN_10_EXP__ (-37)
+#define __DBL_MIN_10_EXP__ (-307)
+#define __LDBL_MIN_10_EXP__ (-4931)
+#define __FLT_MAX_EXP__ 128
+#define __DBL_MAX_EXP__ 1024
+#define __LDBL_MAX_EXP__ 16384
+#define __FLT_MAX_10_EXP__ 38
+#define __DBL_MAX_10_EXP__ 308
+#define __LDBL_MAX_10_EXP__ 4932
+#define __FLT_MIN__ 1.17549435082228750797e-38F
+#define __DBL_MIN__ 2.22507385850720138309e-308
+#define __LDBL_MIN__ 3.3621031431120935063e-4932L
+#define __FLT_EPSILON__ 1.1920928955078125e-07F
+#define __DBL_EPSILON__ 2.22044604925031308085e-16
+#define __LDBL_EPSILON__ 1.0842021724855044340e-19L
+#define __FLT_MAX__ 3.40282346638528859812e+38F
+#define __DBL_MAX__ 1.79769313486231570815e+308
+#define __LDBL_MAX__ 1.1897314953572317650e+4932L
 
 // Type width
 #ifdef __LP64__

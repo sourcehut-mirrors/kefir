@@ -51,52 +51,7 @@ const struct kefir_data_model_descriptor *kefir_util_default_data_model(void) {
         .model = KEFIR_DATA_MODEL_LP64,
         .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
         .int_width = {.short_int = 16, .integer = 32, .long_int = 64, .long_long_int = 64},
-        .floating_point = {.float_bits = 32,
-                           .double_bits = 64,
-                           .long_double_bits = 128,
-                           .float_radix = FLT_RADIX,
-                           .float_mantissa_digits = FLT_MANT_DIG,
-                           .double_mantissa_digits = DBL_MANT_DIG,
-                           .long_double_mantissa_digits = LDBL_MANT_DIG,
-                           .float_digits = FLT_DIG,
-                           .double_digits = DBL_DIG,
-                           .long_double_digits = LDBL_DIG,
-#ifdef FLT_DECIMAL_DIG
-                           .float_decimal_digits = FLT_DECIMAL_DIG,
-#else
-                           .float_decimal_digits = 9,
-#endif
-#ifdef DBL_DECIMAL_DIG
-                           .double_decimal_digits = DBL_DECIMAL_DIG,
-#else
-                           .double_decimal_digits = 17,
-#endif
-#ifdef LDBL_DECIMAL_DIG
-                           .long_double_decimal_digits = LDBL_DECIMAL_DIG,
-#else
-                           .long_double_decimal_digits = 21,
-#endif
-                           .float_min_exponent = FLT_MIN_EXP,
-                           .double_min_exponent = DBL_MIN_EXP,
-                           .long_double_min_exponent = LDBL_MIN_EXP,
-                           .float_min10_exponent = FLT_MIN_10_EXP,
-                           .double_min10_exponent = DBL_MIN_10_EXP,
-                           .long_double_min10_exponent = LDBL_MIN_10_EXP,
-                           .float_max_exponent = FLT_MAX_EXP,
-                           .double_max_exponent = DBL_MAX_EXP,
-                           .long_double_max_exponent = LDBL_MAX_EXP,
-                           .float_max10_exponent = FLT_MAX_10_EXP,
-                           .double_max10_exponent = DBL_MAX_10_EXP,
-                           .long_double_max10_exponent = LDBL_MAX_10_EXP,
-                           .float_max = "3.40282346638528859812e+38F",
-                           .double_max = "1.79769313486231570815e+308",
-                           .long_double_max = "1.1897314953572317650e+4932L",
-                           .float_epsilon = "1.1920928955078125e-07F",
-                           .double_epsilon = "2.22044604925031308085e-16",
-                           .long_double_epsilon = "1.0842021724855044340e-19L",
-                           .float_min = "1.17549435082228750797e-38F",
-                           .double_min = "2.22507385850720138309e-308",
-                           .long_double_min = "3.3621031431120935063e-4932L"},
+        .floating_point = {.float_bits = 32, .double_bits = 64, .long_double_bits = 128},
         .char_bit = 8};
     return &DATA_MODEL_DESCRIPTOR;
 }
