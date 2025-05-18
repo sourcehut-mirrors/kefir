@@ -374,6 +374,7 @@ ATOMIC_STORE_OP(atomic_store64);
 ATOMIC_STORE_OP(atomic_store_long_double);
 ATOMIC_STORE_OP(atomic_store_complex_float32);
 ATOMIC_STORE_OP(atomic_store_complex_float64);
+ATOMIC_STORE_OP(atomic_store_complex_long_double);
 
 #undef ATOMIC_STORE_OP
 

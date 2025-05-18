@@ -600,6 +600,10 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE,
+                                                       atomic_memory_order));
+            break;
+
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,

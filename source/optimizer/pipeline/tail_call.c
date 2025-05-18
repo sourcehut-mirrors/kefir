@@ -161,6 +161,7 @@ static kefir_result_t escape_analyze(kefir_opt_instruction_ref_t instr_ref, void
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));
             REQUIRE_OK(check_escape(instr->operation.parameters.refs[0], param));
             REQUIRE_OK(kefir_hashtreeset_clean(param->mem, &param->visited_instr));

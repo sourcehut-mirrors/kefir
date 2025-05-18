@@ -711,6 +711,7 @@ static kefir_result_t format_operation_atomic_op(struct kefir_json_output *json,
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32:
         case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64:
+        case KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(kefir_json_output_object_key(json, "location"));
             REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

@@ -330,6 +330,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(atomic_store_long_double, KEFIR_OPT_OPCODE_ATOMIC_STORE_LONG_DOUBLE) _separator \
     _def(atomic_store_complex_float, KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32) _separator \
     _def(atomic_store_complex_float, KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64) _separator \
+    _def(atomic_store_complex_long_double, KEFIR_OPT_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE) _separator \
     _def(atomic_copy_memory, KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_FROM) _separator \
     _def(atomic_copy_memory, KEFIR_OPT_OPCODE_ATOMIC_COPY_MEMORY_TO) _separator \
     _def(atomic_compare_exchange, KEFIR_OPT_OPCODE_ATOMIC_CMPXCHG8) _separator \

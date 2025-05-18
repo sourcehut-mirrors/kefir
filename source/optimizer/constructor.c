@@ -965,6 +965,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             ATOMIC_STORE_OP(atomic_store_long_double, KEFIR_IR_OPCODE_ATOMIC_STORE_LONG_DOUBLE)
             ATOMIC_STORE_OP(atomic_store_complex_float32, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32)
             ATOMIC_STORE_OP(atomic_store_complex_float64, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64)
+            ATOMIC_STORE_OP(atomic_store_complex_long_double, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_LONG_DOUBLE)
 
 #undef ATOMIC_STORE_OP
 
