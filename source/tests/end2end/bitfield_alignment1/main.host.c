@@ -18,9 +18,9 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include "./definitions.h"
 #include <stdlib.h>
 #include <assert.h>
-#include "./definitions.h"
 
 int main(void) {
     assert(sz_align[0] == sizeof(struct S1));
