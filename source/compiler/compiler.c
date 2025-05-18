@@ -144,7 +144,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     context->preprocessor_context.parser_scope = &context->parser_scope;
     context->preprocessor_context.preprocessor_config = &context->preprocessor_configuration;
     context->codegen_configuration = KefirCodegenDefaultConfiguration;
-    context->preprocessor_context.environment.data_model = profile->data_model;
+    context->preprocessor_context.environment.data_model = profile->ir_target_platform.data_model;
     context->profile = profile;
     context->source_locator = source_locator;
 

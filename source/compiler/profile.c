@@ -77,7 +77,6 @@ static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *pro
 
     memcpy(profile,
            &(struct kefir_compiler_profile) {.optimizer_enabled = true,
-                                             .data_model = profile->ir_target_platform.data_model,
                                              .type_traits = type_traits,
                                              .new_codegen = amd64_new_codegen,
                                              .free_codegen = amd64_sysv_free_codegen,
@@ -86,7 +85,7 @@ static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *pro
            sizeof(struct kefir_compiler_profile));
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));
-    REQUIRE_OK(kefir_lexer_context_integral_width_from_data_model(&profile->lexer_context, profile->data_model));
+    REQUIRE_OK(kefir_lexer_context_integral_width_from_data_model(&profile->lexer_context, profile->ir_target_platform.data_model));
     return KEFIR_OK;
 }
 

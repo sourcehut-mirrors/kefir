@@ -29,7 +29,6 @@
 struct kefir_ir_target_platform *kft_util_get_ir_target_platform(void);
 struct kefir_ast_translator_environment *kft_util_get_translator_environment(void);
 const struct kefir_ast_type_traits *kefir_util_default_type_traits(void);
-const struct kefir_data_model_descriptor *kefir_util_default_data_model(void);
 
 typedef struct kefir_ast_context_manager {
     struct kefir_ast_global_context *global;

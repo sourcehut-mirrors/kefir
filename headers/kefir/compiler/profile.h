@@ -32,7 +32,6 @@ typedef struct kefir_compiler_profile {
     struct kefir_lexer_context lexer_context;
     const struct kefir_ast_type_traits type_traits;
     struct kefir_ir_target_platform ir_target_platform;
-    const struct kefir_data_model_descriptor *data_model;
     kefir_bool_t optimizer_enabled;
     const char *runtime_include_dirname;
 
