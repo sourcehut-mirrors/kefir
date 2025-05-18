@@ -38,54 +38,55 @@ static kefir_result_t default_integral_type_rank(const struct kefir_ast_type_tra
 
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
     switch (type->tag) {
-
+#define MAKE_RANK(_base, _width) ((((kefir_uint64_t) (_base)) << 32) | ((kefir_uint32_t) (_width)))
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            *rank_ptr = 1;
+            *rank_ptr = MAKE_RANK(0, data_model->scalar_width.bool_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
-            *rank_ptr = data_model->scalar_width.char_bits;
+            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            *rank_ptr = data_model->scalar_width.char_bits;
+            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            *rank_ptr = data_model->scalar_width.char_bits;
+            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            *rank_ptr = data_model->scalar_width.short_bits;
+            *rank_ptr = MAKE_RANK(2, data_model->scalar_width.short_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            *rank_ptr = data_model->scalar_width.short_bits;
+            *rank_ptr = MAKE_RANK(2, data_model->scalar_width.short_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            *rank_ptr = data_model->scalar_width.int_bits;
+            *rank_ptr = MAKE_RANK(3, data_model->scalar_width.int_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            *rank_ptr = data_model->scalar_width.int_bits;
+            *rank_ptr = MAKE_RANK(3, data_model->scalar_width.int_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            *rank_ptr = data_model->scalar_width.long_bits;
+            *rank_ptr = MAKE_RANK(4, data_model->scalar_width.long_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            *rank_ptr = data_model->scalar_width.long_bits;
+            *rank_ptr = MAKE_RANK(4, data_model->scalar_width.long_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            *rank_ptr = data_model->scalar_width.long_long_bits;
+            *rank_ptr = MAKE_RANK(5, data_model->scalar_width.long_long_bits);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            *rank_ptr = data_model->scalar_width.long_long_bits;
+            *rank_ptr = MAKE_RANK(5, data_model->scalar_width.long_long_bits);
             break;
+#undef MAKE_RANK
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected scalar AST type");
