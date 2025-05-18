@@ -215,27 +215,26 @@ __kefir_text_func_ior_i8_end:
 
 shl_i8:
 __kefir_text_func_shl_i8_begin:
-    movsx %sil, %rsi
 _kefir_func_shl_i8_label1:
     movb (%rdi), %al
-    movsx %al, %rax
-    mov %rax, %r8
+    movsx %al, %r8
+    mov %rax, %r9
     mov %rsi, %rcx
-    shl %cl, %r8d
+    shl %cl, %r9b
     mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %r9, %rcx
+    mov %r8, %rax
     lock     cmpxchgb %cl, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_shl_i8_label1
-    mov %r8, %rax
+    mov %r9, %rax
     ret
 __kefir_text_func_shl_i8_end:
 
 shr_i8:
 __kefir_text_func_shr_i8_begin:
-    movsx %sil, %rsi
 _kefir_func_shr_i8_label1:
     movb (%rdi), %al
     movsx %al, %r8
@@ -502,21 +501,21 @@ __kefir_text_func_ixor_i8_end:
 
 shl_i16:
 __kefir_text_func_shl_i16_begin:
-    movsx %si, %rsi
 _kefir_func_shl_i16_label1:
     movw (%rdi), %ax
-    movsx %ax, %rax
-    mov %rax, %r8
+    movsx %ax, %r8
+    mov %rax, %r9
     mov %rsi, %rcx
-    shl %cl, %r8d
+    shl %cl, %r9w
     mov %rdi, %rdx
-    mov %r8, %rcx
+    mov %r9, %rcx
+    mov %r8, %rax
     lock     cmpxchgw %cx, (%rdx)
     sete %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_shl_i16_label1
-    mov %r8, %rax
+    mov %r9, %rax
     ret
 __kefir_text_func_shl_i16_end:
 
@@ -560,7 +559,6 @@ __kefir_text_func_shl_i64_end:
 
 shr_i16:
 __kefir_text_func_shr_i16_begin:
-    movsx %si, %rsi
 _kefir_func_shr_i16_label1:
     movw (%rdi), %ax
     movsx %ax, %r8

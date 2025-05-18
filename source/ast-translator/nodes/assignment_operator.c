@@ -187,6 +187,7 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
     REQUIRE(value_normalized_type != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to perform lvalue conversions"));
     const struct kefir_ast_type *common_type = NULL;
+    const struct kefir_ast_type *operation_type = NULL;
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_normalized_type) &&
         KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_normalized_type)) {
         common_type = kefir_ast_type_common_arithmetic(context->ast_context->type_traits, target_normalized_type,
@@ -195,6 +196,11 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
                                                        node->value->properties.expression_props.bitfield_props);
         REQUIRE(common_type != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to determine common arithmetic type"));
+        if (node->operation != KEFIR_AST_ASSIGNMENT_SHIFT_LEFT && node->operation != KEFIR_AST_ASSIGNMENT_SHIFT_RIGHT) {
+            operation_type = common_type;
+        } else {
+            operation_type = target_normalized_type;
+        }
     }
     const struct kefir_ast_type *result_normalized_type =
         kefir_ast_translator_normalize_type(node->base.properties.type);
@@ -209,14 +215,14 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
                                                            .result_normalized_type = result_normalized_type};
 
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->value, builder, context));
-    if (common_type != NULL) {
+    if (operation_type != NULL) {
         REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                value_normalized_type, common_type));
+                                                value_normalized_type, operation_type));
     }
 
     kefir_bool_t preserve_fenv = false;
-    if (node->target->properties.expression_props.atomic && common_type != NULL &&
-        KEFIR_AST_TYPE_IS_FLOATING_POINT(common_type)) {
+    if (node->target->properties.expression_props.atomic && operation_type != NULL &&
+        KEFIR_AST_TYPE_IS_FLOATING_POINT(operation_type)) {
         preserve_fenv = true;
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FENV_SAVE, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
@@ -229,18 +235,18 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(
             kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
-        if (common_type != NULL) {
+        if (operation_type != NULL) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    target_normalized_type, common_type));
+                                                    target_normalized_type, operation_type));
         }
         REQUIRE(!atomic_aggregate_target_value,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
 
         REQUIRE_OK(reorder_assignment_arguments(builder));
         REQUIRE_OK(generate_op(&generate_params));
-        if (common_type != NULL) {
+        if (operation_type != NULL) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    common_type, result_normalized_type));
+                                                    operation_type, result_normalized_type));
         }
         REQUIRE_OK(store_value(mem, context, builder, node, result_normalized_type));
     } else {
@@ -248,9 +254,9 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(
             kefir_ast_translator_resolve_lvalue(mem, context, builder, node->target, &atomic_aggregate_target_value));
-        if (common_type != NULL) {
+        if (operation_type != NULL) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    target_normalized_type, common_type));
+                                                    target_normalized_type, operation_type));
         }
         REQUIRE(!atomic_aggregate_target_value,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic aggregate value"));
@@ -261,9 +267,9 @@ static kefir_result_t translate_binary_op(struct kefir_mem *mem, struct kefir_as
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
 
         REQUIRE_OK(generate_op(&generate_params));
-        if (common_type != NULL) {
+        if (operation_type != NULL) {
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                                    common_type, result_normalized_type));
+                                                    operation_type, result_normalized_type));
         }
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
@@ -454,10 +460,10 @@ static kefir_result_t generate_lshift(const struct generate_op_parameters *param
     REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(params->result_normalized_type),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected value of long double type"));
 
-    kefir_ast_type_data_model_classification_t common_type_classification;
-    REQUIRE_OK(kefir_ast_type_data_model_classify(params->context->ast_context->type_traits, params->common_type,
-                                                  &common_type_classification));
-    switch (common_type_classification) {
+    kefir_ast_type_data_model_classification_t result_type_classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(params->context->ast_context->type_traits, params->result_normalized_type,
+                                                  &result_type_classification));
+    switch (result_type_classification) {
         case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT8_LSHIFT, 0));
             break;
@@ -493,15 +499,15 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
     REQUIRE(!KEFIR_AST_TYPE_IS_LONG_DOUBLE(params->result_normalized_type),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected value of long double type"));
 
-    kefir_bool_t target_type_signed;
-    kefir_ast_type_data_model_classification_t target_type_classification;
+    kefir_bool_t result_type_signed;
+    kefir_ast_type_data_model_classification_t result_type_classification;
     REQUIRE_OK(kefir_ast_type_data_model_classify(params->context->ast_context->type_traits,
-                                                  params->target_normalized_type, &target_type_classification));
-    switch (target_type_classification) {
+                                                  params->result_normalized_type, &result_type_classification));
+    switch (result_type_classification) {
         case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
-                                                params->target_normalized_type, &target_type_signed));
-            if (target_type_signed) {
+                                                params->result_normalized_type, &result_type_signed));
+            if (result_type_signed) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT8_ARSHIFT, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT8_RSHIFT, 0));
@@ -510,8 +516,8 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
-                                                params->target_normalized_type, &target_type_signed));
-            if (target_type_signed) {
+                                                params->result_normalized_type, &result_type_signed));
+            if (result_type_signed) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT16_ARSHIFT, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT16_RSHIFT, 0));
@@ -520,8 +526,8 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT32:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
-                                                params->target_normalized_type, &target_type_signed));
-            if (target_type_signed) {
+                                                params->result_normalized_type, &result_type_signed));
+            if (result_type_signed) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT32_ARSHIFT, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT32_RSHIFT, 0));
@@ -530,8 +536,8 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
-                                                params->target_normalized_type, &target_type_signed));
-            if (target_type_signed) {
+                                                params->result_normalized_type, &result_type_signed));
+            if (result_type_signed) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_ARSHIFT, 0));
             } else {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_INT64_RSHIFT, 0));
