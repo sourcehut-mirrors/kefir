@@ -52,6 +52,7 @@ typedef struct kefir_ast_type {
     kefir_ast_type_tag_t tag;
     struct kefir_ast_type_ops ops;
     union {
+        struct kefir_ast_type_bit_precise_integer bitprecise;
         const struct kefir_ast_type *referenced_type;
         struct kefir_ast_enum_type enumeration_type;
         struct kefir_ast_struct_type structure_type;

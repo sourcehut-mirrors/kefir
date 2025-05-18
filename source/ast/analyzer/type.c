@@ -186,6 +186,8 @@ kefir_result_t kefir_ast_analyze_type(struct kefir_mem *mem, const struct kefir_
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:

@@ -25,7 +25,12 @@
 static kefir_bool_t same_basic_type(const struct kefir_ast_type *type1, const struct kefir_ast_type *type2) {
     REQUIRE(type1 != NULL, false);
     REQUIRE(type2 != NULL, false);
-    return type1->tag == type2->tag;
+    REQUIRE(type1->tag == type2->tag, false);
+    if (type1->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE ||
+        type1->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE) {
+        REQUIRE(type1->bitprecise.width == type2->bitprecise.width, false);
+    }
+    return true;
 }
 
 static kefir_bool_t compatible_basic_types(const struct kefir_ast_type_traits *type_traits,
@@ -34,11 +39,18 @@ static kefir_bool_t compatible_basic_types(const struct kefir_ast_type_traits *t
     REQUIRE(type1 != NULL, false);
     REQUIRE(type2 != NULL, false);
     if (type1->tag == KEFIR_AST_TYPE_ENUMERATION) {
-        return KEFIR_AST_TYPE_SAME(kefir_ast_enumeration_underlying_type(&type1->enumeration_type), type2);
+        return compatible_basic_types(type_traits, kefir_ast_enumeration_underlying_type(&type1->enumeration_type),
+                                      type2);
     } else if (type2->tag == KEFIR_AST_TYPE_ENUMERATION) {
-        return KEFIR_AST_TYPE_SAME(type1, kefir_ast_enumeration_underlying_type(&type2->enumeration_type));
+        return compatible_basic_types(type_traits, type1,
+                                      kefir_ast_enumeration_underlying_type(&type2->enumeration_type));
     }
-    return type1->tag == type2->tag;
+    REQUIRE(type1->tag == type2->tag, false);
+    if (type1->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE ||
+        type1->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE) {
+        REQUIRE(type1->bitprecise.width == type2->bitprecise.width, false);
+    }
+    return true;
 }
 
 const struct kefir_ast_type *composite_basic_types(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
@@ -130,6 +142,74 @@ COMPLEX_TYPE(long_double, KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE)
 
 #undef COMPLEX_TYPE
 
+static kefir_result_t free_bitprecise(struct kefir_mem *mem, const struct kefir_ast_type *type) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+
+    ASSIGN_DECL_CAST(void *, type_ptr, type);
+    memset(type_ptr, 0, sizeof(struct kefir_ast_type));
+    KEFIR_FREE(mem, type_ptr);
+    return KEFIR_OK;
+}
+
+const struct kefir_ast_type *kefir_ast_type_signed_bitprecise(struct kefir_mem *mem,
+                                                              struct kefir_ast_type_bundle *type_bundle,
+                                                              kefir_size_t width) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(type_bundle != NULL, NULL);
+
+    struct kefir_ast_type *signed_type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
+    REQUIRE(signed_type != NULL, NULL);
+
+    struct kefir_ast_type *unsigned_type = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_type));
+    REQUIRE_ELSE(unsigned_type != NULL, {
+        KEFIR_FREE(mem, signed_type);
+        return NULL;
+    });
+
+    signed_type->tag = KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE;
+    signed_type->ops.same = same_basic_type;
+    signed_type->ops.compatible = compatible_basic_types;
+    signed_type->ops.composite = composite_basic_types;
+    signed_type->ops.free = free_bitprecise;
+    signed_type->bitprecise.width = width;
+    signed_type->bitprecise.flipped_sign_type = NULL;
+
+    kefir_result_t res =
+        kefir_list_insert_after(mem, &type_bundle->types, kefir_list_tail(&type_bundle->types), signed_type);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, signed_type);
+        KEFIR_FREE(mem, unsigned_type);
+        return NULL;
+    });
+
+    unsigned_type->tag = KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE;
+    unsigned_type->ops.same = same_basic_type;
+    unsigned_type->ops.compatible = compatible_basic_types;
+    unsigned_type->ops.composite = composite_basic_types;
+    unsigned_type->ops.free = free_bitprecise;
+    unsigned_type->bitprecise.width = width;
+    unsigned_type->bitprecise.flipped_sign_type = signed_type;
+
+    res = kefir_list_insert_after(mem, &type_bundle->types, kefir_list_tail(&type_bundle->types), unsigned_type);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, unsigned_type);
+        return NULL;
+    });
+
+    signed_type->bitprecise.flipped_sign_type = unsigned_type;
+
+    return signed_type;
+}
+
+const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem *mem,
+                                                                struct kefir_ast_type_bundle *type_bundle,
+                                                                kefir_size_t width) {
+    const struct kefir_ast_type *signed_type = kefir_ast_type_signed_bitprecise(mem, type_bundle, width);
+    REQUIRE(signed_type != NULL, NULL);
+    return signed_type->bitprecise.flipped_sign_type;
+}
+
 const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct kefir_ast_type_traits *type_traits,
                                                                     const struct kefir_ast_type *type) {
     REQUIRE(type_traits != NULL, NULL);
@@ -175,6 +255,10 @@ const struct kefir_ast_type *kefir_ast_type_flip_integer_singedness(const struct
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
             return kefir_ast_type_unsigned_long_long();
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            return type->bitprecise.flipped_sign_type;
 
         default:
             return NULL;
@@ -234,6 +318,7 @@ kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *type
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
             *signedness = false;
             break;
@@ -243,6 +328,7 @@ kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *type
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
             *signedness = true;
             break;
 

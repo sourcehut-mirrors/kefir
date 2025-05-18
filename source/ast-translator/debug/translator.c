@@ -275,6 +275,11 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                   "Debug information generation for bit-precise integers is not impemented yet");
+
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,

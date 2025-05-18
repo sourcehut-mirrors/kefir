@@ -77,6 +77,22 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
             typeentry->typecode = KEFIR_IR_TYPE_WORD;
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            if (type->bitprecise.width <= 8) {
+                typeentry->typecode = KEFIR_IR_TYPE_INT8;
+            } else if (type->bitprecise.width <= 16) {
+                typeentry->typecode = KEFIR_IR_TYPE_INT16;
+            } else if (type->bitprecise.width <= 32) {
+                typeentry->typecode = KEFIR_IR_TYPE_INT32;
+            } else if (type->bitprecise.width <= 64) {
+                typeentry->typecode = KEFIR_IR_TYPE_INT64;
+            } else {
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                       "Bit precise integers wider than 64 bits are not implemented yet");
+            }
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Not a scalar type");
     }
@@ -420,6 +436,8 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
         case KEFIR_AST_TYPE_SCALAR_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:

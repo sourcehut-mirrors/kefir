@@ -139,6 +139,11 @@
     _separator _case(ast_type_variably_modified1)                                            \
     _separator _case(ast_type_variably_modified2)                                            \
     _separator _case(ast_type_variably_modified_analysis1)                                   \
+    _separator _case(ast_bit_precise_types1)                                                 \
+    _separator _case(ast_bit_precise_types2)                                                 \
+    _separator _case(ast_bit_precise_types3)                                                 \
+    _separator _case(ast_bit_precise_types4)                                                 \
+    _separator _case(ast_bit_precise_types5)                                                 \
     _separator _case(ast_declaration_variably_modified_structure_field)                      \
     _separator _case(ast_ordinary_constant_scope1)                                           \
     _separator _case(ast_ordinary_typedef_scope1)                                            \

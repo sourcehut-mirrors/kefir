@@ -38,53 +38,53 @@ static kefir_result_t default_integral_type_rank(const struct kefir_ast_type_tra
 
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
     switch (type->tag) {
-#define MAKE_RANK(_base, _width) ((((kefir_uint64_t) (_base)) << 32) | ((kefir_uint32_t) (_width)))
+#define MAKE_RANK(_base, _width, _bit_precise) \
+    ((((kefir_uint64_t) (_base)) << 32) | ((kefir_uint32_t) ((_width) << 1)) | ((_bit_precise) ? 0 : 1))
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            *rank_ptr = MAKE_RANK(0, data_model->scalar_width.bool_bits);
+            *rank_ptr = MAKE_RANK(0, data_model->scalar_width.bool_bits, false);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_CHAR:
-            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits);
+            *rank_ptr = MAKE_RANK(1, data_model->scalar_width.char_bits, false);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            *rank_ptr = MAKE_RANK(2, data_model->scalar_width.short_bits);
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            *rank_ptr = MAKE_RANK(2, data_model->scalar_width.short_bits);
+            *rank_ptr = MAKE_RANK(2, data_model->scalar_width.short_bits, false);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            *rank_ptr = MAKE_RANK(3, data_model->scalar_width.int_bits);
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            *rank_ptr = MAKE_RANK(3, data_model->scalar_width.int_bits);
+            *rank_ptr = MAKE_RANK(3, data_model->scalar_width.int_bits, false);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            *rank_ptr = MAKE_RANK(4, data_model->scalar_width.long_bits);
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            *rank_ptr = MAKE_RANK(4, data_model->scalar_width.long_bits);
+            *rank_ptr = MAKE_RANK(4, data_model->scalar_width.long_bits, false);
             break;
 
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            *rank_ptr = MAKE_RANK(5, data_model->scalar_width.long_long_bits);
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            *rank_ptr = MAKE_RANK(5, data_model->scalar_width.long_long_bits, false);
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            *rank_ptr = MAKE_RANK(5, data_model->scalar_width.long_long_bits);
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            if (type->bitprecise.width <= data_model->scalar_width.char_bits) {
+                *rank_ptr = MAKE_RANK(1, type->bitprecise.width, true);
+            } else if (type->bitprecise.width <= data_model->scalar_width.short_bits) {
+                *rank_ptr = MAKE_RANK(2, type->bitprecise.width, true);
+            } else if (type->bitprecise.width <= data_model->scalar_width.int_bits) {
+                *rank_ptr = MAKE_RANK(3, type->bitprecise.width, true);
+            } else if (type->bitprecise.width <= data_model->scalar_width.long_bits) {
+                *rank_ptr = MAKE_RANK(4, type->bitprecise.width, true);
+            } else if (type->bitprecise.width <= data_model->scalar_width.long_long_bits) {
+                *rank_ptr = MAKE_RANK(5, type->bitprecise.width, true);
+            } else {
+                *rank_ptr = MAKE_RANK(6, type->bitprecise.width, true);
+            }
             break;
 #undef MAKE_RANK
 
@@ -95,7 +95,7 @@ static kefir_result_t default_integral_type_rank(const struct kefir_ast_type_tra
 }
 
 static kefir_result_t default_integral_type_width(const struct kefir_ast_type_traits *type_traits,
-                                                 const struct kefir_ast_type *type, kefir_size_t *width_ptr) {
+                                                  const struct kefir_ast_type *type, kefir_size_t *width_ptr) {
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
     switch (type->tag) {
         case KEFIR_AST_TYPE_SCALAR_BOOL:
@@ -127,6 +127,11 @@ static kefir_result_t default_integral_type_width(const struct kefir_ast_type_tr
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
             *width_ptr = data_model->scalar_width.long_long_bits;
             break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            *width_ptr = type->bitprecise.width;
+            break;
 #undef MAKE_RANK
 
         default:
@@ -149,8 +154,6 @@ static kefir_result_t default_integral_type_fits(const struct kefir_ast_type_tra
     kefir_size_t source_width = 0, destination_width = 0;
     REQUIRE_OK(default_integral_type_width(type_traits, source, &source_width));
     REQUIRE_OK(default_integral_type_width(type_traits, dest, &destination_width));
-    REQUIRE(source_width != 0 && destination_width != 0,
-            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integral type"));
 
     kefir_bool_t src_sign, dst_sign;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, source, &src_sign));
@@ -202,6 +205,11 @@ static kefir_result_t default_pointer_type_fits(const struct kefir_ast_type_trai
             *result = true;
             break;
 
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+            *result = type->bitprecise.width >= data_model->scalar_width.long_long_bits;
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected AST type");
     }
@@ -214,7 +222,9 @@ static const struct kefir_ast_type *default_bitfield_promotion(const struct kefi
     REQUIRE(type != NULL, NULL);
 
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
-    if (width == data_model->scalar_width.int_bits && KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(type)) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
+        return type;
+    } else if (width == data_model->scalar_width.int_bits && KEFIR_INTERNAL_AST_TYPE_IS_SIGNED_INTEGER(type)) {
         return kefir_ast_type_signed_int();
     } else if (width >= data_model->scalar_width.int_bits) {
         return type;
@@ -405,7 +415,9 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_INT || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT ||
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG || type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG ||
                type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG ||
-               type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG) {
+               type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE ||
+               type->tag == KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_INTEGER_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_ENUMERATION) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_ENUMERAL_TYPE_CLASS;
@@ -543,6 +555,22 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
 
         case KEFIR_AST_TYPE_AUTO:
             *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_AUTO;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+            if (type->bitprecise.width <= 8) {
+                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT8;
+            } else if (type->bitprecise.width <= 16) {
+                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT16;
+            } else if (type->bitprecise.width <= 32) {
+                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT32;
+            } else if (type->bitprecise.width <= 64) {
+                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT64;
+            } else {
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                       "Bit-precise integers wider that 64 bits are not impemented yet");
+            }
             break;
     }
 

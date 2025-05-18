@@ -32,6 +32,10 @@ const struct kefir_ast_type *kefir_ast_type_int_promotion(const struct kefir_ast
         type = kefir_ast_enumeration_underlying_type(&type->enumeration_type);
     }
 
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
+        return type;
+    }
+
     if (bitfield_props.bitfield) {
         type = type_traits->bitfield_promotion(type_traits, type, bitfield_props.width);
         REQUIRE(type != NULL, NULL);
