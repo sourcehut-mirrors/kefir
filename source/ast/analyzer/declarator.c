@@ -456,6 +456,29 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_BITINT:
+            REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Cannot combine type specifiers with referenced type definition"));
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "_BitInt type specifier cannot be combined with complex type specifier"));
+            REQUIRE((*base_type) == NULL,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "_BitInt type specifier can only be combined with unsigned specifier"));
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, decl_specifier->type_specifier.value.bitprecise.width));
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(decl_specifier->type_specifier.value.bitprecise.width,
+                                                             KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR,
+                                           &decl_specifier->type_specifier.value.bitprecise.width->source_location,
+                                           "Expected integral constant expression as bit-precise type parameter"));
+            *base_type = kefir_ast_type_signed_bitprecise(
+                mem, context->type_bundle,
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(decl_specifier->type_specifier.value.bitprecise.width)
+                    ->integer);
+            *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_FLOAT:
             REQUIRE(*base_type == NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                                                "Float type specifier cannot be combined with others"));

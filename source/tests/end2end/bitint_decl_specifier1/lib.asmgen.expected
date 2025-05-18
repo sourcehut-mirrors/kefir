@@ -1,0 +1,244 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 10
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "x",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 10
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "unsigned",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 12
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "y",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 1000
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": null,
+                    "members": [
+                        {
+                            "identifier": "A",
+                            "value": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 1
+                            }
+                        },
+                        {
+                            "identifier": "B",
+                            "value": {
+                                "class": "unary_operation",
+                                "type": "negate",
+                                "argument": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 1
+                                }
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "binary_operation",
+                        "type": "add",
+                        "left": {
+                            "class": "binary_operation",
+                            "type": "multiply",
+                            "left": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 2
+                            },
+                            "right": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 2
+                            }
+                        },
+                        "right": {
+                            "class": "identifier",
+                            "identifier": "A"
+                        }
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "z",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "negate",
+                            "argument": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 1
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "volatile",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "unsigned",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "binary_operation",
+                        "type": "add",
+                        "left": {
+                            "class": "binary_operation",
+                            "type": "multiply",
+                            "left": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 2
+                            },
+                            "right": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 2
+                            }
+                        },
+                        "right": {
+                            "class": "identifier",
+                            "identifier": "B"
+                        }
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "w",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 100
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

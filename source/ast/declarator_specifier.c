@@ -696,6 +696,26 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_auto_type(struct
     return specifier;
 }
 
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct kefir_mem *mem,
+                                                                       struct kefir_ast_node_base *width) {
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(width != NULL, NULL);
+
+    struct kefir_ast_declarator_specifier *specifier = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_declarator_specifier));
+    REQUIRE(specifier != NULL, NULL);
+
+    specifier->klass = KEFIR_AST_TYPE_SPECIFIER;
+    specifier->type_specifier.specifier = KEFIR_AST_TYPE_SPECIFIER_BITINT;
+    specifier->type_specifier.value.bitprecise.width = width;
+    kefir_result_t res = kefir_source_location_empty(&specifier->source_location);
+    REQUIRE_CHAIN(&res, kefir_ast_node_attributes_init(&specifier->attributes));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, specifier);
+        return NULL;
+    });
+    return specifier;
+}
+
 #define STORAGE_CLASS_SPECIFIER(_id, _spec)                                                                 \
     struct kefir_ast_declarator_specifier *kefir_ast_storage_class_specifier_##_id(struct kefir_mem *mem) { \
         REQUIRE(mem != NULL, NULL);                                                                         \
@@ -877,6 +897,11 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
                     clone = kefir_ast_type_specifier_auto_type(mem);
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_BITINT:
+                    clone = kefir_ast_type_specifier_bitint(
+                        mem, KEFIR_AST_NODE_REF(specifier->type_specifier.value.bitprecise.width));
+                    break;
+
                 default:
                     // Intentionally left blank
                     break;
@@ -999,6 +1024,11 @@ kefir_result_t kefir_ast_declarator_specifier_free(struct kefir_mem *mem,
                 case KEFIR_AST_TYPE_SPECIFIER_TYPEOF:
                     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, specifier->type_specifier.value.type_of.node));
                     specifier->type_specifier.value.type_of.node = NULL;
+                    break;
+
+                case KEFIR_AST_TYPE_SPECIFIER_BITINT:
+                    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, specifier->type_specifier.value.bitprecise.width));
+                    specifier->type_specifier.value.bitprecise.width = NULL;
                     break;
 
                 default:

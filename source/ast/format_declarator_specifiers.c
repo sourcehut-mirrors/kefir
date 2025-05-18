@@ -208,6 +208,13 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "auto_type"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_BITINT:
+                    REQUIRE_OK(kefir_json_output_string(json, "bitint"));
+                    REQUIRE_OK(kefir_json_output_object_key(json, "width"));
+                    REQUIRE_OK(kefir_ast_format(json, specifier->type_specifier.value.bitprecise.width,
+                                                display_source_location));
+                    break;
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected type specifier");
             }

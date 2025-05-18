@@ -231,6 +231,7 @@ typedef enum kefir_ast_type_specifier_type {
     KEFIR_AST_TYPE_SPECIFIER_TYPEDEF,
     KEFIR_AST_TYPE_SPECIFIER_TYPEOF,
     KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE,
+    KEFIR_AST_TYPE_SPECIFIER_BITINT,
     // Special value
     KEFIR_AST_TYPE_SPECIFIER_COUNT
 } kefir_ast_type_specifier_type_t;
