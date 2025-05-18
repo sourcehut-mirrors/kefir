@@ -70,7 +70,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                            "_Generic "
                            "const "
                            "__attribute__ "
-                           "asm ";
+                           "asm "
+                           "auto_type "
+                           "typeof "
+                           "_BitInt";
 
     struct kefir_string_pool symbols;
     struct kefir_lexer_source_cursor cursor;

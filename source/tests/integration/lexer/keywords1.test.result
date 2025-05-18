@@ -230,6 +230,21 @@
         "keyword": "asm"
     },
     {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "auto_type"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "typeof"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_BitInt"
+    },
+    {
         "class": "sentinel",
         "preprocessor": false
     }

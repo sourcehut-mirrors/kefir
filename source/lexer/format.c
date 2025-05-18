@@ -220,6 +220,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
         case KEFIR_KEYWORD_AUTO_TYPE:
             REQUIRE_OK(kefir_json_output_string(json, "auto_type"));
             break;
+
+        case KEFIR_KEYWORD_BITINT:
+            REQUIRE_OK(kefir_json_output_string(json, "_BitInt"));
+            break;
     }
     return KEFIR_OK;
 }
