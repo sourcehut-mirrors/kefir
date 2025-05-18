@@ -129,4 +129,24 @@ extern const struct kefir_ast_bitfield_properties KEFIR_AST_BITFIELD_PROPERTIES_
 
 kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *, kefir_int_t *);
 
+typedef enum kefir_ast_type_data_model_classification {
+    KEFIR_AST_TYPE_DATA_MODEL_INT8,
+    KEFIR_AST_TYPE_DATA_MODEL_INT16,
+    KEFIR_AST_TYPE_DATA_MODEL_INT32,
+    KEFIR_AST_TYPE_DATA_MODEL_INT64,
+    KEFIR_AST_TYPE_DATA_MODEL_FLOAT,
+    KEFIR_AST_TYPE_DATA_MODEL_DOUBLE,
+    KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE,
+    KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT,
+    KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE,
+    KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE,
+    KEFIR_AST_TYPE_DATA_MODEL_FUNCTION,
+    KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE,
+    KEFIR_AST_TYPE_DATA_MODEL_VOID,
+    KEFIR_AST_TYPE_DATA_MODEL_AUTO
+} kefir_ast_type_data_model_classification_t;
+
+kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
+                                                  kefir_ast_type_data_model_classification_t *);
+
 #endif

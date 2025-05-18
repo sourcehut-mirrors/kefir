@@ -384,67 +384,52 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
     const kefir_uint64_t mem_flags = retrieve_memflags(type);
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
 
-    switch (normalizer->tag) {
-        case KEFIR_AST_TYPE_VOID:
+    kefir_ast_type_data_model_classification_t normalized_data_model;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, normalizer, &normalized_data_model));
+    switch (normalized_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_VOID:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot load variable with void type");
 
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT16_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT32_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_ENUMERATION:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
-
-        case KEFIR_AST_TYPE_STRUCTURE:
-        case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_FUNCTION:
+        case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
+        case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             // Intentionally left blank
             break;
 
-        case KEFIR_AST_TYPE_QUALIFIED:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_AUTO:
+        case KEFIR_AST_TYPE_DATA_MODEL_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
     return KEFIR_OK;
@@ -464,92 +449,72 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
     const kefir_int64_t atomic_memory_order = KEFIR_IR_MEMORY_ORDER_SEQ_CST;
 
     *atomic_aggregate = false;
-    switch (normalizer->tag) {
-        case KEFIR_AST_TYPE_VOID:
+    kefir_bool_t normalizer_signedness;
+    kefir_ast_type_data_model_classification_t normalized_data_model;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, normalizer, &normalized_data_model));
+    switch (normalized_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_VOID:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot load variable with void type");
 
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, normalizer, &normalizer_signedness));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD8, atomic_memory_order));
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD8, atomic_memory_order));
-            if (type_traits->character_type_signedness) {
+            if (normalizer_signedness) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
             }
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD8, atomic_memory_order));
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD8, atomic_memory_order));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, normalizer, &normalizer_signedness));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD16, atomic_memory_order));
+            if (normalizer_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
+            }
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD16, atomic_memory_order));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, normalizer, &normalizer_signedness));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD32, atomic_memory_order));
+            if (normalizer_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS, 0));
+            }
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD32, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD32, atomic_memory_order));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS, 0));
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD64, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD_LONG_DOUBLE, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_ENUMERATION:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
-
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT32,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_FLOAT64,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_LOAD_COMPLEX_LONG_DOUBLE,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_STRUCTURE:
-        case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_FUNCTION:
+        case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
+        case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             *atomic_aggregate = true;
             break;
 
-        case KEFIR_AST_TYPE_QUALIFIED:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_AUTO:
+        case KEFIR_AST_TYPE_DATA_MODEL_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
     return KEFIR_OK;
@@ -594,59 +559,48 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
 
     const kefir_int64_t atomic_memory_order = KEFIR_IR_MEMORY_ORDER_SEQ_CST;
 
-    switch (normalizer->tag) {
-        case KEFIR_AST_TYPE_VOID:
+    kefir_ast_type_data_model_classification_t normalized_data_model;
+    REQUIRE_OK(
+        kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalizer, &normalized_data_model));
+    switch (normalized_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_VOID:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with void type");
 
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE8, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE16, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE32, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE64, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_LONG_DOUBLE,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_ENUMERATION:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
-
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT32,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_STORE_COMPLEX_FLOAT64,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_STRUCTURE:
-        case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY:
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE: {
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
                                                      type, 0, &translator_type, source_location));
@@ -661,13 +615,10 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
         } break;
 
-        case KEFIR_AST_TYPE_FUNCTION:
+        case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
 
-        case KEFIR_AST_TYPE_QUALIFIED:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_AUTO:
+        case KEFIR_AST_TYPE_DATA_MODEL_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
     return KEFIR_OK;
@@ -690,59 +641,48 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
     const kefir_uint64_t mem_flags = retrieve_memflags(type);
 
-    switch (normalizer->tag) {
-        case KEFIR_AST_TYPE_VOID:
+    kefir_ast_type_data_model_classification_t normalized_data_model;
+    REQUIRE_OK(
+        kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalizer, &normalized_data_model));
+    switch (normalized_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_VOID:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with void type");
 
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT16_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT32_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT32_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_STORE, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_ENUMERATION:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
-
-        case KEFIR_AST_TYPE_STRUCTURE:
-        case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY: {
+        case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
                                                      type, 0, &translator_type, source_location));
@@ -757,13 +697,10 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
         } break;
 
-        case KEFIR_AST_TYPE_FUNCTION:
+        case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
 
-        case KEFIR_AST_TYPE_QUALIFIED:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_AUTO:
+        case KEFIR_AST_TYPE_DATA_MODEL_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
     return KEFIR_OK;
@@ -783,63 +720,52 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
     const struct kefir_ast_type *normalizer = kefir_ast_translator_normalize_type(type);
     const kefir_int64_t atomic_memory_order = KEFIR_IR_MEMORY_ORDER_SEQ_CST;
 
-    switch (normalizer->tag) {
-        case KEFIR_AST_TYPE_VOID:
+    kefir_ast_type_data_model_classification_t normalized_data_model;
+    REQUIRE_OK(
+        kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalizer, &normalized_data_model));
+    switch (normalized_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_VOID:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with void type");
 
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG8, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG16, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+        case KEFIR_AST_TYPE_DATA_MODEL_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG32, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+        case KEFIR_AST_TYPE_DATA_MODEL_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG64, atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_LONG_DOUBLE,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_ENUMERATION:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected enumeration type");
-
-        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT32,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_FLOAT64,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+        case KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_COMPLEX_LONG_DOUBLE,
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_STRUCTURE:
-        case KEFIR_AST_TYPE_UNION:
-        case KEFIR_AST_TYPE_ARRAY: {
+        case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
             struct kefir_ast_translator_type *translator_type = NULL;
             REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
                                                      type, 0, &translator_type, source_location));
@@ -854,13 +780,10 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
             REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
         } break;
 
-        case KEFIR_AST_TYPE_FUNCTION:
+        case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");
 
-        case KEFIR_AST_TYPE_QUALIFIED:
-            return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected qualified type");
-
-        case KEFIR_AST_TYPE_AUTO:
+        case KEFIR_AST_TYPE_DATA_MODEL_AUTO:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected auto type");
     }
     return KEFIR_OK;

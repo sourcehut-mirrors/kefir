@@ -31,42 +31,35 @@ static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_tr
                                       kefir_size_t *index) {
     type = kefir_ast_translator_normalize_type(
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, type));
-    switch (type->tag) {
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+    kefir_ast_type_data_model_classification_t type_classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, type, &type_classification));
+    switch (type_classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_16BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_32BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_64BIT));
             break;
 
         default:
-            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, type));
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, type));
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
             REQUIRE_OK(
                 KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));

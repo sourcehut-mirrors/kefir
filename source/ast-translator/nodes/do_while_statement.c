@@ -64,38 +64,33 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
     const struct kefir_ast_type *controlling_expr_type =
         kefir_ast_translator_normalize_type(KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
             mem, context->ast_context->type_bundle, node->controlling_expr->properties.type));
-    switch (controlling_expr_type->tag) {
-        case KEFIR_AST_TYPE_SCALAR_BOOL:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+    kefir_ast_type_data_model_classification_t controlling_expr_type_classification;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, controlling_expr_type,
+                                                  &controlling_expr_type_classification));
+    switch (controlling_expr_type_classification) {
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_16BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_32BIT));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_64BIT));
             break;
 
         default:
-            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, controlling_expr_type));
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder,
+                                                            controlling_expr_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, beginning,
                                                          KEFIR_IR_BRANCH_CONDITION_8BIT));
             break;

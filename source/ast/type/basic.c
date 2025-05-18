@@ -234,6 +234,7 @@ kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *type
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
             *signedness = false;
             break;
 

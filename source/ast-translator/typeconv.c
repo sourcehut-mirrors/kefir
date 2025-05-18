@@ -298,32 +298,53 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
         }
     }
 
-    switch (target->tag) {
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-        case KEFIR_AST_TYPE_SCALAR_CHAR:
+    kefir_bool_t origin_type_signedness;
+    kefir_ast_type_data_model_classification_t target_type_data_model, origin_type_data_model;
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, target, &target_type_data_model));
+    REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &origin_type_data_model));
+    switch (target_type_data_model) {
+        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             // Intentionally left blank
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            switch (origin->tag) {
-                case KEFIR_AST_TYPE_SCALAR_BOOL:
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_CHAR:
-                    if (type_traits->character_type_signedness) {
+        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+            switch (origin_type_data_model) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
                     } else {
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
+                    }
+
+                default:
+                    // Intentionally left blank
+                    break;
+            }
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+            switch (origin_type_data_model) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
+                    }
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffULL));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     }
                     break;
@@ -334,21 +355,11 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
             }
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-            switch (origin->tag) {
-                case KEFIR_AST_TYPE_SCALAR_BOOL:
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_CHAR:
-                    if (type_traits->character_type_signedness) {
+        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+            switch (origin_type_data_model) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
                     } else {
@@ -357,62 +368,26 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     }
                     break;
 
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
-                    break;
-
-                default:
-                    // Intentionally left blank
-                    break;
-            }
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            switch (origin->tag) {
-                case KEFIR_AST_TYPE_SCALAR_BOOL:
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_CHAR:
-                    if (type_traits->character_type_signedness) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
                         REQUIRE_OK(
-                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
+                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
                     } else {
-                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffULL));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     }
                     break;
 
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffffffULL));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
-                    break;
-
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS, 0));
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_32BITS, 0));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffffffULL));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
+                    }
                     break;
 
                 default:
@@ -427,8 +402,10 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_translate_typeconv_to_bool(struct kefir_irbuilder_block *builder,
+kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_traits *type_traits,
+                                                    struct kefir_irbuilder_block *builder,
                                                     const struct kefir_ast_type *origin) {
+    REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(origin != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid origin AST type"));
 
@@ -455,29 +432,22 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(struct kefir_irbuilder_block
     } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, 0));
     } else {
-        switch (origin->tag) {
-            case KEFIR_AST_TYPE_SCALAR_BOOL:
-            case KEFIR_AST_TYPE_SCALAR_CHAR:
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        kefir_ast_type_data_model_classification_t origin_type_data_model;
+        REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &origin_type_data_model));
+        switch (origin_type_data_model) {
+            case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_TO_BOOL, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_TO_BOOL, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_TO_BOOL, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            case KEFIR_AST_TYPE_SCALAR_POINTER:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_TO_BOOL, 0));
                 break;
 
@@ -526,7 +496,7 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, normalized_origin));
+            REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(type_traits, builder, normalized_origin));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:

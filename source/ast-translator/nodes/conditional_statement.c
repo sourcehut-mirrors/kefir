@@ -57,32 +57,26 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
         kefir_ast_translator_normalize_type(kefir_ast_translator_normalize_type(KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(
             mem, context->ast_context->type_bundle, node->condition->properties.type)));
     if (KEFIR_AST_TYPE_IS_FLOATING_POINT(condition_type)) {
-        REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(builder, condition_type));
+        REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, condition_type));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0));
     } else {
-        switch (condition_type->tag) {
-            case KEFIR_AST_TYPE_SCALAR_BOOL:
-            case KEFIR_AST_TYPE_SCALAR_CHAR:
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+        kefir_ast_type_data_model_classification_t condition_type_classification;
+        REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, condition_type,
+                                                      &condition_type_classification));
+        switch (condition_type_classification) {
+            case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT16:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_BOOL_NOT, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT32:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_BOOL_NOT, 0));
                 break;
 
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
-            case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
-            case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            case KEFIR_AST_TYPE_SCALAR_POINTER:
+            case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0));
                 break;
 

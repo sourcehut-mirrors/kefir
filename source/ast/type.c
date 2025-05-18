@@ -107,7 +107,8 @@ static kefir_result_t default_integral_type_fits(const struct kefir_ast_type_tra
     kefir_size_t source_rank = 0, destination_rank = 0;
     REQUIRE_OK(default_integral_type_rank(type_traits, source, &source_rank));
     REQUIRE_OK(default_integral_type_rank(type_traits, dest, &destination_rank));
-    REQUIRE(source_rank != 0 && destination_rank != 0, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integral type"));
+    REQUIRE(source_rank != 0 && destination_rank != 0,
+            KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integral type"));
 
     kefir_bool_t src_sign, dst_sign;
     REQUIRE_OK(kefir_ast_type_is_signed(type_traits, source, &src_sign));
@@ -384,5 +385,126 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
     } else {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_NO_TYPE_CLASS;
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_traits *type_traits,
+                                                  const struct kefir_ast_type *type,
+                                                  kefir_ast_type_data_model_classification_t *classification_ptr) {
+    REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(classification_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST type data model classification"));
+
+    ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
+#define MATCH_BITS(_bits, _classification)                                                        \
+    do {                                                                                          \
+        switch ((_bits)) {                                                                        \
+            case 8:                                                                               \
+                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT8;                              \
+                break;                                                                            \
+            case 16:                                                                              \
+                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT16;                             \
+                break;                                                                            \
+            case 32:                                                                              \
+                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT32;                             \
+                break;                                                                            \
+            case 64:                                                                              \
+                *(_classification) = KEFIR_AST_TYPE_DATA_MODEL_INT64;                             \
+                break;                                                                            \
+            default:                                                                              \
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected integer type bit width"); \
+        }                                                                                         \
+    } while (0)
+
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_VOID:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_VOID;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_BOOL:
+            MATCH_BITS(data_model->scalar_width.bool_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            MATCH_BITS(data_model->scalar_width.char_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            MATCH_BITS(data_model->scalar_width.short_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            MATCH_BITS(data_model->scalar_width.int_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            MATCH_BITS(data_model->scalar_width.long_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            MATCH_BITS(data_model->scalar_width.long_long_bits, classification_ptr);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_FLOAT:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_FLOAT;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_DOUBLE:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_DOUBLE;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_LONG_DOUBLE;
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_FLOAT:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_FLOAT;
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_DOUBLE;
+            break;
+
+        case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_COMPLEX_LONG_DOUBLE;
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type_traits->uintptr_type, classification_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_ENUMERATION:
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type->enumeration_type.underlying_type,
+                                                          classification_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_QUALIFIED:
+            REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type->qualified_type.type, classification_ptr));
+            break;
+
+        case KEFIR_AST_TYPE_STRUCTURE:
+        case KEFIR_AST_TYPE_UNION:
+        case KEFIR_AST_TYPE_ARRAY:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE;
+            break;
+
+        case KEFIR_AST_TYPE_FUNCTION:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_FUNCTION;
+            break;
+
+        case KEFIR_AST_TYPE_AUTO:
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_AUTO;
+            break;
+    }
+
+#undef MATCH_BITS
+
     return KEFIR_OK;
 }
