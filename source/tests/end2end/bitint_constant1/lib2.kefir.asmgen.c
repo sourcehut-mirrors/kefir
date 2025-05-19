@@ -18,9 +18,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_BitInt(10) x = 10;
-unsigned _BitInt(12) y = 1000;
-
-enum { A = 1, B = -1 };
-const _BitInt(2 * 2 + A) z = -1;
-const volatile unsigned _BitInt(2 * 2 + B) w = 7;
+#include "lib.kefir.asmgen.c"

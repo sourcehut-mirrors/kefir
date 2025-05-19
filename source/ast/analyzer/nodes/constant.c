@@ -76,6 +76,14 @@ kefir_result_t kefir_ast_analyze_constant_node(struct kefir_mem *mem, const stru
             base->properties.type = kefir_ast_type_unsigned_long_long();
             break;
 
+        case KEFIR_AST_BITPRECISE_CONSTANT:
+            base->properties.type = kefir_ast_type_signed_bitprecise(mem, context->type_bundle, node->value.bitprecise.width);
+            break;
+
+        case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
+            base->properties.type = kefir_ast_type_unsigned_bitprecise(mem, context->type_bundle, node->value.bitprecise.width);
+            break;
+
         case KEFIR_AST_FLOAT_CONSTANT:
             base->properties.type = kefir_ast_type_float();
             break;

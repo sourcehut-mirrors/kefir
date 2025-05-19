@@ -30,7 +30,9 @@ enum integer_constant_type {
     CONSTANT_LONG,
     CONSTANT_UNSIGNED_LONG,
     CONSTANT_LONG_LONG,
-    CONSTANT_UNSIGNED_LONG_LONG
+    CONSTANT_UNSIGNED_LONG_LONG,
+    CONSTANT_BIT_PRECISE,
+    CONSTANT_UNSIGNED_BIT_PRECISE
 };
 
 static kefir_result_t get_permitted_constant_types(enum integer_constant_type original, kefir_bool_t decimal,
@@ -93,6 +95,18 @@ static kefir_result_t get_permitted_constant_types(enum integer_constant_type or
             *permitted = types;
             *length = sizeof(types) / sizeof(types[0]);
         } break;
+
+        case CONSTANT_UNSIGNED_BIT_PRECISE: {
+            static const enum integer_constant_type types[] = {CONSTANT_UNSIGNED_BIT_PRECISE};
+            *permitted = types;
+            *length = sizeof(types) / sizeof(types[0]);
+        } break;
+
+        case CONSTANT_BIT_PRECISE: {
+            static const enum integer_constant_type types[] = {CONSTANT_BIT_PRECISE};
+            *permitted = types;
+            *length = sizeof(types) / sizeof(types[0]);
+        } break;
     }
     return KEFIR_OK;
 }
@@ -135,6 +149,41 @@ static kefir_result_t make_integral_constant(const struct kefir_lexer_context *c
                     KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Provided constant exceeds maximum value of its type"));
             REQUIRE_OK(kefir_token_new_constant_ulong_long(value, token));
             break;
+
+        case CONSTANT_UNSIGNED_BIT_PRECISE: {
+            REQUIRE(value <= context->ulong_long_max_value,
+                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers exceeding widest integer type are not implemented yet"));
+
+            kefir_size_t width = 1;
+            const kefir_size_t max_width = sizeof(kefir_uint64_t) * CHAR_BIT;
+            for (; width <= max_width; width++) {
+                const kefir_uint64_t max_value = width < max_width
+                    ? (1ull << width) - 1
+                    : ~0ull;
+                if (value <= max_value) {
+                    break;
+                }
+            }
+            REQUIRE(width <= max_width, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine unsigned bit-precise integer width"));
+            REQUIRE_OK(kefir_token_new_constant_unsigned_bit_precise(value, width, token));
+        } break;
+
+        case CONSTANT_BIT_PRECISE: {
+            REQUIRE((kefir_int64_t) value <= (kefir_int64_t) context->long_long_max_value && (kefir_int64_t) value >= -((kefir_int64_t) context->long_long_max_value) - 1,
+                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers exceeding widest integer type are not implemented yet"));
+
+            kefir_size_t width = 2;
+            const kefir_size_t max_width = sizeof(kefir_uint64_t) * CHAR_BIT;
+            for (; width <= max_width; width++) {
+                const kefir_int64_t max_value = (1ull << (width - 1)) - 1;
+                const kefir_int64_t min_value = -max_value - 1;
+                if ((kefir_int64_t) value >= min_value && (kefir_int64_t) value <= max_value) {
+                    break;
+                }
+            }
+            REQUIRE(width <= max_width, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine bit-precise integer width"));
+            REQUIRE_OK(kefir_token_new_constant_bit_precise(value, width, token));
+        } break;
     }
     return KEFIR_OK;
 }
@@ -236,6 +285,16 @@ static kefir_result_t scan_suffix(struct kefir_lexer_source_cursor *cursor,
         {U"Ull", CONSTANT_UNSIGNED_LONG_LONG},
         {U"LLU", CONSTANT_UNSIGNED_LONG_LONG},
         {U"llU", CONSTANT_UNSIGNED_LONG_LONG},
+        {U"wbu", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"wbU", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"Uwb", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"WBu", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"WBU", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"uWB", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"UWB", CONSTANT_UNSIGNED_BIT_PRECISE},
+        {U"wb", CONSTANT_BIT_PRECISE},
+        {U"WB", CONSTANT_BIT_PRECISE},
         {U"uL", CONSTANT_UNSIGNED_LONG},
         {U"ul", CONSTANT_UNSIGNED_LONG},
         {U"Lu", CONSTANT_UNSIGNED_LONG},

@@ -493,6 +493,22 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_uinteger(json, constant->uinteger));
             break;
 
+        case KEFIR_CONSTANT_TOKEN_BIT_PRECISE:
+            REQUIRE_OK(kefir_json_output_string(json, "bitprecise"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.integer));
+            REQUIRE_OK(kefir_json_output_object_key(json, "width"));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.width));
+            break;
+
+        case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE:
+            REQUIRE_OK(kefir_json_output_string(json, "bitprecise_unsigned"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, constant->bitprecise.uinteger));
+            REQUIRE_OK(kefir_json_output_object_key(json, "width"));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.width));
+            break;
+
         case KEFIR_CONSTANT_TOKEN_FLOAT:
             REQUIRE_OK(kefir_json_output_string(json, "float"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

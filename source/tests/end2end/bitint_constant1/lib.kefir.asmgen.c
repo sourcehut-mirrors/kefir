@@ -18,9 +18,22 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-_BitInt(10) x = 10;
-unsigned _BitInt(12) y = 1000;
-
-enum { A = 1, B = -1 };
-const _BitInt(2 * 2 + A) z = -1;
-const volatile unsigned _BitInt(2 * 2 + B) w = 7;
+long arr[] = {
+    0wb,
+    0uwb,
+    1WB,
+    1wbU,
+    -1wb,
+    7uWB,
+    15wb,
+    -16wb,
+    16Uwb,
+    0x7fffwb,
+    0x8000wb,
+    0x8000uwb,
+    0xffffwb,
+    0xffffuwb,
+    0x7fffffffffffffffwb,
+    0x8000000000000000wb,
+    0xffffffffffffffffuwb
+};

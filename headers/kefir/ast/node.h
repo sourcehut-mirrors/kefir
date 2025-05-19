@@ -55,6 +55,13 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_constant, {
             kefir_long_double_t real;
             kefir_long_double_t imaginary;
         } complex_long_double;
+        struct {
+            union {
+                kefir_int64_t integer;
+                kefir_uint64_t uinteger;
+            };
+            kefir_size_t width;
+        } bitprecise;
     } value;
 });
 
@@ -281,6 +288,8 @@ struct kefir_ast_constant *kefir_ast_new_constant_long(struct kefir_mem *, kefir
 struct kefir_ast_constant *kefir_ast_new_constant_ulong(struct kefir_mem *, kefir_uint64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_long_long(struct kefir_mem *, kefir_int64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *, kefir_uint64_t);
+struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *, kefir_int64_t, kefir_size_t);
+struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *, kefir_uint64_t, kefir_size_t);
 struct kefir_ast_constant *kefir_ast_new_constant_float(struct kefir_mem *, kefir_float32_t);
 struct kefir_ast_constant *kefir_ast_new_constant_double(struct kefir_mem *, kefir_float64_t);
 struct kefir_ast_constant *kefir_ast_new_constant_long_double(struct kefir_mem *, kefir_long_double_t);

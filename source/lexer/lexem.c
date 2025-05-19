@@ -185,6 +185,28 @@ kefir_result_t kefir_token_new_constant_ulong_long(kefir_uint64_t value, struct 
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_new_constant_bit_precise(kefir_int64_t value, kefir_size_t width, struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_BIT_PRECISE;
+    token->constant.bitprecise.integer = value;
+    token->constant.bitprecise.width = width;
+    token->macro_expansions = NULL;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_token_new_constant_unsigned_bit_precise(kefir_uint64_t value, kefir_size_t width, struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE;
+    token->constant.bitprecise.uinteger = value;
+    token->constant.bitprecise.width = width;
+    token->macro_expansions = NULL;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_new_constant_char(kefir_int_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));

@@ -111,6 +111,8 @@ typedef enum kefir_constant_token_type {
     KEFIR_CONSTANT_TOKEN_UNSIGNED_INTEGER,
     KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_INTEGER,
     KEFIR_CONSTANT_TOKEN_UNSIGNED_LONG_LONG_INTEGER,
+    KEFIR_CONSTANT_TOKEN_BIT_PRECISE,
+    KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE,
     KEFIR_CONSTANT_TOKEN_FLOAT,
     KEFIR_CONSTANT_TOKEN_DOUBLE,
     KEFIR_CONSTANT_TOKEN_LONG_DOUBLE,
@@ -155,6 +157,13 @@ typedef struct kefir_constant_token {
         kefir_wchar_t wide_char;
         kefir_char16_t unicode16_char;
         kefir_char32_t unicode32_char;
+        struct {
+            union {
+                kefir_int64_t integer;
+                kefir_int64_t uinteger;
+            };
+            kefir_size_t width;
+        } bitprecise;
     };
 } kefir_constant_token_t;
 
@@ -291,6 +300,8 @@ kefir_result_t kefir_token_new_constant_long(kefir_int64_t, struct kefir_token *
 kefir_result_t kefir_token_new_constant_ulong(kefir_uint64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_long_long(kefir_int64_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_ulong_long(kefir_uint64_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_bit_precise(kefir_int64_t, kefir_size_t, struct kefir_token *);
+kefir_result_t kefir_token_new_constant_unsigned_bit_precise(kefir_uint64_t, kefir_size_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_char(kefir_int_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_wide_char(kefir_wchar_t, struct kefir_token *);
 kefir_result_t kefir_token_new_constant_unicode16_char(kefir_char16_t, struct kefir_token *);

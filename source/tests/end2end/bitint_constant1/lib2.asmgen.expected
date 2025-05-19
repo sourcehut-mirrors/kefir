@@ -1,0 +1,250 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "array",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "arr",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "type": "unbounded",
+                        "static": false,
+                        "type_qualifiers": [],
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "list",
+                        "list": [
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 0,
+                                        "width": 2
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 0,
+                                        "width": 1
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 1,
+                                        "width": 2
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 1,
+                                        "width": 1
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "unary_operation",
+                                        "type": "negate",
+                                        "argument": {
+                                            "class": "constant",
+                                            "type": "bitprecise",
+                                            "value": 1,
+                                            "width": 2
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 7,
+                                        "width": 3
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 15,
+                                        "width": 5
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "unary_operation",
+                                        "type": "negate",
+                                        "argument": {
+                                            "class": "constant",
+                                            "type": "bitprecise",
+                                            "value": 16,
+                                            "width": 6
+                                        }
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 16,
+                                        "width": 5
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 32767,
+                                        "width": 16
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 32768,
+                                        "width": 17
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 32768,
+                                        "width": 16
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 65535,
+                                        "width": 17
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 65535,
+                                        "width": 16
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": 9223372036854775807,
+                                        "width": 64
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": -9223372036854775808,
+                                        "width": 64
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": 18446744073709551615,
+                                        "width": 64
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}
