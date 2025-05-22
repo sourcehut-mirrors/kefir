@@ -479,7 +479,8 @@
     _separator _case(bitint_invert1) \
     _separator _case(bitint_and1) \
     _separator _case(bitint_or1) \
-    _separator _case(bitint_xor1)
+    _separator _case(bitint_xor1) \
+    _separator _case(bitint_negate1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

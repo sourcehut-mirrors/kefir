@@ -230,6 +230,12 @@ DEFINE_CASE(bitint_invert1, "BigInt - invert #1") {
     ASSERT_INVERT(&bigint, KEFIR_UINT64_MIN);
     ASSERT_INVERT(&bigint, KEFIR_UINT64_MAX);
 
+    for (kefir_int64_t i = -10240; i < 10240; i++) {
+        ASSERT_INVERT(&bigint, i);
+        ASSERT_INVERT(&bigint, (1ull << i % (sizeof(kefir_int64_t) * CHAR_BIT)));
+        ASSERT_INVERT(&bigint, i ^ 0xcafebabebad);
+    }
+
 #undef ASSERT_INVERT
 
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
@@ -357,6 +363,41 @@ DEFINE_CASE(bitint_xor1, "BigInt - bitwise xor #1") {
     ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
 }
 END_CASE
+
+DEFINE_CASE(bitint_negate1, "BigInt - negate #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+#define ASSERT_NEGATE(_bigint, _arg)                                                          \
+    do {                                                                                                    \
+        ASSERT_STORE((_bigint), (_arg));                                                                      \
+        ASSERT_OK(kefir_bigint_negate((_bigint)));                                                        \
+        ASSERT_LOAD((_bigint), -(kefir_int64_t) (_arg));                                                                        \
+    } while (0)
+
+    ASSERT_NEGATE(&bigint, 0);
+    ASSERT_NEGATE(&bigint, 1);
+    ASSERT_NEGATE(&bigint, -1);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT8_MIN);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT8_MAX);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT16_MIN);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT16_MAX);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT32_MIN);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT32_MAX);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT64_MIN + 1);
+    ASSERT_NEGATE(&bigint, KEFIR_UINT64_MAX);
+
+    for (kefir_int64_t i = -10240; i < 10240; i++) {
+        ASSERT_NEGATE(&bigint, i);
+        ASSERT_NEGATE(&bigint, (1ull << i % (sizeof(kefir_int64_t) * CHAR_BIT - 1)));
+        ASSERT_NEGATE(&bigint, i ^ 0xcafebabebad);
+    }
+
+#undef ASSERT_NEGATE
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+} END_CASE
 
 #undef ASSERT_STORE
 #undef ASSERT_LOAD
