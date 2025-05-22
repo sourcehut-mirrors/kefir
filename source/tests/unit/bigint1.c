@@ -206,5 +206,34 @@ DEFINE_CASE(bitint_add1, "BigInt - addition #1") {
 }
 END_CASE
 
+DEFINE_CASE(bitint_invert1, "BigInt - invert #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+#define ASSERT_INVERT(_bigint, _arg)                                                          \
+    do {                                                                                                    \
+        ASSERT_STORE((_bigint), (_arg));                                                                      \
+        ASSERT_OK(kefir_bigint_invert((_bigint)));                                                        \
+        ASSERT_LOAD((_bigint), ~(kefir_int64_t) (_arg));                                                                        \
+    } while (0)
+
+    ASSERT_INVERT(&bigint, 0);
+    ASSERT_INVERT(&bigint, 1);
+    ASSERT_INVERT(&bigint, -1);
+    ASSERT_INVERT(&bigint, KEFIR_UINT8_MIN);
+    ASSERT_INVERT(&bigint, KEFIR_UINT8_MAX);
+    ASSERT_INVERT(&bigint, KEFIR_UINT16_MIN);
+    ASSERT_INVERT(&bigint, KEFIR_UINT16_MAX);
+    ASSERT_INVERT(&bigint, KEFIR_UINT32_MIN);
+    ASSERT_INVERT(&bigint, KEFIR_UINT32_MAX);
+    ASSERT_INVERT(&bigint, KEFIR_UINT64_MIN);
+    ASSERT_INVERT(&bigint, KEFIR_UINT64_MAX);
+
+#undef ASSERT_INVERT
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+} END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_LOAD

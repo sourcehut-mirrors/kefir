@@ -196,4 +196,15 @@ static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *lhs_di
     return __KEFIR_BIGINT_OK;
 }
 
+
+static __kefir_bigint_result_t __kefir_bigint_invert(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
+    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+
+    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
+        digits[i] = ~digits[i];
+    }
+    return __KEFIR_BIGINT_OK;
+}
+
 #endif

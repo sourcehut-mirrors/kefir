@@ -111,3 +111,12 @@ kefir_result_t kefir_bigint_add(struct kefir_bigint *lhs_bigint, const struct ke
     UNUSED(res);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_invert(struct kefir_bigint *bigint) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_invert(bigint->digits, (unsigned int) bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
