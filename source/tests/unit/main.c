@@ -476,7 +476,10 @@
     _separator _case(bitint_basic1)                                                          \
     _separator _case(bitint_cast_signed1)                                                    \
     _separator _case(bitint_add1) \
-    _separator _case(bitint_invert1)
+    _separator _case(bitint_invert1) \
+    _separator _case(bitint_and1) \
+    _separator _case(bitint_or1) \
+    _separator _case(bitint_xor1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

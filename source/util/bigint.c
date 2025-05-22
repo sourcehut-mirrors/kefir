@@ -120,3 +120,39 @@ kefir_result_t kefir_bigint_invert(struct kefir_bigint *bigint) {
     UNUSED(res);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_and(struct kefir_bigint *lhs_bigint, const struct kefir_bigint *rhs_bigint) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_and(lhs_bigint->digits, rhs_bigint->digits, (unsigned int) lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_or(struct kefir_bigint *lhs_bigint, const struct kefir_bigint *rhs_bigint) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_or(lhs_bigint->digits, rhs_bigint->digits, (unsigned int) lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_xor(struct kefir_bigint *lhs_bigint, const struct kefir_bigint *rhs_bigint) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_xor(lhs_bigint->digits, rhs_bigint->digits, (unsigned int) lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}

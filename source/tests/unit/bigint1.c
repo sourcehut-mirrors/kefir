@@ -235,5 +235,128 @@ DEFINE_CASE(bitint_invert1, "BigInt - invert #1") {
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
 } END_CASE
 
+DEFINE_CASE(bitint_and1, "BigInt - bitwise and #1") {
+    struct kefir_bigint lhs_bigint, rhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&rhs_bigint));
+
+#define ASSERT_AND(_lhs, _rhs, _arg1, _arg2)                                                          \
+    do {                                                                                                    \
+        ASSERT_STORE((_lhs), (_arg1));                                                                      \
+        ASSERT_STORE((_rhs), (_arg2));                                                                      \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_lhs), MAX((_lhs)->bitwidth, (_rhs)->bitwidth) + 1)); \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_rhs), (_lhs)->bitwidth));                            \
+        ASSERT_OK(kefir_bigint_and((_lhs), (_rhs)));                                                        \
+        ASSERT_LOAD((_lhs), ((kefir_int64_t) (_arg1)) & (_arg2));                                                                        \
+    } while (0)
+
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, 0, 0);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, 1, 0);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, 0, 1);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, 1, 1);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, 1, -1);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, -1, -1);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, KEFIR_INT32_MAX, KEFIR_INT32_MIN);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, KEFIR_INT32_MAX);
+    ASSERT_AND(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, ~KEFIR_INT32_MIN);
+
+    for (kefir_int64_t i = -512; i < 512; i++) {
+        for (kefir_int64_t j = -512; j < 512; j++) {
+            ASSERT_AND(&lhs_bigint, &rhs_bigint, i, j);
+            ASSERT_AND(&lhs_bigint, &rhs_bigint, (1ull << i % (sizeof(kefir_int64_t) * CHAR_BIT)), j);
+            ASSERT_AND(&lhs_bigint, &rhs_bigint, i ^ 0xcafebabebad, j);
+        }
+    }
+
+#undef ASSERT_AND
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
+}
+END_CASE
+
+DEFINE_CASE(bitint_or1, "BigInt - bitwise or #1") {
+    struct kefir_bigint lhs_bigint, rhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&rhs_bigint));
+
+#define ASSERT_OR(_lhs, _rhs, _arg1, _arg2)                                                          \
+    do {                                                                                                    \
+        ASSERT_STORE((_lhs), (_arg1));                                                                      \
+        ASSERT_STORE((_rhs), (_arg2));                                                                      \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_lhs), MAX((_lhs)->bitwidth, (_rhs)->bitwidth) + 1)); \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_rhs), (_lhs)->bitwidth));                            \
+        ASSERT_OK(kefir_bigint_or((_lhs), (_rhs)));                                                        \
+        ASSERT_LOAD((_lhs), ((kefir_int64_t) (_arg1)) | (_arg2));                                                                        \
+    } while (0)
+
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, 0, 0);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, 1, 0);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, 0, 1);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, 1, 1);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, 1, -1);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, -1, -1);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, KEFIR_INT32_MAX, KEFIR_INT32_MIN);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, KEFIR_INT32_MAX);
+    ASSERT_OR(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, ~KEFIR_INT32_MIN);
+
+    for (kefir_int64_t i = -512; i < 512; i++) {
+        for (kefir_int64_t j = -512; j < 512; j++) {
+            ASSERT_OR(&lhs_bigint, &rhs_bigint, i, j);
+            ASSERT_OR(&lhs_bigint, &rhs_bigint, (1ull << i % (sizeof(kefir_int64_t) * CHAR_BIT)), j);
+            ASSERT_OR(&lhs_bigint, &rhs_bigint, i ^ 0xcafebabebad, j);
+        }
+    }
+
+#undef ASSERT_OR
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
+}
+END_CASE
+
+DEFINE_CASE(bitint_xor1, "BigInt - bitwise xor #1") {
+    struct kefir_bigint lhs_bigint, rhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&rhs_bigint));
+
+#define ASSERT_XOR(_lhs, _rhs, _arg1, _arg2)                                                          \
+    do {                                                                                                    \
+        ASSERT_STORE((_lhs), (_arg1));                                                                      \
+        ASSERT_STORE((_rhs), (_arg2));                                                                      \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_lhs), MAX((_lhs)->bitwidth, (_rhs)->bitwidth) + 1)); \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_rhs), (_lhs)->bitwidth));                            \
+        ASSERT_OK(kefir_bigint_xor((_lhs), (_rhs)));                                                        \
+        ASSERT_LOAD((_lhs), ((kefir_int64_t) (_arg1)) ^ (_arg2));                                                                        \
+    } while (0)
+
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, 0, 0);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, 1, 0);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, 0, 1);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, 1, 1);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, 1, -1);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, -1, -1);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, KEFIR_INT32_MAX, KEFIR_INT32_MIN);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, KEFIR_INT32_MAX);
+    ASSERT_XOR(&lhs_bigint, &rhs_bigint, KEFIR_INT64_MAX, ~KEFIR_INT32_MIN);
+
+    for (kefir_int64_t i = -512; i < 512; i++) {
+        for (kefir_int64_t j = -512; j < 512; j++) {
+            ASSERT_XOR(&lhs_bigint, &rhs_bigint, i, j);
+            ASSERT_XOR(&lhs_bigint, &rhs_bigint, (1ull << i % (sizeof(kefir_int64_t) * CHAR_BIT)), j);
+            ASSERT_XOR(&lhs_bigint, &rhs_bigint, i ^ 0xcafebabebad, j);
+        }
+    }
+
+#undef ASSERT_OR
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_LOAD
