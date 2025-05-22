@@ -473,14 +473,15 @@
     _separator _case(cli_options2)                                                           \
     _separator _case(cli_options3)                                                           \
     _separator _case(cli_options4)                                                           \
-    _separator _case(bitint_basic1)                                                          \
-    _separator _case(bitint_cast_signed1)                                                    \
-    _separator _case(bitint_add1) \
-    _separator _case(bitint_invert1) \
-    _separator _case(bitint_and1) \
-    _separator _case(bitint_or1) \
-    _separator _case(bitint_xor1) \
-    _separator _case(bitint_negate1)
+    _separator _case(bigint_basic1)                                                          \
+    _separator _case(bigint_cast_signed1)                                                    \
+    _separator _case(bigint_add1)                                                            \
+    _separator _case(bigint_invert1)                                                         \
+    _separator _case(bigint_and1)                                                            \
+    _separator _case(bigint_or1)                                                             \
+    _separator _case(bigint_xor1)                                                            \
+    _separator _case(bigint_negate1)                                                         \
+    _separator _case(bigint_sub1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id
