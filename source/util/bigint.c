@@ -69,7 +69,7 @@ kefir_result_t kefir_bigint_set_value(struct kefir_mem *mem, struct kefir_bigint
     } else {
         REQUIRE_OK(bigint_ensure_width(mem, bigint, 64));
     }
-    unsigned long long width;
+    unsigned int width = 0;
     __kefir_bigint_result_t res =
         __kefir_bigint_set_signed_integer(bigint->digits, bigint->capacity * CHAR_BIT, &width, value);
     UNUSED(res);
@@ -82,7 +82,8 @@ kefir_result_t kefir_bigint_get_value(const struct kefir_bigint *bigint, kefir_i
     REQUIRE(value_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to integer"));
 
     long long value;
-    __kefir_bigint_result_t res = __kefir_bigint_get_signed_value(bigint->digits, bigint->bitwidth, &value);
+    __kefir_bigint_result_t res =
+        __kefir_bigint_get_signed_value(bigint->digits, (unsigned int) bigint->bitwidth, &value);
     UNUSED(res);
     *value_ptr = value;
     return KEFIR_OK;
@@ -93,8 +94,20 @@ kefir_result_t kefir_bigint_cast_signed(struct kefir_mem *mem, struct kefir_bigi
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
 
     REQUIRE_OK(bigint_ensure_width(mem, bigint, width));
-    __kefir_bigint_result_t res = __kefir_bigint_cast_signed(bigint->digits, bigint->bitwidth, width);
+    __kefir_bigint_result_t res = __kefir_bigint_cast_signed(bigint->digits, bigint->bitwidth, (unsigned int) width);
     UNUSED(res);
     bigint->bitwidth = width;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_add(struct kefir_bigint *lhs_bigint, const struct kefir_bigint *rhs_bigint) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_add(lhs_bigint->digits, rhs_bigint->digits, (unsigned int) lhs_bigint->bitwidth);
+    UNUSED(res);
     return KEFIR_OK;
 }

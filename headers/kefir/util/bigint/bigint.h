@@ -38,4 +38,6 @@ kefir_result_t kefir_bigint_get_value(const struct kefir_bigint *, kefir_int64_t
 
 kefir_result_t kefir_bigint_cast_signed(struct kefir_mem *, struct kefir_bigint *, kefir_size_t);
 
+kefir_result_t kefir_bigint_add(struct kefir_bigint *, const struct kefir_bigint *);
+
 #endif
