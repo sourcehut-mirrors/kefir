@@ -49,5 +49,6 @@ kefir_result_t kefir_bigint_xor(struct kefir_bigint *, const struct kefir_bigint
 
 kefir_result_t kefir_bigint_left_shift(struct kefir_bigint *, kefir_size_t);
 kefir_result_t kefir_bigint_right_shift(struct kefir_bigint *, kefir_size_t);
+kefir_result_t kefir_bigint_arithmetic_right_shift(struct kefir_bigint *, kefir_size_t);
 
 #endif
