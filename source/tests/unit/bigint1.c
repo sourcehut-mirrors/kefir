@@ -517,5 +517,65 @@ DEFINE_CASE(bigint_lshift1, "BigInt - left shift #1") {
 }
 END_CASE
 
+#undef ASSERT_SHL
+
+DEFINE_CASE(bigint_rshift1, "BigInt - right shift #1") {
+    struct kefir_bigint lhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+
+#define ASSERT_SHR(_lhs, _arg1, _arg2, _res)                                                     \
+    do {                                                                                         \
+        ASSERT_STORE((_lhs), (_arg1));                                                           \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_lhs), sizeof(kefir_int64_t) * CHAR_BIT)); \
+        ASSERT_OK(kefir_bigint_right_shift((_lhs), (_arg2)));                                    \
+        ASSERT_LOAD((_lhs), (_res));                                                             \
+    } while (0)
+
+    ASSERT_SHR(&lhs_bigint, 0, 0, 0);
+    ASSERT_SHR(&lhs_bigint, 0, 1, 0);
+    ASSERT_SHR(&lhs_bigint, 1, 0, 1);
+    ASSERT_SHR(&lhs_bigint, 1, 1, 0);
+    for (kefir_uint64_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_SHR(&lhs_bigint, 1ull << i, i, 1);
+        if (i > 0) {
+            ASSERT_SHR(&lhs_bigint, 1ull << i, i - 1, 2);
+        }
+    }
+    ASSERT_SHR(&lhs_bigint, -1ll, 0, -1);
+    ASSERT_SHR(&lhs_bigint, -1ll, 1, KEFIR_INT64_MAX);
+    ASSERT_SHR(&lhs_bigint, -1ll, 2, KEFIR_INT64_MAX / 2);
+    ASSERT_SHR(&lhs_bigint, KEFIR_INT64_MIN, 1, 1ll << (sizeof(kefir_uint64_t) * CHAR_BIT - 2));
+    ASSERT_SHR(&lhs_bigint, -1ll, sizeof(kefir_uint64_t) * CHAR_BIT, 0);
+    ASSERT_SHR(&lhs_bigint, -1ll, sizeof(kefir_uint64_t) * CHAR_BIT - 1, 1);
+    ASSERT_SHR(&lhs_bigint, KEFIR_INT64_MAX, 1, (1ll << (sizeof(kefir_uint64_t) * CHAR_BIT - 2)) - 1);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+}
+END_CASE
+
+#undef ASSERT_SHR
+
+DEFINE_CASE(bigint_combined_shift1, "BigInt - combined shifts #1") {
+    struct kefir_bigint lhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+
+    ASSERT_STORE(&lhs_bigint, 0xbadbabell);
+    ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, &lhs_bigint, 1024));
+    ASSERT_LOAD(&lhs_bigint, 0xbadbabell);
+
+    ASSERT_OK(kefir_bigint_left_shift(&lhs_bigint, 824));
+    ASSERT_LOAD(&lhs_bigint, 0);
+    ASSERT_OK(kefir_bigint_right_shift(&lhs_bigint, 823));
+    ASSERT_LOAD(&lhs_bigint, 0xbadbabell << 1);
+    ASSERT_OK(kefir_bigint_left_shift(&lhs_bigint, 823));
+    ASSERT_OK(kefir_bigint_right_shift(&lhs_bigint, 824));
+    ASSERT_LOAD(&lhs_bigint, 0xbadbabell);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_LOAD

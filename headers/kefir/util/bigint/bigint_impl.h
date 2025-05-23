@@ -337,4 +337,52 @@ static __kefir_bigint_result_t __kefir_bigint_left_shift(__KEFIR_BIGINT_DIGIT_T 
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_right_shift_whole_digits(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                       __KEFIR_BIGINT_UNSIGNED_VALUE_T shift,
+                                                                       __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    if (shift >= total_digits) {
+        for (__KEFIR_BIGINT_UINT_T i = 0; i < total_digits; i++) {
+            digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
+        }
+    } else {
+        __KEFIR_BIGINT_UINT_T i = 0;
+        for (; i < total_digits - shift; i++) {
+            digits[i] = digits[i + shift];
+        }
+        for (; i < total_digits; i++) {
+            digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
+        }
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_right_shift(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T shift,
+                                                          __KEFIR_BIGINT_WIDTH_T width) {
+    if (shift > width) {
+        shift = width;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T shift_whole_digits = shift / __KEFIR_BIGINT_DIGIT_BIT;
+    if (shift_whole_digits > 0) {
+        (void) __kefir_bigint_right_shift_whole_digits(digits, shift_whole_digits, width);
+        shift -= shift_whole_digits * __KEFIR_BIGINT_DIGIT_BIT;
+    }
+
+    if (shift > 0) {
+        for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits - 1; i++) {
+            digits[i] = (digits[i] >> shift) | (digits[i + 1] << (__KEFIR_BIGINT_DIGIT_BIT - shift));
+        }
+
+        const __KEFIR_BIGINT_WIDTH_T mask_offset = width - (total_digits - 1) * __KEFIR_BIGINT_DIGIT_BIT;
+        const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
+
+        digits[total_digits - 1] &= mask;
+        digits[total_digits - 1] >>= shift;
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
 #endif
