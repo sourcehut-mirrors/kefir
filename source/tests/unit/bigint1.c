@@ -484,5 +484,38 @@ DEFINE_CASE(bigint_sub1, "BigInt - subtraction #1") {
 }
 END_CASE
 
+DEFINE_CASE(bigint_lshift1, "BigInt - left shift #1") {
+    struct kefir_bigint lhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+
+#define ASSERT_SHL(_lhs, _arg1, _arg2, _res)                                                     \
+    do {                                                                                         \
+        ASSERT_STORE((_lhs), (_arg1));                                                           \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_lhs), sizeof(kefir_int64_t) * CHAR_BIT)); \
+        ASSERT_OK(kefir_bigint_left_shift((_lhs), (_arg2)));                                     \
+        ASSERT_LOAD((_lhs), (_res));                                                             \
+    } while (0)
+
+    ASSERT_SHL(&lhs_bigint, 0, 0, 0);
+    ASSERT_SHL(&lhs_bigint, 0, 1, 0);
+    for (kefir_uint64_t i = 0; i < sizeof(kefir_int64_t) * CHAR_BIT - 1; i++) {
+        ASSERT_SHL(&lhs_bigint, 1, i, 1ll << i);
+    }
+    ASSERT_SHL(&lhs_bigint, 1, sizeof(kefir_int64_t) * CHAR_BIT - 1, KEFIR_INT64_MIN);
+    ASSERT_SHL(&lhs_bigint, 1, sizeof(kefir_int64_t) * CHAR_BIT, 0);
+
+    ASSERT_SHL(&lhs_bigint, 7, 1, 14);
+    ASSERT_SHL(&lhs_bigint, 7, 2, 28);
+    ASSERT_SHL(&lhs_bigint, 15, 2, 60);
+    ASSERT_SHL(&lhs_bigint, KEFIR_INT64_MIN, 0, KEFIR_INT64_MIN);
+    ASSERT_SHL(&lhs_bigint, -1, 1, -2);
+    ASSERT_SHL(&lhs_bigint, -1, 2, -4);
+    ASSERT_SHL(&lhs_bigint, KEFIR_INT64_MAX, 1, (kefir_int64_t) 18446744073709551614ull);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_LOAD

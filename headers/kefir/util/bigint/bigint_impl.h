@@ -50,8 +50,12 @@
 #define __KEFIR_BIGINT_DIGIT_T unsigned char
 #endif
 
-#ifndef __KEFIR_BIGINT_INT_T
-#define __KEFIR_BIGINT_INT_T unsigned int
+#ifndef __KEFIR_BIGINT_UINT_T
+#define __KEFIR_BIGINT_UINT_T unsigned int
+#endif
+
+#ifndef __KEFIR_BIGINT_WIDTH_T
+#define __KEFIR_BIGINT_WIDTH_T unsigned long long
 #endif
 
 #define __KEFIR_BIGINT_VALUE_BIT (sizeof(__KEFIR_BIGINT_SIGNED_VALUE_T) * __KEFIR_BIGINT_CHAR_BIT)
@@ -65,8 +69,8 @@ typedef enum { __KEFIR_BIGINT_OK } __kefir_bigint_result_t;
 
 #define __KEFIR_BIGINT_BITS_TO_DIGITS(_bits) (((_bits) + __KEFIR_BIGINT_DIGIT_BIT - 1) / __KEFIR_BIGINT_DIGIT_BIT)
 
-static __KEFIR_BIGINT_INT_T __kefir_bigint_count_nonzero_bits(__KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
-    __KEFIR_BIGINT_INT_T bits = 0;
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_count_nonzero_bits(__KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
+    __KEFIR_BIGINT_UINT_T bits = 0;
     for (; value != 0; value >>= 1, bits++) {}
     if (bits == 0) {
         bits = 1;
@@ -75,19 +79,19 @@ static __KEFIR_BIGINT_INT_T __kefir_bigint_count_nonzero_bits(__KEFIR_BIGINT_UNS
 }
 
 static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                                 __KEFIR_BIGINT_INT_T width,
-                                                                 __KEFIR_BIGINT_INT_T *width_ptr,
+                                                                 __KEFIR_BIGINT_WIDTH_T width,
+                                                                 __KEFIR_BIGINT_WIDTH_T *width_ptr,
                                                                  __KEFIR_BIGINT_SIGNED_VALUE_T value) {
     if (width == 0) {
         return __KEFIR_BIGINT_OK;
     }
-    __KEFIR_BIGINT_INT_T fit_width = __kefir_bigint_count_nonzero_bits(value) + (value > 0 ? 1 : 0);
+    __KEFIR_BIGINT_WIDTH_T fit_width = __kefir_bigint_count_nonzero_bits(value) + (value > 0 ? 1 : 0);
     if (fit_width > width) {
         fit_width = width;
     }
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(fit_width);
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(fit_width);
 
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++, value >>= __KEFIR_BIGINT_DIGIT_BIT) {
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++, value >>= __KEFIR_BIGINT_DIGIT_BIT) {
         digits[i] = (unsigned char) value;
     }
 
@@ -95,21 +99,22 @@ static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned char *digits, __KEFIR_BIGINT_INT_T width,
+static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned char *digits,
+                                                               __KEFIR_BIGINT_WIDTH_T width,
                                                                __KEFIR_BIGINT_SIGNED_VALUE_T *value_ptr) {
     if (width > __KEFIR_BIGINT_VALUE_BIT) {
         width = __KEFIR_BIGINT_VALUE_BIT;
     }
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T value = 0;
-    for (__KEFIR_BIGINT_INT_T i = total_digits; i > 0; i--) {
+    for (__KEFIR_BIGINT_WIDTH_T i = total_digits; i > 0; i--) {
         value <<= __KEFIR_BIGINT_DIGIT_BIT;
         value |= digits[i - 1];
     }
 
     if (width < __KEFIR_BIGINT_VALUE_BIT) {
-        const __KEFIR_BIGINT_INT_T sign = width > 0 ? (value >> (width - 1)) & 1 : 0;
+        const __KEFIR_BIGINT_UINT_T sign = width > 0 ? (value >> (width - 1)) & 1 : 0;
 
         if (sign) {
             const unsigned long long mask = ~((1ull << width) - 1);
@@ -125,15 +130,15 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
 }
 
 static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                          __KEFIR_BIGINT_INT_T current_width,
-                                                          __KEFIR_BIGINT_INT_T desired_width) {
-    const __KEFIR_BIGINT_INT_T desired_msb_location = desired_width - 1;
-    const __KEFIR_BIGINT_INT_T desired_msb_digit_index = desired_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
-    const __KEFIR_BIGINT_INT_T desired_msb_bit_offset =
+                                                          __KEFIR_BIGINT_WIDTH_T current_width,
+                                                          __KEFIR_BIGINT_WIDTH_T desired_width) {
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_location = desired_width - 1;
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_digit_index = desired_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_bit_offset =
         desired_msb_location - desired_msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
 
     if (desired_width <= current_width) {
-        __KEFIR_BIGINT_INT_T desired_msb = (digits[desired_msb_digit_index] >> desired_msb_bit_offset) & 1;
+        __KEFIR_BIGINT_UINT_T desired_msb = (digits[desired_msb_digit_index] >> desired_msb_bit_offset) & 1;
         if (desired_msb) {
             const unsigned long long mask = ~((1ull << desired_msb_bit_offset) - 1);
             digits[desired_msb_digit_index] |= mask;
@@ -151,12 +156,12 @@ static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T
         return __KEFIR_BIGINT_OK;
     }
 
-    const __KEFIR_BIGINT_INT_T current_msb_location = current_width - 1;
-    const __KEFIR_BIGINT_INT_T current_msb_digit_index = current_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
-    const __KEFIR_BIGINT_INT_T current_msb_bit_offset =
+    const __KEFIR_BIGINT_WIDTH_T current_msb_location = current_width - 1;
+    const __KEFIR_BIGINT_WIDTH_T current_msb_digit_index = current_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T current_msb_bit_offset =
         current_msb_location - current_msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
 
-    __KEFIR_BIGINT_INT_T current_msb = (digits[current_msb_digit_index] >> current_msb_bit_offset) & 1;
+    __KEFIR_BIGINT_UINT_T current_msb = (digits[current_msb_digit_index] >> current_msb_bit_offset) & 1;
     if (current_msb_bit_offset + 1 < __KEFIR_BIGINT_DIGIT_BIT) {
         if (current_msb) {
             const unsigned long long mask = ~((1ull << current_msb_bit_offset) - 1);
@@ -167,7 +172,7 @@ static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T
         }
     }
 
-    for (__KEFIR_BIGINT_INT_T i = current_msb_digit_index + 1; i <= desired_msb_digit_index; i++) {
+    for (__KEFIR_BIGINT_WIDTH_T i = current_msb_digit_index + 1; i <= desired_msb_digit_index; i++) {
         if (current_msb) {
             digits[i] = ~(__KEFIR_BIGINT_DIGIT_T) 0ull;
         } else {
@@ -180,15 +185,15 @@ static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T
 
 static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                   const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
-                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+                                                  __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    __KEFIR_BIGINT_INT_T carry = 0;
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T rhs_digit = rhs_digits[i];
+    __KEFIR_BIGINT_UINT_T carry = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i];
 
-        const __KEFIR_BIGINT_INT_T digit_sum = carry + lhs_digit + rhs_digit;
+        const __KEFIR_BIGINT_UINT_T digit_sum = carry + lhs_digit + rhs_digit;
         lhs_digits[i] = (__KEFIR_BIGINT_DIGIT_T) digit_sum;
         carry = digit_sum >> __KEFIR_BIGINT_DIGIT_BIT;
     }
@@ -196,11 +201,10 @@ static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *lhs_di
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_invert(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                     __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+static __kefir_bigint_result_t __kefir_bigint_invert(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
         digits[i] = ~digits[i];
     }
     return __KEFIR_BIGINT_OK;
@@ -208,12 +212,12 @@ static __kefir_bigint_result_t __kefir_bigint_invert(__KEFIR_BIGINT_DIGIT_T *dig
 
 static __kefir_bigint_result_t __kefir_bigint_and(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                   const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
-                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+                                                  __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T rhs_digit = rhs_digits[i];
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i];
 
         lhs_digits[i] = lhs_digit & rhs_digit;
     }
@@ -223,12 +227,12 @@ static __kefir_bigint_result_t __kefir_bigint_and(__KEFIR_BIGINT_DIGIT_T *lhs_di
 
 static __kefir_bigint_result_t __kefir_bigint_or(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                  const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
-                                                 __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+                                                 __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T rhs_digit = rhs_digits[i];
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i];
 
         lhs_digits[i] = lhs_digit | rhs_digit;
     }
@@ -238,12 +242,12 @@ static __kefir_bigint_result_t __kefir_bigint_or(__KEFIR_BIGINT_DIGIT_T *lhs_dig
 
 static __kefir_bigint_result_t __kefir_bigint_xor(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                   const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
-                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+                                                  __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T rhs_digit = rhs_digits[i];
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i];
 
         lhs_digits[i] = lhs_digit ^ rhs_digit;
     }
@@ -253,17 +257,17 @@ static __kefir_bigint_result_t __kefir_bigint_xor(__KEFIR_BIGINT_DIGIT_T *lhs_di
 
 static __kefir_bigint_result_t __kefir_bigint_util_add_digit(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                              __KEFIR_BIGINT_DIGIT_T rhs_digit,
-                                                             __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
-    const __KEFIR_BIGINT_INT_T rhs_sign = (rhs_digit >> (__KEFIR_BIGINT_DIGIT_BIT - 1)) & 1;
-    const __KEFIR_BIGINT_INT_T rhs_extension = rhs_sign ? ~(__KEFIR_BIGINT_DIGIT_T) 0 : (__KEFIR_BIGINT_DIGIT_T) 0;
+                                                             __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    const __KEFIR_BIGINT_UINT_T rhs_sign = (rhs_digit >> (__KEFIR_BIGINT_DIGIT_BIT - 1)) & 1;
+    const __KEFIR_BIGINT_UINT_T rhs_extension = rhs_sign ? ~(__KEFIR_BIGINT_DIGIT_T) 0 : (__KEFIR_BIGINT_DIGIT_T) 0;
 
-    __KEFIR_BIGINT_INT_T carry = 0;
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T digit = i == 0 ? rhs_digit : rhs_extension;
+    __KEFIR_BIGINT_UINT_T carry = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T digit = i == 0 ? rhs_digit : rhs_extension;
 
-        const __KEFIR_BIGINT_INT_T digit_sum = carry + lhs_digit + digit;
+        const __KEFIR_BIGINT_UINT_T digit_sum = carry + lhs_digit + digit;
         lhs_digits[i] = (__KEFIR_BIGINT_DIGIT_T) digit_sum;
         carry = digit_sum >> __KEFIR_BIGINT_DIGIT_BIT;
     }
@@ -271,8 +275,7 @@ static __kefir_bigint_result_t __kefir_bigint_util_add_digit(__KEFIR_BIGINT_DIGI
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                     __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
+static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
     (void) __kefir_bigint_invert(digits, width);
     (void) __kefir_bigint_util_add_digit(digits, 1, width);
 
@@ -281,17 +284,54 @@ static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *dig
 
 static __kefir_bigint_result_t __kefir_bigint_subtract(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                        const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
-                                                       __KEFIR_BIGINT_UNSIGNED_VALUE_T width) {
-    const __KEFIR_BIGINT_INT_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+                                                       __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
 
-    __KEFIR_BIGINT_INT_T carry = 0;
-    for (__KEFIR_BIGINT_INT_T i = 0; i < total_digits; i++) {
-        const __KEFIR_BIGINT_INT_T lhs_digit = lhs_digits[i];
-        const __KEFIR_BIGINT_INT_T rhs_digit = rhs_digits[i];
+    __KEFIR_BIGINT_UINT_T carry = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        const __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i];
 
-        const __KEFIR_BIGINT_INT_T digit_diff = ((__KEFIR_BIGINT_INT_T) lhs_digit) - rhs_digit - carry;
+        const __KEFIR_BIGINT_UINT_T digit_diff = ((__KEFIR_BIGINT_UINT_T) lhs_digit) - rhs_digit - carry;
         lhs_digits[i] = (__KEFIR_BIGINT_DIGIT_T) digit_diff;
         carry = (digit_diff >> __KEFIR_BIGINT_DIGIT_BIT) & 1;
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_left_shift_whole_digits(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                      __KEFIR_BIGINT_UNSIGNED_VALUE_T shift,
+                                                                      __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    for (__KEFIR_BIGINT_WIDTH_T i = total_digits - 1; i >= shift; i--) {
+        digits[i] = digits[i - shift];
+    }
+
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < shift; i++) {
+        digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
+    }
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_left_shift(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T shift,
+                                                         __KEFIR_BIGINT_WIDTH_T width) {
+    if (shift > width) {
+        shift = width;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T shift_whole_digits = shift / __KEFIR_BIGINT_DIGIT_BIT;
+    if (shift_whole_digits > 0) {
+        (void) __kefir_bigint_left_shift_whole_digits(digits, shift_whole_digits, width);
+        shift -= shift_whole_digits * __KEFIR_BIGINT_DIGIT_BIT;
+    }
+
+    if (shift > 0) {
+        for (__KEFIR_BIGINT_WIDTH_T i = total_digits - 1; i > 0; i--) {
+            digits[i] = (digits[i] << shift) | (digits[i - 1] >> (__KEFIR_BIGINT_DIGIT_BIT - shift));
+        }
+        digits[0] <<= shift;
     }
 
     return __KEFIR_BIGINT_OK;
