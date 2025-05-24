@@ -52,7 +52,7 @@ kefir_result_t kefir_bigint_copy(struct kefir_bigint *dest, const struct kefir_b
     REQUIRE(dest->capacity >= required_capacity,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Destination big integer lacks capacity for copy"));
 
-    memcpy(dest->digits, src->digits, required_capacity);
+    (void) __kefir_bigint_copy(dest->digits, src->digits, src->bitwidth);
     dest->bitwidth = src->bitwidth;
 
     return KEFIR_OK;
@@ -301,6 +301,25 @@ kefir_result_t kefir_bigint_unsigned_multiply(struct kefir_bigint *result_bigint
     __kefir_bigint_result_t res =
         __kefir_bigint_unsigned_multiply(result_bigint->digits, tmp_bigint->digits, lhs_bigint->digits,
                                          rhs_bigint->digits, result_bigint->bitwidth, lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_signed_multiply(struct kefir_bigint *result_bigint, struct kefir_bigint *lhs_bigint,
+                                            const struct kefir_bigint *rhs_bigint,
+                                            struct kefir_bigint *accumulator_bigint) {
+    REQUIRE(result_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(accumulator_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+    REQUIRE(accumulator_bigint->bitwidth >= lhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Temporary big integer shall be at least as large as operand"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_signed_multiply(result_bigint->digits, accumulator_bigint->digits, lhs_bigint->digits,
+                                       rhs_bigint->digits, result_bigint->bitwidth, lhs_bigint->bitwidth);
     UNUSED(res);
     return KEFIR_OK;
 }

@@ -544,6 +544,7 @@ DEFINE_CASE(bigint_sub1, "BigInt - subtraction #1") {
     ASSERT_SUB(&lhs_bigint, &rhs_bigint, KEFIR_INT32_MIN, KEFIR_INT32_MAX,
                (kefir_int64_t) KEFIR_INT32_MIN - KEFIR_INT32_MAX);
     ASSERT_SUB(&lhs_bigint, &rhs_bigint, KEFIR_UINT64_MIN, KEFIR_UINT64_MAX, 1);
+    ASSERT_SUB(&lhs_bigint, &rhs_bigint, 0, KEFIR_INT64_MIN, KEFIR_INT64_MIN);
 
     for (kefir_int64_t i = -1024; i < 1024; i++) {
         for (kefir_int64_t j = -256; j < 256; j++) {
@@ -870,6 +871,91 @@ DEFINE_CASE(bigint_unsigned_multiply1, "BigInt - unsigned multiplication #1") {
     ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
     ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
     ASSERT_OK(kefir_bigint_free(&kft_mem, &tmp_bigint));
+}
+END_CASE
+
+DEFINE_CASE(bigint_signed_multiply1, "BigInt - signed multiplication #1") {
+    struct kefir_bigint lhs_bigint, rhs_bigint, result_bigint, acc_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&rhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&result_bigint));
+    ASSERT_OK(kefir_bigint_init(&acc_bigint));
+
+#define ASSERT_MUL(_arg1, _arg2, _res)                                                                                 \
+    do {                                                                                                               \
+        ASSERT_STORE(&lhs_bigint, (_arg1));                                                                            \
+        ASSERT_STORE(&rhs_bigint, (_arg2));                                                                            \
+        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &lhs_bigint,                                               \
+                                                  MAX(lhs_bigint.bitwidth, rhs_bigint.bitwidth) + 1));                 \
+        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &rhs_bigint, lhs_bigint.bitwidth));                        \
+        ASSERT_OK(                                                                                                     \
+            kefir_bigint_resize_cast_signed(&kft_mem, &result_bigint, lhs_bigint.bitwidth + rhs_bigint.bitwidth + 1)); \
+        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &acc_bigint, result_bigint.bitwidth));                     \
+        ASSERT_OK(kefir_bigint_signed_multiply(&result_bigint, &lhs_bigint, &rhs_bigint, &acc_bigint));                \
+        ASSERT_LOAD(&result_bigint, (_res));                                                                           \
+    } while (0)
+
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_MUL(1ull << i, 0, 0);
+        ASSERT_MUL(0, 1ull << i, 0);
+        ASSERT_MUL(1ull << i, 1, (kefir_int64_t) (1ull << i));
+        ASSERT_MUL(1, 1ull << i, (kefir_int64_t) (1ull << i));
+
+        if (i < (sizeof(kefir_uint64_t) * CHAR_BIT) / 2) {
+            for (kefir_size_t j = 0; j < (sizeof(kefir_uint64_t) * CHAR_BIT) / 2; j++) {
+                ASSERT_MUL(1ull << i, 1ull << j, (kefir_int64_t) (1ull << (i + j)));
+            }
+        }
+    }
+
+    for (kefir_int64_t i = -4096; i < 4096; i++) {
+        for (kefir_int64_t j = -512; j < 512; j++) {
+            ASSERT_MUL(i, j, i * j);
+        }
+    }
+
+    ASSERT_MUL(KEFIR_UINT16_MAX, ((kefir_uint64_t) KEFIR_UINT16_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_UINT16_MAX) << 16));
+    ASSERT_MUL(KEFIR_UINT16_MAX, ((kefir_uint64_t) KEFIR_UINT32_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_UINT16_MAX) << 32));
+    ASSERT_MUL(KEFIR_UINT32_MAX, ((kefir_uint64_t) KEFIR_UINT16_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_UINT32_MAX) << 16));
+    ASSERT_MUL(KEFIR_UINT32_MAX, ((kefir_uint64_t) KEFIR_UINT32_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_UINT32_MAX) << 32));
+
+    ASSERT_MUL(KEFIR_INT16_MAX, ((kefir_uint64_t) KEFIR_UINT16_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_INT16_MAX) << 16));
+    ASSERT_MUL(KEFIR_INT16_MAX, ((kefir_uint64_t) KEFIR_UINT32_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_INT16_MAX) << 32));
+    ASSERT_MUL(KEFIR_INT32_MAX, ((kefir_uint64_t) KEFIR_UINT16_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_INT32_MAX) << 16));
+    ASSERT_MUL(KEFIR_INT32_MAX, ((kefir_uint64_t) KEFIR_UINT32_MAX) + 1,
+               (kefir_int64_t) (((kefir_uint64_t) KEFIR_INT32_MAX) << 32));
+
+#undef ASSERT_MUL
+
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &lhs_bigint, 2 * sizeof(kefir_int64_t) * CHAR_BIT + 2));
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &rhs_bigint, lhs_bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &result_bigint, lhs_bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &acc_bigint, result_bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_set_signed_value(&lhs_bigint, KEFIR_INT64_MIN));
+    ASSERT_OK(kefir_bigint_set_signed_value(&rhs_bigint, KEFIR_INT64_MIN));
+    ASSERT_OK(kefir_bigint_signed_multiply(&result_bigint, &lhs_bigint, &rhs_bigint, &acc_bigint));
+    ASSERT_LOAD(&result_bigint, 0);
+    ASSERT_OK(kefir_bigint_arithmetic_right_shift(&result_bigint, sizeof(kefir_int64_t) * CHAR_BIT));
+    ASSERT_LOAD(&result_bigint, -(KEFIR_INT64_MIN / 2));
+    ASSERT_OK(kefir_bigint_copy(&lhs_bigint, &result_bigint));
+    ASSERT_OK(kefir_bigint_set_signed_value(&rhs_bigint, KEFIR_INT32_MIN));
+    ASSERT_OK(kefir_bigint_signed_multiply(&result_bigint, &lhs_bigint, &rhs_bigint, &acc_bigint));
+    ASSERT_LOAD(&result_bigint, 0);
+    ASSERT_OK(kefir_bigint_arithmetic_right_shift(&result_bigint, sizeof(kefir_int64_t) * CHAR_BIT));
+    ASSERT_LOAD(&result_bigint, KEFIR_INT32_MIN / 4);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &result_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &acc_bigint));
 }
 END_CASE
 
