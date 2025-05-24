@@ -124,4 +124,7 @@ static __kefir_bigint_result_t __kefir_bigint_signed_multiply(__KEFIR_BIGINT_DIG
                                                               __KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                               __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T);
 
+static __kefir_bigint_result_t __kefir_bigint_unsigned_divide(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
+                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+
 #endif
