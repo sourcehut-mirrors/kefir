@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/util/bigint/bigint.h"
+#include "kefir/util/bigint.h"
 #include "kefir/test/unit_test.h"
 #include "kefir/test/util.h"
 

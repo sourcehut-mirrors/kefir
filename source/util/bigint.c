@@ -18,14 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/util/bigint/bigint.h"
+#include "kefir/util/bigint.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <string.h>
 
 #define __KEFIR_BIGINT_USE_BIGINT_IMPL__
 #define __KEFIR_BIGINT_CHAR_BIT CHAR_BIT
-#include "kefir/util/bigint/bigint_impl.h"
+#include "kefir_bigint/bigint.h"
 
 kefir_result_t kefir_bigint_init(struct kefir_bigint *bigint) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to big integer"));
@@ -165,8 +165,8 @@ kefir_result_t kefir_bigint_cast_signed(struct kefir_bigint *bigint, kefir_size_
     REQUIRE(to_width <= bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided bitwidth exceeds big integer bitwidth"));
 
-    __kefir_bigint_result_t res = __kefir_bigint_resize_cast_signed(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width,
-                                                                    (__KEFIR_BIGINT_WIDTH_T) to_width);
+    __kefir_bigint_result_t res = __kefir_bigint_cast_signed(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width,
+                                                             (__KEFIR_BIGINT_WIDTH_T) to_width);
     UNUSED(res);
     return KEFIR_OK;
 }
@@ -178,8 +178,8 @@ kefir_result_t kefir_bigint_cast_unsigned(struct kefir_bigint *bigint, kefir_siz
     REQUIRE(to_width <= bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided bitwidth exceeds big integer bitwidth"));
 
-    __kefir_bigint_result_t res = __kefir_bigint_resize_cast_unsigned(
-        bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width, (__KEFIR_BIGINT_WIDTH_T) to_width);
+    __kefir_bigint_result_t res = __kefir_bigint_cast_unsigned(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width,
+                                                               (__KEFIR_BIGINT_WIDTH_T) to_width);
     UNUSED(res);
     return KEFIR_OK;
 }
