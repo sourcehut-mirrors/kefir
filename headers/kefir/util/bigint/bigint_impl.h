@@ -117,6 +117,29 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned char *digits,
+                                                                 __KEFIR_BIGINT_WIDTH_T width,
+                                                                 __KEFIR_BIGINT_UNSIGNED_VALUE_T *value_ptr) {
+    if (width > __KEFIR_BIGINT_VALUE_BIT) {
+        width = __KEFIR_BIGINT_VALUE_BIT;
+    }
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T value = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = total_digits; i > 0; i--) {
+        value <<= __KEFIR_BIGINT_DIGIT_BIT;
+        value |= digits[i - 1];
+    }
+
+    if (width < __KEFIR_BIGINT_VALUE_BIT) {
+        const unsigned long long mask = (1ull << width) - 1;
+        value &= mask;
+    }
+
+    *value_ptr = value;
+    return __KEFIR_BIGINT_OK;
+}
+
 static __kefir_bigint_result_t __kefir_bigint_resize_cast_signed(__KEFIR_BIGINT_DIGIT_T *digits,
                                                                  __KEFIR_BIGINT_WIDTH_T current_width,
                                                                  __KEFIR_BIGINT_WIDTH_T desired_width) {
@@ -128,17 +151,17 @@ static __kefir_bigint_result_t __kefir_bigint_resize_cast_signed(__KEFIR_BIGINT_
     if (desired_width <= current_width) {
         __KEFIR_BIGINT_UINT_T desired_msb = (digits[desired_msb_digit_index] >> desired_msb_bit_offset) & 1;
         if (desired_msb) {
-            const unsigned long long mask = ~((1ull << desired_msb_bit_offset) - 1);
+            __KEFIR_BIGINT_UINT_T mask = ~((1ull << desired_msb_bit_offset) - 1);
             digits[desired_msb_digit_index] |= mask;
         } else {
-            const unsigned long long mask = (1ull << desired_msb_bit_offset) - 1;
+            __KEFIR_BIGINT_UINT_T mask = (1ull << desired_msb_bit_offset) - 1;
             digits[desired_msb_digit_index] &= mask;
         }
         return __KEFIR_BIGINT_OK;
     }
 
     if (current_width == 0) {
-        for (unsigned long i = 0; i <= desired_msb_digit_index; i++) {
+        for (__KEFIR_BIGINT_WIDTH_T i = 0; i <= desired_msb_digit_index; i++) {
             digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
         }
         return __KEFIR_BIGINT_OK;
@@ -152,10 +175,10 @@ static __kefir_bigint_result_t __kefir_bigint_resize_cast_signed(__KEFIR_BIGINT_
     __KEFIR_BIGINT_UINT_T current_msb = (digits[current_msb_digit_index] >> current_msb_bit_offset) & 1;
     if (current_msb_bit_offset + 1 < __KEFIR_BIGINT_DIGIT_BIT) {
         if (current_msb) {
-            const unsigned long long mask = ~((1ull << current_msb_bit_offset) - 1);
+            __KEFIR_BIGINT_UINT_T mask = ~((1ull << current_msb_bit_offset) - 1);
             digits[current_msb_digit_index] |= mask;
         } else {
-            const unsigned long long mask = (1ull << current_msb_bit_offset) - 1;
+            __KEFIR_BIGINT_UINT_T mask = (1ull << current_msb_bit_offset) - 1;
             digits[current_msb_digit_index] &= mask;
         }
     }
@@ -166,6 +189,44 @@ static __kefir_bigint_result_t __kefir_bigint_resize_cast_signed(__KEFIR_BIGINT_
         } else {
             digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0ull;
         }
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_resize_cast_unsigned(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                   __KEFIR_BIGINT_WIDTH_T current_width,
+                                                                   __KEFIR_BIGINT_WIDTH_T desired_width) {
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_location = desired_width - 1;
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_digit_index = desired_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T desired_msb_bit_offset =
+        desired_width - desired_msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
+
+    if (desired_width <= current_width) {
+        __KEFIR_BIGINT_UINT_T mask = (1ull << desired_msb_bit_offset) - 1;
+        digits[desired_msb_digit_index] &= mask;
+        return __KEFIR_BIGINT_OK;
+    }
+
+    if (current_width == 0) {
+        for (__KEFIR_BIGINT_WIDTH_T i = 0; i <= desired_msb_digit_index; i++) {
+            digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0ull;
+        }
+        return __KEFIR_BIGINT_OK;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T current_msb_location = current_width - 1;
+    const __KEFIR_BIGINT_WIDTH_T current_msb_digit_index = current_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T current_msb_bit_offset =
+        current_width - current_msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
+
+    if (current_msb_bit_offset + 1 < __KEFIR_BIGINT_DIGIT_BIT) {
+        __KEFIR_BIGINT_UINT_T mask = (1ull << current_msb_bit_offset) - 1;
+        digits[current_msb_digit_index] &= mask;
+    }
+
+    for (__KEFIR_BIGINT_WIDTH_T i = current_msb_digit_index + 1; i <= desired_msb_digit_index; i++) {
+        digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0ull;
     }
 
     return __KEFIR_BIGINT_OK;
@@ -190,6 +251,30 @@ static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_
 
     if (fit_width < width) {
         (void) __kefir_bigint_resize_cast_signed(digits, fit_width, width);
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_set_unsigned_integer(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                   __KEFIR_BIGINT_WIDTH_T width,
+                                                                   __KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
+    if (width == 0) {
+        return __KEFIR_BIGINT_OK;
+    }
+
+    __KEFIR_BIGINT_WIDTH_T fit_width = width;
+    if (fit_width > __KEFIR_BIGINT_VALUE_BIT) {
+        fit_width = __KEFIR_BIGINT_VALUE_BIT;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(fit_width);
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++, value >>= __KEFIR_BIGINT_DIGIT_BIT) {
+        digits[i] = (__KEFIR_BIGINT_DIGIT_T) value;
+    }
+
+    if (fit_width < width) {
+        (void) __kefir_bigint_resize_cast_unsigned(digits, fit_width, width);
     }
 
     return __KEFIR_BIGINT_OK;
@@ -267,12 +352,11 @@ static __kefir_bigint_result_t __kefir_bigint_xor(__KEFIR_BIGINT_DIGIT_T *lhs_di
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_util_add_digit(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
-                                                             __KEFIR_BIGINT_DIGIT_T rhs_digit,
-                                                             __KEFIR_BIGINT_WIDTH_T width) {
+static __kefir_bigint_result_t __kefir_bigint_util_add_digit_zero_extended(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                                           __KEFIR_BIGINT_DIGIT_T rhs_digit,
+                                                                           __KEFIR_BIGINT_WIDTH_T width) {
     const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
-    const __KEFIR_BIGINT_UINT_T rhs_sign = (rhs_digit >> (__KEFIR_BIGINT_DIGIT_BIT - 1)) & 1;
-    const __KEFIR_BIGINT_UINT_T rhs_extension = rhs_sign ? ~(__KEFIR_BIGINT_DIGIT_T) 0 : (__KEFIR_BIGINT_DIGIT_T) 0;
+    const __KEFIR_BIGINT_UINT_T rhs_extension = 0;
 
     __KEFIR_BIGINT_UINT_T carry = 0;
     for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
@@ -289,7 +373,7 @@ static __kefir_bigint_result_t __kefir_bigint_util_add_digit(__KEFIR_BIGINT_DIGI
 
 static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
     (void) __kefir_bigint_invert(digits, width);
-    (void) __kefir_bigint_util_add_digit(digits, 1, width);
+    (void) __kefir_bigint_util_add_digit_zero_extended(digits, 1, width);
 
     return __KEFIR_BIGINT_OK;
 }
@@ -440,4 +524,60 @@ static __kefir_bigint_result_t __kefir_bigint_arithmetic_right_shift(__KEFIR_BIG
 
     return __KEFIR_BIGINT_OK;
 }
+
+static __kefir_bigint_result_t __kefir_bigint_zero(__KEFIR_BIGINT_DIGIT_T *digits, __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0;
+    }
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_unsigned_multiply(__KEFIR_BIGINT_DIGIT_T *result_digits,
+                                                                __KEFIR_BIGINT_DIGIT_T *result_row_digits,
+                                                                const __KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                                const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
+                                                                __KEFIR_BIGINT_WIDTH_T result_width,
+                                                                __KEFIR_BIGINT_WIDTH_T operand_width) {
+    (void) __kefir_bigint_zero(result_digits, result_width);
+    if (result_width == 0 || operand_width == 0) {
+        return __KEFIR_BIGINT_OK;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(operand_width);
+    const __KEFIR_BIGINT_WIDTH_T result_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(result_width);
+    const __KEFIR_BIGINT_WIDTH_T operand_mask_offset = operand_width - (total_digits - 1) * __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_DIGIT_T operand_mask = (1ull << operand_mask_offset) - 1;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        (void) __kefir_bigint_zero(result_row_digits, result_width);
+        __KEFIR_BIGINT_DIGIT_T lhs_digit = lhs_digits[i];
+        if (i + 1 == total_digits) {
+            lhs_digit &= operand_mask;
+        }
+
+        for (__KEFIR_BIGINT_WIDTH_T j = 0; j < total_digits; j++) {
+            const __KEFIR_BIGINT_WIDTH_T rhs_index = total_digits - j - 1;
+            __KEFIR_BIGINT_DIGIT_T rhs_digit = rhs_digits[rhs_index];
+            if (rhs_index + 1 == total_digits) {
+                rhs_digit &= operand_mask;
+            }
+            __KEFIR_BIGINT_UINT_T digit_mul = ((__KEFIR_BIGINT_UINT_T) lhs_digit) * (__KEFIR_BIGINT_UINT_T) rhs_digit;
+            (void) __kefir_bigint_left_shift_whole_digits(result_row_digits, 1, result_width);
+            for (__KEFIR_BIGINT_WIDTH_T k = 0; k < result_total_digits && digit_mul != 0;
+                 digit_mul >>= __KEFIR_BIGINT_DIGIT_BIT, k++) {
+                (void) __kefir_bigint_util_add_digit_zero_extended(&result_row_digits[k],
+                                                                   (__KEFIR_BIGINT_DIGIT_T) digit_mul,
+                                                                   result_width - k * __KEFIR_BIGINT_DIGIT_BIT);
+            }
+        }
+        if (i > 0) {
+            (void) __kefir_bigint_left_shift_whole_digits(result_row_digits, i, result_width);
+        }
+
+        (void) __kefir_bigint_add(result_digits, result_row_digits, result_width);
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
 #endif

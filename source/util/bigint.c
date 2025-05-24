@@ -45,6 +45,19 @@ kefir_result_t kefir_bigint_free(struct kefir_mem *mem, struct kefir_bigint *big
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_copy(struct kefir_bigint *dest, const struct kefir_bigint *src) {
+    REQUIRE(dest != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination big integer"));
+    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source big integer"));
+    const kefir_size_t required_capacity = (src->bitwidth + CHAR_BIT - 1) / CHAR_BIT;
+    REQUIRE(dest->capacity >= required_capacity,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_SPACE, "Destination big integer lacks capacity for copy"));
+
+    memcpy(dest->digits, src->digits, required_capacity);
+    dest->bitwidth = src->bitwidth;
+
+    return KEFIR_OK;
+}
+
 kefir_size_t kefir_bigint_min_signed_width(kefir_int64_t value) {
     return __kefir_bigint_native_signed_width(value);
 }
@@ -89,6 +102,22 @@ kefir_result_t kefir_bigint_resize_cast_signed(struct kefir_mem *mem, struct kef
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_resize_cast_unsigned(struct kefir_mem *mem, struct kefir_bigint *bigint,
+                                                 kefir_size_t width) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    if (width > bigint->bitwidth) {
+        const kefir_size_t old_width = bigint->bitwidth;
+        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, width));
+        REQUIRE_OK(kefir_bigint_cast_unsigned(bigint, old_width, bigint->bitwidth));
+    } else if (width != bigint->bitwidth) {
+        REQUIRE_OK(kefir_bigint_cast_unsigned(bigint, bigint->bitwidth, width));
+        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, width));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bigint_set_signed_value(struct kefir_bigint *bigint, kefir_int64_t value) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
 
@@ -97,13 +126,33 @@ kefir_result_t kefir_bigint_set_signed_value(struct kefir_bigint *bigint, kefir_
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_get_value(const struct kefir_bigint *bigint, kefir_int64_t *value_ptr) {
+kefir_result_t kefir_bigint_set_unsigned_value(struct kefir_bigint *bigint, kefir_uint64_t value) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    __kefir_bigint_result_t res = __kefir_bigint_set_unsigned_integer(bigint->digits, bigint->bitwidth, value);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_get_signed(const struct kefir_bigint *bigint, kefir_int64_t *value_ptr) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(value_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to integer"));
 
     __KEFIR_BIGINT_SIGNED_VALUE_T value;
     __kefir_bigint_result_t res =
         __kefir_bigint_get_signed_value(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) bigint->bitwidth, &value);
+    UNUSED(res);
+    *value_ptr = value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_get_unsigned(const struct kefir_bigint *bigint, kefir_uint64_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to integer"));
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T value;
+    __kefir_bigint_result_t res =
+        __kefir_bigint_get_unsigned_value(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) bigint->bitwidth, &value);
     UNUSED(res);
     *value_ptr = value;
     return KEFIR_OK;
@@ -118,6 +167,19 @@ kefir_result_t kefir_bigint_cast_signed(struct kefir_bigint *bigint, kefir_size_
 
     __kefir_bigint_result_t res = __kefir_bigint_resize_cast_signed(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width,
                                                                     (__KEFIR_BIGINT_WIDTH_T) to_width);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_cast_unsigned(struct kefir_bigint *bigint, kefir_size_t from_width, kefir_size_t to_width) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(from_width <= bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided bitwidth exceeds big integer bitwidth"));
+    REQUIRE(to_width <= bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Provided bitwidth exceeds big integer bitwidth"));
+
+    __kefir_bigint_result_t res = __kefir_bigint_resize_cast_unsigned(
+        bigint->digits, (__KEFIR_BIGINT_WIDTH_T) from_width, (__KEFIR_BIGINT_WIDTH_T) to_width);
     UNUSED(res);
     return KEFIR_OK;
 }
@@ -221,6 +283,24 @@ kefir_result_t kefir_bigint_arithmetic_right_shift(struct kefir_bigint *lhs_bigi
 
     __kefir_bigint_result_t res =
         __kefir_bigint_arithmetic_right_shift(lhs_bigint->digits, (__KEFIR_BIGINT_WIDTH_T) shift, lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_multiply(struct kefir_bigint *result_bigint, const struct kefir_bigint *lhs_bigint,
+                                              const struct kefir_bigint *rhs_bigint, struct kefir_bigint *tmp_bigint) {
+    REQUIRE(result_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+    REQUIRE(tmp_bigint->bitwidth >= result_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Temporary big integer shall be at least as large as result"));
+
+    __kefir_bigint_result_t res =
+        __kefir_bigint_unsigned_multiply(result_bigint->digits, tmp_bigint->digits, lhs_bigint->digits,
+                                         rhs_bigint->digits, result_bigint->bitwidth, lhs_bigint->bitwidth);
     UNUSED(res);
     return KEFIR_OK;
 }

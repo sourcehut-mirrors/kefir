@@ -474,7 +474,9 @@
     _separator _case(cli_options3)                                                           \
     _separator _case(cli_options4)                                                           \
     _separator _case(bigint_basic1)                                                          \
+    _separator _case(bigint_basic2)                                                          \
     _separator _case(bigint_cast_signed1)                                                    \
+    _separator _case(bigint_cast_unsigned1)                                                  \
     _separator _case(bigint_add1)                                                            \
     _separator _case(bigint_invert1)                                                         \
     _separator _case(bigint_and1)                                                            \
@@ -487,7 +489,8 @@
     _separator _case(bigint_combined_shift1)                                                 \
     _separator _case(bigint_arshift1)                                                        \
     _separator _case(bigint_min_signed_width1)                                               \
-    _separator _case(bigint_min_unsigned_width1)
+    _separator _case(bigint_min_unsigned_width1)                                             \
+    _separator _case(bigint_unsigned_multiply1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id
