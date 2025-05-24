@@ -117,9 +117,9 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                          __KEFIR_BIGINT_WIDTH_T current_width,
-                                                          __KEFIR_BIGINT_WIDTH_T desired_width) {
+static __kefir_bigint_result_t __kefir_bigint_resize_cast_signed(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                 __KEFIR_BIGINT_WIDTH_T current_width,
+                                                                 __KEFIR_BIGINT_WIDTH_T desired_width) {
     const __KEFIR_BIGINT_WIDTH_T desired_msb_location = desired_width - 1;
     const __KEFIR_BIGINT_WIDTH_T desired_msb_digit_index = desired_msb_location / __KEFIR_BIGINT_DIGIT_BIT;
     const __KEFIR_BIGINT_WIDTH_T desired_msb_bit_offset =
@@ -189,7 +189,7 @@ static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_
     }
 
     if (fit_width < width) {
-        (void) __kefir_bigint_cast_signed(digits, fit_width, width);
+        (void) __kefir_bigint_resize_cast_signed(digits, fit_width, width);
     }
 
     return __KEFIR_BIGINT_OK;
