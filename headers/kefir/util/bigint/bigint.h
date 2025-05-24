@@ -33,6 +33,9 @@ typedef struct kefir_bigint {
 kefir_result_t kefir_bigint_init(struct kefir_bigint *);
 kefir_result_t kefir_bigint_free(struct kefir_mem *, struct kefir_bigint *);
 
+kefir_size_t kefir_bigint_min_signed_width(kefir_int64_t);
+kefir_size_t kefir_bigint_min_unsigned_width(kefir_uint64_t);
+
 kefir_result_t kefir_bigint_set_value(struct kefir_mem *, struct kefir_bigint *, kefir_int64_t);
 kefir_result_t kefir_bigint_get_value(const struct kefir_bigint *, kefir_int64_t *);
 

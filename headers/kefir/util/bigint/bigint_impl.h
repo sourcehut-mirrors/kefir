@@ -70,7 +70,25 @@ typedef enum { __KEFIR_BIGINT_OK } __kefir_bigint_result_t;
 #define __KEFIR_BIGINT_BITS_TO_DIGITS(_bits) (((_bits) + __KEFIR_BIGINT_DIGIT_BIT - 1) / __KEFIR_BIGINT_DIGIT_BIT)
 
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_count_nonzero_bits(__KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
-    __KEFIR_BIGINT_UINT_T bits = 0;
+    __KEFIR_BIGINT_WIDTH_T bits = 0;
+    for (; value != 0; value >>= 1, bits++) {}
+    if (bits == 0) {
+        bits = 1;
+    }
+    return bits;
+}
+
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_native_signed_width(__KEFIR_BIGINT_SIGNED_VALUE_T value) {
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T uvalue = (__KEFIR_BIGINT_UNSIGNED_VALUE_T) value;
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T mask = (1ull << (__KEFIR_BIGINT_VALUE_BIT - 1));
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T msb = uvalue & mask;
+    __KEFIR_BIGINT_WIDTH_T bits = __KEFIR_BIGINT_VALUE_BIT + 1;
+    for (; bits > 1 && (uvalue & mask) == msb; uvalue <<= 1, bits--) {}
+    return bits;
+}
+
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_native_unsigned_width(__KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
+    __KEFIR_BIGINT_WIDTH_T bits = 0;
     for (; value != 0; value >>= 1, bits++) {}
     if (bits == 0) {
         bits = 1;

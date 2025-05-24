@@ -632,5 +632,39 @@ DEFINE_CASE(bigint_arshift1, "BigInt - arithmetic right shift #1") {
 }
 END_CASE
 
+DEFINE_CASE(bigint_min_signed_width1, "BigInt - minimum signed width #1") {
+    ASSERT(kefir_bigint_min_signed_width(0) == 1);
+    ASSERT(kefir_bigint_min_signed_width(-1) == 1);
+    ASSERT(kefir_bigint_min_signed_width(1) == 2);
+    for (kefir_size_t i = 0; i < sizeof(kefir_int64_t) * CHAR_BIT - 1; i++) {
+        ASSERT(kefir_bigint_min_signed_width(1ull << i) == i + 2);
+        ASSERT(kefir_bigint_min_signed_width(-(1ull << i)) == i + 1);
+    }
+    ASSERT(kefir_bigint_min_signed_width(1ull << (sizeof(kefir_int64_t) * CHAR_BIT - 1)) ==
+           sizeof(kefir_int64_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT8_MAX) == sizeof(kefir_int8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT8_MIN) == sizeof(kefir_int8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT16_MAX) == sizeof(kefir_int16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT16_MIN) == sizeof(kefir_int16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT32_MAX) == sizeof(kefir_int32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT32_MIN) == sizeof(kefir_int32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT64_MAX) == sizeof(kefir_int64_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT64_MIN) == sizeof(kefir_int64_t) * CHAR_BIT);
+}
+END_CASE
+
+DEFINE_CASE(bigint_min_unsigned_width1, "BigInt - minimum unsigned width #1") {
+    ASSERT(kefir_bigint_min_unsigned_width(0) == 1);
+    ASSERT(kefir_bigint_min_unsigned_width(1) == 1);
+    for (kefir_size_t i = 0; i < sizeof(kefir_int64_t) * CHAR_BIT; i++) {
+        ASSERT(kefir_bigint_min_unsigned_width(1ull << i) == (i + 1));
+    }
+    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT8_MAX) == sizeof(kefir_uint8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT16_MAX) == sizeof(kefir_uint16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT32_MAX) == sizeof(kefir_uint32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT64_MAX) == sizeof(kefir_uint64_t) * CHAR_BIT);
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_LOAD

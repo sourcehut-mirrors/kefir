@@ -45,6 +45,14 @@ kefir_result_t kefir_bigint_free(struct kefir_mem *mem, struct kefir_bigint *big
     return KEFIR_OK;
 }
 
+kefir_size_t kefir_bigint_min_signed_width(kefir_int64_t value) {
+    return __kefir_bigint_native_signed_width(value);
+}
+
+kefir_size_t kefir_bigint_min_unsigned_width(kefir_uint64_t value) {
+    return __kefir_bigint_native_unsigned_width(value);
+}
+
 static kefir_result_t bigint_ensure_width(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
     const kefir_size_t required_capacity = (width + CHAR_BIT - 1) / CHAR_BIT;
     if (bigint->capacity < required_capacity) {

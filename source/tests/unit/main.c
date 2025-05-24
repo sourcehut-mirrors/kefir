@@ -485,7 +485,9 @@
     _separator _case(bigint_lshift1)                                                         \
     _separator _case(bigint_rshift1)                                                         \
     _separator _case(bigint_combined_shift1)                                                 \
-    _separator _case(bigint_arshift1)
+    _separator _case(bigint_arshift1)                                                        \
+    _separator _case(bigint_min_signed_width1)                                               \
+    _separator _case(bigint_min_unsigned_width1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id
