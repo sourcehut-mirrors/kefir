@@ -28,10 +28,12 @@
         ASSERT_OK(kefir_bigint_get_value((_bigint), &loaded)); \
         ASSERT(loaded == (_value));                            \
     } while (0)
-#define ASSERT_STORE(_bigint, _value)                                     \
-    do {                                                                  \
-        ASSERT_OK(kefir_bigint_set_value(&kft_mem, (_bigint), (_value))); \
-        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));  \
+#define ASSERT_STORE(_bigint, _value)                                                                                 \
+    do {                                                                                                              \
+        ASSERT_OK(                                                                                                    \
+            kefir_bigint_ensure_width(&kft_mem, (_bigint), kefir_bigint_min_signed_width((kefir_int64_t) (_value)))); \
+        ASSERT_OK(kefir_bigint_set_signed_value((_bigint), (_value)));                                                \
+        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));                                              \
     } while (0)
 
 DEFINE_CASE(bigint_basic1, "BigInt - load/store machine integer #1") {
@@ -370,11 +372,12 @@ DEFINE_CASE(bigint_negate1, "BigInt - negate #1") {
 
     ASSERT_OK(kefir_bigint_init(&bigint));
 
-#define ASSERT_NEGATE(_bigint, _arg)                     \
-    do {                                                 \
-        ASSERT_STORE((_bigint), (_arg));                 \
-        ASSERT_OK(kefir_bigint_negate((_bigint)));       \
-        ASSERT_LOAD((_bigint), -(kefir_int64_t) (_arg)); \
+#define ASSERT_NEGATE(_bigint, _arg)                                                                         \
+    do {                                                                                                     \
+        ASSERT_STORE((_bigint), (_arg));                                                                     \
+        ASSERT_OK(kefir_bigint_cast_signed(&kft_mem, (_bigint), kefir_bigint_min_signed_width((_arg)) + 1)); \
+        ASSERT_OK(kefir_bigint_negate((_bigint)));                                                           \
+        ASSERT_LOAD((_bigint), -(kefir_int64_t) (_arg));                                                     \
     } while (0)
 
     ASSERT_NEGATE(&bigint, 0);

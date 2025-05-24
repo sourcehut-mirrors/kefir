@@ -64,24 +64,21 @@ static kefir_result_t bigint_ensure_width(struct kefir_mem *mem, struct kefir_bi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_set_value(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_int64_t value) {
+kefir_result_t kefir_bigint_ensure_width(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(width > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-zero big integer width"));
 
-    if (value >= KEFIR_INT8_MIN && value <= KEFIR_INT8_MAX) {
-        REQUIRE_OK(bigint_ensure_width(mem, bigint, 8));
-    } else if (value >= KEFIR_INT16_MIN && value <= KEFIR_INT16_MAX) {
-        REQUIRE_OK(bigint_ensure_width(mem, bigint, 16));
-    } else if (value >= KEFIR_INT32_MIN && value <= KEFIR_INT32_MAX) {
-        REQUIRE_OK(bigint_ensure_width(mem, bigint, 32));
-    } else {
-        REQUIRE_OK(bigint_ensure_width(mem, bigint, 64));
-    }
-    __KEFIR_BIGINT_WIDTH_T width = 0;
-    __kefir_bigint_result_t res =
-        __kefir_bigint_set_signed_integer(bigint->digits, bigint->capacity * CHAR_BIT, &width, value);
-    UNUSED(res);
+    REQUIRE_OK(bigint_ensure_width(mem, bigint, width));
     bigint->bitwidth = width;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_set_signed_value(struct kefir_bigint *bigint, kefir_int64_t value) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    __kefir_bigint_result_t res = __kefir_bigint_set_signed_integer(bigint->digits, bigint->bitwidth, value);
+    UNUSED(res);
     return KEFIR_OK;
 }
 

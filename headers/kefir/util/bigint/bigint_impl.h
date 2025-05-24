@@ -69,15 +69,6 @@ typedef enum { __KEFIR_BIGINT_OK } __kefir_bigint_result_t;
 
 #define __KEFIR_BIGINT_BITS_TO_DIGITS(_bits) (((_bits) + __KEFIR_BIGINT_DIGIT_BIT - 1) / __KEFIR_BIGINT_DIGIT_BIT)
 
-static __KEFIR_BIGINT_UINT_T __kefir_bigint_count_nonzero_bits(__KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
-    __KEFIR_BIGINT_WIDTH_T bits = 0;
-    for (; value != 0; value >>= 1, bits++) {}
-    if (bits == 0) {
-        bits = 1;
-    }
-    return bits;
-}
-
 static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_native_signed_width(__KEFIR_BIGINT_SIGNED_VALUE_T value) {
     __KEFIR_BIGINT_UNSIGNED_VALUE_T uvalue = (__KEFIR_BIGINT_UNSIGNED_VALUE_T) value;
     const __KEFIR_BIGINT_UNSIGNED_VALUE_T mask = (1ull << (__KEFIR_BIGINT_VALUE_BIT - 1));
@@ -94,27 +85,6 @@ static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_native_unsigned_width(__KEFIR_BIGIN
         bits = 1;
     }
     return bits;
-}
-
-static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                                 __KEFIR_BIGINT_WIDTH_T width,
-                                                                 __KEFIR_BIGINT_WIDTH_T *width_ptr,
-                                                                 __KEFIR_BIGINT_SIGNED_VALUE_T value) {
-    if (width == 0) {
-        return __KEFIR_BIGINT_OK;
-    }
-    __KEFIR_BIGINT_WIDTH_T fit_width = __kefir_bigint_count_nonzero_bits(value) + (value > 0 ? 1 : 0);
-    if (fit_width > width) {
-        fit_width = width;
-    }
-    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(fit_width);
-
-    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++, value >>= __KEFIR_BIGINT_DIGIT_BIT) {
-        digits[i] = (unsigned char) value;
-    }
-
-    *width_ptr = fit_width;
-    return __KEFIR_BIGINT_OK;
 }
 
 static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned char *digits,
@@ -196,6 +166,30 @@ static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T
         } else {
             digits[i] = (__KEFIR_BIGINT_DIGIT_T) 0ull;
         }
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
+static __kefir_bigint_result_t __kefir_bigint_set_signed_integer(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                 __KEFIR_BIGINT_WIDTH_T width,
+                                                                 __KEFIR_BIGINT_UNSIGNED_VALUE_T value) {
+    if (width == 0) {
+        return __KEFIR_BIGINT_OK;
+    }
+
+    __KEFIR_BIGINT_WIDTH_T fit_width = width;
+    if (fit_width > __KEFIR_BIGINT_VALUE_BIT) {
+        fit_width = __KEFIR_BIGINT_VALUE_BIT;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(fit_width);
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++, value >>= __KEFIR_BIGINT_DIGIT_BIT) {
+        digits[i] = (__KEFIR_BIGINT_DIGIT_T) value;
+    }
+
+    if (fit_width < width) {
+        (void) __kefir_bigint_cast_signed(digits, fit_width, width);
     }
 
     return __KEFIR_BIGINT_OK;
