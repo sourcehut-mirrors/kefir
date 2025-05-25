@@ -98,4 +98,45 @@ static __kefir_bigint_result_t __kefir_bigint_copy(__KEFIR_BIGINT_DIGIT_T *dst_d
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_set_bits(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                       __KEFIR_BIGINT_UNSIGNED_VALUE_T value,
+                                                       __KEFIR_BIGINT_WIDTH_T offset, __KEFIR_BIGINT_WIDTH_T length,
+                                                       __KEFIR_BIGINT_WIDTH_T width) {
+    if (width == 0 || offset >= width) {
+        return __KEFIR_BIGINT_OK;
+    }
+
+    __KEFIR_BIGINT_WIDTH_T iter = offset;
+    __KEFIR_BIGINT_WIDTH_T end = offset + length;
+    if (end > width) {
+        end = width;
+    }
+
+    for (; iter < end;) {
+        __KEFIR_BIGINT_WIDTH_T chunk_end =
+            iter % __KEFIR_BIGINT_DIGIT_BIT != 0
+                ? (iter + __KEFIR_BIGINT_DIGIT_BIT - 1) / __KEFIR_BIGINT_DIGIT_BIT * __KEFIR_BIGINT_DIGIT_BIT
+                : iter + __KEFIR_BIGINT_DIGIT_BIT;
+        if (chunk_end > end) {
+            chunk_end = end;
+        }
+        const __KEFIR_BIGINT_WIDTH_T chunk_width = chunk_end - iter;
+        const __KEFIR_BIGINT_UINT_T chunk_mask = (1ull << chunk_width) - 1;
+        const __KEFIR_BIGINT_UINT_T chunk = value & chunk_mask;
+        const __KEFIR_BIGINT_WIDTH_T target_index = iter / __KEFIR_BIGINT_DIGIT_BIT;
+        const __KEFIR_BIGINT_WIDTH_T target_offset = iter - target_index * __KEFIR_BIGINT_DIGIT_BIT;
+
+        if (chunk_width < __KEFIR_BIGINT_DIGIT_BIT) {
+            digits[target_index] &= ~(chunk_mask << target_offset);
+            digits[target_index] |= chunk << target_offset;
+        } else {
+            digits[target_index] = chunk << target_offset;
+        }
+
+        iter = chunk_end;
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
 #endif

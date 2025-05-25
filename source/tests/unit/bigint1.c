@@ -1453,6 +1453,127 @@ DEFINE_CASE(bigint_decimal_parse1, "BigInt - parse decimal #1") {
 }
 END_CASE
 
+DEFINE_CASE(bigint_hexadecimal_parse1, "BigInt - parse hexadecimal #1") {
+    struct kefir_bigint bigint, base1000, part;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+    ASSERT_OK(kefir_bigint_init(&base1000));
+    ASSERT_OK(kefir_bigint_init(&part));
+
+    int length;
+    char buf[32];
+#define ASSERT_PARSE(_value)                                                                                \
+    do {                                                                                                    \
+        length = snprintf(buf, sizeof(buf), "%s%llx", ((_value) < 0 ? "-" : ""),                            \
+                          ((_value) < 0 ? -(unsigned long long) (_value) : (unsigned long long) (_value))); \
+        ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, buf, length));                                    \
+        ASSERT_LOAD(&bigint, (kefir_int64_t) (_value));                                                     \
+    } while (0)
+
+    for (kefir_int64_t i = -4096; i < 4096; i++) {
+        ASSERT_PARSE(i);
+    }
+
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_PARSE((kefir_int64_t) (1ull << i));
+        ASSERT_PARSE((kefir_int64_t) - (1ull << i));
+    }
+
+    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 5));
+    ASSERT_LOAD(&bigint, 1);
+    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 4));
+    ASSERT_LOAD(&bigint, 0);
+
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT8_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT8_MIN);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT16_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT16_MIN);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT32_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT32_MIN);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT64_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_INT64_MIN);
+
+    ASSERT_PARSE((kefir_int64_t) KEFIR_UINT8_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_UINT16_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_UINT32_MAX);
+    ASSERT_PARSE((kefir_int64_t) KEFIR_UINT64_MAX);
+
+#undef ASSERT_PARSE
+
+    const char SUPER_LARGE[] = {"123456789abcdefFFEEDDCCBBAA99887766554433221100"};
+    ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, SUPER_LARGE, sizeof(SUPER_LARGE)));
+#define ASSERT_PART(_part)                                                                \
+    do {                                                                                  \
+        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &base1000, bigint.bitwidth)); \
+        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &part, bigint.bitwidth));     \
+        ASSERT_OK(kefir_bigint_set_signed_value(&base1000, 0x100));                       \
+        ASSERT_OK(kefir_bigint_signed_divide(&bigint, &part, &base1000));                 \
+        ASSERT_LOAD(&part, (_part));                                                      \
+    } while (0)
+
+    ASSERT_PART(0x00);
+    ASSERT_PART(0x11);
+    ASSERT_PART(0x22);
+    ASSERT_PART(0x33);
+    ASSERT_PART(0x44);
+    ASSERT_PART(0x55);
+    ASSERT_PART(0x66);
+    ASSERT_PART(0x77);
+    ASSERT_PART(0x88);
+    ASSERT_PART(0x99);
+    ASSERT_PART(0xaa);
+    ASSERT_PART(0xbb);
+    ASSERT_PART(0xcc);
+    ASSERT_PART(0xdd);
+    ASSERT_PART(0xee);
+    ASSERT_PART(0xff);
+    ASSERT_PART(0xef);
+    ASSERT_PART(0xcd);
+    ASSERT_PART(0xab);
+    ASSERT_PART(0x89);
+    ASSERT_PART(0x67);
+    ASSERT_PART(0x45);
+    ASSERT_PART(0x23);
+    ASSERT_PART(0x01);
+    ASSERT_LOAD(&bigint, 0);
+
+    const char SUPER_LARGE2[] = {"-123456789abcdefFFEEDDCCBBAA99887766554433221100"};
+    ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, SUPER_LARGE2, sizeof(SUPER_LARGE2)));
+
+    ASSERT_PART(0x00);
+    ASSERT_PART(-0x11);
+    ASSERT_PART(-0x22);
+    ASSERT_PART(-0x33);
+    ASSERT_PART(-0x44);
+    ASSERT_PART(-0x55);
+    ASSERT_PART(-0x66);
+    ASSERT_PART(-0x77);
+    ASSERT_PART(-0x88);
+    ASSERT_PART(-0x99);
+    ASSERT_PART(-0xaa);
+    ASSERT_PART(-0xbb);
+    ASSERT_PART(-0xcc);
+    ASSERT_PART(-0xdd);
+    ASSERT_PART(-0xee);
+    ASSERT_PART(-0xff);
+    ASSERT_PART(-0xef);
+    ASSERT_PART(-0xcd);
+    ASSERT_PART(-0xab);
+    ASSERT_PART(-0x89);
+    ASSERT_PART(-0x67);
+    ASSERT_PART(-0x45);
+    ASSERT_PART(-0x23);
+    ASSERT_PART(-0x01);
+    ASSERT_LOAD(&bigint, 0);
+
+#undef ASSERT_PART
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &base1000));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &part));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD

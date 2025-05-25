@@ -76,6 +76,9 @@ static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned 
                                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T *);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_get_sign(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_is_zero(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_set_bits(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_UNSIGNED_VALUE_T,
+                                                       __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T,
+                                                       __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
                                                           __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_unsigned(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
