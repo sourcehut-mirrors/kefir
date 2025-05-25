@@ -131,5 +131,7 @@ static __kefir_bigint_result_t __kefir_bigint_signed_divide(__KEFIR_BIGINT_DIGIT
                                                             __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_unsigned_compare(const __KEFIR_BIGINT_DIGIT_T *,
                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_signed_compare(const __KEFIR_BIGINT_DIGIT_T *,
+                                                           const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 
 #endif

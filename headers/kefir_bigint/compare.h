@@ -56,4 +56,21 @@ static __KEFIR_BIGINT_UINT_T __kefir_bigint_unsigned_compare(const __KEFIR_BIGIN
     return 0;
 }
 
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_signed_compare(const __KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                           const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
+                                                           __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T msb_index = (width - 1) / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T msb_offset = (width - 1) - msb_index * __KEFIR_BIGINT_DIGIT_BIT;
+
+    const __KEFIR_BIGINT_UINT_T lhs_sign = (lhs_digits[msb_index] >> msb_offset) & 1;
+    const __KEFIR_BIGINT_UINT_T rhs_sign = (rhs_digits[msb_index] >> msb_offset) & 1;
+    if (lhs_sign && !rhs_sign) {
+        return -1;
+    } else if (!lhs_sign && rhs_sign) {
+        return 1;
+    }
+
+    return __kefir_bigint_unsigned_compare(lhs_digits, rhs_digits, width);
+}
+
 #endif
