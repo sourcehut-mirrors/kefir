@@ -40,6 +40,9 @@ static __kefir_bigint_result_t __kefir_bigint_unsigned_divide(__KEFIR_BIGINT_DIG
     if (width == 0) {
         return __KEFIR_BIGINT_OK;
     }
+    if (__kefir_bigint_is_zero(rhs_digits, width)) {
+        return __KEFIR_BIGINT_DIVISION_BY_ZERO;
+    }
 
     const __KEFIR_BIGINT_WIDTH_T msb_digit_index = (width - 1) / __KEFIR_BIGINT_DIGIT_BIT;
     const __KEFIR_BIGINT_WIDTH_T msb_digit_offset = width - 1 - msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
@@ -69,6 +72,9 @@ static __kefir_bigint_result_t __kefir_bigint_signed_divide(__KEFIR_BIGINT_DIGIT
                                                             __KEFIR_BIGINT_WIDTH_T width) {
     const __KEFIR_BIGINT_UINT_T lhs_sign = __kefir_bigint_get_sign(lhs_digits, width);
     const __KEFIR_BIGINT_UINT_T rhs_sign = __kefir_bigint_get_sign(rhs_digits, width);
+    if (__kefir_bigint_is_zero(rhs_digits, width)) {
+        return __KEFIR_BIGINT_DIVISION_BY_ZERO;
+    }
 
     if (lhs_sign) {
         (void) __kefir_bigint_negate(lhs_digits, width);

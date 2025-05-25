@@ -114,4 +114,26 @@ static __KEFIR_BIGINT_UINT_T __kefir_bigint_get_sign(const __KEFIR_BIGINT_DIGIT_
     return (digits[msb_index] >> msb_offset) & 1;
 }
 
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_is_zero(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                    __KEFIR_BIGINT_WIDTH_T width) {
+    if (width == 0) {
+        return __KEFIR_BIGINT_TRUE;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        __KEFIR_BIGINT_DIGIT_T digit = digits[i];
+        if (i + 1 == total_digits) {
+            const __KEFIR_BIGINT_WIDTH_T msb_index = (width - 1) / __KEFIR_BIGINT_DIGIT_BIT;
+            const __KEFIR_BIGINT_WIDTH_T msb_offset = width - 1 - msb_index * __KEFIR_BIGINT_DIGIT_BIT;
+            const __KEFIR_BIGINT_UINT_T mask = (1ull << (msb_offset + 1)) - 1;
+            digit &= mask;
+        }
+        if (digit) {
+            return __KEFIR_BIGINT_FALSE;
+        }
+    }
+    return __KEFIR_BIGINT_TRUE;
+}
+
 #endif

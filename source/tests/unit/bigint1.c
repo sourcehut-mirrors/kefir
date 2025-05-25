@@ -996,6 +996,14 @@ DEFINE_CASE(bigint_unsigned_divide1, "BigInt - unsigned division #1") {
     } while (0)
 
     for (kefir_uint64_t i = 0; i < 4096; i++) {
+        ASSERT_USTORE(&lhs_bigint, i);
+        ASSERT_USTORE(&rhs_bigint, 0);
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &lhs_bigint,
+                                                    MAX(lhs_bigint.bitwidth, rhs_bigint.bitwidth) + 1));
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &rhs_bigint, lhs_bigint.bitwidth));
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &remainder_bigint, lhs_bigint.bitwidth));
+        ASSERT(kefir_bigint_unsigned_divide(&lhs_bigint, &remainder_bigint, &rhs_bigint) == KEFIR_INVALID_REQUEST);
+
         for (kefir_uint64_t j = 1; j < 512; j++) {
             ASSERT_DIV(i, j, i / j, i % j);
         }
@@ -1086,6 +1094,15 @@ DEFINE_CASE(bigint_signed_divide1, "BigInt - signed division #1") {
         for (kefir_int64_t j = -512; j < 512; j++) {
             if (j != 0) {
                 ASSERT_DIV(i, j, i / j, i % j);
+            } else {
+                ASSERT_STORE(&lhs_bigint, i);
+                ASSERT_STORE(&rhs_bigint, j);
+                ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &lhs_bigint,
+                                                          MAX(lhs_bigint.bitwidth, rhs_bigint.bitwidth) + 1));
+                ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &rhs_bigint, lhs_bigint.bitwidth));
+                ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &remainder_bigint, lhs_bigint.bitwidth));
+                ASSERT(kefir_bigint_signed_divide(&lhs_bigint, &remainder_bigint, &rhs_bigint) ==
+                       KEFIR_INVALID_REQUEST);
             }
         }
     }

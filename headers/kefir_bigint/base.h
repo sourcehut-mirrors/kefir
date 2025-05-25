@@ -61,7 +61,7 @@
 #define __KEFIR_BIGINT_VALUE_BIT (sizeof(__KEFIR_BIGINT_SIGNED_VALUE_T) * __KEFIR_BIGINT_CHAR_BIT)
 #define __KEFIR_BIGINT_DIGIT_BIT (sizeof(__KEFIR_BIGINT_DIGIT_T) * __KEFIR_BIGINT_CHAR_BIT)
 
-typedef enum { __KEFIR_BIGINT_OK } __kefir_bigint_result_t;
+typedef enum { __KEFIR_BIGINT_OK, __KEFIR_BIGINT_DIVISION_BY_ZERO } __kefir_bigint_result_t;
 
 #define __KEFIR_BIGINT_TRUE 1
 #define __KEFIR_BIGINT_FALSE 0
@@ -75,6 +75,7 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
 static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned char *, __KEFIR_BIGINT_WIDTH_T,
                                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T *);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_get_sign(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_is_zero(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
                                                           __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_unsigned(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,

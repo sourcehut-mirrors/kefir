@@ -336,7 +336,9 @@ kefir_result_t kefir_bigint_unsigned_divide(struct kefir_bigint *lhs_bigint, str
 
     __kefir_bigint_result_t res = __kefir_bigint_unsigned_divide(lhs_bigint->digits, remainder_bigint->digits,
                                                                  rhs_bigint->digits, lhs_bigint->bitwidth);
-    UNUSED(res);
+    if (res == __KEFIR_BIGINT_DIVISION_BY_ZERO) {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Division by zero occured");
+    }
     return KEFIR_OK;
 }
 
@@ -352,7 +354,9 @@ kefir_result_t kefir_bigint_signed_divide(struct kefir_bigint *lhs_bigint, struc
 
     __kefir_bigint_result_t res = __kefir_bigint_signed_divide(lhs_bigint->digits, remainder_bigint->digits,
                                                                rhs_bigint->digits, lhs_bigint->bitwidth);
-    UNUSED(res);
+    if (res == __KEFIR_BIGINT_DIVISION_BY_ZERO) {
+        return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Division by zero occured");
+    }
     return KEFIR_OK;
 }
 
