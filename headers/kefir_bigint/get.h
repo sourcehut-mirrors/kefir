@@ -50,7 +50,7 @@ static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_native_unsigned_width(__KEFIR_BIGIN
     return bits;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned char *digits,
+static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const __KEFIR_BIGINT_DIGIT_T *digits,
                                                                __KEFIR_BIGINT_WIDTH_T width,
                                                                __KEFIR_BIGINT_SIGNED_VALUE_T *value_ptr) {
     if (width > __KEFIR_BIGINT_VALUE_BIT) {
@@ -80,7 +80,7 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
     return __KEFIR_BIGINT_OK;
 }
 
-static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned char *digits,
+static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const __KEFIR_BIGINT_DIGIT_T *digits,
                                                                  __KEFIR_BIGINT_WIDTH_T width,
                                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T *value_ptr) {
     if (width > __KEFIR_BIGINT_VALUE_BIT) {
@@ -101,6 +101,17 @@ static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned 
 
     *value_ptr = value;
     return __KEFIR_BIGINT_OK;
+}
+
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_get_sign(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                     __KEFIR_BIGINT_WIDTH_T width) {
+    if (width == 0) {
+        return 0;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T msb_index = (width - 1) / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T msb_offset = width - 1 - msb_index * __KEFIR_BIGINT_DIGIT_BIT;
+    return (digits[msb_index] >> msb_offset) & 1;
 }
 
 #endif

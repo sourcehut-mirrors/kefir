@@ -74,6 +74,7 @@ static __kefir_bigint_result_t __kefir_bigint_get_signed_value(const unsigned ch
                                                                __KEFIR_BIGINT_SIGNED_VALUE_T *);
 static __kefir_bigint_result_t __kefir_bigint_get_unsigned_value(const unsigned char *, __KEFIR_BIGINT_WIDTH_T,
                                                                  __KEFIR_BIGINT_UNSIGNED_VALUE_T *);
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_get_sign(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_signed(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
                                                           __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_cast_unsigned(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
@@ -126,5 +127,7 @@ static __kefir_bigint_result_t __kefir_bigint_signed_multiply(__KEFIR_BIGINT_DIG
 
 static __kefir_bigint_result_t __kefir_bigint_unsigned_divide(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
                                                               const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_signed_divide(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
+                                                            __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 
 #endif

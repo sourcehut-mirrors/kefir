@@ -339,3 +339,19 @@ kefir_result_t kefir_bigint_unsigned_divide(struct kefir_bigint *lhs_bigint, str
     UNUSED(res);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_signed_divide(struct kefir_bigint *lhs_bigint, struct kefir_bigint *remainder_bigint,
+                                          struct kefir_bigint *rhs_bigint) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(remainder_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+    REQUIRE(lhs_bigint->bitwidth == remainder_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    __kefir_bigint_result_t res = __kefir_bigint_signed_divide(lhs_bigint->digits, remainder_bigint->digits,
+                                                               rhs_bigint->digits, lhs_bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
