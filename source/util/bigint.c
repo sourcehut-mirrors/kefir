@@ -21,6 +21,7 @@
 #include "kefir/util/bigint.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <math.h>
 #include <string.h>
 
 #define __KEFIR_BIGINT_USE_BIGINT_IMPL__
@@ -385,5 +386,90 @@ kefir_result_t kefir_bigint_signed_compare(const struct kefir_bigint *lhs_bigint
 
     *comparison_ptr =
         (kefir_int_t) __kefir_bigint_signed_compare(lhs_bigint->digits, rhs_bigint->digits, lhs_bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+static kefir_result_t parse10_impl(struct kefir_bigint *bigint, const char *input, kefir_size_t input_length,
+                                   struct kefir_bigint *tmp_bigints) {
+    kefir_bool_t negate = false;
+    if (input_length > 0 && input[0] == '-') {
+        input_length--;
+        input++;
+        negate = true;
+    }
+
+    REQUIRE_OK(kefir_bigint_set_signed_value(bigint, 0));
+    for (kefir_size_t i = 0; i < input_length; i++) {
+        kefir_uint8_t digit = 0;
+        if (input[i] >= '0' && input[i] <= '9') {
+            digit = input[i] - '0';
+        } else if (input[i] == '\0') {
+            break;
+        } else {
+            return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE, "Unexpected character in decimal big integer: '%c' (%d)",
+                                    input[i], input[i]);
+        }
+
+        REQUIRE_OK(kefir_bigint_copy(&tmp_bigints[0], bigint));
+        REQUIRE_OK(kefir_bigint_set_signed_value(&tmp_bigints[1], 10));
+        REQUIRE_OK(kefir_bigint_signed_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1], &tmp_bigints[2]));
+        REQUIRE_OK(kefir_bigint_set_signed_value(&tmp_bigints[0], digit));
+        REQUIRE_OK(kefir_bigint_add(bigint, &tmp_bigints[0]));
+    }
+
+    if (negate) {
+        REQUIRE_OK(kefir_bigint_negate(bigint));
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_parse10_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                         kefir_size_t input_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
+
+    struct kefir_bigint tmp_bigints[3];
+    REQUIRE_OK(kefir_bigint_init(&tmp_bigints[0]));
+    REQUIRE_OK(kefir_bigint_init(&tmp_bigints[1]));
+    REQUIRE_OK(kefir_bigint_init(&tmp_bigints[2]));
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[0], bigint->bitwidth));
+    REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[1], bigint->bitwidth));
+    REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[2], bigint->bitwidth));
+    REQUIRE_CHAIN(&res, parse10_impl(bigint, input, input_length, tmp_bigints));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &tmp_bigints[0]);
+        kefir_bigint_free(mem, &tmp_bigints[1]);
+        kefir_bigint_free(mem, &tmp_bigints[2]);
+        return res;
+    });
+    res = kefir_bigint_free(mem, &tmp_bigints[0]);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &tmp_bigints[1]);
+        kefir_bigint_free(mem, &tmp_bigints[2]);
+        return res;
+    });
+    res = kefir_bigint_free(mem, &tmp_bigints[1]);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &tmp_bigints[2]);
+        return res;
+    });
+    REQUIRE_OK(kefir_bigint_free(mem, &tmp_bigints[2]));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_parse10(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                    kefir_size_t input_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
+
+    const kefir_size_t num_of_bits = 1 + (kefir_size_t) ceil(input_length * 3.322 /* log2(10) */);
+    REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, num_of_bits));
+    REQUIRE_OK(kefir_bigint_parse10_into(mem, bigint, input, input_length));
+
     return KEFIR_OK;
 }

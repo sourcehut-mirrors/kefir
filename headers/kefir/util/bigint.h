@@ -74,4 +74,7 @@ kefir_result_t kefir_bigint_signed_divide(struct kefir_bigint *, struct kefir_bi
 kefir_result_t kefir_bigint_unsigned_compare(const struct kefir_bigint *, const struct kefir_bigint *, kefir_int_t *);
 kefir_result_t kefir_bigint_signed_compare(const struct kefir_bigint *, const struct kefir_bigint *, kefir_int_t *);
 
+kefir_result_t kefir_bigint_parse10_into(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t);
+kefir_result_t kefir_bigint_parse10(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t);
+
 #endif
