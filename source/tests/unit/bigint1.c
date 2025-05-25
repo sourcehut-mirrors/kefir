@@ -1167,6 +1167,69 @@ DEFINE_CASE(bigint_signed_divide1, "BigInt - signed division #1") {
 }
 END_CASE
 
+DEFINE_CASE(bigint_unsigned_compare1, "BigInt - unsigned comparison #1") {
+    struct kefir_bigint lhs_bigint, rhs_bigint;
+
+    ASSERT_OK(kefir_bigint_init(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_init(&rhs_bigint));
+
+#define ASSERT_CMP(_arg1, _arg2)                                                                                      \
+    do {                                                                                                              \
+        kefir_int_t comparison;                                                                                       \
+        ASSERT_USTORE(&lhs_bigint, (_arg1));                                                                          \
+        ASSERT_USTORE(&rhs_bigint, (_arg2));                                                                          \
+        ASSERT_OK(                                                                                                    \
+            kefir_bigint_resize_cast_unsigned(&kft_mem, &lhs_bigint, MAX(lhs_bigint.bitwidth, rhs_bigint.bitwidth))); \
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &rhs_bigint, lhs_bigint.bitwidth));                     \
+        ASSERT_OK(kefir_bigint_unsigned_compare(&lhs_bigint, &rhs_bigint, &comparison));                              \
+        ASSERT(comparison == ((_arg1) > (_arg2) ? 1 : ((_arg1) == (_arg2) ? 0 : -1)));                                \
+    } while (0)
+
+    for (kefir_uint64_t i = 0; i < 4096; i++) {
+        for (kefir_uint64_t j = 0; j < 4096; j++) {
+            ASSERT_CMP(i, j);
+        }
+    }
+
+    ASSERT_CMP(KEFIR_UINT8_MAX, 0);
+    ASSERT_CMP(KEFIR_UINT8_MAX, KEFIR_UINT8_MAX);
+    ASSERT_CMP(KEFIR_UINT16_MAX, 0);
+    ASSERT_CMP(KEFIR_UINT16_MAX, KEFIR_UINT8_MAX);
+    ASSERT_CMP(KEFIR_UINT8_MAX, KEFIR_UINT16_MAX);
+    ASSERT_CMP(KEFIR_UINT16_MAX, KEFIR_UINT16_MAX);
+    ASSERT_CMP(KEFIR_UINT32_MAX, 0);
+    ASSERT_CMP(KEFIR_UINT32_MAX, KEFIR_UINT8_MAX);
+    ASSERT_CMP(KEFIR_UINT8_MAX, KEFIR_UINT16_MAX);
+    ASSERT_CMP(KEFIR_UINT32_MAX, KEFIR_UINT16_MAX);
+    ASSERT_CMP(KEFIR_UINT16_MAX, KEFIR_UINT32_MAX);
+    ASSERT_CMP(KEFIR_UINT32_MAX, KEFIR_UINT32_MAX);
+    ASSERT_CMP(KEFIR_UINT64_MAX, 0);
+    ASSERT_CMP(KEFIR_UINT64_MAX, KEFIR_UINT8_MAX);
+    ASSERT_CMP(KEFIR_UINT8_MAX, KEFIR_UINT64_MAX);
+    ASSERT_CMP(KEFIR_UINT64_MAX, KEFIR_UINT16_MAX);
+    ASSERT_CMP(KEFIR_UINT16_MAX, KEFIR_UINT64_MAX);
+    ASSERT_CMP(KEFIR_UINT64_MAX, KEFIR_UINT32_MAX);
+    ASSERT_CMP(KEFIR_UINT32_MAX, KEFIR_UINT64_MAX);
+    ASSERT_CMP(KEFIR_UINT64_MAX, KEFIR_UINT64_MAX);
+
+    for (kefir_size_t i = 1; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_CMP(1ull << (i - 1), 1ull << (i - 1));
+        ASSERT_CMP(1ull << i, 1ull << (i - 1));
+        ASSERT_CMP(1ull << i, 1ull << i);
+        ASSERT_CMP(1ull << (i - 1), 1ull << i);
+        if (i > 1) {
+            ASSERT_CMP((1ull << i) + 1, 1ull << i);
+            ASSERT_CMP(1ull << i, (1ull << i) + 1);
+        }
+    }
+
+#undef ASSERT_CMP
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD

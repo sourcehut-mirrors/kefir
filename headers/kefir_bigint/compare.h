@@ -27,18 +27,33 @@
     SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#ifndef __KEFIR_BIGINT_BIGINT_H__
-#define __KEFIR_BIGINT_BIGINT_H__
+#ifndef __KEFIR_BIGINT_COMPARE_H__
+#define __KEFIR_BIGINT_COMPARE_H__
 
 #include "kefir_bigint/base.h"
-#include "kefir_bigint/init.h"
-#include "kefir_bigint/get.h"
-#include "kefir_bigint/cast.h"
-#include "kefir_bigint/bitwise.h"
-#include "kefir_bigint/shift.h"
-#include "kefir_bigint/addsub.h"
-#include "kefir_bigint/multiply.h"
-#include "kefir_bigint/divide.h"
-#include "kefir_bigint/compare.h"
+
+static __KEFIR_BIGINT_UINT_T __kefir_bigint_unsigned_compare(const __KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                             const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
+                                                             __KEFIR_BIGINT_WIDTH_T width) {
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    for (__KEFIR_BIGINT_WIDTH_T i = total_digits; i > 0; i--) {
+        __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i - 1];
+        __KEFIR_BIGINT_UINT_T rhs_digit = rhs_digits[i - 1];
+        if (i == total_digits) {
+            const __KEFIR_BIGINT_UINT_T mask_offset =
+                ((width - 1) - (width - 1) / __KEFIR_BIGINT_DIGIT_BIT * __KEFIR_BIGINT_DIGIT_BIT) + 1;
+            const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
+            lhs_digit &= mask;
+            rhs_digit &= mask;
+        }
+
+        if (lhs_digit > rhs_digit) {
+            return 1;
+        } else if (lhs_digit < rhs_digit) {
+            return -1;
+        }
+    }
+    return 0;
+}
 
 #endif

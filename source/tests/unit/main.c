@@ -493,7 +493,8 @@
     _separator _case(bigint_unsigned_multiply1)                                              \
     _separator _case(bigint_signed_multiply1)                                                \
     _separator _case(bigint_unsigned_divide1)                                                \
-    _separator _case(bigint_signed_divide1)
+    _separator _case(bigint_signed_divide1)                                                  \
+    _separator _case(bigint_unsigned_compare1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

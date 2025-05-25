@@ -355,3 +355,17 @@ kefir_result_t kefir_bigint_signed_divide(struct kefir_bigint *lhs_bigint, struc
     UNUSED(res);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_unsigned_compare(const struct kefir_bigint *lhs_bigint,
+                                             const struct kefir_bigint *rhs_bigint, kefir_int_t *comparison_ptr) {
+    REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+    REQUIRE(comparison_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to comparison result"));
+
+    *comparison_ptr =
+        (kefir_int_t) __kefir_bigint_unsigned_compare(lhs_bigint->digits, rhs_bigint->digits, lhs_bigint->bitwidth);
+    return KEFIR_OK;
+}
