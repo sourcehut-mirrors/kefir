@@ -1361,20 +1361,20 @@ DEFINE_CASE(bigint_decimal_parse1, "BigInt - parse decimal #1") {
 
     int length;
     char buf[32];
-#define ASSERT_PARSE(_value)                                                \
-    do {                                                                    \
-        length = snprintf(buf, sizeof(buf), "%" KEFIR_INT64_FMT, (_value)); \
-        ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, buf, length));    \
-        ASSERT_LOAD(&bigint, (kefir_int64_t) (_value));                     \
+#define ASSERT_PARSE(_value)                                                      \
+    do {                                                                          \
+        length = snprintf(buf, sizeof(buf), "%" KEFIR_INT64_FMT, (_value));       \
+        ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, buf, length, 10)); \
+        ASSERT_LOAD(&bigint, (kefir_int64_t) (_value));                           \
     } while (0)
 
     for (kefir_int64_t i = -4096; i < 4096; i++) {
         ASSERT_PARSE(i);
     }
 
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 5));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, "00001", 5, 10));
     ASSERT_LOAD(&bigint, 1);
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 4));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, "00001", 4, 10));
     ASSERT_LOAD(&bigint, 0);
 
     for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
@@ -1398,7 +1398,7 @@ DEFINE_CASE(bigint_decimal_parse1, "BigInt - parse decimal #1") {
 #undef ASSERT_PARSE
 
     const char SUPER_LARGE[] = {"123456789098765432111222333444555666777888999"};
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, SUPER_LARGE, sizeof(SUPER_LARGE)));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, SUPER_LARGE, sizeof(SUPER_LARGE), 10));
 #define ASSERT_PART(_part)                                                                \
     do {                                                                                  \
         ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &base1000, bigint.bitwidth)); \
@@ -1426,7 +1426,7 @@ DEFINE_CASE(bigint_decimal_parse1, "BigInt - parse decimal #1") {
     ASSERT_LOAD(&bigint, 0);
 
     const char SUPER_LARGE2[] = {"-123456789098765432111222333444555666777888999"};
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, SUPER_LARGE2, sizeof(SUPER_LARGE2)));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, SUPER_LARGE2, sizeof(SUPER_LARGE2), 10));
 
     ASSERT_PART(-999);
     ASSERT_PART(-888);
@@ -1466,7 +1466,7 @@ DEFINE_CASE(bigint_hexadecimal_parse1, "BigInt - parse hexadecimal #1") {
     do {                                                                                                    \
         length = snprintf(buf, sizeof(buf), "%s%llx", ((_value) < 0 ? "-" : ""),                            \
                           ((_value) < 0 ? -(unsigned long long) (_value) : (unsigned long long) (_value))); \
-        ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, buf, length));                                    \
+        ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, buf, length, 16));                           \
         ASSERT_LOAD(&bigint, (kefir_int64_t) (_value));                                                     \
     } while (0)
 
@@ -1479,9 +1479,9 @@ DEFINE_CASE(bigint_hexadecimal_parse1, "BigInt - parse hexadecimal #1") {
         ASSERT_PARSE((kefir_int64_t) - (1ull << i));
     }
 
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 5));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, "00001", 5, 10));
     ASSERT_LOAD(&bigint, 1);
-    ASSERT_OK(kefir_bigint_parse10(&kft_mem, &bigint, "00001", 4));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, "00001", 4, 10));
     ASSERT_LOAD(&bigint, 0);
 
     ASSERT_PARSE((kefir_int64_t) KEFIR_INT8_MAX);
@@ -1501,7 +1501,7 @@ DEFINE_CASE(bigint_hexadecimal_parse1, "BigInt - parse hexadecimal #1") {
 #undef ASSERT_PARSE
 
     const char SUPER_LARGE[] = {"123456789abcdefFFEEDDCCBBAA99887766554433221100"};
-    ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, SUPER_LARGE, sizeof(SUPER_LARGE)));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, SUPER_LARGE, sizeof(SUPER_LARGE), 16));
 #define ASSERT_PART(_part)                                                                \
     do {                                                                                  \
         ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, &base1000, bigint.bitwidth)); \
@@ -1538,7 +1538,7 @@ DEFINE_CASE(bigint_hexadecimal_parse1, "BigInt - parse hexadecimal #1") {
     ASSERT_LOAD(&bigint, 0);
 
     const char SUPER_LARGE2[] = {"-123456789abcdefFFEEDDCCBBAA99887766554433221100"};
-    ASSERT_OK(kefir_bigint_parse16(&kft_mem, &bigint, SUPER_LARGE2, sizeof(SUPER_LARGE2)));
+    ASSERT_OK(kefir_bigint_signed_parse(&kft_mem, &bigint, SUPER_LARGE2, sizeof(SUPER_LARGE2), 16));
 
     ASSERT_PART(0x00);
     ASSERT_PART(-0x11);

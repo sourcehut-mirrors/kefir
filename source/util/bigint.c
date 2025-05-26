@@ -391,14 +391,7 @@ kefir_result_t kefir_bigint_signed_compare(const struct kefir_bigint *lhs_bigint
 
 static kefir_result_t parse10_impl(struct kefir_bigint *bigint, const char *input, kefir_size_t input_length,
                                    struct kefir_bigint *tmp_bigints) {
-    kefir_bool_t negate = false;
-    if (input_length > 0 && input[0] == '-') {
-        input_length--;
-        input++;
-        negate = true;
-    }
-
-    REQUIRE_OK(kefir_bigint_set_signed_value(bigint, 0));
+    REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
     for (kefir_size_t i = 0; i < input_length; i++) {
         kefir_uint8_t digit = 0;
         if (input[i] >= '0' && input[i] <= '9') {
@@ -411,21 +404,17 @@ static kefir_result_t parse10_impl(struct kefir_bigint *bigint, const char *inpu
         }
 
         REQUIRE_OK(kefir_bigint_copy(&tmp_bigints[0], bigint));
-        REQUIRE_OK(kefir_bigint_set_signed_value(&tmp_bigints[1], 10));
-        REQUIRE_OK(kefir_bigint_signed_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1], &tmp_bigints[2]));
-        REQUIRE_OK(kefir_bigint_set_signed_value(&tmp_bigints[0], digit));
+        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[1], 10));
+        REQUIRE_OK(kefir_bigint_unsigned_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1], &tmp_bigints[2]));
+        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[0], digit));
         REQUIRE_OK(kefir_bigint_add(bigint, &tmp_bigints[0]));
-    }
-
-    if (negate) {
-        REQUIRE_OK(kefir_bigint_negate(bigint));
     }
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_parse10_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
-                                         kefir_size_t input_length) {
+kefir_result_t kefir_bigint_unsigned_parse10_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                                  kefir_size_t input_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
@@ -461,33 +450,31 @@ kefir_result_t kefir_bigint_parse10_into(struct kefir_mem *mem, struct kefir_big
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_parse10(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
-                                    kefir_size_t input_length) {
+kefir_result_t kefir_bigint_unsigned_parse10(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                             kefir_size_t input_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
 
+    const kefir_size_t input_strlen = strlen(input);
+    if (input_strlen < input_length) {
+        input_length = input_strlen;
+    }
+
     const kefir_size_t num_of_bits = 1 + (kefir_size_t) ceil(input_length * 3.322 /* log2(10) */);
     REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, num_of_bits));
-    REQUIRE_OK(kefir_bigint_parse10_into(mem, bigint, input, input_length));
+    REQUIRE_OK(kefir_bigint_unsigned_parse10_into(mem, bigint, input, input_length));
 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_parse16_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
-                                         kefir_size_t input_length) {
+kefir_result_t kefir_bigint_unsigned_parse16_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                                  kefir_size_t input_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
 
-    kefir_bool_t negate = false;
-    if (input_length > 0 && input[0] == '-') {
-        input_length--;
-        input++;
-        negate = true;
-    }
-
-    REQUIRE_OK(kefir_bigint_set_signed_value(bigint, 0));
+    REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
     for (kefir_size_t i = 0; i < input_length; i++) {
         const kefir_size_t index = input_length - i - 1;
         kefir_uint8_t digit = 0;
@@ -546,15 +533,11 @@ kefir_result_t kefir_bigint_parse16_into(struct kefir_mem *mem, struct kefir_big
         (void) __kefir_bigint_set_bits(bigint->digits, digit, index * 4, 4, bigint->bitwidth);
     }
 
-    if (negate) {
-        REQUIRE_OK(kefir_bigint_negate(bigint));
-    }
-
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_bigint_parse16(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
-                                    kefir_size_t input_length) {
+kefir_result_t kefir_bigint_unsigned_parse16(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                             kefir_size_t input_length) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
@@ -564,9 +547,48 @@ kefir_result_t kefir_bigint_parse16(struct kefir_mem *mem, struct kefir_bigint *
         input_length = input_strlen;
     }
 
-    const kefir_size_t num_of_bits = input_length * 4 + 1;
+    const kefir_size_t num_of_bits = input_length * 4;
     REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, num_of_bits));
-    REQUIRE_OK(kefir_bigint_parse16_into(mem, bigint, input, input_length));
+    REQUIRE_OK(kefir_bigint_unsigned_parse16_into(mem, bigint, input, input_length));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                         kefir_size_t input_length, kefir_uint_t base) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
+
+    const kefir_size_t input_strlen = strlen(input);
+    input_length = MIN(input_length, input_strlen);
+
+    kefir_bool_t negate = false;
+    if (input_length > 0 && input[0] == '-') {
+        negate = true;
+        input_length--;
+        input++;
+    }
+
+    switch (base) {
+        case 10:
+            REQUIRE_OK(kefir_bigint_unsigned_parse10(mem, bigint, input, input_length));
+            break;
+
+        case 16:
+            REQUIRE_OK(kefir_bigint_unsigned_parse16(mem, bigint, input, input_length));
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected big integer base");
+    }
+
+    if (__kefir_bigint_get_sign(bigint->digits, bigint->bitwidth)) {
+        REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, bigint->bitwidth + 1));
+    }
+    if (negate) {
+        REQUIRE_OK(kefir_bigint_negate(bigint));
+    }
 
     return KEFIR_OK;
 }
