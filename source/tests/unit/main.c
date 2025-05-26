@@ -497,7 +497,8 @@
     _separator _case(bigint_unsigned_compare1)                                               \
     _separator _case(bigint_signed_compare1)                                                 \
     _separator _case(bigint_decimal_parse1)                                                  \
-    _separator _case(bigint_hexadecimal_parse1)
+    _separator _case(bigint_hexadecimal_parse1)                                              \
+    _separator _case(bigint_octal_parse1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

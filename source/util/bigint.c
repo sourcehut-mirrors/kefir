@@ -526,8 +526,9 @@ kefir_result_t kefir_bigint_unsigned_parse16_into(struct kefir_mem *mem, struct 
                 return KEFIR_OK;
 
             default:
-                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE, "Unexpected character in decimal big integer: '%c' (%d)",
-                                        input[index], input[index]);
+                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE,
+                                        "Unexpected character in hexadecimal big integer: '%c' (%d)", input[index],
+                                        input[index]);
         }
 
         (void) __kefir_bigint_set_bits(bigint->digits, digit, index * 4, 4, bigint->bitwidth);
@@ -554,6 +555,60 @@ kefir_result_t kefir_bigint_unsigned_parse16(struct kefir_mem *mem, struct kefir
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_unsigned_parse8_into(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                                 kefir_size_t input_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
+
+    REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
+    for (kefir_size_t i = 0; i < input_length; i++) {
+        const kefir_size_t index = input_length - i - 1;
+        kefir_uint8_t digit = 0;
+        switch (input[i]) {
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+                digit = input[i] - '0';
+                break;
+
+            case '\0':
+                return KEFIR_OK;
+
+            default:
+                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE, "Unexpected character in octal big integer: '%c' (%d)",
+                                        input[index], input[index]);
+        }
+
+        (void) __kefir_bigint_set_bits(bigint->digits, digit, index * 3, 3, bigint->bitwidth);
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_parse8(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
+                                            kefir_size_t input_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(input != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid input string"));
+
+    const kefir_size_t input_strlen = strlen(input);
+    if (input_strlen < input_length) {
+        input_length = input_strlen;
+    }
+
+    const kefir_size_t num_of_bits = input_length * 3;
+    REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, num_of_bits));
+    REQUIRE_OK(kefir_bigint_unsigned_parse8_into(mem, bigint, input, input_length));
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *mem, struct kefir_bigint *bigint, const char *input,
                                          kefir_size_t input_length, kefir_uint_t base) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -571,6 +626,10 @@ kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *mem, struct kefir_big
     }
 
     switch (base) {
+        case 8:
+            REQUIRE_OK(kefir_bigint_unsigned_parse8(mem, bigint, input, input_length));
+            break;
+
         case 10:
             REQUIRE_OK(kefir_bigint_unsigned_parse10(mem, bigint, input, input_length));
             break;

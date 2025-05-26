@@ -134,6 +134,7 @@ static __kefir_bigint_result_t __kefir_bigint_set_bits(__KEFIR_BIGINT_DIGIT_T *d
         }
 
         iter = chunk_end;
+        value >>= chunk_width;
     }
 
     return __KEFIR_BIGINT_OK;

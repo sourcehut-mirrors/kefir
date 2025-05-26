@@ -82,6 +82,9 @@ kefir_result_t kefir_bigint_unsigned_parse16_into(struct kefir_mem *, struct kef
                                                   kefir_size_t);
 kefir_result_t kefir_bigint_unsigned_parse16(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t);
 
+kefir_result_t kefir_bigint_unsigned_parse8_into(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t);
+kefir_result_t kefir_bigint_unsigned_parse8(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t);
+
 kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t,
                                          kefir_uint_t);
 
