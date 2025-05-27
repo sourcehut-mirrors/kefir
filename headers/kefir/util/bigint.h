@@ -91,4 +91,7 @@ kefir_result_t kefir_bigint_unsigned_parse2(struct kefir_mem *, struct kefir_big
 kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *, struct kefir_bigint *, const char *, kefir_size_t,
                                          kefir_uint_t);
 
+kefir_result_t kefir_bigint_unsigned_format10_into(struct kefir_mem *, struct kefir_bigint *, char *, kefir_size_t);
+kefir_result_t kefir_bigint_unsigned_format10(struct kefir_mem *, struct kefir_bigint *, char **, kefir_size_t *);
+
 #endif

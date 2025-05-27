@@ -703,3 +703,91 @@ kefir_result_t kefir_bigint_signed_parse(struct kefir_mem *mem, struct kefir_big
 
     return KEFIR_OK;
 }
+
+static kefir_result_t unsigned_format10_into_impl(struct kefir_mem *mem, struct kefir_bigint *bigint, char *output,
+                                                  kefir_size_t output_length, struct kefir_bigint *base10,
+                                                  struct kefir_bigint *digit) {
+    const kefir_size_t old_bitwidth = bigint->bitwidth;
+    if (bigint->bitwidth < CHAR_BIT) {
+        REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, bigint, CHAR_BIT));
+    }
+    REQUIRE_OK(kefir_bigint_resize_nocast(mem, base10, bigint->bitwidth));
+    REQUIRE_OK(kefir_bigint_resize_nocast(mem, digit, bigint->bitwidth));
+    REQUIRE_OK(kefir_bigint_set_unsigned_value(base10, 10));
+
+    kefir_size_t i = 0;
+    for (; i < output_length - 1; i++) {
+        if (__kefir_bigint_is_zero(bigint->digits, bigint->bitwidth)) {
+            if (i == 0) {
+                output[i++] = '0';
+            }
+            break;
+        }
+
+        kefir_uint64_t digit_value;
+        REQUIRE_OK(kefir_bigint_unsigned_divide(bigint, digit, base10));
+        REQUIRE_OK(kefir_bigint_get_unsigned(digit, &digit_value));
+        REQUIRE(digit_value <= 9, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected decimal digit value"));
+        output[i] = '0' + digit_value;
+    }
+
+    for (kefir_size_t j = 0; j < i / 2; j++) {
+        const char tmp = output[j];
+        output[j] = output[i - j - 1];
+        output[i - j - 1] = tmp;
+    }
+    output[i] = '\0';
+
+    if (bigint->bitwidth != old_bitwidth) {
+        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, old_bitwidth));
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_format10_into(struct kefir_mem *mem, struct kefir_bigint *bigint, char *output,
+                                                   kefir_size_t output_length) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output string"));
+    REQUIRE(output_length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-empty output string"));
+
+    struct kefir_bigint base10, digit;
+    REQUIRE_OK(kefir_bigint_init(&base10));
+    REQUIRE_OK(kefir_bigint_init(&digit));
+
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, unsigned_format10_into_impl(mem, bigint, output, output_length, &base10, &digit));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &base10);
+        kefir_bigint_free(mem, &digit);
+        return res;
+    });
+    res = kefir_bigint_free(mem, &base10);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &digit);
+        return res;
+    });
+    REQUIRE_OK(kefir_bigint_free(mem, &digit));
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_format10(struct kefir_mem *mem, struct kefir_bigint *bigint, char **output_ptr,
+                                              kefir_size_t *output_length_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(output_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to output string"));
+
+    const kefir_size_t output_length = 1 + (kefir_size_t) ceil(bigint->bitwidth * 0.302 /* log10(2) */);
+    char *output = KEFIR_MALLOC(mem, sizeof(char) * output_length);
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatted big integer"));
+    kefir_result_t res = kefir_bigint_unsigned_format10_into(mem, bigint, output, output_length);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, output);
+        return res;
+    });
+
+    *output_ptr = output;
+    ASSIGN_PTR(output_length_ptr, output_length);
+    return KEFIR_OK;
+}
