@@ -1859,6 +1859,48 @@ DEFINE_CASE(bigint_decimal_format1, "BigInt - format decimal #1") {
 }
 END_CASE
 
+DEFINE_CASE(bigint_hexdecimal_format1, "BigInt - format hexdecimal #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+#define ASSERT_FMT(_val)                                                                \
+    do {                                                                                \
+        char buf[128];                                                                  \
+        ASSERT_USTORE(&bigint, (_val));                                                 \
+        char *formatted;                                                                \
+        ASSERT_OK(kefir_bigint_unsigned_format16(&kft_mem, &bigint, &formatted, NULL)); \
+        snprintf(buf, sizeof(buf), "%llx", (unsigned long long) (_val));                       \
+        ASSERT(strcmp(formatted, buf) == 0);                                            \
+        KEFIR_FREE(&kft_mem, formatted);                                                \
+    } while (0)
+
+    for (kefir_uint64_t i = 0; i < 4096; i++) {
+        ASSERT_FMT(i);
+    }
+
+    for (kefir_uint64_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_FMT(1ul << i);
+    }
+
+    ASSERT_FMT((kefir_uint64_t) KEFIR_UINT8_MAX);
+    ASSERT_FMT((kefir_uint64_t) KEFIR_UINT16_MAX);
+    ASSERT_FMT((kefir_uint64_t) KEFIR_UINT32_MAX);
+    ASSERT_FMT((kefir_uint64_t) KEFIR_UINT64_MAX);
+
+#undef ASSERT_FMT
+
+    const char SUPER_LONG[] = "1234567890abcdef00998877665544332211ffeeddccbbaa";
+    ASSERT_OK(kefir_bigint_unsigned_parse16(&kft_mem, &bigint, SUPER_LONG, sizeof(SUPER_LONG)));
+    char *formatted;
+    ASSERT_OK(kefir_bigint_unsigned_format16(&kft_mem, &bigint, &formatted, NULL));
+    ASSERT(strcmp(formatted, SUPER_LONG) == 0);
+    KEFIR_FREE(&kft_mem, formatted);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD
