@@ -938,3 +938,58 @@ kefir_result_t kefir_bigint_unsigned_format8(struct kefir_mem *mem, struct kefir
     ASSIGN_PTR(output_length_ptr, output_length);
     return KEFIR_OK;
 }
+
+static kefir_result_t unsigned_format2_into_impl(const struct kefir_bigint *bigint, char *output,
+                                                  kefir_size_t output_length) {
+    kefir_size_t i = 0;
+    for (; i < output_length - 1; i++) {
+        if (__kefir_bigint_is_zero(bigint->digits, bigint->bitwidth)) {
+            if (i == 0) {
+                output[i++] = '0';
+            }
+            break;
+        }
+
+        kefir_uint64_t digit_value = __kefir_bigint_get_bits(bigint->digits, i, 1, bigint->bitwidth);
+        REQUIRE(digit_value < 2, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected hexadecimal digit value"));
+        output[i] = '0' + digit_value;
+    }
+
+    for (kefir_size_t j = 0; j < i / 2; j++) {
+        const char tmp = output[j];
+        output[j] = output[i - j - 1];
+        output[i - j - 1] = tmp;
+    }
+    output[i] = '\0';
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_format2_into(const struct kefir_bigint *bigint, char *output,
+                                                   kefir_size_t output_length) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output string"));
+    REQUIRE(output_length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-empty output string"));
+
+    REQUIRE_OK(unsigned_format2_into_impl(bigint, output, output_length));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_format2(struct kefir_mem *mem, struct kefir_bigint *bigint, char **output_ptr,
+                                              kefir_size_t *output_length_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(output_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to output string"));
+
+    const kefir_size_t output_length = 1 + bigint->bitwidth;
+    char *output = KEFIR_MALLOC(mem, sizeof(char) * output_length);
+    REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate formatted big integer"));
+    kefir_result_t res = kefir_bigint_unsigned_format2_into(bigint, output, output_length);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, output);
+        return res;
+    });
+
+    *output_ptr = output;
+    ASSIGN_PTR(output_length_ptr, output_length);
+    return KEFIR_OK;
+}
