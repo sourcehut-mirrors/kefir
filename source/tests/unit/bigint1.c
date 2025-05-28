@@ -1071,6 +1071,16 @@ DEFINE_CASE(bigint_unsigned_divide1, "BigInt - unsigned division #1") {
     ASSERT_ULOAD(&lhs_bigint, 0);
     ASSERT_ULOAD(&remainder_bigint, 0xbadbabe);
 
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &lhs_bigint, 1024));
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &rhs_bigint, sizeof(kefir_uint16_t) * CHAR_BIT));
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &remainder_bigint, lhs_bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&lhs_bigint, 0));
+    ASSERT_OK(kefir_bigint_invert(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&rhs_bigint, 0x1000));
+    ASSERT_OK(kefir_bigint_unsigned_divide(&lhs_bigint, &remainder_bigint, &rhs_bigint));
+    ASSERT_ULOAD(&lhs_bigint, (kefir_uint64_t) ~0ull);
+    ASSERT_ULOAD(&remainder_bigint, 0xfff);
+
     ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
     ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));
     ASSERT_OK(kefir_bigint_free(&kft_mem, &remainder_bigint));
@@ -1184,6 +1194,18 @@ DEFINE_CASE(bigint_signed_divide1, "BigInt - signed division #1") {
     ASSERT_DIV(KEFIR_INT64_MAX, -1, -KEFIR_INT64_MAX, 0);
 
 #undef ASSERT_DIV
+
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &lhs_bigint, 1024));
+    ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &rhs_bigint, sizeof(kefir_uint16_t) * CHAR_BIT));
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &remainder_bigint, lhs_bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&lhs_bigint, 0));
+    ASSERT_OK(kefir_bigint_invert(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_right_shift(&lhs_bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&lhs_bigint));
+    ASSERT_OK(kefir_bigint_set_signed_value(&rhs_bigint, -0x1000));
+    ASSERT_OK(kefir_bigint_signed_divide(&lhs_bigint, &remainder_bigint, &rhs_bigint));
+    ASSERT_LOAD(&lhs_bigint, -1ll);
+    ASSERT_LOAD(&remainder_bigint, -0xfff);
 
     ASSERT_OK(kefir_bigint_free(&kft_mem, &lhs_bigint));
     ASSERT_OK(kefir_bigint_free(&kft_mem, &rhs_bigint));

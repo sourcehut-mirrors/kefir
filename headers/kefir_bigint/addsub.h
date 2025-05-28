@@ -76,6 +76,37 @@ static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *lhs_di
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_add_zero_extend(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                              const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
+                                                              __KEFIR_BIGINT_WIDTH_T lhs_width,
+                                                              __KEFIR_BIGINT_WIDTH_T rhs_width) {
+    const __KEFIR_BIGINT_WIDTH_T lhs_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(lhs_width);
+    const __KEFIR_BIGINT_WIDTH_T rhs_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(rhs_width);
+
+    __KEFIR_BIGINT_UINT_T carry = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < lhs_total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        __KEFIR_BIGINT_UINT_T rhs_digit;
+        if (i + 1 < rhs_total_digits) {
+            rhs_digit = rhs_digits[i];
+        } else if (i + 1 == rhs_total_digits) {
+            rhs_digit = rhs_digits[i];
+            const __KEFIR_BIGINT_WIDTH_T mask_offset =
+                rhs_width - (rhs_width - 1) / __KEFIR_BIGINT_DIGIT_BIT * __KEFIR_BIGINT_DIGIT_BIT;
+            const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
+            rhs_digit &= mask;
+        } else {
+            rhs_digit = 0;
+        }
+
+        const __KEFIR_BIGINT_UINT_T digit_sum = carry + lhs_digit + rhs_digit;
+        lhs_digits[i] = (__KEFIR_BIGINT_DIGIT_T) digit_sum;
+        carry = digit_sum >> __KEFIR_BIGINT_DIGIT_BIT;
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
+
 static __kefir_bigint_result_t __kefir_bigint_subtract(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                        const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
                                                        __KEFIR_BIGINT_WIDTH_T width) {
@@ -94,4 +125,34 @@ static __kefir_bigint_result_t __kefir_bigint_subtract(__KEFIR_BIGINT_DIGIT_T *l
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_subtract_zero_extend(__KEFIR_BIGINT_DIGIT_T *lhs_digits,
+                                                                   const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
+                                                                   __KEFIR_BIGINT_WIDTH_T lhs_width,
+                                                                   __KEFIR_BIGINT_WIDTH_T rhs_width) {
+    const __KEFIR_BIGINT_WIDTH_T lhs_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(lhs_width);
+    const __KEFIR_BIGINT_WIDTH_T rhs_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(rhs_width);
+
+    __KEFIR_BIGINT_UINT_T carry = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < lhs_total_digits; i++) {
+        const __KEFIR_BIGINT_UINT_T lhs_digit = lhs_digits[i];
+        __KEFIR_BIGINT_UINT_T rhs_digit;
+        if (i + 1 < rhs_total_digits) {
+            rhs_digit = rhs_digits[i];
+        } else if (i + 1 == rhs_total_digits) {
+            rhs_digit = rhs_digits[i];
+            const __KEFIR_BIGINT_WIDTH_T mask_offset =
+                rhs_width - (rhs_width - 1) / __KEFIR_BIGINT_DIGIT_BIT * __KEFIR_BIGINT_DIGIT_BIT;
+            const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
+            rhs_digit &= mask;
+        } else {
+            rhs_digit = 0;
+        }
+
+        const __KEFIR_BIGINT_UINT_T digit_diff = ((__KEFIR_BIGINT_UINT_T) lhs_digit) - rhs_digit - carry;
+        lhs_digits[i] = (__KEFIR_BIGINT_DIGIT_T) digit_diff;
+        carry = (digit_diff >> __KEFIR_BIGINT_DIGIT_BIT) & 1;
+    }
+
+    return __KEFIR_BIGINT_OK;
+}
 #endif

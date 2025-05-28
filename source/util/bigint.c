@@ -330,13 +330,13 @@ kefir_result_t kefir_bigint_unsigned_divide(struct kefir_bigint *lhs_bigint, str
     REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(remainder_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
-    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+    REQUIRE(lhs_bigint->bitwidth >= rhs_bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
     REQUIRE(lhs_bigint->bitwidth == remainder_bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
 
-    __kefir_bigint_result_t res = __kefir_bigint_unsigned_divide(lhs_bigint->digits, remainder_bigint->digits,
-                                                                 rhs_bigint->digits, lhs_bigint->bitwidth);
+    __kefir_bigint_result_t res = __kefir_bigint_unsigned_divide(
+        lhs_bigint->digits, remainder_bigint->digits, rhs_bigint->digits, lhs_bigint->bitwidth, rhs_bigint->bitwidth);
     if (res == __KEFIR_BIGINT_DIVISION_BY_ZERO) {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Division by zero occured");
     }
@@ -348,13 +348,13 @@ kefir_result_t kefir_bigint_signed_divide(struct kefir_bigint *lhs_bigint, struc
     REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(remainder_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
-    REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
+    REQUIRE(lhs_bigint->bitwidth >= rhs_bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
     REQUIRE(lhs_bigint->bitwidth == remainder_bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
 
-    __kefir_bigint_result_t res = __kefir_bigint_signed_divide(lhs_bigint->digits, remainder_bigint->digits,
-                                                               rhs_bigint->digits, lhs_bigint->bitwidth);
+    __kefir_bigint_result_t res = __kefir_bigint_signed_divide(
+        lhs_bigint->digits, remainder_bigint->digits, rhs_bigint->digits, lhs_bigint->bitwidth, rhs_bigint->bitwidth);
     if (res == __KEFIR_BIGINT_DIVISION_BY_ZERO) {
         return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Division by zero occured");
     }

@@ -93,8 +93,13 @@ static __kefir_bigint_result_t __kefir_bigint_util_add_digit_zero_extended(__KEF
                                                                            __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                   __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_add_zero_extend(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
+                                                              __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_subtract(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                        __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_subtract_zero_extend(__KEFIR_BIGINT_DIGIT_T *,
+                                                                   const __KEFIR_BIGINT_DIGIT_T *,
+                                                                   __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_or(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                  __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_and(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
@@ -130,9 +135,11 @@ static __kefir_bigint_result_t __kefir_bigint_signed_multiply(__KEFIR_BIGINT_DIG
                                                               __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T);
 
 static __kefir_bigint_result_t __kefir_bigint_unsigned_divide(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
-                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
+                                                              __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_signed_divide(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
-                                                            __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+                                                            __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
+                                                            __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_unsigned_compare(const __KEFIR_BIGINT_DIGIT_T *,
                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_signed_compare(const __KEFIR_BIGINT_DIGIT_T *,
