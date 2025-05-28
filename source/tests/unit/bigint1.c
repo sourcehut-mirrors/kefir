@@ -1876,7 +1876,7 @@ DEFINE_CASE(bigint_hexdecimal_format1, "BigInt - format hexdecimal #1") {
         ASSERT_USTORE(&bigint, (_val));                                                 \
         char *formatted;                                                                \
         ASSERT_OK(kefir_bigint_unsigned_format16(&kft_mem, &bigint, &formatted, NULL)); \
-        snprintf(buf, sizeof(buf), "%llx", (unsigned long long) (_val));                       \
+        snprintf(buf, sizeof(buf), "%llx", (unsigned long long) (_val));                \
         ASSERT(strcmp(formatted, buf) == 0);                                            \
         KEFIR_FREE(&kft_mem, formatted);                                                \
     } while (0)
@@ -1903,6 +1903,12 @@ DEFINE_CASE(bigint_hexdecimal_format1, "BigInt - format hexdecimal #1") {
     ASSERT(strcmp(formatted, SUPER_LONG) == 0);
     KEFIR_FREE(&kft_mem, formatted);
 
+    const char SUPER_LONG2[] = "000000000000000abcdef";
+    ASSERT_OK(kefir_bigint_unsigned_parse16(&kft_mem, &bigint, SUPER_LONG2, sizeof(SUPER_LONG2)));
+    ASSERT_OK(kefir_bigint_unsigned_format16(&kft_mem, &bigint, &formatted, NULL));
+    ASSERT(strcmp(formatted, SUPER_LONG2 + 15) == 0);
+    KEFIR_FREE(&kft_mem, formatted);
+
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
 }
 END_CASE
@@ -1912,15 +1918,15 @@ DEFINE_CASE(bigint_octal_format1, "BigInt - format octal #1") {
 
     ASSERT_OK(kefir_bigint_init(&bigint));
 
-#define ASSERT_FMT(_val)                                                                \
-    do {                                                                                \
-        char buf[128];                                                                  \
-        ASSERT_USTORE(&bigint, (_val));                                                 \
-        char *formatted;                                                                \
+#define ASSERT_FMT(_val)                                                               \
+    do {                                                                               \
+        char buf[128];                                                                 \
+        ASSERT_USTORE(&bigint, (_val));                                                \
+        char *formatted;                                                               \
         ASSERT_OK(kefir_bigint_unsigned_format8(&kft_mem, &bigint, &formatted, NULL)); \
-        snprintf(buf, sizeof(buf), "%llo", (unsigned long long) (_val));                       \
-        ASSERT(strcmp(formatted, buf) == 0);                                            \
-        KEFIR_FREE(&kft_mem, formatted);                                                \
+        snprintf(buf, sizeof(buf), "%llo", (unsigned long long) (_val));               \
+        ASSERT(strcmp(formatted, buf) == 0);                                           \
+        KEFIR_FREE(&kft_mem, formatted);                                               \
     } while (0)
 
     for (kefir_uint64_t i = 0; i < 4096; i++) {
@@ -1945,6 +1951,12 @@ DEFINE_CASE(bigint_octal_format1, "BigInt - format octal #1") {
     ASSERT(strcmp(formatted, SUPER_LONG) == 0);
     KEFIR_FREE(&kft_mem, formatted);
 
+    const char SUPER_LONG2[] = "0000000000000001234567";
+    ASSERT_OK(kefir_bigint_unsigned_parse8(&kft_mem, &bigint, SUPER_LONG2, sizeof(SUPER_LONG2)));
+    ASSERT_OK(kefir_bigint_unsigned_format8(&kft_mem, &bigint, &formatted, NULL));
+    ASSERT(strcmp(formatted, SUPER_LONG2 + 15) == 0);
+    KEFIR_FREE(&kft_mem, formatted);
+
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
 }
 END_CASE
@@ -1954,15 +1966,15 @@ DEFINE_CASE(bigint_binary_format1, "BigInt - format binary #1") {
 
     ASSERT_OK(kefir_bigint_init(&bigint));
 
-#define ASSERT_FMT(_val)                                                                \
-    do {                                                                                \
-        char buf[128];                                                                  \
-        ASSERT_USTORE(&bigint, (_val));                                                 \
-        char *formatted;                                                                \
+#define ASSERT_FMT(_val)                                                               \
+    do {                                                                               \
+        char buf[128];                                                                 \
+        ASSERT_USTORE(&bigint, (_val));                                                \
+        char *formatted;                                                               \
         ASSERT_OK(kefir_bigint_unsigned_format2(&kft_mem, &bigint, &formatted, NULL)); \
-        ASSERT_OK(uint64_to_binstr((_val), buf, sizeof(buf))); \
-        ASSERT(strcmp(formatted, buf) == 0);                                            \
-        KEFIR_FREE(&kft_mem, formatted);                                                \
+        ASSERT_OK(uint64_to_binstr((_val), buf, sizeof(buf)));                         \
+        ASSERT(strcmp(formatted, buf) == 0);                                           \
+        KEFIR_FREE(&kft_mem, formatted);                                               \
     } while (0)
 
     for (kefir_uint64_t i = 0; i < 4096; i++) {
@@ -1980,11 +1992,18 @@ DEFINE_CASE(bigint_binary_format1, "BigInt - format binary #1") {
 
 #undef ASSERT_FMT
 
-    const char SUPER_LONG[] = "11110000111111110000000010101010101010111001100110011001100111111110000000010100101111101010111101";
+    const char SUPER_LONG[] =
+        "11110000111111110000000010101010101010111001100110011001100111111110000000010100101111101010111101";
     ASSERT_OK(kefir_bigint_unsigned_parse2(&kft_mem, &bigint, SUPER_LONG, sizeof(SUPER_LONG)));
     char *formatted;
     ASSERT_OK(kefir_bigint_unsigned_format2(&kft_mem, &bigint, &formatted, NULL));
     ASSERT(strcmp(formatted, SUPER_LONG) == 0);
+    KEFIR_FREE(&kft_mem, formatted);
+
+    const char SUPER_LONG2[] = "0000000000000001010110011001110001110001";
+    ASSERT_OK(kefir_bigint_unsigned_parse2(&kft_mem, &bigint, SUPER_LONG2, sizeof(SUPER_LONG2)));
+    ASSERT_OK(kefir_bigint_unsigned_format2(&kft_mem, &bigint, &formatted, NULL));
+    ASSERT(strcmp(formatted, SUPER_LONG2 + 15) == 0);
     KEFIR_FREE(&kft_mem, formatted);
 
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));

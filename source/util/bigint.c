@@ -845,6 +845,8 @@ static kefir_result_t unsigned_format16_into_impl(const struct kefir_bigint *big
         }
     }
 
+    for (; i > 1 && output[i - 1] == '0'; i--) {}
+
     for (kefir_size_t j = 0; j < i / 2; j++) {
         const char tmp = output[j];
         output[j] = output[i - j - 1];
@@ -885,7 +887,7 @@ kefir_result_t kefir_bigint_unsigned_format16(struct kefir_mem *mem, struct kefi
 }
 
 static kefir_result_t unsigned_format8_into_impl(const struct kefir_bigint *bigint, char *output,
-                                                  kefir_size_t output_length) {
+                                                 kefir_size_t output_length) {
     kefir_size_t i = 0;
     for (; i < output_length - 1; i++) {
         if (__kefir_bigint_is_zero(bigint->digits, bigint->bitwidth)) {
@@ -900,6 +902,8 @@ static kefir_result_t unsigned_format8_into_impl(const struct kefir_bigint *bigi
         output[i] = '0' + digit_value;
     }
 
+    for (; i > 1 && output[i - 1] == '0'; i--) {}
+
     for (kefir_size_t j = 0; j < i / 2; j++) {
         const char tmp = output[j];
         output[j] = output[i - j - 1];
@@ -910,7 +914,7 @@ static kefir_result_t unsigned_format8_into_impl(const struct kefir_bigint *bigi
 }
 
 kefir_result_t kefir_bigint_unsigned_format8_into(const struct kefir_bigint *bigint, char *output,
-                                                   kefir_size_t output_length) {
+                                                  kefir_size_t output_length) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output string"));
     REQUIRE(output_length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-empty output string"));
@@ -920,7 +924,7 @@ kefir_result_t kefir_bigint_unsigned_format8_into(const struct kefir_bigint *big
 }
 
 kefir_result_t kefir_bigint_unsigned_format8(struct kefir_mem *mem, struct kefir_bigint *bigint, char **output_ptr,
-                                              kefir_size_t *output_length_ptr) {
+                                             kefir_size_t *output_length_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(output_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to output string"));
@@ -940,7 +944,7 @@ kefir_result_t kefir_bigint_unsigned_format8(struct kefir_mem *mem, struct kefir
 }
 
 static kefir_result_t unsigned_format2_into_impl(const struct kefir_bigint *bigint, char *output,
-                                                  kefir_size_t output_length) {
+                                                 kefir_size_t output_length) {
     kefir_size_t i = 0;
     for (; i < output_length - 1; i++) {
         if (__kefir_bigint_is_zero(bigint->digits, bigint->bitwidth)) {
@@ -955,6 +959,8 @@ static kefir_result_t unsigned_format2_into_impl(const struct kefir_bigint *bigi
         output[i] = '0' + digit_value;
     }
 
+    for (; i > 1 && output[i - 1] == '0'; i--) {}
+
     for (kefir_size_t j = 0; j < i / 2; j++) {
         const char tmp = output[j];
         output[j] = output[i - j - 1];
@@ -965,7 +971,7 @@ static kefir_result_t unsigned_format2_into_impl(const struct kefir_bigint *bigi
 }
 
 kefir_result_t kefir_bigint_unsigned_format2_into(const struct kefir_bigint *bigint, char *output,
-                                                   kefir_size_t output_length) {
+                                                  kefir_size_t output_length) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid output string"));
     REQUIRE(output_length > 0, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-empty output string"));
@@ -975,7 +981,7 @@ kefir_result_t kefir_bigint_unsigned_format2_into(const struct kefir_bigint *big
 }
 
 kefir_result_t kefir_bigint_unsigned_format2(struct kefir_mem *mem, struct kefir_bigint *bigint, char **output_ptr,
-                                              kefir_size_t *output_length_ptr) {
+                                             kefir_size_t *output_length_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(output_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to output string"));
