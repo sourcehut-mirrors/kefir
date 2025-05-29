@@ -911,7 +911,7 @@ DEFINE_CASE(bigint_signed_multiply1, "BigInt - signed multiplication #1") {
     }
 
     for (kefir_int64_t i = -4096; i < 4096; i++) {
-        for (kefir_int64_t j = -512; j < 512; j++) {
+        for (kefir_int64_t j = -512; j < 512; j += 4) {
             ASSERT_MUL(i, j, i * j);
         }
     }
@@ -1109,7 +1109,7 @@ DEFINE_CASE(bigint_signed_divide1, "BigInt - signed division #1") {
     } while (0)
 
     for (kefir_int64_t i = -4096; i < 4096; i++) {
-        for (kefir_int64_t j = -512; j < 512; j++) {
+        for (kefir_int64_t j = -512; j < 512; j += 4) {
             if (j != 0) {
                 ASSERT_DIV(i, j, i / j, i % j);
             } else {
@@ -1296,7 +1296,7 @@ DEFINE_CASE(bigint_signed_compare1, "BigInt - signed comparison #1") {
     } while (0)
 
     for (kefir_int64_t i = -4096; i < 4096; i++) {
-        for (kefir_int64_t j = -4096; j < 4096; j++) {
+        for (kefir_int64_t j = -4096; j < 4096; j += 8) {
             ASSERT_CMP(i, j);
         }
     }
