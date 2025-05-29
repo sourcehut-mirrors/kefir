@@ -568,8 +568,9 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             } else if (type->bitprecise.width <= 64) {
                 *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT64;
             } else {
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Bit-precise integers wider that 64 bits are not impemented yet");
+                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT64;
+                // return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                //                        "Bit-precise integers wider that 64 bits are not impemented yet");
             }
             break;
     }

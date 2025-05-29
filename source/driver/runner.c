@@ -419,7 +419,7 @@ static kefir_result_t dump_tokens_impl(struct kefir_mem *mem, const struct kefir
     if (output != NULL) {
         struct kefir_json_output json;
         REQUIRE_OK(kefir_json_output_init(&json, output, 4));
-        REQUIRE_OK(kefir_token_buffer_format(&json, &tokens, options->debug_info));
+        REQUIRE_OK(kefir_token_buffer_format(mem, &json, &tokens, options->debug_info));
         REQUIRE_OK(kefir_json_output_finalize(&json));
     }
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));

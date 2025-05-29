@@ -24,6 +24,7 @@
 #include "kefir/core/source_error.h"
 #include "kefir/core/string_buffer.h"
 #include "kefir/util/char32.h"
+#include <string.h>
 
 enum integer_constant_type {
     CONSTANT_INT,
@@ -184,8 +185,9 @@ static kefir_result_t parse_integer_constant(const char *literal, kefir_size_t b
     return KEFIR_OK;
 }
 
-static kefir_result_t make_integral_constant(const struct kefir_lexer_context *context, enum integer_constant_type type,
-                                             const char *literal, kefir_size_t base, struct kefir_token *token) {
+static kefir_result_t make_integral_constant(struct kefir_mem *mem, const struct kefir_lexer_context *context,
+                                             enum integer_constant_type type, const char *literal, kefir_size_t base,
+                                             struct kefir_token *token) {
     kefir_uint64_t value = 0;
     switch (type) {
         case CONSTANT_INT:
@@ -231,49 +233,71 @@ static kefir_result_t make_integral_constant(const struct kefir_lexer_context *c
             break;
 
         case CONSTANT_UNSIGNED_BIT_PRECISE: {
-            REQUIRE_OK(parse_integer_constant(literal, base, &value));
-            REQUIRE(value <= context->ulong_long_max_value,
-                    KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                    "Bit-precise integers exceeding widest integer type are not implemented yet"));
-
-            kefir_size_t width = 1;
-            const kefir_size_t max_width = sizeof(kefir_uint64_t) * CHAR_BIT;
-            for (; width <= max_width; width++) {
-                const kefir_uint64_t max_value = width < max_width ? (1ull << width) - 1 : ~0ull;
-                if (value <= max_value) {
+            struct kefir_bigint bigint;
+            REQUIRE_OK(kefir_bigint_init(&bigint));
+            kefir_result_t res;
+            switch (base) {
+                case 10:
+                    res = kefir_bigint_unsigned_parse10(mem, &bigint, literal, strlen(literal));
                     break;
-                }
+
+                case 16:
+                    res = kefir_bigint_unsigned_parse16(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                case 8:
+                    res = kefir_bigint_unsigned_parse8(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                case 2:
+                    res = kefir_bigint_unsigned_parse2(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                default:
+                    res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integer constant base");
+                    break;
             }
-            REQUIRE(width <= max_width,
-                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine unsigned bit-precise integer width"));
-            REQUIRE_OK(kefir_token_new_constant_unsigned_bit_precise(value, width, token));
+            REQUIRE_CHAIN(&res,
+                          kefir_bigint_resize_cast_unsigned(mem, &bigint, kefir_bigint_min_unsigned_width(&bigint)));
+            REQUIRE_CHAIN(&res, kefir_token_new_constant_unsigned_bit_precise(&bigint, token));
+            REQUIRE_ELSE(res == KEFIR_OK, { kefir_bigint_free(mem, &bigint); });
         } break;
 
         case CONSTANT_BIT_PRECISE: {
-            REQUIRE_OK(parse_integer_constant(literal, base, &value));
-            REQUIRE((kefir_int64_t) value <= (kefir_int64_t) context->long_long_max_value &&
-                        (kefir_int64_t) value >= -((kefir_int64_t) context->long_long_max_value) - 1,
-                    KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                    "Bit-precise integers exceeding widest integer type are not implemented yet"));
-
-            kefir_size_t width = 2;
-            const kefir_size_t max_width = sizeof(kefir_uint64_t) * CHAR_BIT;
-            for (; width <= max_width; width++) {
-                const kefir_int64_t max_value = (1ull << (width - 1)) - 1;
-                const kefir_int64_t min_value = -max_value - 1;
-                if ((kefir_int64_t) value >= min_value && (kefir_int64_t) value <= max_value) {
+            struct kefir_bigint bigint;
+            REQUIRE_OK(kefir_bigint_init(&bigint));
+            kefir_result_t res;
+            switch (base) {
+                case 10:
+                    res = kefir_bigint_unsigned_parse10(mem, &bigint, literal, strlen(literal));
                     break;
-                }
+
+                case 16:
+                    res = kefir_bigint_unsigned_parse16(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                case 8:
+                    res = kefir_bigint_unsigned_parse8(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                case 2:
+                    res = kefir_bigint_unsigned_parse2(mem, &bigint, literal, strlen(literal));
+                    break;
+
+                default:
+                    res = KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected integer constant base");
+                    break;
             }
-            REQUIRE(width <= max_width,
-                    KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to determine bit-precise integer width"));
-            REQUIRE_OK(kefir_token_new_constant_bit_precise(value, width, token));
+            REQUIRE_CHAIN(
+                &res, kefir_bigint_resize_cast_unsigned(mem, &bigint, kefir_bigint_min_unsigned_width(&bigint) + 1));
+            REQUIRE_CHAIN(&res, kefir_token_new_constant_bit_precise(&bigint, token));
+            REQUIRE_ELSE(res == KEFIR_OK, { kefir_bigint_free(mem, &bigint); });
         } break;
     }
     return KEFIR_OK;
 }
 
-static kefir_result_t build_integral_constant(const struct kefir_lexer_context *context,
+static kefir_result_t build_integral_constant(struct kefir_mem *mem, const struct kefir_lexer_context *context,
                                               enum integer_constant_type type, const char *literal, kefir_size_t base,
                                               struct kefir_token *token,
                                               const struct kefir_source_location *source_location) {
@@ -281,7 +305,7 @@ static kefir_result_t build_integral_constant(const struct kefir_lexer_context *
     kefir_size_t permitted_types_length = 0;
     REQUIRE_OK(get_permitted_constant_types(type, base == 10, &permitted_types, &permitted_types_length));
     for (kefir_size_t i = 0; i < permitted_types_length; i++) {
-        kefir_result_t res = make_integral_constant(context, permitted_types[i], literal, base, token);
+        kefir_result_t res = make_integral_constant(mem, context, permitted_types[i], literal, base, token);
         if (res == KEFIR_OK) {
             return KEFIR_OK;
         } else {
@@ -354,7 +378,7 @@ static kefir_result_t next_octal_constant(struct kefir_mem *mem, struct kefir_le
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_suffix(struct kefir_lexer_source_cursor *cursor,
+static kefir_result_t scan_suffix(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                   const struct kefir_lexer_context *lexer_context, const char *literal,
                                   kefir_size_t base, struct kefir_token *token,
                                   const struct kefir_source_location *source_location) {
@@ -411,9 +435,10 @@ static kefir_result_t scan_suffix(struct kefir_lexer_source_cursor *cursor,
     }
 
     if (matchedSuffix == NULL) {
-        REQUIRE_OK(build_integral_constant(lexer_context, CONSTANT_INT, literal, base, token, source_location));
+        REQUIRE_OK(build_integral_constant(mem, lexer_context, CONSTANT_INT, literal, base, token, source_location));
     } else {
-        REQUIRE_OK(build_integral_constant(lexer_context, matchedSuffix->type, literal, base, token, source_location));
+        REQUIRE_OK(
+            build_integral_constant(mem, lexer_context, matchedSuffix->type, literal, base, token, source_location));
     }
     return KEFIR_OK;
 }
@@ -443,7 +468,7 @@ kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_mem *mem, struct 
     if (res == KEFIR_NO_MATCH) {
         res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match integer constant");
     }
-    REQUIRE_CHAIN(&res, scan_suffix(cursor, lexer_context, kefir_string_buffer_value(&strbuf, NULL), base, token,
+    REQUIRE_CHAIN(&res, scan_suffix(mem, cursor, lexer_context, kefir_string_buffer_value(&strbuf, NULL), base, token,
                                     &source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_string_buffer_free(mem, &strbuf);

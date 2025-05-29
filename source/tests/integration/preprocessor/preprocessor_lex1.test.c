@@ -61,7 +61,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     struct kefir_json_output json;
     REQUIRE_OK(kefir_json_output_init(&json, stdout, 4));
-    REQUIRE_OK(kefir_token_buffer_format(&json, &tokens, false));
+    REQUIRE_OK(kefir_token_buffer_format(mem, &json, &tokens, false));
     REQUIRE_OK(kefir_json_output_finalize(&json));
 
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));

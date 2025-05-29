@@ -59,6 +59,15 @@ kefir_result_t kefir_bigint_copy(struct kefir_bigint *dest, const struct kefir_b
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_move(struct kefir_bigint *dest, struct kefir_bigint *src) {
+    REQUIRE(dest != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination big integer"));
+    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source big integer"));
+
+    memcpy(dest, src, sizeof(struct kefir_bigint));
+    memset(src, 0, sizeof(struct kefir_bigint));
+    return KEFIR_OK;
+}
+
 kefir_size_t kefir_bigint_min_native_signed_width(kefir_int64_t value) {
     return __kefir_bigint_native_signed_width(value);
 }

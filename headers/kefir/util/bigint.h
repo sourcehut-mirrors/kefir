@@ -34,6 +34,7 @@ kefir_result_t kefir_bigint_init(struct kefir_bigint *);
 kefir_result_t kefir_bigint_free(struct kefir_mem *, struct kefir_bigint *);
 
 kefir_result_t kefir_bigint_copy(struct kefir_bigint *, const struct kefir_bigint *);
+kefir_result_t kefir_bigint_move(struct kefir_bigint *, struct kefir_bigint *);
 
 kefir_result_t kefir_bigint_resize_nocast(struct kefir_mem *, struct kefir_bigint *, kefir_size_t);
 kefir_result_t kefir_bigint_resize_cast_signed(struct kefir_mem *, struct kefir_bigint *, kefir_size_t);

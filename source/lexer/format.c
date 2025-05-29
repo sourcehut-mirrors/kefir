@@ -454,7 +454,8 @@ static kefir_result_t format_punctuator(struct kefir_json_output *json, kefir_pu
     return KEFIR_OK;
 }
 
-static kefir_result_t format_constant(struct kefir_json_output *json, const struct kefir_constant_token *constant) {
+static kefir_result_t format_constant(struct kefir_mem *mem, struct kefir_json_output *json,
+                                      const struct kefir_constant_token *constant) {
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     switch (constant->type) {
         case KEFIR_CONSTANT_TOKEN_INTEGER:
@@ -493,20 +494,44 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_uinteger(json, constant->uinteger));
             break;
 
-        case KEFIR_CONSTANT_TOKEN_BIT_PRECISE:
+        case KEFIR_CONSTANT_TOKEN_BIT_PRECISE: {
             REQUIRE_OK(kefir_json_output_string(json, "bitprecise"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.integer));
+            char *value = NULL;
+            struct kefir_bigint copy;
+            REQUIRE_OK(kefir_bigint_init(&copy));
+            kefir_result_t res = kefir_bigint_resize_cast_unsigned(mem, &copy, constant->bitprecise.bitwidth);
+            REQUIRE_CHAIN(&res, kefir_bigint_copy(&copy, &constant->bitprecise));
+            REQUIRE_CHAIN(&res, kefir_bigint_unsigned_format10(mem, &copy, &value, NULL));
+            REQUIRE_CHAIN(&res, kefir_json_output_string(json, value));
+            KEFIR_FREE(mem, value);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_bigint_free(mem, &copy);
+                return res;
+            });
+            REQUIRE_OK(kefir_bigint_free(mem, &copy));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.width));
-            break;
+            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.bitwidth));
+        } break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE:
             REQUIRE_OK(kefir_json_output_string(json, "bitprecise_unsigned"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, constant->bitprecise.uinteger));
+            char *value = NULL;
+            struct kefir_bigint copy;
+            REQUIRE_OK(kefir_bigint_init(&copy));
+            kefir_result_t res = kefir_bigint_resize_cast_unsigned(mem, &copy, constant->bitprecise.bitwidth);
+            REQUIRE_CHAIN(&res, kefir_bigint_copy(&copy, &constant->bitprecise));
+            REQUIRE_CHAIN(&res, kefir_bigint_unsigned_format10(mem, &copy, &value, NULL));
+            REQUIRE_CHAIN(&res, kefir_json_output_string(json, value));
+            KEFIR_FREE(mem, value);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_bigint_free(mem, &copy);
+                return res;
+            });
+            REQUIRE_OK(kefir_bigint_free(mem, &copy));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.width));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->bitprecise.bitwidth));
             break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT:
@@ -669,8 +694,9 @@ kefir_result_t format_string_literal(struct kefir_json_output *json, const struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct kefir_token *token,
-                                  kefir_bool_t display_source_location) {
+kefir_result_t kefir_token_format(struct kefir_mem *mem, struct kefir_json_output *json,
+                                  const struct kefir_token *token, kefir_bool_t display_source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
 
@@ -716,7 +742,7 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
             REQUIRE_OK(kefir_json_output_string(json, "constant"));
             REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
             REQUIRE_OK(kefir_json_output_boolean(json, false));
-            REQUIRE_OK(format_constant(json, &token->constant));
+            REQUIRE_OK(format_constant(mem, json, &token->constant));
             break;
 
         case KEFIR_TOKEN_PP_WHITESPACE:
@@ -783,14 +809,16 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_buffer_format(struct kefir_json_output *json, const struct kefir_token_buffer *buffer,
+kefir_result_t kefir_token_buffer_format(struct kefir_mem *mem, struct kefir_json_output *json,
+                                         const struct kefir_token_buffer *buffer,
                                          kefir_bool_t display_source_location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid json output"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
     REQUIRE_OK(kefir_json_output_array_begin(json));
     for (kefir_size_t i = 0; i < kefir_token_buffer_length(buffer); i++) {
-        REQUIRE_OK(kefir_token_format(json, kefir_token_buffer_at(buffer, i), display_source_location));
+        REQUIRE_OK(kefir_token_format(mem, json, kefir_token_buffer_at(buffer, i), display_source_location));
     }
     REQUIRE_OK(kefir_json_output_array_end(json));
     return KEFIR_OK;

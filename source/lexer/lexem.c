@@ -185,24 +185,26 @@ kefir_result_t kefir_token_new_constant_ulong_long(kefir_uint64_t value, struct 
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_new_constant_bit_precise(kefir_int64_t value, kefir_size_t width, struct kefir_token *token) {
+kefir_result_t kefir_token_new_constant_bit_precise(struct kefir_bigint *bigint, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_BIT_PRECISE;
-    token->constant.bitprecise.integer = value;
-    token->constant.bitprecise.width = width;
+    REQUIRE_OK(kefir_bigint_move(&token->constant.bitprecise, bigint));
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_token_new_constant_unsigned_bit_precise(kefir_uint64_t value, kefir_size_t width, struct kefir_token *token) {
+kefir_result_t kefir_token_new_constant_unsigned_bit_precise(struct kefir_bigint *bigint, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_CONSTANT;
     token->constant.type = KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE;
-    token->constant.bitprecise.uinteger = value;
-    token->constant.bitprecise.width = width;
+    REQUIRE_OK(kefir_bigint_move(&token->constant.bitprecise, bigint));
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }
@@ -664,10 +666,16 @@ kefir_result_t kefir_token_free(struct kefir_mem *mem, struct kefir_token *token
             }
             break;
 
+        case KEFIR_TOKEN_CONSTANT:
+            if (token->constant.type == KEFIR_CONSTANT_TOKEN_BIT_PRECISE ||
+                token->constant.type == KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE) {
+                REQUIRE_OK(kefir_bigint_free(mem, &token->constant.bitprecise));
+            }
+            break;
+
         case KEFIR_TOKEN_IDENTIFIER:
         case KEFIR_TOKEN_SENTINEL:
         case KEFIR_TOKEN_KEYWORD:
-        case KEFIR_TOKEN_CONSTANT:
         case KEFIR_TOKEN_PUNCTUATOR:
         case KEFIR_TOKEN_PP_WHITESPACE:
         case KEFIR_TOKEN_PP_PLACEMAKER:

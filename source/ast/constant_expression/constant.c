@@ -92,15 +92,17 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_AST_BITPRECISE_CONSTANT:
-            REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
-                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not implemented yet"));
+            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
+            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
+            //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             value->integer = node->value.bitprecise.integer;
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
-            REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
-                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not implemented yet"));
+            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
+            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
+            //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             value->uinteger = node->value.bitprecise.uinteger;
             break;

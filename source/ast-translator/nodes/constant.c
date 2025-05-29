@@ -89,15 +89,17 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
             break;
 
         case KEFIR_AST_BITPRECISE_CONSTANT:
-            REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
-                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not implemented yet"));
+            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
+            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
+            //     implemented yet"));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST,
                                                        (kefir_int64_t) node->value.bitprecise.integer));
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
-            REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
-                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not implemented yet"));
+            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
+            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
+            //     implemented yet"));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                        (kefir_uint64_t) node->value.bitprecise.uinteger));
             break;
