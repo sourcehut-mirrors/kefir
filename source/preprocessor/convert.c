@@ -23,7 +23,7 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
             kefir_result_t res = kefir_lexer_scan_floating_point_constant(mem, &cursor, dst);
             if (res == KEFIR_NO_MATCH) {
                 REQUIRE_OK(kefir_lexer_source_cursor_restore(&cursor, &state));
-                res = kefir_lexer_scan_integral_constant(&cursor, preprocessor->lexer.context, dst);
+                res = kefir_lexer_scan_integral_constant(mem, &cursor, preprocessor->lexer.context, dst);
             }
             REQUIRE_OK(res);
             REQUIRE_ELSE(cursor.index == cursor.length, {

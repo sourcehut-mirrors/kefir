@@ -88,7 +88,7 @@ kefir_result_t kefir_lexer_match_raw_string_literal(struct kefir_mem *, struct k
 kefir_result_t kefir_lexer_merge_raw_string_literals(struct kefir_mem *, const struct kefir_list *,
                                                      struct kefir_token *);
 
-kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_lexer_source_cursor *,
+kefir_result_t kefir_lexer_scan_integral_constant(struct kefir_mem *, struct kefir_lexer_source_cursor *,
                                                   const struct kefir_lexer_context *, struct kefir_token *);
 kefir_result_t kefir_lexer_scan_floating_point_constant(struct kefir_mem *, struct kefir_lexer_source_cursor *,
                                                         struct kefir_token *);
