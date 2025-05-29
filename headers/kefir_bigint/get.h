@@ -137,8 +137,9 @@ static __KEFIR_BIGINT_UINT_T __kefir_bigint_is_zero(const __KEFIR_BIGINT_DIGIT_T
 }
 
 static __KEFIR_BIGINT_UNSIGNED_VALUE_T __kefir_bigint_get_bits(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                       __KEFIR_BIGINT_WIDTH_T offset, __KEFIR_BIGINT_WIDTH_T length,
-                                                       __KEFIR_BIGINT_WIDTH_T width) {
+                                                               __KEFIR_BIGINT_WIDTH_T offset,
+                                                               __KEFIR_BIGINT_WIDTH_T length,
+                                                               __KEFIR_BIGINT_WIDTH_T width) {
     __KEFIR_BIGINT_WIDTH_T iter = offset;
     __KEFIR_BIGINT_WIDTH_T end = offset + length;
     if (end > width) {
@@ -165,6 +166,22 @@ static __KEFIR_BIGINT_UNSIGNED_VALUE_T __kefir_bigint_get_bits(__KEFIR_BIGINT_DI
     }
 
     return value;
+}
+
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_get_min_unsigned_width(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                    __KEFIR_BIGINT_WIDTH_T width) {
+    __KEFIR_BIGINT_WIDTH_T minwidth = width;
+
+    for (; minwidth - 1 > 0; minwidth--) {
+        const __KEFIR_BIGINT_WIDTH_T index = (minwidth - 1) / __KEFIR_BIGINT_DIGIT_BIT;
+        const __KEFIR_BIGINT_WIDTH_T offset = (minwidth - 1) - index * __KEFIR_BIGINT_DIGIT_BIT;
+        const __KEFIR_BIGINT_UINT_T value = (digits[index] >> offset) & 1;
+        if (value) {
+            break;
+        }
+    }
+
+    return minwidth;
 }
 
 #endif

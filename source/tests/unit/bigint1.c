@@ -34,19 +34,19 @@
         ASSERT_OK(kefir_bigint_get_unsigned((_bigint), &loaded)); \
         ASSERT(loaded == (_value));                               \
     } while (0)
-#define ASSERT_STORE(_bigint, _value)                                                                                  \
-    do {                                                                                                               \
-        ASSERT_OK(                                                                                                     \
-            kefir_bigint_resize_nocast(&kft_mem, (_bigint), kefir_bigint_min_signed_width((kefir_int64_t) (_value)))); \
-        ASSERT_OK(kefir_bigint_set_signed_value((_bigint), (_value)));                                                 \
-        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));                                               \
+#define ASSERT_STORE(_bigint, _value)                                                                          \
+    do {                                                                                                       \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, (_bigint),                                              \
+                                             kefir_bigint_min_native_signed_width((kefir_int64_t) (_value)))); \
+        ASSERT_OK(kefir_bigint_set_signed_value((_bigint), (_value)));                                         \
+        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));                                       \
     } while (0)
-#define ASSERT_USTORE(_bigint, _value)                                                                    \
-    do {                                                                                                  \
-        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, (_bigint),                                         \
-                                             kefir_bigint_min_unsigned_width((kefir_int64_t) (_value)))); \
-        ASSERT_OK(kefir_bigint_set_unsigned_value((_bigint), (_value)));                                  \
-        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));                                  \
+#define ASSERT_USTORE(_bigint, _value)                                                                           \
+    do {                                                                                                         \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, (_bigint),                                                \
+                                             kefir_bigint_min_native_unsigned_width((kefir_int64_t) (_value)))); \
+        ASSERT_OK(kefir_bigint_set_unsigned_value((_bigint), (_value)));                                         \
+        ASSERT((_bigint)->bitwidth <= CHAR_BIT * sizeof(kefir_int64_t));                                         \
     } while (0)
 
 DEFINE_CASE(bigint_basic1, "BigInt - load/store signed integers #1") {
@@ -488,12 +488,13 @@ DEFINE_CASE(bigint_negate1, "BigInt - negate #1") {
 
     ASSERT_OK(kefir_bigint_init(&bigint));
 
-#define ASSERT_NEGATE(_bigint, _arg)                                                                                \
-    do {                                                                                                            \
-        ASSERT_STORE((_bigint), (_arg));                                                                            \
-        ASSERT_OK(kefir_bigint_resize_cast_signed(&kft_mem, (_bigint), kefir_bigint_min_signed_width((_arg)) + 1)); \
-        ASSERT_OK(kefir_bigint_negate((_bigint)));                                                                  \
-        ASSERT_LOAD((_bigint), -(kefir_int64_t) (_arg));                                                            \
+#define ASSERT_NEGATE(_bigint, _arg)                                                                                 \
+    do {                                                                                                             \
+        ASSERT_STORE((_bigint), (_arg));                                                                             \
+        ASSERT_OK(                                                                                                   \
+            kefir_bigint_resize_cast_signed(&kft_mem, (_bigint), kefir_bigint_min_native_signed_width((_arg)) + 1)); \
+        ASSERT_OK(kefir_bigint_negate((_bigint)));                                                                   \
+        ASSERT_LOAD((_bigint), -(kefir_int64_t) (_arg));                                                             \
     } while (0)
 
     ASSERT_NEGATE(&bigint, 0);
@@ -762,36 +763,36 @@ DEFINE_CASE(bigint_arshift1, "BigInt - arithmetic right shift #1") {
 END_CASE
 
 DEFINE_CASE(bigint_min_signed_width1, "BigInt - minimum signed width #1") {
-    ASSERT(kefir_bigint_min_signed_width(0) == 1);
-    ASSERT(kefir_bigint_min_signed_width(-1) == 1);
-    ASSERT(kefir_bigint_min_signed_width(1) == 2);
+    ASSERT(kefir_bigint_min_native_signed_width(0) == 1);
+    ASSERT(kefir_bigint_min_native_signed_width(-1) == 1);
+    ASSERT(kefir_bigint_min_native_signed_width(1) == 2);
     for (kefir_size_t i = 0; i < sizeof(kefir_int64_t) * CHAR_BIT - 1; i++) {
-        ASSERT(kefir_bigint_min_signed_width(1ull << i) == i + 2);
-        ASSERT(kefir_bigint_min_signed_width(-(1ull << i)) == i + 1);
+        ASSERT(kefir_bigint_min_native_signed_width(1ull << i) == i + 2);
+        ASSERT(kefir_bigint_min_native_signed_width(-(1ull << i)) == i + 1);
     }
-    ASSERT(kefir_bigint_min_signed_width(1ull << (sizeof(kefir_int64_t) * CHAR_BIT - 1)) ==
+    ASSERT(kefir_bigint_min_native_signed_width(1ull << (sizeof(kefir_int64_t) * CHAR_BIT - 1)) ==
            sizeof(kefir_int64_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT8_MAX) == sizeof(kefir_int8_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT8_MIN) == sizeof(kefir_int8_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT16_MAX) == sizeof(kefir_int16_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT16_MIN) == sizeof(kefir_int16_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT32_MAX) == sizeof(kefir_int32_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT32_MIN) == sizeof(kefir_int32_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT64_MAX) == sizeof(kefir_int64_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_signed_width(KEFIR_INT64_MIN) == sizeof(kefir_int64_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT8_MAX) == sizeof(kefir_int8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT8_MIN) == sizeof(kefir_int8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT16_MAX) == sizeof(kefir_int16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT16_MIN) == sizeof(kefir_int16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT32_MAX) == sizeof(kefir_int32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT32_MIN) == sizeof(kefir_int32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT64_MAX) == sizeof(kefir_int64_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_signed_width(KEFIR_INT64_MIN) == sizeof(kefir_int64_t) * CHAR_BIT);
 }
 END_CASE
 
 DEFINE_CASE(bigint_min_unsigned_width1, "BigInt - minimum unsigned width #1") {
-    ASSERT(kefir_bigint_min_unsigned_width(0) == 1);
-    ASSERT(kefir_bigint_min_unsigned_width(1) == 1);
+    ASSERT(kefir_bigint_min_native_unsigned_width(0) == 1);
+    ASSERT(kefir_bigint_min_native_unsigned_width(1) == 1);
     for (kefir_size_t i = 0; i < sizeof(kefir_int64_t) * CHAR_BIT; i++) {
-        ASSERT(kefir_bigint_min_unsigned_width(1ull << i) == (i + 1));
+        ASSERT(kefir_bigint_min_native_unsigned_width(1ull << i) == (i + 1));
     }
-    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT8_MAX) == sizeof(kefir_uint8_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT16_MAX) == sizeof(kefir_uint16_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT32_MAX) == sizeof(kefir_uint32_t) * CHAR_BIT);
-    ASSERT(kefir_bigint_min_unsigned_width(KEFIR_UINT64_MAX) == sizeof(kefir_uint64_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_unsigned_width(KEFIR_UINT8_MAX) == sizeof(kefir_uint8_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_unsigned_width(KEFIR_UINT16_MAX) == sizeof(kefir_uint16_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_unsigned_width(KEFIR_UINT32_MAX) == sizeof(kefir_uint32_t) * CHAR_BIT);
+    ASSERT(kefir_bigint_min_native_unsigned_width(KEFIR_UINT64_MAX) == sizeof(kefir_uint64_t) * CHAR_BIT);
 }
 END_CASE
 
@@ -2007,6 +2008,33 @@ DEFINE_CASE(bigint_binary_format1, "BigInt - format binary #1") {
     KEFIR_FREE(&kft_mem, formatted);
 
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
+DEFINE_CASE(bigint_min_bigint_unsigned_width1, "BigInt - minimum unsigned width #1") {
+    struct kefir_bigint bigint, bigint2;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+    ASSERT_OK(kefir_bigint_init(&bigint2));
+
+    for (kefir_uint64_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT; i++) {
+        ASSERT_USTORE(&bigint, 1ul << i);
+        ASSERT(kefir_bigint_min_unsigned_width(&bigint) == (i + 1));
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &bigint, i * 3 + 1));
+        ASSERT_OK(kefir_bigint_left_shift(&bigint, i));
+        ASSERT(kefir_bigint_min_unsigned_width(&bigint) == (2 * i + 1));
+        ASSERT_OK(kefir_bigint_left_shift(&bigint, i));
+        ASSERT(kefir_bigint_min_unsigned_width(&bigint) == (3 * i + 1));
+
+        ASSERT_USTORE(&bigint, 1ul << i);
+        ASSERT_USTORE(&bigint2, 1);
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &bigint2, bigint.bitwidth));
+        ASSERT_OK(kefir_bigint_subtract(&bigint, &bigint2));
+        ASSERT(kefir_bigint_min_unsigned_width(&bigint) == MAX(i, 1));
+    }
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint2));
 }
 END_CASE
 

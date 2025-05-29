@@ -475,6 +475,7 @@
     _separator _case(cli_options4)                                                           \
     _separator _case(bigint_basic1)                                                          \
     _separator _case(bigint_basic2)                                                          \
+    _separator _case(bigint_min_bigint_unsigned_width1)                                      \
     _separator _case(bigint_cast_signed1)                                                    \
     _separator _case(bigint_cast_unsigned1)                                                  \
     _separator _case(bigint_add1)                                                            \
@@ -500,9 +501,9 @@
     _separator _case(bigint_hexadecimal_parse1)                                              \
     _separator _case(bigint_octal_parse1)                                                    \
     _separator _case(bigint_binary_parse1)                                                   \
-    _separator _case(bigint_decimal_format1) \
-    _separator _case(bigint_hexdecimal_format1) \
-    _separator _case(bigint_octal_format1) \
+    _separator _case(bigint_decimal_format1)                                                 \
+    _separator _case(bigint_hexdecimal_format1)                                              \
+    _separator _case(bigint_octal_format1)                                                   \
     _separator _case(bigint_binary_format1)
 TEST_CASES(DECLARE_CASE, ;);
 
