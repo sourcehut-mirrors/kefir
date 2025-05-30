@@ -25,9 +25,7 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/util/json.h"
 
-kefir_result_t kefir_token_format(struct kefir_mem *, struct kefir_json_output *, const struct kefir_token *,
-                                  kefir_bool_t);
-kefir_result_t kefir_token_buffer_format(struct kefir_mem *, struct kefir_json_output *,
-                                         const struct kefir_token_buffer *, kefir_bool_t);
+kefir_result_t kefir_token_format(struct kefir_json_output *, const struct kefir_token *, kefir_bool_t);
+kefir_result_t kefir_token_buffer_format(struct kefir_json_output *, const struct kefir_token_buffer *, kefir_bool_t);
 
 #endif

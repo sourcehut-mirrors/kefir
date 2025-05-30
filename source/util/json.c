@@ -427,3 +427,53 @@ kefir_result_t kefir_json_output_null(struct kefir_json_output *json) {
     fprintf(json->file, "null");
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_json_output_bigint(struct kefir_json_output *json, const struct kefir_bigint *bigint) {
+    REQUIRE_OK(valid_json(json));
+    REQUIRE_OK(write_separator(json));
+    REQUIRE_OK(validate_value(json));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    fprintf(json->file, "\"0x");
+
+    const kefir_size_t width = (bigint->bitwidth + 3) / 4 * 4;
+    for (kefir_size_t i = width; i > 0; i -= 4) {
+        kefir_uint64_t value;
+        REQUIRE_OK(kefir_bigint_get_bits(bigint, i - 4, 4, &value));
+        if (value <= 9) {
+            fprintf(json->file, "%c", (char) value + '0');
+        } else {
+            switch (value) {
+                case 0xa:
+                    fprintf(json->file, "a");
+                    break;
+
+                case 0xb:
+                    fprintf(json->file, "b");
+                    break;
+
+                case 0xc:
+                    fprintf(json->file, "c");
+                    break;
+
+                case 0xd:
+                    fprintf(json->file, "d");
+                    break;
+
+                case 0xe:
+                    fprintf(json->file, "e");
+                    break;
+
+                case 0xf:
+                    fprintf(json->file, "f");
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected hexadecimal digit");
+            }
+        }
+    }
+
+    fprintf(json->file, "\"");
+    return KEFIR_OK;
+}

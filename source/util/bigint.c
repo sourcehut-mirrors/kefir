@@ -59,6 +59,30 @@ kefir_result_t kefir_bigint_copy(struct kefir_bigint *dest, const struct kefir_b
     return KEFIR_OK;
 }
 
+static kefir_result_t bigint_ensure_width(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
+    const kefir_size_t required_capacity = (width + CHAR_BIT - 1) / CHAR_BIT;
+    if (bigint->capacity < required_capacity) {
+        kefir_uint8_t *new_digits = KEFIR_REALLOC(mem, bigint->digits, sizeof(kefir_uint8_t) * required_capacity);
+        REQUIRE(new_digits != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to ensure bigint capacity"));
+        bigint->digits = new_digits;
+        bigint->capacity = required_capacity;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_copy_resize(struct kefir_mem *mem, struct kefir_bigint *dest,
+                                        const struct kefir_bigint *src) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dest != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination big integer"));
+    REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source big integer"));
+
+    REQUIRE_OK(bigint_ensure_width(mem, dest, src->bitwidth));
+    (void) __kefir_bigint_copy(dest->digits, src->digits, src->bitwidth);
+    dest->bitwidth = src->bitwidth;
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bigint_move(struct kefir_bigint *dest, struct kefir_bigint *src) {
     REQUIRE(dest != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination big integer"));
     REQUIRE(src != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source big integer"));
@@ -80,17 +104,6 @@ kefir_size_t kefir_bigint_min_unsigned_width(const struct kefir_bigint *value) {
     REQUIRE(value != NULL, 0);
 
     return __kefir_bigint_get_min_unsigned_width(value->digits, value->bitwidth);
-}
-
-static kefir_result_t bigint_ensure_width(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
-    const kefir_size_t required_capacity = (width + CHAR_BIT - 1) / CHAR_BIT;
-    if (bigint->capacity < required_capacity) {
-        kefir_uint8_t *new_digits = KEFIR_REALLOC(mem, bigint->digits, sizeof(kefir_uint8_t) * required_capacity);
-        REQUIRE(new_digits != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to ensure bigint capacity"));
-        bigint->digits = new_digits;
-        bigint->capacity = required_capacity;
-    }
-    return KEFIR_OK;
 }
 
 kefir_result_t kefir_bigint_resize_nocast(struct kefir_mem *mem, struct kefir_bigint *bigint, kefir_size_t width) {
@@ -171,6 +184,15 @@ kefir_result_t kefir_bigint_get_unsigned(const struct kefir_bigint *bigint, kefi
         __kefir_bigint_get_unsigned_value(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) bigint->bitwidth, &value);
     UNUSED(res);
     *value_ptr = value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_get_bits(const struct kefir_bigint *bigint, kefir_size_t offset, kefir_size_t length,
+                                     kefir_uint64_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to integer"));
+
+    *value_ptr = __kefir_bigint_get_bits(bigint->digits, offset, length, bigint->bitwidth);
     return KEFIR_OK;
 }
 

@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include "kefir/core/basic-types.h"
+#include "kefir/util/bigint.h"
 
 #define KEFIR_JSON_MAX_DEPTH 1024
 
@@ -64,5 +65,6 @@ kefir_result_t kefir_json_output_string(struct kefir_json_output *, const char *
 kefir_result_t kefir_json_output_raw_string(struct kefir_json_output *, const char *, kefir_size_t);
 kefir_result_t kefir_json_output_boolean(struct kefir_json_output *, kefir_bool_t);
 kefir_result_t kefir_json_output_null(struct kefir_json_output *);
+kefir_result_t kefir_json_output_bigint(struct kefir_json_output *, const struct kefir_bigint *);
 
 #endif

@@ -344,8 +344,8 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 1229782938247303441,
-                                        "width": 622
+                                        "value": -67108865,
+                                        "width": 157
                                     }
                                 }
                             },
@@ -356,8 +356,8 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 1229782938247303441,
-                                        "width": 621
+                                        "value": 18446744073642442751,
+                                        "width": 156
                                     }
                                 }
                             }

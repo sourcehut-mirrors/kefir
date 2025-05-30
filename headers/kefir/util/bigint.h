@@ -34,6 +34,7 @@ kefir_result_t kefir_bigint_init(struct kefir_bigint *);
 kefir_result_t kefir_bigint_free(struct kefir_mem *, struct kefir_bigint *);
 
 kefir_result_t kefir_bigint_copy(struct kefir_bigint *, const struct kefir_bigint *);
+kefir_result_t kefir_bigint_copy_resize(struct kefir_mem *, struct kefir_bigint *, const struct kefir_bigint *);
 kefir_result_t kefir_bigint_move(struct kefir_bigint *, struct kefir_bigint *);
 
 kefir_result_t kefir_bigint_resize_nocast(struct kefir_mem *, struct kefir_bigint *, kefir_size_t);
@@ -48,6 +49,7 @@ kefir_result_t kefir_bigint_set_signed_value(struct kefir_bigint *, kefir_int64_
 kefir_result_t kefir_bigint_set_unsigned_value(struct kefir_bigint *, kefir_uint64_t);
 kefir_result_t kefir_bigint_get_signed(const struct kefir_bigint *, kefir_int64_t *);
 kefir_result_t kefir_bigint_get_unsigned(const struct kefir_bigint *, kefir_uint64_t *);
+kefir_result_t kefir_bigint_get_bits(const struct kefir_bigint *, kefir_size_t, kefir_size_t, kefir_uint64_t *);
 
 kefir_result_t kefir_bigint_cast_signed(struct kefir_bigint *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_bigint_cast_unsigned(struct kefir_bigint *, kefir_size_t, kefir_size_t);

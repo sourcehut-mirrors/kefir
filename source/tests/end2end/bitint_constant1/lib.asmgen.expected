@@ -33,7 +33,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "0",
+        "value": "0x0",
         "width": 2
     },
     {
@@ -45,7 +45,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "0",
+        "value": "0x0",
         "width": 1
     },
     {
@@ -57,7 +57,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "1",
+        "value": "0x1",
         "width": 2
     },
     {
@@ -69,7 +69,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "1",
+        "value": "0x1",
         "width": 1
     },
     {
@@ -86,7 +86,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "1",
+        "value": "0x1",
         "width": 2
     },
     {
@@ -98,7 +98,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "7",
+        "value": "0x7",
         "width": 3
     },
     {
@@ -110,7 +110,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "15",
+        "value": "0x0f",
         "width": 5
     },
     {
@@ -127,7 +127,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "16",
+        "value": "0x10",
         "width": 6
     },
     {
@@ -139,7 +139,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "16",
+        "value": "0x10",
         "width": 5
     },
     {
@@ -151,7 +151,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "32767",
+        "value": "0x7fff",
         "width": 16
     },
     {
@@ -163,7 +163,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "32768",
+        "value": "0x08000",
         "width": 17
     },
     {
@@ -175,7 +175,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "32768",
+        "value": "0x8000",
         "width": 16
     },
     {
@@ -187,7 +187,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "65535",
+        "value": "0x0ffff",
         "width": 17
     },
     {
@@ -199,7 +199,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "65535",
+        "value": "0xffff",
         "width": 16
     },
     {
@@ -211,7 +211,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "9223372036854775807",
+        "value": "0x7fffffffffffffff",
         "width": 64
     },
     {
@@ -223,7 +223,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "9223372036854775808",
+        "value": "0x08000000000000000",
         "width": 65
     },
     {
@@ -235,7 +235,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "18446744073709551615",
+        "value": "0xffffffffffffffff",
         "width": 64
     },
     {
@@ -247,7 +247,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "152657167261762716276716276127",
+        "value": "0x1ed430c9388c869ab7669099f",
         "width": 98
     },
     {
@@ -259,7 +259,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "167367236828282828838328388283828",
+        "value": "0x84078b57b1e022be424b177edb4",
         "width": 108
     },
     {
@@ -271,7 +271,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "82722089377047541302434566715376307",
+        "value": "0x0fee838e92928e9ed9fe9ab39282b3",
         "width": 117
     },
     {
@@ -283,7 +283,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "11374001267377486391193847005762720642",
+        "value": "0x88e8d8ef8e838e8d8f8ee8abdbe9382",
         "width": 124
     },
     {
@@ -295,7 +295,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "216877744348259326806174479982343395",
+        "value": "0x29c4e5facb1cb1a72eb358d38d34e3",
         "width": 119
     },
     {
@@ -307,7 +307,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "216877744348259326806174479982343395",
+        "value": "0x29c4e5facb1cb1a72eb358d38d34e3",
         "width": 118
     },
     {
@@ -319,7 +319,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "6277101735386680763835789423207666416102355444464034512895",
+        "value": "0x0ffffffffffffffffffffffffffffffffffffffffffffffff",
         "width": 193
     },
     {
@@ -331,7 +331,7 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "6277101735386680763835789423207666416102355444464034512895",
+        "value": "0xffffffffffffffffffffffffffffffffffffffffffffffff",
         "width": 192
     },
     {
@@ -343,8 +343,8 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise",
-        "value": "4641154599631953143962780360616344528089628608447835215839836138813553026538775010687167166460542195412844146294753425405567123129654376218925640177126275805983047218410773576381193326865",
-        "width": 622
+        "value": "0x0ffffffffffffffffffffffffffffffffbffffff",
+        "width": 157
     },
     {
         "class": "punctuator",
@@ -355,8 +355,8 @@
         "class": "constant",
         "preprocessor": false,
         "type": "bitprecise_unsigned",
-        "value": "4641154599631953143962780360616344528089628608447835215839836138813553026538775010687167166460542195412844146294753425405567123129654376218925640177126275805983047218410773576381193326865",
-        "width": 621
+        "value": "0xffffffffffffffffffffffffffffffffbffffff",
+        "width": 156
     },
     {
         "class": "punctuator",
