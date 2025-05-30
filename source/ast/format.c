@@ -154,17 +154,17 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
         case KEFIR_AST_BITPRECISE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "bitprecise"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_integer(json, node->value.bitprecise.integer));
+            REQUIRE_OK(kefir_json_output_bigint(json, &node->value.bitprecise));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, node->value.bitprecise.width));
+            REQUIRE_OK(kefir_json_output_integer(json, node->value.bitprecise.bitwidth));
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "unsigned_bitprecise"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-            REQUIRE_OK(kefir_json_output_uinteger(json, node->value.bitprecise.uinteger));
+            REQUIRE_OK(kefir_json_output_bigint(json, &node->value.bitprecise));
             REQUIRE_OK(kefir_json_output_object_key(json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(json, node->value.bitprecise.width));
+            REQUIRE_OK(kefir_json_output_integer(json, node->value.bitprecise.bitwidth));
             break;
 
         case KEFIR_AST_FLOAT_CONSTANT:

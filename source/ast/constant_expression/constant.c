@@ -96,7 +96,7 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
             //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            value->integer = node->value.bitprecise.integer;
+            REQUIRE_OK(kefir_bigint_get_signed(&node->value.bitprecise, &value->integer));
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
@@ -104,7 +104,7 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
             //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            value->uinteger = node->value.bitprecise.uinteger;
+            REQUIRE_OK(kefir_bigint_get_unsigned(&node->value.bitprecise, &value->uinteger));
             break;
 
         case KEFIR_AST_FLOAT_CONSTANT:

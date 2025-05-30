@@ -36,7 +36,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 0,
+                                        "value": "0x0",
                                         "width": 2
                                     }
                                 }
@@ -48,7 +48,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 0,
+                                        "value": "0x0",
                                         "width": 1
                                     }
                                 }
@@ -60,7 +60,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 1,
+                                        "value": "0x1",
                                         "width": 2
                                     }
                                 }
@@ -72,7 +72,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 1,
+                                        "value": "0x1",
                                         "width": 1
                                     }
                                 }
@@ -87,7 +87,7 @@
                                         "argument": {
                                             "class": "constant",
                                             "type": "bitprecise",
-                                            "value": 1,
+                                            "value": "0x1",
                                             "width": 2
                                         }
                                     }
@@ -100,7 +100,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 7,
+                                        "value": "0x7",
                                         "width": 3
                                     }
                                 }
@@ -112,7 +112,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 15,
+                                        "value": "0x0f",
                                         "width": 5
                                     }
                                 }
@@ -127,7 +127,7 @@
                                         "argument": {
                                             "class": "constant",
                                             "type": "bitprecise",
-                                            "value": 16,
+                                            "value": "0x10",
                                             "width": 6
                                         }
                                     }
@@ -140,7 +140,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 16,
+                                        "value": "0x10",
                                         "width": 5
                                     }
                                 }
@@ -152,7 +152,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 32767,
+                                        "value": "0x7fff",
                                         "width": 16
                                     }
                                 }
@@ -164,7 +164,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 32768,
+                                        "value": "0x08000",
                                         "width": 17
                                     }
                                 }
@@ -176,7 +176,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 32768,
+                                        "value": "0x8000",
                                         "width": 16
                                     }
                                 }
@@ -188,7 +188,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 65535,
+                                        "value": "0x0ffff",
                                         "width": 17
                                     }
                                 }
@@ -200,7 +200,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 65535,
+                                        "value": "0xffff",
                                         "width": 16
                                     }
                                 }
@@ -212,7 +212,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": 9223372036854775807,
+                                        "value": "0x7fffffffffffffff",
                                         "width": 64
                                     }
                                 }
@@ -224,7 +224,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -9223372036854775808,
+                                        "value": "0x08000000000000000",
                                         "width": 65
                                     }
                                 }
@@ -236,7 +236,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 18446744073709551615,
+                                        "value": "0xffffffffffffffff",
                                         "width": 64
                                     }
                                 }
@@ -248,7 +248,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -8590500104062301793,
+                                        "value": "0x1ed430c9388c869ab7669099f",
                                         "width": 98
                                     }
                                 }
@@ -260,7 +260,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 156469458321796532,
+                                        "value": "0x84078b57b1e022be424b177edb4",
                                         "width": 108
                                     }
                                 }
@@ -272,7 +272,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -7000284205379583309,
+                                        "value": "0x0fee838e92928e9ed9fe9ab39282b3",
                                         "width": 117
                                     }
                                 }
@@ -284,7 +284,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 15634508386072957826,
+                                        "value": "0x88e8d8ef8e838e8d8f8ee8abdbe9382",
                                         "width": 124
                                     }
                                 }
@@ -296,7 +296,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -6399980826359155485,
+                                        "value": "0x29c4e5facb1cb1a72eb358d38d34e3",
                                         "width": 119
                                     }
                                 }
@@ -308,7 +308,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 12046763247350396131,
+                                        "value": "0x29c4e5facb1cb1a72eb358d38d34e3",
                                         "width": 118
                                     }
                                 }
@@ -320,7 +320,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -1,
+                                        "value": "0x0ffffffffffffffffffffffffffffffffffffffffffffffff",
                                         "width": 193
                                     }
                                 }
@@ -332,7 +332,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 18446744073709551615,
+                                        "value": "0xffffffffffffffffffffffffffffffffffffffffffffffff",
                                         "width": 192
                                     }
                                 }
@@ -344,7 +344,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "bitprecise",
-                                        "value": -67108865,
+                                        "value": "0x0ffffffffffffffffffffffffffffffffbffffff",
                                         "width": 157
                                     }
                                 }
@@ -356,7 +356,7 @@
                                     "expression": {
                                         "class": "constant",
                                         "type": "unsigned_bitprecise",
-                                        "value": 18446744073642442751,
+                                        "value": "0xffffffffffffffffffffffffffffffffbffffff",
                                         "width": 156
                                     }
                                 }

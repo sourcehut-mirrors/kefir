@@ -60,21 +60,37 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
             break;
 
         case KEFIR_CONSTANT_TOKEN_BIT_PRECISE: {
-            kefir_int64_t value;
-            REQUIRE_OK(kefir_bigint_get_signed(&token->constant.bitprecise, &value));
-            REQUIRE_ALLOC(
-                result,
-                KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bitprecise(mem, value, token->constant.bitprecise.bitwidth)),
-                "Failed to allocate AST constant");
+            struct kefir_bigint copy;
+            REQUIRE_OK(kefir_bigint_init(&copy));
+            kefir_result_t res = kefir_bigint_copy_resize(mem, &copy, &token->constant.bitprecise);
+            if (res == KEFIR_OK) {
+                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bitprecise(mem, &copy));
+                if (*result == NULL) {
+                    res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant");
+                }
+            }
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_bigint_free(mem, &copy);
+                return res;
+            });
+            REQUIRE_OK(kefir_bigint_free(mem, &copy));
         } break;
 
         case KEFIR_CONSTANT_TOKEN_UNSIGNED_BIT_PRECISE: {
-            kefir_uint64_t value;
-            REQUIRE_OK(kefir_bigint_get_unsigned(&token->constant.bitprecise, &value));
-            REQUIRE_ALLOC(result,
-                          KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unsigned_bitprecise(
-                              mem, value, token->constant.bitprecise.bitwidth)),
-                          "Failed to allocate AST constant");
+            struct kefir_bigint copy;
+            REQUIRE_OK(kefir_bigint_init(&copy));
+            kefir_result_t res = kefir_bigint_copy_resize(mem, &copy, &token->constant.bitprecise);
+            if (res == KEFIR_OK) {
+                *result = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_unsigned_bitprecise(mem, &copy));
+                if (*result == NULL) {
+                    res = KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST constant");
+                }
+            }
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_bigint_free(mem, &copy);
+                return res;
+            });
+            REQUIRE_OK(kefir_bigint_free(mem, &copy));
         } break;
 
         case KEFIR_CONSTANT_TOKEN_FLOAT:

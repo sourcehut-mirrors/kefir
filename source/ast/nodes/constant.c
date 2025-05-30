@@ -29,6 +29,9 @@ kefir_result_t ast_constant_free(struct kefir_mem *mem, struct kefir_ast_node_ba
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_constant *, node, base->self);
+    if (node->type == KEFIR_AST_BITPRECISE_CONSTANT || node->type == KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT) {
+        REQUIRE_OK(kefir_bigint_free(mem, &node->value.bitprecise));
+    }
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -278,7 +281,7 @@ struct kefir_ast_constant *kefir_ast_new_constant_ulong_long(struct kefir_mem *m
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *mem, kefir_int64_t value, kefir_size_t width) {
+struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *mem, struct kefir_bigint *bitprecise) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -296,12 +299,16 @@ struct kefir_ast_constant *kefir_ast_new_constant_bitprecise(struct kefir_mem *m
         return NULL;
     });
     constant->type = KEFIR_AST_BITPRECISE_CONSTANT;
-    constant->value.bitprecise.integer = value;
-    constant->value.bitprecise.width = width;
+    res = kefir_bigint_move(&constant->value.bitprecise, bitprecise);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
     return constant;
 }
 
-struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *mem, kefir_uint64_t value, kefir_size_t width) {
+struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kefir_mem *mem,
+                                                                      struct kefir_bigint *bitprecise) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
     REQUIRE(constant != NULL, NULL);
@@ -319,8 +326,11 @@ struct kefir_ast_constant *kefir_ast_new_constant_unsigned_bitprecise(struct kef
         return NULL;
     });
     constant->type = KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT;
-    constant->value.bitprecise.uinteger = value;
-    constant->value.bitprecise.width = width;
+    res = kefir_bigint_move(&constant->value.bitprecise, bitprecise);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
     return constant;
 }
 
