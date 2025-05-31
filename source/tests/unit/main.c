@@ -512,7 +512,8 @@
     _separator _case(bigint_unsigned_to_double1)                                             \
     _separator _case(bigint_unsigned_to_long_double1)                                        \
     _separator _case(bigint_float_to_signed1)                                                \
-    _separator _case(bigint_double_to_signed1)
+    _separator _case(bigint_double_to_signed1)                                               \
+    _separator _case(bigint_long_double_to_signed1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id
