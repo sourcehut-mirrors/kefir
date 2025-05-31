@@ -107,4 +107,6 @@ kefir_result_t kefir_bigint_unsigned_format8(struct kefir_mem *, struct kefir_bi
 kefir_result_t kefir_bigint_unsigned_format2_into(const struct kefir_bigint *, char *, kefir_size_t);
 kefir_result_t kefir_bigint_unsigned_format2(struct kefir_mem *, struct kefir_bigint *, char **, kefir_size_t *);
 
+kefir_result_t kefir_bigint_signed_to_float(struct kefir_bigint *, struct kefir_bigint *, kefir_float32_t *);
+
 #endif

@@ -38,6 +38,14 @@
 #error "bigint_impl.h environment is missing __KEFIR_BIGINT_CHAR_BIT definition"
 #endif
 
+#ifndef __KEFIR_BIGINT_FLT_MANT_DIG
+#error "bigint_impl.h environment is missing __KEFIR_BIGINT_FLT_MANT_DIG definition"
+#endif
+
+#ifndef __KEFIR_BIGINT_UCHAR_T
+#define __KEFIR_BIGINT_UCHAR_T unsigned char
+#endif
+
 #ifndef __KEFIR_BIGINT_SIGNED_VALUE_T
 #define __KEFIR_BIGINT_SIGNED_VALUE_T long long
 #endif
@@ -56,6 +64,10 @@
 
 #ifndef __KEFIR_BIGINT_WIDTH_T
 #define __KEFIR_BIGINT_WIDTH_T unsigned long long
+#endif
+
+#ifndef __KEFIR_BIGINT_FLOAT_T
+#define __KEFIR_BIGINT_FLOAT_T float
 #endif
 
 #define __KEFIR_BIGINT_VALUE_BIT (sizeof(__KEFIR_BIGINT_SIGNED_VALUE_T) * __KEFIR_BIGINT_CHAR_BIT)
@@ -144,5 +156,8 @@ static __KEFIR_BIGINT_UINT_T __kefir_bigint_unsigned_compare(const __KEFIR_BIGIN
                                                              const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_UINT_T __kefir_bigint_signed_compare(const __KEFIR_BIGINT_DIGIT_T *,
                                                            const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+
+static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
+                                                             __KEFIR_BIGINT_WIDTH_T);
 
 #endif

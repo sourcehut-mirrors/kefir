@@ -22,10 +22,12 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include <math.h>
+#include <float.h>
 #include <string.h>
 
 #define __KEFIR_BIGINT_USE_BIGINT_IMPL__
 #define __KEFIR_BIGINT_CHAR_BIT CHAR_BIT
+#define __KEFIR_BIGINT_FLT_MANT_DIG FLT_MANT_DIG
 #include "kefir_bigint/bigint.h"
 
 kefir_result_t kefir_bigint_init(struct kefir_bigint *bigint) {
@@ -1034,5 +1036,20 @@ kefir_result_t kefir_bigint_unsigned_format2(struct kefir_mem *mem, struct kefir
 
     *output_ptr = output;
     ASSIGN_PTR(output_length_ptr, output_length);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_signed_to_float(struct kefir_bigint *bigint, struct kefir_bigint *tmp_bigint,
+                                            kefir_float32_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to floating-point value"));
+    REQUIRE(bigint->bitwidth >= sizeof(kefir_float32_t) * CHAR_BIT,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided big integer is too narrow"));
+    REQUIRE(bigint->bitwidth == tmp_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    *value_ptr = __kefir_bigint_signed_to_float(bigint->digits, tmp_bigint->digits, bigint->bitwidth);
     return KEFIR_OK;
 }

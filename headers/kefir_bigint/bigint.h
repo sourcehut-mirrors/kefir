@@ -40,5 +40,6 @@
 #include "kefir_bigint/multiply.h"
 #include "kefir_bigint/divide.h"
 #include "kefir_bigint/compare.h"
+#include "kefir_bigint/float.h"
 
 #endif
