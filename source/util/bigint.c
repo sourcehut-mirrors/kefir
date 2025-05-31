@@ -1170,3 +1170,11 @@ kefir_result_t kefir_bigint_unsigned_from_double(struct kefir_bigint *bigint, ke
     UNUSED(res);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_unsigned_from_long_double(struct kefir_bigint *bigint, kefir_long_double_t value) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    __kefir_bigint_result_t res = __kefir_bigint_unsigned_from_long_double(bigint->digits, value, bigint->bitwidth);
+    UNUSED(res);
+    return KEFIR_OK;
+}
