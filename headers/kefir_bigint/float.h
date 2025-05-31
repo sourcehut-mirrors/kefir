@@ -35,8 +35,7 @@
 // Conversion algorithm is taken from
 // https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/floattisf.c#L24C23-L24C34
 
-#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _signed, _sign, _exponent,     \
-                                              _mantissa)                                                              \
+#define __KEFIR_BIGINT_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _signed, _sign, _exponent, _mantissa) \
     do {                                                                                                              \
         if ((_signed)) {                                                                                              \
             *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                 \
@@ -98,8 +97,8 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGI
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 1, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 1, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_FLOAT_T f;
@@ -115,8 +114,8 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DI
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 1, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 1, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_DOUBLE_T f;
@@ -132,8 +131,8 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 1, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 1, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
         __KEFIR_BIGINT_LONG_DOUBLE_T f;
@@ -149,8 +148,8 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_unsigned_to_float(__KEFIR_BIGINT_DI
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 0, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 0, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_FLOAT_T f;
@@ -166,8 +165,8 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_unsigned_to_double(__KEFIR_BIGINT_
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 0, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 0, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_DOUBLE_T f;
@@ -183,8 +182,8 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 0, &sign, &exponent,
-                                          &mantissa);
+    __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 0, &sign, &exponent,
+                                   &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
         __KEFIR_BIGINT_LONG_DOUBLE_T f;
@@ -192,6 +191,79 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
     return conv.f;
 }
 
-#undef __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL
+#undef __KEFIR_BIGINT_TO_IEEE754_IMPL
+
+// Conversion algorithm is taken from
+// https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/fp_fixint_impl.inc#L16
+
+#define __KEFIR_BIGINT_FROM_IEEE754_IMPL(_digits, _width, _sign, _exponent, _mantissa, _mantissa_width)   \
+    do {                                                                                                  \
+        if ((_exponent) < 0) {                                                                            \
+            (void) __kefir_bigint_zero((_digits), (_width));                                              \
+            return __KEFIR_BIGINT_OK;                                                                     \
+        }                                                                                                 \
+                                                                                                          \
+        if ((__KEFIR_BIGINT_UNSIGNED_VALUE_T) (_exponent) >= (_width)) {                                  \
+            if (!sign) {                                                                                  \
+                (void) __kefir_bigint_zero((_digits), (_width));                                          \
+                (void) __kefir_bigint_invert((_digits), (_width));                                        \
+                (void) __kefir_bigint_right_shift((_digits), 1, (_width));                                \
+            } else {                                                                                      \
+                (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), 1);                       \
+                (void) __kefir_bigint_left_shift((_digits), (_width) - 1, (_width));                      \
+            }                                                                                             \
+            return __KEFIR_BIGINT_OK;                                                                     \
+        }                                                                                                 \
+                                                                                                          \
+        if ((_exponent) < (_mantissa_width)) {                                                            \
+            (void) __kefir_bigint_set_unsigned_integer((_digits), (_width),                               \
+                                                       (_mantissa) >> ((_mantissa_width) - (_exponent))); \
+        } else {                                                                                          \
+            (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), (_mantissa));                 \
+            (void) __kefir_bigint_left_shift((_digits), (_exponent) - (_mantissa_width), (_width));       \
+        }                                                                                                 \
+                                                                                                          \
+        if (sign) {                                                                                       \
+            (void) __kefir_bigint_negate((_digits), (_width));                                            \
+        }                                                                                                 \
+    } while (0)
+
+#define __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_OFFSET 127
+#define __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_WIDTH 8
+#define __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH 23
+#define __KEFIR_BIGINT_IEEE754_FLOAT_SIGN_MASK \
+    (1ull << (__KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_WIDTH + __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH))
+#define __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_MASK ((1ull << __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_WIDTH) - 1)
+#define __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_MASK ((1ull << __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH) - 1)
+
+static __kefir_bigint_result_t __kefir_bigint_signed_from_float(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                __KEFIR_BIGINT_FLOAT_T value,
+                                                                __KEFIR_BIGINT_WIDTH_T width) {
+    union {
+        __KEFIR_BIGINT_FLOAT_T f;
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
+    } conv = {.f = value};
+
+    const __KEFIR_BIGINT_SIGNED_VALUE_T sign = conv.u & __KEFIR_BIGINT_IEEE754_FLOAT_SIGN_MASK;
+    const __KEFIR_BIGINT_SIGNED_VALUE_T exponent =
+        ((conv.u >> __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH) & __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_MASK) -
+        __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_OFFSET;
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T mantissa =
+        (conv.u & __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_MASK) | (1ull << __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH);
+
+    __KEFIR_BIGINT_FROM_IEEE754_IMPL(digits, width, sign, exponent, mantissa,
+                                     __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH);
+
+    return __KEFIR_BIGINT_OK;
+}
+
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_OFFSET
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_WIDTH
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_WIDTH
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_SIGN_MASK
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_EXPONENT_MASK
+#undef __KEFIR_BIGINT_IEEE754_FLOAT_MANTISSA_MASK
+
+#undef __KEFIR_BIGINT_FROM_IEEE754_IMPL
 
 #endif

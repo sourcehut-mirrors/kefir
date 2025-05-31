@@ -189,4 +189,7 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
                                                                            __KEFIR_BIGINT_DIGIT_T *,
                                                                            __KEFIR_BIGINT_WIDTH_T);
 
+static __kefir_bigint_result_t __kefir_bigint_signed_from_float(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_FLOAT_T,
+                                                                __KEFIR_BIGINT_WIDTH_T);
+
 #endif
