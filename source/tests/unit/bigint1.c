@@ -2620,6 +2620,63 @@ DEFINE_CASE(bigint_float_to_unsigned1, "BigInt - float to unsigned conversion #1
 }
 END_CASE
 
+DEFINE_CASE(bigint_double_to_unsigned1, "BigInt - double to unsigned conversion #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+#define ASSERT_CAST(_arg, _width)                                                                           \
+    do {                                                                                                    \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_uint##_width##_t) * CHAR_BIT)); \
+                                                                                                            \
+        ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, (_arg)));                                         \
+        ASSERT_ULOAD(&bigint, (kefir_uint##_width##_t)(_arg));                                                \
+    } while (0)
+
+    for (kefir_float32_t i = 0.0; i < 200.0; i += 0.25) {
+        ASSERT_CAST(i, 8);
+        ASSERT_CAST(i * 1e-1, 8);
+        ASSERT_CAST(i, 16);
+        ASSERT_CAST(i * 1e-1, 16);
+        ASSERT_CAST(i, 32);
+        ASSERT_CAST(i * 1e-1, 32);
+        ASSERT_CAST(i, 64);
+        ASSERT_CAST(i * 1e-1, 64);
+        ASSERT_CAST(i * 1e3, 32);
+        ASSERT_CAST(i * 1e5, 32);
+        ASSERT_CAST(i * 1e3, 64);
+        ASSERT_CAST(i * 1e5, 64);
+    }
+
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT8_MAX, 8);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT8_MAX, 16);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT8_MAX, 32);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT8_MAX, 64);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT16_MAX, 16);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT16_MAX, 32);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT16_MAX, 64);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT32_MAX, 32);
+    ASSERT_CAST((kefir_float64_t) KEFIR_UINT32_MAX, 64);
+    ASSERT_CAST((kefir_float64_t) KEFIR_INT64_MAX, 64);
+
+#undef ASSERT_CAST
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
+    ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, FLT_MAX));
+    ASSERT_ULOAD(&bigint, KEFIR_UINT64_MAX);
+    ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, -FLT_MAX));
+    ASSERT_ULOAD(&bigint, 0);
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 1024));
+    ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, FLT_MAX));
+    char buf[128];
+    ASSERT_OK(kefir_bigint_unsigned_format10_into(&kft_mem, &bigint, buf, sizeof(buf)));
+    ASSERT(strcmp(buf, "340282346638528859811704183484516925440") == 0);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD

@@ -121,5 +121,6 @@ kefir_result_t kefir_bigint_signed_from_double(struct kefir_bigint *, kefir_floa
 kefir_result_t kefir_bigint_signed_from_long_double(struct kefir_bigint *, kefir_long_double_t);
 
 kefir_result_t kefir_bigint_unsigned_from_float(struct kefir_bigint *, kefir_float32_t);
+kefir_result_t kefir_bigint_unsigned_from_double(struct kefir_bigint *, kefir_float64_t);
 
 #endif

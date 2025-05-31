@@ -336,6 +336,27 @@ static __kefir_bigint_result_t __kefir_bigint_signed_from_double(__KEFIR_BIGINT_
     return __KEFIR_BIGINT_OK;
 }
 
+static __kefir_bigint_result_t __kefir_bigint_unsigned_from_double(__KEFIR_BIGINT_DIGIT_T *digits,
+                                                                 __KEFIR_BIGINT_DOUBLE_T value,
+                                                                 __KEFIR_BIGINT_WIDTH_T width) {
+    union {
+        __KEFIR_BIGINT_DOUBLE_T f;
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
+    } conv = {.f = value};
+
+    const __KEFIR_BIGINT_SIGNED_VALUE_T sign = conv.u & __KEFIR_BIGINT_IEEE754_DOUBLE_SIGN_MASK;
+    const __KEFIR_BIGINT_SIGNED_VALUE_T exponent =
+        ((conv.u >> __KEFIR_BIGINT_IEEE754_DOUBLE_MANTISSA_WIDTH) & __KEFIR_BIGINT_IEEE754_DOUBLE_EXPONENT_MASK) -
+        __KEFIR_BIGINT_IEEE754_DOUBLE_EXPONENT_OFFSET;
+    const __KEFIR_BIGINT_UNSIGNED_VALUE_T mantissa =
+        (conv.u & __KEFIR_BIGINT_IEEE754_DOUBLE_MANTISSA_MASK) | (1ull << __KEFIR_BIGINT_IEEE754_DOUBLE_MANTISSA_WIDTH);
+
+    __KEFIR_BIGINT_UNSIGNED_FROM_IEEE754_IMPL(digits, width, sign, exponent, mantissa,
+                                     __KEFIR_BIGINT_IEEE754_DOUBLE_MANTISSA_WIDTH);
+
+    return __KEFIR_BIGINT_OK;
+}
+
 #undef __KEFIR_BIGINT_IEEE754_DOUBLE_EXPONENT_OFFSET
 #undef __KEFIR_BIGINT_IEEE754_DOUBLE_EXPONENT_WIDTH
 #undef __KEFIR_BIGINT_IEEE754_DOUBLE_MANTISSA_WIDTH
