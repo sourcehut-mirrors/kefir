@@ -32,12 +32,16 @@
 
 #include "kefir_bigint/base.h"
 
-#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _sign, _exponent, _mantissa)   \
+#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _signed, _sign, _exponent, _mantissa)   \
     do {                                                                                                              \
-        *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                     \
-        if (sign) {                                                                                                   \
-            (void) __kefir_bigint_negate((_digits), (_width));                                                        \
-        }                                                                                                             \
+        if ((_signed)) { \
+            *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                     \
+            if (sign) {                                                                                                   \
+                (void) __kefir_bigint_negate((_digits), (_width));                                                        \
+            }                                                                                                             \
+        } else { \
+            *(_sign) = 0; \
+        } \
                                                                                                                       \
         const __KEFIR_BIGINT_WIDTH_T significant_digits = __kefir_bigint_get_min_unsigned_width((_digits), (_width)); \
         *(_exponent) = significant_digits - 1;                                                                        \
@@ -93,7 +97,7 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGI
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, &sign, &exponent,
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 1, &sign, &exponent,
                                           &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
@@ -110,7 +114,7 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DI
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, &sign, &exponent,
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 1, &sign, &exponent,
                                           &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
@@ -127,7 +131,7 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR
     }
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
-    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, &sign, &exponent,
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 1, &sign, &exponent,
                                           &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
