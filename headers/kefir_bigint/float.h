@@ -32,71 +32,76 @@
 
 #include "kefir_bigint/base.h"
 
-static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGIT_T *digits,
-                                                             __KEFIR_BIGINT_DIGIT_T *tmp_digits,
+#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _sign, _exponent, _mantissa)   \
+    do {                                                                                                              \
+        *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                     \
+        if (sign) {                                                                                                   \
+            (void) __kefir_bigint_negate((_digits), (_width));                                                        \
+        }                                                                                                             \
+                                                                                                                      \
+        const __KEFIR_BIGINT_WIDTH_T significant_digits = __kefir_bigint_get_min_unsigned_width((_digits), (_width)); \
+        *(_exponent) = significant_digits - 1;                                                                        \
+        if (significant_digits > (_mant_dig)) {                                                                       \
+            switch (significant_digits) {                                                                             \
+                case (_mant_dig) + 1:                                                                                 \
+                    (void) __kefir_bigint_left_shift((_digits), 1, (_width));                                         \
+                    break;                                                                                            \
+                                                                                                                      \
+                case (_mant_dig) + 2:                                                                                 \
+                    /* Intentionally left blank */                                                                    \
+                    break;                                                                                            \
+                                                                                                                      \
+                default:                                                                                              \
+                    (void) __kefir_bigint_set_signed_integer((_tmp_digits), (_width), -1);                            \
+                    (void) __kefir_bigint_right_shift((_tmp_digits), (_width) + (_mant_dig) + 2 - significant_digits, \
+                                                      (_width));                                                      \
+                    (void) __kefir_bigint_and((_tmp_digits), (_digits), (_width));                                    \
+                    (void) __kefir_bigint_set_unsigned_integer((_tmp_digits), (_width),                               \
+                                                               !__kefir_bigint_is_zero((_tmp_digits), (_width)));     \
+                    (void) __kefir_bigint_right_shift((_digits), significant_digits - ((_mant_dig) + 2), (_width));   \
+                    (void) __kefir_bigint_or((_digits), (_tmp_digits), (_width));                                     \
+                    break;                                                                                            \
+            }                                                                                                         \
+                                                                                                                      \
+            __KEFIR_BIGINT_UNSIGNED_VALUE_T val;                                                                      \
+            (void) __kefir_bigint_get_unsigned_value((_digits), (_width), &val);                                      \
+            (void) __kefir_bigint_set_unsigned_integer((_tmp_digits), (_width), (val & 4) != 0);                      \
+            (void) __kefir_bigint_or((_digits), (_tmp_digits), (_width));                                             \
+            (void) __kefir_bigint_util_add_digit_zero_extended((_digits), 1, (_width));                               \
+            (void) __kefir_bigint_right_shift((_digits), 2, (_width));                                                \
+                                                                                                                      \
+            if (__kefir_bigint_get_bits((_digits), (_mant_dig), 1, (_width))) {                                       \
+                (void) __kefir_bigint_right_shift((_digits), 1, (_width));                                            \
+                (*(_exponent))++;                                                                                     \
+            }                                                                                                         \
+                                                                                                                      \
+        } else if (significant_digits != (_mant_dig)) {                                                               \
+            (void) __kefir_bigint_left_shift((_digits), (_mant_dig) - significant_digits, (_width));                  \
+        }                                                                                                             \
+                                                                                                                      \
+        (void) __kefir_bigint_get_unsigned_value((_digits), (_width), (_mantissa));                                   \
+    } while (0)
+
+static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                             __KEFIR_BIGINT_DIGIT_T *tmp,
                                                              __KEFIR_BIGINT_WIDTH_T width) {
     // Conversion algorithm is taken from
     // https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/floattisf.c#L24C23-L24C34
 
-    if (__kefir_bigint_is_zero(digits, width)) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
         return 0.0f;
     }
 
-    const __KEFIR_BIGINT_UNSIGNED_VALUE_T sign =
-        -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign(digits, width);
-    if (sign) {
-        (void) __kefir_bigint_negate(digits, width);
-    }
-
-    const __KEFIR_BIGINT_WIDTH_T significant_digits = __kefir_bigint_get_min_unsigned_width(digits, width);
-    __KEFIR_BIGINT_UNSIGNED_VALUE_T exponent = significant_digits - 1;
-    if (significant_digits > __KEFIR_BIGINT_FLT_MANT_DIG) {
-        switch (significant_digits) {
-            case __KEFIR_BIGINT_FLT_MANT_DIG + 1:
-                (void) __kefir_bigint_left_shift(digits, 1, width);
-                break;
-
-            case __KEFIR_BIGINT_FLT_MANT_DIG + 2:
-                // Intentionally left blank
-                break;
-
-            default:
-                (void) __kefir_bigint_set_signed_integer(tmp_digits, width, -1);
-                (void) __kefir_bigint_right_shift(tmp_digits,
-                                                  width + __KEFIR_BIGINT_FLT_MANT_DIG + 2 - significant_digits, width);
-                (void) __kefir_bigint_and(tmp_digits, digits, width);
-                (void) __kefir_bigint_set_unsigned_integer(tmp_digits, width,
-                                                           !__kefir_bigint_is_zero(tmp_digits, width));
-                (void) __kefir_bigint_right_shift(digits, significant_digits - (__KEFIR_BIGINT_FLT_MANT_DIG + 2),
-                                                  width);
-                (void) __kefir_bigint_or(digits, tmp_digits, width);
-                break;
-        }
-
-        __KEFIR_BIGINT_UNSIGNED_VALUE_T val;
-        (void) __kefir_bigint_get_unsigned_value(digits, width, &val);
-        (void) __kefir_bigint_set_unsigned_integer(tmp_digits, width, (val & 4) != 0);
-        (void) __kefir_bigint_or(digits, tmp_digits, width);
-        (void) __kefir_bigint_util_add_digit_zero_extended(digits, 1, width);
-        (void) __kefir_bigint_right_shift(digits, 2, width);
-
-        if (__kefir_bigint_get_bits(digits, __KEFIR_BIGINT_FLT_MANT_DIG, 1, width)) {
-            (void) __kefir_bigint_right_shift(digits, 1, width);
-            exponent++;
-        }
-
-    } else if (significant_digits != __KEFIR_BIGINT_FLT_MANT_DIG) {
-        (void) __kefir_bigint_left_shift(digits, __KEFIR_BIGINT_FLT_MANT_DIG - significant_digits, width);
-    }
-
-    __KEFIR_BIGINT_UNSIGNED_VALUE_T val;
-    (void) __kefir_bigint_get_unsigned_value(digits, width, &val);
-
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, &sign, &exponent,
+                                          &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_FLOAT_T f;
-    } conv = {.u = (sign & 0x80000000) | ((exponent + 127) << 23) | (val & 0x007fffff)};
+    } conv = {.u = (sign & 0x80000000) | ((exponent + 127) << 23) | (mantissa & 0x007fffff)};
     return conv.f;
 }
+
+#undef __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL
 
 #endif
