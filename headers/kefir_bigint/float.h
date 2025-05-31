@@ -119,6 +119,23 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DI
     return conv.f;
 }
 
+static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                                         __KEFIR_BIGINT_DIGIT_T *tmp,
+                                                                         __KEFIR_BIGINT_WIDTH_T width) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
+        return 0.0L;
+    }
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, &sign, &exponent,
+                                          &mantissa);
+    union {
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
+        __KEFIR_BIGINT_LONG_DOUBLE_T f;
+    } conv = {.u[0] = mantissa, .u[1] = (sign & 0x8000) | ((exponent + 16383) & 0x7fff)};
+    return conv.f;
+}
+
 #undef __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL
 
 #endif

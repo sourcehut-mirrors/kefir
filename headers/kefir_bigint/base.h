@@ -46,6 +46,10 @@
 #error "bigint_impl.h environment is missing __KEFIR_BIGINT_DBL_MANT_DIG definition"
 #endif
 
+#ifndef __KEFIR_BIGINT_LDBL_MANT_DIG
+#error "bigint_impl.h environment is missing __KEFIR_BIGINT_LDBL_MANT_DIG definition"
+#endif
+
 #ifndef __KEFIR_BIGINT_UCHAR_T
 #define __KEFIR_BIGINT_UCHAR_T unsigned char
 #endif
@@ -76,6 +80,10 @@
 
 #ifndef __KEFIR_BIGINT_DOUBLE_T
 #define __KEFIR_BIGINT_DOUBLE_T double
+#endif
+
+#ifndef __KEFIR_BIGINT_LONG_DOUBLE_T
+#define __KEFIR_BIGINT_LONG_DOUBLE_T long double
 #endif
 
 #define __KEFIR_BIGINT_VALUE_BIT (sizeof(__KEFIR_BIGINT_SIGNED_VALUE_T) * __KEFIR_BIGINT_CHAR_BIT)
