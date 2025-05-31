@@ -1085,3 +1085,48 @@ kefir_result_t kefir_bigint_signed_to_long_double(struct kefir_bigint *bigint, s
     *value_ptr = __kefir_bigint_signed_to_long_double(bigint->digits, tmp_bigint->digits, bigint->bitwidth);
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_bigint_unsigned_to_float(struct kefir_bigint *bigint, struct kefir_bigint *tmp_bigint,
+                                              kefir_float32_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to floating-point value"));
+    REQUIRE(bigint->bitwidth >= sizeof(kefir_float32_t) * CHAR_BIT,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided big integer is too narrow"));
+    REQUIRE(bigint->bitwidth == tmp_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    *value_ptr = __kefir_bigint_unsigned_to_float(bigint->digits, tmp_bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_to_double(struct kefir_bigint *bigint, struct kefir_bigint *tmp_bigint,
+                                               kefir_float64_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to floating-point value"));
+    REQUIRE(bigint->bitwidth >= sizeof(kefir_float64_t) * CHAR_BIT,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided big integer is too narrow"));
+    REQUIRE(bigint->bitwidth == tmp_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    *value_ptr = __kefir_bigint_unsigned_to_double(bigint->digits, tmp_bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_unsigned_to_long_double(struct kefir_bigint *bigint, struct kefir_bigint *tmp_bigint,
+                                                    kefir_long_double_t *value_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(value_ptr != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to floating-point value"));
+    REQUIRE(bigint->bitwidth >= sizeof(kefir_long_double_t) * CHAR_BIT,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Provided big integer is too narrow"));
+    REQUIRE(bigint->bitwidth == tmp_bigint->bitwidth,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
+
+    *value_ptr = __kefir_bigint_unsigned_to_long_double(bigint->digits, tmp_bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}

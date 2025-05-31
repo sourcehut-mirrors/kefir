@@ -176,8 +176,17 @@ static __KEFIR_BIGINT_UINT_T __kefir_bigint_signed_compare(const __KEFIR_BIGINT_
 static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
                                                              __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
-                                                             __KEFIR_BIGINT_WIDTH_T);
-static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
-                                                             __KEFIR_BIGINT_WIDTH_T);
+                                                               __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR_BIGINT_DIGIT_T *,
+                                                                         __KEFIR_BIGINT_DIGIT_T *,
+                                                                         __KEFIR_BIGINT_WIDTH_T);
+
+static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_unsigned_to_float(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
+                                                               __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_unsigned_to_double(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_DIGIT_T *,
+                                                                 __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEFIR_BIGINT_DIGIT_T *,
+                                                                           __KEFIR_BIGINT_DIGIT_T *,
+                                                                           __KEFIR_BIGINT_WIDTH_T);
 
 #endif

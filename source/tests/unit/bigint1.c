@@ -2225,6 +2225,143 @@ DEFINE_CASE(bigint_signed_to_long_double1, "BigInt - signed to long double conve
 }
 END_CASE
 
+DEFINE_CASE(bigint_unsigned_to_float1, "BigInt - unsigned to float conversion #1") {
+    struct kefir_bigint bigint, bigint2;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+    ASSERT_OK(kefir_bigint_init(&bigint2));
+
+#define ASSERT_CAST(_arg)                                                                                       \
+    do {                                                                                                        \
+        ASSERT_USTORE(&bigint, (_arg));                                                                         \
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &bigint,                                          \
+                                                    MAX(sizeof(kefir_float32_t) * CHAR_BIT, bigint.bitwidth))); \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));                             \
+                                                                                                                \
+        kefir_float32_t value;                                                                                  \
+        ASSERT_OK(kefir_bigint_unsigned_to_float(&bigint, &bigint2, &value));                                   \
+        ASSERT(fabs(value - (kefir_float32_t) (_arg)) < 1e-3);                                                  \
+    } while (0)
+
+    for (kefir_uint64_t i = 0; i < 4096; i++) {
+        ASSERT_CAST(i);
+    }
+
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT - 1; i++) {
+        ASSERT_CAST(1ull << i);
+        ASSERT_CAST(-(1ull << i));
+    }
+
+    ASSERT_CAST(KEFIR_UINT8_MAX);
+    ASSERT_CAST(KEFIR_UINT16_MAX);
+    ASSERT_CAST(KEFIR_UINT32_MAX);
+    ASSERT_CAST(KEFIR_UINT64_MAX);
+
+#undef ASSERT_CAST
+
+    kefir_float32_t value;
+    const char MAXIUM[] = "340282346638528859811704183484516925440";
+    ASSERT_OK(kefir_bigint_unsigned_parse10(&kft_mem, &bigint, MAXIUM, sizeof(MAXIUM)));
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_unsigned_to_float(&bigint, &bigint2, &value));
+    ASSERT(fabs(value - (kefir_float32_t) FLT_MAX) < 1e-3);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint2));
+}
+END_CASE
+
+DEFINE_CASE(bigint_unsigned_to_double1, "BigInt - unsigned to double conversion #1") {
+    struct kefir_bigint bigint, bigint2;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+    ASSERT_OK(kefir_bigint_init(&bigint2));
+
+#define ASSERT_CAST(_arg)                                                                                       \
+    do {                                                                                                        \
+        ASSERT_USTORE(&bigint, (_arg));                                                                         \
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &bigint,                                          \
+                                                    MAX(sizeof(kefir_float64_t) * CHAR_BIT, bigint.bitwidth))); \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));                             \
+                                                                                                                \
+        kefir_float64_t value;                                                                                  \
+        ASSERT_OK(kefir_bigint_unsigned_to_double(&bigint, &bigint2, &value));                                  \
+        ASSERT(fabs(value - (kefir_float64_t) (_arg)) < 1e-6);                                                  \
+    } while (0)
+
+    for (kefir_uint64_t i = 0; i < 4096; i++) {
+        ASSERT_CAST(i);
+    }
+
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT - 1; i++) {
+        ASSERT_CAST(1ull << i);
+        ASSERT_CAST(-(1ull << i));
+    }
+
+    ASSERT_CAST(KEFIR_UINT8_MAX);
+    ASSERT_CAST(KEFIR_UINT16_MAX);
+    ASSERT_CAST(KEFIR_UINT32_MAX);
+    ASSERT_CAST(KEFIR_UINT64_MAX);
+
+#undef ASSERT_CAST
+
+    kefir_float64_t value;
+    const char MAXIUM[] = "340282346638528859811704183484516925440";
+    ASSERT_OK(kefir_bigint_unsigned_parse10(&kft_mem, &bigint, MAXIUM, sizeof(MAXIUM)));
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_unsigned_to_double(&bigint, &bigint2, &value));
+    ASSERT(fabs(value - (kefir_float64_t) FLT_MAX) < 1e-6);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint2));
+}
+END_CASE
+
+DEFINE_CASE(bigint_unsigned_to_long_double1, "BigInt - unsigned to long double conversion #1") {
+    struct kefir_bigint bigint, bigint2;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+    ASSERT_OK(kefir_bigint_init(&bigint2));
+
+#define ASSERT_CAST(_arg)                                                                                           \
+    do {                                                                                                            \
+        ASSERT_USTORE(&bigint, (_arg));                                                                             \
+        ASSERT_OK(kefir_bigint_resize_cast_unsigned(&kft_mem, &bigint,                                              \
+                                                    MAX(sizeof(kefir_long_double_t) * CHAR_BIT, bigint.bitwidth))); \
+        ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));                                 \
+                                                                                                                    \
+        kefir_long_double_t value;                                                                                  \
+        ASSERT_OK(kefir_bigint_unsigned_to_long_double(&bigint, &bigint2, &value));                                 \
+        ASSERT(fabsl(value - (kefir_long_double_t) (_arg)) < 1e-8);                                                 \
+    } while (0)
+
+    for (kefir_uint64_t i = 0; i < 4096; i++) {
+        ASSERT_CAST(i);
+    }
+
+    for (kefir_size_t i = 0; i < sizeof(kefir_uint64_t) * CHAR_BIT - 1; i++) {
+        ASSERT_CAST(1ull << i);
+    }
+
+    ASSERT_CAST(KEFIR_UINT8_MAX);
+    ASSERT_CAST(KEFIR_UINT16_MAX);
+    ASSERT_CAST(KEFIR_UINT32_MAX);
+    ASSERT_CAST(KEFIR_UINT64_MAX);
+
+#undef ASSERT_CAST
+
+    kefir_long_double_t value;
+    const char MAXIUM[] = "340282346638528859811704183484516925440";
+    ASSERT_OK(kefir_bigint_unsigned_parse10(&kft_mem, &bigint, MAXIUM, sizeof(MAXIUM)));
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint2, bigint.bitwidth));
+    ASSERT_OK(kefir_bigint_unsigned_to_long_double(&bigint, &bigint2, &value));
+    ASSERT(fabsl(value - (kefir_long_double_t) FLT_MAX) < 1e-8);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint2));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD

@@ -32,16 +32,20 @@
 
 #include "kefir_bigint/base.h"
 
-#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _signed, _sign, _exponent, _mantissa)   \
+// Conversion algorithm is taken from
+// https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/floattisf.c#L24C23-L24C34
+
+#define __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(_digits, _tmp_digits, _width, _mant_dig, _signed, _sign, _exponent,     \
+                                              _mantissa)                                                              \
     do {                                                                                                              \
-        if ((_signed)) { \
-            *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                     \
-            if (sign) {                                                                                                   \
-                (void) __kefir_bigint_negate((_digits), (_width));                                                        \
-            }                                                                                                             \
-        } else { \
-            *(_sign) = 0; \
-        } \
+        if ((_signed)) {                                                                                              \
+            *(_sign) = -(__KEFIR_BIGINT_SIGNED_VALUE_T) __kefir_bigint_get_sign((_digits), (_width));                 \
+            if (sign) {                                                                                               \
+                (void) __kefir_bigint_negate((_digits), (_width));                                                    \
+            }                                                                                                         \
+        } else {                                                                                                      \
+            *(_sign) = 0;                                                                                             \
+        }                                                                                                             \
                                                                                                                       \
         const __KEFIR_BIGINT_WIDTH_T significant_digits = __kefir_bigint_get_min_unsigned_width((_digits), (_width)); \
         *(_exponent) = significant_digits - 1;                                                                        \
@@ -89,9 +93,6 @@
 static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGIT_T *signed_digits,
                                                              __KEFIR_BIGINT_DIGIT_T *tmp,
                                                              __KEFIR_BIGINT_WIDTH_T width) {
-    // Conversion algorithm is taken from
-    // https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/floattisf.c#L24C23-L24C34
-
     if (__kefir_bigint_is_zero(signed_digits, width)) {
         return 0.0f;
     }
@@ -132,6 +133,57 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR
 
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 1, &sign, &exponent,
+                                          &mantissa);
+    union {
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
+        __KEFIR_BIGINT_LONG_DOUBLE_T f;
+    } conv = {.u[0] = mantissa, .u[1] = (sign & 0x8000) | ((exponent + 16383) & 0x7fff)};
+    return conv.f;
+}
+
+static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_unsigned_to_float(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                               __KEFIR_BIGINT_DIGIT_T *tmp,
+                                                               __KEFIR_BIGINT_WIDTH_T width) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
+        return 0.0f;
+    }
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 0, &sign, &exponent,
+                                          &mantissa);
+    union {
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
+        __KEFIR_BIGINT_FLOAT_T f;
+    } conv = {.u = (sign & 0x80000000) | ((exponent + 127) << 23) | (mantissa & 0x007fffff)};
+    return conv.f;
+}
+
+static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_unsigned_to_double(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                                 __KEFIR_BIGINT_DIGIT_T *tmp,
+                                                                 __KEFIR_BIGINT_WIDTH_T width) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
+        return 0.0;
+    }
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 0, &sign, &exponent,
+                                          &mantissa);
+    union {
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
+        __KEFIR_BIGINT_DOUBLE_T f;
+    } conv = {.u = ((sign & 0x80000000) << 32) | ((exponent + 1023) << 52) | (mantissa & 0x000fffffffffffffull)};
+    return conv.f;
+}
+
+static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                                           __KEFIR_BIGINT_DIGIT_T *tmp,
+                                                                           __KEFIR_BIGINT_WIDTH_T width) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
+        return 0.0L;
+    }
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 0, &sign, &exponent,
                                           &mantissa);
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
