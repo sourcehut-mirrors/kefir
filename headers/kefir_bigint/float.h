@@ -102,6 +102,23 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGI
     return conv.f;
 }
 
+static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DIGIT_T *signed_digits,
+                                                               __KEFIR_BIGINT_DIGIT_T *tmp,
+                                                               __KEFIR_BIGINT_WIDTH_T width) {
+    if (__kefir_bigint_is_zero(signed_digits, width)) {
+        return 0.0;
+    }
+
+    __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
+    __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, &sign, &exponent,
+                                          &mantissa);
+    union {
+        __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
+        __KEFIR_BIGINT_DOUBLE_T f;
+    } conv = {.u = ((sign & 0x80000000) << 32) | ((exponent + 1023) << 52) | (mantissa & 0x000fffffffffffffull)};
+    return conv.f;
+}
+
 #undef __KEFIR_BIGINT_SIGNED_TO_IEEE754_IMPL
 
 #endif

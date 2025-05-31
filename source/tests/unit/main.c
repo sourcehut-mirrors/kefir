@@ -505,7 +505,8 @@
     _separator _case(bigint_hexdecimal_format1)                                              \
     _separator _case(bigint_octal_format1)                                                   \
     _separator _case(bigint_binary_format1)                                                  \
-    _separator _case(bigint_signed_to_float1)
+    _separator _case(bigint_signed_to_float1)                                                \
+    _separator _case(bigint_signed_to_double1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id
