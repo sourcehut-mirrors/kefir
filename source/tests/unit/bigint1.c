@@ -2413,7 +2413,7 @@ DEFINE_CASE(bigint_float_to_signed1, "BigInt - float to signed conversion #1") {
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_signed_from_float(&bigint, FLT_MAX));
-    ASSERT_LOAD(&bigint, KEFIR_INT64_MAX);
+    ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
     ASSERT_OK(kefir_bigint_signed_from_float(&bigint, -FLT_MAX));
     ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
 
@@ -2478,7 +2478,7 @@ DEFINE_CASE(bigint_double_to_signed1, "BigInt - double to signed conversion #1")
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_signed_from_double(&bigint, FLT_MAX));
-    ASSERT_LOAD(&bigint, KEFIR_INT64_MAX);
+    ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
     ASSERT_OK(kefir_bigint_signed_from_double(&bigint, -FLT_MAX));
     ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
 
@@ -2547,7 +2547,7 @@ DEFINE_CASE(bigint_long_double_to_signed1, "BigInt - long double to signed conve
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_signed_from_long_double(&bigint, FLT_MAX));
-    ASSERT_LOAD(&bigint, KEFIR_INT64_MAX);
+    ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
     ASSERT_OK(kefir_bigint_signed_from_long_double(&bigint, -FLT_MAX));
     ASSERT_LOAD(&bigint, KEFIR_INT64_MIN);
 
@@ -2601,9 +2601,9 @@ DEFINE_CASE(bigint_float_to_unsigned1, "BigInt - float to unsigned conversion #1
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_unsigned_from_float(&bigint, FLT_MAX));
-    ASSERT_ULOAD(&bigint, KEFIR_UINT64_MAX);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) 0ull);
     ASSERT_OK(kefir_bigint_unsigned_from_float(&bigint, -FLT_MAX));
-    ASSERT_ULOAD(&bigint, 0);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) KEFIR_INT64_MIN);
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 1024));
     ASSERT_OK(kefir_bigint_unsigned_from_float(&bigint, FLT_MAX));
@@ -2657,9 +2657,9 @@ DEFINE_CASE(bigint_double_to_unsigned1, "BigInt - double to unsigned conversion 
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, FLT_MAX));
-    ASSERT_ULOAD(&bigint, KEFIR_UINT64_MAX);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) 0ull);
     ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, -FLT_MAX));
-    ASSERT_ULOAD(&bigint, 0);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) KEFIR_INT64_MIN);
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 1024));
     ASSERT_OK(kefir_bigint_unsigned_from_double(&bigint, FLT_MAX));
@@ -2716,9 +2716,9 @@ DEFINE_CASE(bigint_long_double_to_unsigned1, "BigInt - long double to unsigned c
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, sizeof(kefir_int64_t) * CHAR_BIT));
     ASSERT_OK(kefir_bigint_unsigned_from_long_double(&bigint, FLT_MAX));
-    ASSERT_ULOAD(&bigint, KEFIR_UINT64_MAX);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) 0);
     ASSERT_OK(kefir_bigint_unsigned_from_long_double(&bigint, -FLT_MAX));
-    ASSERT_ULOAD(&bigint, 0);
+    ASSERT_ULOAD(&bigint, (kefir_uint64_t) KEFIR_INT64_MIN);
 
     ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 1024));
     ASSERT_OK(kefir_bigint_unsigned_from_long_double(&bigint, FLT_MAX));

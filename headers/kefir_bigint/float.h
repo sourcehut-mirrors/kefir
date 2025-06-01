@@ -193,8 +193,10 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
 
 #undef __KEFIR_BIGINT_TO_IEEE754_IMPL
 
-// Conversion algorithm is taken from
+// Conversion algorithms are taken from
 // https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/fp_fixint_impl.inc#L16
+// https://github.com/llvm-mirror/compiler-rt/blob/69445f095c22aac2388f939bedebf224a6efcdaf/lib/builtins/fp_fixuint_impl.inc#L16
+// and updated to match cvts*2si instruction behavior instead of saturation
 
 #define __KEFIR_BIGINT_SIGNED_FROM_IEEE754_IMPL(_digits, _width, _sign, _exponent, _mantissa, _mantissa_width) \
     do {                                                                                                       \
@@ -204,14 +206,8 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
         }                                                                                                      \
                                                                                                                \
         if ((__KEFIR_BIGINT_UNSIGNED_VALUE_T) (_exponent) >= (_width)) {                                       \
-            if (!sign) {                                                                                       \
-                (void) __kefir_bigint_zero((_digits), (_width));                                               \
-                (void) __kefir_bigint_invert((_digits), (_width));                                             \
-                (void) __kefir_bigint_right_shift((_digits), 1, (_width));                                     \
-            } else {                                                                                           \
-                (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), 1);                            \
-                (void) __kefir_bigint_left_shift((_digits), (_width) - 1, (_width));                           \
-            }                                                                                                  \
+            (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), 1);                                \
+            (void) __kefir_bigint_left_shift((_digits), (_width) - 1, (_width));                               \
             return __KEFIR_BIGINT_OK;                                                                          \
         }                                                                                                      \
                                                                                                                \
@@ -230,14 +226,18 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
 
 #define __KEFIR_BIGINT_UNSIGNED_FROM_IEEE754_IMPL(_digits, _width, _sign, _exponent, _mantissa, _mantissa_width) \
     do {                                                                                                         \
-        if ((_sign) || (_exponent) < 0) {                                                                        \
+        if ((_exponent) < 0) {                                                                                   \
             (void) __kefir_bigint_zero((_digits), (_width));                                                     \
             return __KEFIR_BIGINT_OK;                                                                            \
         }                                                                                                        \
                                                                                                                  \
         if ((__KEFIR_BIGINT_UNSIGNED_VALUE_T) (_exponent) >= (_width)) {                                         \
-            (void) __kefir_bigint_zero((_digits), (_width));                                                     \
-            (void) __kefir_bigint_invert((_digits), (_width));                                                   \
+            if ((_sign)) {                                                                                       \
+                (void) __kefir_bigint_set_unsigned_integer((_digits), (_width), 1);                              \
+                (void) __kefir_bigint_left_shift((_digits), (_width) - 1, (_width));                             \
+            } else {                                                                                             \
+                (void) __kefir_bigint_zero((_digits), (_width));                                                 \
+            }                                                                                                    \
             return __KEFIR_BIGINT_OK;                                                                            \
         }                                                                                                        \
                                                                                                                  \
