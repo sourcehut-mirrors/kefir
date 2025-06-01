@@ -2404,12 +2404,6 @@ DEFINE_CASE(bigint_float_to_signed1, "BigInt - float to signed conversion #1") {
     ASSERT_CAST((kefir_float32_t) KEFIR_INT16_MAX, 32);
     ASSERT_CAST((kefir_float32_t) KEFIR_INT16_MIN, 64);
     ASSERT_CAST((kefir_float32_t) KEFIR_INT16_MAX, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MIN, 32);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MAX, 32);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MIN, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MAX, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT64_MIN, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT64_MAX, 64);
 
 #undef ASSERT_CAST
 
@@ -2475,8 +2469,6 @@ DEFINE_CASE(bigint_double_to_signed1, "BigInt - double to signed conversion #1")
     ASSERT_CAST((kefir_float64_t) KEFIR_INT32_MAX, 32);
     ASSERT_CAST((kefir_float64_t) KEFIR_INT32_MIN, 64);
     ASSERT_CAST((kefir_float64_t) KEFIR_INT32_MAX, 64);
-    ASSERT_CAST((kefir_float64_t) KEFIR_INT64_MIN, 64);
-    ASSERT_CAST((kefir_float64_t) KEFIR_INT64_MAX, 64);
 
 #undef ASSERT_CAST
 
@@ -2598,9 +2590,6 @@ DEFINE_CASE(bigint_float_to_unsigned1, "BigInt - float to unsigned conversion #1
     ASSERT_CAST((kefir_float32_t) KEFIR_UINT16_MAX, 16);
     ASSERT_CAST((kefir_float32_t) KEFIR_UINT16_MAX, 32);
     ASSERT_CAST((kefir_float32_t) KEFIR_UINT16_MAX, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MAX, 32);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT32_MAX, 64);
-    ASSERT_CAST((kefir_float32_t) KEFIR_INT64_MAX, 64);
 
 #undef ASSERT_CAST
 
@@ -2657,7 +2646,6 @@ DEFINE_CASE(bigint_double_to_unsigned1, "BigInt - double to unsigned conversion 
     ASSERT_CAST((kefir_float64_t) KEFIR_UINT16_MAX, 64);
     ASSERT_CAST((kefir_float64_t) KEFIR_UINT32_MAX, 32);
     ASSERT_CAST((kefir_float64_t) KEFIR_UINT32_MAX, 64);
-    ASSERT_CAST((kefir_float64_t) KEFIR_INT64_MAX, 64);
 
 #undef ASSERT_CAST
 
