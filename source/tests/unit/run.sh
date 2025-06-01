@@ -20,6 +20,7 @@
 VALGRIND="valgrind $VALGRIND_TEST_OPTIONS"
 
 if [[ "x$USE_VALGRIND" == "xyes" ]]; then
+    export KEFIR_DISABLE_LONG_DOUBLE=1
     exec $VALGRIND "$1"
 else
     exec "$1"

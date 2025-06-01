@@ -2196,8 +2196,10 @@ DEFINE_CASE(bigint_signed_to_long_double1, "BigInt - signed to long double conve
     ASSERT_CAST(KEFIR_INT16_MAX);
     ASSERT_CAST(KEFIR_INT32_MIN);
     ASSERT_CAST(KEFIR_INT32_MAX);
-    ASSERT_CAST(KEFIR_INT64_MIN);
-    ASSERT_CAST(KEFIR_INT64_MAX);
+    if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
+        ASSERT_CAST(KEFIR_INT64_MIN);
+        ASSERT_CAST(KEFIR_INT64_MAX);
+    }
 
 #undef ASSERT_CAST
 
@@ -2346,7 +2348,9 @@ DEFINE_CASE(bigint_unsigned_to_long_double1, "BigInt - unsigned to long double c
     ASSERT_CAST(KEFIR_UINT8_MAX);
     ASSERT_CAST(KEFIR_UINT16_MAX);
     ASSERT_CAST(KEFIR_UINT32_MAX);
-    ASSERT_CAST(KEFIR_UINT64_MAX);
+    if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
+        ASSERT_CAST(KEFIR_UINT64_MAX);
+    }
 
 #undef ASSERT_CAST
 
@@ -2534,8 +2538,10 @@ DEFINE_CASE(bigint_long_double_to_signed1, "BigInt - long double to signed conve
     ASSERT_CAST((kefir_long_double_t) KEFIR_INT32_MAX, 32);
     ASSERT_CAST((kefir_long_double_t) KEFIR_INT32_MIN, 64);
     ASSERT_CAST((kefir_long_double_t) KEFIR_INT32_MAX, 64);
-    ASSERT_CAST((kefir_long_double_t) KEFIR_INT64_MIN, 64);
-    ASSERT_CAST((kefir_long_double_t) KEFIR_INT64_MAX, 64);
+    if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
+        ASSERT_CAST((kefir_long_double_t) KEFIR_INT64_MIN, 64);
+        ASSERT_CAST((kefir_long_double_t) KEFIR_INT64_MAX, 64);
+    }
 
 #undef ASSERT_CAST
 
@@ -2702,7 +2708,9 @@ DEFINE_CASE(bigint_long_double_to_unsigned1, "BigInt - long double to unsigned c
     ASSERT_CAST((kefir_long_double_t) KEFIR_UINT16_MAX, 64);
     ASSERT_CAST((kefir_long_double_t) KEFIR_UINT32_MAX, 32);
     ASSERT_CAST((kefir_long_double_t) KEFIR_UINT32_MAX, 64);
-    ASSERT_CAST((kefir_long_double_t) KEFIR_UINT64_MAX, 64);
+    if (getenv(KEFIR_DISABLE_LONG_DOUBLE_FLAG) == NULL) {
+        ASSERT_CAST((kefir_long_double_t) KEFIR_UINT64_MAX, 64);
+    }
 
 #undef ASSERT_CAST
 
