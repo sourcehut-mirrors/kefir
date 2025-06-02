@@ -88,8 +88,9 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
             } else if (type->bitprecise.width <= 64) {
                 typeentry->typecode = KEFIR_IR_TYPE_INT64;
             } else {
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Bit precise integers wider than 64 bits are not implemented yet");
+                // return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                //                        "Bit precise integers wider than 64 bits are not implemented yet");
+                typeentry->typecode = KEFIR_IR_TYPE_INT64;
             }
             break;
 
