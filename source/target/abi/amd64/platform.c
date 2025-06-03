@@ -23,6 +23,7 @@
 #include "kefir/target/abi/amd64/system-v/qwords.h"
 #include "kefir/target/abi/amd64/system-v/type_layout.h"
 #include "kefir/target/abi/amd64/bitfields.h"
+#include "kefir/target/abi/amd64/base.h"
 #include "kefir/ir/platform.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -101,6 +102,31 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR bitfield allocator"));
 
     REQUIRE_OK(kefir_abi_amd64_bitfield_allocator(mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, type, allocator));
+    return KEFIR_OK;
+}
+
+static kefir_result_t amd64_sysv_bitprecise_type(struct kefir_mem *mem, const struct kefir_ir_target_platform *platform,
+                                                 kefir_size_t width, struct kefir_ir_typeentry *typeentry) {
+    UNUSED(platform);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR typeentry"));
+
+    typeentry->typecode = KEFIR_IR_TYPE_BITS;
+    typeentry->param = (width + KEFIR_AMD64_ABI_QWORD - 1) / KEFIR_AMD64_ABI_QWORD * KEFIR_AMD64_ABI_QWORD;
+    if (width <= KEFIR_AMD64_ABI_QWORD) {
+        typeentry->param = KEFIR_AMD64_ABI_QWORD;
+        typeentry->alignment = 1;
+    } else if (width <= 2 * KEFIR_AMD64_ABI_QWORD) {
+        typeentry->param = 2 * KEFIR_AMD64_ABI_QWORD;
+        typeentry->alignment = 2;
+    } else if (width <= 4 * KEFIR_AMD64_ABI_QWORD) {
+        typeentry->param = 4 * KEFIR_AMD64_ABI_QWORD;
+        typeentry->alignment = 4;
+    } else {
+        typeentry->param =
+            (width + 8 * KEFIR_AMD64_ABI_QWORD - 1) / (8 * KEFIR_AMD64_ABI_QWORD) * (8 * KEFIR_AMD64_ABI_QWORD);
+        typeentry->alignment = KEFIR_AMD64_ABI_QWORD;
+    }
     return KEFIR_OK;
 }
 
@@ -206,18 +232,18 @@ static kefir_result_t amd64_sysv_free(struct kefir_mem *mem, struct kefir_ir_tar
     return KEFIR_OK;
 }
 
-
 static const struct kefir_data_model_descriptor AMD64_SYSV_DATA_MODEL_DESCRIPTOR = {
     .model = KEFIR_DATA_MODEL_LP64,
     .byte_order = KEFIR_BYTE_ORDER_LITTLE_ENDIAN,
-    .scalar_width = {.bool_bits = 8, .char_bits = 8,
-                        .short_bits = 16,
-                        .int_bits = 32,
-                        .long_bits = 64,
-                        .long_long_bits = 64,
-                        .float_bits = 32,
-                        .double_bits = 64,
-                        .long_double_bits = 128}};
+    .scalar_width = {.bool_bits = 8,
+                     .char_bits = 8,
+                     .short_bits = 16,
+                     .int_bits = 32,
+                     .long_bits = 64,
+                     .long_long_bits = 64,
+                     .float_bits = 32,
+                     .double_bits = 64,
+                     .long_double_bits = 128}};
 
 kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant,
                                                struct kefir_ir_target_platform *platform) {
@@ -231,6 +257,7 @@ kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant
             platform->free_type = amd64_sysv_free_type;
             platform->typeentry_info = amd64_sysv_typeentry_info;
             platform->bitfield_allocator = amd64_sysv_bitfield_allocator;
+            platform->bitprecise_type = amd64_sysv_bitprecise_type;
             platform->decode_inline_assembly_constraints = amd64_sysv_decode_inline_assembly_constraints;
             platform->free = amd64_sysv_free;
             platform->payload = NULL;

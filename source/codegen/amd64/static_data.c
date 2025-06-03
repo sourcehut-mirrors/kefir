@@ -191,8 +191,14 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             for (kefir_size_t i = 0; i < bytes; i++) {
                 const kefir_size_t qword_container_idx = i / sizeof(kefir_uint64_t);
                 const kefir_size_t qword_offset = i % sizeof(kefir_uint64_t);
-                kefir_uint64_t qword_container =
-                    qword_container_idx < entry->value.bits.length ? entry->value.bits.bits[qword_container_idx] : 0;
+                kefir_uint64_t qword_container;
+                if (entry->type == KEFIR_IR_DATA_VALUE_BITS) {
+                    qword_container = qword_container_idx < entry->value.bits.length
+                                          ? entry->value.bits.bits[qword_container_idx]
+                                          : 0;
+                } else {
+                    qword_container = qword_container_idx == 0 ? value : 0;
+                }
                 REQUIRE_OK(
                     KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
                                              kefir_asm_amd64_xasmgen_operand_immu(
