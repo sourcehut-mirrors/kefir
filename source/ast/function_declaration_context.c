@@ -405,6 +405,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = parent->symbols;
     context->context.type_bundle = parent->type_bundle;
+    context->context.bigint_pool = parent->bigint_pool;
     context->context.type_traits = parent->type_traits;
     context->context.target_env = parent->target_env;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_FUNCTION_PARAMETER;

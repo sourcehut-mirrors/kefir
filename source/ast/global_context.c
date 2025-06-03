@@ -331,6 +331,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE_OK(kefir_string_pool_init(&context->symbols));
     REQUIRE_OK(kefir_ast_type_bundle_init(&context->type_bundle, &context->symbols));
+    REQUIRE_OK(kefir_bigint_pool_init(&context->bigint_pool));
     context->type_traits = type_traits;
     context->target_env = target_env;
     context->temporary_ids.next_id = 0;
@@ -371,6 +372,7 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = &context->symbols;
     context->context.type_bundle = &context->type_bundle;
+    context->context.bigint_pool = &context->bigint_pool;
     context->context.type_traits = context->type_traits;
     context->context.target_env = context->target_env;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;
@@ -407,6 +409,7 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->function_identifiers));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->object_identifiers));
     REQUIRE_OK(kefir_list_free(mem, &context->function_decl_contexts));
+    REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
     REQUIRE_OK(kefir_string_pool_free(mem, &context->symbols));
     return KEFIR_OK;

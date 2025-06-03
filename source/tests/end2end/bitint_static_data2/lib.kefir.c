@@ -18,9 +18,11 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
-
-extern int sizes[], alignments[];
-
-#endif
+_BitInt(2) a = -1;
+_BitInt(4) b = -2;
+_BitInt(10) c = -300;
+_BitInt(15) d = -500;
+_BitInt(24) e = -400;
+_BitInt(33) f = -300;
+_BitInt(69) g = -200;
+_BitInt(1020) h = -100;

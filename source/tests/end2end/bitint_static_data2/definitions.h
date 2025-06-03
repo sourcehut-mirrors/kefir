@@ -21,6 +21,4 @@
 #ifndef DEFINITIONS_H_
 #define DEFINITIONS_H_
 
-extern int sizes[], alignments[];
-
 #endif

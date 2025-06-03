@@ -1178,3 +1178,53 @@ kefir_result_t kefir_bigint_unsigned_from_long_double(struct kefir_bigint *bigin
     UNUSED(res);
     return KEFIR_OK;
 }
+
+static kefir_result_t bigint_pool_entry_free(struct kefir_mem *mem, struct kefir_list *list,
+                                             struct kefir_list_entry *entry, void *payload) {
+    UNUSED(list);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bigint pool entry"));
+    REQUIRE(entry->value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bigint pool entry"));
+
+    ASSIGN_DECL_CAST(struct kefir_bigint *, bigint, entry->value);
+    REQUIRE_OK(kefir_bigint_free(mem, bigint));
+    KEFIR_FREE(mem, bigint);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_pool_init(struct kefir_bigint_pool *pool) {
+    REQUIRE(pool != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to big integer pool"));
+
+    REQUIRE_OK(kefir_list_init(&pool->bigints));
+    REQUIRE_OK(kefir_list_on_remove(&pool->bigints, bigint_pool_entry_free, NULL));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_pool_free(struct kefir_mem *mem, struct kefir_bigint_pool *pool) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(pool != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer pool"));
+
+    REQUIRE_OK(kefir_list_free(mem, &pool->bigints));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_pool_alloc(struct kefir_mem *mem, struct kefir_bigint_pool *pool,
+                                       struct kefir_bigint **bigint_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(pool != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer pool"));
+    REQUIRE(bigint_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to big integer"));
+
+    struct kefir_bigint *bigint = KEFIR_MALLOC(mem, sizeof(struct kefir_bigint));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate a big integer"));
+
+    kefir_result_t res = kefir_bigint_init(bigint);
+    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &pool->bigints, kefir_list_tail(&pool->bigints), bigint));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, bigint);
+        return res;
+    });
+
+    *bigint_ptr = bigint;
+    return KEFIR_OK;
+}

@@ -88,6 +88,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
         node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
         KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location, "Expected constant expression AST node"));
 
+    memset(value, 0, sizeof(struct kefir_ast_constant_expression_value));
     struct eval_param param = {.mem = mem, .context = context, .value = value};
     struct kefir_ast_visitor visitor;
     REQUIRE_OK(kefir_ast_visitor_init(&visitor, visit_non_constant_expression));

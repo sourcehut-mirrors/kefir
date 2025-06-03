@@ -31,6 +31,7 @@
 #include "kefir/ast/initializer.h"
 #include "kefir/ast/constants.h"
 #include "kefir/ast/declarator.h"
+#include "kefir/util/bigint.h"
 
 typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
 
@@ -110,6 +111,7 @@ typedef struct kefir_ast_context {
     struct kefir_string_pool *symbols;
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle *type_bundle;
+    struct kefir_bigint_pool *bigint_pool;
     const struct kefir_ast_target_environment *target_env;
     kefir_ast_type_analysis_context_t type_analysis_context;
     struct kefir_ast_flow_control_tree *flow_control_tree;

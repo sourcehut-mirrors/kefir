@@ -235,7 +235,14 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_LONG:
                 case KEFIR_IR_TYPE_WORD:
                 case KEFIR_IR_TYPE_BITS:
-                    if (resolved_layout->bitfield) {
+                    if (value.bitprecise != NULL) {
+                        for (kefir_size_t i = 0; i < value.bitprecise->bitwidth; i += sizeof(kefir_uint64_t)) {
+                            const kefir_size_t width = MIN(value.bitprecise->bitwidth - i, sizeof(kefir_uint64_t));
+                            kefir_uint64_t part;
+                            REQUIRE_OK(kefir_bigint_get_bits(value.bitprecise, i, width, &part));
+                            REQUIRE_OK(kefir_ir_data_set_bitfield(param->mem, param->data, slot, part, i, width));
+                        }
+                    } else if (resolved_layout->bitfield) {
                         REQUIRE_OK(kefir_ir_data_set_bitfield(param->mem, param->data, slot, value.integer,
                                                               resolved_layout->bitfield_props.offset,
                                                               resolved_layout->bitfield_props.width));

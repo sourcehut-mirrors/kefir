@@ -92,19 +92,19 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_AST_BITPRECISE_CONSTANT:
-            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
-            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
-            //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             REQUIRE_OK(kefir_bigint_get_signed(&node->value.bitprecise, &value->integer));
+
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.bitprecise));
             break;
 
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT:
-            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_ast_constant_expression_int_t) * CHAR_BIT,
-            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
-            //     implemented yet"));
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             REQUIRE_OK(kefir_bigint_get_unsigned(&node->value.bitprecise, &value->uinteger));
+
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+            REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, &node->value.bitprecise));
             break;
 
         case KEFIR_AST_FLOAT_CONSTANT:

@@ -23,6 +23,8 @@
 #include <assert.h>
 #include "./definitions.h"
 
+extern unsigned char a, b, c, d, e, f, g, h, i, j, k;
+
 int main(void) {
     assert(a == 1);
     assert(b == 1);

@@ -70,6 +70,7 @@ typedef struct kefir_ast_constant_expression_value {
         kefir_ast_constant_expression_int_t integer;
         kefir_ast_constant_expression_uint_t uinteger;
     };
+    struct kefir_bigint *bitprecise;
     kefir_ast_constant_expression_float_t floating_point;
     struct {
         kefir_ast_constant_expression_float_t real;

@@ -1,0 +1,209 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global f
+.type f, @object
+.global g
+.type g, @object
+.global h
+.type h, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+a:
+    .byte 3
+
+b:
+    .byte 14
+
+    .align 2
+c:
+    .byte 212
+    .byte 2
+
+    .align 2
+d:
+    .byte 12
+    .byte 126
+
+    .align 4
+e:
+    .byte 112
+    .byte 254
+    .byte 255
+    .byte 0
+
+    .align 8
+f:
+    .byte 212
+    .byte 254
+    .byte 255
+    .byte 255
+    .byte 1
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+g:
+    .byte 56
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 31
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+h:
+    .byte 156
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 15
+

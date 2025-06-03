@@ -27,6 +27,7 @@ static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kef
                                          const struct kefir_ast_type *type,
                                          struct kefir_ast_constant_expression_value *value,
                                          kefir_ast_constant_expression_int_t source,
+                                         const struct kefir_bigint *source_bitprecise,
                                          const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
@@ -64,6 +65,17 @@ static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kef
                 value->integer = source;
                 break;
         }
+
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+            if (source_bitprecise) {
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise));
+                REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, value->bitprecise, type->bitprecise.width));
+            } else {
+                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, type->bitprecise.width));
+                REQUIRE_OK(kefir_bigint_set_signed_value(value->bitprecise, value->integer));
+            }
+        }
     } else {
         switch (type_info.size) {
             case 1:
@@ -83,6 +95,17 @@ static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kef
                 value->uinteger = source;
                 break;
         }
+
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(type)) {
+            REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+            if (source_bitprecise) {
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, source_bitprecise));
+                REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, type->bitprecise.width));
+            } else {
+                REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, type->bitprecise.width));
+                REQUIRE_OK(kefir_bigint_set_unsigned_value(value->bitprecise, value->uinteger));
+            }
+        }
     }
     return KEFIR_OK;
 }
@@ -101,6 +124,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid base AST node"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination AST type"));
 
+    memset(value, 0, sizeof(struct kefir_ast_constant_expression_value));
     const struct kefir_ast_type *unqualified = kefir_ast_unqualified_type(type);
     if (unqualified->tag == KEFIR_AST_TYPE_VOID) {
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE;
@@ -108,8 +132,8 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
         switch (source->klass) {
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-                REQUIRE_OK(
-                    cast_integral_type(mem, context, unqualified, value, source->integer, &node->source_location));
+                REQUIRE_OK(cast_integral_type(mem, context, unqualified, value, source->integer, source->bitprecise,
+                                              &node->source_location));
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
@@ -117,7 +141,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     value->integer = (bool) source->floating_point;
                 } else {
                     REQUIRE_OK(cast_integral_type(mem, context, unqualified, value,
-                                                  (kefir_ast_constant_expression_int_t) source->floating_point,
+                                                  (kefir_ast_constant_expression_int_t) source->floating_point, NULL,
                                                   &node->source_location));
                 }
                 break;
@@ -129,7 +153,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     REQUIRE_OK(
                         cast_integral_type(mem, context, unqualified, value,
                                            (kefir_ast_constant_expression_int_t) source->complex_floating_point.real,
-                                           &node->source_location));
+                                           NULL, &node->source_location));
                 }
                 break;
 

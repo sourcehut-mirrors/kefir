@@ -32,6 +32,7 @@ typedef struct kefir_ast_global_context {
     struct kefir_string_pool symbols;
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle type_bundle;
+    struct kefir_bigint_pool bigint_pool;
     const struct kefir_ast_target_environment *target_env;
     struct kefir_list function_decl_contexts;
 

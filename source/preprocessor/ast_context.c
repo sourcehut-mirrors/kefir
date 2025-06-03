@@ -186,8 +186,10 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.symbols = symbols;
     context->context.type_traits = type_traits;
     REQUIRE_OK(kefir_ast_type_bundle_init(&context->type_bundle, symbols));
+    REQUIRE_OK(kefir_bigint_pool_init(&context->bigint_pool));
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
     context->context.type_bundle = &context->type_bundle;
+    context->context.bigint_pool = &context->bigint_pool;
     context->context.target_env = target_env;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;
     context->context.flow_control_tree = NULL;
@@ -217,6 +219,7 @@ kefir_result_t kefir_preprocessor_ast_context_free(struct kefir_mem *mem,
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
     *context = (struct kefir_preprocessor_ast_context) {0};
     return KEFIR_OK;

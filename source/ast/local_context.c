@@ -481,6 +481,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = &context->global->symbols;
     context->context.type_bundle = &context->global->type_bundle;
+    context->context.bigint_pool = &context->global->bigint_pool;
     context->context.type_traits = context->global->type_traits;
     context->context.target_env = context->global->target_env;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;

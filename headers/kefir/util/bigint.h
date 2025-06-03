@@ -23,6 +23,7 @@
 
 #include "kefir/core/basic-types.h"
 #include "kefir/core/mem.h"
+#include "kefir/core/list.h"
 
 typedef struct kefir_bigint {
     kefir_uint8_t *digits;
@@ -123,5 +124,14 @@ kefir_result_t kefir_bigint_signed_from_long_double(struct kefir_bigint *, kefir
 kefir_result_t kefir_bigint_unsigned_from_float(struct kefir_bigint *, kefir_float32_t);
 kefir_result_t kefir_bigint_unsigned_from_double(struct kefir_bigint *, kefir_float64_t);
 kefir_result_t kefir_bigint_unsigned_from_long_double(struct kefir_bigint *, kefir_long_double_t);
+
+typedef struct kefir_bigint_pool {
+    struct kefir_list bigints;
+} kefir_bigint_pool_t;
+
+kefir_result_t kefir_bigint_pool_init(struct kefir_bigint_pool *);
+kefir_result_t kefir_bigint_pool_free(struct kefir_mem *, struct kefir_bigint_pool *);
+
+kefir_result_t kefir_bigint_pool_alloc(struct kefir_mem *, struct kefir_bigint_pool *, struct kefir_bigint **);
 
 #endif
