@@ -91,7 +91,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *, cons
                                                         struct kefir_ast_constant_expression_value *,
                                                         const struct kefir_ast_constant_expression_value *,
                                                         const struct kefir_ast_node_base *,
-                                                        const struct kefir_ast_type *);
+                                                        const struct kefir_ast_type *, const struct kefir_ast_type *);
 
 kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *,
                                                               kefir_bool_t *);

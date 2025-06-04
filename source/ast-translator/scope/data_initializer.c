@@ -213,9 +213,9 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expression),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expression->source_location,
                                    "Unable to evaluate constant expression"));
-    REQUIRE_OK(kefir_ast_constant_expression_value_cast(param->mem, param->context, &value,
-                                                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression),
-                                                        expression, resolved_layout->type));
+    REQUIRE_OK(kefir_ast_constant_expression_value_cast(
+        param->mem, param->context, &value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression), expression,
+        resolved_layout->type, expression->properties.type));
     struct kefir_ir_typeentry *target_typeentry = kefir_ir_type_at(param->type, resolved_layout->value);
     REQUIRE(target_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain target IR type entry"));
     switch (value.klass) {
