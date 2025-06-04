@@ -51,6 +51,7 @@ kefir_result_t kefir_bigint_set_unsigned_value(struct kefir_bigint *, kefir_uint
 kefir_result_t kefir_bigint_get_signed(const struct kefir_bigint *, kefir_int64_t *);
 kefir_result_t kefir_bigint_get_unsigned(const struct kefir_bigint *, kefir_uint64_t *);
 kefir_result_t kefir_bigint_get_bits(const struct kefir_bigint *, kefir_size_t, kefir_size_t, kefir_uint64_t *);
+kefir_result_t kefir_bigint_is_zero(const struct kefir_bigint *, kefir_bool_t *);
 
 kefir_result_t kefir_bigint_cast_signed(struct kefir_bigint *, kefir_size_t, kefir_size_t);
 kefir_result_t kefir_bigint_cast_unsigned(struct kefir_bigint *, kefir_size_t, kefir_size_t);

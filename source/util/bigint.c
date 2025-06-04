@@ -200,6 +200,14 @@ kefir_result_t kefir_bigint_get_bits(const struct kefir_bigint *bigint, kefir_si
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_is_zero(const struct kefir_bigint *bigint, kefir_bool_t *is_zero_ptr) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(is_zero_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *is_zero_ptr = __kefir_bigint_is_zero(bigint->digits, (__KEFIR_BIGINT_WIDTH_T) bigint->bitwidth);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_bigint_cast_signed(struct kefir_bigint *bigint, kefir_size_t from_width, kefir_size_t to_width) {
     REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(from_width <= bigint->bitwidth,

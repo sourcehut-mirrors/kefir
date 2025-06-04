@@ -93,6 +93,7 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
                 value->integer = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->integer;
+                value->bitprecise = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise;
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT;
@@ -158,11 +159,27 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
                 if (type_signed_integer) {
-                    APPLY_UNARY_SIGNED_OP(type_info.size, value, -,
-                                          KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_copy_resize(
+                            mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
+                        REQUIRE_OK(kefir_bigint_negate(value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
+                    } else {
+                        APPLY_UNARY_SIGNED_OP(type_info.size, value, -,
+                                              KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    }
                 } else {
-                    APPLY_UNARY_UNSIGNED_OP(type_info.size, value, -,
-                                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_copy_resize(
+                            mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
+                        REQUIRE_OK(kefir_bigint_negate(value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+                    } else {
+                        APPLY_UNARY_UNSIGNED_OP(type_info.size, value, -,
+                                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    }
                 }
             } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg,
                                                                 KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT)) {
@@ -187,11 +204,27 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
                 REQUIRE_OK(
                     get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
                 if (type_signed_integer) {
-                    APPLY_UNARY_SIGNED_OP(type_info.size, value, ~,
-                                          KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_copy_resize(
+                            mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
+                        REQUIRE_OK(kefir_bigint_invert(value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
+                    } else {
+                        APPLY_UNARY_SIGNED_OP(type_info.size, value, ~,
+                                              KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    }
                 } else {
-                    APPLY_UNARY_UNSIGNED_OP(type_info.size, value, ~,
-                                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->base.properties.type)) {
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_copy_resize(
+                            mem, value->bitprecise, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise));
+                        REQUIRE_OK(kefir_bigint_invert(value->bitprecise));
+                        REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+                    } else {
+                        APPLY_UNARY_UNSIGNED_OP(type_info.size, value, ~,
+                                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
+                    }
                 }
             } else {
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->arg->source_location,
@@ -204,8 +237,13 @@ kefir_result_t kefir_ast_evaluate_unary_operation_node(struct kefir_mem *mem, co
             if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
-                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                if (type_signed_integer) {
+                    get_type_info(mem, context, node->arg->properties.type, &node->base.source_location, &type_info));
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(node->arg->properties.type)) {
+                    kefir_bool_t is_zero = false;
+                    REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg)->bitprecise,
+                                                    &is_zero));
+                    value->integer = is_zero ? 1 : 0;
+                } else if (type_signed_integer) {
                     APPLY_UNARY_SIGNED_OP(type_info.size, value, !,
                                           KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg));
                 } else {

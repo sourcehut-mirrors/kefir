@@ -1,0 +1,179 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global f
+.type f, @object
+.global g
+.type g, @object
+.global h
+.type h, @object
+.global i
+.type i, @object
+.global j
+.type j, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+
+    .align 8
+b:
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 1
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+c:
+    .byte 1
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 0
+
+    .align 8
+d:
+    .byte 1
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 1
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+e:
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+
+    .align 8
+f:
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 255
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+g:
+    .byte 0
+
+h:
+    .byte 1
+
+i:
+    .byte 0
+
+j:
+    .byte 1
+
