@@ -403,10 +403,30 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 value->floating_point = lhs_value.floating_point * rhs_value.floating_point;
             } else {
                 value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                struct kefir_ast_target_environment_object_info type_info;
-                REQUIRE_OK(
-                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                APPLY_SIGNED_OP(type_info.size, value, &lhs_value, *, &rhs_value);
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                    struct kefir_bigint *acc_bigint;
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &acc_bigint));
+                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, lhs_value.bitprecise->bitwidth));
+                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, acc_bigint, lhs_value.bitprecise->bitwidth));
+                    if (common_type_signed_integer) {
+                        struct kefir_bigint *tmp_lhs_bigint;
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_lhs_bigint));
+                        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_lhs_bigint, lhs_value.bitprecise));
+                        REQUIRE_OK(kefir_bigint_signed_multiply(value->bitprecise, tmp_lhs_bigint, rhs_value.bitprecise,
+                                                                acc_bigint));
+                        REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
+                    } else {
+                        REQUIRE_OK(kefir_bigint_unsigned_multiply(value->bitprecise, lhs_value.bitprecise,
+                                                                  rhs_value.bitprecise, acc_bigint));
+                        REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+                    }
+                } else {
+                    struct kefir_ast_target_environment_object_info type_info;
+                    REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
+                                             &type_info));
+                    APPLY_SIGNED_OP(type_info.size, value, &lhs_value, *, &rhs_value);
+                }
             }
         } break;
 
@@ -596,12 +616,12 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         } break;
 
         case KEFIR_AST_OPERATION_SHIFT_LEFT: {
-            const struct kefir_ast_type *lhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
-                                             node->arg1->properties.expression_props.bitfield_props);
-            const struct kefir_ast_type *rhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
-                                             node->arg2->properties.expression_props.bitfield_props);
+            const struct kefir_ast_type *lhs_type = kefir_ast_type_int_promotion(
+                context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
+                node->arg1->properties.expression_props.bitfield_props);
+            const struct kefir_ast_type *rhs_type = kefir_ast_type_int_promotion(
+                context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
+                node->arg2->properties.expression_props.bitfield_props);
 
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
             REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, &lhs_value,
@@ -650,12 +670,12 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         } break;
 
         case KEFIR_AST_OPERATION_SHIFT_RIGHT: {
-            const struct kefir_ast_type *lhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
-                                             node->arg1->properties.expression_props.bitfield_props);
-            const struct kefir_ast_type *rhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
-                                             node->arg2->properties.expression_props.bitfield_props);
+            const struct kefir_ast_type *lhs_type = kefir_ast_type_int_promotion(
+                context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
+                node->arg1->properties.expression_props.bitfield_props);
+            const struct kefir_ast_type *rhs_type = kefir_ast_type_int_promotion(
+                context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
+                node->arg2->properties.expression_props.bitfield_props);
 
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
             REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, &lhs_value,
