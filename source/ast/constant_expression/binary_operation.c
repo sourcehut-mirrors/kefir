@@ -675,6 +675,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
                 node->arg2->properties.expression_props.bitfield_props);
 
+            kefir_bool_t lhs_signed_type;
+            REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, lhs_type, &lhs_signed_type));
+
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
             REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, &lhs_value,
                                                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1),
@@ -689,7 +692,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
             if (rhs_value.integer >= (kefir_int64_t) type_info.size * 8) {
                 value->integer = 0;
-            } else if (common_type_signed_integer) {
+            } else if (lhs_signed_type) {
                 if (rhs_value.integer == (kefir_int64_t) type_info.size * 8 - 1) {
                     if ((lhs_value.integer & 1) == 1) {
                         switch (type_info.size) {
@@ -729,6 +732,9 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
                 node->arg2->properties.expression_props.bitfield_props);
 
+            kefir_bool_t lhs_signed_type;
+            REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, lhs_type, &lhs_signed_type));
+
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
             REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, &lhs_value,
                                                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1),
@@ -743,7 +749,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
             if (rhs_value.integer >= (kefir_int64_t) type_info.size * 8) {
                 value->integer = 0;
-            } else if (common_type_signed_integer) {
+            } else if (lhs_signed_type) {
                 APPLY_SIGNED_OP(type_info.size, value, &lhs_value, >>, &rhs_value);
             } else {
                 APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, >>, &rhs_value);
