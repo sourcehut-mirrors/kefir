@@ -571,11 +571,23 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             if (common_type_signed_integer) {
-                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                struct kefir_ast_target_environment_object_info type_info;
-                REQUIRE_OK(
-                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                switch (type_info.size) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                    struct kefir_bigint *result_bigint, *rhs_bigint;
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &result_bigint));
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &rhs_bigint));
+                    REQUIRE_OK(kefir_bigint_copy_resize(mem, result_bigint, lhs_value.bitprecise));
+                    REQUIRE_OK(kefir_bigint_copy_resize(mem, rhs_bigint, rhs_value.bitprecise));
+                    REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, result_bigint, result_bigint->bitwidth * 2 + 1));
+                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, result_bigint->bitwidth));
+                    REQUIRE_OK(kefir_bigint_signed_divide(result_bigint, value->bitprecise, rhs_bigint));
+                    REQUIRE_OK(
+                        kefir_bigint_resize_cast_signed(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                } else {
+                    struct kefir_ast_target_environment_object_info type_info;
+                    REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
+                                             &type_info));
+                    switch (type_info.size) {
 #define MOD_CASE(_width)                                                                                \
     do {                                                                                                \
         const kefir_int##_width##_t arg1 = (kefir_int##_width##_t) lhs_value.integer;                   \
@@ -589,30 +601,41 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         }                                                                                               \
     } while (0)
 
-                    case 1:
-                        MOD_CASE(8);
-                        break;
+                        case 1:
+                            MOD_CASE(8);
+                            break;
 
-                    case 2:
-                        MOD_CASE(16);
-                        break;
+                        case 2:
+                            MOD_CASE(16);
+                            break;
 
-                    case 3:
-                    case 4:
-                        MOD_CASE(32);
-                        break;
+                        case 3:
+                        case 4:
+                            MOD_CASE(32);
+                            break;
 
-                    default:
-                        MOD_CASE(64);
-                        break;
+                        default:
+                            MOD_CASE(64);
+                            break;
 #undef MOD_CASE
+                    }
                 }
             } else {
-                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-                struct kefir_ast_target_environment_object_info type_info;
-                REQUIRE_OK(
-                    get_type_info(mem, context, node->base.properties.type, &node->base.source_location, &type_info));
-                switch (type_info.size) {
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                    struct kefir_bigint *result_bigint;
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                    REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &result_bigint));
+                    REQUIRE_OK(kefir_bigint_copy_resize(mem, result_bigint, lhs_value.bitprecise));
+                    REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, result_bigint, result_bigint->bitwidth * 2 + 1));
+                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, result_bigint->bitwidth));
+                    REQUIRE_OK(kefir_bigint_unsigned_divide(result_bigint, value->bitprecise, rhs_value.bitprecise));
+                    REQUIRE_OK(
+                        kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                } else {
+                    struct kefir_ast_target_environment_object_info type_info;
+                    REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
+                                             &type_info));
+                    switch (type_info.size) {
 #define DIV_CASE(_width)                                                                                \
     do {                                                                                                \
         const kefir_uint##_width##_t arg1 = (kefir_uint##_width##_t) lhs_value.uinteger;                \
@@ -622,23 +645,24 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         value->integer = arg1 % arg2;                                                                   \
     } while (0)
 
-                    case 1:
-                        DIV_CASE(8);
-                        break;
+                        case 1:
+                            DIV_CASE(8);
+                            break;
 
-                    case 2:
-                        DIV_CASE(16);
-                        break;
+                        case 2:
+                            DIV_CASE(16);
+                            break;
 
-                    case 3:
-                    case 4:
-                        DIV_CASE(32);
-                        break;
+                        case 3:
+                        case 4:
+                            DIV_CASE(32);
+                            break;
 
-                    default:
-                        DIV_CASE(64);
-                        break;
+                        default:
+                            DIV_CASE(64);
+                            break;
 #undef DIV_CASE
+                    }
                 }
             }
         } break;

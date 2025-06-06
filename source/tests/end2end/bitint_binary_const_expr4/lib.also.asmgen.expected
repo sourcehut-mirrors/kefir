@@ -1,0 +1,198 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global f
+.type f, @object
+.global g
+.type g, @object
+.global h
+.type h, @object
+.global i
+.type i, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .byte 16
+    .byte 7
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+b:
+    .byte 69
+    .byte 36
+    .byte 1
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+c:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+d:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+e:
+    .byte 87
+    .byte 195
+    .byte 194
+    .byte 230
+    .byte 223
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+
+    .align 8
+f:
+    .byte 218
+    .byte 128
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+
+    .align 8
+g:
+    .byte 38
+    .byte 127
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+h:
+    .byte 112
+    .byte 126
+    .byte 86
+    .byte 159
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+    .byte 255
+
+    .align 8
+i:
+    .byte 205
+    .byte 228
+    .byte 214
+    .byte 207
+    .byte 61
+    .byte 246
+    .byte 227
+    .byte 5
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
