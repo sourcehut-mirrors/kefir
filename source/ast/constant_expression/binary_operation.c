@@ -597,10 +597,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
         case KEFIR_AST_OPERATION_SHIFT_LEFT: {
             const struct kefir_ast_type *lhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, node->arg1->properties.type,
+                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
                                              node->arg1->properties.expression_props.bitfield_props);
             const struct kefir_ast_type *rhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, node->arg2->properties.type,
+                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
                                              node->arg2->properties.expression_props.bitfield_props);
 
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
@@ -651,10 +651,10 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
         case KEFIR_AST_OPERATION_SHIFT_RIGHT: {
             const struct kefir_ast_type *lhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, node->arg1->properties.type,
+                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg1->properties.type),
                                              node->arg1->properties.expression_props.bitfield_props);
             const struct kefir_ast_type *rhs_type =
-                kefir_ast_type_int_promotion(context->type_traits, node->arg2->properties.type,
+                kefir_ast_type_int_promotion(context->type_traits, kefir_ast_unqualified_type(node->arg2->properties.type),
                                              node->arg2->properties.expression_props.bitfield_props);
 
             struct kefir_ast_constant_expression_value lhs_value, rhs_value;
