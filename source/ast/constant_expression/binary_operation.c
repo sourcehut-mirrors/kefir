@@ -474,6 +474,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_signed_divide(value->bitprecise, remainder_bigint, rhs_bigint));
                     REQUIRE_OK(
                         kefir_bigint_resize_cast_signed(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
@@ -524,6 +525,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_unsigned_divide(value->bitprecise, remainder_bigint, rhs_value.bitprecise));
                     REQUIRE_OK(
                         kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
@@ -583,6 +585,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_signed_divide(result_bigint, value->bitprecise, rhs_bigint));
                     REQUIRE_OK(
                         kefir_bigint_resize_cast_signed(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
@@ -631,6 +634,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_unsigned_divide(result_bigint, value->bitprecise, rhs_value.bitprecise));
                     REQUIRE_OK(
                         kefir_bigint_resize_cast_unsigned(mem, value->bitprecise, common_arith_type->bitprecise.width));
+                    REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->base.properties.type, &node->base.source_location,
@@ -692,9 +696,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 if (rhs_value.integer >= (kefir_int64_t) lhs_value.bitprecise->bitwidth) {
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, lhs_value.bitprecise->bitwidth));
                     REQUIRE_OK(kefir_bigint_set_signed_value(value->bitprecise, 0));
+                    value->integer = 0;
                 } else {
                     REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                     REQUIRE_OK(kefir_bigint_left_shift(value->bitprecise, rhs_value.integer));
+                    REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 }
             } else {
                 struct kefir_ast_target_environment_object_info type_info;
@@ -760,12 +766,15 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 if (rhs_value.integer >= (kefir_int64_t) lhs_value.bitprecise->bitwidth) {
                     REQUIRE_OK(kefir_bigint_resize_nocast(mem, value->bitprecise, lhs_value.bitprecise->bitwidth));
                     REQUIRE_OK(kefir_bigint_set_signed_value(value->bitprecise, 0));
+                    value->integer = 0;
                 } else if (lhs_signed_type) {
                     REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                     REQUIRE_OK(kefir_bigint_arithmetic_right_shift(value->bitprecise, rhs_value.integer));
+                    REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                 } else {
                     REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
                     REQUIRE_OK(kefir_bigint_right_shift(value->bitprecise, rhs_value.integer));
+                    REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                 }
             } else {
                 struct kefir_ast_target_environment_object_info type_info;
