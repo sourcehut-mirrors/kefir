@@ -1108,9 +1108,16 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
-            APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, &, &rhs_value);
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_and(value->bitprecise, rhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+            } else {
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, &, &rhs_value);
+            }
         } break;
 
         case KEFIR_AST_OPERATION_BITWISE_OR: {
@@ -1123,9 +1130,16 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
-            APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, |, &rhs_value);
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_or(value->bitprecise, rhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+            } else {
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, |, &rhs_value);
+            }
         } break;
 
         case KEFIR_AST_OPERATION_BITWISE_XOR: {
@@ -1138,9 +1152,16 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                 common_arith_type, node->arg2->properties.type));
 
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
-            APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, ^, &rhs_value);
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &value->bitprecise));
+                REQUIRE_OK(kefir_bigint_copy_resize(mem, value->bitprecise, lhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_xor(value->bitprecise, rhs_value.bitprecise));
+                REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
+            } else {
+                struct kefir_ast_target_environment_object_info type_info;
+                REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                APPLY_UNSIGNED_OP(type_info.size, value, &lhs_value, ^, &rhs_value);
+            }
         } break;
 
 #define CONV_BOOL(_size, _result, _arg)                                        \
