@@ -174,7 +174,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &cond_node->source_location,
                                            "Expected a constant expression evaluating to an integer"));
 
-            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(cond_node)->integer != 0) {
+            kefir_bool_t condition = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(cond_node)->integer != 0;
+            const struct kefir_ast_type *cond_node_unqualified_type =
+                kefir_ast_unqualified_type(cond_node->properties.type);
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(cond_node_unqualified_type)) {
+                kefir_bool_t is_zero;
+                REQUIRE_OK(
+                    kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(cond_node)->bitprecise, &is_zero));
+                condition = !is_zero;
+            }
+
+            if (condition) {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, expr1_node, builder, context));
             } else {
                 REQUIRE_OK(kefir_ast_translate_expression(mem, expr2_node, builder, context));

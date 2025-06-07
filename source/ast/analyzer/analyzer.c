@@ -178,15 +178,20 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *mem, const s
     REQUIRE(node->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
                 node->properties.expression_props.constant_expression,
             KEFIR_OK);
-    REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(node->properties.type) ||
-                (node->properties.type->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
-                 node->properties.type->referenced_type->tag == KEFIR_AST_TYPE_VOID),
+
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+    REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type) ||
+                (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
+                 unqualified_type->referenced_type->tag == KEFIR_AST_TYPE_VOID),
             KEFIR_OK);
 
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node), KEFIR_OK);
     switch (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-            if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->integer == 0) {
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type) &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->bitprecise != NULL) {
+                REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->bitprecise, is_null));
+            } else if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->integer == 0) {
                 *is_null = true;
             }
             break;

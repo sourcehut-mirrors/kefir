@@ -553,7 +553,13 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
 
     switch (expr_value.klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-            *result = expr_value.integer != 0;
+            if (expr_value.bitprecise != NULL) {
+                kefir_bool_t is_zero;
+                REQUIRE_OK(kefir_bigint_is_zero(expr_value.bitprecise, &is_zero));
+                *result = !is_zero;
+            } else {
+                *result = expr_value.integer != 0;
+            }
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
