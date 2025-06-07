@@ -118,7 +118,13 @@ kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir
     *boolean = false;
     switch (value->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
-            *boolean = value->integer;
+            if (value->bitprecise != NULL) {
+                kefir_bool_t is_zero;
+                REQUIRE_OK(kefir_bigint_is_zero(value->bitprecise, &is_zero));
+                *boolean = !is_zero;
+            } else {
+                *boolean = value->integer;
+            }
             break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
