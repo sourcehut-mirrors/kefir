@@ -1186,6 +1186,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         }                                                                      \
     } while (0)
         case KEFIR_AST_OPERATION_LOGICAL_AND: {
+            const struct kefir_ast_type *unqualified_arg1_type =
+                kefir_ast_unqualified_type(node->arg1->properties.type);
+            const struct kefir_ast_type *unqualified_arg2_type =
+                kefir_ast_unqualified_type(node->arg2->properties.type);
+
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             kefir_bool_t arg1_bool = false;
             kefir_bool_t arg2_bool = false;
@@ -1204,6 +1209,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
                                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset !=
                                 0;
+            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type)) {
+                kefir_bool_t is_zero;
+                REQUIRE_OK(
+                    kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->bitprecise, &is_zero));
+                arg1_bool = !is_zero;
             } else {
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
@@ -1230,6 +1240,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
                                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset !=
                                     0;
+                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type)) {
+                    kefir_bool_t is_zero;
+                    REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->bitprecise,
+                                                    &is_zero));
+                    arg2_bool = !is_zero;
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->arg2->properties.type, &node->arg2->source_location,
@@ -1242,6 +1257,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
         } break;
 
         case KEFIR_AST_OPERATION_LOGICAL_OR: {
+            const struct kefir_ast_type *unqualified_arg1_type =
+                kefir_ast_unqualified_type(node->arg1->properties.type);
+            const struct kefir_ast_type *unqualified_arg2_type =
+                kefir_ast_unqualified_type(node->arg2->properties.type);
+
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             kefir_bool_t arg1_bool = false;
             kefir_bool_t arg2_bool = false;
@@ -1260,6 +1280,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
                                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset !=
                                 0;
+            } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg1_type)) {
+                kefir_bool_t is_zero;
+                REQUIRE_OK(
+                    kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->bitprecise, &is_zero));
+                arg1_bool = !is_zero;
             } else {
                 struct kefir_ast_target_environment_object_info type_info;
                 REQUIRE_OK(
@@ -1286,6 +1311,11 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                                 KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
                                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset !=
                                     0;
+                } else if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_arg2_type)) {
+                    kefir_bool_t is_zero;
+                    REQUIRE_OK(kefir_bigint_is_zero(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->bitprecise,
+                                                    &is_zero));
+                    arg2_bool = !is_zero;
                 } else {
                     struct kefir_ast_target_environment_object_info type_info;
                     REQUIRE_OK(get_type_info(mem, context, node->arg2->properties.type, &node->arg2->source_location,
