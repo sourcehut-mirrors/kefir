@@ -1028,9 +1028,17 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point == rhs_value.floating_point;
                 } else {
-                    struct kefir_ast_target_environment_object_info type_info;
-                    REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
-                    APPLY_SIGNED_OP(type_info.size, value, &lhs_value, ==, &rhs_value);
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                        kefir_int_t comparison;
+                        REQUIRE_OK(
+                            kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
+                        value->integer = comparison == 0;
+                    } else {
+                        struct kefir_ast_target_environment_object_info type_info;
+                        REQUIRE_OK(
+                            get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                        APPLY_SIGNED_OP(type_info.size, value, &lhs_value, ==, &rhs_value);
+                    }
                 }
             }
             break;
@@ -1066,9 +1074,17 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                             "Expected both binary constant expression parts to have floating-point type after cast"));
                     value->integer = lhs_value.floating_point != rhs_value.floating_point;
                 } else {
-                    struct kefir_ast_target_environment_object_info type_info;
-                    REQUIRE_OK(get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
-                    APPLY_SIGNED_OP(type_info.size, value, &lhs_value, !=, &rhs_value);
+                    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_arith_type)) {
+                        kefir_int_t comparison;
+                        REQUIRE_OK(
+                            kefir_bigint_signed_compare(lhs_value.bitprecise, rhs_value.bitprecise, &comparison));
+                        value->integer = comparison != 0;
+                    } else {
+                        struct kefir_ast_target_environment_object_info type_info;
+                        REQUIRE_OK(
+                            get_type_info(mem, context, common_arith_type, &node->base.source_location, &type_info));
+                        APPLY_SIGNED_OP(type_info.size, value, &lhs_value, !=, &rhs_value);
+                    }
                 }
             }
             break;
