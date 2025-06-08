@@ -88,22 +88,11 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
                                                        (kefir_uint64_t) node->value.ulong_long));
             break;
 
-        case KEFIR_AST_BITPRECISE_CONSTANT: {
-            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
-            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
-            //     implemented yet"));
-            kefir_int64_t value;
-            REQUIRE_OK(kefir_bigint_get_signed(&node->value.bitprecise, &value));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT_CONST, value));
-        } break;
-
+        case KEFIR_AST_BITPRECISE_CONSTANT:
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT: {
-            // REQUIRE(node->value.bitprecise.width <= sizeof(kefir_int64_t) * CHAR_BIT,
-            //     KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers wider than native types are not
-            //     implemented yet"));
-            kefir_uint64_t value;
-            REQUIRE_OK(kefir_bigint_get_unsigned(&node->value.bitprecise, &value));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, value));
+            kefir_id_t bigint_id;
+            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.bitprecise, &bigint_id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_CONST, bigint_id));
         } break;
 
         case KEFIR_AST_FLOAT_CONSTANT:

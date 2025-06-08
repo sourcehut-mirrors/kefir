@@ -18,9 +18,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef DEFINITIONS_H_
-#define DEFINITIONS_H_
-
-unsigned long get(int);
-
-#endif
+int get(void) {
+    return 0x123456782746538276537428476ebdcebdabcdef744364727446efdbcfebdcwb;
+}

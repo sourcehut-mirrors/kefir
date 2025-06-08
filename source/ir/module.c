@@ -102,6 +102,20 @@ static kefir_result_t destroy_identifier(struct kefir_mem *mem, struct kefir_has
     return KEFIR_OK;
 }
 
+static kefir_result_t destroy_bigint(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                     kefir_hashtree_value_t value, void *data) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(data);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_bigint *, bigint, value);
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    REQUIRE_OK(kefir_bigint_free(mem, bigint));
+    KEFIR_FREE(mem, bigint);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_module *module) {
     UNUSED(mem);
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
@@ -122,11 +136,14 @@ kefir_result_t kefir_ir_module_alloc(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtree_init(&module->inline_assembly, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->inline_assembly, destroy_inline_assembly, NULL));
     REQUIRE_OK(kefir_hashtree_init(&module->global_inline_asm, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_init(&module->bigints, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&module->bigints, destroy_bigint, NULL));
     REQUIRE_OK(kefir_ir_module_debug_info_init(&module->debug_info));
     module->next_type_id = 0;
     module->next_string_literal_id = 0;
     module->next_function_decl_id = 0;
     module->next_inline_assembly_id = 0;
+    module->next_bigint_id = 0;
     return KEFIR_OK;
 }
 
@@ -134,6 +151,7 @@ kefir_result_t kefir_ir_module_free(struct kefir_mem *mem, struct kefir_ir_modul
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module pointer"));
     REQUIRE_OK(kefir_ir_module_debug_info_free(mem, &module->debug_info));
+    REQUIRE_OK(kefir_hashtree_free(mem, &module->bigints));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->global_inline_asm));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->inline_assembly));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->string_literals));
@@ -717,5 +735,49 @@ kefir_result_t kefir_ir_module_inline_assembly_global(struct kefir_mem *mem, str
     if (res != KEFIR_ALREADY_EXISTS) {
         REQUIRE_OK(res);
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_module_new_bigint(struct kefir_mem *mem, struct kefir_ir_module *module,
+                                          const struct kefir_bigint *bigint, kefir_id_t *id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+    REQUIRE(id_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));
+
+    struct kefir_bigint *big_integer = KEFIR_MALLOC(mem, sizeof(struct kefir_bigint));
+    REQUIRE(big_integer != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate big integer"));
+
+    kefir_result_t res = kefir_bigint_init(big_integer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, big_integer);
+        return res;
+    });
+
+    res = kefir_bigint_copy_resize(mem, big_integer, bigint);
+    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &module->bigints, (kefir_hashtree_key_t) module->next_bigint_id,
+                                              (kefir_hashtree_value_t) big_integer));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, big_integer);
+        return res;
+    });
+
+    *id_ptr = module->next_bigint_id++;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ir_module_get_bigint(const struct kefir_ir_module *module, kefir_id_t bigint_id,
+                                          const struct kefir_bigint **bigint_ptr) {
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+    REQUIRE(bigint_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to big integer"));
+
+    struct kefir_hashtree_node *node;
+    kefir_result_t res = kefir_hashtree_at(&module->bigints, (kefir_hashtree_key_t) bigint_id, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested big integer in IR module");
+    }
+    REQUIRE_OK(res);
+
+    *bigint_ptr = (const struct kefir_bigint *) node->value;
     return KEFIR_OK;
 }

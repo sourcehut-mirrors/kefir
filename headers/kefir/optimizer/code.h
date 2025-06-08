@@ -214,6 +214,7 @@ typedef struct kefir_opt_operation_parameters {
         union {
             kefir_int64_t integer;
             kefir_uint64_t uinteger;
+            kefir_id_t bitint_ref;
             kefir_float32_t float32;
             kefir_float64_t float64;
             kefir_long_double_t long_double;

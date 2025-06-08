@@ -29,6 +29,7 @@
 #include "kefir/ir/data.h"
 #include "kefir/ir/assembly.h"
 #include "kefir/ir/debug.h"
+#include "kefir/util/bigint.h"
 
 typedef enum kefir_ir_identifier_type {
     KEFIR_IR_IDENTIFIER_FUNCTION,
@@ -79,11 +80,13 @@ typedef struct kefir_ir_module {
     struct kefir_hashtree string_literals;
     struct kefir_hashtree inline_assembly;
     struct kefir_hashtree global_inline_asm;
+    struct kefir_hashtree bigints;
 
     kefir_id_t next_type_id;
     kefir_id_t next_string_literal_id;
     kefir_id_t next_function_decl_id;
     kefir_id_t next_inline_assembly_id;
+    kefir_id_t next_bigint_id;
 
     struct kefir_ir_module_debug_info debug_info;
 } kefir_ir_module_t;
@@ -169,5 +172,9 @@ const struct kefir_ir_inline_assembly *kefir_ir_module_inline_assembly_next(stru
                                                                             kefir_id_t *);
 
 kefir_result_t kefir_ir_module_inline_assembly_global(struct kefir_mem *, struct kefir_ir_module *, kefir_id_t);
+
+kefir_result_t kefir_ir_module_new_bigint(struct kefir_mem *, struct kefir_ir_module *, const struct kefir_bigint *,
+                                          kefir_id_t *);
+kefir_result_t kefir_ir_module_get_bigint(const struct kefir_ir_module *, kefir_id_t, const struct kefir_bigint **);
 
 #endif

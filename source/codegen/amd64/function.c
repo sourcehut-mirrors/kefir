@@ -46,6 +46,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
         break
         KEFIR_CODEGEN_AMD64_INSTRUCTIONS(CASE_INSTR, ;);
 #undef CASE_INSTR
+
+        case KEFIR_OPT_OPCODE_BITINT_CONST:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integer code generation is not implemented yet");
     }
 
     kefir_size_t instruction_location;

@@ -1,0 +1,41 @@
+{
+    "functions": [
+        {
+            "id": 26,
+            "name": "get",
+            "code": {
+                "entry_point": 0,
+                "blocks": [
+                    {
+                        "id": 0,
+                        "control_flow": 1,
+                        "code": [
+                            {
+                                "id": 0,
+                                "opcode": "bitint_const",
+                                "value": "0x123456782746538276537428476ebdcebdabcdef744364727446efdbcfebdc",
+                                "control_next": null
+                            },
+                            {
+                                "id": 1,
+                                "opcode": "return",
+                                "arg": 0,
+                                "control_next": null
+                            }
+                        ],
+                        "public_labels": [],
+                        "properties": {
+                            "successors": [],
+                            "predecessors": [],
+                            "immediate_dominator": null,
+                            "alive_instructions": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

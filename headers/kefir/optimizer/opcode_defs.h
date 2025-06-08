@@ -45,6 +45,7 @@
     /* Constants */ \
     OPCODE(INT_CONST, "int_const", immediate) SEPARATOR \
     OPCODE(UINT_CONST, "uint_const", immediate) SEPARATOR \
+    OPCODE(BITINT_CONST, "bitint_const", immediate) SEPARATOR \
     OPCODE(FLOAT32_CONST, "float32_const", immediate) SEPARATOR \
     OPCODE(FLOAT64_CONST, "float64_const", immediate) SEPARATOR \
     OPCODE(LONG_DOUBLE_CONST, "long_double_const", immediate) SEPARATOR \
