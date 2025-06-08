@@ -105,29 +105,6 @@ static kefir_result_t amd64_sysv_bitfield_allocator(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-static kefir_result_t amd64_sysv_bitprecise_type(struct kefir_mem *mem, const struct kefir_ir_target_platform *platform,
-                                                 kefir_size_t width, struct kefir_ir_typeentry *typeentry) {
-    UNUSED(platform);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR typeentry"));
-
-    typeentry->typecode = KEFIR_IR_TYPE_BITFIELD;
-    if (width <= KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = KEFIR_IR_BITFIELD_PARAM(8, 1);
-        typeentry->alignment = 1;
-    } else if (width <= 2 * KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = KEFIR_IR_BITFIELD_PARAM(16, 2);
-        typeentry->alignment = 2;
-    } else if (width <= 4 * KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = KEFIR_IR_BITFIELD_PARAM(32, 4);
-        typeentry->alignment = 4;
-    } else {
-        typeentry->param = KEFIR_IR_BITFIELD_PARAM((width + 63) / 64 * 64, 8);
-        typeentry->alignment = KEFIR_AMD64_ABI_QWORD;
-    }
-    return KEFIR_OK;
-}
-
 static kefir_result_t amd64_sysv_decode_inline_assembly_constraints(
     const struct kefir_ir_target_platform *platform, const char *constraints,
     struct kefir_ir_inline_assembly_parameter_constraints *decoded_constraints,
@@ -255,7 +232,6 @@ kefir_result_t kefir_abi_amd64_target_platform(kefir_abi_amd64_variant_t variant
             platform->free_type = amd64_sysv_free_type;
             platform->typeentry_info = amd64_sysv_typeentry_info;
             platform->bitfield_allocator = amd64_sysv_bitfield_allocator;
-            platform->bitprecise_type = amd64_sysv_bitprecise_type;
             platform->decode_inline_assembly_constraints = amd64_sysv_decode_inline_assembly_constraints;
             platform->free = amd64_sysv_free;
             platform->payload = NULL;

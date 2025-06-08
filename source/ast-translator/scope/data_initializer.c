@@ -228,6 +228,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT16:
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
+                case KEFIR_IR_TYPE_BITINT:
                 case KEFIR_IR_TYPE_BOOL:
                 case KEFIR_IR_TYPE_CHAR:
                 case KEFIR_IR_TYPE_SHORT:

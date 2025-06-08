@@ -37,6 +37,7 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_INT64,
     KEFIR_IR_TYPE_FLOAT32,
     KEFIR_IR_TYPE_FLOAT64,
+    KEFIR_IR_TYPE_BITINT,
     // Fixed complex numbers
     KEFIR_IR_TYPE_COMPLEX_FLOAT32,
     KEFIR_IR_TYPE_COMPLEX_FLOAT64,
@@ -112,6 +113,7 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         (visitor)->visit[KEFIR_IR_TYPE_INT16] = (callback);          \
         (visitor)->visit[KEFIR_IR_TYPE_INT32] = (callback);          \
         (visitor)->visit[KEFIR_IR_TYPE_INT64] = (callback);          \
+        (visitor)->visit[KEFIR_IR_TYPE_BITINT] = (callback);         \
     } while (0)
 #define KEFIR_IR_TYPE_VISITOR_INIT_ALIASED_INTEGERS(visitor, callback) \
     do {                                                               \

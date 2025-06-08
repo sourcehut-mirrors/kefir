@@ -588,6 +588,9 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_WORD:
             return "word";
 
+        case KEFIR_IR_TYPE_BITINT:
+            return "bitint";
+
         case KEFIR_IR_TYPE_BITFIELD:
             return "bitfield";
 
@@ -639,6 +642,11 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            break;
+
+        case KEFIR_IR_TYPE_BITINT:
+            REQUIRE_OK(kefir_json_output_object_key(param->json, "width"));
+            REQUIRE_OK(kefir_json_output_integer(param->json, typeentry->param));
             break;
 
         case KEFIR_IR_TYPE_BITFIELD:

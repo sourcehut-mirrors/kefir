@@ -169,6 +169,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                     case KEFIR_IR_TYPE_INT16:
                     case KEFIR_IR_TYPE_INT32:
                     case KEFIR_IR_TYPE_INT64:
+                    case KEFIR_IR_TYPE_BITINT:
                     case KEFIR_IR_TYPE_FLOAT32:
                     case KEFIR_IR_TYPE_FLOAT64:
                     case KEFIR_IR_TYPE_BOOL:
@@ -516,6 +517,10 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                                                                  KEFIR_ASMCMP_OPERAND_VARIANT_80BIT),
                             NULL));
                         break;
+
+                    case KEFIR_IR_TYPE_BITINT:
+                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                               "Bit-precise integer support in code generator is not implemented yet");
 
                     case KEFIR_IR_TYPE_BITFIELD:
                     case KEFIR_IR_TYPE_NONE:

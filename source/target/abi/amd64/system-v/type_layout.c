@@ -64,6 +64,22 @@ static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_
             *alignment_ptr = 8;
             break;
 
+        case KEFIR_IR_TYPE_BITINT:
+            if (typeentry->param <= 8) {
+                *size_ptr = 1;
+                *alignment_ptr = 1;
+            } else if (typeentry->param <= 16) {
+                *size_ptr = 2;
+                *alignment_ptr = 2;
+            } else if (typeentry->param <= 32) {
+                *size_ptr = 4;
+                *alignment_ptr = 4;
+            } else {
+                *size_ptr = (typeentry->param + 63) / 64 * 8;
+                *alignment_ptr = 8;
+            }
+            break;
+
         case KEFIR_IR_TYPE_BITFIELD: {
             const kefir_size_t bits = KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param);
             *size_ptr = (bits + 7) / 8;

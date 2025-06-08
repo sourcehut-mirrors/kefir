@@ -49,8 +49,6 @@ typedef struct kefir_ir_target_platform {
                                      struct kefir_ir_target_platform_typeentry_info *);
     kefir_result_t (*bitfield_allocator)(struct kefir_mem *, const struct kefir_ir_target_platform *,
                                          struct kefir_ir_type *, struct kefir_ir_bitfield_allocator *);
-    kefir_result_t (*bitprecise_type)(struct kefir_mem *, const struct kefir_ir_target_platform *, kefir_size_t,
-                                      struct kefir_ir_typeentry *);
     kefir_result_t (*decode_inline_assembly_constraints)(const struct kefir_ir_target_platform *, const char *,
                                                          struct kefir_ir_inline_assembly_parameter_constraints *,
                                                          const struct kefir_source_location *);
@@ -66,8 +64,6 @@ typedef struct kefir_ir_target_platform {
     ((platform)->typeentry_info((mem), (type), (index), (info)))
 #define KEFIR_IR_TARGET_PLATFORM_BITFIELD_ALLOCATOR(mem, platform, type, allocator) \
     ((platform)->bitfield_allocator((mem), (platform), (type), (allocator)))
-#define KEFIR_IR_TARGET_PLATFORM_BITPRECISE_TYPE(mem, platform, width, typeentry) \
-    ((platform)->bitprecise_type((mem), (platform), (width), (typeentry)))
 #define KEFIR_IR_TARGET_PLATFORM_DECODE_INLINE_ASSEMBLY_CONSTRAINTS(_platform, _constraints, _decoded, _location) \
     ((_platform)->decode_inline_assembly_constraints((_platform), (_constraints), (_decoded), (_location)))
 #define KEFIR_IR_TARGET_PLATFORM_FREE(mem, platform) ((platform)->free((mem), (platform)))
