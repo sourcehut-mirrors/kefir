@@ -592,9 +592,9 @@
                             "type": "int"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 7,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
                             "type": "union",
@@ -724,9 +724,9 @@
                             "type": "int"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 7,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
                             "type": "union",
@@ -808,9 +808,9 @@
                             "type": "int"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 7,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
                             "type": "union",

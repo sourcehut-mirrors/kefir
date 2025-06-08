@@ -234,7 +234,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT:
                 case KEFIR_IR_TYPE_LONG:
                 case KEFIR_IR_TYPE_WORD:
-                case KEFIR_IR_TYPE_BITS:
+                case KEFIR_IR_TYPE_BITFIELD:
                     if (value.bitprecise != NULL) {
                         for (kefir_size_t i = 0; i < value.bitprecise->bitwidth; i += sizeof(kefir_uint64_t)) {
                             const kefir_size_t width = MIN(value.bitprecise->bitwidth - i, sizeof(kefir_uint64_t));

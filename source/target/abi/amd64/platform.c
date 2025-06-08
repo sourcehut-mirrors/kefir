@@ -111,20 +111,18 @@ static kefir_result_t amd64_sysv_bitprecise_type(struct kefir_mem *mem, const st
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to IR typeentry"));
 
-    typeentry->typecode = KEFIR_IR_TYPE_BITS;
-    typeentry->param = (width + KEFIR_AMD64_ABI_QWORD - 1) / KEFIR_AMD64_ABI_QWORD * KEFIR_AMD64_ABI_QWORD;
+    typeentry->typecode = KEFIR_IR_TYPE_BITFIELD;
     if (width <= KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = KEFIR_AMD64_ABI_QWORD;
+        typeentry->param = KEFIR_IR_BITFIELD_PARAM(8, 1);
         typeentry->alignment = 1;
     } else if (width <= 2 * KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = 2 * KEFIR_AMD64_ABI_QWORD;
+        typeentry->param = KEFIR_IR_BITFIELD_PARAM(16, 2);
         typeentry->alignment = 2;
     } else if (width <= 4 * KEFIR_AMD64_ABI_QWORD) {
-        typeentry->param = 4 * KEFIR_AMD64_ABI_QWORD;
+        typeentry->param = KEFIR_IR_BITFIELD_PARAM(32, 4);
         typeentry->alignment = 4;
     } else {
-        typeentry->param =
-            (width + 8 * KEFIR_AMD64_ABI_QWORD - 1) / (8 * KEFIR_AMD64_ABI_QWORD) * (8 * KEFIR_AMD64_ABI_QWORD);
+        typeentry->param = KEFIR_IR_BITFIELD_PARAM((width + 63) / 64 * 64, 8);
         typeentry->alignment = KEFIR_AMD64_ABI_QWORD;
     }
     return KEFIR_OK;

@@ -48,7 +48,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_BITS, 4, 6));
+    REQUIRE_OK(
+        kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_BITFIELD, 4, KEFIR_IR_BITFIELD_PARAM(6, 4)));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_UNION, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_STRUCT, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_SHORT, 0, 0));

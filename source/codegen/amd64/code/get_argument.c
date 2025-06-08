@@ -304,7 +304,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_INT:
                 case KEFIR_IR_TYPE_LONG:
                 case KEFIR_IR_TYPE_WORD:
-                case KEFIR_IR_TYPE_BITS:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
                     REQUIRE_OK(kefir_asmcmp_amd64_mov(
@@ -325,6 +324,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
+                case KEFIR_IR_TYPE_BITFIELD:
                 case KEFIR_IR_TYPE_NONE:
                 case KEFIR_IR_TYPE_COUNT:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type code");

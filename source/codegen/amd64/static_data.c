@@ -145,7 +145,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
 
     const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
-    if (typeentry->typecode != KEFIR_IR_TYPE_BITS) {
+    if (typeentry->typecode != KEFIR_IR_TYPE_BITFIELD) {
         REQUIRE_OK(align_offset(layout, param));
     }
     switch (typeentry->typecode) {
@@ -182,12 +182,9 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                                              &param->codegen->xasmgen_helpers.operands[0], (kefir_uint64_t) value)));
             break;
 
-        case KEFIR_IR_TYPE_BITS: {
-            kefir_size_t bits = typeentry->param;
-            kefir_size_t bytes = bits / 8;
-            if (bits % 8 != 0) {
-                bytes += 1;
-            }
+        case KEFIR_IR_TYPE_BITFIELD: {
+            const kefir_size_t bits = KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param);
+            const kefir_size_t bytes = (bits + 7) / 8;
             for (kefir_size_t i = 0; i < bytes; i++) {
                 const kefir_size_t qword_container_idx = i / sizeof(kefir_uint64_t);
                 const kefir_size_t qword_offset = i % sizeof(kefir_uint64_t);

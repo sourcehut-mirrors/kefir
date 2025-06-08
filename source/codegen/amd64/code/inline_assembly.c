@@ -323,7 +323,7 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             *param_type = INLINE_ASSEMBLY_PARAMETER_AGGREGATE;
             break;
 
-        case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
@@ -893,7 +893,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
             }
             break;
 
-        case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
@@ -991,7 +991,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
-        case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
@@ -1647,7 +1647,7 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
         case KEFIR_IR_TYPE_UNION:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
-        case KEFIR_IR_TYPE_BITS:
+        case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
         case KEFIR_IR_TYPE_COUNT:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");
@@ -1789,7 +1789,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                 }
                 break;
 
-            case KEFIR_IR_TYPE_BITS:
+            case KEFIR_IR_TYPE_BITFIELD:
             case KEFIR_IR_TYPE_NONE:
             case KEFIR_IR_TYPE_COUNT:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR inline assembly parameter type");

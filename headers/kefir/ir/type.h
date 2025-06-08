@@ -48,9 +48,10 @@ typedef enum kefir_ir_typecode {
     KEFIR_IR_TYPE_LONG,
     KEFIR_IR_TYPE_WORD,
     KEFIR_IR_TYPE_LONG_DOUBLE,
-    KEFIR_IR_TYPE_BITS,
     // Platform-dependent complex numbers
     KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE,
+    // Bit-fields
+    KEFIR_IR_TYPE_BITFIELD,
     // > 64-bit scalars are not supported yet
     KEFIR_IR_TYPE_NONE,
     KEFIR_IR_TYPE_COUNT,  // Auxilary
@@ -87,7 +88,8 @@ kefir_size_t kefir_ir_type_slots(const struct kefir_ir_type *);
 kefir_result_t kefir_ir_type_slot_of(const struct kefir_ir_type *, kefir_size_t, kefir_size_t *);
 
 kefir_int_t kefir_ir_typeentry_compare(const struct kefir_ir_typeentry *, const struct kefir_ir_typeentry *);
-kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *, kefir_size_t, const struct kefir_ir_type *, kefir_size_t, kefir_bool_t *);
+kefir_result_t kefir_ir_type_same(const struct kefir_ir_type *, kefir_size_t, const struct kefir_ir_type *,
+                                  kefir_size_t, kefir_bool_t *);
 
 typedef kefir_result_t (*kefir_ir_type_visitor_callback_t)(const struct kefir_ir_type *, kefir_size_t,
                                                            const struct kefir_ir_typeentry *, void *);
@@ -119,7 +121,7 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         (visitor)->visit[KEFIR_IR_TYPE_INT] = (callback);              \
         (visitor)->visit[KEFIR_IR_TYPE_LONG] = (callback);             \
         (visitor)->visit[KEFIR_IR_TYPE_WORD] = (callback);             \
-        (visitor)->visit[KEFIR_IR_TYPE_BITS] = (callback);             \
+        (visitor)->visit[KEFIR_IR_TYPE_BITFIELD] = (callback);         \
     } while (0)
 #define KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(visitor, callback)              \
     do {                                                                    \
@@ -147,5 +149,10 @@ kefir_result_t kefir_ir_type_visitor_list_nodes(const struct kefir_ir_type *, co
         KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(visitor, callback);      \
         (visitor)->visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = (callback); \
     } while (0)
+
+#define KEFIR_IR_BITFIELD_PARAM(_width, _base_size) \
+    ((((kefir_uint64_t) (_width)) << 32) | ((kefir_uint32_t) (_base_size)))
+#define KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(_param) (((kefir_uint64_t) (_param)) >> 32)
+#define KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(_param) (((kefir_uint32_t) (_param)))
 
 #endif

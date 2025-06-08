@@ -31,14 +31,14 @@
                 "type": "word"
             },
             {
-                "type": "bits",
+                "type": "bitfield",
                 "width": 7,
-                "alignment": 2
+                "base_size": 2
             },
             {
-                "type": "bits",
+                "type": "bitfield",
                 "width": 3,
-                "alignment": 2
+                "base_size": 2
             }
         ]
     }

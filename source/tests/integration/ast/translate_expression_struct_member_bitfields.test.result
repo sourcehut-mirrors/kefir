@@ -27,22 +27,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -71,22 +71,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -99,22 +99,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -127,22 +127,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -155,22 +155,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -183,22 +183,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -211,22 +211,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -239,22 +239,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -267,22 +267,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -295,22 +295,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -323,22 +323,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -351,22 +351,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }
@@ -379,22 +379,22 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 19,
-                            "alignment": 4
+                            "base_size": 4
                         },
                         {
                             "type": "char"
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 4,
-                            "alignment": 8
+                            "base_size": 8
                         },
                         {
-                            "type": "bits",
+                            "type": "bitfield",
                             "width": 57,
-                            "alignment": 8
+                            "base_size": 8
                         }
                     ]
                 }

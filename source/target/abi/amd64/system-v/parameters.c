@@ -130,9 +130,10 @@ static kefir_result_t assign_nested_scalar(const struct kefir_ir_type *type, kef
         (typeentry->typecode == KEFIR_IR_TYPE_FLOAT32 || typeentry->typecode == KEFIR_IR_TYPE_FLOAT64)
             ? KEFIR_AMD64_SYSV_PARAM_SSE
             : KEFIR_AMD64_SYSV_PARAM_INTEGER;
-    if (typeentry->typecode == KEFIR_IR_TYPE_BITS) {
+    if (typeentry->typecode == KEFIR_IR_TYPE_BITFIELD) {
         REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next_bitfield(&info->top_allocation->container, dataclass,
-                                                             typeentry->param, &allocation->container_reference));
+                                                             KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param),
+                                                             &allocation->container_reference));
     } else {
         REQUIRE_OK(kefir_abi_amd64_sysv_qwords_next(&info->top_allocation->container, dataclass, layout->size,
                                                     layout->alignment, &allocation->container_reference));

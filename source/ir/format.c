@@ -588,8 +588,8 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_WORD:
             return "word";
 
-        case KEFIR_IR_TYPE_BITS:
-            return "bits";
+        case KEFIR_IR_TYPE_BITFIELD:
+            return "bitfield";
 
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
             return "complex_float32";
@@ -641,12 +641,12 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
             break;
 
-        case KEFIR_IR_TYPE_BITS: {
-            kefir_size_t bits = typeentry->param;
-
+        case KEFIR_IR_TYPE_BITFIELD:
             REQUIRE_OK(kefir_json_output_object_key(param->json, "width"));
-            REQUIRE_OK(kefir_json_output_integer(param->json, bits));
-        } break;
+            REQUIRE_OK(kefir_json_output_integer(param->json, KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param)));
+            REQUIRE_OK(kefir_json_output_object_key(param->json, "base_size"));
+            REQUIRE_OK(kefir_json_output_integer(param->json, KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(typeentry->param)));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid type code");

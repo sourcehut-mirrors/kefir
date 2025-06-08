@@ -165,13 +165,15 @@ static kefir_result_t amd64_sysv_bitfield_next(struct kefir_mem *mem, struct kef
     bitfield->width = bitwidth;
     payload->props.tail_offset += bitwidth;
 
-    typeentry->typecode = KEFIR_IR_TYPE_BITS;
+    typeentry->typecode = KEFIR_IR_TYPE_BITFIELD;
+    kefir_size_t base_size;
     if (named) {
-        typeentry->alignment = base_bit_alignment / 8;
+        base_size = base_bit_size / 8;
     } else {
-        typeentry->alignment = 0;
+        base_size = 1;
     }
-    typeentry->param = payload->props.tail_offset - payload->props.head_offset;
+    typeentry->alignment = 0;
+    typeentry->param = KEFIR_IR_BITFIELD_PARAM(payload->props.tail_offset - payload->props.head_offset, base_size);
 
     return KEFIR_OK;
 }
@@ -203,10 +205,11 @@ static kefir_result_t amd64_sysv_bitfield_next_colocated(struct kefir_mem *mem,
     bitfield->width = bitwidth;
 
     payload->props.tail_offset += bitwidth;
+    kefir_size_t base_size = KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(typeentry->param);
     if (named) {
-        typeentry->alignment = MAX(typeentry->alignment, colocated_bit_alignment / 8);
+        base_size = MAX(base_size, colocated_bit_size / 8);
     }
-    typeentry->param = payload->props.tail_offset - payload->props.head_offset;
+    typeentry->param = KEFIR_IR_BITFIELD_PARAM(payload->props.tail_offset - payload->props.head_offset, base_size);
     return KEFIR_OK;
 }
 

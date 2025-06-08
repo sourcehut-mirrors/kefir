@@ -43,7 +43,7 @@ static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struc
                                     const struct kefir_ir_typeentry **typeentry_ptr) {
     const kefir_uint64_t mem_flags = retrieve_memflags(layout->qualified_type);
     struct kefir_ir_typeentry *typeentry = kefir_ir_type_at(ir_type, layout->value);
-    REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_BITS,
+    REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_BITFIELD,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected a bit-field"));
     ASSIGN_PTR(typeentry_ptr, typeentry);
 

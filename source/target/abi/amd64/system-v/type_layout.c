@@ -64,10 +64,10 @@ static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_
             *alignment_ptr = 8;
             break;
 
-        case KEFIR_IR_TYPE_BITS: {
-            kefir_size_t bits = typeentry->param;
-            *size_ptr = bits / 8 + (bits % 8 != 0 ? 1 : 0);
-            *alignment_ptr = 1;
+        case KEFIR_IR_TYPE_BITFIELD: {
+            const kefir_size_t bits = KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param);
+            *size_ptr = (bits + 7) / 8;
+            *alignment_ptr = KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(typeentry->param);
         } break;
 
         default:
@@ -118,7 +118,7 @@ static kefir_result_t update_compound_type_layout(struct compound_type_layout *c
         data->aligned = typeentry->alignment >= data->alignment;
         data->alignment = typeentry->alignment;
     }
-    if (compound_type_layout->aggregate && typeentry->typecode != KEFIR_IR_TYPE_BITS) {
+    if (compound_type_layout->aggregate && typeentry->typecode != KEFIR_IR_TYPE_BITFIELD) {
         compound_type_layout->offset = kefir_target_abi_pad_aligned(compound_type_layout->offset, data->alignment);
     }
     compound_type_layout->max_alignment = MAX(compound_type_layout->max_alignment, data->alignment);
