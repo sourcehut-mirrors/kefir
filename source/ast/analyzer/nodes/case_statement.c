@@ -23,6 +23,7 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/declarator.h"
 #include "kefir/ast/type_conv.h"
+#include "kefir/ast/node_base.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -86,38 +87,65 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
             kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
+        struct kefir_ast_node_base *begin_node = node->expression;
+        struct kefir_ast_node_base *end_node = node->range_end_expression;
         kefir_ast_constant_expression_int_t begin = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer;
         kefir_ast_constant_expression_int_t end =
             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer;
         if (end < begin) {
             kefir_ast_constant_expression_int_t tmp = begin;
+            struct kefir_ast_node_base *tmp_node = begin_node;
             begin = end;
+            begin_node = end_node;
             end = tmp;
+            end_node = tmp_node;
         }
 
-        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.cases,
-                                         (kefir_hashtree_key_t) begin, (kefir_hashtree_value_t) point));
-        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_ranges,
-                                         (kefir_hashtree_key_t) begin, (kefir_hashtree_key_t) end));
+        const kefir_size_t case_identifier = switch_statement->value.switchStatement.num_of_cases;
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_flow_control_points,
+                                         (kefir_hashtree_key_t) case_identifier, (kefir_hashtree_value_t) point));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_label_nodes,
+                                         (kefir_hashtree_key_t) case_identifier,
+                                         (kefir_hashtree_value_t) KEFIR_AST_NODE_REF(begin_node)));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_range_end_nodes,
+                                         (kefir_hashtree_key_t) case_identifier,
+                                         (kefir_hashtree_key_t) KEFIR_AST_NODE_REF(end_node)));
         base->properties.statement_props.target_flow_control_point = point;
+
+        switch_statement->value.switchStatement.num_of_cases++;
     } else if (node->expression != NULL) {
         REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->expression));
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->expression, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
+
+        struct kefir_hashtree_node_iterator iter;
+        for (const struct kefir_hashtree_node *switchCase =
+                 kefir_hashtree_iter(&switch_statement->value.switchStatement.case_label_nodes, &iter);
+             switchCase != NULL; switchCase = kefir_hashtree_next(&iter)) {
+
+            ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, other_case_label, iter.node->value);
+            REQUIRE(
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->bitprecise == NULL &&
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(other_case_label)->bitprecise == NULL,
+                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers in case labels are not implemented yet"));
+            REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer !=
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(other_case_label)->integer,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
+                                           "Cannot duplicate case statement constants"));
+        }
+
         struct kefir_ast_flow_control_point *point =
             kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
-        kefir_result_t res = kefir_hashtree_insert(
-            mem, &switch_statement->value.switchStatement.cases,
-            (kefir_hashtree_key_t) KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer,
-            (kefir_hashtree_value_t) point);
-        if (res == KEFIR_ALREADY_EXISTS) {
-            res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
-                                         "Cannot duplicate case statement constants");
-        }
-        REQUIRE_OK(res);
+        const kefir_size_t case_identifier = switch_statement->value.switchStatement.num_of_cases;
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_flow_control_points,
+                                         (kefir_hashtree_key_t) case_identifier, (kefir_hashtree_value_t) point));
+        REQUIRE_OK(kefir_hashtree_insert(mem, &switch_statement->value.switchStatement.case_label_nodes,
+                                         (kefir_hashtree_key_t) case_identifier,
+                                         (kefir_hashtree_value_t) KEFIR_AST_NODE_REF(node->expression)));
         base->properties.statement_props.target_flow_control_point = point;
+        switch_statement->value.switchStatement.num_of_cases++;
     } else {
         REQUIRE(switch_statement->value.switchStatement.defaultCase == NULL,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,

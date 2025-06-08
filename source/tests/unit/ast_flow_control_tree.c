@@ -21,6 +21,7 @@
 #include "kefir/test/unit_test.h"
 #include "kefir/ast/flow_control.h"
 #include "kefir/ast/local_context.h"
+#include "kefir/ast/node.h"
 #include "kefir/ast/function_declaration_context.h"
 #include "kefir/test/util.h"
 
@@ -458,18 +459,20 @@ DEFINE_CASE(ast_flow_control_tree6, "AST Flow control tree - flow control value 
     struct kefir_ast_flow_control_structure *stmt4 = NULL;
     ASSERT_OK(kefir_ast_flow_control_tree_push(&kft_mem, context->flow_control_tree,
                                                KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH, &associated_scopes, &stmt4));
-    ASSERT_OK(kefir_hashtree_insert(
-        &kft_mem, &stmt4->value.switchStatement.cases, (kefir_hashtree_key_t) -1,
-        (kefir_hashtree_value_t) kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL)));
-    ASSERT_OK(kefir_hashtree_insert(
-        &kft_mem, &stmt4->value.switchStatement.cases, (kefir_hashtree_key_t) 0,
-        (kefir_hashtree_value_t) kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL)));
-    ASSERT_OK(kefir_hashtree_insert(
-        &kft_mem, &stmt4->value.switchStatement.cases, (kefir_hashtree_key_t) 1,
-        (kefir_hashtree_value_t) kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL)));
-    ASSERT_OK(kefir_hashtree_insert(
-        &kft_mem, &stmt4->value.switchStatement.cases, (kefir_hashtree_key_t) 0xfff,
-        (kefir_hashtree_value_t) kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL)));
+
+    struct kefir_ast_node_base *case_label_values[] = {
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)),
+        KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0xfff))};
+
+    for (int i = 0; i < 4; i++) {
+        ASSERT_OK(kefir_hashtree_insert(
+            &kft_mem, &stmt4->value.switchStatement.case_flow_control_points, (kefir_hashtree_key_t) i,
+            (kefir_hashtree_value_t) kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL)));
+        ASSERT_OK(kefir_hashtree_insert(&kft_mem, &stmt4->value.switchStatement.case_label_nodes,
+                                        (kefir_hashtree_key_t) i, (kefir_hashtree_value_t) case_label_values[i]));
+    }
     stmt4->value.switchStatement.defaultCase =
         kefir_ast_flow_control_point_alloc(&kft_mem, context->flow_control_tree, NULL);
     ASSERT_OK(kefir_ast_flow_control_tree_pop(context->flow_control_tree));

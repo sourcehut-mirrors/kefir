@@ -428,7 +428,7 @@
                 },
                 {
                     "opcode": "int_const",
-                    "arg": 0
+                    "arg": 1
                 },
                 {
                     "opcode": "scalar_compare",
@@ -447,7 +447,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 47
+                    "arg": 38
                 },
                 {
                     "opcode": "vstack_pick",
@@ -455,7 +455,7 @@
                 },
                 {
                     "opcode": "int_const",
-                    "arg": 1
+                    "arg": 0
                 },
                 {
                     "opcode": "scalar_compare",
@@ -474,7 +474,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 38
+                    "arg": 47
                 },
                 {
                     "opcode": "vstack_pop"

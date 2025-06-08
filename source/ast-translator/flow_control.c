@@ -180,7 +180,7 @@ static kefir_result_t flow_control_tree_init(struct kefir_mem *mem, struct kefir
             case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH: {
                 struct kefir_hashtree_node_iterator iter;
                 for (const struct kefir_hashtree_node *node =
-                         kefir_hashtree_iter(&stmt->value.switchStatement.cases, &iter);
+                         kefir_hashtree_iter(&stmt->value.switchStatement.case_flow_control_points, &iter);
                      node != NULL; node = kefir_hashtree_next(&iter)) {
                     ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, point, node->value);
                     REQUIRE_OK(kefir_ast_translator_flow_control_point_init(mem, point, NULL));

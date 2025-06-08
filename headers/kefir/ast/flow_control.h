@@ -89,8 +89,10 @@ typedef struct kefir_ast_flow_control_structure {
         } conditional;
 
         struct {
-            struct kefir_hashtree cases;
-            struct kefir_hashtree case_ranges;
+            kefir_size_t num_of_cases;
+            struct kefir_hashtree case_flow_control_points;
+            struct kefir_hashtree case_label_nodes;
+            struct kefir_hashtree case_range_end_nodes;
             struct kefir_ast_flow_control_point *defaultCase;
             const struct kefir_ast_type *controlling_expression_type;
             struct kefir_ast_flow_control_point *end;

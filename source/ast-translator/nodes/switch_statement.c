@@ -59,22 +59,38 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                                             flow_control_stmt->value.switchStatement.controlling_expression_type));
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_hashtree_node *switchCase =
-             kefir_hashtree_iter(&flow_control_stmt->value.switchStatement.cases, &iter);
+             kefir_hashtree_iter(&flow_control_stmt->value.switchStatement.case_flow_control_points, &iter);
          switchCase != NULL; switchCase = kefir_hashtree_next(&iter)) {
 
-        ASSIGN_DECL_CAST(kefir_ast_constant_expression_int_t, value, iter.node->key);
+        ASSIGN_DECL_CAST(kefir_size_t, cast_identifier, iter.node->key);
         ASSIGN_DECL_CAST(struct kefir_ast_flow_control_point *, point, iter.node->value);
 
-        kefir_ast_constant_expression_int_t range = 1;
+        struct kefir_hashtree_node *switchCaseLabelNode;
+        REQUIRE_OK(kefir_hashtree_at(&flow_control_stmt->value.switchStatement.case_label_nodes,
+                                     (kefir_hashtree_key_t) cast_identifier, &switchCaseLabelNode));
+        ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, value_node, switchCaseLabelNode->value);
+
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(value_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant expression"));
+
+        const struct kefir_ast_node_base *range_end_node = NULL;
         struct kefir_hashtree_node *range_node;
-        kefir_result_t res = kefir_hashtree_at(&flow_control_stmt->value.switchStatement.case_ranges,
-                                               (kefir_hashtree_key_t) value, &range_node);
+        kefir_result_t res = kefir_hashtree_at(&flow_control_stmt->value.switchStatement.case_range_end_nodes,
+                                               (kefir_hashtree_key_t) cast_identifier, &range_node);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            range = (kefir_ast_constant_expression_int_t) range_node->value;
+            range_end_node = (const struct kefir_ast_node_base *) range_node->value;
+
+            REQUIRE(
+                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(range_end_node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant expression"));
         }
 
-        if (range == 1) {
+        const kefir_ast_constant_expression_int_t value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(value_node)->integer;
+        const kefir_ast_constant_expression_int_t range =
+            range_end_node != NULL ? KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(range_end_node)->integer : value + 1;
+
+        if (range == value + 1) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value));
             kefir_ast_type_data_model_classification_t controlling_expr_type_classification;

@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/flow_control.h"
+#include "kefir/ast/node_base.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include <string.h>
@@ -93,8 +94,9 @@ static kefir_result_t flow_control_statement_free(struct kefir_mem *mem, void *n
             break;
 
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH:
-            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.cases));
-            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.case_ranges));
+            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.case_flow_control_points));
+            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.case_label_nodes));
+            REQUIRE_OK(kefir_hashtree_free(mem, &statement->value.switchStatement.case_range_end_nodes));
             if (statement->value.switchStatement.defaultCase != NULL) {
                 statement->value.switchStatement.defaultCase = NULL;
             }
@@ -181,6 +183,34 @@ static struct kefir_ast_flow_control_point *control_point_alloc(struct kefir_mem
     return control_point;
 }
 
+static kefir_result_t free_switch_statement_case(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                 kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                 void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, value);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
+
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
+    return KEFIR_OK;
+}
+
+static kefir_result_t free_switch_statement_case_range_end(struct kefir_mem *mem, struct kefir_hashtree *tree,
+                                                           kefir_hashtree_key_t key, kefir_hashtree_value_t value,
+                                                           void *payload) {
+    UNUSED(tree);
+    UNUSED(key);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, value);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
+
+    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node));
+    return KEFIR_OK;
+}
+
 static kefir_result_t alloc_control_structure(
     struct kefir_mem *mem, struct kefir_ast_flow_control_tree *tree, kefir_ast_flow_control_structure_type_t type,
     struct kefir_tree_node *parent_node,
@@ -214,14 +244,22 @@ static kefir_result_t alloc_control_structure(
             break;
 
         case KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH: {
-            kefir_result_t res = kefir_hashtree_init(&stmt->value.switchStatement.cases, &kefir_hashtree_uint_ops);
+            kefir_result_t res =
+                kefir_hashtree_init(&stmt->value.switchStatement.case_flow_control_points, &kefir_hashtree_uint_ops);
             REQUIRE_CHAIN(&res,
-                          kefir_hashtree_init(&stmt->value.switchStatement.case_ranges, &kefir_hashtree_uint_ops));
+                          kefir_hashtree_init(&stmt->value.switchStatement.case_label_nodes, &kefir_hashtree_uint_ops));
+            REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&stmt->value.switchStatement.case_label_nodes,
+                                                          free_switch_statement_case, NULL));
+            REQUIRE_CHAIN(
+                &res, kefir_hashtree_init(&stmt->value.switchStatement.case_range_end_nodes, &kefir_hashtree_uint_ops));
+            REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&stmt->value.switchStatement.case_range_end_nodes,
+                                                          free_switch_statement_case_range_end, NULL));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, stmt);
                 return res;
             });
 
+            stmt->value.switchStatement.num_of_cases = 0;
             stmt->value.switchStatement.defaultCase = NULL;
             stmt->value.switchStatement.controlling_expression_type = NULL;
             stmt->value.switchStatement.end = NULL;
@@ -267,8 +305,9 @@ static kefir_result_t alloc_control_structure(
     kefir_result_t res = kefir_tree_insert_child(mem, parent_node, stmt, &control_struct_tree_node);
     REQUIRE_ELSE(res == KEFIR_OK, {
         if (type == KEFIR_AST_FLOW_CONTROL_STRUCTURE_SWITCH) {
-            kefir_hashtree_free(mem, &stmt->value.switchStatement.case_ranges);
-            kefir_hashtree_free(mem, &stmt->value.switchStatement.cases);
+            kefir_hashtree_free(mem, &stmt->value.switchStatement.case_range_end_nodes);
+            kefir_hashtree_free(mem, &stmt->value.switchStatement.case_label_nodes);
+            kefir_hashtree_free(mem, &stmt->value.switchStatement.case_flow_control_points);
         } else if (type == KEFIR_AST_FLOW_CONTROL_BRANCHING_POINT) {
             KEFIR_FREE(mem, stmt->value.branching_point);
         }
