@@ -141,7 +141,8 @@ kefir_result_t kefir_ir_format_instr_immediate(struct kefir_json_output *json, c
             REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64));
             break;
 
-        case KEFIR_IR_OPCODE_BITINT_CONST: {
+        case KEFIR_IR_OPCODE_BITINT_SIGNED_CONST:
+        case KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST: {
             const struct kefir_bigint *bigint;
             REQUIRE_OK(kefir_ir_module_get_bigint(module, (kefir_id_t) instr->arg.u32[0], &bigint));
             REQUIRE_OK(kefir_json_output_bigint(json, bigint));

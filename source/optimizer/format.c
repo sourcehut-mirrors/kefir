@@ -837,7 +837,8 @@ static kefir_result_t format_operation_immediate(struct kefir_json_output *json,
             REQUIRE_OK(id_format(json, oper->parameters.imm.block_ref));
             break;
 
-        case KEFIR_IR_OPCODE_BITINT_CONST: {
+        case KEFIR_IR_OPCODE_BITINT_SIGNED_CONST:
+        case KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST: {
             const struct kefir_bigint *bigint;
             REQUIRE_OK(
                 kefir_ir_module_get_bigint(module->ir_module, (kefir_id_t) oper->parameters.imm.bitint_ref, &bigint));

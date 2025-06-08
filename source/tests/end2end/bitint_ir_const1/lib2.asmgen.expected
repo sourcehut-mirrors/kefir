@@ -12,7 +12,7 @@
                         "code": [
                             {
                                 "id": 0,
-                                "opcode": "bitint_const",
+                                "opcode": "bitint_signed_const",
                                 "value": "0x123456782746538276537428476ebdcebdabcdef744364727446efdbcfebdc",
                                 "control_next": null
                             },

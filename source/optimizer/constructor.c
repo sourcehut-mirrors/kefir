@@ -441,9 +441,15 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
-        case KEFIR_IR_OPCODE_BITINT_CONST:
-            REQUIRE_OK(
-                kefir_opt_code_builder_bitint_constant(mem, code, current_block_id, instr->arg.u32[0], &instr_ref));
+        case KEFIR_IR_OPCODE_BITINT_SIGNED_CONST:
+            REQUIRE_OK(kefir_opt_code_builder_bitint_signed_constant(mem, code, current_block_id, instr->arg.u32[0],
+                                                                     &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
+        case KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST:
+            REQUIRE_OK(kefir_opt_code_builder_bitint_unsigned_constant(mem, code, current_block_id, instr->arg.u32[0],
+                                                                       &instr_ref));
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 

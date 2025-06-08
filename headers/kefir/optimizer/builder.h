@@ -61,8 +61,12 @@ kefir_result_t kefir_opt_code_builder_int_constant(struct kefir_mem *, struct ke
 kefir_result_t kefir_opt_code_builder_uint_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                     kefir_opt_block_id_t, kefir_uint64_t,
                                                     kefir_opt_instruction_ref_t *);
-kefir_result_t kefir_opt_code_builder_bitint_constant(struct kefir_mem *, struct kefir_opt_code_container *,
-                                                      kefir_opt_block_id_t, kefir_id_t, kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_bitint_signed_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                             kefir_opt_block_id_t, kefir_id_t,
+                                                             kefir_opt_instruction_ref_t *);
+kefir_result_t kefir_opt_code_builder_bitint_unsigned_constant(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                               kefir_opt_block_id_t, kefir_id_t,
+                                                               kefir_opt_instruction_ref_t *);
 kefir_result_t kefir_opt_code_builder_float32_constant(struct kefir_mem *, struct kefir_opt_code_container *,
                                                        kefir_opt_block_id_t, kefir_float32_t,
                                                        kefir_opt_instruction_ref_t *);

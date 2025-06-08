@@ -263,17 +263,33 @@ kefir_result_t kefir_opt_code_builder_uint_constant(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_code_builder_bitint_constant(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                      kefir_opt_block_id_t block_id, kefir_id_t bitint_ref,
-                                                      kefir_opt_instruction_ref_t *instr_id_ptr) {
+kefir_result_t kefir_opt_code_builder_bitint_signed_constant(struct kefir_mem *mem,
+                                                             struct kefir_opt_code_container *code,
+                                                             kefir_opt_block_id_t block_id, kefir_id_t bitint_ref,
+                                                             kefir_opt_instruction_ref_t *instr_id_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
 
-    REQUIRE_OK(
-        kefir_opt_code_builder_add_instruction(mem, code, block_id,
-                                               &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_BITINT_CONST,
-                                                                              .parameters.imm.bitint_ref = bitint_ref},
-                                               false, instr_id_ptr));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST,
+                                       .parameters.imm.bitint_ref = bitint_ref},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_bitint_unsigned_constant(struct kefir_mem *mem,
+                                                               struct kefir_opt_code_container *code,
+                                                               kefir_opt_block_id_t block_id, kefir_id_t bitint_ref,
+                                                               kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST,
+                                       .parameters.imm.bitint_ref = bitint_ref},
+        false, instr_id_ptr));
     return KEFIR_OK;
 }
 

@@ -467,7 +467,7 @@
             "name": "get",
             "body": [
                 {
-                    "opcode": "bitint_const",
+                    "opcode": "bitint_signed_const",
                     "arg": "0x123456782746538276537428476ebdcebdabcdef744364727446efdbcfebdc"
                 },
                 {

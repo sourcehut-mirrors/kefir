@@ -88,11 +88,16 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
                                                        (kefir_uint64_t) node->value.ulong_long));
             break;
 
-        case KEFIR_AST_BITPRECISE_CONSTANT:
+        case KEFIR_AST_BITPRECISE_CONSTANT: {
+            kefir_id_t bigint_id;
+            REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.bitprecise, &bigint_id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
+        } break;
+
         case KEFIR_AST_UNSIGNED_BITPRECISE_CONSTANT: {
             kefir_id_t bigint_id;
             REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, &node->value.bitprecise, &bigint_id));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_CONST, bigint_id));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_CONST, bigint_id));
         } break;
 
         case KEFIR_AST_FLOAT_CONSTANT:
