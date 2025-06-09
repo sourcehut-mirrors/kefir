@@ -559,19 +559,7 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
-            if (type->bitprecise.width <= 8) {
-                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT8;
-            } else if (type->bitprecise.width <= 16) {
-                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT16;
-            } else if (type->bitprecise.width <= 32) {
-                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT32;
-            } else if (type->bitprecise.width <= 64) {
-                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT64;
-            } else {
-                *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_INT64;
-                // return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                //                        "Bit-precise integers wider that 64 bits are not impemented yet");
-            }
+            *classification_ptr = KEFIR_AST_TYPE_DATA_MODEL_BITINT;
             break;
     }
 

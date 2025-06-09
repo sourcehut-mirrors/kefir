@@ -305,6 +305,7 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     switch (target_type_data_model) {
         case KEFIR_AST_TYPE_DATA_MODEL_INT8:
             // Intentionally left blank
+            // TODO Implement conversion to bitint
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT16:
@@ -318,6 +319,10 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     }
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    // TODO Implement conversion to bitint
+                    break;
 
                 default:
                     // Intentionally left blank
@@ -347,6 +352,10 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffffULL));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     }
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    // TODO Implement conversion to bitint
                     break;
 
                 default:
@@ -390,10 +399,18 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     }
                     break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    // TODO Implement conversion to bitint
+                    break;
+
                 default:
                     // Intentionally left blank
                     break;
             }
+            break;
+
+        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+            // TODO Implement conversion from bitint
             break;
 
         default:

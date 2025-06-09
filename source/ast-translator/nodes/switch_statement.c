@@ -118,6 +118,10 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                                                                KEFIR_IR_COMPARE_INT64_EQUALS));
                     break;
 
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                           "Full bit-precise integer support is not implemented yet");
+
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
             }
@@ -206,6 +210,10 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
                                                                KEFIR_IR_COMPARE_INT64_EQUALS));
                     break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                           "Full bit-precise integer support is not implemented yet");
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

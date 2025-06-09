@@ -154,6 +154,10 @@ static kefir_result_t translate_arithmetic_unary(struct kefir_mem *mem, struct k
                             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_NEG, 0));
                             break;
 
+                        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                                   "Full bit-precise integer support is not implemented yet");
+
                         default:
                             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
                     }
@@ -195,6 +199,9 @@ static kefir_result_t translate_unary_inversion(struct kefir_mem *mem, struct ke
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_NOT, 0));
             break;
 
+        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
     }
@@ -231,6 +238,10 @@ static kefir_result_t translate_logical_not_inversion(struct kefir_mem *mem,
             case KEFIR_AST_TYPE_DATA_MODEL_INT64:
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_NOT, 0));
                 break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                       "Full bit-precise integer support is not implemented yet");
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected condition type");
@@ -387,6 +398,10 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, diff));
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
                 break;
+
+            case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                       "Full bit-precise integer support is not implemented yet");
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
