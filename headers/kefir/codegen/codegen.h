@@ -55,4 +55,7 @@ kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *, struct kefir_codeg
 
 extern const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration;
 
+extern const char KefirCodegenBigintRuntime[];
+extern kefir_uint64_t KefirCodegenBigintRuntimeLength;
+
 #endif

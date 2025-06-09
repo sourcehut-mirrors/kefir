@@ -72,30 +72,25 @@ static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_c
     const char *filename = "<predefined-defs>";
 
     struct kefir_token_buffer buffer;
+    struct kefir_ast_translation_unit *defs_unit = NULL;
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
 
     kefir_result_t res =
         kefir_compiler_preprocess_lex(mem, context, &context->builtin_token_allocator, &buffer, KefirPredefinedDefs,
                                       KefirPredefinedDefsLength, filename, filename);
+    REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_token_buffer_free(mem, &buffer);
         return res;
     });
 
-    struct kefir_ast_translation_unit *defs_unit = NULL;
-    REQUIRE_OK(kefir_compiler_parse(mem, context, &buffer, &defs_unit));
-
     res = kefir_token_buffer_free(mem, &buffer);
+    REQUIRE_CHAIN(&res, kefir_compiler_analyze(mem, context, KEFIR_AST_NODE_BASE(defs_unit)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));
         return res;
     });
 
-    res = kefir_compiler_analyze(mem, context, KEFIR_AST_NODE_BASE(defs_unit));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit));
-        return res;
-    });
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(defs_unit)));
     return KEFIR_OK;
 }
