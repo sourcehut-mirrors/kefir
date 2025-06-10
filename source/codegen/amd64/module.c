@@ -53,6 +53,7 @@ kefir_result_t kefir_codegen_amd64_module_init(struct kefir_codegen_amd64_module
     module->liveness = liveness;
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, on_function_free, NULL));
+    REQUIRE_OK(kefir_hashtreeset_init(&module->required_runtime_functions, &kefir_hashtree_str_ops));
     return KEFIR_OK;
 }
 
@@ -60,6 +61,7 @@ kefir_result_t kefir_codegen_amd64_module_free(struct kefir_mem *mem, struct kef
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &module->required_runtime_functions));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->functions));
     memset(module, 0, sizeof(struct kefir_codegen_amd64_module));
     return KEFIR_OK;
@@ -116,5 +118,20 @@ kefir_result_t kefir_codegen_amd64_module_function(const struct kefir_codegen_am
     REQUIRE_OK(res);
 
     *function_ptr = (struct kefir_codegen_amd64_function *) node->value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_codegen_amd64_module_require_runtime(struct kefir_mem *mem,
+                                                          struct kefir_codegen_amd64_module *module,
+                                                          const char *function) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 codegen module"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid runtime function name"));
+
+    function = kefir_string_pool_insert(mem, &module->module->ir_module->symbols, function, NULL);
+    REQUIRE(function != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert runtime function name into string pool"));
+
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &module->required_runtime_functions, (kefir_hashtreeset_entry_t) function));
     return KEFIR_OK;
 }

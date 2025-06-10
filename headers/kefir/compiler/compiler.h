@@ -53,6 +53,11 @@ typedef struct kefir_compiler_extensions {
     void *payload;
 } kefir_compiler_extensions_t;
 
+typedef struct kefir_compiler_codegen_runtime_hooks {
+    struct kefir_codegen_runtime_hooks hooks;
+    const struct kefir_compiler_context *compiler_context;
+} kefir_compiler_codegen_runtime_hooks_t;
+
 typedef struct kefir_compiler_context {
     struct kefir_compiler_profile *profile;
     const struct kefir_preprocessor_source_locator *source_locator;
@@ -70,6 +75,9 @@ typedef struct kefir_compiler_context {
     const struct kefir_compiler_extensions *extensions;
     void *extension_payload;
 } kefir_compiler_context_t;
+
+kefir_result_t kefir_compiler_init_runtime_hooks(const struct kefir_compiler_context *,
+                                                 struct kefir_compiler_codegen_runtime_hooks *);
 
 struct kefir_mem *kefir_system_memalloc(void);
 kefir_result_t kefir_compiler_context_init(struct kefir_mem *, struct kefir_compiler_context *,

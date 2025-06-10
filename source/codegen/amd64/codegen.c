@@ -597,7 +597,9 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
 
     REQUIRE_OK(
         KEFIR_AMD64_XASMGEN_SECTION(&codegen_module->codegen->xasmgen, ".text", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
+    if (!codegen_module->codegen->config->runtime_function_generator_mode) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_BEGIN));
+    }
 
     kefir_bool_t has_constructors = false;
     kefir_bool_t has_destructors = false;
@@ -625,7 +627,9 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     }
 
     REQUIRE_OK(translate_global_inline_assembly(codegen_module->codegen, codegen_module->module));
-    REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
+    if (!codegen_module->codegen->config->runtime_function_generator_mode) {
+        REQUIRE_OK(KEFIR_AMD64_XASMGEN_LABEL(&codegen_module->codegen->xasmgen, "%s", KEFIR_AMD64_TEXT_SECTION_END));
+    }
 
     REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
     REQUIRE_OK(translate_data(mem, codegen_module));
@@ -642,6 +646,16 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     if (codegen_module->codegen->config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEWLINE(&codegen_module->codegen->xasmgen, 1));
         REQUIRE_OK(kefir_codegen_amd64_generate_dwarf_debug_info(mem, codegen_module));
+    }
+
+    if (!codegen_module->codegen->config->runtime_function_generator_mode &&
+        !kefir_hashtreeset_empty(&codegen_module->required_runtime_functions)) {
+        REQUIRE(codegen_module->codegen->runtime_hooks != NULL &&
+                    codegen_module->codegen->runtime_hooks->generate_runtime_functions != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to generate required runtime functions"));
+        REQUIRE_OK(codegen_module->codegen->runtime_hooks->generate_runtime_functions(
+            mem, kefir_asm_amd64_xasmgen_get_output(&codegen_module->codegen->xasmgen),
+            &codegen_module->required_runtime_functions, codegen_module->codegen->runtime_hooks->payload));
     }
 
     return KEFIR_OK;
@@ -714,6 +728,7 @@ static kefir_result_t build_pipeline(struct kefir_mem *mem, struct kefir_codegen
 
 kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_codegen_amd64 *codegen, FILE *output,
                                         kefir_abi_amd64_variant_t abi_variant,
+                                        const struct kefir_codegen_runtime_hooks *runtime_hooks,
                                         const struct kefir_codegen_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(codegen != NULL,
@@ -733,6 +748,7 @@ kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *mem, struct kefir_code
     codegen->codegen.self = codegen;
     codegen->config = config;
     codegen->abi_variant = abi_variant;
+    codegen->runtime_hooks = runtime_hooks;
     REQUIRE_OK(build_pipeline(mem, codegen));
     if (config->debug_info) {
         REQUIRE_OK(KEFIR_AMD64_XASMGEN_NEW_DEBUG_INFO_TRACKER(mem, &codegen->xasmgen, &codegen->debug_info_tracker));

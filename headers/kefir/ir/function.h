@@ -48,6 +48,7 @@ typedef struct kefir_ir_function {
     struct kefir_ir_function_decl *declaration;
     struct kefir_irblock body;
     struct {
+        kefir_bool_t used;
         kefir_bool_t constructor;
         kefir_bool_t destructor;
         kefir_bool_t inline_function;

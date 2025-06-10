@@ -15,5 +15,7 @@ kefir_result_t kefir_optimizer_configuration_free(struct kefir_mem *, struct kef
 
 kefir_result_t kefir_optimizer_configuration_add_pipeline_pass(struct kefir_mem *,
                                                                struct kefir_optimizer_configuration *, const char *);
+kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *, struct kefir_optimizer_configuration *,
+                                                       const struct kefir_optimizer_configuration *);
 
 #endif

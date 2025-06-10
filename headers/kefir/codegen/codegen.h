@@ -27,6 +27,11 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/optimizer/analysis.h"
 
+typedef struct kefir_codegen_runtime_hooks {
+    kefir_result_t (*generate_runtime_functions)(struct kefir_mem *, FILE *, const struct kefir_hashtreeset *, void *);
+    void *payload;
+} kefir_codegen_runtime_hooks_t;
+
 typedef struct kefir_codegen_configuration {
     kefir_bool_t emulated_tls;
     kefir_bool_t position_independent_code;
@@ -36,6 +41,7 @@ typedef struct kefir_codegen_configuration {
     const char *pipeline_spec;
     kefir_bool_t debug_info;
     kefir_bool_t valgrind_compatible_x87;
+    kefir_bool_t runtime_function_generator_mode;
 } kefir_codegen_configuration_t;
 
 typedef struct kefir_codegen {
@@ -54,8 +60,5 @@ kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *, struct kefir_codeg
 #define KEFIR_CODEGEN_CLOSE(mem, codegen) ((codegen)->close((mem), (codegen)))
 
 extern const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration;
-
-extern const char KefirCodegenBigintRuntime[];
-extern kefir_uint64_t KefirCodegenBigintRuntimeLength;
 
 #endif

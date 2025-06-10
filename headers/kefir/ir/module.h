@@ -177,4 +177,6 @@ kefir_result_t kefir_ir_module_new_bigint(struct kefir_mem *, struct kefir_ir_mo
                                           kefir_id_t *);
 kefir_result_t kefir_ir_module_get_bigint(const struct kefir_ir_module *, kefir_id_t, const struct kefir_bigint **);
 
+kefir_result_t kefir_ir_module_mark_function_used(struct kefir_ir_module *, const char *);
+
 #endif

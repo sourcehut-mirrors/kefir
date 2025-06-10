@@ -36,6 +36,7 @@ static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefi
 
 static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
                                         const struct kefir_codegen_configuration *config,
+                                        const struct kefir_codegen_runtime_hooks *runtime_hooks,
                                         struct kefir_codegen **codegen_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
@@ -43,7 +44,8 @@ static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
 
     struct kefir_codegen_amd64 *codegen = KEFIR_MALLOC(mem, sizeof(struct kefir_codegen_amd64));
     REQUIRE(codegen != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AMD64 code generator"));
-    kefir_result_t res = kefir_codegen_amd64_init(mem, codegen, output, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, config);
+    kefir_result_t res =
+        kefir_codegen_amd64_init(mem, codegen, output, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, runtime_hooks, config);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, codegen);
         return res;
@@ -54,7 +56,7 @@ static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
 }
 
 static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *profile,
-                                                            const struct kefir_compiler_profile_configuration *config) {
+                                              const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
 
     struct kefir_ast_type_traits type_traits;
@@ -81,15 +83,18 @@ static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *pro
                                              .new_codegen = amd64_new_codegen,
                                              .free_codegen = amd64_sysv_free_codegen,
                                              .ir_target_platform = profile->ir_target_platform,
-                                             .runtime_include_dirname = NULL},
+                                             .runtime_include_dirname = NULL,
+                                             .runtime_hooks_enabled = true},
            sizeof(struct kefir_compiler_profile));
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));
-    REQUIRE_OK(kefir_lexer_context_integral_width_from_data_model(&profile->lexer_context, profile->ir_target_platform.data_model));
+    REQUIRE_OK(kefir_lexer_context_integral_width_from_data_model(&profile->lexer_context,
+                                                                  profile->ir_target_platform.data_model));
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_mem *mem, struct kefir_compiler_profile *profile,
+static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_mem *mem,
+                                                            struct kefir_compiler_profile *profile,
                                                             const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
@@ -105,12 +110,14 @@ static kefir_result_t kefir_compiler_new_amd64_sysv_profile(struct kefir_mem *me
 
 const struct Profile {
     const char *identifier;
-    kefir_result_t (*init)(struct kefir_mem *mem, struct kefir_compiler_profile *, const struct kefir_compiler_profile_configuration *);
+    kefir_result_t (*init)(struct kefir_mem *mem, struct kefir_compiler_profile *,
+                           const struct kefir_compiler_profile_configuration *);
 } Profiles[] = {{"amd64-sysv-gas", kefir_compiler_new_amd64_sysv_profile},
                 {NULL, kefir_compiler_new_amd64_sysv_profile}};
 const kefir_size_t ProfileCount = sizeof(Profiles) / sizeof(Profiles[0]);
 
-kefir_result_t kefir_compiler_profile(struct kefir_mem *mem, struct kefir_compiler_profile *profile, const char *identifier,
+kefir_result_t kefir_compiler_profile(struct kefir_mem *mem, struct kefir_compiler_profile *profile,
+                                      const char *identifier,
                                       const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));

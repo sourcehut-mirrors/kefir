@@ -33,7 +33,8 @@ kefir_result_t kefir_test_codegen_init(struct kefir_mem *mem, struct kefir_test_
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
 
     codegen->config = &KefirCodegenDefaultConfiguration;
-    REQUIRE_OK(kefir_codegen_amd64_init(mem, &codegen->new_codegen, output, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, config));
+    REQUIRE_OK(
+        kefir_codegen_amd64_init(mem, &codegen->new_codegen, output, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, NULL, config));
 
     codegen->iface.translate_optimized = translate_impl;
     codegen->iface.close = close_impl;

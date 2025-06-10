@@ -32,3 +32,23 @@ kefir_result_t kefir_optimizer_configuration_add_pipeline_pass(struct kefir_mem 
     REQUIRE_OK(kefir_optimizer_pipeline_add(mem, &conf->pipeline, pass));
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_optimizer_configuration_copy_from(struct kefir_mem *mem,
+                                                       struct kefir_optimizer_configuration *dst_conf,
+                                                       const struct kefir_optimizer_configuration *src_conf) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dst_conf != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination optimizer configuration"));
+    REQUIRE(src_conf != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source optimizer configuration"));
+
+    dst_conf->max_inline_depth = src_conf->max_inline_depth;
+    dst_conf->max_inlines_per_function = src_conf->max_inlines_per_function;
+    for (const struct kefir_list_entry *iter = kefir_list_head(&src_conf->pipeline.pipeline); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(struct kefir_optimizer_pass *, pass, iter->value);
+        REQUIRE_OK(kefir_optimizer_pipeline_add(mem, &dst_conf->pipeline, pass));
+    }
+    return KEFIR_OK;
+}

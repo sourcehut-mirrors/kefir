@@ -34,9 +34,10 @@ typedef struct kefir_compiler_profile {
     struct kefir_ir_target_platform ir_target_platform;
     kefir_bool_t optimizer_enabled;
     const char *runtime_include_dirname;
+    kefir_bool_t runtime_hooks_enabled;
 
     kefir_result_t (*new_codegen)(struct kefir_mem *, FILE *, const struct kefir_codegen_configuration *,
-                                  struct kefir_codegen **);
+                                  const struct kefir_codegen_runtime_hooks *, struct kefir_codegen **);
     kefir_result_t (*free_codegen)(struct kefir_mem *, struct kefir_codegen *);
 } kefir_compiler_profile_t;
 

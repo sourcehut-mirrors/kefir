@@ -355,7 +355,7 @@ static kefir_result_t initialize_symbol_queue(struct kefir_mem *mem, struct kefi
 
         ASSIGN_DECL_CAST(const char *, symbol, node->key);
         ASSIGN_DECL_CAST(const struct kefir_ir_function *, function, node->value);
-        if (function->flags.constructor || function->flags.destructor) {
+        if (function->flags.constructor || function->flags.destructor || function->flags.used) {
             REQUIRE_OK(kefir_queue_push(mem, symbol_queue, (kefir_queue_entry_t) symbol));
         }
     }

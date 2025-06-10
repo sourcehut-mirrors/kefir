@@ -23,11 +23,6 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-const char KefirCodegenBigintRuntime[] = {
-#include STRINGIFY(KEFIR_CODEGEN_KEFIR_BIGINT_INCLUDE)
-};
-kefir_uint64_t KefirCodegenBigintRuntimeLength = sizeof(KefirCodegenBigintRuntime);
-
 const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .emulated_tls = false,
     .position_independent_code = false,
@@ -36,7 +31,8 @@ const struct kefir_codegen_configuration KefirCodegenDefaultConfiguration = {
     .print_details = NULL,
     .pipeline_spec = NULL,
     .debug_info = false,
-    .valgrind_compatible_x87 = true};
+    .valgrind_compatible_x87 = true,
+    .runtime_function_generator_mode = false};
 
 kefir_result_t kefir_codegen_translate_ir(struct kefir_mem *mem, struct kefir_codegen *codegen,
                                           struct kefir_ir_module *ir_module) {

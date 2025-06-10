@@ -781,3 +781,18 @@ kefir_result_t kefir_ir_module_get_bigint(const struct kefir_ir_module *module, 
     *bigint_ptr = (const struct kefir_bigint *) node->value;
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ir_module_mark_function_used(struct kefir_ir_module *module, const char *identifier) {
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
+
+    struct kefir_hashtree_node *node = NULL;
+    kefir_result_t res = kefir_hashtree_at(&module->functions, (kefir_hashtree_key_t) identifier, &node);
+    if (res == KEFIR_NOT_FOUND) {
+        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested IR function");
+    }
+    REQUIRE_OK(res);
+
+    ASSIGN_DECL_CAST(struct kefir_ir_function *, function, node->value);
+    function->flags.used = true;
+    return KEFIR_OK;
+}

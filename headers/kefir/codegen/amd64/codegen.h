@@ -35,9 +35,11 @@ typedef struct kefir_codegen_amd64 {
     struct kefir_asm_amd64_xasmgen_helpers xasmgen_helpers;
     struct kefir_asmcmp_pipeline pipeline;
     kefir_amd64_xasmgen_debug_info_tracker_t debug_info_tracker;
+    const struct kefir_codegen_runtime_hooks *runtime_hooks;
 } kefir_codegen_amd64_t;
 
 kefir_result_t kefir_codegen_amd64_init(struct kefir_mem *, struct kefir_codegen_amd64 *, FILE *,
-                                        kefir_abi_amd64_variant_t, const struct kefir_codegen_configuration *);
+                                        kefir_abi_amd64_variant_t, const struct kefir_codegen_runtime_hooks *,
+                                        const struct kefir_codegen_configuration *);
 
 #endif

@@ -523,8 +523,16 @@ kefir_result_t kefir_compiler_codegen(struct kefir_mem *mem, struct kefir_compil
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR module"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
 
+    struct kefir_compiler_codegen_runtime_hooks runtime_hooks;
+    const struct kefir_codegen_runtime_hooks *runtime_hooks_ptr = NULL;
+    if (context->profile->runtime_hooks_enabled) {
+        REQUIRE_OK(kefir_compiler_init_runtime_hooks(context, &runtime_hooks));
+        runtime_hooks_ptr = &runtime_hooks.hooks;
+    }
+
     struct kefir_codegen *codegen = NULL;
-    REQUIRE_OK(context->profile->new_codegen(mem, output, &context->codegen_configuration, &codegen));
+    REQUIRE_OK(
+        context->profile->new_codegen(mem, output, &context->codegen_configuration, runtime_hooks_ptr, &codegen));
     kefir_result_t res = KEFIR_CODEGEN_TRANSLATE(mem, codegen, module);
     REQUIRE_ELSE(res == KEFIR_OK, {
         context->profile->free_codegen(mem, codegen);
@@ -541,8 +549,16 @@ kefir_result_t kefir_compiler_codegen_optimized(struct kefir_mem *mem, struct ke
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(output != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
 
+    struct kefir_compiler_codegen_runtime_hooks runtime_hooks;
+    const struct kefir_codegen_runtime_hooks *runtime_hooks_ptr = NULL;
+    if (context->profile->runtime_hooks_enabled) {
+        REQUIRE_OK(kefir_compiler_init_runtime_hooks(context, &runtime_hooks));
+        runtime_hooks_ptr = &runtime_hooks.hooks;
+    }
+
     struct kefir_codegen *codegen = NULL;
-    REQUIRE_OK(context->profile->new_codegen(mem, output, &context->codegen_configuration, &codegen));
+    REQUIRE_OK(
+        context->profile->new_codegen(mem, output, &context->codegen_configuration, runtime_hooks_ptr, &codegen));
     kefir_result_t res = KEFIR_CODEGEN_TRANSLATE_OPTIMIZED(mem, codegen, module);
     REQUIRE_ELSE(res == KEFIR_OK, {
         context->profile->free_codegen(mem, codegen);

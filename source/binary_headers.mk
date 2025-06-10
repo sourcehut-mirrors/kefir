@@ -5,19 +5,19 @@ $(BIN_HEADERS_DESTDIR)/cc1/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_HELP
 $(BIN_HEADERS_DESTDIR)/driver/help.binary.h: $(GENERATED_HELP_DIR)/kefir.1.txt
 $(BIN_HEADERS_DESTDIR)/driver/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_HELP_DIR)/kefir.1.txt --zero
 
-$(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.h: $(wildcard $(HEADERS_DIR)/kefir_bigint/*.h)
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h: $(wildcard $(BIN_HEADERS_INCDIR)/kefir_bigint/*.h)
 	@echo "Generating $@"
 	@mkdir -p "$(shell dirname $@)"
-	@$(CC) -E -P -I "$(HEADERS_DIR)" \
+	@$(BIN_HEADERS_CC) -E -P -I "$(BIN_HEADERS_INCDIR)" \
 		-D__KEFIR_BIGINT_USE_BIGINT_IMPL__  \
 		-D__KEFIR_BIGINT_CHAR_BIT=8 \
 		-D__KEFIR_BIGINT_FLT_MANT_DIG=__FLT_MANT_DIG__ \
 		-D__KEFIR_BIGINT_DBL_MANT_DIG=__DBL_MANT_DIG__ \
 		-D__KEFIR_BIGINT_LDBL_MANT_DIG=__LDBL_MANT_DIG__ \
-		"$(HEADERS_DIR)/kefir_bigint/bigint.h" > "$@.tmp"
+		"$(BIN_HEADERS_INCDIR)/kefir_bigint/bigint.h" > "$@.tmp"
 	@mv "$@.tmp" "$@"
-$(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.binary.h: $(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.h
-$(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.h --zero
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h
+$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h: BINARY_HEADER_CONTENT=$(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h --zero
 
 $(BIN_HEADERS_DESTDIR)/compiler/compiler.deps: $(BIN_HEADERS_DESTDIR)/compiler/predefined_defs.binary.h
 	@mkdir -p $(shell dirname "$@")
@@ -35,6 +35,6 @@ $(BIN_HEADERS_DESTDIR)/web/main.deps: $(BIN_HEADERS_DESTDIR)/driver/help.binary.
 	@mkdir -p $(shell dirname "$@")
 	@echo '-I$(shell dirname "$@")/../driver -DKEFIR_DRIVER_HELP_INCLUDE=help.binary.h' > $@
 
-$(BIN_HEADERS_DESTDIR)/codegen/codegen.deps: $(BIN_HEADERS_DESTDIR)/codegen/kefir_bigint.binary.h
+$(BIN_HEADERS_DESTDIR)/compiler/runtime.deps: $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.binary.h
 	@mkdir -p $(shell dirname "$@")
-	@echo "-I$(shell dirname "$@") -DKEFIR_CODEGEN_KEFIR_BIGINT_INCLUDE=kefir_bigint.binary.h" >> $@
+	@echo "-I$(shell dirname "$@") -DKEFIR_COMPILER_RUNTIME_KEFIR_BIGINT_INCLUDE=kefir_bigint.binary.h" >> $@
