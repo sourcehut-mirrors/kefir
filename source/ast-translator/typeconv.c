@@ -304,8 +304,22 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
     REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &origin_type_data_model));
     switch (target_type_data_model) {
         case KEFIR_AST_TYPE_DATA_MODEL_INT8:
-            // Intentionally left blank
-            // TODO Implement conversion to bitint
+            switch (origin_type_data_model) {
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_SIGNED,
+                                                                   origin->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_UNSIGNED,
+                                                                   origin->bitprecise.width));
+                    }
+                    break;
+
+                default:
+                    // Intentionally left blank
+                    break;
+            }
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_INT16:
@@ -319,9 +333,17 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xffULL));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
                     }
+                    break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    // TODO Implement conversion to bitint
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_SIGNED,
+                                                                   origin->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_UNSIGNED,
+                                                                   origin->bitprecise.width));
+                    }
                     break;
 
                 default:
@@ -355,7 +377,14 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    // TODO Implement conversion to bitint
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_SIGNED,
+                                                                   origin->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_UNSIGNED,
+                                                                   origin->bitprecise.width));
+                    }
                     break;
 
                 default:
@@ -400,7 +429,14 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    // TODO Implement conversion to bitint
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_SIGNED,
+                                                                   origin->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GET_UNSIGNED,
+                                                                   origin->bitprecise.width));
+                    }
                     break;
 
                 default:

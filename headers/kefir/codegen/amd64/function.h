@@ -347,6 +347,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(mul_overflow, KEFIR_OPT_OPCODE_MUL_OVERFLOW) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) _separator \
+    _def(bitint_get_signed, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED) _separator \
+    _def(bitint_get_unsigned, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

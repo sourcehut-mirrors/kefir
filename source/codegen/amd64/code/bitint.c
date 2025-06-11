@@ -22,8 +22,14 @@
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/module.h"
 #include "kefir/codegen/amd64/symbolic_labels.h"
+#include "kefir/target/abi/amd64/return.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+
+#define BIGINT_GET_SIGNED_VALUE_FN "__kefir_bigint_get_signed_value"
+#define BIGINT_GET_UNSIGNED_VALUE_FN "__kefir_bigint_get_unsigned_value"
+
+#define QWORD_BITS (KEFIR_AMD64_ABI_QWORD * 8)
 
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_const)(struct kefir_mem *mem,
                                                                   struct kefir_codegen_amd64_function *function,
@@ -37,8 +43,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_const)(struct kefir_m
                                           &bigint));
 
     kefir_asmcmp_virtual_register_index_t result_vreg;
-    const kefir_size_t qword_bits = KEFIR_AMD64_ABI_QWORD * 8;
-    if (bigint->bitwidth <= qword_bits) {
+    if (bigint->bitwidth <= QWORD_BITS) {
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
 
@@ -68,26 +73,102 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_const)(struct kefir_m
             }
         }
     } else {
-        const kefir_size_t qwords = (bigint->bitwidth + qword_bits - 1) / qword_bits;
+        const kefir_size_t qwords = (bigint->bitwidth + QWORD_BITS - 1) / QWORD_BITS;
         REQUIRE_OK(
             kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1, &result_vreg));
 
         for (kefir_size_t i = 0; i < qwords; i++) {
             kefir_uint64_t part;
-            REQUIRE_OK(kefir_bigint_get_bits(bigint, i * qword_bits, qword_bits / 2, &part));
+            REQUIRE_OK(kefir_bigint_get_bits(bigint, i * QWORD_BITS, QWORD_BITS / 2, &part));
             REQUIRE_OK(
                 kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                        &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD,
                                                                            KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
                                        &KEFIR_ASMCMP_MAKE_INT(part), NULL));
 
-            REQUIRE_OK(kefir_bigint_get_bits(bigint, i * qword_bits + qword_bits / 2, qword_bits / 2, &part));
+            REQUIRE_OK(kefir_bigint_get_bits(bigint, i * QWORD_BITS + QWORD_BITS / 2, QWORD_BITS / 2, &part));
             REQUIRE_OK(kefir_asmcmp_amd64_mov(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(result_vreg, i * KEFIR_AMD64_ABI_QWORD + KEFIR_AMD64_ABI_QWORD / 2,
                                                     KEFIR_ASMCMP_OPERAND_VARIANT_32BIT),
                 &KEFIR_ASMCMP_MAKE_INT(part), NULL));
         }
+    }
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_get_signed)(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+    if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             result_vreg, arg_vreg, NULL));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_sar(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
+    }
+
+    REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
+    return KEFIR_OK;
+}
+
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_get_unsigned)(
+    struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+    const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t result_vreg, arg_vreg;
+    REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                 KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+    if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             result_vreg, arg_vreg, NULL));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_shr(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_mov(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG(result_vreg),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(arg_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
     }
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));

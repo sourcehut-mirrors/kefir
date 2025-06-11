@@ -801,6 +801,18 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef UNARY_OP
 
+#define BITINT_UNARY_OP(_id, _opcode)                                                                                  \
+    case _opcode:                                                                                                      \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                          \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr->arg.u64, instr_ref2, &instr_ref)); \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                           \
+        break;
+
+            BITINT_UNARY_OP(bitint_get_signed, KEFIR_IR_OPCODE_BITINT_GET_SIGNED)
+            BITINT_UNARY_OP(bitint_get_unsigned, KEFIR_IR_OPCODE_BITINT_GET_UNSIGNED)
+
+#undef BITINT_UNARY_OP
+
         case KEFIR_IR_OPCODE_SCALAR_COMPARE: {
             kefir_opt_comparison_operation_t compare_op;
             REQUIRE_OK(get_comparison_operation(instr->arg.u64, &compare_op));

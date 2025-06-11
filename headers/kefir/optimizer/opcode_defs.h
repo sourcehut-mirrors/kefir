@@ -45,8 +45,6 @@
     /* Constants */ \
     OPCODE(INT_CONST, "int_const", immediate) SEPARATOR \
     OPCODE(UINT_CONST, "uint_const", immediate) SEPARATOR \
-    OPCODE(BITINT_SIGNED_CONST, "bitint_signed_const", immediate) SEPARATOR \
-    OPCODE(BITINT_UNSIGNED_CONST, "bitint_unsigned_const", immediate) SEPARATOR \
     OPCODE(FLOAT32_CONST, "float32_const", immediate) SEPARATOR \
     OPCODE(FLOAT64_CONST, "float64_const", immediate) SEPARATOR \
     OPCODE(LONG_DOUBLE_CONST, "long_double_const", immediate) SEPARATOR \
@@ -285,7 +283,12 @@
     /* Overflow arithmetics */ \
     OPCODE(ADD_OVERFLOW, "add_overflow", overflow_arith) SEPARATOR \
     OPCODE(SUB_OVERFLOW, "sub_overflow", overflow_arith) SEPARATOR \
-    OPCODE(MUL_OVERFLOW, "mul_overflow", overflow_arith)
+    OPCODE(MUL_OVERFLOW, "mul_overflow", overflow_arith) SEPARATOR \
+    /* Bit-precise */ \
+    OPCODE(BITINT_SIGNED_CONST, "bitint_signed_const", immediate) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_CONST, "bitint_unsigned_const", immediate) SEPARATOR \
+    OPCODE(BITINT_GET_SIGNED, "bitint_get_signed", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_GET_UNSIGNED, "bitint_get_unsigned", bitint_ref1)
 // clang-format on
 
 #endif

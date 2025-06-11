@@ -166,6 +166,16 @@ static kefir_result_t extract_inputs_ref1(const struct kefir_opt_code_container 
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_bitint_ref1(const struct kefir_opt_code_container *code,
+                                                 const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+                                                 kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                                 void *payload) {
+    UNUSED(code);
+    UNUSED(resolve_phi);
+    INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+    return KEFIR_OK;
+}
+
 static kefir_result_t extract_inputs_ref2(const struct kefir_opt_code_container *code,
                                           const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
                                           kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
