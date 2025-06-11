@@ -288,7 +288,9 @@
     OPCODE(BITINT_SIGNED_CONST, "bitint_signed_const", immediate) SEPARATOR \
     OPCODE(BITINT_UNSIGNED_CONST, "bitint_unsigned_const", immediate) SEPARATOR \
     OPCODE(BITINT_GET_SIGNED, "bitint_get_signed", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_GET_UNSIGNED, "bitint_get_unsigned", bitint_ref1)
+    OPCODE(BITINT_GET_UNSIGNED, "bitint_get_unsigned", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_FROM_SIGNED, "bitint_from_signed", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_FROM_UNSIGNED, "bitint_from_unsigned", bitint_ref1)
 // clang-format on
 
 #endif

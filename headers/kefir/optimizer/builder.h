@@ -248,6 +248,8 @@ UNARY_OP(complex_long_double_neg);
 
 BITINT_UNARY_OP(bitint_get_signed);
 BITINT_UNARY_OP(bitint_get_unsigned);
+BITINT_UNARY_OP(bitint_from_signed);
+BITINT_UNARY_OP(bitint_from_unsigned);
 
 #undef BITINT_UNARY_OP
 
