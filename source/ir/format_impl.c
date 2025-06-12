@@ -37,6 +37,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
 #define TYPE_FMT_inline_asm u64
 #define TYPE_FMT_ref1 none
 #define TYPE_FMT_bitint_ref1 u64
+#define TYPE_FMT_bitint2_ref1 u32
 #define TYPE_FMT_ref2 none
 #define TYPE_FMT_ref3_cond condition
 #define TYPE_FMT_ref4_compare compare

@@ -1,6 +1,8 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global get0
+.type get0, @function
 .global get1
 .type get1, @function
 .global get2
@@ -25,31 +27,29 @@
 .type get11, @function
 .global get12
 .type get12, @function
-.global get1a
-.type get1a, @function
-.global get3a
-.type get3a, @function
-.global get5a
-.type get5a, @function
-.global get7a
-.type get7a, @function
-.global get9a
-.type get9a, @function
-.global get11a
-.type get11a, @function
 
 .section .text
 __kefir_text_section_begin:
+get0:
+__kefir_text_func_get0_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get0_label0:
+    movabs $3286494746042850, %rax
+    shl $37, %rax
+    sar $37, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get0_end:
+
 get1:
 __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get1_label0:
-    mov $3, %rax
-    neg %eax
-    movsx %eax, %rax
-    shl $58, %rax
-    sar $58, %rax
+    movabs $3286494746042850, %rax
+    shl $37, %rax
+    sar $37, %rax
     pop %rbp
     ret
 __kefir_text_func_get1_end:
@@ -59,10 +59,9 @@ __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get2_label0:
-    mov $10, %rcx
-    movsx %ecx, %rax
-    shl $58, %rax
-    sar $58, %rax
+    mov $19088707, %rax
+    shl $37, %rax
+    sar $37, %rax
     pop %rbp
     ret
 __kefir_text_func_get2_end:
@@ -72,11 +71,9 @@ __kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_get3_label0:
-    mov $4096, %rax
-    neg %eax
-    movsx %eax, %rax
-    shl $50, %rax
-    sar $50, %rax
+    movabs $4204523319983572, %rax
+    shl $37, %rax
+    shr $37, %rax
     pop %rbp
     ret
 __kefir_text_func_get3_end:
@@ -85,11 +82,16 @@ get4:
 __kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $16, %rsp
 _kefir_func_get4_label0:
-    mov $2048, %rcx
-    movsx %ecx, %rax
-    shl $51, %rax
-    sar $51, %rax
+    movl $2182589677, -16(%rbp)
+    movl $2146094641, -12(%rbp)
+    movl $2900818638, -8(%rbp)
+    movl $16436815, -4(%rbp)
+    mov -16(%rbp), %rax
+    shl $3, %rax
+    sar $3, %rax
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get4_end:
@@ -98,12 +100,18 @@ get5:
 __kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $32, %rsp
 _kefir_func_get5_label0:
-    mov $831467, %rax
-    neg %eax
-    movsx %eax, %rax
-    shl $40, %rax
-    sar $40, %rax
+    movl $2882400237, -32(%rbp)
+    movl $0, -28(%rbp)
+    movl $0, -24(%rbp)
+    movl $0, -20(%rbp)
+    movl $1048576, -16(%rbp)
+    movl $0, -12(%rbp)
+    mov -32(%rbp), %rax
+    shl $3, %rax
+    sar $3, %rax
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get5_end:
@@ -112,12 +120,18 @@ get6:
 __kefir_text_func_get6_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $32, %rsp
 _kefir_func_get6_label0:
-    movabs $4294967295, %rcx
-    mov $1044991, %rax
-    and %rcx, %rax
-    shl $40, %rax
-    sar $40, %rax
+    movl $2290666700, -32(%rbp)
+    movl $4294932343, -28(%rbp)
+    movl $3579141870, -24(%rbp)
+    movl $876891613, -20(%rbp)
+    movl $304227123, -16(%rbp)
+    movl $178954513, -12(%rbp)
+    mov -32(%rbp), %rax
+    shl $3, %rax
+    shr $3, %rax
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get6_end:
@@ -126,11 +140,25 @@ get7:
 __kefir_text_func_get7_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $48, %rsp
+    mov %rdi, %rcx
 _kefir_func_get7_label0:
-    movabs $64327324284627417, %rax
-    neg %rax
-    shl $4, %rax
-    sar $4, %rax
+    movabs $152627362517262, %rdx
+    neg %rdx
+    shl $1, %rdx
+    sar $1, %rdx
+    movq %rcx, -16(%rbp)
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
+    mov $200, %rsi
+    call __kefir_bigint_set_signed_integer
+    movq -16(%rbp), %rcx
+    mov %rcx, %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get7_end:
@@ -139,10 +167,22 @@ get8:
 __kefir_text_func_get8_begin:
     push %rbp
     mov %rsp, %rbp
+    sub $48, %rsp
+    mov %rdi, %rcx
 _kefir_func_get8_label0:
-    movabs $1094394507244, %rax
-    shl $4, %rax
-    sar $4, %rax
+    movabs $152627362517262, %rdx
+    movq %rcx, -16(%rbp)
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
+    mov $200, %rsi
+    call __kefir_bigint_set_signed_integer
+    movq -16(%rbp), %rcx
+    mov %rcx, %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get8_end:
@@ -151,16 +191,21 @@ get9:
 __kefir_text_func_get9_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $48, %rsp
+    mov %rdi, %rcx
 _kefir_func_get9_label0:
-    movabs $1028332837181762172, %rdx
-    neg %rdx
-    leaq -16(%rbp), %rax
+    movabs $212205289333297, %rdx
+    movq %rcx, -16(%rbp)
+    leaq -48(%rbp), %rax
     mov %rax, %rdi
-    mov $111, %rsi
-    call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    mov $200, %rsi
+    call __kefir_bigint_set_unsigned_integer
+    movq -16(%rbp), %rcx
+    mov %rcx, %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -170,15 +215,43 @@ get10:
 __kefir_text_func_get10_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $16, %rsp
+    sub $80, %rsp
+    mov %rdi, %r8
 _kefir_func_get10_label0:
-    movabs $3991073699158421302, %rdx
-    leaq -16(%rbp), %rax
+    movabs $8372472467146471642, %rdx
+    neg %rdx
+    movq %r8, -64(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
-    mov $111, %rsi
-    call __kefir_bigint_set_unsigned_integer
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
+    mov $128, %rsi
+    call __kefir_bigint_set_signed_integer
+    movq -64(%rbp), %r8
+    movq %r8, -8(%rbp)
+    mov -80(%rbp), %rax
+    mov %rax, -64(%rbp)
+    mov -72(%rbp), %rax
+    mov %rax, -56(%rbp)
+    leaq -64(%rbp), %rax
+    mov %rax, %rdi
+    mov $128, %rsi
+    mov $430, %rdx
+    call __kefir_bigint_cast_signed
+    movq -8(%rbp), %r8
+    mov %r8, %rax
+    movq -64(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -56(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -48(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -40(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -32(%rbp), %rcx
+    movq %rcx, 32(%rax)
+    movq -24(%rbp), %rcx
+    movq %rcx, 40(%rax)
+    movq -16(%rbp), %rcx
+    movq %rcx, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -188,24 +261,43 @@ get11:
 __kefir_text_func_get11_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    sub $96, %rsp
+    mov %rdi, %r8
 _kefir_func_get11_label0:
-    movabs $1028332837181762172, %rdx
-    neg %rdx
-    movq %rcx, -16(%rbp)
-    leaq -64(%rbp), %rax
+    movl $1179063874, -96(%rbp)
+    movl $1462268803, -92(%rbp)
+    movl $656962872, -88(%rbp)
+    movl $1899524680, -84(%rbp)
+    movl $925135430, -80(%rbp)
+    movl $8, -76(%rbp)
+    movq %r8, -16(%rbp)
+    mov -96(%rbp), %rax
+    mov %rax, -72(%rbp)
+    mov -88(%rbp), %rax
+    mov %rax, -64(%rbp)
+    mov -80(%rbp), %rax
+    mov %rax, -56(%rbp)
+    leaq -72(%rbp), %rax
     mov %rax, %rdi
-    mov $350, %rsi
-    call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
+    mov $165, %rsi
+    mov $430, %rdx
+    call __kefir_bigint_cast_signed
+    movq -16(%rbp), %r8
+    mov %r8, %rax
+    movq -72(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -64(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -56(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -48(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -40(%rbp), %rcx
+    movq %rcx, 32(%rax)
+    movq -32(%rbp), %rcx
+    movq %rcx, 40(%rax)
+    movq -24(%rbp), %rcx
+    movq %rcx, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -215,122 +307,51 @@ get12:
 __kefir_text_func_get12_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
+    sub $96, %rsp
+    mov %rdi, %r8
 _kefir_func_get12_label0:
-    movabs $3991073699158421302, %rdx
-    movq %rcx, -16(%rbp)
+    movl $3687759335, -96(%rbp)
+    movl $1668440555, -92(%rbp)
+    movl $3326486388, -88(%rbp)
+    movl $3418209466, -84(%rbp)
+    movl $3688614891, -80(%rbp)
+    movl $3183262699, -76(%rbp)
+    movl $12238014, -72(%rbp)
+    movl $0, -68(%rbp)
+    movq %r8, -8(%rbp)
+    mov -96(%rbp), %rax
+    mov %rax, -64(%rbp)
+    mov -88(%rbp), %rax
+    mov %rax, -56(%rbp)
+    mov -80(%rbp), %rax
+    mov %rax, -48(%rbp)
+    mov -72(%rbp), %rax
+    mov %rax, -40(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
-    mov $350, %rsi
-    call __kefir_bigint_set_unsigned_integer
+    mov $216, %rsi
+    mov $430, %rdx
+    call __kefir_bigint_cast_unsigned
+    movq -8(%rbp), %r8
+    mov %r8, %rax
+    movq -64(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -56(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -48(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -40(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -32(%rbp), %rcx
+    movq %rcx, 32(%rax)
+    movq -24(%rbp), %rcx
+    movq %rcx, 40(%rax)
     movq -16(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
+    movq %rcx, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_get12_end:
-
-get1a:
-__kefir_text_func_get1a_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_get1a_label0:
-    mov $3, %rcx
-    movsx %ecx, %rax
-    shl $58, %rax
-    sar $58, %rax
-    pop %rbp
-    ret
-__kefir_text_func_get1a_end:
-
-get3a:
-__kefir_text_func_get3a_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_get3a_label0:
-    mov $4096, %rcx
-    movsx %ecx, %rax
-    shl $50, %rax
-    sar $50, %rax
-    pop %rbp
-    ret
-__kefir_text_func_get3a_end:
-
-get5a:
-__kefir_text_func_get5a_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_get5a_label0:
-    mov $831467, %rcx
-    movsx %ecx, %rax
-    shl $40, %rax
-    sar $40, %rax
-    pop %rbp
-    ret
-__kefir_text_func_get5a_end:
-
-get7a:
-__kefir_text_func_get7a_begin:
-    push %rbp
-    mov %rsp, %rbp
-_kefir_func_get7a_label0:
-    movabs $64327324284627417, %rax
-    shl $4, %rax
-    sar $4, %rax
-    pop %rbp
-    ret
-__kefir_text_func_get7a_end:
-
-get9a:
-__kefir_text_func_get9a_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-_kefir_func_get9a_label0:
-    movabs $1028332837181762172, %rdx
-    leaq -16(%rbp), %rax
-    mov %rax, %rdi
-    mov $111, %rsi
-    call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rax
-    movq -8(%rbp), %rdx
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_get9a_end:
-
-get11a:
-__kefir_text_func_get11a_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
-    mov %rdi, %rcx
-_kefir_func_get11a_label0:
-    movabs $1028332837181762172, %rdx
-    movq %rcx, -16(%rbp)
-    leaq -64(%rbp), %rax
-    mov %rax, %rdi
-    mov $350, %rsi
-    call __kefir_bigint_set_signed_integer
-    movq -16(%rbp), %rcx
-    mov %rcx, %rax
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
-    movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
-    lea (%rbp), %rsp
-    pop %rbp
-    ret
-__kefir_text_func_get11a_end:
 
 __kefir_text_section_end:
 

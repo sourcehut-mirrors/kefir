@@ -504,7 +504,14 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    // TODO Implement conversion
+                    REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_type_signedness));
+                    if (origin_type_signedness) {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_CAST_SIGNED,
+                                                                   target->bitprecise.width, origin->bitprecise.width));
+                    } else {
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_CAST_UNSIGNED,
+                                                                   target->bitprecise.width, origin->bitprecise.width));
+                    }
                     break;
 
                 default:

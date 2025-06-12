@@ -245,13 +245,20 @@ UNARY_OP(complex_long_double_neg);
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *,           \
                                                 kefir_opt_block_id_t, kefir_size_t, kefir_opt_instruction_ref_t, \
                                                 kefir_opt_instruction_ref_t *)
+#define BITINT2_UNARY_OP(_id)                                                                          \
+    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \
+                                                kefir_opt_block_id_t, kefir_size_t, kefir_size_t,      \
+                                                kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *)
 
 BITINT_UNARY_OP(bitint_get_signed);
 BITINT_UNARY_OP(bitint_get_unsigned);
 BITINT_UNARY_OP(bitint_from_signed);
 BITINT_UNARY_OP(bitint_from_unsigned);
+BITINT2_UNARY_OP(bitint_cast_signed);
+BITINT2_UNARY_OP(bitint_cast_unsigned);
 
 #undef BITINT_UNARY_OP
+#undef BITINT2_UNARY_OP
 
 #define BINARY_OP(_id)                                                                                 \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *, struct kefir_opt_code_container *, \

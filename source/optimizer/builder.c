@@ -881,13 +881,33 @@ UNARY_OP(complex_long_double_neg, KEFIR_OPT_OPCODE_COMPLEX_LONG_DOUBLE_NEG)
             false, instr_id_ptr));                                                                                  \
         return KEFIR_OK;                                                                                            \
     }
+#define BITINT2_UNARY_OP(_id, _opcode)                                                                              \
+    kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,       \
+                                                kefir_opt_block_id_t block_id, kefir_size_t bitwidth,               \
+                                                kefir_size_t src_bitwidth, kefir_opt_instruction_ref_t ref1,        \
+                                                kefir_opt_instruction_ref_t *instr_id_ptr) {                        \
+        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));          \
+        REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container")); \
+        REQUIRE_OK(instr_exists(code, block_id, ref1, false));                                                      \
+        REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                          \
+            mem, code, block_id,                                                                                    \
+            &(struct kefir_opt_operation) {.opcode = (_opcode),                                                     \
+                                           .parameters.refs = {ref1},                                               \
+                                           .parameters.bitwidth = bitwidth,                                         \
+                                           .parameters.src_bitwidth = src_bitwidth},                                \
+            false, instr_id_ptr));                                                                                  \
+        return KEFIR_OK;                                                                                            \
+    }
 
 BITINT_UNARY_OP(bitint_get_signed, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED)
 BITINT_UNARY_OP(bitint_get_unsigned, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED)
 BITINT_UNARY_OP(bitint_from_signed, KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED)
 BITINT_UNARY_OP(bitint_from_unsigned, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED)
+BITINT2_UNARY_OP(bitint_cast_signed, KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED)
+BITINT2_UNARY_OP(bitint_cast_unsigned, KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED)
 
 #undef BITINT_UNARY_OP
+#undef BITINT2_UNARY_OP
 
 #define BINARY_OP(_id, _opcode)                                                                                        \
     kefir_result_t kefir_opt_code_builder_##_id(struct kefir_mem *mem, struct kefir_opt_code_container *code,          \

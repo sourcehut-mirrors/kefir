@@ -1,0 +1,47 @@
+/*
+    SPDX-License-Identifier: GPL-3.0
+
+    Copyright (C) 2020-2025  Jevgenijs Protopopovs
+
+    This file is part of Kefir project.
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
+#ifndef DEFINITIONS_H_
+#define DEFINITIONS_H_
+
+signed int get0(void);
+signed int get1(void);
+signed int get2(void);
+unsigned int get3(void);
+
+signed long get4(void);
+signed long get5(void);
+unsigned long get6(void);
+
+struct S4 {
+    unsigned long arr[4];
+};
+struct S4 get7(void);
+struct S4 get8(void);
+struct S4 get9(void);
+
+struct S7 {
+    unsigned long arr[7];
+};
+struct S7 get10(void);
+struct S7 get11(void);
+struct S7 get12(void);
+
+#endif

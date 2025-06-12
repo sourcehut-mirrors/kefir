@@ -26,7 +26,7 @@
 int main(void) {
     assert(get1() == 30);
     assert(get2() == 1024);
-    assert(get3() == 0xfffffe);
+    assert(get3() == (unsigned int) -2);
     assert(get4() == 0xcafebabe123ull);
 
     const struct B1 b1 = get5();
