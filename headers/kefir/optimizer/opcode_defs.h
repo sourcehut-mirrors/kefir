@@ -292,7 +292,13 @@
     OPCODE(BITINT_FROM_SIGNED, "bitint_from_signed", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_FROM_UNSIGNED, "bitint_from_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_CAST_SIGNED, "bitint_cast_signed", bitint2_ref1) SEPARATOR \
-    OPCODE(BITINT_CAST_UNSIGNED, "bitint_cast_unsigned", bitint2_ref1)
+    OPCODE(BITINT_CAST_UNSIGNED, "bitint_cast_unsigned", bitint2_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_FLOAT, "bitint_signed_to_float", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_FLOAT, "bitint_signed_to_float", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_DOUBLE, "bitint_signed_to_double", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_DOUBLE, "bitint_signed_to_double", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_SIGNED_TO_LONG_DOUBLE, "bitint_signed_to_long_double", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_LONG_DOUBLE, "bitint_signed_to_long_double", bitint_ref1)
 // clang-format on
 
 #endif

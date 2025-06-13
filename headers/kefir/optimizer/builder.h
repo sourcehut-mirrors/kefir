@@ -256,6 +256,12 @@ BITINT_UNARY_OP(bitint_from_signed);
 BITINT_UNARY_OP(bitint_from_unsigned);
 BITINT2_UNARY_OP(bitint_cast_signed);
 BITINT2_UNARY_OP(bitint_cast_unsigned);
+BITINT_UNARY_OP(bitint_signed_to_float);
+BITINT_UNARY_OP(bitint_unsigned_to_float);
+BITINT_UNARY_OP(bitint_signed_to_double);
+BITINT_UNARY_OP(bitint_unsigned_to_double);
+BITINT_UNARY_OP(bitint_signed_to_long_double);
+BITINT_UNARY_OP(bitint_unsigned_to_long_double);
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

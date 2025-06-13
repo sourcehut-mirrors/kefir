@@ -47,7 +47,18 @@ static kefir_result_t cast_to_float32(struct kefir_mem *mem, struct kefir_ir_mod
                                       const struct kefir_ast_type *origin) {
     REQUIRE_OK(obtain_real_part(builder, &origin));
 
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(origin)) {
+        kefir_bool_t origin_sign;
+        REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
+
+        if (origin_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_FLOAT,
+                                                       origin->bitprecise.width));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_FLOAT,
+                                                       origin->bitprecise.width));
+        }
+    } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
 
@@ -78,7 +89,18 @@ static kefir_result_t cast_to_float64(struct kefir_mem *mem, struct kefir_ir_mod
                                       const struct kefir_ast_type *origin) {
     REQUIRE_OK(obtain_real_part(builder, &origin));
 
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(origin)) {
+        kefir_bool_t origin_sign;
+        REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
+
+        if (origin_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DOUBLE,
+                                                       origin->bitprecise.width));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DOUBLE,
+                                                       origin->bitprecise.width));
+        }
+    } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
 
@@ -108,7 +130,18 @@ static kefir_result_t cast_to_long_double(struct kefir_mem *mem, struct kefir_ir
                                           const struct kefir_ast_type_traits *type_traits,
                                           const struct kefir_ast_type *origin) {
     REQUIRE_OK(obtain_real_part(builder, &origin));
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(origin)) {
+        kefir_bool_t origin_sign;
+        REQUIRE_OK(kefir_ast_type_is_signed(type_traits, kefir_ast_translator_normalize_type(origin), &origin_sign));
+
+        if (origin_sign) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE,
+                                                       origin->bitprecise.width));
+        } else {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE,
+                                                       origin->bitprecise.width));
+        }
+    } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(origin)) {
         kefir_bool_t origin_sign;
         REQUIRE_OK(kefir_ast_type_is_signed(type_traits, origin, &origin_sign));
 

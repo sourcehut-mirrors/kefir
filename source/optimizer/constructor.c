@@ -821,6 +821,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_UNARY_OP(bitint_from_unsigned, KEFIR_IR_OPCODE_BITINT_FROM_UNSIGNED)
             BITINT2_UNARY_OP(bitint_cast_signed, KEFIR_IR_OPCODE_BITINT_CAST_SIGNED)
             BITINT2_UNARY_OP(bitint_cast_unsigned, KEFIR_IR_OPCODE_BITINT_CAST_UNSIGNED)
+            BITINT_UNARY_OP(bitint_signed_to_float, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_FLOAT)
+            BITINT_UNARY_OP(bitint_unsigned_to_float, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_FLOAT)
+            BITINT_UNARY_OP(bitint_signed_to_double, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_DOUBLE)
+            BITINT_UNARY_OP(bitint_unsigned_to_double, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_DOUBLE)
+            BITINT_UNARY_OP(bitint_signed_to_long_double, KEFIR_IR_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE)
+            BITINT_UNARY_OP(bitint_unsigned_to_long_double, KEFIR_IR_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE)
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP
