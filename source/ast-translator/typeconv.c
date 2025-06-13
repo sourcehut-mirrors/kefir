@@ -312,19 +312,43 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
 
     REQUIRE_OK(obtain_real_part(builder, &origin));
     if (origin->tag == KEFIR_AST_TYPE_SCALAR_FLOAT) {
-        if (target_sign) {
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT_TO_BITINT_SIGNED,
+                                                           target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT_TO_BITINT_UNSIGNED,
+                                                           target->bitprecise.width));
+            }
+        } else if (target_sign) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_INT, 0));
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT32_TO_UINT, 0));
         }
     } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE) {
-        if (target_sign) {
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DOUBLE_TO_BITINT_SIGNED,
+                                                           target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_DOUBLE_TO_BITINT_UNSIGNED,
+                                                           target->bitprecise.width));
+            }
+        } else if (target_sign) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_INT, 0));
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_FLOAT64_TO_UINT, 0));
         }
     } else if (KEFIR_AST_TYPE_IS_LONG_DOUBLE(origin)) {
-        if (target_sign) {
+        if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(target)) {
+            if (target_sign) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED,
+                                                           target->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED,
+                                                           target->bitprecise.width));
+            }
+        } else if (target_sign) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_INT, 0));
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_UINT, 0));
@@ -548,7 +572,8 @@ static kefir_result_t cast_to_integer(const struct kefir_ast_type_traits *type_t
                     break;
 
                 default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected source integral type");
+                    // Intentionally left blank
+                    break;
             }
             break;
 

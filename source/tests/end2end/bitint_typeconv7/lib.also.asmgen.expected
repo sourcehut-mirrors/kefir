@@ -1,0 +1,169 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+.global get5
+.type get5, @function
+.global get6
+.type get6, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_get1_label0:
+    movd _kefir_func_get1_label1(%rip), %xmm0
+    cvttss2si %xmm0, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get1_end:
+.section .rodata
+    .align 4
+_kefir_func_get1_label1:
+    .long 1134367736
+.section .text
+
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_get2_label0:
+    movd _kefir_func_get2_label1(%rip), %xmm0
+    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    cvttss2si %xmm0, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+.section .rodata
+    .align 4
+_kefir_func_get2_label1:
+    .long 1162107126
+.section .text
+
+get3:
+__kefir_text_func_get3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_get3_label0:
+    movd _kefir_func_get3_label1(%rip), %xmm0
+    comiss __kefir_constant_float32_to_uint(%rip), %xmm0
+    jnb _kefir_func_get3_label2
+    cvttss2si %xmm0, %rax
+    jmp _kefir_func_get3_label3
+_kefir_func_get3_label2:
+    subss __kefir_constant_float32_to_uint(%rip), %xmm0
+    cvttss2si %xmm0, %rax
+    btc $63, %rax
+_kefir_func_get3_label3:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get3_end:
+.section .rodata
+    .align 4
+_kefir_func_get3_label1:
+    .long 1190489907
+.section .text
+
+get4:
+__kefir_text_func_get4_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get4_label0:
+    movq _kefir_func_get4_label1(%rip), %xmm0
+    cvttsd2si %xmm0, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get4_end:
+.section .rodata
+    .align 8
+_kefir_func_get4_label1:
+    .quad 4644234306990580433
+.section .text
+
+get5:
+__kefir_text_func_get5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+_kefir_func_get5_label0:
+    movq _kefir_func_get5_label1(%rip), %xmm0
+    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    cvttsd2si %xmm0, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get5_end:
+.section .rodata
+    .align 8
+_kefir_func_get5_label1:
+    .quad 4659126778572434309
+.section .text
+
+get6:
+__kefir_text_func_get6_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get6_label0:
+    movq _kefir_func_get6_label1(%rip), %xmm0
+    comisd __kefir_constant_float64_to_uint(%rip), %xmm0
+    jnb _kefir_func_get6_label2
+    cvttsd2si %xmm0, %rax
+    jmp _kefir_func_get6_label3
+_kefir_func_get6_label2:
+    subsd __kefir_constant_float64_to_uint(%rip), %xmm0
+    cvttsd2si %xmm0, %rax
+    btc $63, %rax
+_kefir_func_get6_label3:
+    pop %rbp
+    ret
+__kefir_text_func_get6_end:
+.section .rodata
+    .align 8
+_kefir_func_get6_label1:
+    .quad 4674364668329223782
+.section .text
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 4
+__kefir_constant_float32_to_uint:
+    .long 1593835520
+    .align 8
+__kefir_constant_float64_to_uint:
+    .long 0, 1138753536
+    .align 16
+__kefir_constant_float32_neg:
+    .long 2147483648
+    .long 0
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_float64_neg:
+    .long 0
+    .long 2147483648
+    .long 0
+    .long 0
