@@ -307,7 +307,8 @@
     OPCODE(LONG_DOUBLE_TO_BITINT_UNSIGNED, "long_double_to_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_TO_BOOL, "bitint_to_bool", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_LOAD, "bitint_load", bitint_load) SEPARATOR \
-    OPCODE(BITINT_STORE, "bitint_store", bitint_store)
+    OPCODE(BITINT_STORE, "bitint_store", bitint_store) SEPARATOR \
+    OPCODE(BITINT_ATOMIC_LOAD, "bitint_atomic_load", bitint_atomic_load)
 // clang-format on
 
 #endif

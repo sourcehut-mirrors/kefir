@@ -190,7 +190,10 @@ typedef struct kefir_opt_operation_parameters {
         struct {
             kefir_size_t bitwidth;
             union {
-                struct kefir_opt_memory_access_flags bitint_memflags;
+                struct {
+                    struct kefir_opt_memory_access_flags bitint_memflags;
+                    kefir_opt_memory_order_t bitint_atomic_memorder;
+                };
                 kefir_size_t src_bitwidth;
             };
         };

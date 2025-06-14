@@ -1,0 +1,122 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern a
+.extern b
+.extern c
+.extern d
+.extern e
+.extern f
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+.global get5
+.type get5, @function
+.global get6
+.type get6, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get1_label0:
+    movq a@GOTPCREL(%rip), %rax
+    mov (%rax), %al
+    shl $58, %rax
+    sar $58, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get2_label0:
+    movq b@GOTPCREL(%rip), %rax
+    mov (%rax), %ax
+    shl $51, %rax
+    sar $51, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get3_label0:
+    movq c@GOTPCREL(%rip), %rax
+    mov (%rax), %eax
+    shl $37, %rax
+    sar $37, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get3_end:
+
+get4:
+__kefir_text_func_get4_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get4_label0:
+    movq d@GOTPCREL(%rip), %rax
+    mov (%rax), %rax
+    shl $14, %rax
+    sar $14, %rax
+    pop %rbp
+    ret
+__kefir_text_func_get4_end:
+
+get5:
+__kefir_text_func_get5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_get5_label0:
+    movq e@GOTPCREL(%rip), %rsi
+    lea -16(%rbp), %rdx
+    mov $16, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get5_end:
+
+get6:
+__kefir_text_func_get6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    mov %rdi, %r8
+_kefir_func_get6_label0:
+    movq f@GOTPCREL(%rip), %rsi
+    movq %r8, -16(%rbp)
+    lea -64(%rbp), %rdx
+    mov $48, %rdi
+    mov $5, %rcx
+    call __atomic_load@PLT
+    movq -16(%rbp), %r8
+    mov %r8, %rax
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 32(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get6_end:
+
+__kefir_text_section_end:
+

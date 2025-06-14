@@ -27,16 +27,9 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-#define LIBATOMIC_SEQ_CST 5
+kefir_result_t kefir_codegen_amd64_get_atomic_memorder(kefir_opt_memory_order_t model, kefir_int64_t *memorder) {
+    REQUIRE(memorder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to memory order"));
 
-#define LIBATOMIC_LOAD_N(_n) "__atomic_load_" #_n
-#define LIBATOMIC_STORE_N(_n) "__atomic_store_" #_n
-#define LIBATOMIC_LOAD "__atomic_load"
-#define LIBATOMIC_STORE "__atomic_store"
-#define LIBATOMIC_CMPXCHG_N(_n) "__atomic_compare_exchange_" #_n
-#define LIBATOMIC_CMPXCHG "__atomic_compare_exchange"
-
-static kefir_result_t get_memorder(kefir_opt_memory_order_t model, kefir_int64_t *memorder) {
     *memorder = LIBATOMIC_SEQ_CST;
     switch (model) {
         case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
@@ -46,37 +39,6 @@ static kefir_result_t get_memorder(kefir_opt_memory_order_t model, kefir_int64_t
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic memory order");
     }
-    return KEFIR_OK;
-}
-
-static kefir_result_t preserve_regs(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
-                                    kefir_asmcmp_stash_index_t *stash_idx) {
-    const kefir_size_t num_of_preserved_gp_regs =
-        kefir_abi_amd64_num_of_caller_preserved_general_purpose_registers(function->codegen->abi_variant);
-    const kefir_size_t num_of_preserved_sse_regs =
-        kefir_abi_amd64_num_of_caller_preserved_sse_registers(function->codegen->abi_variant);
-
-    REQUIRE_OK(kefir_asmcmp_register_stash_new(mem, &function->code.context, stash_idx));
-
-    for (kefir_size_t i = 0; i < num_of_preserved_gp_regs; i++) {
-        kefir_asm_amd64_xasmgen_register_t reg;
-        REQUIRE_OK(
-            kefir_abi_amd64_get_caller_preserved_general_purpose_register(function->codegen->abi_variant, i, &reg));
-
-        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, *stash_idx,
-                                                   (kefir_asmcmp_physical_register_index_t) reg));
-    }
-
-    for (kefir_size_t i = 0; i < num_of_preserved_sse_regs; i++) {
-        kefir_asm_amd64_xasmgen_register_t reg;
-        REQUIRE_OK(kefir_abi_amd64_get_caller_preserved_sse_register(function->codegen->abi_variant, i, &reg));
-
-        REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, *stash_idx,
-                                                   (kefir_asmcmp_physical_register_index_t) reg));
-    }
-
-    REQUIRE_OK(kefir_asmcmp_amd64_activate_stash(
-        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), *stash_idx, NULL));
     return KEFIR_OK;
 }
 
@@ -140,7 +102,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
     const char *atomic_memory_copy_fn_name = LIBATOMIC_LOAD;
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_size_t total_size_qwords, total_alignment_qwords;
 
@@ -207,7 +169,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_complex)(
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(target_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(size_placement_vreg),
@@ -300,7 +262,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store)(struct kefir_m
                                                          value_placement_vreg, value_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     switch (instruction->operation.opcode) {
         case KEFIR_OPT_OPCODE_ATOMIC_STORE8:
@@ -367,7 +329,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_size_t total_size = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, NULL));
@@ -431,7 +393,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_copy_memory)(
                                                          source_ptr_placement_vreg, source_ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(size_placement_vreg), &KEFIR_ASMCMP_MAKE_UINT(total_size),
@@ -457,7 +419,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, result_vreg, target_ptr_placement_vreg, source_ptr_vreg,
         source_ptr_placement_vreg, memorder_placement_vreg;
@@ -504,7 +466,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_load_long_double)(
                                                          source_ptr_placement_vreg, source_ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -534,7 +496,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_float)(
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg, source_vreg,
         source_real_vreg, source_imag_vreg, source_ptr_placement_vreg, tmp_spill_area, memorder_placement_vreg;
@@ -620,7 +582,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_float)(
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(tmp_spill_area, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(size_placement_vreg),
@@ -648,7 +610,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_do
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     const kefir_size_t total_size =
         kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant) * KEFIR_AMD64_ABI_QWORD;
@@ -696,7 +658,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_complex_long_do
                                                          source_ptr_placement_vreg, source_ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(size_placement_vreg), &KEFIR_ASMCMP_MAKE_UINT(total_size),
@@ -722,7 +684,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, target_ptr_vreg, target_ptr_placement_vreg,
         source_ptr_vreg, source_ptr_placement_vreg, memorder_placement_vreg;
@@ -768,7 +730,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_store_long_double)(
         &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(source_ptr_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT), NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(
         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
@@ -880,7 +842,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_asmcmp_virtual_register_index_t size_placement_vreg, ptr_vreg, ptr_placement_vreg, expected_value_vreg,
         expected_value_location_vreg, expected_value_location_placement_vreg, desired_value_vreg,
@@ -951,7 +913,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_long
                                                          ptr_placement_vreg, ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(success_memorder_placement_vreg),
@@ -1034,7 +996,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_size_t total_size, total_alignment;
     switch (instruction->operation.opcode) {
@@ -1193,7 +1155,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          ptr_placement_vreg, ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(success_memorder_placement_vreg),
@@ -1253,7 +1215,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
     REQUIRE_OK(kefir_codegen_amd64_function_x87_flush(mem, function));
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     const kefir_size_t total_size =
         kefir_abi_amd64_complex_long_double_qword_size(function->codegen->abi_variant) * KEFIR_AMD64_ABI_QWORD;
@@ -1327,7 +1289,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_comp
                                                          ptr_placement_vreg, ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(success_memorder_placement_vreg),
@@ -1383,7 +1345,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
     struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
     const struct kefir_opt_instruction *instruction) {
     kefir_asmcmp_stash_index_t stash_idx;
-    REQUIRE_OK(preserve_regs(mem, function, &stash_idx));
+    REQUIRE_OK(kefir_codegen_amd64_function_call_preserve_regs(mem, function, NULL, &stash_idx, NULL));
 
     kefir_size_t total_size = 0, total_alignment = 0;
     REQUIRE_OK(size_of_memory_operand(mem, function, instruction, &total_size, &total_alignment));
@@ -1455,7 +1417,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(atomic_compare_exchange_memo
                                                          ptr_placement_vreg, ptr_vreg, NULL));
 
     kefir_int64_t memorder;
-    REQUIRE_OK(get_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
+    REQUIRE_OK(kefir_codegen_amd64_get_atomic_memorder(instruction->operation.parameters.atomic_op.model, &memorder));
 
     REQUIRE_OK(kefir_asmcmp_amd64_mov(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG(success_memorder_placement_vreg),

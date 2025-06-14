@@ -2410,6 +2410,13 @@ static kefir_result_t replace_references_bitint_store(struct kefir_opt_instructi
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_bitint_atomic_load(struct kefir_opt_instruction *instr,
+                                                            kefir_opt_instruction_ref_t to_ref,
+                                                            kefir_opt_instruction_ref_t from_ref) {
+    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], to_ref, from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_store_mem(struct kefir_opt_instruction *instr,
                                                    kefir_opt_instruction_ref_t to_ref,
                                                    kefir_opt_instruction_ref_t from_ref) {

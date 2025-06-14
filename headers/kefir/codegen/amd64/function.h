@@ -368,6 +368,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_to_bool, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
     _def(bitint_load, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
     _def(bitint_store, KEFIR_OPT_OPCODE_BITINT_STORE) _separator \
+    _def(bitint_atomic_load, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -470,6 +471,41 @@ kefir_result_t kefir_codegen_amd64_function_long_double_to_uint(struct kefir_mem
                                                                 struct kefir_codegen_amd64_function *,
                                                                 kefir_opt_instruction_ref_t,
                                                                 kefir_opt_instruction_ref_t);
+
+kefir_result_t kefir_codegen_amd64_get_atomic_memorder(kefir_opt_memory_order_t, kefir_int64_t *);
+
+kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem *,
+                                                               struct kefir_codegen_amd64_function *,
+                                                               const struct kefir_opt_call_node *,
+                                                               kefir_asmcmp_stash_index_t *,
+                                                               kefir_asmcmp_virtual_register_index_t *);
+
+#define BIGINT_GET_SET_SIGNED_INTEGER_FN "__kefir_bigint_set_signed_integer"
+#define BIGINT_GET_SET_UNSIGNED_INTEGER_FN "__kefir_bigint_set_unsigned_integer"
+#define BIGINT_CAST_SIGNED_FN "__kefir_bigint_cast_signed"
+#define BIGINT_CAST_UNSIGNED_FN "__kefir_bigint_cast_unsigned"
+#define BIGINT_SIGNED_TO_FLOAT_FN "__kefir_bigint_signed_to_float"
+#define BIGINT_UNSIGNED_TO_FLOAT_FN "__kefir_bigint_unsigned_to_float"
+#define BIGINT_SIGNED_TO_DOUBLE_FN "__kefir_bigint_signed_to_double"
+#define BIGINT_UNSIGNED_TO_DOUBLE_FN "__kefir_bigint_unsigned_to_double"
+#define BIGINT_SIGNED_TO_LONG_DOUBLE_FN "__kefir_bigint_signed_to_long_double"
+#define BIGINT_UNSIGNED_TO_LONG_DOUBLE_FN "__kefir_bigint_unsigned_to_long_double"
+#define BIGINT_SIGNED_FROM_FLOAT_FN "__kefir_bigint_signed_from_float"
+#define BIGINT_SIGNED_FROM_DOUBLE_FN "__kefir_bigint_signed_from_double"
+#define BIGINT_SIGNED_FROM_LONG_DOUBLE_FN "__kefir_bigint_signed_from_long_double"
+#define BIGINT_UNSIGNED_FROM_FLOAT_FN "__kefir_bigint_unsigned_from_float"
+#define BIGINT_UNSIGNED_FROM_DOUBLE_FN "__kefir_bigint_unsigned_from_double"
+#define BIGINT_UNSIGNED_FROM_LONG_DOUBLE_FN "__kefir_bigint_unsigned_from_long_double"
+#define BIGINT_IS_ZERO_FN "__kefir_bigint_is_zero"
+
+#define LIBATOMIC_SEQ_CST 5
+
+#define LIBATOMIC_LOAD_N(_n) "__atomic_load_" #_n
+#define LIBATOMIC_STORE_N(_n) "__atomic_store_" #_n
+#define LIBATOMIC_LOAD "__atomic_load"
+#define LIBATOMIC_STORE "__atomic_store"
+#define LIBATOMIC_CMPXCHG_N(_n) "__atomic_compare_exchange_" #_n
+#define LIBATOMIC_CMPXCHG "__atomic_compare_exchange"
 
 #endif
 

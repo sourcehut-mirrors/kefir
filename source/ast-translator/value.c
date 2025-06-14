@@ -516,8 +516,14 @@ kefir_result_t kefir_ast_translator_atomic_load_value(const struct kefir_ast_typ
                                                        atomic_memory_order));
             break;
 
-        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+        case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+            kefir_bool_t is_signed;
+            const kefir_uint64_t mem_flags = retrieve_memflags(type);
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, normalizer, &is_signed));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_ATOMIC_LOAD,
+                                                         normalizer->bitprecise.width, is_signed, mem_flags,
+                                                         atomic_memory_order));
+        } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
