@@ -189,7 +189,10 @@ typedef struct kefir_opt_operation_parameters {
         kefir_size_t index;
         struct {
             kefir_size_t bitwidth;
-            kefir_size_t src_bitwidth;
+            union {
+                struct kefir_opt_memory_access_flags bitint_memflags;
+                kefir_size_t src_bitwidth;
+            };
         };
         kefir_int64_t offset;
         kefir_id_t ir_ref;

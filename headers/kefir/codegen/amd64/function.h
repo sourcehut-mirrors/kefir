@@ -366,6 +366,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(long_double_to_bitint_signed, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED) _separator \
     _def(long_double_to_bitint_unsigned, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED) _separator \
     _def(bitint_to_bool, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
+    _def(bitint_load, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

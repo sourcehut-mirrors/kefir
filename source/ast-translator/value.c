@@ -424,8 +424,12 @@ kefir_result_t kefir_ast_translator_load_value(const struct kefir_ast_type *type
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_LOAD, mem_flags));
             break;
 
-        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+        case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+            kefir_bool_t is_signed;
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, normalizer, &is_signed));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_LOAD,
+                                                         normalizer->bitprecise.width, is_signed, mem_flags, 0));
+        } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE:
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:

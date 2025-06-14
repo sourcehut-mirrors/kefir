@@ -53,6 +53,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
 #define TYPE_FMT_type typeref
 #define TYPE_FMT_load_mem memflags
 #define TYPE_FMT_store_mem memflags
+#define TYPE_FMT_bitint_load bitint_memflags
 #define TYPE_FMT_bitfield u32
 #define TYPE_FMT_stack_alloc boolean
 #define TYPE_FMT_atomic_op memory_order

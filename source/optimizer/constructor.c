@@ -1163,6 +1163,24 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef LOAD_OP
 
+#define BITINT_LOAD_OP(_id, _opcode)                                                                                 \
+    case _opcode: {                                                                                                  \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                        \
+        kefir_bool_t volatile_access = (instr->arg.u32[2] & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;                     \
+        kefir_opt_memory_load_extension_t load_ext =                                                                 \
+            instr->arg.u32[1] ? KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND : KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND;               \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr->arg.u32[0], instr_ref2,          \
+                                                &(const struct kefir_opt_memory_access_flags) {                      \
+                                                    .load_extension = load_ext, .volatile_access = volatile_access}, \
+                                                &instr_ref));                                                        \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                           \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                         \
+    } break;
+
+            BITINT_LOAD_OP(bitint_load, KEFIR_IR_OPCODE_BITINT_LOAD)
+
+#undef BITINT_LOAD_OP
+
 #define STORE_OP(_id, _opcode)                                                                               \
     case _opcode: {                                                                                          \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                \

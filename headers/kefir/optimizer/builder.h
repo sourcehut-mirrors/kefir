@@ -450,6 +450,15 @@ LOAD_OP(complex_long_double_load);
 
 #undef LOAD_OP
 
+#define BITINT_LOAD_OP(_id)                                                                        \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                   \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_size_t, \
+        kefir_opt_instruction_ref_t, const struct kefir_opt_memory_access_flags *, kefir_opt_instruction_ref_t *)
+
+BITINT_LOAD_OP(bitint_load);
+
+#undef BITINT_LOAD_OP
+
 #define STORE_OP(_id)                                                                                             \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \
