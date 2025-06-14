@@ -516,6 +516,26 @@ static kefir_result_t format_operation_bitint_load(struct kefir_json_output *jso
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_bitint_store(struct kefir_json_output *json,
+                                                    const struct kefir_opt_module *module,
+                                                    const struct kefir_opt_code_container *code,
+                                                    const struct kefir_opt_operation *oper) {
+    UNUSED(module);
+    UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "location"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitwidth));
+    REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
+    REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.bitint_memflags.volatile_access));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_store_mem(struct kefir_json_output *json, const struct kefir_opt_module *module,
                                                  const struct kefir_opt_code_container *code,
                                                  const struct kefir_opt_operation *oper) {

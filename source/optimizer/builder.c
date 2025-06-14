@@ -1099,6 +1099,31 @@ BITINT_LOAD_OP(bitint_load, KEFIR_OPT_OPCODE_BITINT_LOAD)
 
 #undef BITINT_LOAD_OP
 
+#define BITINT_STORE_OP(_id, _opcode)                                                                               \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                                    \
+        struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,                \
+        kefir_size_t bitwidth, kefir_opt_instruction_ref_t location, kefir_opt_instruction_ref_t value,             \
+        const struct kefir_opt_memory_access_flags *flags, kefir_opt_instruction_ref_t *instr_id_ptr) {             \
+        REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));          \
+        REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container")); \
+        REQUIRE(flags != NULL,                                                                                      \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer memory access flags"));          \
+        REQUIRE_OK(instr_exists(code, block_id, location, false));                                                  \
+        REQUIRE_OK(kefir_opt_code_builder_add_instruction(                                                          \
+            mem, code, block_id,                                                                                    \
+            &(struct kefir_opt_operation) {.opcode = (_opcode),                                                     \
+                                           .parameters = {.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF] = location,   \
+                                                          .refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF] = value,         \
+                                                          .bitwidth = bitwidth,                                     \
+                                                          .bitint_memflags = *flags}},                              \
+            false, instr_id_ptr));                                                                                  \
+        return KEFIR_OK;                                                                                            \
+    }
+
+BITINT_STORE_OP(bitint_store, KEFIR_OPT_OPCODE_BITINT_STORE)
+
+#undef BITINT_STORE_OP
+
 #define STORE_OP(_id, _opcode)                                                                                      \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                    \
         struct kefir_mem *mem, struct kefir_opt_code_container *code, kefir_opt_block_id_t block_id,                \

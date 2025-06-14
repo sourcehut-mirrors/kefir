@@ -715,7 +715,9 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_STORE, type->bitprecise.width,
+                                                       mem_flags));
+            break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");

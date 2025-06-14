@@ -294,11 +294,11 @@
     OPCODE(BITINT_CAST_SIGNED, "bitint_cast_signed", bitint2_ref1) SEPARATOR \
     OPCODE(BITINT_CAST_UNSIGNED, "bitint_cast_unsigned", bitint2_ref1) SEPARATOR \
     OPCODE(BITINT_SIGNED_TO_FLOAT, "bitint_signed_to_float", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_UNSIGNED_TO_FLOAT, "bitint_signed_to_float", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_FLOAT, "bitint_unsigned_to_float", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_SIGNED_TO_DOUBLE, "bitint_signed_to_double", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_UNSIGNED_TO_DOUBLE, "bitint_signed_to_double", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_DOUBLE, "bitint_unsigned_to_double", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_SIGNED_TO_LONG_DOUBLE, "bitint_signed_to_long_double", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_UNSIGNED_TO_LONG_DOUBLE, "bitint_signed_to_long_double", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_UNSIGNED_TO_LONG_DOUBLE, "bitint_unsigned_to_long_double", bitint_ref1) SEPARATOR \
     OPCODE(FLOAT_TO_BITINT_SIGNED, "float_to_bitint_signed", bitint_ref1) SEPARATOR \
     OPCODE(FLOAT_TO_BITINT_UNSIGNED, "float_to_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(DOUBLE_TO_BITINT_SIGNED, "double_to_bitint_signed", bitint_ref1) SEPARATOR \
@@ -306,7 +306,8 @@
     OPCODE(LONG_DOUBLE_TO_BITINT_SIGNED, "long_double_to_bitint_signed", bitint_ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_BITINT_UNSIGNED, "long_double_to_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_TO_BOOL, "bitint_to_bool", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_LOAD, "bitint_load", bitint_load)
+    OPCODE(BITINT_LOAD, "bitint_load", bitint_load) SEPARATOR \
+    OPCODE(BITINT_STORE, "bitint_store", bitint_store)
 // clang-format on
 
 #endif

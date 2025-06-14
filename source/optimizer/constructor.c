@@ -1181,6 +1181,24 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef BITINT_LOAD_OP
 
+#define BITINT_STORE_OP(_id, _opcode)                                                                        \
+    case _opcode: {                                                                                          \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                \
+        kefir_bool_t volatile_access = (instr->arg.u32[1] & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0;             \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(                                                             \
+            mem, code, current_block_id, instr->arg.u32[0], instr_ref2, instr_ref3,                          \
+            &(const struct kefir_opt_memory_access_flags) {.load_extension = KEFIR_OPT_MEMORY_LOAD_NOEXTEND, \
+                                                           .volatile_access = volatile_access},              \
+            &instr_ref));                                                                                    \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                 \
+    } break;
+
+            BITINT_STORE_OP(bitint_store, KEFIR_IR_OPCODE_BITINT_STORE)
+
+#undef BITINT_STORE_OP
+
 #define STORE_OP(_id, _opcode)                                                                               \
     case _opcode: {                                                                                          \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                \
