@@ -147,6 +147,8 @@ _kefir_func_get7_label0:
     neg %rdx
     shl $1, %rdx
     sar $1, %rdx
+    shl $1, %rdx
+    sar $1, %rdx
     movq %rcx, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
@@ -171,6 +173,8 @@ __kefir_text_func_get8_begin:
     mov %rdi, %rcx
 _kefir_func_get8_label0:
     movabs $152627362517262, %rdx
+    shl $15, %rdx
+    sar $15, %rdx
     movq %rcx, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
@@ -195,6 +199,8 @@ __kefir_text_func_get9_begin:
     mov %rdi, %rcx
 _kefir_func_get9_label0:
     movabs $212205289333297, %rdx
+    shl $16, %rdx
+    shr $16, %rdx
     movq %rcx, -16(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
