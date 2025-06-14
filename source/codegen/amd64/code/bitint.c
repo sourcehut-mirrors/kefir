@@ -639,8 +639,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_signed_to_float)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_int_to_float(mem, function, instruction->operation.parameters.refs[0],
-                                                             instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_sar(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_int_to_float(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }
@@ -655,8 +671,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_unsigned_to_float)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_float(mem, function, instruction->operation.parameters.refs[0],
-                                                              instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shr(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_float(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }
@@ -671,8 +703,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_signed_to_double)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_int_to_double(mem, function, instruction->operation.parameters.refs[0],
-                                                              instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_sar(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_int_to_double(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }
@@ -687,8 +735,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_unsigned_to_double)(
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_double(mem, function, instruction->operation.parameters.refs[0],
-                                                               instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shr(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_double(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }
@@ -703,8 +767,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_signed_to_long_double
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_int_to_long_double(
-            mem, function, instruction->operation.parameters.refs[0], instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_sar(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_int_to_long_double(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }
@@ -719,8 +799,24 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(bitint_unsigned_to_long_doub
     REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
 
     if (instruction->operation.parameters.bitwidth <= QWORD_BITS) {
-        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_long_double(
-            mem, function, instruction->operation.parameters.refs[0], instruction->id));
+        kefir_asmcmp_virtual_register_index_t arg_vreg, tmp_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
+                                                     KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
+        REQUIRE_OK(
+            kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg_vreg, NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shl(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_shr(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+            &KEFIR_ASMCMP_MAKE_VREG64(tmp_vreg),
+            &KEFIR_ASMCMP_MAKE_UINT(QWORD_BITS - instruction->operation.parameters.bitwidth), NULL));
+
+        REQUIRE_OK(kefir_codegen_amd64_function_uint_to_long_double(mem, function, tmp_vreg, instruction->id));
     } else {
         REQUIRE_OK(bigint_to_floating_point_impl(mem, function, instruction));
     }

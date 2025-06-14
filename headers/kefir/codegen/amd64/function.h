@@ -433,20 +433,23 @@ kefir_result_t kefir_codegen_amd64_function_x87_locations_next(
     struct kefir_codegen_amd64_function_x87_locations_iterator *, kefir_opt_instruction_ref_t *, kefir_size_t *);
 
 kefir_result_t kefir_codegen_amd64_function_int_to_float(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                         kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+                                                         kefir_asmcmp_instruction_index_t, kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_uint_to_float(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                          kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+                                                          kefir_asmcmp_instruction_index_t,
+                                                          kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_int_to_double(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                          kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+                                                          kefir_asmcmp_instruction_index_t,
+                                                          kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_uint_to_double(struct kefir_mem *, struct kefir_codegen_amd64_function *,
-                                                           kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t);
+                                                           kefir_asmcmp_instruction_index_t,
+                                                           kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_int_to_long_double(struct kefir_mem *,
                                                                struct kefir_codegen_amd64_function *,
-                                                               kefir_opt_instruction_ref_t,
+                                                               kefir_asmcmp_instruction_index_t,
                                                                kefir_opt_instruction_ref_t);
 kefir_result_t kefir_codegen_amd64_function_uint_to_long_double(struct kefir_mem *,
                                                                 struct kefir_codegen_amd64_function *,
-                                                                kefir_opt_instruction_ref_t,
+                                                                kefir_asmcmp_instruction_index_t,
                                                                 kefir_opt_instruction_ref_t);
 
 kefir_result_t kefir_codegen_amd64_function_float_to_int(struct kefir_mem *, struct kefir_codegen_amd64_function *,
