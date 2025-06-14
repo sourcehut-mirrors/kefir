@@ -632,6 +632,11 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_TO_BOOL, 0));
                 break;
 
+            case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_TO_BOOL, origin->bitprecise.width));
+                break;
+
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unable to cast non-scalar type to bool");
         }

@@ -268,6 +268,7 @@ BITINT_UNARY_OP(double_to_bitint_signed);
 BITINT_UNARY_OP(double_to_bitint_unsigned);
 BITINT_UNARY_OP(long_double_to_bitint_signed);
 BITINT_UNARY_OP(long_double_to_bitint_unsigned);
+BITINT_UNARY_OP(bitint_to_bool);
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

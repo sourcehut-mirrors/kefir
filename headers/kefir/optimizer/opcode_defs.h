@@ -304,7 +304,8 @@
     OPCODE(DOUBLE_TO_BITINT_SIGNED, "double_to_bitint_signed", bitint_ref1) SEPARATOR \
     OPCODE(DOUBLE_TO_BITINT_UNSIGNED, "double_to_bitint_unsigned", bitint_ref1) SEPARATOR \
     OPCODE(LONG_DOUBLE_TO_BITINT_SIGNED, "long_double_to_bitint_signed", bitint_ref1) SEPARATOR \
-    OPCODE(LONG_DOUBLE_TO_BITINT_UNSIGNED, "long_double_to_bitint_unsigned", bitint_ref1)
+    OPCODE(LONG_DOUBLE_TO_BITINT_UNSIGNED, "long_double_to_bitint_unsigned", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_TO_BOOL, "bitint_to_bool", bitint_ref1)
 // clang-format on
 
 #endif
