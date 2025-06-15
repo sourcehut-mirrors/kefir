@@ -63,6 +63,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
 #define TYPE_FMT_localvar localvar
 #define TYPE_FMT_overflow_arith overflow_arith
 #define TYPE_FMT_branch_compare branch_compare
+#define TYPE_FMT_tmpobj tmpobj
 #define KEFIR_IR_OPCODES_SYMBOL_IMPL(_id, _mnemonic, _type) KEFIR_IR_OPCODES_SYMBOL_IMPL2(_id, _mnemonic, _type)
 #define KEFIR_IR_OPCODES_SYMBOL(_id, _mnemonic, _type) KEFIR_IR_OPCODES_SYMBOL_IMPL(_id, _mnemonic, TYPE_FMT_##_type)
         KEFIR_IR_GENERIC_OPCODE_DEFS(KEFIR_IR_OPCODES_SYMBOL, )

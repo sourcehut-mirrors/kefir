@@ -32,6 +32,7 @@
     OPCODE(SELECT, "select", ref3_cond) SEPARATOR \
     OPCODE(SELECT_COMPARE, "select_compare", ref4_compare) SEPARATOR \
     OPCODE(LOCAL_LIFETIME_MARK, "local_lifetime_mark", ref1) SEPARATOR \
+    OPCODE(TEMPORARY_OBJECT, "temporary_object", tmpobj) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \

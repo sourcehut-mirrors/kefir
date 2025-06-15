@@ -424,6 +424,23 @@ static kefir_result_t inline_operation_bitint_store(struct do_inline_param *para
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_operation_tmpobj(struct do_inline_param *param, const struct kefir_opt_instruction *instr,
+                                              kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
+    kefir_opt_block_id_t mapped_block_id;
+    REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+
+    kefir_opt_instruction_ref_t mapped_ref1;
+    REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], &mapped_ref1));
+
+    REQUIRE_OK(kefir_opt_code_container_new_instruction(
+        param->mem, param->dst_code, mapped_block_id,
+        &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
+                                       .parameters = {.refs = {mapped_ref1, KEFIR_ID_NONE, KEFIR_ID_NONE},
+                                                      .tmp_object = instr->operation.parameters.tmp_object}},
+        mapped_instr_ref_ptr));
+    return KEFIR_OK;
+}
+
 static kefir_result_t inline_operation_store_mem(struct do_inline_param *param,
                                                  const struct kefir_opt_instruction *instr,
                                                  kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {

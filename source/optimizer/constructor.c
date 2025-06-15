@@ -729,6 +729,12 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
             break;
 
+        case KEFIR_IR_OPCODE_TEMPORARY_OBJECT:
+            REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, code, current_block_id, instr->arg.u64_2[0],
+                                                               instr->arg.u64_2[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \

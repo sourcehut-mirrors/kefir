@@ -594,6 +594,18 @@ static kefir_result_t format_operation_store_mem(struct kefir_json_output *json,
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_tmpobj(struct kefir_json_output *json, const struct kefir_opt_module *module,
+                                              const struct kefir_opt_code_container *code,
+                                              const struct kefir_opt_operation *oper) {
+    UNUSED(module);
+    UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "size"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.tmp_object.size));
+    REQUIRE_OK(kefir_json_output_object_key(json, "alignment"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.tmp_object.alignment));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_bitfield(struct kefir_json_output *json, const struct kefir_opt_module *module,
                                                 const struct kefir_opt_code_container *code,
                                                 const struct kefir_opt_operation *oper) {

@@ -607,6 +607,25 @@ kefir_result_t kefir_ir_format_instr_localvar(struct kefir_json_output *json, co
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_instr_tmpobj(struct kefir_json_output *json, const struct kefir_ir_module *module,
+                                            const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+
+    REQUIRE_OK(kefir_json_output_object_key(json, "size"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64_2[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "alignment"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u64_2[1]));
+
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 struct format_param {
     struct kefir_json_output *json;
     struct kefir_ir_type_visitor *visitor;

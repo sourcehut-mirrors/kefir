@@ -2402,6 +2402,14 @@ static kefir_result_t replace_references_bitint_load(struct kefir_opt_instructio
     return KEFIR_OK;
 }
 
+static kefir_result_t replace_references_tmpobj(struct kefir_opt_instruction *instr, kefir_opt_instruction_ref_t to_ref,
+                                                kefir_opt_instruction_ref_t from_ref) {
+    UNUSED(instr);
+    UNUSED(to_ref);
+    UNUSED(from_ref);
+    return KEFIR_OK;
+}
+
 static kefir_result_t replace_references_bitint_store(struct kefir_opt_instruction *instr,
                                                       kefir_opt_instruction_ref_t to_ref,
                                                       kefir_opt_instruction_ref_t from_ref) {

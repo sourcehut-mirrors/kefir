@@ -205,6 +205,10 @@ typedef struct kefir_opt_operation_parameters {
             kefir_id_t global_ref;
             kefir_int64_t offset;
         } variable;
+        struct {
+            kefir_size_t size;
+            kefir_size_t alignment;
+        } tmp_object;
 
         struct {
             kefir_opt_block_id_t target_block;
