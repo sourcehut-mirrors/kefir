@@ -32,8 +32,18 @@ struct lowering_param {
     struct {
         kefir_id_t bigint_set_signed;
         kefir_id_t bigint_set_unsigned;
+        kefir_id_t bigint_cast_signed;
+        kefir_id_t bigint_cast_unsigned;
     } runtime_fn;
 };
+
+#define BIGINT_RUNTIME_FN_IDENTIFIER(_name)                                                                \
+    (struct kefir_ir_identifier) {                                                                         \
+        .symbol = (_name), .type = KEFIR_IR_IDENTIFIER_FUNCTION, .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL, \
+        .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT, .alias = NULL, .debug_info = {               \
+            .entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE                                                          \
+        }                                                                                                  \
+    }
 
 static kefir_result_t get_bigint_set_signed_function_decl_id(struct kefir_mem *mem,
                                                              struct kefir_codegen_amd64_module *codegen_module,
@@ -57,14 +67,8 @@ static kefir_result_t get_bigint_set_signed_function_decl_id(struct kefir_mem *m
         mem, module->ir_module, BIGINT_GET_SET_SIGNED_INTEGER_FN, parameters_type_id, false, returns_type_id);
     REQUIRE(func_decl != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));
 
-    REQUIRE_OK(kefir_ir_module_declare_identifier(
-        mem, module->ir_module, func_decl->name,
-        &(struct kefir_ir_identifier) {.symbol = func_decl->name,
-                                       .type = KEFIR_IR_IDENTIFIER_FUNCTION,
-                                       .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-                                       .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                                       .alias = NULL,
-                                       .debug_info = {.entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE}}));
+    REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,
+                                                  &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));
 
     REQUIRE_OK(kefir_codegen_amd64_module_require_runtime(mem, codegen_module, BIGINT_GET_SET_SIGNED_INTEGER_FN));
 
@@ -95,19 +99,88 @@ static kefir_result_t get_bigint_set_unsigned_function_decl_id(struct kefir_mem 
         mem, module->ir_module, BIGINT_GET_SET_UNSIGNED_INTEGER_FN, parameters_type_id, false, returns_type_id);
     REQUIRE(func_decl != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));
 
-    REQUIRE_OK(kefir_ir_module_declare_identifier(
-        mem, module->ir_module, func_decl->name,
-        &(struct kefir_ir_identifier) {.symbol = func_decl->name,
-                                       .type = KEFIR_IR_IDENTIFIER_FUNCTION,
-                                       .scope = KEFIR_IR_IDENTIFIER_SCOPE_LOCAL,
-                                       .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
-                                       .alias = NULL,
-                                       .debug_info = {.entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE}}));
+    REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,
+                                                  &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));
 
     REQUIRE_OK(kefir_codegen_amd64_module_require_runtime(mem, codegen_module, BIGINT_GET_SET_UNSIGNED_INTEGER_FN));
 
     param->runtime_fn.bigint_set_unsigned = func_decl->id;
     *func_decl_id = func_decl->id;
+    return KEFIR_OK;
+}
+
+static kefir_result_t get_bigint_cast_signed_function_decl_id(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_module *codegen_module,
+                                                              struct kefir_opt_module *module,
+                                                              struct lowering_param *param, kefir_id_t *func_decl_id) {
+    if (param->runtime_fn.bigint_cast_signed != KEFIR_ID_NONE) {
+        *func_decl_id = param->runtime_fn.bigint_cast_signed;
+        return KEFIR_OK;
+    }
+
+    kefir_id_t parameters_type_id, returns_type_id;
+    struct kefir_ir_type *parameters_type = kefir_ir_module_new_type(mem, module->ir_module, 3, &parameters_type_id);
+    struct kefir_ir_type *returns_type = kefir_ir_module_new_type(mem, module->ir_module, 0, &returns_type_id);
+    REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+    REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+
+    struct kefir_ir_function_decl *func_decl = kefir_ir_module_new_function_declaration(
+        mem, module->ir_module, BIGINT_CAST_SIGNED_FN, parameters_type_id, false, returns_type_id);
+    REQUIRE(func_decl != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));
+
+    REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,
+                                                  &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));
+
+    REQUIRE_OK(kefir_codegen_amd64_module_require_runtime(mem, codegen_module, BIGINT_CAST_SIGNED_FN));
+
+    param->runtime_fn.bigint_cast_signed = func_decl->id;
+    *func_decl_id = func_decl->id;
+    return KEFIR_OK;
+}
+
+static kefir_result_t get_bigint_cast_unsigned_function_decl_id(struct kefir_mem *mem,
+                                                                struct kefir_codegen_amd64_module *codegen_module,
+                                                                struct kefir_opt_module *module,
+                                                                struct lowering_param *param,
+                                                                kefir_id_t *func_decl_id) {
+    if (param->runtime_fn.bigint_cast_unsigned != KEFIR_ID_NONE) {
+        *func_decl_id = param->runtime_fn.bigint_cast_unsigned;
+        return KEFIR_OK;
+    }
+
+    kefir_id_t parameters_type_id, returns_type_id;
+    struct kefir_ir_type *parameters_type = kefir_ir_module_new_type(mem, module->ir_module, 3, &parameters_type_id);
+    struct kefir_ir_type *returns_type = kefir_ir_module_new_type(mem, module->ir_module, 0, &returns_type_id);
+    REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+    REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+
+    struct kefir_ir_function_decl *func_decl = kefir_ir_module_new_function_declaration(
+        mem, module->ir_module, BIGINT_CAST_UNSIGNED_FN, parameters_type_id, false, returns_type_id);
+    REQUIRE(func_decl != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));
+
+    REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,
+                                                  &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));
+
+    REQUIRE_OK(kefir_codegen_amd64_module_require_runtime(mem, codegen_module, BIGINT_CAST_UNSIGNED_FN));
+
+    param->runtime_fn.bigint_cast_unsigned = func_decl->id;
+    *func_decl_id = func_decl->id;
+    return KEFIR_OK;
+}
+
+static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
+                                      struct kefir_ir_type **type_ptr, kefir_id_t *type_id_ptr) {
+    struct kefir_ir_type *type = kefir_ir_module_new_type(mem, module->ir_module, 1, type_id_ptr);
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, type, KEFIR_IR_TYPE_BITINT, 0, width));
+    ASSIGN_PTR(type_ptr, type);
     return KEFIR_OK;
 }
 
@@ -231,6 +304,100 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
             break;
 
+        case KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED: {
+            const kefir_bool_t signed_cast = instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED;
+
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+            const kefir_size_t src_bitwidth = instr->operation.parameters.src_bitwidth;
+            if (bitwidth <= QWORD_BITS && src_bitwidth <= QWORD_BITS) {
+                if (signed_cast) {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(
+                        mem, &func->code, block_id, arg_ref, 0, MIN(bitwidth, src_bitwidth), replacement_ref));
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(
+                        mem, &func->code, block_id, arg_ref, 0, MIN(bitwidth, src_bitwidth), replacement_ref));
+                }
+            } else if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t value_ref;
+                REQUIRE_OK(kefir_opt_code_builder_int64_load(
+                    mem, &func->code, block_id, arg_ref,
+                    &(struct kefir_opt_memory_access_flags) {.load_extension = KEFIR_OPT_MEMORY_LOAD_NOEXTEND,
+                                                             .volatile_access = false},
+                    &value_ref));
+                if (signed_cast) {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, value_ref, 0,
+                                                                          bitwidth, replacement_ref));
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, value_ref, 0,
+                                                                            bitwidth, replacement_ref));
+                }
+            } else if (src_bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t casted_arg_ref;
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                if (signed_cast) {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg_ref, 0,
+                                                                          src_bitwidth, &casted_arg_ref));
+                    REQUIRE_OK(
+                        get_bigint_set_signed_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, arg_ref, 0,
+                                                                            src_bitwidth, &casted_arg_ref));
+                    REQUIRE_OK(
+                        get_bigint_set_unsigned_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                }
+
+                kefir_opt_instruction_ref_t call_node_id, call_ref, value_ref, bitwidth_ref;
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,
+                                                             &call_node_id, &call_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, value_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, bitwidth_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, casted_arg_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, call_ref, replacement_ref));
+            } else {
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                if (signed_cast) {
+                    REQUIRE_OK(
+                        get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                } else {
+                    REQUIRE_OK(
+                        get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                }
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, MIN(bitwidth, src_bitwidth), NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t call_node_id, call_ref, value_ref, bitwidth_ref, src_bitwidth_ref,
+                    init_value_ref, init_value_pair_ref;
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, src_bitwidth, &src_bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
+                                                              bitint_type_id, 0, &init_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, init_value_ref,
+                                                       &init_value_pair_ref));
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,
+                                                             &call_node_id, &call_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, init_value_pair_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, src_bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, bitwidth_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, call_ref, replacement_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
@@ -297,6 +464,8 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
     struct lowering_param param = {.runtime_fn = {
                                        .bigint_set_signed = KEFIR_ID_NONE,
                                        .bigint_set_unsigned = KEFIR_ID_NONE,
+                                       .bigint_cast_signed = KEFIR_ID_NONE,
+                                       .bigint_cast_unsigned = KEFIR_ID_NONE,
                                    }};
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);

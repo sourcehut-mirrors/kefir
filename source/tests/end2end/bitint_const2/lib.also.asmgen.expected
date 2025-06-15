@@ -34,8 +34,8 @@ __kefir_text_func_get2_begin:
     mov %rsp, %rbp
 _kefir_func_get2_label0:
     mov $1024, %rax
-    shl $51, %rax
-    sar $51, %rax
+    shl $52, %rax
+    sar $52, %rax
     pop %rbp
     ret
 __kefir_text_func_get2_end:
@@ -58,8 +58,8 @@ __kefir_text_func_get4_begin:
     mov %rsp, %rbp
 _kefir_func_get4_label0:
     movabs $13949712720163, %rax
-    shl $14, %rax
-    sar $14, %rax
+    shl $19, %rax
+    sar $19, %rax
     pop %rbp
     ret
 __kefir_text_func_get4_end:
@@ -74,10 +74,8 @@ _kefir_func_get5_label0:
     movl $1269486369, -28(%rbp)
     movl $267165987, -24(%rbp)
     movl $0, -20(%rbp)
-    mov -32(%rbp), %rax
-    mov %rax, -16(%rbp)
-    mov -24(%rbp), %rax
-    mov %rax, -8(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
     leaq -16(%rbp), %rax
     mov %rax, %rdi
     mov $93, %rsi
@@ -103,19 +101,19 @@ _kefir_func_get6_label0:
     movl $2266117206, -52(%rbp)
     movl $2882400009, -48(%rbp)
     movl $0, -44(%rbp)
-    movq %rcx, -8(%rbp)
-    mov -64(%rbp), %rax
-    mov %rax, -40(%rbp)
-    mov -56(%rbp), %rax
-    mov %rax, -32(%rbp)
-    mov -48(%rbp), %rax
-    mov %rax, -24(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -40(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -32(%rbp)
+    movq -48(%rbp), %rax
+    movq %rax, -24(%rbp)
+    movq %rcx, -64(%rbp)
     leaq -40(%rbp), %rax
     mov %rax, %rdi
     mov $161, %rsi
     mov $200, %rdx
     call __kefir_bigint_cast_signed
-    movq -8(%rbp), %rcx
+    movq -64(%rbp), %rcx
     mov %rcx, %rax
     movdqu -40(%rbp), %xmm0
     movdqu %xmm0, (%rax)
@@ -143,23 +141,23 @@ _kefir_func_get7_label0:
     movl $3723427601, -148(%rbp)
     movl $11189196, -144(%rbp)
     movl $0, -140(%rbp)
-    movq %r8, -8(%rbp)
-    mov -176(%rbp), %rax
-    mov %rax, -136(%rbp)
-    mov -168(%rbp), %rax
-    mov %rax, -128(%rbp)
-    mov -160(%rbp), %rax
-    mov %rax, -120(%rbp)
-    mov -152(%rbp), %rax
-    mov %rax, -112(%rbp)
-    mov -144(%rbp), %rax
-    mov %rax, -104(%rbp)
+    movq -176(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -168(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -160(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movq %r8, -176(%rbp)
     leaq -136(%rbp), %rax
     mov %rax, %rdi
     mov $281, %rsi
     mov $1024, %rdx
     call __kefir_bigint_cast_signed
-    movq -8(%rbp), %r8
+    movq -176(%rbp), %r8
     mov %r8, %rax
     mov %rax, %rdi
     leaq -136(%rbp), %rcx

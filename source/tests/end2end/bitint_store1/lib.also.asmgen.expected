@@ -29,8 +29,8 @@ __kefir_text_func_set1_begin:
 _kefir_func_set1_label0:
     movq a@GOTPCREL(%rip), %rax
     mov $14, %rcx
-    shl $58, %rcx
-    sar $58, %rcx
+    shl $59, %rcx
+    sar $59, %rcx
     mov %cl, (%rax)
     pop %rbp
     ret
@@ -43,8 +43,8 @@ __kefir_text_func_set2_begin:
 _kefir_func_set2_label0:
     movq b@GOTPCREL(%rip), %rax
     mov $1024, %rcx
-    shl $51, %rcx
-    sar $51, %rcx
+    shl $52, %rcx
+    sar $52, %rcx
     mov %cx, (%rax)
     pop %rbp
     ret
@@ -57,8 +57,8 @@ __kefir_text_func_set3_begin:
 _kefir_func_set3_label0:
     movq c@GOTPCREL(%rip), %rax
     mov $2047468, %rcx
-    shl $37, %rcx
-    sar $37, %rcx
+    shl $42, %rcx
+    sar $42, %rcx
     mov %ecx, (%rax)
     pop %rbp
     ret
@@ -71,8 +71,8 @@ __kefir_text_func_set4_begin:
 _kefir_func_set4_label0:
     movq d@GOTPCREL(%rip), %rax
     movabs $47426834430, %rcx
-    shl $14, %rcx
-    sar $14, %rcx
+    shl $27, %rcx
+    sar $27, %rcx
     mov %rcx, (%rax)
     pop %rbp
     ret
@@ -82,25 +82,23 @@ set5:
 __kefir_text_func_set5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
 _kefir_func_set5_label0:
     movq e@GOTPCREL(%rip), %rax
-    movl $3736284861, -48(%rbp)
-    movl $1684987308, -44(%rbp)
-    movl $25715, -40(%rbp)
-    movl $0, -36(%rbp)
-    movq %rax, -16(%rbp)
-    mov -48(%rbp), %rcx
-    mov %rcx, -32(%rbp)
-    mov -40(%rbp), %rcx
-    mov %rcx, -24(%rbp)
-    leaq -32(%rbp), %rcx
-    mov %rcx, %rdi
+    movl $3736284861, -32(%rbp)
+    movl $1684987308, -28(%rbp)
+    movl $25715, -24(%rbp)
+    movl $0, -20(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movq %rax, -32(%rbp)
+    leaq -16(%rbp), %rdx
+    mov %rdx, %rdi
     mov $80, %rsi
     mov $111, %rdx
     call __kefir_bigint_cast_signed
-    movq -16(%rbp), %rax
-    movdqu -32(%rbp), %xmm0
+    movq -32(%rbp), %rax
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     lea (%rbp), %rsp
     pop %rbp
@@ -111,37 +109,33 @@ set6:
 __kefir_text_func_set6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
 _kefir_func_set6_label0:
     movq f@GOTPCREL(%rip), %rax
-    movl $1735808086, -96(%rbp)
-    movl $1734689605, -92(%rbp)
-    movl $3420376389, -88(%rbp)
-    movl $1164413421, -84(%rbp)
-    movl $2271560483, -80(%rbp)
-    movl $591751049, -76(%rbp)
-    movl $1, -72(%rbp)
-    movl $0, -68(%rbp)
-    movq %rax, -16(%rbp)
-    mov -96(%rbp), %rcx
-    mov %rcx, -64(%rbp)
-    mov -88(%rbp), %rcx
-    mov %rcx, -56(%rbp)
-    mov -80(%rbp), %rcx
-    mov %rcx, -48(%rbp)
-    mov -72(%rbp), %rcx
-    mov %rcx, -40(%rbp)
-    leaq -64(%rbp), %rcx
-    mov %rcx, %rdi
+    movl $1735808086, -80(%rbp)
+    movl $1734689605, -76(%rbp)
+    movl $3420376389, -72(%rbp)
+    movl $1164413421, -68(%rbp)
+    movl $2271560483, -64(%rbp)
+    movl $591751049, -60(%rbp)
+    movl $1, -56(%rbp)
+    movl $0, -52(%rbp)
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movq %rax, -80(%rbp)
+    leaq -48(%rbp), %rdx
+    mov %rdx, %rdi
     mov $194, %rsi
     mov $366, %rdx
     call __kefir_bigint_cast_signed
-    movq -16(%rbp), %rax
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
+    movq -80(%rbp), %rax
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
+    movdqu %xmm0, (%rax)
     movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
     lea (%rbp), %rsp
     pop %rbp
