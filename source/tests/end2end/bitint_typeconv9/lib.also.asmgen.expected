@@ -24,7 +24,7 @@ _kefir_func_get1_label0:
     mov $10000, %rax
     shl $49, %rax
     shr $49, %rax
-    test %rax, %rax
+    test %ax, %ax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -39,7 +39,7 @@ _kefir_func_get2_label0:
     mov $0, %rax
     shl $62, %rax
     shr $62, %rax
-    test %rax, %rax
+    test %al, %al
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -54,7 +54,7 @@ _kefir_func_get3_label0:
     mov $200000, %rax
     shl $46, %rax
     shr $46, %rax
-    test %rax, %rax
+    test %eax, %eax
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -69,7 +69,7 @@ _kefir_func_get4_label0:
     mov $0, %rax
     shl $63, %rax
     shr $63, %rax
-    test %rax, %rax
+    test %al, %al
     setne %al
     movzx %al, %rax
     pop %rbp
@@ -88,12 +88,14 @@ _kefir_func_get5_label0:
     movl $3174079306, -20(%rbp)
     movl $638771808, -16(%rbp)
     movl $0, -12(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $159, %rsi
     call __kefir_bigint_is_zero
+    mov $0, %rcx
     test %al, %al
-    sete %al
-    movzx %al, %rax
+    sete %cl
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -111,12 +113,14 @@ _kefir_func_get6_label0:
     movl $3174079306, -20(%rbp)
     movl $638771808, -16(%rbp)
     movl $0, -12(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $158, %rsi
     call __kefir_bigint_is_zero
+    mov $0, %rcx
     test %al, %al
-    sete %al
-    movzx %al, %rax
+    sete %cl
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

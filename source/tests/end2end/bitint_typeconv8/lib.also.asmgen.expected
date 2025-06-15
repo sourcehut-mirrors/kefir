@@ -25,7 +25,8 @@ __kefir_text_func_get1_begin:
 _kefir_func_get1_label0:
     movd _kefir_func_get1_label1(%rip), %xmm0
     movq %rcx, -8(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_signed_from_float
     movq -8(%rbp), %rcx
@@ -57,7 +58,8 @@ _kefir_func_get2_label0:
     movd _kefir_func_get2_label1(%rip), %xmm0
     xorps __kefir_constant_float32_neg(%rip), %xmm0
     movq %rcx, -24(%rbp)
-    lea -48(%rbp), %rdi
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_signed_from_float
     movq -24(%rbp), %rcx
@@ -88,7 +90,8 @@ __kefir_text_func_get3_begin:
 _kefir_func_get3_label0:
     movd _kefir_func_get3_label1(%rip), %xmm0
     movq %rcx, -8(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_unsigned_from_float
     movq -8(%rbp), %rcx
@@ -118,7 +121,8 @@ __kefir_text_func_get4_begin:
 _kefir_func_get4_label0:
     movq _kefir_func_get4_label1(%rip), %xmm0
     movq %rcx, -8(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_signed_from_double
     movq -8(%rbp), %rcx
@@ -150,7 +154,8 @@ _kefir_func_get5_label0:
     movq _kefir_func_get5_label1(%rip), %xmm0
     xorpd __kefir_constant_float64_neg(%rip), %xmm0
     movq %rcx, -24(%rbp)
-    lea -48(%rbp), %rdi
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_signed_from_double
     movq -24(%rbp), %rcx
@@ -181,7 +186,8 @@ __kefir_text_func_get6_begin:
 _kefir_func_get6_label0:
     movq _kefir_func_get6_label1(%rip), %xmm0
     movq %rcx, -8(%rbp)
-    lea -32(%rbp), %rdi
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
     mov $180, %rsi
     call __kefir_bigint_unsigned_from_double
     movq -8(%rbp), %rcx

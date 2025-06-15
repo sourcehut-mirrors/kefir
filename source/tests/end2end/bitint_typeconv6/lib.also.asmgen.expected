@@ -34,8 +34,10 @@ _kefir_func_get0_label0:
     movq %rax, -16(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -8(%rbp)
-    lea -24(%rbp), %rdi
-    lea -48(%rbp), %rsi
+    leaq -24(%rbp), %rax
+    mov %rax, %rdi
+    leaq -48(%rbp), %rax
+    mov %rax, %rsi
     mov $129, %rdx
     call __kefir_bigint_signed_to_float
     lea (%rbp), %rsp
@@ -55,8 +57,10 @@ _kefir_func_get1_label0:
     movl $4294967040, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea -16(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    leaq -16(%rbp), %rdx
+    mov %rdx, %rdi
+    leaq -32(%rbp), %rdx
+    mov %rdx, %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_to_float
     lea (%rbp), %rsp
@@ -82,8 +86,10 @@ _kefir_func_get2_label0:
     movq %rax, -16(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -8(%rbp)
-    lea -24(%rbp), %rdi
-    lea -48(%rbp), %rsi
+    leaq -24(%rbp), %rax
+    mov %rax, %rdi
+    leaq -48(%rbp), %rax
+    mov %rax, %rsi
     mov $129, %rdx
     call __kefir_bigint_signed_to_double
     lea (%rbp), %rsp
@@ -103,8 +109,10 @@ _kefir_func_get3_label0:
     movl $4294967040, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea -16(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    leaq -16(%rbp), %rdx
+    mov %rdx, %rdi
+    leaq -32(%rbp), %rdx
+    mov %rdx, %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_to_double
     lea (%rbp), %rsp
@@ -130,8 +138,10 @@ _kefir_func_get4_label0:
     movq %rax, -16(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -8(%rbp)
-    lea -24(%rbp), %rdi
-    lea -48(%rbp), %rsi
+    leaq -24(%rbp), %rax
+    mov %rax, %rdi
+    leaq -48(%rbp), %rax
+    mov %rax, %rsi
     mov $129, %rdx
     call __kefir_bigint_signed_to_long_double
     lea (%rbp), %rsp
@@ -151,8 +161,10 @@ _kefir_func_get5_label0:
     movl $4294967040, -20(%rbp)
     movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    lea -16(%rbp), %rdi
-    lea -32(%rbp), %rsi
+    leaq -16(%rbp), %rdx
+    mov %rdx, %rdi
+    leaq -32(%rbp), %rdx
+    mov %rdx, %rsi
     mov $128, %rdx
     call __kefir_bigint_unsigned_to_long_double
     lea (%rbp), %rsp

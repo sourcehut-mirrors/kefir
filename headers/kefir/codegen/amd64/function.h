@@ -355,19 +355,19 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED) _separator \
-    _def(bitint_signed_to_float, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) _separator \
-    _def(bitint_unsigned_to_float, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT) _separator \
-    _def(bitint_signed_to_double, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE) _separator \
-    _def(bitint_unsigned_to_double, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE) _separator \
-    _def(bitint_signed_to_long_double, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE) _separator \
-    _def(bitint_unsigned_to_long_double, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE) _separator \
-    _def(float_to_bitint_signed, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_SIGNED) _separator \
-    _def(float_to_bitint_unsigned, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_UNSIGNED) _separator \
-    _def(double_to_bitint_signed, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_SIGNED) _separator \
-    _def(double_to_bitint_unsigned, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_UNSIGNED) _separator \
-    _def(long_double_to_bitint_signed, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED) _separator \
-    _def(long_double_to_bitint_unsigned, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED) _separator \
-    _def(bitint_to_bool, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_SIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_SIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
     _def(bitint_load, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
     _def(bitint_store, KEFIR_OPT_OPCODE_BITINT_STORE) _separator \
     _def(bitint_atomic_load, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
