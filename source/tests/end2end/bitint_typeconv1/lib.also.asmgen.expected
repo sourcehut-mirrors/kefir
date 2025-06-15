@@ -30,7 +30,7 @@ _kefir_func_get1_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -46,7 +46,7 @@ _kefir_func_get2_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -62,7 +62,7 @@ _kefir_func_get3_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -78,7 +78,7 @@ _kefir_func_get4_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -94,7 +94,7 @@ _kefir_func_get5_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -110,7 +110,7 @@ _kefir_func_get6_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -126,7 +126,7 @@ _kefir_func_get7_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -142,7 +142,7 @@ _kefir_func_get8_label0:
     movl $1126280141, -12(%rbp)
     movl $2299103077, -8(%rbp)
     movl $19088743, -4(%rbp)
-    mov -16(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

@@ -118,6 +118,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT32_PLACEHOLDER) _separator \
     _def(float_placeholder, KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER) _separator \
     _def(temporary_object, KEFIR_OPT_OPCODE_TEMPORARY_OBJECT) _separator \
+    _def(pair, KEFIR_OPT_OPCODE_PAIR) _separator \
     _def(local_lifetime_mark, KEFIR_OPT_OPCODE_LOCAL_LIFETIME_MARK) _separator \
     _def(alloc_local, KEFIR_OPT_OPCODE_ALLOC_LOCAL) _separator \
     _def(ref_local, KEFIR_OPT_OPCODE_REF_LOCAL) _separator \
@@ -348,10 +349,10 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(mul_overflow, KEFIR_OPT_OPCODE_MUL_OVERFLOW) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST) _separator \
     _def(bitint_const, KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) _separator \
-    _def(bitint_get_signed, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED) _separator \
-    _def(bitint_get_unsigned, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED) _separator \
-    _def(bitint_from_signed, KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED) _separator \
-    _def(bitint_from_unsigned, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_SIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED) _separator \
     _def(bitint_cast_signed, KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED) _separator \
     _def(bitint_cast_unsigned, KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED) _separator \
     _def(bitint_signed_to_float, KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) _separator \

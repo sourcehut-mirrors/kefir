@@ -448,8 +448,23 @@ kefir_result_t kefir_opt_code_builder_temporary_object(struct kefir_mem *mem, st
 
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
-        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_FLOAT64_PLACEHOLDER,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_TEMPORARY_OBJECT,
                                        .parameters.tmp_object = {.size = size, .alignment = alignment}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_pair(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                           kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t arg1_ref,
+                                           kefir_opt_instruction_ref_t arg2_ref,
+                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_PAIR,
+                                       .parameters.refs = {arg1_ref, arg2_ref, KEFIR_ID_NONE}},
         false, instr_id_ptr));
     return KEFIR_OK;
 }

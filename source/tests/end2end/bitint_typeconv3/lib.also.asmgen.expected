@@ -117,7 +117,7 @@ _kefir_func_get6_label0:
     mov $1044991, %rax
     and %rcx, %rax
     shl $40, %rax
-    sar $40, %rax
+    shr $40, %rax
     pop %rbp
     ret
 __kefir_text_func_get6_end:
@@ -142,7 +142,7 @@ __kefir_text_func_get8_begin:
 _kefir_func_get8_label0:
     movabs $1094394507244, %rax
     shl $4, %rax
-    sar $4, %rax
+    shr $4, %rax
     pop %rbp
     ret
 __kefir_text_func_get8_end:

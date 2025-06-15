@@ -25,6 +25,7 @@
 #include "kefir/codegen/amd64/function.h"
 #include "kefir/codegen/amd64/dwarf.h"
 #include "kefir/codegen/amd64/module.h"
+#include "kefir/codegen/amd64/lowering.h"
 #include "kefir/target/abi/amd64/type_layout.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -671,7 +672,9 @@ static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *
     struct kefir_opt_module_liveness liveness;
     REQUIRE_OK(kefir_opt_module_liveness_init(&liveness));
     REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, &liveness));
-    kefir_result_t res = translate_impl(mem, &codegen_module);
+    kefir_result_t res = KEFIR_OK;
+    REQUIRE_CHAIN(&res, kefir_codegen_amd64_lower_module(mem, &codegen_module, module));
+    REQUIRE_CHAIN(&res, translate_impl(mem, &codegen_module));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_liveness_free(mem, &liveness);
         kefir_codegen_amd64_module_free(mem, &codegen_module);
