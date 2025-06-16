@@ -31,7 +31,7 @@ _kefir_func_set1_label0:
     mov $14, %rcx
     shl $60, %rcx
     shr $60, %rcx
-    mov %cl, (%rax)
+    movb %cl, (%rax)
     pop %rbp
     ret
 __kefir_text_func_set1_end:
@@ -45,7 +45,7 @@ _kefir_func_set2_label0:
     mov $1024, %rcx
     shl $53, %rcx
     shr $53, %rcx
-    mov %cx, (%rax)
+    movw %cx, (%rax)
     pop %rbp
     ret
 __kefir_text_func_set2_end:
@@ -59,7 +59,7 @@ _kefir_func_set3_label0:
     mov $2047468, %rcx
     shl $43, %rcx
     shr $43, %rcx
-    mov %ecx, (%rax)
+    movl %ecx, (%rax)
     pop %rbp
     ret
 __kefir_text_func_set3_end:
@@ -73,7 +73,7 @@ _kefir_func_set4_label0:
     movabs $47426834430, %rcx
     shl $28, %rcx
     shr $28, %rcx
-    mov %rcx, (%rax)
+    movq %rcx, (%rax)
     pop %rbp
     ret
 __kefir_text_func_set4_end:

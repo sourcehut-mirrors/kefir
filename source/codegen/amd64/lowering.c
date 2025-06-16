@@ -667,6 +667,141 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_LOAD: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                const struct kefir_opt_memory_access_flags load_memflags = {
+                    .load_extension = KEFIR_OPT_MEMORY_LOAD_NOEXTEND, .volatile_access = memflags.volatile_access};
+                kefir_opt_instruction_ref_t value_ref;
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                &value_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_int64_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                }
+
+                switch (memflags.load_extension) {
+                    case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
+                        *replacement_ref = value_ref;
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, value_ref, 0,
+                                                                              bitwidth, replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, value_ref,
+                                                                                0, bitwidth, replacement_ref));
+                        break;
+                }
+            } else {
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t value_ref, copy_ref;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
+                                                              bitint_type_id, 0, &copy_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, replacement_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_BITINT_STORE: {
+            const kefir_opt_instruction_ref_t location_arg_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t value_arg_ref = instr->operation.parameters.refs[1];
+            struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_int8_store(mem, &func->code, block_id, location_arg_ref,
+                                                                 value_arg_ref, &memflags, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_int16_store(mem, &func->code, block_id, location_arg_ref,
+                                                                  value_arg_ref, &memflags, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_int32_store(mem, &func->code, block_id, location_arg_ref,
+                                                                  value_arg_ref, &memflags, replacement_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_int64_store(mem, &func->code, block_id, location_arg_ref,
+                                                                  value_arg_ref, &memflags, replacement_ref));
+                }
+            } else {
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, location_arg_ref,
+                                                              value_arg_ref, bitint_type_id, 0, replacement_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
+            const kefir_opt_memory_order_t memorder = instr->operation.parameters.bitint_atomic_memorder;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t value_ref;
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_atomic_load8(mem, &func->code, block_id, arg_ref, memorder, &value_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_load16(mem, &func->code, block_id, arg_ref, memorder,
+                                                                    &value_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_load32(mem, &func->code, block_id, arg_ref, memorder,
+                                                                    &value_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_load64(mem, &func->code, block_id, arg_ref, memorder,
+                                                                    &value_ref));
+                }
+
+                switch (memflags.load_extension) {
+                    case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
+                        *replacement_ref = value_ref;
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, value_ref, 0,
+                                                                              bitwidth, replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, value_ref,
+                                                                                0, bitwidth, replacement_ref));
+                        break;
+                }
+            } else {
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t value_ref, copy_ref;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_from(
+                    mem, &func->code, block_id, value_ref, arg_ref, memorder, bitint_type_id, 0, &copy_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, replacement_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
