@@ -86,6 +86,16 @@ static kefir_result_t extract_inputs_bitint_atomic_load(const struct kefir_opt_c
     return KEFIR_OK;
 }
 
+static kefir_result_t extract_inputs_bitint_atomic_store(
+    const struct kefir_opt_code_container *code, const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+    kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *), void *payload) {
+    UNUSED(code);
+    UNUSED(resolve_phi);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], callback, payload);
+    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], callback, payload);
+    return KEFIR_OK;
+}
+
 static kefir_result_t extract_inputs_stack_alloc(const struct kefir_opt_code_container *code,
                                                  const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
                                                  kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),

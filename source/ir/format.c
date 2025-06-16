@@ -539,6 +539,33 @@ kefir_result_t kefir_ir_format_instr_bitint_atomic_load_memflags(struct kefir_js
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ir_format_instr_bitint_atomic_store_memflags(struct kefir_json_output *json,
+                                                                  const struct kefir_ir_module *module,
+                                                                  const struct kefir_irinstr *instr) {
+    UNUSED(module);
+    REQUIRE(json != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid json output"));
+    REQUIRE(instr != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR instruction"));
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "opcode"));
+    REQUIRE_OK(kefir_json_output_string(json, kefir_iropcode_mnemonic(instr->opcode)));
+    REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, instr->arg.u32[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "memory_flags"));
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
+    REQUIRE_OK(kefir_json_output_boolean(json, (instr->arg.u32[1] & KEFIR_IR_MEMORY_FLAG_VOLATILE) != 0));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "memory_order"));
+    switch (instr->arg.u32[2]) {
+        case KEFIR_IR_MEMORY_ORDER_SEQ_CST:
+            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
+            break;
+    }
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *json, const struct kefir_ir_module *module,
                                                   const struct kefir_irinstr *instr) {
     UNUSED(module);

@@ -404,6 +404,28 @@ static kefir_result_t inline_operation_bitint_atomic_load(struct do_inline_param
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_operation_bitint_atomic_store(struct do_inline_param *param,
+                                                           const struct kefir_opt_instruction *instr,
+                                                           kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
+    kefir_opt_block_id_t mapped_block_id;
+    REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+
+    kefir_opt_instruction_ref_t mapped_ref1, mapped_ref2;
+    REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], &mapped_ref1));
+    REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[1], &mapped_ref2));
+
+    REQUIRE_OK(kefir_opt_code_container_new_instruction(
+        param->mem, param->dst_code, mapped_block_id,
+        &(struct kefir_opt_operation) {
+            .opcode = instr->operation.opcode,
+            .parameters = {.refs = {mapped_ref1, mapped_ref2, KEFIR_ID_NONE},
+                           .bitwidth = instr->operation.parameters.bitwidth,
+                           .bitint_atomic_memorder = instr->operation.parameters.bitint_atomic_memorder,
+                           .bitint_memflags = instr->operation.parameters.bitint_memflags}},
+        mapped_instr_ref_ptr));
+    return KEFIR_OK;
+}
+
 static kefir_result_t inline_operation_bitint_store(struct do_inline_param *param,
                                                     const struct kefir_opt_instruction *instr,
                                                     kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {

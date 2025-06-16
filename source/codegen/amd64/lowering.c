@@ -802,6 +802,35 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE: {
+            const kefir_opt_instruction_ref_t location_arg_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t value_arg_ref = instr->operation.parameters.refs[1];
+            const kefir_opt_memory_order_t memorder = instr->operation.parameters.bitint_atomic_memorder;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_store8(mem, &func->code, block_id, location_arg_ref,
+                                                                    value_arg_ref, memorder, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_store16(mem, &func->code, block_id, location_arg_ref,
+                                                                     value_arg_ref, memorder, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_store32(mem, &func->code, block_id, location_arg_ref,
+                                                                     value_arg_ref, memorder, replacement_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_store64(mem, &func->code, block_id, location_arg_ref,
+                                                                     value_arg_ref, memorder, replacement_ref));
+                }
+            } else {
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+                REQUIRE_OK(kefir_opt_code_builder_atomic_copy_memory_to(mem, &func->code, block_id, location_arg_ref,
+                                                                        value_arg_ref, memorder, bitint_type_id, 0,
+                                                                        replacement_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
