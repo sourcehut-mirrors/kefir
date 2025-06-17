@@ -762,6 +762,53 @@ static kefir_result_t sse_allocate_return(const struct kefir_ir_type *type, kefi
     return KEFIR_OK;
 }
 
+static kefir_result_t bitint_allocate(const struct kefir_ir_type *type, kefir_size_t index,
+                                      const struct kefir_ir_typeentry *typeentry, void *payload) {
+    UNUSED(index);
+    UNUSED(typeentry);
+    struct allocation_state *state = (struct allocation_state *) payload;
+    kefir_size_t slot;
+    REQUIRE_OK(kefir_ir_type_slot_of(type, index, &slot));
+    struct kefir_abi_sysv_amd64_parameter_allocation *alloc = &state->allocation[slot];
+
+    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+    REQUIRE_OK(kefir_abi_amd64_type_layout_at(state->layout, index, &layout));
+
+    if (alloc->type == KEFIR_AMD64_SYSV_INPUT_PARAM_IMMEDIATE) {
+        REQUIRE(alloc->requirements.integer == 1 && alloc->requirements.sse == 0 && alloc->requirements.sseup == 0 &&
+                    alloc->requirements.memory.size == 0,
+                KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected INTEGER to require exactly 1 int eightbyte"));
+        if (state->current->integer_register + 1 <= ABI_INTEGER_REGS) {
+            alloc->location.integer_register = state->current->integer_register++;
+        } else {
+            const kefir_size_t alignment = MAX(alloc->requirements.memory.alignment, KEFIR_AMD64_ABI_QWORD);
+            state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
+            alloc->klass = KEFIR_AMD64_SYSV_PARAM_MEMORY;
+            alloc->location.stack_offset = state->current->stack_offset;
+            state->current->stack_offset += KEFIR_AMD64_ABI_QWORD;
+        }
+    } else if (alloc->type == KEFIR_AMD64_SYSV_INPUT_PARAM_OWNING_CONTAINER &&
+               alloc->klass == KEFIR_AMD64_SYSV_PARAM_NO_CLASS &&
+               state->current->integer_register + alloc->requirements.integer <= ABI_INTEGER_REGS) {
+        alloc->location.integer_register = state->current->integer_register;
+        state->current->integer_register += alloc->requirements.integer;
+        for (kefir_size_t i = 0; i < kefir_vector_length(&alloc->container.qwords); i++) {
+            ASSIGN_DECL_CAST(struct kefir_abi_amd64_sysv_qword *, qword, kefir_vector_at(&alloc->container.qwords, i));
+            qword->klass = KEFIR_AMD64_SYSV_PARAM_INTEGER;
+            qword->location = i + alloc->location.integer_register;
+        }
+    } else {
+        if (alloc->type == KEFIR_AMD64_SYSV_INPUT_PARAM_OWNING_CONTAINER) {
+            REQUIRE_OK(aggregate_disown(state->mem, alloc));
+        }
+        const kefir_size_t alignment = MAX(layout->alignment, KEFIR_AMD64_ABI_QWORD);
+        state->current->stack_offset = kefir_target_abi_pad_aligned(state->current->stack_offset, alignment);
+        alloc->location.stack_offset = state->current->stack_offset;
+        state->current->stack_offset += layout->size;
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t long_double_allocate(const struct kefir_ir_type *type, kefir_size_t index,
                                            const struct kefir_ir_typeentry *typeentry, void *payload) {
     UNUSED(index);
@@ -997,6 +1044,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, integer_allocate);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, sse_allocate);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(&visitor, aggregate_allocate);
+    visitor.visit[KEFIR_IR_TYPE_BITINT] = bitint_allocate;
     visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_allocate;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_allocate;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate;

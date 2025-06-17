@@ -1,0 +1,157 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern a
+.extern b
+.extern c
+.extern d
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    sub $56, %rsp
+_kefir_func_test1_label0:
+    mov 56(%rbp), %rax
+    mov 48(%rbp), %r10
+    mov 40(%rbp), %r11
+    mov 32(%rbp), %rbx
+    mov 24(%rbp), %r12
+    mov 16(%rbp), %r13
+    movq %rax, -32(%rbp)
+    movl %r10d, -36(%rbp)
+    movw %r11w, -40(%rbp)
+    movb %bl, -54(%rbp)
+    movq %r12, -48(%rbp)
+    movl %r13d, -52(%rbp)
+    movw %r9w, -56(%rbp)
+    movb %r8b, -71(%rbp)
+    movq %rcx, -64(%rbp)
+    movl %edx, -68(%rbp)
+    movw %si, -70(%rbp)
+    movb %dil, -72(%rbp)
+    movb -72(%rbp), %al
+    shl $59, %rax
+    sar $59, %rax
+    movq a@GOTPCREL(%rip), %rcx
+    mov $0, %rsi
+    movsx %esi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movb -71(%rbp), %al
+    shl $59, %rax
+    sar $59, %rax
+    movq a@GOTPCREL(%rip), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movb -54(%rbp), %al
+    shl $59, %rax
+    sar $59, %rax
+    movq a@GOTPCREL(%rip), %rcx
+    mov $2, %rsi
+    movsx %esi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movw -70(%rbp), %ax
+    shl $52, %rax
+    sar $52, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $0, %rsi
+    movsx %esi, %rdx
+    imul $2, %rdx, %rdx
+    add %rdx, %rcx
+    movw %ax, (%rcx)
+    movw -56(%rbp), %ax
+    shl $52, %rax
+    sar $52, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    imul $2, %rdx, %rdx
+    add %rdx, %rcx
+    movw %ax, (%rcx)
+    movw -40(%rbp), %ax
+    shl $52, %rax
+    sar $52, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $2, %rsi
+    movsx %esi, %rdx
+    imul $2, %rdx, %rdx
+    add %rdx, %rcx
+    movw %ax, (%rcx)
+    movl -68(%rbp), %eax
+    shl $37, %rax
+    sar $37, %rax
+    movq c@GOTPCREL(%rip), %rcx
+    mov $0, %rsi
+    movsx %esi, %rdx
+    imul $4, %rdx, %rdx
+    add %rdx, %rcx
+    movl %eax, (%rcx)
+    movl -52(%rbp), %eax
+    shl $37, %rax
+    sar $37, %rax
+    movq c@GOTPCREL(%rip), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    imul $4, %rdx, %rdx
+    add %rdx, %rcx
+    movl %eax, (%rcx)
+    movl -36(%rbp), %eax
+    shl $37, %rax
+    sar $37, %rax
+    movq c@GOTPCREL(%rip), %rcx
+    mov $2, %rsi
+    movsx %esi, %rdx
+    imul $4, %rdx, %rdx
+    add %rdx, %rcx
+    movl %eax, (%rcx)
+    movq -64(%rbp), %rax
+    shl $3, %rax
+    sar $3, %rax
+    movq d@GOTPCREL(%rip), %rcx
+    mov $0, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    movq -48(%rbp), %rax
+    shl $3, %rax
+    sar $3, %rax
+    movq d@GOTPCREL(%rip), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    movq -32(%rbp), %rax
+    shl $3, %rax
+    sar $3, %rax
+    movq d@GOTPCREL(%rip), %rcx
+    mov $2, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+

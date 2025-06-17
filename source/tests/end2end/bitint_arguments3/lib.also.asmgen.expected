@@ -1,0 +1,92 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern a
+.extern b
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+_kefir_func_test1_label0:
+    mov 32(%rbp), %rax
+    lea 16(%rbp), %r10
+    movq %rcx, -112(%rbp)
+    movq %r8, -104(%rbp)
+    movq %rdi, -96(%rbp)
+    movq %rsi, -88(%rbp)
+    movq %rax, -8(%rbp)
+    movdqu (%r10), %xmm0
+    movdqu %xmm0, -24(%rbp)
+    movq %r9, -32(%rbp)
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    movq %rdx, -56(%rbp)
+    movdqu -96(%rbp), %xmm0
+    movdqu %xmm0, -72(%rbp)
+    movdqu -72(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movq a@GOTPCREL(%rip), %rax
+    mov $0, %rdx
+    movsx %edx, %rcx
+    imul $16, %rcx, %rcx
+    add %rcx, %rax
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movq a@GOTPCREL(%rip), %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    imul $16, %rcx, %rcx
+    add %rcx, %rax
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -24(%rbp), %xmm0
+    movdqu %xmm0, -128(%rbp)
+    movq a@GOTPCREL(%rip), %rax
+    mov $2, %rdx
+    movsx %edx, %rcx
+    imul $16, %rcx, %rcx
+    add %rcx, %rax
+    movdqu -128(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movq -56(%rbp), %rax
+    shl $8, %rax
+    sar $8, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $0, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    movq -32(%rbp), %rax
+    shl $8, %rax
+    sar $8, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    movq -8(%rbp), %rax
+    shl $8, %rax
+    sar $8, %rax
+    movq b@GOTPCREL(%rip), %rcx
+    mov $2, %rsi
+    movsx %esi, %rdx
+    imul $8, %rdx, %rdx
+    add %rdx, %rcx
+    movq %rax, (%rcx)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
