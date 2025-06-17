@@ -812,8 +812,12 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
             REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
         } break;
 
-        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+        case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+            const kefir_uint64_t mem_flags = retrieve_memflags(type);
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE,
+                                                         normalizer->bitprecise.width, mem_flags, atomic_memory_order,
+                                                         0));
+        } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Cannot store value with function type");

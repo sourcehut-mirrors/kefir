@@ -536,61 +536,55 @@ static kefir_result_t format_operation_bitint_store(struct kefir_json_output *js
     return KEFIR_OK;
 }
 
-static kefir_result_t format_operation_bitint_atomic_load(struct kefir_json_output *json,
-                                                          const struct kefir_opt_module *module,
-                                                          const struct kefir_opt_code_container *code,
-                                                          const struct kefir_opt_operation *oper) {
+static kefir_result_t format_operation_bitint_atomic(struct kefir_json_output *json,
+                                                     const struct kefir_opt_module *module,
+                                                     const struct kefir_opt_code_container *code,
+                                                     const struct kefir_opt_operation *oper) {
     UNUSED(module);
     UNUSED(code);
     REQUIRE_OK(kefir_json_output_object_key(json, "location"));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
-    REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
-    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitwidth));
-    REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
-    REQUIRE_OK(kefir_json_output_object_begin(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "load_extension"));
-    switch (oper->parameters.bitint_memflags.load_extension) {
-        case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
-            REQUIRE_OK(kefir_json_output_string(json, "noextend"));
+    switch (oper->opcode) {
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD:
+            REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
             break;
 
-        case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
-            REQUIRE_OK(kefir_json_output_string(json, "zero_extend"));
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE:
+            REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
             break;
 
-        case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
-            REQUIRE_OK(kefir_json_output_string(json, "sign_extend"));
-            break;
-    }
-    REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
-    REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.bitint_memflags.volatile_access));
-    REQUIRE_OK(kefir_json_output_object_end(json));
-    REQUIRE_OK(kefir_json_output_object_key(json, "atomic_model"));
-    switch (oper->parameters.bitint_atomic_memorder) {
-        case KEFIR_OPT_MEMORY_ORDER_SEQ_CST:
-            REQUIRE_OK(kefir_json_output_string(json, "seq_cst"));
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE:
+            REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "compare_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
+            REQUIRE_OK(kefir_json_output_object_key(json, "new_value"));
+            REQUIRE_OK(id_format(json, oper->parameters.refs[2]));
             break;
 
         default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected atomic model");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
     }
-    return KEFIR_OK;
-}
-
-static kefir_result_t format_operation_bitint_atomic_store(struct kefir_json_output *json,
-                                                           const struct kefir_opt_module *module,
-                                                           const struct kefir_opt_code_container *code,
-                                                           const struct kefir_opt_operation *oper) {
-    UNUSED(module);
-    UNUSED(code);
-    REQUIRE_OK(kefir_json_output_object_key(json, "location"));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF]));
-    REQUIRE_OK(kefir_json_output_object_key(json, "value"));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF]));
     REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
     REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitwidth));
     REQUIRE_OK(kefir_json_output_object_key(json, "flags"));
     REQUIRE_OK(kefir_json_output_object_begin(json));
+    if (oper->opcode == KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "load_extension"));
+        switch (oper->parameters.bitint_memflags.load_extension) {
+            case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
+                REQUIRE_OK(kefir_json_output_string(json, "noextend"));
+                break;
+
+            case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
+                REQUIRE_OK(kefir_json_output_string(json, "zero_extend"));
+                break;
+
+            case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
+                REQUIRE_OK(kefir_json_output_string(json, "sign_extend"));
+                break;
+        }
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "volatile"));
     REQUIRE_OK(kefir_json_output_boolean(json, oper->parameters.bitint_memflags.volatile_access));
     REQUIRE_OK(kefir_json_output_object_end(json));

@@ -831,6 +831,43 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE: {
+            const kefir_opt_instruction_ref_t location_arg_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t compare_value_arg_ref = instr->operation.parameters.refs[1];
+            const kefir_opt_instruction_ref_t new_value_arg_ref = instr->operation.parameters.refs[2];
+            const kefir_opt_memory_order_t memorder = instr->operation.parameters.bitint_atomic_memorder;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange8(
+                        mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref,
+                        memorder, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange16(
+                        mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref,
+                        memorder, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange32(
+                        mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref,
+                        memorder, replacement_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange64(
+                        mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref,
+                        memorder, replacement_ref));
+                }
+            } else {
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+                REQUIRE_OK(kefir_opt_code_builder_atomic_compare_exchange_memory(
+                    mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref, memorder,
+                    bitint_type_id, 0, replacement_ref));
+            }
+            return KEFIR_SET_ERROR(
+                KEFIR_NOT_IMPLEMENTED,
+                "Atomic compare exchange of bit-precise integers is not fully implemented yet");  // TODO Add tests
+        } break;
+
         default:
             // Intentionally left blank
             break;

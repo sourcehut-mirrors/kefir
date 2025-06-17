@@ -496,6 +496,16 @@ BITINT_ATOMIC_STORE_OP(bitint_atomic_store);
 
 #undef BITINT_ATOMIC_STORE_OP
 
+#define BITINT_ATOMIC_COMPARE_EXCHANGE_OP(_id)                                                     \
+    kefir_result_t kefir_opt_code_builder_##_id(                                                   \
+        struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_size_t, \
+        kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t,     \
+        const struct kefir_opt_memory_access_flags *, kefir_opt_memory_order_t, kefir_opt_instruction_ref_t *)
+
+BITINT_ATOMIC_COMPARE_EXCHANGE_OP(bitint_atomic_compare_exchange);
+
+#undef BITINT_ATOMIC_COMPARE_EXCHANGE_OP
+
 #define STORE_OP(_id)                                                                                             \
     kefir_result_t kefir_opt_code_builder_##_id(                                                                  \
         struct kefir_mem *, struct kefir_opt_code_container *, kefir_opt_block_id_t, kefir_opt_instruction_ref_t, \

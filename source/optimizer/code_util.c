@@ -75,24 +75,31 @@ static kefir_result_t extract_inputs_bitint_store(const struct kefir_opt_code_co
     return KEFIR_OK;
 }
 
-static kefir_result_t extract_inputs_bitint_atomic_load(const struct kefir_opt_code_container *code,
-                                                        const struct kefir_opt_instruction *instr,
-                                                        kefir_bool_t resolve_phi,
-                                                        kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
-                                                        void *payload) {
+static kefir_result_t extract_inputs_bitint_atomic(const struct kefir_opt_code_container *code,
+                                                   const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
+                                                   kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *),
+                                                   void *payload) {
     UNUSED(code);
     UNUSED(resolve_phi);
-    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], callback, payload);
-    return KEFIR_OK;
-}
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD:
+            INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+            break;
 
-static kefir_result_t extract_inputs_bitint_atomic_store(
-    const struct kefir_opt_code_container *code, const struct kefir_opt_instruction *instr, kefir_bool_t resolve_phi,
-    kefir_result_t (*callback)(kefir_opt_instruction_ref_t, void *), void *payload) {
-    UNUSED(code);
-    UNUSED(resolve_phi);
-    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], callback, payload);
-    INPUT_CALLBACK(instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], callback, payload);
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE:
+            INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+            INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE:
+            INPUT_CALLBACK(instr->operation.parameters.refs[0], callback, payload);
+            INPUT_CALLBACK(instr->operation.parameters.refs[1], callback, payload);
+            INPUT_CALLBACK(instr->operation.parameters.refs[2], callback, payload);
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
+    }
     return KEFIR_OK;
 }
 

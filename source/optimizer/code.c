@@ -2418,17 +2418,28 @@ static kefir_result_t replace_references_bitint_store(struct kefir_opt_instructi
     return KEFIR_OK;
 }
 
-static kefir_result_t replace_references_bitint_atomic_load(struct kefir_opt_instruction *instr,
-                                                            kefir_opt_instruction_ref_t to_ref,
-                                                            kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_LOCATION_REF], to_ref, from_ref);
-    return KEFIR_OK;
-}
+static kefir_result_t replace_references_bitint_atomic(struct kefir_opt_instruction *instr,
+                                                       kefir_opt_instruction_ref_t to_ref,
+                                                       kefir_opt_instruction_ref_t from_ref) {
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD:
+            REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+            break;
 
-static kefir_result_t replace_references_bitint_atomic_store(struct kefir_opt_instruction *instr,
-                                                             kefir_opt_instruction_ref_t to_ref,
-                                                             kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.refs[KEFIR_OPT_MEMORY_ACCESS_VALUE_REF], to_ref, from_ref);
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE:
+            REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+            REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE:
+            REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+            REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+            REPLACE_REF(&instr->operation.parameters.refs[2], to_ref, from_ref);
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
+    }
     return KEFIR_OK;
 }
 
