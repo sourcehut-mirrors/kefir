@@ -1,0 +1,129 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $352, %rsp
+    test %al, %al
+    je _kefir_func_test1_label5
+    movdqu %xmm0, -240(%rbp)
+    movdqu %xmm1, -224(%rbp)
+    movdqu %xmm2, -208(%rbp)
+    movdqu %xmm3, -192(%rbp)
+    movdqu %xmm4, -176(%rbp)
+    movdqu %xmm5, -160(%rbp)
+    movdqu %xmm6, -144(%rbp)
+    movdqu %xmm7, -128(%rbp)
+_kefir_func_test1_label5:
+    mov %rdi, -288(%rbp)
+    mov %rsi, -280(%rbp)
+    mov %rdx, -272(%rbp)
+    mov %rcx, -264(%rbp)
+    mov %r8, -256(%rbp)
+    mov %r9, -248(%rbp)
+_kefir_func_test1_label0:
+    movl %esi, -112(%rbp)
+    movl $16, -32(%rbp)
+    movl $48, -28(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    lea -288(%rbp), %rax
+    movq %rax, -16(%rbp)
+_kefir_func_test1_label1:
+    movl -32(%rbp), %eax
+    add $64, %rax
+    cmp $48, %rax
+    ja _kefir_func_test1_label4
+    movq -16(%rbp), %rax
+    movl -32(%rbp), %ecx
+    add %rcx, %rax
+    movq (%rax), %rcx
+    movq %rcx, -352(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -344(%rbp)
+    movq 16(%rax), %rcx
+    movq %rcx, -336(%rbp)
+    movq 24(%rax), %rcx
+    movq %rcx, -328(%rbp)
+    movq 32(%rax), %rcx
+    movq %rcx, -320(%rbp)
+    movq 40(%rax), %rcx
+    movq %rcx, -312(%rbp)
+    movq 48(%rax), %rcx
+    movq %rcx, -304(%rbp)
+    movq 56(%rax), %rcx
+    movq %rcx, -296(%rbp)
+    addl $64, -32(%rbp)
+    jmp _kefir_func_test1_label3
+_kefir_func_test1_label4:
+    movq -24(%rbp), %rax
+    leaq -352(%rbp), %rsi
+    add $7, %rsi
+    leaq -352(%rbp), %rsi
+    and $-8, %rsi
+    lea 64(%rax), %rcx
+    movq %rcx, -24(%rbp)
+    movq (%rax), %rcx
+    movq %rcx, -352(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -344(%rbp)
+    movq 16(%rax), %rcx
+    movq %rcx, -336(%rbp)
+    movq 24(%rax), %rcx
+    movq %rcx, -328(%rbp)
+    movq 32(%rax), %rcx
+    movq %rcx, -320(%rbp)
+    movq 40(%rax), %rcx
+    movq %rcx, -312(%rbp)
+    movq 48(%rax), %rcx
+    movq %rcx, -304(%rbp)
+    movq 56(%rax), %rcx
+    movq %rcx, -296(%rbp)
+_kefir_func_test1_label3:
+    movdqu -352(%rbp), %xmm0
+    movdqu %xmm0, -104(%rbp)
+    movdqu -336(%rbp), %xmm0
+    movdqu %xmm0, -88(%rbp)
+    movdqu -320(%rbp), %xmm0
+    movdqu %xmm0, -72(%rbp)
+    movdqu -304(%rbp), %xmm0
+    movdqu %xmm0, -56(%rbp)
+    movl -112(%rbp), %eax
+    mov %rax, %rcx
+    add $-1, %ecx
+    movl %ecx, -112(%rbp)
+    test %eax, %eax
+    jz _kefir_func_test1_label2
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label2:
+    movdqu -104(%rbp), %xmm0
+    movdqu %xmm0, -352(%rbp)
+    movdqu -88(%rbp), %xmm0
+    movdqu %xmm0, -336(%rbp)
+    movdqu -72(%rbp), %xmm0
+    movdqu %xmm0, -320(%rbp)
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -304(%rbp)
+    mov %rdi, %rax
+    movdqu -352(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -336(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -320(%rbp), %xmm0
+    movdqu %xmm0, 32(%rax)
+    movdqu -304(%rbp), %xmm0
+    movdqu %xmm0, 48(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+

@@ -1205,7 +1205,6 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                                                            .volatile_access = volatile_access},              \
             &instr_ref));                                                                                    \
         REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                   \
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                 \
     } break;
 
             BITINT_STORE_OP(bitint_store, KEFIR_IR_OPCODE_BITINT_STORE)

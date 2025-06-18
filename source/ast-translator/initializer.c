@@ -304,7 +304,8 @@ kefir_result_t kefir_ast_translate_default_initializer(struct kefir_mem *mem,
     // stay uninitialized
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     REQUIRE(unqualified_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve unqualified AST type"));
-    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type)) {
+    if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type) &&
+        !KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type)) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_PLACEHOLDER, 0));
         REQUIRE_OK(kefir_ast_translator_store_value(mem, type, context, builder, source_location));

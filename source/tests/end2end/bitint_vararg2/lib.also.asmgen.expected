@@ -1,0 +1,86 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $256, %rsp
+    test %al, %al
+    je _kefir_func_test1_label5
+    movdqu %xmm0, -192(%rbp)
+    movdqu %xmm1, -176(%rbp)
+    movdqu %xmm2, -160(%rbp)
+    movdqu %xmm3, -144(%rbp)
+    movdqu %xmm4, -128(%rbp)
+    movdqu %xmm5, -112(%rbp)
+    movdqu %xmm6, -96(%rbp)
+    movdqu %xmm7, -80(%rbp)
+_kefir_func_test1_label5:
+    mov %rdi, -240(%rbp)
+    mov %rsi, -232(%rbp)
+    mov %rdx, -224(%rbp)
+    mov %rcx, -216(%rbp)
+    mov %r8, -208(%rbp)
+    mov %r9, -200(%rbp)
+_kefir_func_test1_label0:
+    movl %edi, -64(%rbp)
+    movl $8, -32(%rbp)
+    movl $48, -28(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    lea -240(%rbp), %rax
+    movq %rax, -16(%rbp)
+_kefir_func_test1_label1:
+    movl -32(%rbp), %eax
+    add $16, %rax
+    cmp $48, %rax
+    ja _kefir_func_test1_label4
+    movq -16(%rbp), %rax
+    movl -32(%rbp), %ecx
+    add %rcx, %rax
+    movq (%rax), %rcx
+    movq %rcx, -256(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -248(%rbp)
+    addl $16, -32(%rbp)
+    jmp _kefir_func_test1_label3
+_kefir_func_test1_label4:
+    movq -24(%rbp), %rax
+    leaq -256(%rbp), %rdx
+    add $7, %rdx
+    leaq -256(%rbp), %rdx
+    and $-8, %rdx
+    lea 16(%rax), %rcx
+    movq %rcx, -24(%rbp)
+    movq (%rax), %rcx
+    movq %rcx, -256(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -248(%rbp)
+_kefir_func_test1_label3:
+    movdqu -256(%rbp), %xmm0
+    movdqu %xmm0, -56(%rbp)
+    movl -64(%rbp), %eax
+    mov %rax, %rcx
+    add $-1, %ecx
+    movl %ecx, -64(%rbp)
+    test %eax, %eax
+    jz _kefir_func_test1_label2
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label2:
+    movdqu -56(%rbp), %xmm0
+    movdqu %xmm0, -256(%rbp)
+    movq -256(%rbp), %rax
+    movq -248(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
