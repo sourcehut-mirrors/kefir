@@ -312,7 +312,7 @@
     OPCODE(BITINT_STORE, "bitint_store", bitint_store) SEPARATOR \
     OPCODE(BITINT_ATOMIC_LOAD, "bitint_atomic_load", bitint_atomic) SEPARATOR \
     OPCODE(BITINT_ATOMIC_STORE, "bitint_atomic_store", bitint_atomic) SEPARATOR \
-    OPCODE(BITINT_ATOMIC_COMPARE_EXCHANGE, "bitint_atomic_compare_exchange", bitint_atomic)
-// clang-format on
+    OPCODE(BITINT_ATOMIC_COMPARE_EXCHANGE, "bitint_atomic_compare_exchange", bitint_atomic) SEPARATOR \
+    OPCODE(BITINT_NEGATE, "bitint_negate", bitint_ref1)  // clang-format on
 
 #endif

@@ -847,6 +847,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_UNARY_OP(long_double_to_bitint_signed, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED)
             BITINT_UNARY_OP(long_double_to_bitint_unsigned, KEFIR_IR_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED)
             BITINT_UNARY_OP(bitint_to_bool, KEFIR_IR_OPCODE_BITINT_TO_BOOL)
+            BITINT_UNARY_OP(bitint_negate, KEFIR_IR_OPCODE_BITINT_NEGATE)
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

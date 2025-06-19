@@ -119,6 +119,7 @@ static __kefir_bigint_result_t __kefir_bigint_set_unsigned_integer(__KEFIR_BIGIN
 static __kefir_bigint_result_t __kefir_bigint_util_add_digit_zero_extended(__KEFIR_BIGINT_DIGIT_T *,
                                                                            __KEFIR_BIGINT_DIGIT_T,
                                                                            __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_negate(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_add(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                   __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_add_zero_extend(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,

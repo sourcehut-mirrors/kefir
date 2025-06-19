@@ -373,6 +373,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_NEGATE) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -501,6 +502,7 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define BIGINT_UNSIGNED_FROM_DOUBLE_FN "__kefir_bigint_unsigned_from_double"
 #define BIGINT_UNSIGNED_FROM_LONG_DOUBLE_FN "__kefir_bigint_unsigned_from_long_double"
 #define BIGINT_IS_ZERO_FN "__kefir_bigint_is_zero"
+#define BIGINT_NEGATE_FN "__kefir_bigint_negate"
 
 #define LIBATOMIC_SEQ_CST 5
 
