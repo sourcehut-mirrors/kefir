@@ -129,6 +129,7 @@ static __kefir_bigint_result_t __kefir_bigint_subtract(__KEFIR_BIGINT_DIGIT_T *,
 static __kefir_bigint_result_t __kefir_bigint_subtract_zero_extend(__KEFIR_BIGINT_DIGIT_T *,
                                                                    const __KEFIR_BIGINT_DIGIT_T *,
                                                                    __KEFIR_BIGINT_WIDTH_T, __KEFIR_BIGINT_WIDTH_T);
+static __kefir_bigint_result_t __kefir_bigint_invert(__KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_or(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,
                                                  __KEFIR_BIGINT_WIDTH_T);
 static __kefir_bigint_result_t __kefir_bigint_and(__KEFIR_BIGINT_DIGIT_T *, const __KEFIR_BIGINT_DIGIT_T *,

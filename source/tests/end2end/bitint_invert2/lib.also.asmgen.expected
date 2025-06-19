@@ -1,0 +1,237 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global inv1
+.type inv1, @function
+.global inv2
+.type inv2, @function
+.global inv3
+.type inv3, @function
+.global inv4
+.type inv4, @function
+.global inv5
+.type inv5, @function
+.global inv6
+.type inv6, @function
+
+.section .text
+__kefir_text_section_begin:
+inv1:
+__kefir_text_func_inv1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_inv1_label0:
+    movb %dil, -1(%rbp)
+    movb -1(%rbp), %al
+    shl $58, %rax
+    shr $58, %rax
+    not %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv1_end:
+
+inv2:
+__kefir_text_func_inv2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_inv2_label0:
+    movw %di, -2(%rbp)
+    movw -2(%rbp), %ax
+    shl $50, %rax
+    shr $50, %rax
+    not %ax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv2_end:
+
+inv3:
+__kefir_text_func_inv3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_inv3_label0:
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    shl $35, %rax
+    shr $35, %rax
+    not %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv3_end:
+
+inv4:
+__kefir_text_func_inv4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_inv4_label0:
+    movq %rdi, -8(%rbp)
+    movq -8(%rbp), %rax
+    shl $6, %rax
+    shr $6, %rax
+    not %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv4_end:
+
+inv5:
+__kefir_text_func_inv5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func_inv5_label0:
+    movq %rdi, -32(%rbp)
+    movq %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -48(%rbp)
+    leaq -48(%rbp), %rax
+    mov %rax, %rdi
+    mov $119, %rsi
+    call __kefir_bigint_invert
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv5_end:
+
+inv6:
+__kefir_text_func_inv6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $128, %rsp
+    mov %rdi, %rdx
+_kefir_func_inv6_label0:
+    lea 16(%rbp), %rax
+    movq (%rax), %rcx
+    movq %rcx, -40(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -32(%rbp)
+    movq 16(%rax), %rcx
+    movq %rcx, -24(%rbp)
+    movq 24(%rax), %rcx
+    movq %rcx, -16(%rbp)
+    movq 32(%rax), %rcx
+    movq %rcx, -8(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movq -8(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq -128(%rbp), %rax
+    movq %rax, -88(%rbp)
+    movq -120(%rbp), %rax
+    movq %rax, -80(%rbp)
+    movq -112(%rbp), %rax
+    movq %rax, -72(%rbp)
+    movq -104(%rbp), %rax
+    movq %rax, -64(%rbp)
+    movq -96(%rbp), %rax
+    movq %rax, -56(%rbp)
+    movq %rdx, -128(%rbp)
+    leaq -88(%rbp), %rax
+    mov %rax, %rdi
+    mov $310, %rsi
+    call __kefir_bigint_invert
+    movq -128(%rbp), %rdx
+    mov %rdx, %rax
+    movq -88(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -80(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -72(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -64(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -56(%rbp), %rcx
+    movq %rcx, 32(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_inv6_end:
+
+__kefir_text_section_end:
+
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+
+.section .text
+__kefir_bigint_invert:
+__kefir_text_func___kefir_bigint_invert_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+_kefir_func___kefir_bigint_invert_label0:
+    movq %rsi, -32(%rbp)
+    movq %rdi, -24(%rbp)
+    movq -32(%rbp), %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    imul %rcx, %rdx
+    add %rdx, %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    sub %rcx, %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rsi
+    imul %rcx, %rsi
+    mov $0, %rdx
+    div %rsi
+    movq %rax, -16(%rbp)
+    mov $0, %rcx
+    movsx %ecx, %rax
+    movq %rax, -8(%rbp)
+_kefir_func___kefir_bigint_invert_label1:
+    movq -8(%rbp), %rax
+    movq -16(%rbp), %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setb %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_invert_label3
+_kefir_func___kefir_bigint_invert_label2:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_invert_label3:
+    movq -24(%rbp), %rax
+    movq -8(%rbp), %rcx
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    movq -24(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    and $255, %rax
+    not %eax
+    movb %al, (%rcx)
+    movq -8(%rbp), %rax
+    add $1, %rax
+    movq %rax, -8(%rbp)
+    jmp _kefir_func___kefir_bigint_invert_label1
+__kefir_text_func___kefir_bigint_invert_end:
+
+

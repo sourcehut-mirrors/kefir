@@ -48,6 +48,7 @@ struct lowering_param {
         kefir_id_t bigint_unsigned_from_long_double;
         kefir_id_t bigint_is_zero;
         kefir_id_t bigint_negate;
+        kefir_id_t bigint_invert;
     } runtime_fn;
 };
 
@@ -184,6 +185,10 @@ DECL_BIGINT_RUNTIME_FN(bigint_is_zero, BIGINT_IS_ZERO_FN, 2, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
 })
 DECL_BIGINT_RUNTIME_FN(bigint_negate, BIGINT_NEGATE_FN, 2, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_invert, BIGINT_INVERT_FN, 2, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
@@ -917,6 +922,50 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_INVERT: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_int8_not(mem, &func->code, block_id, arg_ref, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_int16_not(mem, &func->code, block_id, arg_ref, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_int32_not(mem, &func->code, block_id, arg_ref, replacement_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_int64_not(mem, &func->code, block_id, arg_ref, replacement_ref));
+                }
+            } else {
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_opt_instruction_ref_t value_ref, init_value_ref, init_value_pair_ref, bitwidth_ref, call_ref;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
+                                                              bitint_type_id, 0, &init_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, init_value_ref,
+                                                       &init_value_pair_ref));
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_bigint_invert_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, KEFIR_ID_NONE,
+                                                             &call_node_id, &call_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, init_value_pair_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, bitwidth_ref));
+
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, call_ref, replacement_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
@@ -997,7 +1046,8 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
                                                   .bigint_signed_from_long_double = KEFIR_ID_NONE,
                                                   .bigint_unsigned_from_long_double = KEFIR_ID_NONE,
                                                   .bigint_is_zero = KEFIR_ID_NONE,
-                                                  .bigint_negate = KEFIR_ID_NONE}};
+                                                  .bigint_negate = KEFIR_ID_NONE,
+                                                  .bigint_invert = KEFIR_ID_NONE}};
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
