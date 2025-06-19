@@ -25,19 +25,25 @@
 #include "./definitions.h"
 
 int main(void) {
-    assert(test1(0, 0xcafe) == 0xcafe);
-    assert(test1(0, 0xcafe, 0x0bad) == 0xcafe);
-    assert(test1(1, 0xcafe, 0x0bad) == 0x0bad);
-    assert(test1(1, 0xcafe, 0x0bad, ~0ull) == 0x0bad);
-    assert(test1(2, 0xcafe, 0x0bad, ~0ull) == ~0ull);
-    assert(test1(0, 0xcafe, 0x0bad, ~0ull, 0) == 0xcafe);
-    assert(test1(3, 0xcafe, 0x0bad, ~0ull, 0) == 0);
-    assert(test1(4, 0xcafe, 0x0bad, ~0ull, 0, 1234) == 1234);
-    assert(test1(5, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll) == (unsigned long) -1ll);
-    assert(test1(3, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll) == 0);
-    assert(test1(6, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll, 0x0c0ffe) == 0x0c0ffe);
-    assert(test1(7, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll, 0x0c0ffe, 10000) == 10000);
-    assert(test1(8, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll, 0x0c0ffe, 10000, 1) == 1);
-    assert(test1(9, 0xcafe, 0x0bad, ~0ull, 0, 1234, (unsigned long) -1ll, 0x0c0ffe, 10000, 1, 0xfefe4e3) == 0xfefe4e3);
+    assert((test1(0, 0xcafeull) & ((1ull << 43) - 1)) == 0xcafe);
+    assert((test1(0, 0xcafeull, 0x0badull) & ((1ull << 43) - 1)) == 0xcafe);
+    assert((test1(1, 0xcafeull, 0x0badull) & ((1ull << 43) - 1)) == 0x0bad);
+    assert((test1(1, 0xcafeull, 0x0badull, ~0ull) & ((1ull << 43) - 1)) == 0x0bad);
+    assert((test1(2, 0xcafeull, 0x0badull, ~0ull) & ((1ull << 43) - 1)) == ((~0ull) & ((1ull << 43) - 1)));
+    assert((test1(0, 0xcafeull, 0x0badull, ~0ull, 0ull) & ((1ull << 43) - 1)) == 0xcafe);
+    assert((test1(3, 0xcafeull, 0x0badull, ~0ull, 0ull) & ((1ull << 43) - 1)) == 0);
+    assert((test1(4, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull) & ((1ull << 43) - 1)) == 1234);
+    assert((test1(5, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll) & ((1ull << 43) - 1)) ==
+           (1ull << 43) - 1);
+    assert((test1(3, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll) & ((1ull << 43) - 1)) == 0);
+    assert((test1(6, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll, 0x0c0ffeull) &
+            ((1ull << 43) - 1)) == 0x0c0ffe);
+    assert((test1(7, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll, 0x0c0ffeull, 10000ull) &
+            ((1ull << 43) - 1)) == 10000);
+    assert((test1(8, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll, 0x0c0ffeull, 10000ull, 1ull) &
+            ((1ull << 43) - 1)) == 1);
+    assert((test1(9, 0xcafeull, 0x0badull, ~0ull, 0ull, 1234ull, (unsigned long) -1ll, 0x0c0ffeull, 10000ull, 1ull,
+                  0xfefe4e3ull) &
+            ((1ull << 43) - 1)) == 0xfefe4e3);
     return EXIT_SUCCESS;
 }
