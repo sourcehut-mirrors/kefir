@@ -966,6 +966,42 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t value_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, arg_ref, 0,
+                                                                        bitwidth, &value_ref));
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int8_bool_not(mem, &func->code, block_id, value_ref, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int16_bool_not(mem, &func->code, block_id, value_ref, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int32_bool_not(mem, &func->code, block_id, value_ref, replacement_ref));
+                } else if (bitwidth <= QWORD_BITS) {
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_bool_not(mem, &func->code, block_id, value_ref, replacement_ref));
+                }
+            } else {
+                kefir_opt_instruction_ref_t bitwidth_ref;
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_bigint_is_zero_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, KEFIR_ID_NONE,
+                                                             &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, bitwidth_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;

@@ -375,6 +375,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_NEGATE) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_INVERT) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BOOL_NOT) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
