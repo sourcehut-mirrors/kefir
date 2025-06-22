@@ -980,6 +980,19 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef BINARY_OP
 
+#define BITINT_BINARY_OP(_id, _opcode)                                                                               \
+    case _opcode:                                                                                                    \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                        \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                        \
+        REQUIRE_OK(kefir_opt_code_builder_##_id(mem, code, current_block_id, instr->arg.u64, instr_ref2, instr_ref3, \
+                                                &instr_ref));                                                        \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                         \
+        break;
+
+            BITINT_BINARY_OP(bitint_add, KEFIR_IR_OPCODE_BITINT_ADD)
+
+#undef BITINT_BINARY_OP
+
 #define ATOMIC_LOAD_OP(_id, _opcode)                                                                          \
     case _opcode: {                                                                                           \
         kefir_opt_memory_order_t model;                                                                       \

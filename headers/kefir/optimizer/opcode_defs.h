@@ -315,7 +315,8 @@
     OPCODE(BITINT_ATOMIC_COMPARE_EXCHANGE, "bitint_atomic_compare_exchange", bitint_atomic) SEPARATOR \
     OPCODE(BITINT_NEGATE, "bitint_negate", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_INVERT, "bitint_invert", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_BOOL_NOT, "bitint_bool_not", bitint_ref1)
+    OPCODE(BITINT_BOOL_NOT, "bitint_bool_not", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_ADD, "bitint_add", bitint_ref2)
 
 // clang-format on
 

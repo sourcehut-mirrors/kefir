@@ -390,6 +390,21 @@ static kefir_result_t format_operation_bitint_ref1(struct kefir_json_output *jso
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_bitint_ref2(struct kefir_json_output *json,
+                                                   const struct kefir_opt_module *module,
+                                                   const struct kefir_opt_code_container *code,
+                                                   const struct kefir_opt_operation *oper) {
+    UNUSED(module);
+    UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "args"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
+    REQUIRE_OK(id_format(json, oper->parameters.bitwidth));
+    return KEFIR_OK;
+}
 static kefir_result_t format_operation_bitint2_ref1(struct kefir_json_output *json,
                                                     const struct kefir_opt_module *module,
                                                     const struct kefir_opt_code_container *code,
