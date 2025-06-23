@@ -402,6 +402,7 @@ BINARY_OP(complex_long_double_div);
                                                 kefir_opt_block_id_t, kefir_size_t, kefir_opt_instruction_ref_t, \
                                                 kefir_opt_instruction_ref_t, kefir_opt_instruction_ref_t *)
 BITINT_BINARY_OP(bitint_add);
+BITINT_BINARY_OP(bitint_sub);
 
 #undef BITINT_BINARY_OP
 

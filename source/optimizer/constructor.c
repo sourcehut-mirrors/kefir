@@ -990,6 +990,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
         break;
 
             BITINT_BINARY_OP(bitint_add, KEFIR_IR_OPCODE_BITINT_ADD)
+            BITINT_BINARY_OP(bitint_sub, KEFIR_IR_OPCODE_BITINT_SUB)
 
 #undef BITINT_BINARY_OP
 

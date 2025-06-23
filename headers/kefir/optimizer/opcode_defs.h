@@ -316,7 +316,8 @@
     OPCODE(BITINT_NEGATE, "bitint_negate", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_INVERT, "bitint_invert", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_BOOL_NOT, "bitint_bool_not", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_ADD, "bitint_add", bitint_ref2)
+    OPCODE(BITINT_ADD, "bitint_add", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_SUB, "bitint_sub", bitint_ref2)
 
 // clang-format on
 
