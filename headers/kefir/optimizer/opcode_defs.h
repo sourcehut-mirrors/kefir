@@ -318,6 +318,8 @@
     OPCODE(BITINT_BOOL_NOT, "bitint_bool_not", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_ADD, "bitint_add", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_SUB, "bitint_sub", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_IMUL, "bitint_imul", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_UMUL, "bitint_umul", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_AND, "bitint_and", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_OR, "bitint_or", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_XOR, "bitint_xor", bitint_ref2)

@@ -51,6 +51,8 @@ struct lowering_param {
         kefir_id_t bigint_invert;
         kefir_id_t bigint_add;
         kefir_id_t bigint_subtract;
+        kefir_id_t bigint_signed_multiply;
+        kefir_id_t bigint_unsigned_multiply;
         kefir_id_t bigint_and;
         kefir_id_t bigint_or;
         kefir_id_t bigint_xor;
@@ -220,6 +222,22 @@ DECL_BIGINT_RUNTIME_FN(bigint_or, BIGINT_OR_FN, 3, 0, {
 DECL_BIGINT_RUNTIME_FN(bigint_xor, BIGINT_XOR_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_signed_multiply, BIGINT_SIGNED_MULTIPLY_FN, 6, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_unsigned_multiply, BIGINT_UNSIGNED_MULTIPLY_FN, 6, 0, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
 
@@ -1104,6 +1122,134 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
 
 #undef BINOP
 
+        case KEFIR_OPT_OPCODE_BITINT_UMUL: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t arg1_value_ref, arg2_value_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, arg1_ref, 0,
+                                                                        bitwidth, &arg1_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, arg2_ref, 0,
+                                                                        bitwidth, &arg2_value_ref));
+
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_uint8_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                arg2_value_ref, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_uint16_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                 arg2_value_ref, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_uint32_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                 arg2_value_ref, replacement_ref));
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_uint64_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                 arg2_value_ref, replacement_ref));
+                }
+            } else {
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(
+                    get_bigint_unsigned_multiply_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t result_value_ref, tmp_value_ref, bitwidth_ref, call_ref;
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
+                                                                   qwords * KEFIR_AMD64_ABI_QWORD,
+                                                                   KEFIR_AMD64_ABI_QWORD, &result_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &tmp_value_ref));
+
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 6, KEFIR_ID_NONE,
+                                                             &call_node_id, &call_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, tmp_value_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg1_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 4, bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 5, bitwidth_ref));
+
+                REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, result_value_ref, call_ref,
+                                                       replacement_ref));
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_BITINT_IMUL: {
+            const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];
+            const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t arg1_value_ref, arg2_value_ref;
+                REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg1_ref, 0, bitwidth,
+                                                                      &arg1_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg2_ref, 0, bitwidth,
+                                                                      &arg2_value_ref));
+
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_int8_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                               arg2_value_ref, replacement_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_int16_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                arg2_value_ref, replacement_ref));
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_int32_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                arg2_value_ref, replacement_ref));
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_int64_mul(mem, &func->code, block_id, arg1_value_ref,
+                                                                arg2_value_ref, replacement_ref));
+                }
+            } else {
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_id_t func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(
+                    get_bigint_signed_multiply_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t result_value_ref, tmp_value_ref, lhs_value_ref, lhs_init_value_ref,
+                    lhs_init_value_pair_ref, bitwidth_ref, call_ref;
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
+                                                                   qwords * KEFIR_AMD64_ABI_QWORD,
+                                                                   KEFIR_AMD64_ABI_QWORD, &result_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &tmp_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &lhs_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, lhs_value_ref, arg1_ref,
+                                                              bitint_type_id, 0, &lhs_init_value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, lhs_value_ref, lhs_init_value_ref,
+                                                       &lhs_init_value_pair_ref));
+
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 6, KEFIR_ID_NONE,
+                                                             &call_node_id, &call_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, result_value_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, tmp_value_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2,
+                                                                      lhs_init_value_pair_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 4, bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 5, bitwidth_ref));
+
+                REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, result_value_ref, call_ref,
+                                                       replacement_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
@@ -1188,6 +1334,8 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
                                                   .bigint_invert = KEFIR_ID_NONE,
                                                   .bigint_add = KEFIR_ID_NONE,
                                                   .bigint_subtract = KEFIR_ID_NONE,
+                                                  .bigint_signed_multiply = KEFIR_ID_NONE,
+                                                  .bigint_unsigned_multiply = KEFIR_ID_NONE,
                                                   .bigint_and = KEFIR_ID_NONE,
                                                   .bigint_or = KEFIR_ID_NONE,
                                                   .bigint_xor = KEFIR_ID_NONE}};

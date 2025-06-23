@@ -378,6 +378,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BOOL_NOT) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ADD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_SUB) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IMUL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMUL) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \
@@ -513,6 +515,8 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define BIGINT_INVERT_FN "__kefir_bigint_invert"
 #define BIGINT_ADD_FN "__kefir_bigint_add"
 #define BIGINT_SUBTRACT_FN "__kefir_bigint_subtract"
+#define BIGINT_UNSIGNED_MULTIPLY_FN "__kefir_bigint_unsigned_multiply"
+#define BIGINT_SIGNED_MULTIPLY_FN "__kefir_bigint_signed_multiply"
 #define BIGINT_AND_FN "__kefir_bigint_and"
 #define BIGINT_OR_FN "__kefir_bigint_or"
 #define BIGINT_XOR_FN "__kefir_bigint_xor"
