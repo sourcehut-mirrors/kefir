@@ -118,8 +118,9 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Full bit-precise integer support is not implemented yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_ADD,
+                                                           result_normalized_type->bitprecise.width));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
