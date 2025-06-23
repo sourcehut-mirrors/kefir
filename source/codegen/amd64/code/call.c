@@ -591,6 +591,20 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
             mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg_idx, NULL));
     }
 
+    for (kefir_size_t i = 0; i < call_node->argument_count; i++, subarg_count++) {
+        kefir_asmcmp_virtual_register_index_t argument_vreg_idx;
+        REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, call_node->arguments[i], &argument_vreg_idx));
+
+        const struct kefir_asmcmp_virtual_register *argument_vreg;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, argument_vreg_idx, &argument_vreg));
+
+        if (argument_vreg->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_SPILL_SPACE) {
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), argument_vreg_idx,
+                NULL));
+        }
+    }
+
     return KEFIR_OK;
 }
 
