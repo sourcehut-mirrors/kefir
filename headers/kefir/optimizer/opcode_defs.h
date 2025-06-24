@@ -324,6 +324,9 @@
     OPCODE(BITINT_UDIV, "bitint_udiv", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_IMOD, "bitint_imod", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_UMOD, "bitint_umod", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_LSHIFT, "bitint_lshift", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_RSHIFT, "bitint_rshift", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_ARSHIFT, "bitint_arshift", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_AND, "bitint_and", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_OR, "bitint_or", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_XOR, "bitint_xor", bitint_ref2)

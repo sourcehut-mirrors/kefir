@@ -1,0 +1,583 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global shr1
+.type shr1, @function
+.global shr2
+.type shr2, @function
+.global shr3
+.type shr3, @function
+.global shr4
+.type shr4, @function
+.global shr5
+.type shr5, @function
+.global shr6
+.type shr6, @function
+
+.section .text
+__kefir_text_section_begin:
+shr1:
+__kefir_text_func_shr1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_shr1_label0:
+    movb %sil, -1(%rbp)
+    movb %dil, -2(%rbp)
+    movb -2(%rbp), %al
+    shl $58, %rax
+    shr $58, %rax
+    movb -1(%rbp), %cl
+    shl $58, %rcx
+    sar $58, %rcx
+    shl $58, %rcx
+    sar $58, %rcx
+    shr %cl, %al
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr1_end:
+
+shr2:
+__kefir_text_func_shr2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_shr2_label0:
+    movw %si, -2(%rbp)
+    movw %di, -4(%rbp)
+    movw -4(%rbp), %ax
+    shl $50, %rax
+    shr $50, %rax
+    movw -2(%rbp), %cx
+    shl $50, %rcx
+    sar $50, %rcx
+    shl $50, %rcx
+    sar $50, %rcx
+    shr %cl, %ax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr2_end:
+
+shr3:
+__kefir_text_func_shr3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_shr3_label0:
+    movl %esi, -4(%rbp)
+    movl %edi, -8(%rbp)
+    movl -8(%rbp), %eax
+    shl $35, %rax
+    shr $35, %rax
+    movl -4(%rbp), %ecx
+    shl $35, %rcx
+    sar $35, %rcx
+    shl $35, %rcx
+    sar $35, %rcx
+    shr %cl, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr3_end:
+
+shr4:
+__kefir_text_func_shr4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_shr4_label0:
+    movq %rsi, -8(%rbp)
+    movq %rdi, -16(%rbp)
+    movq -16(%rbp), %rax
+    shl $6, %rax
+    shr $6, %rax
+    movq -8(%rbp), %rcx
+    shl $6, %rcx
+    sar $6, %rcx
+    shl $6, %rcx
+    sar $6, %rcx
+    shr %cl, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr4_end:
+
+shr5:
+__kefir_text_func_shr5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $112, %rsp
+_kefir_func_shr5_label0:
+    movq %rdx, -64(%rbp)
+    movq %rcx, -56(%rbp)
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -112(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, -96(%rbp)
+    movdqu -112(%rbp), %xmm0
+    movdqu %xmm0, -80(%rbp)
+    movq -96(%rbp), %rsi
+    leaq -80(%rbp), %rax
+    mov %rax, %rdi
+    mov $120, %rdx
+    call __kefir_bigint_right_shift
+    movq -80(%rbp), %rax
+    movq -72(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr5_end:
+
+shr6:
+__kefir_text_func_shr6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $208, %rsp
+    mov %rdi, %r8
+_kefir_func_shr6_label0:
+    lea 56(%rbp), %rax
+    lea 16(%rbp), %rcx
+    movq (%rax), %rdx
+    movq %rdx, -40(%rbp)
+    movq 8(%rax), %rdx
+    movq %rdx, -32(%rbp)
+    movq 16(%rax), %rdx
+    movq %rdx, -24(%rbp)
+    movq 24(%rax), %rdx
+    movq %rdx, -16(%rbp)
+    movq 32(%rax), %rdx
+    movq %rdx, -8(%rbp)
+    movq (%rcx), %rax
+    movq %rax, -80(%rbp)
+    movq 8(%rcx), %rax
+    movq %rax, -72(%rbp)
+    movq 16(%rcx), %rax
+    movq %rax, -64(%rbp)
+    movq 24(%rcx), %rax
+    movq %rax, -56(%rbp)
+    movq 32(%rcx), %rax
+    movq %rax, -48(%rbp)
+    movq -80(%rbp), %rax
+    movq %rax, -168(%rbp)
+    movq -72(%rbp), %rax
+    movq %rax, -160(%rbp)
+    movq -64(%rbp), %rax
+    movq %rax, -152(%rbp)
+    movq -56(%rbp), %rax
+    movq %rax, -144(%rbp)
+    movq -48(%rbp), %rax
+    movq %rax, -136(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -208(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -200(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -192(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, -184(%rbp)
+    movq -8(%rbp), %rax
+    movq %rax, -176(%rbp)
+    movq -168(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -160(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -152(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -144(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movq -136(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq -208(%rbp), %rsi
+    movq %r8, -208(%rbp)
+    leaq -128(%rbp), %rax
+    mov %rax, %rdi
+    mov $310, %rdx
+    call __kefir_bigint_right_shift
+    movq -208(%rbp), %r8
+    mov %r8, %rax
+    movq -128(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -120(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -112(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    movq -104(%rbp), %rcx
+    movq %rcx, 24(%rax)
+    movq -96(%rbp), %rcx
+    movq %rcx, 32(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_shr6_end:
+
+__kefir_text_section_end:
+
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+
+.section .text
+__kefir_bigint_right_shift_whole_digits:
+__kefir_text_func___kefir_bigint_right_shift_whole_digits_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+_kefir_func___kefir_bigint_right_shift_whole_digits_label0:
+    movq %rcx, -32(%rbp)
+    movl %edx, -48(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -24(%rbp)
+    movq -32(%rbp), %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    imul %rcx, %rdx
+    add %rdx, %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    sub %rcx, %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rsi
+    imul %rcx, %rsi
+    mov $0, %rdx
+    div %rsi
+    movq %rax, -16(%rbp)
+    movl -48(%rbp), %eax
+    test %eax, %eax
+    jz _kefir_func___kefir_bigint_right_shift_whole_digits_label15
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label1
+_kefir_func___kefir_bigint_right_shift_whole_digits_label15:
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label14
+_kefir_func___kefir_bigint_right_shift_whole_digits_label1:
+    mov $0, %rax
+    and $255, %rax
+    not %eax
+    mov %rax, %rdi
+    leaq -44(%rbp), %r8
+_kefir_func___kefir_bigint_right_shift_whole_digits_label2:
+    movb %dil, (%r8)
+    movq -40(%rbp), %rax
+    movq -16(%rbp), %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    seta %dl
+    mov $0, %rsi
+    cmp %rax, %rcx
+    sete %sil
+    or %rsi, %rdx
+    setne %dl
+    movzx %dl, %rdx
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_whole_digits_label10
+_kefir_func___kefir_bigint_right_shift_whole_digits_label3:
+    movl $0, -8(%rbp)
+_kefir_func___kefir_bigint_right_shift_whole_digits_label4:
+    movl -8(%rbp), %eax
+    movq -16(%rbp), %rcx
+    movq -40(%rbp), %rdx
+    movabs $4294967295, %rsi
+    and %rsi, %rax
+    sub %rdx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setb %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_whole_digits_label9
+_kefir_func___kefir_bigint_right_shift_whole_digits_label5:
+    movl -8(%rbp), %eax
+    movq -16(%rbp), %rcx
+    movabs $4294967295, %rdx
+    and %rdx, %rax
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setb %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_whole_digits_label8
+_kefir_func___kefir_bigint_right_shift_whole_digits_label6:
+_kefir_func___kefir_bigint_right_shift_whole_digits_label7:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_right_shift_whole_digits_label8:
+    movb -44(%rbp), %al
+    movq -24(%rbp), %rcx
+    movl -8(%rbp), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movl -8(%rbp), %eax
+    add $1, %eax
+    movl %eax, -8(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label5
+_kefir_func___kefir_bigint_right_shift_whole_digits_label9:
+    movq -24(%rbp), %rax
+    movl -8(%rbp), %ecx
+    movq -40(%rbp), %rdx
+    movabs $4294967295, %rsi
+    and %rsi, %rcx
+    add %rdx, %rcx
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    movq -24(%rbp), %rcx
+    movl -8(%rbp), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movl -8(%rbp), %eax
+    add $1, %eax
+    movl %eax, -8(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label4
+_kefir_func___kefir_bigint_right_shift_whole_digits_label10:
+    movl $0, -8(%rbp)
+_kefir_func___kefir_bigint_right_shift_whole_digits_label11:
+    movl -8(%rbp), %eax
+    movq -16(%rbp), %rcx
+    movabs $4294967295, %rdx
+    and %rdx, %rax
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setb %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_whole_digits_label13
+_kefir_func___kefir_bigint_right_shift_whole_digits_label12:
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label7
+_kefir_func___kefir_bigint_right_shift_whole_digits_label13:
+    movb -44(%rbp), %al
+    movq -24(%rbp), %rcx
+    movl -8(%rbp), %edx
+    movabs $4294967295, %rsi
+    and %rsi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
+    movl -8(%rbp), %eax
+    add $1, %eax
+    movl %eax, -8(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label11
+_kefir_func___kefir_bigint_right_shift_whole_digits_label14:
+    mov $0, %rax
+    and $255, %rax
+    mov %rax, %rdi
+    leaq -44(%rbp), %r8
+    jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label2
+__kefir_text_func___kefir_bigint_right_shift_whole_digits_end:
+
+__kefir_bigint_right_shift:
+__kefir_text_func___kefir_bigint_right_shift_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+_kefir_func___kefir_bigint_right_shift_label0:
+    movq %rdx, -56(%rbp)
+    movq %rsi, -64(%rbp)
+    movq %rdi, -48(%rbp)
+    movq -64(%rbp), %rax
+    movq -56(%rbp), %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    seta %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_label9
+_kefir_func___kefir_bigint_right_shift_label1:
+    movq -56(%rbp), %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rdx
+    imul %rcx, %rdx
+    add %rdx, %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    sub %rcx, %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rsi
+    imul %rcx, %rsi
+    mov $0, %rdx
+    div %rsi
+    movq %rax, -32(%rbp)
+    movq -64(%rbp), %rax
+    mov $8, %rdx
+    movsx %edx, %rcx
+    mov $1, %rsi
+    imul %rcx, %rsi
+    mov $0, %rdx
+    div %rsi
+    movq %rax, -40(%rbp)
+    movq -40(%rbp), %rax
+    mov $0, %rdx
+    movsx %edx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    seta %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_label8
+_kefir_func___kefir_bigint_right_shift_label2:
+    movq -64(%rbp), %rax
+    mov $0, %rdx
+    movsx %edx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    seta %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_label4
+_kefir_func___kefir_bigint_right_shift_label3:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_right_shift_label4:
+    mov $0, %rcx
+    movsx %ecx, %rax
+    movq %rax, -8(%rbp)
+_kefir_func___kefir_bigint_right_shift_label5:
+    movq -8(%rbp), %rax
+    movq -32(%rbp), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    setb %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_right_shift_label7
+_kefir_func___kefir_bigint_right_shift_label6:
+    movq -56(%rbp), %rax
+    movq -32(%rbp), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rcx
+    mov $8, %rsi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    imul %rsi, %rcx
+    sub %rcx, %rax
+    movq %rax, -16(%rbp)
+    movq -16(%rbp), %rcx
+    mov $1, %rax
+    shl %cl, %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    sub %rcx, %rax
+    movl %eax, -24(%rbp)
+    movl -24(%rbp), %eax
+    movq -48(%rbp), %rcx
+    movq -32(%rbp), %rdx
+    mov $1, %rdi
+    movsx %edi, %rsi
+    sub %rsi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb (%rcx), %dl
+    and $255, %rdx
+    and %eax, %edx
+    movb %dl, (%rcx)
+    movq -64(%rbp), %rcx
+    movq -48(%rbp), %rax
+    movq -32(%rbp), %rdx
+    mov $1, %rdi
+    movsx %edi, %rsi
+    sub %rsi, %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rax
+    movb (%rax), %dl
+    shr %cl, %dl
+    movb %dl, (%rax)
+    jmp _kefir_func___kefir_bigint_right_shift_label3
+_kefir_func___kefir_bigint_right_shift_label7:
+    movq -48(%rbp), %rax
+    movq -8(%rbp), %rcx
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    movq -64(%rbp), %rcx
+    movq -48(%rbp), %rdx
+    movq -8(%rbp), %rsi
+    mov $1, %r8
+    movsx %r8d, %rdi
+    add %rdi, %rsi
+    imul $1, %rsi, %rsi
+    add %rsi, %rdx
+    movb (%rdx), %dl
+    movq -64(%rbp), %rsi
+    movq -48(%rbp), %rdi
+    movq -8(%rbp), %r8
+    imul $1, %r8, %r8
+    add %r8, %rdi
+    and $255, %rax
+    sar %cl, %eax
+    and $255, %rdx
+    mov $8, %rcx
+    movsx %ecx, %r8
+    mov $1, %rcx
+    imul %r8, %rcx
+    sub %rsi, %rcx
+    shl %cl, %edx
+    or %edx, %eax
+    movb %al, (%rdi)
+    movq -8(%rbp), %rax
+    add $1, %rax
+    movq %rax, -8(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_label5
+_kefir_func___kefir_bigint_right_shift_label8:
+    movq -48(%rbp), %rdi
+    movq -40(%rbp), %rsi
+    movq -56(%rbp), %rcx
+    mov $0, %rdx
+    call __kefir_bigint_right_shift_whole_digits
+    movq -40(%rbp), %rax
+    movq -64(%rbp), %rcx
+    mov $8, %rsi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    imul %rsi, %rax
+    sub %rax, %rcx
+    movq %rcx, -64(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_label2
+_kefir_func___kefir_bigint_right_shift_label9:
+    movq -56(%rbp), %rax
+    movq %rax, -64(%rbp)
+    jmp _kefir_func___kefir_bigint_right_shift_label1
+__kefir_text_func___kefir_bigint_right_shift_end:
+
+

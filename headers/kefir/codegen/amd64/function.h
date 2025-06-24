@@ -384,6 +384,9 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UDIV) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IMOD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMOD) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LSHIFT) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_RSHIFT) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ARSHIFT) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \
@@ -526,6 +529,9 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define BIGINT_AND_FN "__kefir_bigint_and"
 #define BIGINT_OR_FN "__kefir_bigint_or"
 #define BIGINT_XOR_FN "__kefir_bigint_xor"
+#define BIGINT_LEFT_SHIFT_FN "__kefir_bigint_left_shift"
+#define BIGINT_RIGHT_SHIFT_FN "__kefir_bigint_right_shift"
+#define BIGINT_ARITHMETIC_RIGHT_SHIFT_FN "__kefir_bigint_arithmetic_right_shift"
 
 #define LIBATOMIC_SEQ_CST 5
 
