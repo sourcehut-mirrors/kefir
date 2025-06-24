@@ -382,6 +382,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMUL) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IDIV) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UDIV) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_IMOD) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_UMOD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \

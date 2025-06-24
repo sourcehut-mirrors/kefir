@@ -524,7 +524,16 @@ static kefir_result_t translate_modulo(struct kefir_mem *mem, struct kefir_ast_t
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_normalized_type,
+                                                &result_type_signedness));
+            if (result_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_IMOD,
+                                                           result_normalized_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_UMOD,
+                                                           result_normalized_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

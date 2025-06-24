@@ -407,6 +407,8 @@ BITINT_BINARY_OP(bitint_imul);
 BITINT_BINARY_OP(bitint_umul);
 BITINT_BINARY_OP(bitint_idiv);
 BITINT_BINARY_OP(bitint_udiv);
+BITINT_BINARY_OP(bitint_imod);
+BITINT_BINARY_OP(bitint_umod);
 BITINT_BINARY_OP(bitint_and);
 BITINT_BINARY_OP(bitint_or);
 BITINT_BINARY_OP(bitint_xor);
