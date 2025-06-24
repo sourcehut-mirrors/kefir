@@ -1,27 +1,27 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
-.global add1
-.type add1, @function
-.global add2
-.type add2, @function
-.global add3
-.type add3, @function
-.global add4
-.type add4, @function
-.global add5
-.type add5, @function
-.global add6
-.type add6, @function
+.global equals1
+.type equals1, @function
+.global equals2
+.type equals2, @function
+.global equals3
+.type equals3, @function
+.global equals4
+.type equals4, @function
+.global equals5
+.type equals5, @function
+.global equals6
+.type equals6, @function
 
 .section .text
 __kefir_text_section_begin:
-add1:
-__kefir_text_func_add1_begin:
+equals1:
+__kefir_text_func_equals1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add1_label0:
+_kefir_func_equals1_label0:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
@@ -30,18 +30,25 @@ _kefir_func_add1_label0:
     movb -1(%rbp), %cl
     shl $58, %rcx
     sar $58, %rcx
-    add %cl, %al
+    shl $58, %rax
+    shr $58, %rax
+    shl $58, %rcx
+    shr $58, %rcx
+    mov $0, %rdx
+    cmp %cl, %al
+    sete %dl
+    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add1_end:
+__kefir_text_func_equals1_end:
 
-add2:
-__kefir_text_func_add2_begin:
+equals2:
+__kefir_text_func_equals2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add2_label0:
+_kefir_func_equals2_label0:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
@@ -50,18 +57,25 @@ _kefir_func_add2_label0:
     movw -2(%rbp), %cx
     shl $50, %rcx
     sar $50, %rcx
-    add %cx, %ax
+    shl $50, %rax
+    shr $50, %rax
+    shl $50, %rcx
+    shr $50, %rcx
+    mov $0, %rdx
+    cmp %cx, %ax
+    sete %dl
+    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add2_end:
+__kefir_text_func_equals2_end:
 
-add3:
-__kefir_text_func_add3_begin:
+equals3:
+__kefir_text_func_equals3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add3_label0:
+_kefir_func_equals3_label0:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
@@ -70,18 +84,25 @@ _kefir_func_add3_label0:
     movl -4(%rbp), %ecx
     shl $35, %rcx
     sar $35, %rcx
-    add %ecx, %eax
+    shl $35, %rax
+    shr $35, %rax
+    shl $35, %rcx
+    shr $35, %rcx
+    mov $0, %rdx
+    cmp %ecx, %eax
+    sete %dl
+    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add3_end:
+__kefir_text_func_equals3_end:
 
-add4:
-__kefir_text_func_add4_begin:
+equals4:
+__kefir_text_func_equals4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-_kefir_func_add4_label0:
+_kefir_func_equals4_label0:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
@@ -90,18 +111,25 @@ _kefir_func_add4_label0:
     movq -8(%rbp), %rcx
     shl $6, %rcx
     sar $6, %rcx
-    add %rcx, %rax
+    shl $6, %rax
+    shr $6, %rax
+    shl $6, %rcx
+    shr $6, %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    sete %dl
+    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add4_end:
+__kefir_text_func_equals4_end:
 
-add5:
-__kefir_text_func_add5_begin:
+equals5:
+__kefir_text_func_equals5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $112, %rsp
-_kefir_func_add5_label0:
+    sub $96, %rsp
+_kefir_func_equals5_label0:
     movq %rdx, -64(%rbp)
     movq %rcx, -56(%rbp)
     movq %rdi, -48(%rbp)
@@ -111,31 +139,30 @@ _kefir_func_add5_label0:
     movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -112(%rbp)
-    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -96(%rbp)
-    movdqu -112(%rbp), %xmm0
+    movdqu -16(%rbp), %xmm0
     movdqu %xmm0, -80(%rbp)
-    leaq -80(%rbp), %rax
-    mov %rax, %rdi
     leaq -96(%rbp), %rax
+    mov %rax, %rdi
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
-    call __kefir_bigint_add
-    movq -80(%rbp), %rax
-    movq -72(%rbp), %rdx
+    call __kefir_bigint_unsigned_compare
+    mov $0, %rcx
+    cmp $0, %al
+    sete %cl
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add5_end:
+__kefir_text_func_equals5_end:
 
-add6:
-__kefir_text_func_add6_begin:
+equals6:
+__kefir_text_func_equals6_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $208, %rsp
-    mov %rdi, %r8
-_kefir_func_add6_label0:
+    sub $160, %rsp
+_kefir_func_equals6_label0:
     lea 56(%rbp), %rax
     lea 16(%rbp), %rcx
     movq (%rax), %rdx
@@ -159,58 +186,39 @@ _kefir_func_add6_label0:
     movq 32(%rcx), %rax
     movq %rax, -48(%rbp)
     movq -80(%rbp), %rax
-    movq %rax, -168(%rbp)
-    movq -72(%rbp), %rax
     movq %rax, -160(%rbp)
-    movq -64(%rbp), %rax
+    movq -72(%rbp), %rax
     movq %rax, -152(%rbp)
-    movq -56(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %rax, -144(%rbp)
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     movq %rax, -136(%rbp)
-    movq -40(%rbp), %rax
-    movq %rax, -208(%rbp)
-    movq -32(%rbp), %rax
-    movq %rax, -200(%rbp)
-    movq -24(%rbp), %rax
-    movq %rax, -192(%rbp)
-    movq -16(%rbp), %rax
-    movq %rax, -184(%rbp)
-    movq -8(%rbp), %rax
-    movq %rax, -176(%rbp)
-    movq -168(%rbp), %rax
+    movq -48(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq -160(%rbp), %rax
+    movq -40(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq -152(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, -112(%rbp)
-    movq -144(%rbp), %rax
+    movq -24(%rbp), %rax
     movq %rax, -104(%rbp)
-    movq -136(%rbp), %rax
+    movq -16(%rbp), %rax
     movq %rax, -96(%rbp)
-    movq %r8, -168(%rbp)
-    leaq -128(%rbp), %rax
+    movq -8(%rbp), %rax
+    movq %rax, -88(%rbp)
+    leaq -160(%rbp), %rax
     mov %rax, %rdi
-    leaq -208(%rbp), %rax
+    leaq -120(%rbp), %rax
     mov %rax, %rsi
     mov $310, %rdx
-    call __kefir_bigint_add
-    movq -168(%rbp), %r8
-    mov %r8, %rax
-    movq -128(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -120(%rbp), %rcx
-    movq %rcx, 8(%rax)
-    movq -112(%rbp), %rcx
-    movq %rcx, 16(%rax)
-    movq -104(%rbp), %rcx
-    movq %rcx, 24(%rax)
-    movq -96(%rbp), %rcx
-    movq %rcx, 32(%rax)
+    call __kefir_bigint_unsigned_compare
+    mov $0, %rcx
+    cmp $0, %al
+    sete %cl
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-__kefir_text_func_add6_end:
+__kefir_text_func_equals6_end:
 
 __kefir_text_section_end:
 
@@ -219,16 +227,16 @@ __kefir_text_section_end:
 
 
 .section .text
-__kefir_bigint_add:
-__kefir_text_func___kefir_bigint_add_begin:
+__kefir_bigint_unsigned_compare:
+__kefir_text_func___kefir_bigint_unsigned_compare_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-_kefir_func___kefir_bigint_add_label0:
-    movq %rdx, -48(%rbp)
-    movq %rsi, -32(%rbp)
-    movq %rdi, -40(%rbp)
-    movq -48(%rbp), %rax
+_kefir_func___kefir_bigint_unsigned_compare_label0:
+    movq %rdx, -56(%rbp)
+    movq %rsi, -40(%rbp)
+    movq %rdi, -48(%rbp)
+    movq -56(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
     mov $1, %rdx
@@ -243,65 +251,138 @@ _kefir_func___kefir_bigint_add_label0:
     imul %rcx, %rsi
     mov $0, %rdx
     div %rsi
+    movq %rax, -32(%rbp)
+    movq -32(%rbp), %rax
     movq %rax, -24(%rbp)
-    movl $0, -56(%rbp)
-    mov $0, %rcx
-    movsx %ecx, %rax
-    movq %rax, -16(%rbp)
-_kefir_func___kefir_bigint_add_label1:
-    movq -16(%rbp), %rax
-    movq -24(%rbp), %rcx
+_kefir_func___kefir_bigint_unsigned_compare_label1:
+    movq -24(%rbp), %rax
+    mov $0, %rdx
+    movsx %edx, %rcx
     mov $0, %rdx
     cmp %rcx, %rax
+    seta %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_unsigned_compare_label3
+_kefir_func___kefir_bigint_unsigned_compare_label2:
+    mov $0, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_unsigned_compare_label3:
+    movq -48(%rbp), %rax
+    movq -24(%rbp), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rcx
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    and $255, %rax
+    movl %eax, -16(%rbp)
+    movq -40(%rbp), %rax
+    movq -24(%rbp), %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rcx
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    and $255, %rax
+    movl %eax, -12(%rbp)
+    movq -24(%rbp), %rax
+    movq -32(%rbp), %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    sete %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_unsigned_compare_label9
+_kefir_func___kefir_bigint_unsigned_compare_label4:
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    mov $0, %rdx
+    cmp %ecx, %eax
+    seta %dl
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_unsigned_compare_label8
+_kefir_func___kefir_bigint_unsigned_compare_label5:
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    mov $0, %rdx
+    cmp %ecx, %eax
     setb %dl
     mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_add_label3
-_kefir_func___kefir_bigint_add_label2:
-    mov $0, %rax
+    jz _kefir_func___kefir_bigint_unsigned_compare_label7
+_kefir_func___kefir_bigint_unsigned_compare_label6:
+    movq -24(%rbp), %rax
+    add $-1, %rax
+    movq %rax, -24(%rbp)
+    jmp _kefir_func___kefir_bigint_unsigned_compare_label1
+_kefir_func___kefir_bigint_unsigned_compare_label7:
+    mov $1, %rax
+    neg %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_add_label3:
-    movq -40(%rbp), %rax
-    movq -16(%rbp), %rcx
-    imul $1, %rcx, %rcx
-    add %rcx, %rax
-    movb (%rax), %al
-    and $255, %rax
+_kefir_func___kefir_bigint_unsigned_compare_label8:
+    mov $1, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_unsigned_compare_label9:
+    movq -56(%rbp), %rcx
+    movq -56(%rbp), %rax
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rcx
+    mov $1, %rsi
+    movsx %esi, %rdx
+    sub %rdx, %rax
+    mov $8, %rsi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    mov $0, %rdx
+    div %rsi
+    mov $8, %rsi
+    movsx %esi, %rdx
+    mov $1, %rsi
+    imul %rdx, %rsi
+    imul %rsi, %rax
+    sub %rax, %rcx
+    mov $1, %rdx
+    movsx %edx, %rax
+    add %rax, %rcx
+    movl %ecx, -4(%rbp)
+    movl -4(%rbp), %ecx
+    movabs $4294967295, %rax
+    and %rax, %rcx
+    mov $1, %rax
+    shl %cl, %rax
+    mov $1, %rdx
+    movsx %edx, %rcx
+    sub %rcx, %rax
     movl %eax, -8(%rbp)
-    movq -32(%rbp), %rax
-    movq -16(%rbp), %rcx
-    imul $1, %rcx, %rcx
-    add %rcx, %rax
-    movb (%rax), %al
-    and $255, %rax
-    movl %eax, -4(%rbp)
-    movl -56(%rbp), %eax
-    movl -8(%rbp), %ecx
-    movl -4(%rbp), %edx
-    add %ecx, %eax
-    add %edx, %eax
-    movl %eax, -52(%rbp)
-    movl -52(%rbp), %eax
-    movq -40(%rbp), %rcx
-    movq -16(%rbp), %rdx
-    imul $1, %rdx, %rdx
-    add %rdx, %rcx
-    movb %al, (%rcx)
-    movl -52(%rbp), %eax
-    mov $8, %rcx
-    movsx %ecx, %rdx
-    mov $1, %rcx
-    imul %rdx, %rcx
-    shr %cl, %eax
-    movl %eax, -56(%rbp)
-    movq -16(%rbp), %rax
-    add $1, %rax
-    movq %rax, -16(%rbp)
-    jmp _kefir_func___kefir_bigint_add_label1
-__kefir_text_func___kefir_bigint_add_end:
+    movl -8(%rbp), %eax
+    movl -16(%rbp), %ecx
+    and %eax, %ecx
+    movl %ecx, -16(%rbp)
+    movl -8(%rbp), %eax
+    movl -12(%rbp), %ecx
+    and %eax, %ecx
+    movl %ecx, -12(%rbp)
+    jmp _kefir_func___kefir_bigint_unsigned_compare_label4
+__kefir_text_func___kefir_bigint_unsigned_compare_end:
 
 

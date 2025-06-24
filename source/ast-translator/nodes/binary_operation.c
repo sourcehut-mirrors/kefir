@@ -1100,7 +1100,10 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_TO_BOOL,
+                                                       normalized_type2->bitprecise.width));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
+            break;
 
         default:
             REQUIRE_OK(
@@ -1146,7 +1149,10 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_TO_BOOL,
+                                                       normalized_type2->bitprecise.width));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
+            break;
 
         default:
             REQUIRE_OK(
