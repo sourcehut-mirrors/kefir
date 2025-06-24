@@ -61,6 +61,8 @@ struct lowering_param {
         kefir_id_t bigint_and;
         kefir_id_t bigint_or;
         kefir_id_t bigint_xor;
+        kefir_id_t bigint_unsigned_compare;
+        kefir_id_t bigint_signed_compare;
     } runtime_fn;
 };
 
@@ -273,6 +275,18 @@ DECL_BIGINT_RUNTIME_FN(bigint_arshift, BIGINT_ARITHMETIC_RIGHT_SHIFT_FN, 3, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_unsigned_compare, BIGINT_UNSIGNED_COMPARE_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_signed_compare, BIGINT_SIGNED_COMPARE_FN, 3, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
 })
 
 static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
@@ -1746,6 +1760,80 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
 
 #undef SHIFT_OP
 
+#define CMP_OP(_extract, _cmp, _fn, _fn_res)                                                                           \
+    do {                                                                                                               \
+        const kefir_opt_instruction_ref_t arg1_ref = instr->operation.parameters.refs[0];                              \
+        const kefir_opt_instruction_ref_t arg2_ref = instr->operation.parameters.refs[1];                              \
+        const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;                                            \
+                                                                                                                       \
+        if (bitwidth <= QWORD_BITS) {                                                                                  \
+            kefir_opt_instruction_ref_t arg1_value_ref, arg2_value_ref;                                                \
+            REQUIRE_OK(_extract(mem, &func->code, block_id, arg1_ref, 0, bitwidth, &arg1_value_ref));                  \
+            REQUIRE_OK(_extract(mem, &func->code, block_id, arg2_ref, 0, bitwidth, &arg2_value_ref));                  \
+                                                                                                                       \
+            if (bitwidth <= 8) {                                                                                       \
+                REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id,                           \
+                                                                 KEFIR_OPT_COMPARISON_INT8_##_cmp, arg1_value_ref,     \
+                                                                 arg2_value_ref, replacement_ref));                    \
+            } else if (bitwidth <= 16) {                                                                               \
+                REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id,                           \
+                                                                 KEFIR_OPT_COMPARISON_INT16_##_cmp, arg1_value_ref,    \
+                                                                 arg2_value_ref, replacement_ref));                    \
+            } else if (bitwidth <= 32) {                                                                               \
+                REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id,                           \
+                                                                 KEFIR_OPT_COMPARISON_INT32_##_cmp, arg1_value_ref,    \
+                                                                 arg2_value_ref, replacement_ref));                    \
+            } else {                                                                                                   \
+                REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id,                           \
+                                                                 KEFIR_OPT_COMPARISON_INT64_##_cmp, arg1_value_ref,    \
+                                                                 arg2_value_ref, replacement_ref));                    \
+            }                                                                                                          \
+        } else {                                                                                                       \
+            kefir_id_t func_decl_id;                                                                                   \
+            REQUIRE_OK(_fn(mem, codegen_module, module, param, &func_decl_id));                                        \
+                                                                                                                       \
+            kefir_opt_instruction_ref_t bitwidth_ref, call_ref, expected_ref;                                          \
+            REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));     \
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id, (_fn_res), &expected_ref));     \
+                                                                                                                       \
+            kefir_opt_call_id_t call_node_id;                                                                          \
+            REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 3, KEFIR_ID_NONE,   \
+                                                         &call_node_id, &call_ref));                                   \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg1_ref));       \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg2_ref));       \
+            REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, bitwidth_ref));   \
+                                                                                                                       \
+            REQUIRE_OK(kefir_opt_code_builder_scalar_compare(mem, &func->code, block_id,                               \
+                                                             KEFIR_OPT_COMPARISON_INT8_EQUALS, call_ref, expected_ref, \
+                                                             replacement_ref));                                        \
+        }                                                                                                              \
+    } while (0)
+
+        case KEFIR_OPT_OPCODE_BITINT_EQUAL:
+            CMP_OP(kefir_opt_code_builder_bits_extract_unsigned, EQUALS, get_bigint_unsigned_compare_function_decl_id,
+                   0);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_GREATER:
+            CMP_OP(kefir_opt_code_builder_bits_extract_signed, GREATER, get_bigint_signed_compare_function_decl_id, 1);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_ABOVE:
+            CMP_OP(kefir_opt_code_builder_bits_extract_unsigned, ABOVE, get_bigint_unsigned_compare_function_decl_id,
+                   1);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_LESS:
+            CMP_OP(kefir_opt_code_builder_bits_extract_signed, LESSER, get_bigint_signed_compare_function_decl_id, -1);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITINT_BELOW:
+            CMP_OP(kefir_opt_code_builder_bits_extract_unsigned, BELOW, get_bigint_unsigned_compare_function_decl_id,
+                   -1);
+            break;
+
+#undef CMP_OP
+
         default:
             // Intentionally left blank
             break;
@@ -1839,7 +1927,9 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
                                                   .bigint_arshift = KEFIR_ID_NONE,
                                                   .bigint_and = KEFIR_ID_NONE,
                                                   .bigint_or = KEFIR_ID_NONE,
-                                                  .bigint_xor = KEFIR_ID_NONE}};
+                                                  .bigint_xor = KEFIR_ID_NONE,
+                                                  .bigint_unsigned_compare = KEFIR_ID_NONE,
+                                                  .bigint_signed_compare = KEFIR_ID_NONE}};
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {

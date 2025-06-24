@@ -415,6 +415,11 @@ BITINT_BINARY_OP(bitint_arshift);
 BITINT_BINARY_OP(bitint_and);
 BITINT_BINARY_OP(bitint_or);
 BITINT_BINARY_OP(bitint_xor);
+BITINT_BINARY_OP(bitint_equal);
+BITINT_BINARY_OP(bitint_greater);
+BITINT_BINARY_OP(bitint_above);
+BITINT_BINARY_OP(bitint_less);
+BITINT_BINARY_OP(bitint_below);
 
 #undef BITINT_BINARY_OP
 

@@ -390,6 +390,11 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_AND) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_OR) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_XOR) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EQUAL) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_GREATER) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ABOVE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LESS) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BELOW) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -532,6 +537,8 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define BIGINT_LEFT_SHIFT_FN "__kefir_bigint_left_shift"
 #define BIGINT_RIGHT_SHIFT_FN "__kefir_bigint_right_shift"
 #define BIGINT_ARITHMETIC_RIGHT_SHIFT_FN "__kefir_bigint_arithmetic_right_shift"
+#define BIGINT_UNSIGNED_COMPARE_FN "__kefir_bigint_unsigned_compare"
+#define BIGINT_SIGNED_COMPARE_FN "__kefir_bigint_signed_compare"
 
 #define LIBATOMIC_SEQ_CST 5
 

@@ -790,7 +790,9 @@ static kefir_result_t translate_relational_equals(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(
+                KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL, common_type->bitprecise.width));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
@@ -873,7 +875,15 @@ static kefir_result_t translate_relational_less(const struct kefir_ast_type_trai
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, common_type, &common_type_signedness));
+            if (common_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_LESS,
+                                                           common_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_BELOW,
+                                                           common_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");
@@ -948,7 +958,15 @@ static kefir_result_t translate_relational_greater(const struct kefir_ast_type_t
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, common_type, &common_type_signedness));
+            if (common_type_signedness) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_GREATER,
+                                                           common_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_ABOVE,
+                                                           common_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of a scalar type");

@@ -1003,6 +1003,11 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_BINARY_OP(bitint_and, KEFIR_IR_OPCODE_BITINT_AND)
             BITINT_BINARY_OP(bitint_or, KEFIR_IR_OPCODE_BITINT_OR)
             BITINT_BINARY_OP(bitint_xor, KEFIR_IR_OPCODE_BITINT_XOR)
+            BITINT_BINARY_OP(bitint_equal, KEFIR_IR_OPCODE_BITINT_EQUAL)
+            BITINT_BINARY_OP(bitint_greater, KEFIR_IR_OPCODE_BITINT_GREATER)
+            BITINT_BINARY_OP(bitint_above, KEFIR_IR_OPCODE_BITINT_ABOVE)
+            BITINT_BINARY_OP(bitint_less, KEFIR_IR_OPCODE_BITINT_LESS)
+            BITINT_BINARY_OP(bitint_below, KEFIR_IR_OPCODE_BITINT_BELOW)
 
 #undef BITINT_BINARY_OP
 

@@ -329,7 +329,12 @@
     OPCODE(BITINT_ARSHIFT, "bitint_arshift", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_AND, "bitint_and", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_OR, "bitint_or", bitint_ref2) SEPARATOR \
-    OPCODE(BITINT_XOR, "bitint_xor", bitint_ref2)
+    OPCODE(BITINT_XOR, "bitint_xor", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_EQUAL, "bitint_equal", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_GREATER, "bitint_greater", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_ABOVE, "bitint_above", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_LESS, "bitint_less", bitint_ref2) SEPARATOR \
+    OPCODE(BITINT_BELOW, "bitint_below", bitint_ref2)
 
 // clang-format on
 
