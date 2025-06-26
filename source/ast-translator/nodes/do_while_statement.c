@@ -89,8 +89,6 @@ kefir_result_t kefir_ast_translate_do_while_statement_node(struct kefir_mem *mem
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
-
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder,
                                                             controlling_expr_type));

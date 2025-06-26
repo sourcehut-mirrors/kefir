@@ -81,8 +81,9 @@ kefir_result_t kefir_ast_translate_conditional_statement_node(struct kefir_mem *
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Full bit-precise integer support is not implemented yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_BOOL_NOT,
+                                                           condition_type->bitprecise.width));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected condition type");

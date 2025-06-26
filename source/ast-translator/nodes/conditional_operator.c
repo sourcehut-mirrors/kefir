@@ -59,8 +59,6 @@ static kefir_result_t generate_branch(struct kefir_mem *mem, struct kefir_ast_tr
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
-
         default:
             REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, type));
             *index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
