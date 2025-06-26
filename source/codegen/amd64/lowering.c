@@ -969,9 +969,6 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                     mem, &func->code, block_id, location_arg_ref, compare_value_arg_ref, new_value_arg_ref, memorder,
                     bitint_type_id, 0, replacement_ref));
             }
-            return KEFIR_SET_ERROR(
-                KEFIR_NOT_IMPLEMENTED,
-                "Atomic compare exchange of bit-precise integers is not fully implemented yet");  // TODO Add tests
         } break;
 
         case KEFIR_OPT_OPCODE_BITINT_NEGATE: {
