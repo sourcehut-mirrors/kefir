@@ -169,7 +169,16 @@ static kefir_result_t generate_multiplication_op(const struct generate_op_parame
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(parameters->context->ast_context->type_traits, parameters->common_type,
+                                                &common_type_signed));
+            if (common_type_signed) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_BITINT_IMUL,
+                                                           parameters->common_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(parameters->builder, KEFIR_IR_OPCODE_BITINT_UMUL,
+                                                           parameters->common_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -381,7 +390,16 @@ static kefir_result_t generate_division_op(const struct generate_op_parameters *
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->common_type,
+                                                &common_type_signed));
+            if (common_type_signed) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_IDIV,
+                                                           params->common_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_UDIV,
+                                                           params->common_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -448,7 +466,16 @@ static kefir_result_t generate_modulo(const struct generate_op_parameters *param
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits, params->common_type,
+                                                &common_type_signed));
+            if (common_type_signed) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_IMOD,
+                                                           params->common_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_UMOD,
+                                                           params->common_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -490,7 +517,12 @@ static kefir_result_t generate_lshift(const struct generate_op_parameters *param
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
+                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_LSHIFT,
+                                                       params->result_normalized_type->bitprecise.width));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -557,7 +589,19 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(kefir_ast_type_is_signed(params->context->ast_context->type_traits,
+                                                params->result_normalized_type, &result_type_signed));
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
+                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+            if (result_type_signed) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_ARSHIFT,
+                                                           params->result_normalized_type->bitprecise.width));
+            } else {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_RSHIFT,
+                                                           params->result_normalized_type->bitprecise.width));
+            }
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -599,7 +643,9 @@ static kefir_result_t generate_iand(const struct generate_op_parameters *params)
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_AND,
+                                                       params->common_type->bitprecise.width));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -641,7 +687,9 @@ static kefir_result_t generate_ior(const struct generate_op_parameters *params) 
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_OR,
+                                                       params->common_type->bitprecise.width));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -683,7 +731,9 @@ static kefir_result_t generate_ixor(const struct generate_op_parameters *params)
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Full bit-precise integer support is not implemented yet");
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_XOR,
+                                                       params->common_type->bitprecise.width));
+            break;
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -747,8 +797,9 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Full bit-precise integer support is not implemented yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_ADD,
+                                                           params->common_type->bitprecise.width));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
@@ -847,8 +898,9 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
                 break;
 
             case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Full bit-precise integer support is not implemented yet");
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_SUB,
+                                                           params->common_type->bitprecise.width));
+                break;
 
             default:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
