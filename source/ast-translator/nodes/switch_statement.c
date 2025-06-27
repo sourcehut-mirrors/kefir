@@ -86,13 +86,12 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected integral constant expression"));
         }
 
-        const kefir_ast_constant_expression_int_t value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(value_node)->integer;
-        const kefir_ast_constant_expression_int_t range =
-            range_end_node != NULL ? KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(range_end_node)->integer : value + 1;
-
-        if (range == value + 1) {
+        if (range_end_node == NULL) {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, value_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                mem, context->module, builder, context->ast_context->type_traits, value_node->properties.type,
+                flow_control_stmt->value.switchStatement.controlling_expression_type));
             kefir_ast_type_data_model_classification_t controlling_expr_type_classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(
                 context->ast_context->type_traits, flow_control_stmt->value.switchStatement.controlling_expression_type,
@@ -119,15 +118,20 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "Full bit-precise integer support is not implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                    break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");
             }
         } else {
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, value_node, builder, context));
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                mem, context->module, builder, context->ast_context->type_traits, value_node->properties.type,
+                flow_control_stmt->value.switchStatement.controlling_expression_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
             kefir_ast_type_data_model_classification_t controlling_expr_type_classification;
@@ -144,7 +148,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, range));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
@@ -163,7 +171,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, range));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
@@ -182,7 +194,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, range));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
@@ -201,7 +217,11 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, range));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
@@ -212,8 +232,31 @@ kefir_result_t kefir_ast_translate_switch_statement_node(struct kefir_mem *mem,
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "Full bit-precise integer support is not implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_BITINT_GREATER,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(kefir_ast_translate_expression(mem, range_end_node, builder, context));
+                    REQUIRE_OK(kefir_ast_translate_typeconv(
+                        mem, context->module, builder, context->ast_context->type_traits,
+                        range_end_node->properties.type,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_BITINT_LESS,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 2));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                        builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                        flow_control_stmt->value.switchStatement.controlling_expression_type->bitprecise.width));
+                    break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected value of an integral type");

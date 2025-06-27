@@ -79,25 +79,23 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
                                                          KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
                                        "Expected AST case label to be an integral constant expression"));
-        REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer !=
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer,
+
+        struct kefir_ast_node_base *begin_node = node->expression;
+        struct kefir_ast_node_base *end_node = node->range_end_expression;
+        kefir_int_t begin_end_cmp;
+        REQUIRE_OK(kefir_ast_evaluate_comparison(mem, context, begin_node, end_node, &begin_end_cmp));
+
+        REQUIRE(begin_end_cmp != 0,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->range_end_expression->source_location,
                                        "Expected AST case label range to be non-empty"));
+
         struct kefir_ast_flow_control_point *point =
             kefir_ast_flow_control_point_alloc(mem, context->flow_control_tree, direct_parent);
         REQUIRE(point != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST flow control point"));
 
-        struct kefir_ast_node_base *begin_node = node->expression;
-        struct kefir_ast_node_base *end_node = node->range_end_expression;
-        kefir_ast_constant_expression_int_t begin = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer;
-        kefir_ast_constant_expression_int_t end =
-            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->range_end_expression)->integer;
-        if (end < begin) {
-            kefir_ast_constant_expression_int_t tmp = begin;
+        if (begin_end_cmp > 0) {
             struct kefir_ast_node_base *tmp_node = begin_node;
-            begin = end;
             begin_node = end_node;
-            end = tmp;
             end_node = tmp_node;
         }
 
@@ -124,15 +122,12 @@ kefir_result_t kefir_ast_analyze_case_statement_node(struct kefir_mem *mem, cons
                  kefir_hashtree_iter(&switch_statement->value.switchStatement.case_label_nodes, &iter);
              switchCase != NULL; switchCase = kefir_hashtree_next(&iter)) {
 
-            ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, other_case_label, iter.node->value);
-            REQUIRE(
-                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->bitprecise == NULL &&
-                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(other_case_label)->bitprecise == NULL,
-                KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED, "Bit-precise integers in case labels are not implemented yet"));
-            REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->expression)->integer !=
-                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(other_case_label)->integer,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
-                                           "Cannot duplicate case statement constants"));
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, other_case_label, iter.node->value);
+
+            kefir_int_t label_cmp;
+            REQUIRE_OK(kefir_ast_evaluate_comparison(mem, context, node->expression, other_case_label, &label_cmp));
+            REQUIRE(label_cmp != 0, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
+                                                           "Cannot duplicate case statement constants"));
         }
 
         struct kefir_ast_flow_control_point *point =

@@ -88,6 +88,9 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -96,7 +99,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9,
+                    "arg": 10,
                     "condition": "8bit"
                 },
                 {
@@ -104,7 +107,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 25
+                    "arg": 28
                 },
                 {
                     "opcode": "vstack_pick",
@@ -115,6 +118,9 @@
                     "arg": 2
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -123,7 +129,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 16,
+                    "arg": 18,
                     "condition": "8bit"
                 },
                 {
@@ -131,7 +137,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 34
+                    "arg": 37
                 },
                 {
                     "opcode": "vstack_pick",
@@ -142,6 +148,9 @@
                     "arg": 3
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -150,7 +159,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 23,
+                    "arg": 26,
                     "condition": "8bit"
                 },
                 {
@@ -158,14 +167,14 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 43
+                    "arg": 46
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 52
+                    "arg": 55
                 },
                 {
                     "opcode": "int_const",
@@ -203,7 +212,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 61
+                    "arg": 64
                 },
                 {
                     "opcode": "int_const",
@@ -241,7 +250,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 61
+                    "arg": 64
                 },
                 {
                     "opcode": "int_const",
@@ -279,7 +288,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 61
+                    "arg": 64
                 },
                 {
                     "opcode": "int_const",
@@ -317,7 +326,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 61
+                    "arg": 64
                 }
             ],
             "public_labels": []
@@ -347,6 +356,9 @@
                     "arg": -1
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -355,7 +367,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9,
+                    "arg": 10,
                     "condition": "8bit"
                 },
                 {
@@ -363,14 +375,14 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 11
+                    "arg": 12
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 20
+                    "arg": 21
                 },
                 {
                     "opcode": "int_const",
@@ -408,7 +420,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 57
+                    "arg": 60
                 },
                 {
                     "opcode": "get_global",
@@ -431,6 +443,9 @@
                     "arg": 1
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -439,7 +454,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 29,
+                    "arg": 31,
                     "condition": "8bit"
                 },
                 {
@@ -447,7 +462,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 38
+                    "arg": 41
                 },
                 {
                     "opcode": "vstack_pick",
@@ -458,6 +473,9 @@
                     "arg": 0
                 },
                 {
+                    "opcode": "int64_sign_extend_32bits"
+                },
+                {
                     "opcode": "scalar_compare",
                     "comparison": "int64_equals"
                 },
@@ -466,7 +484,7 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 36,
+                    "arg": 39,
                     "condition": "8bit"
                 },
                 {
@@ -474,14 +492,14 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 47
+                    "arg": 50
                 },
                 {
                     "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "jump",
-                    "arg": 56
+                    "arg": 59
                 },
                 {
                     "opcode": "int_const",
@@ -519,7 +537,7 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 56
+                    "arg": 59
                 },
                 {
                     "opcode": "int_const",
@@ -557,11 +575,11 @@
                 },
                 {
                     "opcode": "jump",
-                    "arg": 56
+                    "arg": 59
                 },
                 {
                     "opcode": "jump",
-                    "arg": 57
+                    "arg": 60
                 }
             ],
             "public_labels": []

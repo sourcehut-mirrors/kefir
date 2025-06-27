@@ -96,4 +96,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *, cons
 kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir_ast_constant_expression_value *,
                                                               kefir_bool_t *);
 
+kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *, const struct kefir_ast_context *,
+                                             struct kefir_ast_node_base *, struct kefir_ast_node_base *, kefir_int_t *);
+
 #endif
