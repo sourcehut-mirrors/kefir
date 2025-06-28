@@ -7,10 +7,6 @@ VALGRIND_TEST_OPTIONS+=--suppressions=$(ROOT)/suppressions/freebsd.valgrind
 TEST_CFLAGS=
 endif
 
-ifneq ($(PLATFORM),openbsd)
-VALGRIND_TEST_OPTIONS+=--expensive-definedness-checks=yes
-endif
-
 include source/tests/unit/Makefile.mk
 include source/tests/integration/Makefile.mk
 include source/tests/system/Makefile.mk
