@@ -69,6 +69,21 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
                                                              kefir_asmcmp_context_instr_tail(&function->code.context),
                                                              *return_space_vreg, return_space, NULL));
+    } else if (call_node != NULL) {
+        const struct kefir_ir_function_decl *ir_func_decl =
+            kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+        REQUIRE(ir_func_decl != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+
+        const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_func_decl->result, 0);
+        if (return_typeentry != NULL && return_typeentry->typecode == KEFIR_IR_TYPE_BITINT) {
+            const kefir_size_t qwords =
+                (return_typeentry->param + KEFIR_AMD64_ABI_QWORD * 8 - 1) / (KEFIR_AMD64_ABI_QWORD * 8);
+            REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1,
+                                                                     return_space_vreg));
+        } else {
+            ASSIGN_PTR(return_space_vreg, KEFIR_ASMCMP_INDEX_NONE);
+        }
     } else {
         ASSIGN_PTR(return_space_vreg, KEFIR_ASMCMP_INDEX_NONE);
     }
@@ -522,9 +537,11 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
                             NULL));
                         break;
 
-                    case KEFIR_IR_TYPE_BITINT:
-                        return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                               "Bit-precise integer support in code generator is not implemented yet");
+                    case KEFIR_IR_TYPE_BITINT: {
+                        const kefir_size_t size = (typeentry->param + 7) / 8;
+                        REQUIRE_OK(kefir_codegen_amd64_copy_memory(mem, function, argument_placement_vreg,
+                                                                   argument_vreg, size));
+                    } break;
 
                     case KEFIR_IR_TYPE_BITFIELD:
                     case KEFIR_IR_TYPE_NONE:
@@ -690,6 +707,13 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                         mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
                         return_space_vreg, NULL));
                     break;
+
+                case KEFIR_IR_TYPE_BITINT: {
+                    const kefir_size_t qwords =
+                        (return_typeentry->param + KEFIR_AMD64_ABI_QWORD * 8 - 1) / (KEFIR_AMD64_ABI_QWORD * 8);
+                    REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(mem, &function->code.context, qwords, 1,
+                                                                             &return_vreg));
+                } break;
 
                 case KEFIR_IR_TYPE_COMPLEX_FLOAT32: {
                     complex_float32_multireg_return = true;
