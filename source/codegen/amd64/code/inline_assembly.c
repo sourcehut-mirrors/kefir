@@ -324,8 +324,12 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             break;
 
         case KEFIR_IR_TYPE_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                   "Bit-precise integer support in code generator is not implemented yet");
+            if (param_typeentry->param <= 64) {
+                *param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
+            } else {
+                *param_type = INLINE_ASSEMBLY_PARAMETER_AGGREGATE;
+            }
+            break;
 
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
@@ -570,6 +574,12 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
 
     struct kefir_asmcmp_value vreg_variant_value;
     switch (param_type->typecode) {
+        case KEFIR_IR_TYPE_BITINT:
+            if (entry->allocation_type == INLINE_ASSEMBLY_PARAMETER_ALLOCATION_REGISTER_INDIRECT) {
+                return KEFIR_OK;
+            }
+            // Fallthrough
+
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
@@ -896,10 +906,6 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
                     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Unexpected IR type code");
             }
             break;
-
-        case KEFIR_IR_TYPE_BITINT:
-            return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                   "Bit-precise integer support in code generator is not implemented yet");
 
         case KEFIR_IR_TYPE_BITFIELD:
         case KEFIR_IR_TYPE_NONE:
@@ -1693,6 +1699,16 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &tmp_vreg));
         switch (param_type->typecode) {
+            case KEFIR_IR_TYPE_BITINT:
+                if (param_type->param > 64) {
+                    REQUIRE(
+                        entry->allocation_type != INLINE_ASSEMBLY_PARAMETER_ALLOCATION_MEMORY,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                        "On-stack aggregate parameters of IR inline assembly are not supported yet"));
+                    return KEFIR_OK;
+                }
+                // Fallthrough
+
             case KEFIR_IR_TYPE_INT8:
             case KEFIR_IR_TYPE_INT16:
             case KEFIR_IR_TYPE_INT32:
@@ -1798,10 +1814,6 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                         break;
                 }
                 break;
-
-            case KEFIR_IR_TYPE_BITINT:
-                return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                       "Bit-precise integer support in code generator is not implemented yet");
 
             case KEFIR_IR_TYPE_BITFIELD:
             case KEFIR_IR_TYPE_NONE:
