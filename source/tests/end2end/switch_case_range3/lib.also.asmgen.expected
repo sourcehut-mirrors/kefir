@@ -16,301 +16,257 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movb %dil, -1(%rbp)
-    movb -1(%rbp), %al
-    mov %rax, %r8
-    shl $58, %r8
-    shr $58, %r8
-    mov %r8, %rax
+    mov %rdi, %r8
+    mov %r8, %rdi
+    shl $58, %rdi
+    shr $58, %rdi
+    mov $240, %rax
     shl $58, %rax
     shr $58, %rax
-    mov $240, %rcx
+    mov %rax, %rcx
     shl $58, %rcx
     shr $58, %rcx
-    mov %rcx, %rdx
-    shl $58, %rdx
-    shr $58, %rdx
-    xor %esi, %esi
-    cmp %dl, %al
-    seta %sil
-    shl $58, %rcx
-    shr $58, %rcx
-    mov %r8, %rax
-    shl $58, %rax
-    shr $58, %rax
     xor %edx, %edx
-    cmp %al, %cl
-    sete %dl
-    or %dl, %sil
+    cmp %cl, %dil
+    seta %dl
+    shl $58, %rax
+    shr $58, %rax
+    mov %r8, %rdi
+    shl $58, %rdi
+    shr $58, %rdi
+    xor %ecx, %ecx
+    cmp %dil, %al
+    sete %cl
+    or %cl, %dl
+    setne %dl
+    movzx %dl, %rdx
+    mov %r8, %rdi
+    shl $58, %rdi
+    shr $58, %rdi
+    mov $255, %rax
+    shl $58, %rax
+    shr $58, %rax
+    mov %rax, %rcx
+    shl $58, %rcx
+    shr $58, %rcx
+    xor %esi, %esi
+    cmp %cl, %dil
+    setb %sil
+    shl $58, %rax
+    shr $58, %rax
+    mov %r8, %rdi
+    shl $58, %rdi
+    shr $58, %rdi
+    xor %ecx, %ecx
+    cmp %dil, %al
+    sete %cl
+    or %cl, %sil
     setne %sil
     movzx %sil, %rsi
-    mov %r8, %rax
-    shl $58, %rax
-    shr $58, %rax
-    mov $255, %rcx
-    shl $58, %rcx
-    shr $58, %rcx
-    mov %rcx, %rdx
-    shl $58, %rdx
-    shr $58, %rdx
-    xor %edi, %edi
-    cmp %dl, %al
-    setb %dil
-    shl $58, %rcx
-    shr $58, %rcx
-    mov %r8, %rax
-    shl $58, %rax
-    shr $58, %rax
-    xor %edx, %edx
-    cmp %al, %cl
-    sete %dl
-    or %dl, %dil
-    setne %dil
-    movzx %dil, %rdi
-    test %sil, %sil
+    test %dl, %dl
     setne %al
-    test %dil, %dil
+    test %sil, %sil
     setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
     jnz _kefir_func_test1_label2
     mov $2, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_test1_label2:
     mov $1, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movw %di, -2(%rbp)
-    movw -2(%rbp), %ax
-    mov %rax, %r8
-    shl $50, %r8
-    shr $50, %r8
-    mov %r8, %rax
+    mov %rdi, %r8
+    mov %r8, %rdi
+    shl $50, %rdi
+    shr $50, %rdi
+    mov $65280, %rax
     shl $50, %rax
     shr $50, %rax
-    mov $65280, %rcx
+    mov %rax, %rcx
     shl $50, %rcx
     shr $50, %rcx
-    mov %rcx, %rdx
-    shl $50, %rdx
-    shr $50, %rdx
-    xor %esi, %esi
-    cmp %dx, %ax
-    seta %sil
-    shl $50, %rcx
-    shr $50, %rcx
-    mov %r8, %rax
-    shl $50, %rax
-    shr $50, %rax
     xor %edx, %edx
-    cmp %ax, %cx
-    sete %dl
-    or %dl, %sil
+    cmp %cx, %di
+    seta %dl
+    shl $50, %rax
+    shr $50, %rax
+    mov %r8, %rdi
+    shl $50, %rdi
+    shr $50, %rdi
+    xor %ecx, %ecx
+    cmp %di, %ax
+    sete %cl
+    or %cl, %dl
+    setne %dl
+    movzx %dl, %rdx
+    mov %r8, %rdi
+    shl $50, %rdi
+    shr $50, %rdi
+    mov $65535, %rax
+    shl $50, %rax
+    shr $50, %rax
+    mov %rax, %rcx
+    shl $50, %rcx
+    shr $50, %rcx
+    xor %esi, %esi
+    cmp %cx, %di
+    setb %sil
+    shl $50, %rax
+    shr $50, %rax
+    mov %r8, %rdi
+    shl $50, %rdi
+    shr $50, %rdi
+    xor %ecx, %ecx
+    cmp %di, %ax
+    sete %cl
+    or %cl, %sil
     setne %sil
     movzx %sil, %rsi
-    mov %r8, %rax
-    shl $50, %rax
-    shr $50, %rax
-    mov $65535, %rcx
-    shl $50, %rcx
-    shr $50, %rcx
-    mov %rcx, %rdx
-    shl $50, %rdx
-    shr $50, %rdx
-    xor %edi, %edi
-    cmp %dx, %ax
-    setb %dil
-    shl $50, %rcx
-    shr $50, %rcx
-    mov %r8, %rax
-    shl $50, %rax
-    shr $50, %rax
-    xor %edx, %edx
-    cmp %ax, %cx
-    sete %dl
-    or %dl, %dil
-    setne %dil
-    movzx %dil, %rdi
-    test %sil, %sil
+    test %dl, %dl
     setne %al
-    test %dil, %dil
+    test %sil, %sil
     setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
     jnz _kefir_func_test2_label2
     mov $2, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_test2_label2:
     mov $1, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    mov %rax, %r8
-    shl $35, %r8
-    shr $35, %r8
-    mov %r8, %rax
+    mov %rdi, %r8
+    mov %r8, %rdi
+    shl $35, %rdi
+    shr $35, %rdi
+    movabs $4294967040, %rax
     shl $35, %rax
     shr $35, %rax
-    movabs $4294967040, %rcx
+    mov %rax, %rcx
     shl $35, %rcx
     shr $35, %rcx
-    mov %rcx, %rdx
-    shl $35, %rdx
-    shr $35, %rdx
-    xor %esi, %esi
-    cmp %edx, %eax
-    seta %sil
-    shl $35, %rcx
-    shr $35, %rcx
-    mov %r8, %rax
-    shl $35, %rax
-    shr $35, %rax
     xor %edx, %edx
-    cmp %eax, %ecx
-    sete %dl
-    or %dl, %sil
+    cmp %ecx, %edi
+    seta %dl
+    shl $35, %rax
+    shr $35, %rax
+    mov %r8, %rdi
+    shl $35, %rdi
+    shr $35, %rdi
+    xor %ecx, %ecx
+    cmp %edi, %eax
+    sete %cl
+    or %cl, %dl
+    setne %dl
+    movzx %dl, %rdx
+    mov %r8, %rdi
+    shl $35, %rdi
+    shr $35, %rdi
+    movabs $4294967295, %rax
+    shl $35, %rax
+    shr $35, %rax
+    mov %rax, %rcx
+    shl $35, %rcx
+    shr $35, %rcx
+    xor %esi, %esi
+    cmp %ecx, %edi
+    setb %sil
+    shl $35, %rax
+    shr $35, %rax
+    mov %r8, %rdi
+    shl $35, %rdi
+    shr $35, %rdi
+    xor %ecx, %ecx
+    cmp %edi, %eax
+    sete %cl
+    or %cl, %sil
     setne %sil
     movzx %sil, %rsi
-    mov %r8, %rax
-    shl $35, %rax
-    shr $35, %rax
-    movabs $4294967295, %rcx
-    shl $35, %rcx
-    shr $35, %rcx
-    mov %rcx, %rdx
-    shl $35, %rdx
-    shr $35, %rdx
-    xor %edi, %edi
-    cmp %edx, %eax
-    setb %dil
-    shl $35, %rcx
-    shr $35, %rcx
-    mov %r8, %rax
-    shl $35, %rax
-    shr $35, %rax
-    xor %edx, %edx
-    cmp %eax, %ecx
-    sete %dl
-    or %dl, %dil
-    setne %dil
-    movzx %dil, %rdi
-    test %sil, %sil
+    test %dl, %dl
     setne %al
-    test %dil, %dil
+    test %sil, %sil
     setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
     jnz _kefir_func_test3_label2
     mov $2, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_test3_label2:
     mov $1, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test3_end:
 
 test4:
 __kefir_text_func_test4_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    mov %rax, %r8
-    shl $4, %r8
-    shr $4, %r8
-    mov %r8, %rax
+    mov %rdi, %r8
+    mov %r8, %rdi
+    shl $4, %rdi
+    shr $4, %rdi
+    mov $-256, %rax
     shl $4, %rax
     shr $4, %rax
-    mov $-256, %rcx
+    mov %rax, %rcx
     shl $4, %rcx
     shr $4, %rcx
-    mov %rcx, %rdx
-    shl $4, %rdx
-    shr $4, %rdx
-    xor %esi, %esi
-    cmp %rdx, %rax
-    seta %sil
-    shl $4, %rcx
-    shr $4, %rcx
-    mov %r8, %rax
-    shl $4, %rax
-    shr $4, %rax
     xor %edx, %edx
-    cmp %rax, %rcx
-    sete %dl
-    or %dl, %sil
+    cmp %rcx, %rdi
+    seta %dl
+    shl $4, %rax
+    shr $4, %rax
+    mov %r8, %rdi
+    shl $4, %rdi
+    shr $4, %rdi
+    xor %ecx, %ecx
+    cmp %rdi, %rax
+    sete %cl
+    or %cl, %dl
+    setne %dl
+    movzx %dl, %rdx
+    mov %r8, %rdi
+    shl $4, %rdi
+    shr $4, %rdi
+    mov $-1, %rax
+    shl $4, %rax
+    shr $4, %rax
+    mov %rax, %rcx
+    shl $4, %rcx
+    shr $4, %rcx
+    xor %esi, %esi
+    cmp %rcx, %rdi
+    setb %sil
+    shl $4, %rax
+    shr $4, %rax
+    mov %r8, %rdi
+    shl $4, %rdi
+    shr $4, %rdi
+    xor %ecx, %ecx
+    cmp %rdi, %rax
+    sete %cl
+    or %cl, %sil
     setne %sil
     movzx %sil, %rsi
-    mov %r8, %rax
-    shl $4, %rax
-    shr $4, %rax
-    mov $-1, %rcx
-    shl $4, %rcx
-    shr $4, %rcx
-    mov %rcx, %rdx
-    shl $4, %rdx
-    shr $4, %rdx
-    xor %edi, %edi
-    cmp %rdx, %rax
-    setb %dil
-    shl $4, %rcx
-    shr $4, %rcx
-    mov %r8, %rax
-    shl $4, %rax
-    shr $4, %rax
-    xor %edx, %edx
-    cmp %rax, %rcx
-    sete %dl
-    or %dl, %dil
-    setne %dil
-    movzx %dil, %rdi
-    test %sil, %sil
+    test %dl, %dl
     setne %al
-    test %dil, %dil
+    test %sil, %sil
     setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
     jnz _kefir_func_test4_label2
     mov $2, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_test4_label2:
     mov $1, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_test4_end:
 
@@ -318,37 +274,33 @@ test5:
 __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
-    movq %rdi, -64(%rbp)
-    movq %rsi, -56(%rbp)
-    movdqu -64(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -80(%rbp)
+    sub $64, %rsp
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
     mov $-256, %rdx
     shl $0, %rdx
     shr $0, %rdx
-    leaq -96(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_unsigned_integer
-    leaq -80(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $1, %al
     sete %cl
-    movq %rcx, -48(%rbp)
-    leaq -96(%rbp), %rax
+    movq %rcx, -32(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -80(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -48(%rbp), %rcx
+    movq -32(%rbp), %rcx
     xor %edx, %edx
     cmp $0, %al
     sete %dl
@@ -358,33 +310,33 @@ __kefir_text_func_test5_begin:
     mov $-1, %rdx
     shl $0, %rdx
     shr $0, %rdx
-    movq %rcx, -48(%rbp)
-    leaq -96(%rbp), %rax
+    movq %rcx, -32(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_unsigned_integer
-    movq -48(%rbp), %rcx
-    movq %rcx, -48(%rbp)
-    leaq -80(%rbp), %rax
+    movq -32(%rbp), %rcx
+    movq %rcx, -32(%rbp)
+    leaq -48(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -48(%rbp), %rcx
+    movq -32(%rbp), %rcx
     xor %r8d, %r8d
     cmp $-1, %al
     sete %r8b
-    movq %rcx, -40(%rbp)
-    movq %r8, -32(%rbp)
-    leaq -96(%rbp), %rax
+    movq %rcx, -24(%rbp)
+    movq %r8, -16(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -80(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -40(%rbp), %rcx
-    movq -32(%rbp), %r8
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %r8
     xor %edx, %edx
     cmp $0, %al
     sete %dl
