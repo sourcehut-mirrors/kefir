@@ -1,0 +1,260 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+.global get5
+.type get5, @function
+.global get6
+.type get6, @function
+.global get7
+.type get7, @function
+.global get8
+.type get8, @function
+.global get9
+.type get9, @function
+.global get10
+.type get10, @function
+.global get11
+.type get11, @function
+.global get12
+.type get12, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    mov $314, %rax
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    mov $314, %rax
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    mov $2718, %rax
+    ret
+__kefir_text_func_get3_end:
+
+get4:
+__kefir_text_func_get4_begin:
+    mov $2718, %rax
+    ret
+__kefir_text_func_get4_end:
+
+get5:
+__kefir_text_func_get5_begin:
+    mov $271828, %rax
+    ret
+__kefir_text_func_get5_end:
+
+get6:
+__kefir_text_func_get6_begin:
+    mov $271828, %rax
+    ret
+__kefir_text_func_get6_end:
+
+get7:
+__kefir_text_func_get7_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movd _kefir_func_get7_label1(%rip), %xmm0
+    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    cvttss2si %xmm0, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get7_end:
+.section .rodata
+    .align 4
+_kefir_func_get7_label1:
+    .long 1134362624
+.section .text
+
+get8:
+__kefir_text_func_get8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movd _kefir_func_get8_label1(%rip), %xmm0
+    xorps __kefir_constant_float32_neg(%rip), %xmm0
+    comiss __kefir_constant_float32_to_uint(%rip), %xmm0
+    jnb _kefir_func_get8_label2
+    cvttss2si %xmm0, %rax
+    jmp _kefir_func_get8_label3
+_kefir_func_get8_label2:
+    subss __kefir_constant_float32_to_uint(%rip), %xmm0
+    cvttss2si %xmm0, %rax
+    btc $63, %rax
+_kefir_func_get8_label3:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get8_end:
+.section .rodata
+    .align 4
+_kefir_func_get8_label1:
+    .long 1134362624
+.section .text
+
+get9:
+__kefir_text_func_get9_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq _kefir_func_get9_label1(%rip), %xmm0
+    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    cvttsd2si %xmm0, %rax
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get9_end:
+.section .rodata
+    .align 8
+_kefir_func_get9_label1:
+    .quad 4658195976008824259
+.section .text
+
+get10:
+__kefir_text_func_get10_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq _kefir_func_get10_label1(%rip), %xmm0
+    xorpd __kefir_constant_float64_neg(%rip), %xmm0
+    comisd __kefir_constant_float64_to_uint(%rip), %xmm0
+    jnb _kefir_func_get10_label2
+    cvttsd2si %xmm0, %rax
+    jmp _kefir_func_get10_label3
+_kefir_func_get10_label2:
+    subsd __kefir_constant_float64_to_uint(%rip), %xmm0
+    cvttsd2si %xmm0, %rax
+    btc $63, %rax
+_kefir_func_get10_label3:
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get10_end:
+.section .rodata
+    .align 8
+_kefir_func_get10_label1:
+    .quad 4658195976008824259
+.section .text
+
+get11:
+__kefir_text_func_get11_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt _kefir_func_get11_label1(%rip)
+    fchs
+    fnstcww -32(%rbp)
+    movzxw -32(%rbp), %eax
+    or $3072, %eax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -24(%rbp)
+    mov -24(%rbp), %rax
+    fldcww -32(%rbp)
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get11_end:
+.section .rodata
+    .align 8
+_kefir_func_get11_label1:
+    .quad 9564097496163024896
+    .quad 16401
+.section .text
+
+get12:
+__kefir_text_func_get12_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    fstcw -8(%rbp)
+    fldt _kefir_func_get12_label1(%rip)
+    fchs
+    flds __kefir_constant_long_double_to_uint(%rip)
+    fxch %st(1)
+    fcomi %st(1)
+    jnb _kefir_func_get12_label2
+    fstp %st(1)
+    fnstcww -32(%rbp)
+    movzxw -32(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -32(%rbp)
+    jmp _kefir_func_get12_label3
+_kefir_func_get12_label2:
+    fnstcww -32(%rbp)
+    fsubp
+    movzxw -32(%rbp), %eax
+    or $3072, %ax
+    movw %ax, -24(%rbp)
+    fldcww -24(%rbp)
+    fistpq -16(%rbp)
+    mov -16(%rbp), %rax
+    fldcww -32(%rbp)
+    btc $63, %rax
+_kefir_func_get12_label3:
+    fldcw -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get12_end:
+.section .rodata
+    .align 8
+_kefir_func_get12_label1:
+    .quad 9564097496163024896
+    .quad 16401
+.section .text
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 4
+__kefir_constant_float32_to_uint:
+    .long 1593835520
+    .align 8
+__kefir_constant_float64_to_uint:
+    .long 0, 1138753536
+    .align 4
+__kefir_constant_long_double_to_uint:
+    .long 1593835520
+    .align 16
+__kefir_constant_float32_neg:
+    .long 2147483648
+    .long 0
+    .long 0
+    .long 0
+    .align 16
+__kefir_constant_float64_neg:
+    .long 0
+    .long 2147483648
+    .long 0
+    .long 0
