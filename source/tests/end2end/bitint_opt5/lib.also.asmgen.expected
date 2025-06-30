@@ -1,0 +1,112 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+.global get5
+.type get5, @function
+.global get6
+.type get6, @function
+.global get7
+.type get7, @function
+.global get8
+.type get8, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    movabs $4886718217, %rax
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $291, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    movabs $4886718265, %rax
+    ret
+__kefir_text_func_get3_end:
+
+get4:
+__kefir_text_func_get4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $3040223825, -16(%rbp)
+    movl $180141502, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get4_end:
+
+get5:
+__kefir_text_func_get5_begin:
+    movabs $4886718230, %rax
+    ret
+__kefir_text_func_get5_end:
+
+get6:
+__kefir_text_func_get6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $4281545250, -16(%rbp)
+    movl $178974447, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get6_end:
+
+get7:
+__kefir_text_func_get7_begin:
+    movabs $4886718260, %rax
+    ret
+__kefir_text_func_get7_end:
+
+get8:
+__kefir_text_func_get8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $675378200, -16(%rbp)
+    movl $39925524, -12(%rbp)
+    movl $291, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get8_end:
+
+__kefir_text_section_end:
+
