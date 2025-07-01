@@ -1,0 +1,52 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    mov $1, %rax
+    test $1, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    mov $1, %rax
+    test $1, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    xor %eax, %eax
+    test $0, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_get3_end:
+
+get4:
+__kefir_text_func_get4_begin:
+    xor %eax, %eax
+    test $0, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_get4_end:
+
+__kefir_text_section_end:
+
