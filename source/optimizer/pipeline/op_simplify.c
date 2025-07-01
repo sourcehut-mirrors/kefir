@@ -3372,6 +3372,139 @@ static kefir_result_t simplify_bitint_cast(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_bitint_to_float_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func,
+                                             const struct kefir_opt_instruction *bitint_to_instr,
+                                             kefir_opt_instruction_ref_t *replacement_ref,
+                                            struct kefir_bigint *tmp_bigint,
+                                            struct kefir_bigint *tmp2_bigint) {
+    const struct kefir_opt_instruction *source_instr;
+    REQUIRE_OK(
+        kefir_opt_code_container_instr(&func->code, bitint_to_instr->operation.parameters.refs[0], &source_instr));
+
+    if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_float32_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_float32_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_signed_to_float(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_float32_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    } else if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_float32_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_float32_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_unsigned_to_float(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_float32_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    } else if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_float64_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_float64_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_signed_to_double(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_float64_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    } else if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_float64_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_float64_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_unsigned_to_double(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_float64_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    } else if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_long_double_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_long_double_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    } else if ((source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+         source_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+        bitint_to_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE) {
+        const struct kefir_bigint *bigint;
+        REQUIRE_OK(
+            kefir_ir_module_get_bigint(module->ir_module, source_instr->operation.parameters.imm.bitint_ref, &bigint));
+
+        kefir_long_double_t value;
+        REQUIRE_OK(kefir_bigint_resize_nocast(
+            mem, tmp2_bigint, MAX(bigint->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
+        REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, bigint));
+        REQUIRE_OK(
+            kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
+        REQUIRE_OK(kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value));
+        REQUIRE_OK(
+            kefir_opt_code_builder_long_double_constant(mem, &func->code, bitint_to_instr->block_id, value, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t simplify_bitint_to_float(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                             struct kefir_opt_function *func,
+                                             const struct kefir_opt_instruction *bitint_to_instr,
+                                             kefir_opt_instruction_ref_t *replacement_ref) {
+    struct kefir_bigint tmp_bigint, tmp2_bigint;
+    REQUIRE_OK(kefir_bigint_init(&tmp_bigint));
+    REQUIRE_OK(kefir_bigint_init(&tmp2_bigint));
+    
+    kefir_result_t res = simplify_bitint_to_float_impl(mem, module, func, bitint_to_instr, replacement_ref, &tmp_bigint, &tmp2_bigint);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &tmp2_bigint);
+        kefir_bigint_free(mem, &tmp_bigint);
+        return res;
+    });
+    res = kefir_bigint_free(mem, &tmp2_bigint);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_bigint_free(mem, &tmp_bigint);
+        return res;
+    });
+    REQUIRE_OK(kefir_bigint_free(mem, &tmp_bigint));
+    return KEFIR_OK;
+}
+
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
@@ -3553,6 +3686,15 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED:
                     case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED:
                         REQUIRE_OK(simplify_bitint_from_float(mem, module, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT:
+                    case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT:
+                    case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE:
+                    case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE:
+                    case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE:
+                    case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE:
+                        REQUIRE_OK(simplify_bitint_to_float(mem, module, func, instr, &replacement_ref));
                         break;
 
                     default:
