@@ -254,20 +254,17 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp_bigint));
                     REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->bigint_pool, &tmp2_bigint));
                     REQUIRE_OK(kefir_bigint_resize_nocast(
-                        mem, tmp_bigint, MAX(source->bitprecise->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
-                    REQUIRE_OK(kefir_bigint_resize_nocast(mem, tmp2_bigint, tmp_bigint->bitwidth));
-                    REQUIRE_OK(kefir_bigint_copy(tmp_bigint, source->bitprecise));
+                        mem, tmp2_bigint, MAX(source->bitprecise->bitwidth, sizeof(kefir_long_double_t) * CHAR_BIT)));
+                    REQUIRE_OK(kefir_bigint_copy_resize(mem, tmp_bigint, source->bitprecise));
 
                     kefir_bool_t signed_integer = false;
                     REQUIRE_OK(
                         kefir_ast_type_is_signed(context->type_traits, unqualified_source_type, &signed_integer));
                     if (signed_integer) {
-                        REQUIRE_OK(
-                            kefir_bigint_cast_signed(tmp_bigint, source->bitprecise->bitwidth, tmp_bigint->bitwidth));
+                        REQUIRE_OK(kefir_bigint_resize_cast_signed(mem, tmp_bigint, tmp2_bigint->bitwidth));
                         REQUIRE_OK(kefir_bigint_signed_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));
                     } else {
-                        REQUIRE_OK(
-                            kefir_bigint_cast_unsigned(tmp_bigint, source->bitprecise->bitwidth, tmp_bigint->bitwidth));
+                        REQUIRE_OK(kefir_bigint_resize_cast_unsigned(mem, tmp_bigint, tmp2_bigint->bitwidth));
                         REQUIRE_OK(
                             kefir_bigint_unsigned_to_long_double(tmp_bigint, tmp2_bigint, &value->floating_point));
                     }
