@@ -1,0 +1,80 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global add1
+.type add1, @function
+.global add2
+.type add2, @function
+.global sub1
+.type sub1, @function
+.global sub2
+.type sub2, @function
+
+.section .text
+__kefir_text_section_begin:
+add1:
+__kefir_text_func_add1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $1183744, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add1_end:
+
+add2:
+__kefir_text_func_add2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $4293791744, -16(%rbp)
+    movl $4294967295, -12(%rbp)
+    movl $4294967295, -8(%rbp)
+    movl $16777215, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add2_end:
+
+sub1:
+__kefir_text_func_sub1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $1175552, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sub1_end:
+
+sub2:
+__kefir_text_func_sub2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $4293783552, -16(%rbp)
+    movl $4294967295, -12(%rbp)
+    movl $4294967295, -8(%rbp)
+    movl $16777215, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_sub2_end:
+
+__kefir_text_section_end:
+

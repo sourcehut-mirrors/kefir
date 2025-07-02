@@ -1,0 +1,116 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or1
+.type or1, @function
+.global or2
+.type or2, @function
+.global and1
+.type and1, @function
+.global and2
+.type and2, @function
+.global xor1
+.type xor1, @function
+.global xor2
+.type xor2, @function
+
+.section .text
+__kefir_text_section_begin:
+or1:
+__kefir_text_func_or1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $602927087, -16(%rbp)
+    movl $1, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_or1_end:
+
+or2:
+__kefir_text_func_or2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $602927087, -16(%rbp)
+    movl $1, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_or2_end:
+
+and1:
+__kefir_text_func_and1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $83337, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_and1_end:
+
+and2:
+__kefir_text_func_and2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $83337, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_and2_end:
+
+xor1:
+__kefir_text_func_xor1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $602843750, -16(%rbp)
+    movl $1, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_xor1_end:
+
+xor2:
+__kefir_text_func_xor2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl $602843750, -16(%rbp)
+    movl $1, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_xor2_end:
+
+__kefir_text_section_end:
+
