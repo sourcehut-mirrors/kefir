@@ -3865,6 +3865,82 @@ static kefir_result_t simplify_bitint_shift(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_bitint_relational(struct kefir_mem *mem, const struct kefir_opt_module *module,
+                                                 struct kefir_opt_function *func,
+                                                 const struct kefir_opt_instruction *bitint_relational_instr,
+                                                 kefir_opt_instruction_ref_t *replacement_ref) {
+    const struct kefir_opt_instruction *arg1_instr, *arg2_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, bitint_relational_instr->operation.parameters.refs[0],
+                                              &arg1_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, bitint_relational_instr->operation.parameters.refs[1],
+                                              &arg2_instr));
+
+    REQUIRE((arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+             arg1_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST) &&
+                (arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST ||
+                 arg2_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST),
+            KEFIR_OK);
+
+    if (bitint_relational_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_EQUAL) {
+        const struct kefir_bigint *arg1_bigint, *arg2_bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
+                                              &arg1_bigint));
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg2_instr->operation.parameters.imm.bitint_ref,
+                                              &arg2_bigint));
+
+        kefir_int_t comparison;
+        REQUIRE_OK(kefir_bigint_signed_compare(arg1_bigint, arg2_bigint, &comparison));
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, bitint_relational_instr->block_id,
+                                                       comparison == 0, replacement_ref));
+    } else if (bitint_relational_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_GREATER) {
+        const struct kefir_bigint *arg1_bigint, *arg2_bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
+                                              &arg1_bigint));
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg2_instr->operation.parameters.imm.bitint_ref,
+                                              &arg2_bigint));
+
+        kefir_int_t comparison;
+        REQUIRE_OK(kefir_bigint_signed_compare(arg1_bigint, arg2_bigint, &comparison));
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, bitint_relational_instr->block_id,
+                                                       comparison > 0, replacement_ref));
+    } else if (bitint_relational_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_LESS) {
+        const struct kefir_bigint *arg1_bigint, *arg2_bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
+                                              &arg1_bigint));
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg2_instr->operation.parameters.imm.bitint_ref,
+                                              &arg2_bigint));
+
+        kefir_int_t comparison;
+        REQUIRE_OK(kefir_bigint_signed_compare(arg1_bigint, arg2_bigint, &comparison));
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, bitint_relational_instr->block_id,
+                                                       comparison < 0, replacement_ref));
+    } else if (bitint_relational_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_ABOVE) {
+        const struct kefir_bigint *arg1_bigint, *arg2_bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
+                                              &arg1_bigint));
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg2_instr->operation.parameters.imm.bitint_ref,
+                                              &arg2_bigint));
+
+        kefir_int_t comparison;
+        REQUIRE_OK(kefir_bigint_unsigned_compare(arg1_bigint, arg2_bigint, &comparison));
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, bitint_relational_instr->block_id,
+                                                       comparison > 0, replacement_ref));
+    } else if (bitint_relational_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_BELOW) {
+        const struct kefir_bigint *arg1_bigint, *arg2_bigint;
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
+                                              &arg1_bigint));
+        REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg2_instr->operation.parameters.imm.bitint_ref,
+                                              &arg2_bigint));
+
+        kefir_int_t comparison;
+        REQUIRE_OK(kefir_bigint_unsigned_compare(arg1_bigint, arg2_bigint, &comparison));
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, bitint_relational_instr->block_id,
+                                                       comparison < 0, replacement_ref));
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
@@ -4088,6 +4164,14 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
                     case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
                         REQUIRE_OK(simplify_bitint_shift(mem, module, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_BITINT_EQUAL:
+                    case KEFIR_OPT_OPCODE_BITINT_GREATER:
+                    case KEFIR_OPT_OPCODE_BITINT_LESS:
+                    case KEFIR_OPT_OPCODE_BITINT_ABOVE:
+                    case KEFIR_OPT_OPCODE_BITINT_BELOW:
+                        REQUIRE_OK(simplify_bitint_relational(mem, module, func, instr, &replacement_ref));
                         break;
 
                     default:

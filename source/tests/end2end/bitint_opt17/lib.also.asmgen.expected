@@ -1,0 +1,120 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global eq1
+.type eq1, @function
+.global eq2
+.type eq2, @function
+.global less1
+.type less1, @function
+.global less2
+.type less2, @function
+.global less3
+.type less3, @function
+.global above1
+.type above1, @function
+.global above2
+.type above2, @function
+.global above3
+.type above3, @function
+.global below1
+.type below1, @function
+.global below2
+.type below2, @function
+.global below3
+.type below3, @function
+.global greater1
+.type greater1, @function
+.global greater2
+.type greater2, @function
+.global greater3
+.type greater3, @function
+
+.section .text
+__kefir_text_section_begin:
+eq1:
+__kefir_text_func_eq1_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_eq1_end:
+
+eq2:
+__kefir_text_func_eq2_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_eq2_end:
+
+less1:
+__kefir_text_func_less1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_less1_end:
+
+less2:
+__kefir_text_func_less2_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_less2_end:
+
+less3:
+__kefir_text_func_less3_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_less3_end:
+
+above1:
+__kefir_text_func_above1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_above1_end:
+
+above2:
+__kefir_text_func_above2_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_above2_end:
+
+above3:
+__kefir_text_func_above3_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_above3_end:
+
+below1:
+__kefir_text_func_below1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_below1_end:
+
+below2:
+__kefir_text_func_below2_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_below2_end:
+
+below3:
+__kefir_text_func_below3_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_below3_end:
+
+greater1:
+__kefir_text_func_greater1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_greater1_end:
+
+greater2:
+__kefir_text_func_greater2_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_greater2_end:
+
+greater3:
+__kefir_text_func_greater3_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_greater3_end:
+
+__kefir_text_section_end:
+
