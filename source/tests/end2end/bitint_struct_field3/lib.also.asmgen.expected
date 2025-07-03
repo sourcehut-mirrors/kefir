@@ -1,0 +1,31 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sizes
+.type sizes, @object
+.global alignments
+.type alignments, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+sizes:
+    .long 1
+    .long 2
+    .long 4
+    .long 8
+    .long 16
+    .long 40
+
+    .align 16
+alignments:
+    .long 1
+    .long 2
+    .long 4
+    .long 8
+    .long 8
+    .long 8
+

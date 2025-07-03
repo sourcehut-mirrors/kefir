@@ -83,7 +83,7 @@ static kefir_result_t kefir_amd64_sysv_scalar_type_layout(const struct kefir_ir_
         case KEFIR_IR_TYPE_BITFIELD: {
             const kefir_size_t bits = KEFIR_IR_BITFIELD_PARAM_GET_WIDTH(typeentry->param);
             *size_ptr = (bits + 7) / 8;
-            *alignment_ptr = KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(typeentry->param);
+            *alignment_ptr = MIN(KEFIR_IR_BITFIELD_PARAM_GET_BASE_SIZE(typeentry->param), KEFIR_AMD64_ABI_QWORD);
         } break;
 
         default:
