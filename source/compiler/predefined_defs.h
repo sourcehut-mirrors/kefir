@@ -130,6 +130,8 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __INTMAX_WIDTH__ __LONG_WIDTH__
 #endif
 
+#define __BITINT_MAXWIDTH__ 65535
+
 // Type size
 #ifdef __LP64__
 #define __SIZEOF_POINTER__ __SIZEOF_LONG__
