@@ -615,6 +615,23 @@ static kefir_result_t format_operation_bitint_atomic(struct kefir_json_output *j
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_bitint_bitfield(struct kefir_json_output *json,
+                                                       const struct kefir_opt_module *module,
+                                                       const struct kefir_opt_code_container *code,
+                                                       const struct kefir_opt_operation *oper) {
+    UNUSED(module);
+    UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitwidth));
+    REQUIRE_OK(kefir_json_output_object_key(json, "offset"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitint_bitfield.offset));
+    REQUIRE_OK(kefir_json_output_object_key(json, "length"));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitint_bitfield.length));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_store_mem(struct kefir_json_output *json, const struct kefir_opt_module *module,
                                                  const struct kefir_opt_code_container *code,
                                                  const struct kefir_opt_operation *oper) {

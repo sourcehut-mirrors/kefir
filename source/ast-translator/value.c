@@ -54,7 +54,13 @@ static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struc
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
 
     kefir_size_t bits = bit_offset + layout->bitfield_props.width;
-    if (bits <= 8) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(layout->type)) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_LOAD, bits, false, mem_flags, 0));
+        if (bits != layout->type->bitprecise.width) {
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_CAST_UNSIGNED,
+                                                       layout->type->bitprecise.width, bits));
+        }
+    } else if (bits <= 8) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_LOAD, mem_flags));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0xff));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_AND, 0));
@@ -182,7 +188,17 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
     REQUIRE_CHAIN(&res, kefir_ast_type_is_signed(context->ast_context->type_traits, member_layout->type, &signedness));
 
     kefir_size_t bit_offset = member_layout->bitfield_props.offset % 8;
-    if (signedness) {
+    if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
+        if (signedness) {
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_SIGNED,
+                                                                  member_layout->type->bitprecise.width, bit_offset,
+                                                                  member_layout->bitfield_props.width, 0));
+        } else {
+            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_UNSIGNED,
+                                                                  member_layout->type->bitprecise.width, bit_offset,
+                                                                  member_layout->bitfield_props.width, 0));
+        }
+    } else if (signedness) {
         REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_SIGNED, bit_offset,
                                                             member_layout->bitfield_props.width));
     } else {

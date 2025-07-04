@@ -195,6 +195,10 @@ typedef struct kefir_opt_operation_parameters {
                     kefir_opt_memory_order_t bitint_atomic_memorder;
                 };
                 kefir_size_t src_bitwidth;
+                struct {
+                    kefir_size_t offset;
+                    kefir_size_t length;
+                } bitint_bitfield;
             };
         };
         kefir_int64_t offset;

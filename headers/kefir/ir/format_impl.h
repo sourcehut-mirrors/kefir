@@ -64,6 +64,8 @@ kefir_result_t kefir_ir_format_instr_bitint_store_memflags(struct kefir_json_out
                                                            const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_bitint_atomic(struct kefir_json_output *, const struct kefir_ir_module *,
                                                    const struct kefir_irinstr *);
+kefir_result_t kefir_ir_format_instr_bitint_bitfield(struct kefir_json_output *, const struct kefir_ir_module *,
+                                                     const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_memory_order(struct kefir_json_output *, const struct kefir_ir_module *,
                                                   const struct kefir_irinstr *);
 kefir_result_t kefir_ir_format_instr_atomic_typeref(struct kefir_json_output *, const struct kefir_ir_module *,
