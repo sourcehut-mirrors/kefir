@@ -1559,6 +1559,14 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
             REQUIRE_OK(kefir_json_output_string(json, "type_signed_int"));
             break;
 
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_BIT_PRECISE:
+            REQUIRE_OK(kefir_json_output_string(json, "type_signed_bitint"));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_BIT_PRECISE:
+            REQUIRE_OK(kefir_json_output_string(json, "type_unsigned_bitint"));
+            break;
+
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
             REQUIRE_OK(kefir_json_output_string(json, "type_float"));
             break;
@@ -1664,6 +1672,12 @@ static kefir_result_t format_debug_entry(struct kefir_json_output *json, const s
 
             case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE:
                 REQUIRE_OK(kefir_json_output_string(json, "size"));
+                REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+                REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->size));
+                break;
+
+            case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BIT_SIZE:
+                REQUIRE_OK(kefir_json_output_string(json, "bit_size"));
                 REQUIRE_OK(kefir_json_output_object_key(json, "value"));
                 REQUIRE_OK(kefir_json_output_uinteger(json, entry_attr->size));
                 break;

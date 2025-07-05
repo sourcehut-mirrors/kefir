@@ -37,6 +37,7 @@ typedef struct kefir_codegen_amd64_dwarf_abbrev_context {
         kefir_codegen_amd64_dwarf_entry_id_t compile_unit;
         kefir_codegen_amd64_dwarf_entry_id_t void_type;
         kefir_codegen_amd64_dwarf_entry_id_t scalar_type;
+        kefir_codegen_amd64_dwarf_entry_id_t scalar_bitprecise_type;
         kefir_codegen_amd64_dwarf_entry_id_t pointer_type;
         kefir_codegen_amd64_dwarf_entry_id_t enumeration_type;
         kefir_codegen_amd64_dwarf_entry_id_t enumerator;

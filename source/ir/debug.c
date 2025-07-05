@@ -266,6 +266,7 @@ kefir_result_t kefir_ir_debug_entry_add_attribute(struct kefir_mem *mem, struct 
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE:
+        case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BIT_SIZE:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT:
         case KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_OFFSET:

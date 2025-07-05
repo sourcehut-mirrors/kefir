@@ -275,24 +275,48 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                              (kefir_hashtree_value_t) *entry_id_ptr));
             break;
 
-        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
-        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE: {
+            char buf[256];
+            snprintf(buf, sizeof(buf) - 1, "unsigned _BitInt(%" KEFIR_SIZE_FMT ")", type->bitprecise.width);
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
-            REQUIRE_OK(
-                kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
-                                         KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,  // TODO Implement proper _BitInt support
-                                         entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_BIT_PRECISE, entry_id_ptr));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
-                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("_BitInt")));
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(buf)));
             REQUIRE_OK(
                 kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                                                    &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_BIT_SIZE(type->bitprecise.width)));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
                 mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
                 &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
             REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
                                              (kefir_hashtree_value_t) *entry_id_ptr));
-            break;
+        } break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE: {
+            char buf[256];
+            snprintf(buf, sizeof(buf) - 1, "_BitInt(%" KEFIR_SIZE_FMT ")", type->bitprecise.width);
+
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_BIT_PRECISE, entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME(buf)));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr,
+                                                          &KEFIR_IR_DEBUG_ENTRY_ATTR_BIT_SIZE(type->bitprecise.width)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+        } break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));

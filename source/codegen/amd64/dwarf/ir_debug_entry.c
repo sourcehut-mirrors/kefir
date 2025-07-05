@@ -47,6 +47,27 @@ static kefir_result_t define_scalar_type_abbrev(struct kefir_codegen_amd64 *code
     return KEFIR_OK;
 }
 
+static kefir_result_t define_scalar_bitprecise_type_abbrev(struct kefir_codegen_amd64 *codegen,
+                                                           struct kefir_codegen_amd64_dwarf_context *context) {
+    REQUIRE(context->abbrev.entries.scalar_bitprecise_type == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
+
+    context->abbrev.entries.scalar_bitprecise_type = KEFIR_CODEGEN_AMD64_DWARF_NEXT_ABBREV_ENTRY_ID(context);
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV(&codegen->xasmgen, context->abbrev.entries.scalar_bitprecise_type,
+                                              KEFIR_DWARF(DW_TAG_base_type), KEFIR_DWARF(DW_CHILDREN_no)));
+    REQUIRE_OK(
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_name), KEFIR_DWARF(DW_FORM_string)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_byte_size),
+                                                  KEFIR_DWARF(DW_FORM_udata)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_alignment),
+                                                  KEFIR_DWARF(DW_FORM_data1)));
+    REQUIRE_OK(
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_encoding), KEFIR_DWARF(DW_FORM_data1)));
+    REQUIRE_OK(
+        KEFIR_AMD64_DWARF_ATTRIBUTE_ABBREV(&codegen->xasmgen, KEFIR_DWARF(DW_AT_bit_size), KEFIR_DWARF(DW_FORM_udata)));
+    REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_ABBREV_END(&codegen->xasmgen));
+    return KEFIR_OK;
+}
+
 static kefir_result_t define_void_type_abbrev(struct kefir_codegen_amd64 *codegen,
                                               struct kefir_codegen_amd64_dwarf_context *context) {
     REQUIRE(context->abbrev.entries.void_type == KEFIR_CODEGEN_AMD64_DWARF_ENTRY_NULL, KEFIR_OK);
@@ -430,6 +451,15 @@ static kefir_result_t generate_type_immediate_abbrev(struct kefir_mem *mem, stru
             ASSIGN_PTR(dwarf_entry_id, context->abbrev.entries.scalar_type);
             break;
 
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_BIT_PRECISE:
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_BIT_PRECISE:
+            REQUIRE_OK(define_scalar_bitprecise_type_abbrev(codegen, context));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &context->abbrev.entries.ir_debug_entries,
+                                             (kefir_hashtree_key_t) ir_debug_entry->identifier,
+                                             (kefir_hashtree_value_t) context->abbrev.entries.scalar_bitprecise_type));
+            ASSIGN_PTR(dwarf_entry_id, context->abbrev.entries.scalar_bitprecise_type);
+            break;
+
         case KEFIR_IR_DEBUG_ENTRY_TYPE_VOID:
             REQUIRE_OK(define_void_type_abbrev(codegen, context));
             REQUIRE_OK(kefir_hashtree_insert(mem, &context->abbrev.entries.ir_debug_entries,
@@ -768,6 +798,25 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
         REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, (_encoding)));                                        \
     } while (0)
 
+#define DEFINE_SCALAR_BITPRECISE_TYPE_INFO(_encoding)                                                             \
+    do {                                                                                                          \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ENTRY_INFO(&codegen->xasmgen, dwarf_entry_id,                                \
+                                                context->abbrev.entries.scalar_bitprecise_type));                 \
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
+                                                      KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, &ir_attr));            \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_STRING(&codegen->xasmgen, ir_attr->name));                                   \
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
+                                                      KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, &ir_attr));            \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, ir_attr->size));                                  \
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
+                                                      KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, &ir_attr));       \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, ir_attr->alignment));                                \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_BYTE(&codegen->xasmgen, (_encoding)));                                       \
+        REQUIRE_OK(kefir_ir_debug_entry_get_attribute(&ir_module->debug_info.entries, ir_debug_entry->identifier, \
+                                                      KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BIT_SIZE, &ir_attr));        \
+        REQUIRE_OK(KEFIR_AMD64_DWARF_ULEB128(&codegen->xasmgen, ir_attr->size));                                  \
+    } while (0)
+
         case KEFIR_IR_DEBUG_ENTRY_TYPE_BOOLEAN:
             DEFINE_SCALAR_TYPE_INFO(KEFIR_DWARF(DW_ATE_boolean));
             break;
@@ -784,8 +833,16 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
             DEFINE_SCALAR_TYPE_INFO(KEFIR_DWARF(DW_ATE_signed));
             break;
 
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_BIT_PRECISE:
+            DEFINE_SCALAR_BITPRECISE_TYPE_INFO(KEFIR_DWARF(DW_ATE_signed));
+            break;
+
         case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT:
             DEFINE_SCALAR_TYPE_INFO(KEFIR_DWARF(DW_ATE_unsigned));
+            break;
+
+        case KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_BIT_PRECISE:
+            DEFINE_SCALAR_BITPRECISE_TYPE_INFO(KEFIR_DWARF(DW_ATE_unsigned));
             break;
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT:
@@ -797,6 +854,7 @@ static kefir_result_t generate_type_immediate_info(struct kefir_mem *mem, struct
             break;
 
 #undef DEFINE_SCALAR_TYPE_INFO
+#undef DEFINE_SCALAR_BITPRECISE_TYPE_INFO
 
         case KEFIR_IR_DEBUG_ENTRY_TYPE_VOID:
             REQUIRE_OK(

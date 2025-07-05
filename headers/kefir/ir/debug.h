@@ -37,6 +37,8 @@ typedef enum kefir_ir_debug_entry_tag {
     KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_CHARACTER,
     KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT,
     KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,
+    KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_BIT_PRECISE,
+    KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_BIT_PRECISE,
     KEFIR_IR_DEBUG_ENTRY_TYPE_FLOAT,
     KEFIR_IR_DEBUG_ENTRY_TYPE_COMPLEX_FLOAT,
     KEFIR_IR_DEBUG_ENTRY_TYPE_POINTER,
@@ -64,6 +66,7 @@ typedef enum kefir_ir_debug_entry_tag {
 typedef enum kefir_ir_debug_entry_attribute_tag {
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME = 0,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE,
+    KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BIT_SIZE,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_LENGTH,
     KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_CONSTANT_UINT,
@@ -135,6 +138,8 @@ typedef struct kefir_ir_debug_entries {
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_NAME, .name = (_name)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(_size) \
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_SIZE, .size = (_size)})
+#define KEFIR_IR_DEBUG_ENTRY_ATTR_BIT_SIZE(_size) \
+    ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_BIT_SIZE, .size = (_size)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(_align) \
     ((struct kefir_ir_debug_entry_attribute) {.tag = KEFIR_IR_DEBUG_ENTRY_ATTRIBUTE_ALIGNMENT, .alignment = (_align)})
 #define KEFIR_IR_DEBUG_ENTRY_ATTR_LENGTH(_length) \
