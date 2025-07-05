@@ -1242,6 +1242,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     } break;
 
             BITINT_STORE_OP(bitint_store, KEFIR_IR_OPCODE_BITINT_STORE)
+            BITINT_STORE_OP(bitint_store_precise, KEFIR_IR_OPCODE_BITINT_STORE_PRECISE)
 
 #undef BITINT_STORE_OP
 
@@ -1336,7 +1337,17 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_BITFIELD_OP(bitint_extract_signed, KEFIR_IR_OPCODE_BITINT_EXTRACT_SIGNED)
             BITINT_BITFIELD_OP(bitint_extract_unsigned, KEFIR_IR_OPCODE_BITINT_EXTRACT_UNSIGNED)
 
-#undef BITINT_LOAD_OP
+        case KEFIR_IR_OPCODE_BITINT_INSERT: {
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));
+            REQUIRE_OK(kefir_opt_code_builder_bitint_insert(mem, code, current_block_id, instr->arg.u32[0], instr_ref2,
+                                                            instr_ref3, instr->arg.u32[1], instr->arg.u32[2],
+                                                            &instr_ref));
+            REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+        } break;
+
+#undef BITINT_BITFIELD_OP
 
 #define STORE_OP(_id, _opcode)                                                                               \
     case _opcode: {                                                                                          \

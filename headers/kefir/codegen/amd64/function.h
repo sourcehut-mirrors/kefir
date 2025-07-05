@@ -370,6 +370,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_TO_BOOL) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_LOAD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_STORE) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_ATOMIC_COMPARE_EXCHANGE) _separator \
@@ -397,6 +398,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BELOW) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_INSERT) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 

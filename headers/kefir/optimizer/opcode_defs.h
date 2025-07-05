@@ -310,6 +310,7 @@
     OPCODE(BITINT_TO_BOOL, "bitint_to_bool", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_LOAD, "bitint_load", bitint_load) SEPARATOR \
     OPCODE(BITINT_STORE, "bitint_store", bitint_store) SEPARATOR \
+    OPCODE(BITINT_STORE_PRECISE, "bitint_store_precise", bitint_store) SEPARATOR \
     OPCODE(BITINT_ATOMIC_LOAD, "bitint_atomic_load", bitint_atomic) SEPARATOR \
     OPCODE(BITINT_ATOMIC_STORE, "bitint_atomic_store", bitint_atomic) SEPARATOR \
     OPCODE(BITINT_ATOMIC_COMPARE_EXCHANGE, "bitint_atomic_compare_exchange", bitint_atomic) SEPARATOR \
@@ -336,7 +337,8 @@
     OPCODE(BITINT_LESS, "bitint_less", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_BELOW, "bitint_below", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_EXTRACT_SIGNED, "bitint_extract_signed", bitint_bitfield) SEPARATOR \
-    OPCODE(BITINT_EXTRACT_UNSIGNED, "bitint_extract_unsigned", bitint_bitfield)
+    OPCODE(BITINT_EXTRACT_UNSIGNED, "bitint_extract_unsigned", bitint_bitfield) SEPARATOR \
+    OPCODE(BITINT_INSERT, "bitint_insert", bitint_bitfield)
 
 // clang-format on
 

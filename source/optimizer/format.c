@@ -621,8 +621,16 @@ static kefir_result_t format_operation_bitint_bitfield(struct kefir_json_output 
                                                        const struct kefir_opt_operation *oper) {
     UNUSED(module);
     UNUSED(code);
-    REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
-    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    if (oper->opcode == KEFIR_OPT_OPCODE_BITINT_INSERT) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "args"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+        REQUIRE_OK(id_format(json, oper->parameters.refs[1]));
+        REQUIRE_OK(kefir_json_output_array_end(json));
+    } else {
+        REQUIRE_OK(kefir_json_output_object_key(json, "arg"));
+        REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "bitwidth"));
     REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.bitwidth));
     REQUIRE_OK(kefir_json_output_object_key(json, "offset"));

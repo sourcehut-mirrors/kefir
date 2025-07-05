@@ -2454,7 +2454,12 @@ static kefir_result_t replace_references_bitint_atomic(struct kefir_opt_instruct
 static kefir_result_t replace_references_bitint_bitfield(struct kefir_opt_instruction *instr,
                                                          kefir_opt_instruction_ref_t to_ref,
                                                          kefir_opt_instruction_ref_t from_ref) {
-    REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_INSERT) {
+        REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+        REPLACE_REF(&instr->operation.parameters.refs[1], to_ref, from_ref);
+    } else {
+        REPLACE_REF(&instr->operation.parameters.refs[0], to_ref, from_ref);
+    }
     return KEFIR_OK;
 }
 static kefir_result_t replace_references_store_mem(struct kefir_opt_instruction *instr,

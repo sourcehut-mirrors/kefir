@@ -1193,6 +1193,7 @@ BITINT_LOAD_OP(bitint_load, KEFIR_OPT_OPCODE_BITINT_LOAD)
     }
 
 BITINT_STORE_OP(bitint_store, KEFIR_OPT_OPCODE_BITINT_STORE)
+BITINT_STORE_OP(bitint_store_precise, KEFIR_OPT_OPCODE_BITINT_STORE_PRECISE)
 
 #undef BITINT_STORE_OP
 
@@ -1295,6 +1296,25 @@ BITINT_ATOMIC_LOAD_OP(bitint_atomic_load, KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD)
 
 BITINT_BITFIELD_OP(bitint_extract_signed, KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED)
 BITINT_BITFIELD_OP(bitint_extract_unsigned, KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED)
+
+kefir_result_t kefir_opt_code_builder_bitint_insert(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                    kefir_opt_block_id_t block_id, kefir_size_t bitwidth,
+                                                    kefir_opt_instruction_ref_t base, kefir_opt_instruction_ref_t value,
+                                                    kefir_size_t offset, kefir_size_t length,
+                                                    kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+    REQUIRE_OK(instr_exists(code, block_id, base, false));
+    REQUIRE_OK(instr_exists(code, block_id, value, false));
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id,
+        &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_BITINT_INSERT,
+                                       .parameters = {.refs = {base, value, KEFIR_ID_NONE},
+                                                      .bitwidth = bitwidth,
+                                                      .bitint_bitfield = {.offset = offset, .length = length}}},
+        false, instr_id_ptr));
+    return KEFIR_OK;
+}
 
 #undef BITINT_BITFIELD_OP
 

@@ -446,13 +446,16 @@ static kefir_result_t inline_operation_bitint_bitfield(struct do_inline_param *p
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
-    kefir_opt_instruction_ref_t mapped_ref1;
+    kefir_opt_instruction_ref_t mapped_ref1, mapped_ref2 = KEFIR_ID_NONE;
     REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], &mapped_ref1));
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_INSERT) {
+        REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[1], &mapped_ref2));
+    }
 
     REQUIRE_OK(kefir_opt_code_container_new_instruction(
         param->mem, param->dst_code, mapped_block_id,
         &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
-                                       .parameters = {.refs = {mapped_ref1, KEFIR_ID_NONE, KEFIR_ID_NONE},
+                                       .parameters = {.refs = {mapped_ref1, mapped_ref2, KEFIR_ID_NONE},
                                                       .bitwidth = instr->operation.parameters.bitwidth,
                                                       .bitint_bitfield = instr->operation.parameters.bitint_bitfield}},
         mapped_instr_ref_ptr));

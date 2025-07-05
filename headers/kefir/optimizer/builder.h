@@ -513,6 +513,7 @@ BITINT_ATOMIC_LOAD_OP(bitint_atomic_load);
         kefir_opt_instruction_ref_t *)
 
 BITINT_STORE_OP(bitint_store);
+BITINT_STORE_OP(bitint_store_precise);
 
 #undef BITINT_STORE_OP
 
@@ -543,6 +544,11 @@ BITINT_ATOMIC_COMPARE_EXCHANGE_OP(bitint_atomic_compare_exchange);
 
 BITINT_BITFIELD_OP(bitint_extract_signed);
 BITINT_BITFIELD_OP(bitint_extract_unsigned);
+
+kefir_result_t kefir_opt_code_builder_bitint_insert(struct kefir_mem *, struct kefir_opt_code_container *,
+                                                    kefir_opt_block_id_t, kefir_size_t, kefir_opt_instruction_ref_t,
+                                                    kefir_opt_instruction_ref_t, kefir_size_t, kefir_size_t,
+                                                    kefir_opt_instruction_ref_t *);
 
 #undef BITINT_BITFIELD_OP
 
