@@ -38,112 +38,112 @@ _kefir_func_test1_label0:
     movw %si, -70(%rbp)
     movb %dil, -72(%rbp)
     movb -72(%rbp), %al
-    shl $59, %rax
-    sar $59, %rax
     movq a@GOTPCREL(%rip), %rcx
     mov $0, %rsi
     movsx %esi, %rdx
     imul $1, %rdx, %rdx
     add %rdx, %rcx
+    shl $59, %rax
+    sar $59, %rax
     movb %al, (%rcx)
     movb -71(%rbp), %al
-    shl $59, %rax
-    sar $59, %rax
     movq a@GOTPCREL(%rip), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     imul $1, %rdx, %rdx
     add %rdx, %rcx
+    shl $59, %rax
+    sar $59, %rax
     movb %al, (%rcx)
     movb -54(%rbp), %al
-    shl $59, %rax
-    sar $59, %rax
     movq a@GOTPCREL(%rip), %rcx
     mov $2, %rsi
     movsx %esi, %rdx
     imul $1, %rdx, %rdx
     add %rdx, %rcx
+    shl $59, %rax
+    sar $59, %rax
     movb %al, (%rcx)
     movw -70(%rbp), %ax
-    shl $52, %rax
-    sar $52, %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $0, %rsi
     movsx %esi, %rdx
     imul $2, %rdx, %rdx
     add %rdx, %rcx
+    shl $52, %rax
+    sar $52, %rax
     movw %ax, (%rcx)
     movw -56(%rbp), %ax
-    shl $52, %rax
-    sar $52, %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     imul $2, %rdx, %rdx
     add %rdx, %rcx
+    shl $52, %rax
+    sar $52, %rax
     movw %ax, (%rcx)
     movw -40(%rbp), %ax
-    shl $52, %rax
-    sar $52, %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $2, %rsi
     movsx %esi, %rdx
     imul $2, %rdx, %rdx
     add %rdx, %rcx
+    shl $52, %rax
+    sar $52, %rax
     movw %ax, (%rcx)
     movl -68(%rbp), %eax
-    shl $37, %rax
-    sar $37, %rax
     movq c@GOTPCREL(%rip), %rcx
     mov $0, %rsi
     movsx %esi, %rdx
     imul $4, %rdx, %rdx
     add %rdx, %rcx
+    shl $37, %rax
+    sar $37, %rax
     movl %eax, (%rcx)
     movl -52(%rbp), %eax
-    shl $37, %rax
-    sar $37, %rax
     movq c@GOTPCREL(%rip), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     imul $4, %rdx, %rdx
     add %rdx, %rcx
-    movl %eax, (%rcx)
-    movl -36(%rbp), %eax
     shl $37, %rax
     sar $37, %rax
+    movl %eax, (%rcx)
+    movl -36(%rbp), %eax
     movq c@GOTPCREL(%rip), %rcx
     mov $2, %rsi
     movsx %esi, %rdx
     imul $4, %rdx, %rdx
     add %rdx, %rcx
+    shl $37, %rax
+    sar $37, %rax
     movl %eax, (%rcx)
     movq -64(%rbp), %rax
-    shl $3, %rax
-    sar $3, %rax
     movq d@GOTPCREL(%rip), %rcx
     mov $0, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
-    movq %rax, (%rcx)
-    movq -48(%rbp), %rax
     shl $3, %rax
     sar $3, %rax
+    movq %rax, (%rcx)
+    movq -48(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
-    movq %rax, (%rcx)
-    movq -32(%rbp), %rax
     shl $3, %rax
     sar $3, %rax
+    movq %rax, (%rcx)
+    movq -32(%rbp), %rax
     movq d@GOTPCREL(%rip), %rcx
     mov $2, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
+    shl $3, %rax
+    sar $3, %rax
     movq %rax, (%rcx)
     lea -24(%rbp), %rsp
     pop %r13

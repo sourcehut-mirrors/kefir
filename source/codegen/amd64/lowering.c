@@ -787,6 +787,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
         } break;
 
         case KEFIR_OPT_OPCODE_BITINT_LOAD: {
+            const kefir_opt_instruction_ref_t instr_id = instr->id;
             const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
             struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
             const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
@@ -804,10 +805,13 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 } else if (bitwidth <= 32) {
                     REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
                                                                  &value_ref));
-                } else if (bitwidth <= QWORD_BITS) {
+                } else {
                     REQUIRE_OK(kefir_opt_code_builder_int64_load(mem, &func->code, block_id, arg_ref, &load_memflags,
                                                                  &value_ref));
                 }
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, value_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
 
                 switch (memflags.load_extension) {
                     case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
@@ -837,6 +841,9 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                                                               bitint_type_id, 0, &copy_ref));
                 REQUIRE_OK(
                     kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, replacement_ref));
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, copy_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
             }
         } break;
 
@@ -974,6 +981,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
         } break;
 
         case KEFIR_OPT_OPCODE_BITINT_ATOMIC_LOAD: {
+            const kefir_opt_instruction_ref_t instr_id = instr->id;
             const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
             struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
             const kefir_opt_memory_order_t memorder = instr->operation.parameters.bitint_atomic_memorder;
@@ -990,10 +998,13 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 } else if (bitwidth <= 32) {
                     REQUIRE_OK(kefir_opt_code_builder_atomic_load32(mem, &func->code, block_id, arg_ref, memorder,
                                                                     &value_ref));
-                } else if (bitwidth <= QWORD_BITS) {
+                } else {
                     REQUIRE_OK(kefir_opt_code_builder_atomic_load64(mem, &func->code, block_id, arg_ref, memorder,
                                                                     &value_ref));
                 }
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, value_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
 
                 switch (memflags.load_extension) {
                     case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
@@ -1023,6 +1034,9 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                     mem, &func->code, block_id, value_ref, arg_ref, memorder, bitint_type_id, 0, &copy_ref));
                 REQUIRE_OK(
                     kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, replacement_ref));
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, copy_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
             }
         } break;
 

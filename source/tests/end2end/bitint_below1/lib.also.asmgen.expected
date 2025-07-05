@@ -25,13 +25,13 @@ _kefir_func_below1_label0:
     movb %sil, -1(%rbp)
     movb %dil, -2(%rbp)
     movb -2(%rbp), %al
+    movb -1(%rbp), %cl
     shl $58, %rax
     shr $58, %rax
-    movb -1(%rbp), %cl
+    shl $58, %rax
+    shr $58, %rax
     shl $58, %rcx
     shr $58, %rcx
-    shl $58, %rax
-    shr $58, %rax
     shl $58, %rcx
     shr $58, %rcx
     mov $0, %rdx
@@ -52,13 +52,13 @@ _kefir_func_below2_label0:
     movw %si, -2(%rbp)
     movw %di, -4(%rbp)
     movw -4(%rbp), %ax
+    movw -2(%rbp), %cx
     shl $50, %rax
     shr $50, %rax
-    movw -2(%rbp), %cx
+    shl $50, %rax
+    shr $50, %rax
     shl $50, %rcx
     shr $50, %rcx
-    shl $50, %rax
-    shr $50, %rax
     shl $50, %rcx
     shr $50, %rcx
     mov $0, %rdx
@@ -79,13 +79,13 @@ _kefir_func_below3_label0:
     movl %esi, -4(%rbp)
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
+    movl -4(%rbp), %ecx
     shl $35, %rax
     shr $35, %rax
-    movl -4(%rbp), %ecx
+    shl $35, %rax
+    shr $35, %rax
     shl $35, %rcx
     shr $35, %rcx
-    shl $35, %rax
-    shr $35, %rax
     shl $35, %rcx
     shr $35, %rcx
     mov $0, %rdx
@@ -106,13 +106,13 @@ _kefir_func_below4_label0:
     movq %rsi, -8(%rbp)
     movq %rdi, -16(%rbp)
     movq -16(%rbp), %rax
+    movq -8(%rbp), %rcx
     shl $6, %rax
     shr $6, %rax
-    movq -8(%rbp), %rcx
+    shl $6, %rax
+    shr $6, %rax
     shl $6, %rcx
     shr $6, %rcx
-    shl $6, %rax
-    shr $6, %rax
     shl $6, %rcx
     shr $6, %rcx
     mov $0, %rdx

@@ -30,9 +30,9 @@ __kefir_text_func_add1_begin:
 _kefir_func_add1_label0:
     movb %dil, -1(%rbp)
     movb -1(%rbp), %al
+    movq a@GOTPCREL(%rip), %rdx
     shl $58, %rax
     sar $58, %rax
-    movq a@GOTPCREL(%rip), %rdx
     mov %rdx, %rdi
     mov %rax, %r8
 _kefir_func_add1_label1:
@@ -72,9 +72,9 @@ __kefir_text_func_add2_begin:
 _kefir_func_add2_label0:
     movw %di, -2(%rbp)
     movw -2(%rbp), %ax
+    movq b@GOTPCREL(%rip), %rdx
     shl $51, %rax
     sar $51, %rax
-    movq b@GOTPCREL(%rip), %rdx
     mov %rdx, %rdi
     mov %rax, %r8
 _kefir_func_add2_label1:
@@ -114,9 +114,9 @@ __kefir_text_func_add3_begin:
 _kefir_func_add3_label0:
     movl %edi, -4(%rbp)
     movl -4(%rbp), %eax
+    movq c@GOTPCREL(%rip), %rdx
     shl $37, %rax
     sar $37, %rax
-    movq c@GOTPCREL(%rip), %rdx
     mov %rdx, %rdi
     mov %rax, %r8
 _kefir_func_add3_label1:
@@ -156,9 +156,9 @@ __kefir_text_func_add4_begin:
 _kefir_func_add4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rax
+    movq d@GOTPCREL(%rip), %rdx
     shl $14, %rax
     sar $14, %rax
-    movq d@GOTPCREL(%rip), %rdx
     mov %rdx, %rdi
     mov %rax, %r8
 _kefir_func_add4_label1:

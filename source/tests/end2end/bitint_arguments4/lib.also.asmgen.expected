@@ -57,31 +57,31 @@ _kefir_func_test1_label0:
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, (%rax)
     movq -56(%rbp), %rax
-    shl $8, %rax
-    shr $8, %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $0, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
-    movq %rax, (%rcx)
-    movq -32(%rbp), %rax
     shl $8, %rax
     shr $8, %rax
+    movq %rax, (%rcx)
+    movq -32(%rbp), %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
-    movq %rax, (%rcx)
-    movq -8(%rbp), %rax
     shl $8, %rax
     shr $8, %rax
+    movq %rax, (%rcx)
+    movq -8(%rbp), %rax
     movq b@GOTPCREL(%rip), %rcx
     mov $2, %rsi
     movsx %esi, %rdx
     imul $8, %rdx, %rdx
     add %rdx, %rcx
+    shl $8, %rax
+    shr $8, %rax
     movq %rax, (%rcx)
     lea (%rbp), %rsp
     pop %rbp
