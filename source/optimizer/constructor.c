@@ -1225,6 +1225,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
     } break;
 
             BITINT_LOAD_OP(bitint_load, KEFIR_IR_OPCODE_BITINT_LOAD)
+            BITINT_LOAD_OP(bitint_load_precise, KEFIR_IR_OPCODE_BITINT_LOAD_PRECISE)
 
 #undef BITINT_LOAD_OP
 

@@ -54,7 +54,20 @@ _kefir_func_get3_label0:
     movdqu %xmm0, -16(%rbp)
     leaq -16(%rbp), %rax
     add $0, %rax
-    movq (%rax), %rax
+    mov %rax, %rcx
+    add $6, %rcx
+    movb (%rcx), %cl
+    mov %rax, %rdx
+    add $4, %rdx
+    movw (%rdx), %dx
+    movl (%rax), %eax
+    movabs $4294967295, %rsi
+    and %rsi, %rax
+    and $65535, %rdx
+    shl $32, %rdx
+    or %rdx, %rax
+    shl $48, %rcx
+    or %rcx, %rax
     shl $14, %rax
     shr $14, %rax
     shl $14, %rax

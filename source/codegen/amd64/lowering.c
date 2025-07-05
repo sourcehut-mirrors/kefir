@@ -847,6 +847,197 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_LOAD_PRECISE: {
+            const kefir_opt_instruction_ref_t instr_id = instr->id;
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            struct kefir_opt_memory_access_flags memflags = instr->operation.parameters.bitint_memflags;
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_bool_t update_control_flow = true;
+                const struct kefir_opt_memory_access_flags load_memflags = {
+                    .load_extension = KEFIR_OPT_MEMORY_LOAD_NOEXTEND, .volatile_access = memflags.volatile_access};
+                kefir_opt_instruction_ref_t value_ref;
+                if (bitwidth <= 8) {
+                    REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                &value_ref));
+                } else if (bitwidth <= 16) {
+                    REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                } else if (bitwidth <= 24) {
+                    kefir_opt_instruction_ref_t part1_ref, part2_ref, location2_offset_ref, location2_ref, mask_ref,
+                        masked_ref, shift_ref, shifted_ref;
+
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 2, &location2_offset_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, arg_ref,
+                                                                location2_offset_ref, &location2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0xffffull, &mask_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 16, &shift_ref));
+
+                    REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &part1_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, &func->code, block_id, location2_ref,
+                                                                &load_memflags, &part2_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_and(mem, &func->code, block_id, part1_ref, mask_ref, &masked_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_lshift(mem, &func->code, block_id, part2_ref, shift_ref,
+                                                                   &shifted_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_or(mem, &func->code, block_id, masked_ref, shifted_ref,
+                                                               &value_ref));
+
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part1_ref));
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part2_ref));
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+
+                    update_control_flow = false;
+                } else if (bitwidth <= 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                } else if (bitwidth <= 40) {
+                    kefir_opt_instruction_ref_t part1_ref, part2_ref, location2_offset_ref, location2_ref, mask_ref,
+                        masked_ref, shift_ref, shifted_ref;
+
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 4, &location2_offset_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, arg_ref,
+                                                                location2_offset_ref, &location2_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0xffffffffull, &mask_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 32, &shift_ref));
+
+                    REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &part1_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, &func->code, block_id, location2_ref,
+                                                                &load_memflags, &part2_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_and(mem, &func->code, block_id, part1_ref, mask_ref, &masked_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_lshift(mem, &func->code, block_id, part2_ref, shift_ref,
+                                                                   &shifted_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_or(mem, &func->code, block_id, masked_ref, shifted_ref,
+                                                               &value_ref));
+
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part1_ref));
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part2_ref));
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+
+                    update_control_flow = false;
+                } else if (bitwidth <= 48) {
+                    kefir_opt_instruction_ref_t part1_ref, part2_ref, location2_offset_ref, location2_ref, mask_ref,
+                        masked_ref, shift_ref, shifted_ref;
+
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 4, &location2_offset_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, arg_ref,
+                                                                location2_offset_ref, &location2_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0xffffffffull, &mask_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 32, &shift_ref));
+
+                    REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &part1_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, &func->code, block_id, location2_ref,
+                                                                 &load_memflags, &part2_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_and(mem, &func->code, block_id, part1_ref, mask_ref, &masked_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_lshift(mem, &func->code, block_id, part2_ref, shift_ref,
+                                                                   &shifted_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_or(mem, &func->code, block_id, masked_ref, shifted_ref,
+                                                               &value_ref));
+
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part1_ref));
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part2_ref));
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+
+                    update_control_flow = false;
+                } else if (bitwidth <= 56) {
+                    kefir_opt_instruction_ref_t part1_ref, part2_ref, part3_ref, location2_offset_ref,
+                        location3_offset_ref, location2_ref, location3_ref, mask_ref, mask2_ref, masked_ref,
+                        masked2_ref, shift_ref, shift2_ref, shifted_ref, shifted2_ref, part12_ref;
+
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 4, &location2_offset_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 6, &location3_offset_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, arg_ref,
+                                                                location2_offset_ref, &location2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_add(mem, &func->code, block_id, arg_ref,
+                                                                location3_offset_ref, &location3_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0xffffffffull, &mask_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 0xffffull, &mask2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 32, &shift_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, 48, &shift2_ref));
+
+                    REQUIRE_OK(kefir_opt_code_builder_int32_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &part1_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int16_load(mem, &func->code, block_id, location2_ref,
+                                                                 &load_memflags, &part2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int8_load(mem, &func->code, block_id, location3_ref,
+                                                                &load_memflags, &part3_ref));
+                    REQUIRE_OK(
+                        kefir_opt_code_builder_int64_and(mem, &func->code, block_id, part1_ref, mask_ref, &masked_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_and(mem, &func->code, block_id, part2_ref, mask2_ref,
+                                                                &masked2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_lshift(mem, &func->code, block_id, masked2_ref, shift_ref,
+                                                                   &shifted_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_lshift(mem, &func->code, block_id, part3_ref, shift2_ref,
+                                                                   &shifted2_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_or(mem, &func->code, block_id, masked_ref, shifted_ref,
+                                                               &part12_ref));
+                    REQUIRE_OK(kefir_opt_code_builder_int64_or(mem, &func->code, block_id, part12_ref, shifted2_ref,
+                                                               &value_ref));
+
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part1_ref));
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part2_ref));
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, part3_ref));
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+
+                    update_control_flow = false;
+                } else {
+                    REQUIRE_OK(kefir_opt_code_builder_int64_load(mem, &func->code, block_id, arg_ref, &load_memflags,
+                                                                 &value_ref));
+                }
+
+                if (update_control_flow) {
+                    REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, value_ref));
+                    REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+                }
+
+                switch (memflags.load_extension) {
+                    case KEFIR_OPT_MEMORY_LOAD_NOEXTEND:
+                        *replacement_ref = value_ref;
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, value_ref, 0,
+                                                                              bitwidth, replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND:
+                        REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, value_ref,
+                                                                                0, bitwidth, replacement_ref));
+                        break;
+                }
+            } else {
+                const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
+
+                kefir_id_t bitint_type_id;
+                REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
+
+                kefir_opt_instruction_ref_t value_ref, copy_ref;
+                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
+                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &value_ref));
+                REQUIRE_OK(kefir_opt_code_builder_copy_memory(mem, &func->code, block_id, value_ref, arg_ref,
+                                                              bitint_type_id, 0, &copy_ref));
+                REQUIRE_OK(
+                    kefir_opt_code_builder_pair(mem, &func->code, block_id, value_ref, copy_ref, replacement_ref));
+
+                REQUIRE_OK(kefir_opt_code_container_insert_control(&func->code, block_id, instr_id, copy_ref));
+                REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr_id));
+            }
+        } break;
+
         case KEFIR_OPT_OPCODE_BITINT_STORE: {
             const kefir_opt_instruction_ref_t location_arg_ref = instr->operation.parameters.refs[0];
             const kefir_opt_instruction_ref_t value_arg_ref = instr->operation.parameters.refs[1];

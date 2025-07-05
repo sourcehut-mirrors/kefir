@@ -493,6 +493,7 @@ LOAD_OP(complex_long_double_load);
         kefir_opt_instruction_ref_t, const struct kefir_opt_memory_access_flags *, kefir_opt_instruction_ref_t *)
 
 BITINT_LOAD_OP(bitint_load);
+BITINT_LOAD_OP(bitint_load_precise);
 
 #undef BITINT_LOAD_OP
 
