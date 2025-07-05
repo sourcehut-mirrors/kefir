@@ -1,0 +1,58 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global add
+.type add, @function
+.global get
+.type get, @function
+.global value
+.type value, @object
+
+.section .text
+__kefir_text_section_begin:
+add:
+__kefir_text_func_add_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_add_label0:
+    movq %rsi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -16(%rbp), %rcx
+    movq -8(%rbp), %rdx
+    movq (%rdx), %rax
+    shl $21, %rax
+    sar $21, %rax
+    shl $21, %rcx
+    sar $21, %rcx
+    add %rcx, %rax
+    movq %rax, (%rdx)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add_end:
+
+get:
+__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get_label0:
+    movq value@GOTPCREL(%rip), %rax
+    pop %rbp
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+value:
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+

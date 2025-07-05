@@ -762,8 +762,8 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_STORE, type->bitprecise.width,
-                                                       mem_flags));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITINT_STORE,
+                                                       normalizer->bitprecise.width, mem_flags));
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_FUNCTION:
