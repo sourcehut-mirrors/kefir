@@ -1,0 +1,441 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "a"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 97
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "b"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": -15957
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "c"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 126
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "d"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 1701604463
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "e"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 120
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "get1"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 97
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "get2"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": -15957
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "get3"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 126
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "get4"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 1701604463
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "unsigned"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "char"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "get5"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "{"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "return"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "unicode8_char",
+        "value": 120
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "}"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

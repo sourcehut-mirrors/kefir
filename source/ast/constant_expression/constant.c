@@ -46,6 +46,11 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
             value->integer = node->value.character;
             break;
 
+        case KEFIR_AST_UNICODE8_CHAR_CONSTANT:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            value->integer = node->value.character;
+            break;
+
         case KEFIR_AST_WIDE_CHAR_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             value->integer = node->value.wide_character;

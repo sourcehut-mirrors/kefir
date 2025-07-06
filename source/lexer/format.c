@@ -557,6 +557,12 @@ static kefir_result_t format_constant(struct kefir_json_output *json, const stru
             REQUIRE_OK(kefir_json_output_integer(json, constant->character));
             break;
 
+        case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
+            REQUIRE_OK(kefir_json_output_string(json, "unicode8_char"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_integer(json, constant->character));
+            break;
+
         case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
             REQUIRE_OK(kefir_json_output_string(json, "wide_char"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

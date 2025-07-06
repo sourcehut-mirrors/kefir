@@ -240,6 +240,12 @@ static kefir_result_t format_constant(FILE *out, const struct kefir_token *token
             fprintf(out, "'");
             break;
 
+        case KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR:
+            fprintf(out, "u8'");
+            REQUIRE_OK(format_char(out, token->constant.character));
+            fprintf(out, "'");
+            break;
+
         case KEFIR_CONSTANT_TOKEN_WIDE_CHAR:
             fprintf(out, "L'");
             REQUIRE_OK(format_wchar(out, token->constant.wide_char));

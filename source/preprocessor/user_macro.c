@@ -221,6 +221,8 @@ static kefir_result_t concat_tokens_impl(struct kefir_mem *mem, struct kefir_str
 
         if (strcmp(left->identifier, "L") == 0) {
             REQUIRE_OK(kefir_token_new_constant_wide_char(right->constant.character, allocated_token));
+        } else if (strcmp(left->identifier, "u8") == 0) {
+            REQUIRE_OK(kefir_token_new_constant_unicode8_char(right->constant.character, allocated_token));
         } else if (strcmp(left->identifier, "u") == 0) {
             REQUIRE_OK(
                 kefir_token_new_constant_unicode16_char((kefir_char16_t) right->constant.character, allocated_token));

@@ -275,6 +275,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_inline_assembly, {
 struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *, kefir_bool_t);
 struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *, kefir_int_t);
 struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *, kefir_wchar_t);
+struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *, kefir_int_t);
 struct kefir_ast_constant *kefir_ast_new_constant_unicode16_char(struct kefir_mem *, kefir_char16_t);
 struct kefir_ast_constant *kefir_ast_new_constant_unicode32_char(struct kefir_mem *, kefir_char32_t);
 struct kefir_ast_constant *kefir_ast_new_constant_int(struct kefir_mem *, kefir_int64_t);

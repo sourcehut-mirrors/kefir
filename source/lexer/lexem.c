@@ -219,6 +219,16 @@ kefir_result_t kefir_token_new_constant_char(kefir_int_t value, struct kefir_tok
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_new_constant_unicode8_char(kefir_int_t value, struct kefir_token *token) {
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
+    REQUIRE_OK(kefir_source_location_empty(&token->source_location));
+    token->klass = KEFIR_TOKEN_CONSTANT;
+    token->constant.type = KEFIR_CONSTANT_TOKEN_UNICODE8_CHAR;
+    token->constant.character = value;
+    token->macro_expansions = NULL;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_token_new_constant_wide_char(kefir_wchar_t value, struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));

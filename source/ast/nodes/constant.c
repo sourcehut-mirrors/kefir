@@ -83,6 +83,28 @@ struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, ke
     return constant;
 }
 
+struct kefir_ast_constant *kefir_ast_new_constant_unicode8_char(struct kefir_mem *mem, kefir_int_t value) {
+    REQUIRE(mem != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
+    constant->base.klass = &AST_CONSTANT_CLASS;
+    constant->base.self = constant;
+    kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    res = kefir_source_location_empty(&constant->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->type = KEFIR_AST_UNICODE8_CHAR_CONSTANT;
+    constant->value.character = value;
+    return constant;
+}
+
 struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *mem, kefir_wchar_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));

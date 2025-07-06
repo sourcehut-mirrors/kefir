@@ -102,6 +102,28 @@ static kefir_result_t match_narrow_character(struct kefir_lexer *lexer, struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t match_unicode8_character(struct kefir_lexer *lexer, struct kefir_token *token) {
+    REQUIRE(kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'u' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 1) == U'8' &&
+                kefir_lexer_source_cursor_at(lexer->cursor, 2) == U'\'',
+            KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match unicode8 character constant"));
+    REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 3));
+
+    kefir_uint_t character_value = 0;
+    kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+                                                 "Empty character constant is not permitted"));
+    for (kefir_bool_t scan = true; scan;) {
+        REQUIRE_OK(next_character(lexer->cursor, &character_value, &scan));
+    }
+    chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
+    REQUIRE(chr == U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
+                                                 "Character constant shall terminate with single quote"));
+    REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
+    REQUIRE_OK(kefir_token_new_constant_unicode8_char((kefir_int_t) character_value, token));
+    return KEFIR_OK;
+}
+
 static kefir_result_t scan_wide_character(struct kefir_lexer *lexer, kefir_char32_t *value) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
     REQUIRE(chr != U'\'', KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location,
@@ -162,6 +184,8 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     ASSIGN_DECL_CAST(struct kefir_token *, token, payload);
 
     kefir_result_t res = match_narrow_character(lexer, token);
+    REQUIRE(res == KEFIR_NO_MATCH, res);
+    res = match_unicode8_character(lexer, token);
     REQUIRE(res == KEFIR_NO_MATCH, res);
     res = match_wide_character(lexer, token);
     REQUIRE(res == KEFIR_NO_MATCH, res);

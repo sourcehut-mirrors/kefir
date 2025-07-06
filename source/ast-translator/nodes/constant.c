@@ -43,6 +43,11 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
                                                        (kefir_int64_t) node->value.character));
             break;
 
+        case KEFIR_AST_UNICODE8_CHAR_CONSTANT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
+                                                       (kefir_int64_t) node->value.character));
+            break;
+
         case KEFIR_AST_WIDE_CHAR_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
                                                        (kefir_int64_t) node->value.wide_character));

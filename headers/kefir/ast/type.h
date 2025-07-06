@@ -76,6 +76,7 @@ typedef struct kefir_ast_type_traits {
     const struct kefir_ast_type *uintptr_type;
     const struct kefir_ast_type *ptrdiff_type;
     const struct kefir_ast_type *wide_char_type;
+    const struct kefir_ast_type *unicode8_char_type;
     const struct kefir_ast_type *unicode16_char_type;
     const struct kefir_ast_type *unicode32_char_type;
     const struct kefir_ast_type *incomplete_type_substitute;

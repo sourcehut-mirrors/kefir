@@ -97,6 +97,12 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
             REQUIRE_OK(kefir_json_output_integer(json, node->value.character));
             break;
 
+        case KEFIR_AST_UNICODE8_CHAR_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "unicode8_character"));
+            REQUIRE_OK(kefir_json_output_object_key(json, "value"));
+            REQUIRE_OK(kefir_json_output_integer(json, node->value.character));
+            break;
+
         case KEFIR_AST_WIDE_CHAR_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "wide_character"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

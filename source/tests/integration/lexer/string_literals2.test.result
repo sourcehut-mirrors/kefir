@@ -34,14 +34,9 @@
         "length": 48
     },
     {
-        "class": "identifier",
-        "preprocessor": false,
-        "identifier": "u8"
-    },
-    {
         "class": "constant",
         "preprocessor": false,
-        "type": "char",
+        "type": "unicode8_char",
         "value": 97
     },
     {
