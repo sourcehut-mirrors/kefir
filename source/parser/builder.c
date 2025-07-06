@@ -494,28 +494,37 @@ kefir_result_t kefir_parser_ast_builder_comma_operator(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_parser_ast_builder_static_assertion(struct kefir_mem *mem,
-                                                         struct kefir_parser_ast_builder *builder) {
+                                                         struct kefir_parser_ast_builder *builder,
+                                                         kefir_bool_t has_string_literal) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
     struct kefir_ast_node_base *assertion = NULL, *string_literal = NULL;
-    REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &string_literal));
+    if (has_string_literal) {
+        REQUIRE_OK(kefir_parser_ast_builder_pop(mem, builder, &string_literal));
+    }
     kefir_result_t res = kefir_parser_ast_builder_pop(mem, builder, &assertion);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_NODE_FREE(mem, string_literal);
+        if (string_literal != NULL) {
+            KEFIR_AST_NODE_FREE(mem, string_literal);
+        }
         return res;
     });
 
-    REQUIRE_ELSE(string_literal->klass->type == KEFIR_AST_STRING_LITERAL, {
-        KEFIR_AST_NODE_FREE(mem, string_literal);
+    REQUIRE_ELSE(string_literal == NULL || string_literal->klass->type == KEFIR_AST_STRING_LITERAL, {
+        if (string_literal != NULL) {
+            KEFIR_AST_NODE_FREE(mem, string_literal);
+        }
         KEFIR_AST_NODE_FREE(mem, assertion);
         return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected string literal node");
     });
 
     struct kefir_ast_static_assertion *static_assertion =
-        kefir_ast_new_static_assertion(mem, assertion, string_literal->self);
+        kefir_ast_new_static_assertion(mem, assertion, string_literal != NULL ? string_literal->self : NULL);
     REQUIRE_ELSE(static_assertion != NULL, {
-        KEFIR_AST_NODE_FREE(mem, string_literal);
+        if (string_literal != NULL) {
+            KEFIR_AST_NODE_FREE(mem, string_literal);
+        }
         KEFIR_AST_NODE_FREE(mem, assertion);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST static assertion");
     });

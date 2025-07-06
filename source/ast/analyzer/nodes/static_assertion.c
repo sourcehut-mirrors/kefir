@@ -37,14 +37,16 @@ kefir_result_t kefir_ast_analyze_static_assertion_node(struct kefir_mem *mem, co
     base->properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
     base->properties.declaration_props.static_assertion = true;
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->condition));
-    REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(node->string)));
+    if (node->string != NULL) {
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, KEFIR_AST_NODE_BASE(node->string)));
+    }
 
     REQUIRE(node->condition->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->condition->source_location,
                                    "Expected static assert condition expression"));
     REQUIRE(
-        node->string->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-            node->string->base.properties.expression_props.string_literal.content != NULL,
+        node->string == NULL || (node->string->base.properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
+                                 node->string->base.properties.expression_props.string_literal.content != NULL),
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->string->base.source_location, "Expected string literal"));
 
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->condition, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
@@ -61,7 +63,13 @@ kefir_result_t kefir_ast_analyze_static_assertion_node(struct kefir_mem *mem, co
         condition = !is_zero;
     }
 
-    REQUIRE(condition, KEFIR_SET_SOURCE_ERRORF(KEFIR_STATIC_ASSERT, &node->base.source_location, "%s",
-                                               node->string->base.properties.expression_props.string_literal.content));
+    if (node->string != NULL) {
+        REQUIRE(condition,
+                KEFIR_SET_SOURCE_ERRORF(KEFIR_STATIC_ASSERT, &node->base.source_location, "%s",
+                                        node->string->base.properties.expression_props.string_literal.content));
+    } else {
+        REQUIRE(condition,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_STATIC_ASSERT, &node->base.source_location, "Failed static assertion"));
+    }
     return KEFIR_OK;
 }

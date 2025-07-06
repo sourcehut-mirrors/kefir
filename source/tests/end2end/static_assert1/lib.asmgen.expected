@@ -1,0 +1,87 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "static_assertion",
+            "assertion": {
+                "class": "constant",
+                "type": "integer",
+                "value": 1
+            },
+            "string_literal": null
+        },
+        {
+            "class": "static_assertion",
+            "assertion": {
+                "class": "constant",
+                "type": "integer",
+                "value": 1
+            },
+            "string_literal": {
+                "class": "string_literal",
+                "type": "multibyte",
+                "content": "Some message\u0000",
+                "length": 13
+            }
+        },
+        {
+            "class": "static_assertion",
+            "assertion": {
+                "class": "binary_operation",
+                "type": "add",
+                "left": {
+                    "class": "constant",
+                    "type": "integer",
+                    "value": 2
+                },
+                "right": {
+                    "class": "binary_operation",
+                    "type": "multiply",
+                    "left": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 2
+                    },
+                    "right": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 2
+                    }
+                }
+            },
+            "string_literal": null
+        },
+        {
+            "class": "static_assertion",
+            "assertion": {
+                "class": "binary_operation",
+                "type": "add",
+                "left": {
+                    "class": "constant",
+                    "type": "integer",
+                    "value": 2
+                },
+                "right": {
+                    "class": "binary_operation",
+                    "type": "multiply",
+                    "left": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 2
+                    },
+                    "right": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 2
+                    }
+                }
+            },
+            "string_literal": {
+                "class": "string_literal",
+                "type": "multibyte",
+                "content": "Another message\u0000",
+                "length": 16
+            }
+        }
+    ]
+}

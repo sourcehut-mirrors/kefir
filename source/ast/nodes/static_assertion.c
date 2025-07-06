@@ -30,7 +30,9 @@ kefir_result_t ast_static_assertion_free(struct kefir_mem *mem, struct kefir_ast
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_static_assertion *, node, base->self);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->condition));
-    REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->string)));
+    if (node->string != NULL) {
+        REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(node->string)));
+    }
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -43,7 +45,6 @@ struct kefir_ast_static_assertion *kefir_ast_new_static_assertion(struct kefir_m
                                                                   struct kefir_ast_string_literal *string) {
     REQUIRE(mem != NULL, NULL);
     REQUIRE(condition != NULL, NULL);
-    REQUIRE(string != NULL, NULL);
 
     struct kefir_ast_static_assertion *static_assertion = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_static_assertion));
     REQUIRE(static_assertion != NULL, NULL);

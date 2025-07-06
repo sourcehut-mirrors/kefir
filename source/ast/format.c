@@ -875,7 +875,11 @@ static kefir_result_t visit_static_assertion(const struct kefir_ast_visitor *vis
     REQUIRE_OK(kefir_json_output_object_key(json, "assertion"));
     REQUIRE_OK(kefir_ast_format(json, node->condition, param->display_source_location));
     REQUIRE_OK(kefir_json_output_object_key(json, "string_literal"));
-    REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(node->string), param->display_source_location));
+    if (node->string != NULL) {
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(node->string), param->display_source_location));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
     }
