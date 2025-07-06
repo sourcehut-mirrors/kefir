@@ -43,15 +43,19 @@ kefir_result_t kefir_ast_analyze_labeled_statement_node(struct kefir_mem *mem, c
 
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_STATEMENT;
-    REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->statement));
-    REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
-                node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->statement->source_location,
-                                   "Expected AST statement node to be associated with the label"));
+    if (node->statement != NULL) {
+        REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->statement));
+        REQUIRE(node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_STATEMENT ||
+                    node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION ||
+                    node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_INLINE_ASSEMBLY,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->statement->source_location,
+                                       "Expected AST statement or declaration node to be associated with the label"));
+    }
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
-    REQUIRE_OK(
-        context->reference_label(mem, context, node->label, parent, &node->statement->source_location, &scoped_id));
+    REQUIRE_OK(context->reference_label(
+        mem, context, node->label, parent,
+        node->statement != NULL ? &node->statement->source_location : &node->base.source_location, &scoped_id));
     base->properties.statement_props.target_flow_control_point = scoped_id->label.point;
     base->properties.statement_props.scoped_id = scoped_id;
     return KEFIR_OK;

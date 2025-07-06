@@ -1,0 +1,272 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "function",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "factorial",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "ellipsis": false,
+                        "parameters": [
+                            {
+                                "class": "declaration",
+                                "specifiers": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "long",
+                                        "attributes": []
+                                    }
+                                ],
+                                "init_declarators": [
+                                    {
+                                        "class": "init_declarator",
+                                        "declarator": {
+                                            "class": "abstract",
+                                            "attributes": []
+                                        },
+                                        "initializer": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "factorial",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "long",
+                                "attributes": []
+                            }
+                        ],
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": [
+                            {
+                                "class": "storage_class",
+                                "storage": "static",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_qualifier",
+                                "qualifier": "const",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_specifier",
+                                "specifier": "char",
+                                "attributes": []
+                            }
+                        ],
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "factorial\u0000",
+                                        "length": 10
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "goto_statement",
+                        "identifier": "test1"
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 0
+                        }
+                    },
+                    {
+                        "class": "labeled_statement",
+                        "label": "test1",
+                        "statement": {
+                            "class": "declaration",
+                            "specifiers": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "long",
+                                    "attributes": []
+                                }
+                            ],
+                            "init_declarators": [
+                                {
+                                    "class": "init_declarator",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "fact",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "initializer": {
+                                        "type": "expression",
+                                        "expression": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "class": "for_statement",
+                        "init": null,
+                        "controlling_expression": null,
+                        "tail": null,
+                        "body": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "if_statement",
+                                    "expression": {
+                                        "class": "binary_operation",
+                                        "type": "less_equal",
+                                        "left": {
+                                            "class": "identifier",
+                                            "identifier": "x"
+                                        },
+                                        "right": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        }
+                                    },
+                                    "thenBranch": {
+                                        "class": "goto_statement",
+                                        "identifier": "test2"
+                                    },
+                                    "elseBranch": null
+                                },
+                                {
+                                    "class": "expression_statement",
+                                    "expression": {
+                                        "class": "assignment_operator",
+                                        "type": "multiply",
+                                        "target": {
+                                            "class": "identifier",
+                                            "identifier": "fact"
+                                        },
+                                        "value": {
+                                            "class": "identifier",
+                                            "identifier": "x"
+                                        }
+                                    }
+                                },
+                                {
+                                    "class": "expression_statement",
+                                    "expression": {
+                                        "class": "unary_operation",
+                                        "type": "postfix_decrement",
+                                        "argument": {
+                                            "class": "identifier",
+                                            "identifier": "x"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "class": "compound_statement",
+                        "items": [
+                            {
+                                "class": "labeled_statement",
+                                "label": "test2",
+                                "statement": null
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "fact"
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}

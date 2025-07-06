@@ -66,6 +66,13 @@ kefir_result_t kefir_ast_translate_labeled_statement_node(struct kefir_mem *mem,
                 &KEFIR_IR_DEBUG_ENTRY_ATTR_SOURCE_LOCATION_COLUMN(node->base.source_location.column)));
         }
     }
-    REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
+
+    if (node->statement != NULL) {
+        if (node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION) {
+            REQUIRE_OK(kefir_ast_translate_declaration(mem, node->statement, builder, context));
+        } else {
+            REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
+        }
+    }
     return KEFIR_OK;
 }

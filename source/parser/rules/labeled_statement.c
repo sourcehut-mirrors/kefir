@@ -38,10 +38,25 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
         SKIP_ATTRIBUTES(&res, mem, parser);
         REQUIRE_OK(res);
 
-        REQUIRE_MATCH_OK(
-            &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL),
-            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected statement"));
-        REQUIRE_OK(kefir_parser_ast_builder_labeled_statement(mem, builder, identifier));
+        kefir_bool_t empty_statement = false;
+        res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, declaration), NULL);
+        if (res == KEFIR_NO_MATCH) {
+            res = kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL);
+        }
+        if (res == KEFIR_NO_MATCH) {
+            REQUIRE(PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                           "Expected a declaration, statement or right brace"));
+            res = KEFIR_OK;
+            empty_statement = true;
+        }
+        REQUIRE_OK(res);
+
+        if (empty_statement) {
+            REQUIRE_OK(kefir_parser_ast_builder_empty_labeled_statement(mem, builder, identifier));
+        } else {
+            REQUIRE_OK(kefir_parser_ast_builder_labeled_statement(mem, builder, identifier));
+        }
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CASE)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_MATCH_OK(

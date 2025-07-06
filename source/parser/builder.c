@@ -780,6 +780,25 @@ kefir_result_t kefir_parser_ast_builder_compound_statement_append(struct kefir_m
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem *mem,
+                                                                struct kefir_parser_ast_builder *builder,
+                                                                const char *identifier) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
+
+    struct kefir_ast_labeled_statement *labeled_stmt =
+        kefir_ast_new_labeled_statement(mem, builder->parser->symbols, identifier, NULL);
+    REQUIRE(labeled_stmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement"));
+
+    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(labeled_stmt));
+        return res;
+    });
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
                                                           struct kefir_parser_ast_builder *builder,
                                                           const char *identifier) {
