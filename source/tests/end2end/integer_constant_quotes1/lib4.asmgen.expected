@@ -1,0 +1,184 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "array",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "arr",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "type": "unbounded",
+                        "static": false,
+                        "type_qualifiers": [],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "array",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "arr",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "type": "unbounded",
+                        "static": false,
+                        "type_qualifiers": [],
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "list",
+                        "list": [
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1000
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 4096
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 8
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 512
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 123456789
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_long_long",
+                                        "value": 188897262082166
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "long_long",
+                                        "value": 61680
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "long",
+                                        "value": 548836660955
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "bitprecise",
+                                        "value": "0x467a8049f0b2e",
+                                        "width": 52
+                                    }
+                                }
+                            },
+                            {
+                                "designation": null,
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "unsigned_bitprecise",
+                                        "value": "0x1239871236541230",
+                                        "width": 61
+                                    }
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        }
+    ]
+}

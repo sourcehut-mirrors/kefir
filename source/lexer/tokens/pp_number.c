@@ -51,6 +51,10 @@ static kefir_result_t match_pp_number(struct kefir_mem *mem, struct kefir_lexer 
         } else if (kefir_isdigit32(chr1) || kefir_isnondigit32(chr1) || chr1 == U'.') {
             REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr1));
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
+        } else if (chr1 == U'\'' && (kefir_isdigit32(chr2) || kefir_isnondigit32(chr2))) {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr1));
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr2));
+            REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 2));
         } else {
             kefir_char32_t chr;
             kefir_result_t res = kefir_lexer_cursor_next_universal_character(lexer->cursor, &chr);

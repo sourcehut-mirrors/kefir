@@ -323,9 +323,15 @@ static kefir_result_t next_decimal_constant(struct kefir_mem *mem, struct kefir_
     REQUIRE(kefir_isdigit32(chr) && chr != U'0',
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match decimal integer constant"));
 
-    for (; kefir_isdigit32(chr);
+    for (; kefir_isdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        if (chr == U'\'') {
+            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+                break;
+            }
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        }
     }
     *base = 10;
     return KEFIR_OK;
@@ -340,9 +346,15 @@ static kefir_result_t next_hexadecimal_constant(struct kefir_mem *mem, struct ke
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal integer constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
 
-    for (; kefir_ishexdigit32(chr);
+    for (; kefir_ishexdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        if (chr == U'\'') {
+            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+                break;
+            }
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        }
     }
     *base = 16;
     return KEFIR_OK;
@@ -357,9 +369,15 @@ static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_l
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match binary integer constant"));
     REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 2));
 
-    for (; chr == U'0' || chr == U'1';
+    for (; chr == U'0' || chr == U'1' || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        if (chr == U'\'') {
+            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+                break;
+            }
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        }
     }
     *base = 2;
     return KEFIR_OK;
@@ -368,11 +386,18 @@ static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_l
 static kefir_result_t next_octal_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                           struct kefir_string_buffer *strbuf, kefir_size_t *base) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    REQUIRE(chr == U'0', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
+    kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
+    REQUIRE(chr == U'0' && chr2 != U'\'', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
 
-    for (; kefir_isoctdigit32(chr);
+    for (; kefir_isoctdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        if (chr == U'\'') {
+            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+                break;
+            }
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+        }
     }
     *base = 8;
     return KEFIR_OK;
