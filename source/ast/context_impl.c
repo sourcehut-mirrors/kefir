@@ -212,7 +212,10 @@ kefir_result_t kefir_ast_context_type_retrieve_tag(const struct kefir_ast_type *
     }
 }
 
-kefir_result_t kefir_ast_context_update_existing_scoped_type_tag(struct kefir_ast_scoped_identifier *scoped_id,
+kefir_result_t kefir_ast_context_update_existing_scoped_type_tag(struct kefir_mem *mem,
+                                                                 struct kefir_ast_type_bundle *type_bundle,
+                                                                 const struct kefir_ast_type_traits *type_traits,
+                                                                 struct kefir_ast_scoped_identifier *scoped_id,
                                                                  const struct kefir_ast_type *type) {
     REQUIRE(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG,
             KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot redefine with different kind of symbol"));
@@ -222,17 +225,25 @@ kefir_result_t kefir_ast_context_update_existing_scoped_type_tag(struct kefir_as
         case KEFIR_AST_TYPE_STRUCTURE:
         case KEFIR_AST_TYPE_UNION:
             if (type->structure_type.complete) {
-                REQUIRE(!scoped_id->type->structure_type.complete,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot redefine complete struct/union"));
-                scoped_id->type = type;
+                if (!scoped_id->type->structure_type.complete) {
+                    scoped_id->type = type;
+                } else {
+                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type, type),
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected compatible struct/union types"));
+                    scoped_id->type = KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type, type);
+                }
             }
             return KEFIR_OK;
 
         case KEFIR_AST_TYPE_ENUMERATION:
             if (type->enumeration_type.complete) {
-                REQUIRE(!scoped_id->type->enumeration_type.complete,
-                        KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Cannot redefine complete enumeration"));
-                scoped_id->type = type;
+                if (!scoped_id->type->enumeration_type.complete) {
+                    scoped_id->type = type;
+                } else {
+                    REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, scoped_id->type, type),
+                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected compatible enum types"));
+                    scoped_id->type = KEFIR_AST_TYPE_COMPOSITE(mem, type_bundle, type_traits, scoped_id->type, type);
+                }
             }
             return KEFIR_OK;
 

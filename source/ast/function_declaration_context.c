@@ -161,7 +161,8 @@ static kefir_result_t scoped_context_define_tag(struct kefir_mem *mem,
         kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->tag_scope, identifier,
                                                                 (struct kefir_ast_scoped_identifier **) &scoped_id);
         if (res == KEFIR_OK) {
-            REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(scoped_id, type));
+            REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(
+                mem, context->context.type_bundle, context->context.type_traits, scoped_id, type));
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type, location);

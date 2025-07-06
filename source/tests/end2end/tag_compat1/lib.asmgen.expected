@@ -1,0 +1,20 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global fn1
+.type fn1, @function
+
+.section .text
+__kefir_text_section_begin:
+fn1:
+__kefir_text_func_fn1_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_fn1_label0:
+    mov %rdi, %rax
+    pop %rbp
+    ret
+__kefir_text_func_fn1_end:
+
+__kefir_text_section_end:
+

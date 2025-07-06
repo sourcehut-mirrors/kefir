@@ -209,3 +209,68 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *mem, const struct
     }
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_constant_expression_value *lhs_value,
+                                                         const struct kefir_ast_constant_expression_value *rhs_value,
+                                                         kefir_bool_t *equal_ptr) {
+    REQUIRE(lhs_value != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value"));
+    REQUIRE(rhs_value != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression value"));
+    REQUIRE(equal_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to equality flag"));
+
+    if (lhs_value->klass != rhs_value->klass) {
+        *equal_ptr = false;
+        return KEFIR_OK;
+    }
+
+    switch (lhs_value->klass) {
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+            *equal_ptr = true;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+            if (lhs_value->bitprecise != rhs_value->bitprecise) {
+                *equal_ptr = false;
+            } else if (lhs_value->bitprecise != NULL) {
+                kefir_int_t cmp;
+                REQUIRE_OK(kefir_bigint_signed_compare(lhs_value->bitprecise, rhs_value->bitprecise, &cmp));
+                *equal_ptr = cmp == 0;
+            } else {
+                *equal_ptr = lhs_value->integer == rhs_value->integer;
+            }
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+            *equal_ptr = lhs_value->floating_point == rhs_value->floating_point;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            *equal_ptr = lhs_value->complex_floating_point.real == rhs_value->complex_floating_point.real &&
+                         lhs_value->complex_floating_point.imaginary == rhs_value->complex_floating_point.imaginary;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+            if (lhs_value->pointer.type != rhs_value->pointer.type) {
+                *equal_ptr = false;
+            } else if (lhs_value->pointer.offset != rhs_value->pointer.offset) {
+                *equal_ptr = false;
+            } else {
+                switch (lhs_value->pointer.type) {
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
+                        *equal_ptr = strcmp(lhs_value->pointer.base.literal, rhs_value->pointer.base.literal) == 0;
+                        break;
+
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
+                        *equal_ptr = lhs_value->pointer.base.integral == rhs_value->pointer.base.integral;
+                        break;
+
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL:
+                        *equal_ptr = false;
+                        break;
+                }
+            }
+            break;
+    }
+    return KEFIR_OK;
+}

@@ -1,0 +1,36 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    cmp $0, %edi
+    je _kefir_func_get_label8
+    cmp $1, %edi
+    je _kefir_func_get_label7
+    cmp $2, %edi
+    je _kefir_func_get_label6
+    cmp $3, %edi
+    je _kefir_func_get_label5
+    mov $-101, %rax
+    ret
+_kefir_func_get_label5:
+    mov $101, %rax
+    ret
+_kefir_func_get_label6:
+    mov $1, %rax
+    ret
+_kefir_func_get_label7:
+    xor %eax, %eax
+    ret
+_kefir_func_get_label8:
+    mov $-1, %rax
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+

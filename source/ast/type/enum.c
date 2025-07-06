@@ -91,10 +91,15 @@ static kefir_bool_t compatible_enumeration_types(const struct kefir_ast_type_tra
                     kefir_list_length(&type2->enumeration_type.enumerators),
                 false);
         const struct kefir_list_entry *iter1 = kefir_list_head(&type1->enumeration_type.enumerators);
-        const struct kefir_list_entry *iter2 = kefir_list_head(&type2->enumeration_type.enumerators);
-        for (; iter1 != NULL && iter2 != NULL; kefir_list_next(&iter1), kefir_list_next(&iter2)) {
+        for (; iter1 != NULL && iter1 != NULL; kefir_list_next(&iter1)) {
             ASSIGN_DECL_CAST(const struct kefir_ast_enum_enumerator *, enum1, iter1->value);
-            ASSIGN_DECL_CAST(const struct kefir_ast_enum_enumerator *, enum2, iter2->value);
+
+            struct kefir_hashtree_node *node = NULL;
+            kefir_result_t res = kefir_hashtree_at(&type2->enumeration_type.enumerator_index,
+                                                   (kefir_hashtree_key_t) enum1->identifier, &node);
+            REQUIRE(res == KEFIR_OK, false);
+            ASSIGN_DECL_CAST(struct kefir_ast_enum_enumerator *, enum2, node->value);
+
             REQUIRE(strcmp(enum1->identifier, enum2->identifier) == 0, false);
             if (enum1->has_value && enum2->has_value) {
                 REQUIRE(enum1->value == enum2->value, false);

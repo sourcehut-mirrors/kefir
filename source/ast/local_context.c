@@ -1108,7 +1108,11 @@ kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, st
     kefir_result_t res = kefir_ast_identifier_flat_scope_at(
         kefir_ast_identifier_block_scope_top(&context->ordinary_scope), identifier, &scoped_id);
     if (res == KEFIR_OK) {
-        return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant");
+        kefir_bool_t equal_values;
+        REQUIRE_OK(kefir_ast_constant_expression_value_equal(&scoped_id->enum_constant.value, value, &equal_values));
+        REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(context->context.type_traits, scoped_id->enum_constant.type, type) &&
+                    equal_values,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant"));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
@@ -1146,7 +1150,8 @@ kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *mem, struct 
         kefir_ast_identifier_flat_scope_at(kefir_ast_identifier_block_scope_top(&context->tag_scope), identifier,
                                            (struct kefir_ast_scoped_identifier **) &scoped_id);
     if (res == KEFIR_OK) {
-        REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(scoped_id, type));
+        REQUIRE_OK(kefir_ast_context_update_existing_scoped_type_tag(mem, context->context.type_bundle,
+                                                                     context->context.type_traits, scoped_id, type));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_type_tag(mem, type, location);
