@@ -57,6 +57,7 @@ VISITOR(binary_operation, struct kefir_ast_binary_operation)
 VISITOR(conditional_operator, struct kefir_ast_conditional_operator)
 VISITOR(cast_operator, struct kefir_ast_cast_operator)
 VISITOR(builtin, struct kefir_ast_builtin)
+VISITOR(comma_operator, struct kefir_ast_comma_operator)
 #undef VISITOR
 
 static kefir_result_t evaluate_extension_node(const struct kefir_ast_visitor *visitor,
@@ -106,6 +107,7 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate(struct kefir_mem *me
     visitor.conditional_operator = evaluate_conditional_operator;
     visitor.cast_operator = evaluate_cast_operator;
     visitor.builtin = evaluate_builtin;
+    visitor.comma_operator = evaluate_comma_operator;
     visitor.extension_node = evaluate_extension_node;
     return KEFIR_AST_NODE_VISIT(&visitor, node, &param);
 }

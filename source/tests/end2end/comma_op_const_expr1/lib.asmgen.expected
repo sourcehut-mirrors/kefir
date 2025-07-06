@@ -1,0 +1,614 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "x",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                },
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "y",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "double",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "z",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "complex",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "float",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "w",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "void",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "pointer",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "a",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "type_qualifiers": [],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": null,
+                    "members": [
+                        {
+                            "identifier": "Y",
+                            "value": {
+                                "class": "comma_operator",
+                                "expressions": [
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    },
+                                    {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 2
+                                    },
+                                    {
+                                        "class": "comma_operator",
+                                        "expressions": [
+                                            {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 2
+                                            },
+                                            {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 3
+                                            },
+                                            {
+                                                "class": "comma_operator",
+                                                "expressions": [
+                                                    {
+                                                        "class": "constant",
+                                                        "type": "integer",
+                                                        "value": 3
+                                                    },
+                                                    {
+                                                        "class": "comma_operator",
+                                                        "expressions": [
+                                                            {
+                                                                "class": "constant",
+                                                                "type": "integer",
+                                                                "value": 4
+                                                            },
+                                                            {
+                                                                "class": "constant",
+                                                                "type": "integer",
+                                                                "value": 5
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "x",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "comma_operator",
+                            "expressions": [
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 0
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 2
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 3
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 4
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 5
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 6
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 7
+                                        },
+                                        {
+                                            "class": "comma_operator",
+                                            "expressions": [
+                                                {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 8
+                                                },
+                                                {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 9
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 10
+                                        },
+                                        {
+                                            "class": "comma_operator",
+                                            "expressions": [
+                                                {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 11
+                                                },
+                                                {
+                                                    "class": "comma_operator",
+                                                    "expressions": [
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "integer",
+                                                            "value": 12
+                                                        },
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "integer",
+                                                            "value": 13
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "y",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "Y"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "double",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "z",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "comma_operator",
+                            "expressions": [
+                                {
+                                    "class": "constant",
+                                    "type": "double",
+                                    "value": 0.000000
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "double",
+                                    "value": 1.000000
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "constant",
+                                            "type": "double",
+                                            "value": 2.000000
+                                        },
+                                        {
+                                            "class": "comma_operator",
+                                            "expressions": [
+                                                {
+                                                    "class": "constant",
+                                                    "type": "double",
+                                                    "value": 3.000000
+                                                },
+                                                {
+                                                    "class": "comma_operator",
+                                                    "expressions": [
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "double",
+                                                            "value": 4.000000
+                                                        },
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "double",
+                                                            "value": 5.000000
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "double",
+                                    "value": 6.000000
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "complex",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "float",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "w",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "comma_operator",
+                            "expressions": [
+                                {
+                                    "class": "binary_operation",
+                                    "type": "add",
+                                    "left": {
+                                        "class": "constant",
+                                        "type": "double",
+                                        "value": 1.000000
+                                    },
+                                    "right": {
+                                        "class": "constant",
+                                        "type": "complex_double",
+                                        "real_value": 0.000000,
+                                        "imaginary_value": 1.000000
+                                    }
+                                },
+                                {
+                                    "class": "binary_operation",
+                                    "type": "subtract",
+                                    "left": {
+                                        "class": "constant",
+                                        "type": "double",
+                                        "value": 0.000000
+                                    },
+                                    "right": {
+                                        "class": "constant",
+                                        "type": "complex_double",
+                                        "real_value": 0.000000,
+                                        "imaginary_value": 1.000000
+                                    }
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "binary_operation",
+                                            "type": "add",
+                                            "left": {
+                                                "class": "constant",
+                                                "type": "double",
+                                                "value": 0.000000
+                                            },
+                                            "right": {
+                                                "class": "constant",
+                                                "type": "complex_double",
+                                                "real_value": 0.000000,
+                                                "imaginary_value": 0.000000
+                                            }
+                                        },
+                                        {
+                                            "class": "binary_operation",
+                                            "type": "subtract",
+                                            "left": {
+                                                "class": "constant",
+                                                "type": "double",
+                                                "value": 1.000000
+                                            },
+                                            "right": {
+                                                "class": "constant",
+                                                "type": "complex_double",
+                                                "real_value": 0.000000,
+                                                "imaginary_value": 1.000000
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "void",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "pointer",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "a",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "type_qualifiers": [],
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "comma_operator",
+                            "expressions": [
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 0
+                                },
+                                {
+                                    "class": "unary_operation",
+                                    "type": "address",
+                                    "argument": {
+                                        "class": "identifier",
+                                        "identifier": "w"
+                                    }
+                                },
+                                {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "unary_operation",
+                                            "type": "address",
+                                            "argument": {
+                                                "class": "identifier",
+                                                "identifier": "y"
+                                            }
+                                        },
+                                        {
+                                            "class": "unary_operation",
+                                            "type": "address",
+                                            "argument": {
+                                                "class": "identifier",
+                                                "identifier": "x"
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
