@@ -31,10 +31,16 @@ static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_
     kefir_size_t fraction_digits = 0;
 
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_isdigit32(chr);
+    for (; kefir_isdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        integer_digits++;
+        if (chr == U'\'') {
+            REQUIRE(integer_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            integer_digits++;
+        }
     }
 
     if (chr == U'.') {
@@ -46,10 +52,16 @@ static kefir_result_t match_fractional_part(struct kefir_mem *mem, struct kefir_
         return KEFIR_OK;
     }
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_isdigit32(chr);
+    for (; kefir_isdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        fraction_digits++;
+        if (chr == U'\'') {
+            REQUIRE(fraction_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            fraction_digits++;
+        }
     }
     REQUIRE(integer_digits > 0 || fraction_digits > 0,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
@@ -70,10 +82,16 @@ static kefir_result_t match_exponent(struct kefir_mem *mem, struct kefir_lexer_s
 
     struct kefir_source_location exponent_location = cursor->location;
     kefir_size_t exponent_digits = 0;
-    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr);
+    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        exponent_digits++;
+        if (chr == U'\'') {
+            REQUIRE(exponent_digits > 0, KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_isdigit32(next_chr), KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            exponent_digits++;
+        }
     }
     REQUIRE(exponent_digits > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &exponent_location,
                                                         "Expected one or more floating point exponent digits"));
@@ -183,10 +201,18 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
     kefir_size_t integer_digits = 0;
     kefir_size_t fraction_digits = 0;
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_ishexdigit32(chr);
+    for (; kefir_ishexdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        integer_digits++;
+        if (chr == U'\'') {
+            REQUIRE(integer_digits > 0,
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_ishexdigit32(next_chr),
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            integer_digits++;
+        }
     }
 
     if (chr == U'.') {
@@ -198,10 +224,18 @@ static kefir_result_t match_hexadecimal_fractional_part(struct kefir_mem *mem, s
         return KEFIR_OK;
     }
     chr = kefir_lexer_source_cursor_at(cursor, 0);
-    for (; kefir_ishexdigit32(chr);
+    for (; kefir_ishexdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        fraction_digits++;
+        if (chr == U'\'') {
+            REQUIRE(fraction_digits > 0,
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_ishexdigit32(next_chr),
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            fraction_digits++;
+        }
     }
     REQUIRE(integer_digits > 0 || fraction_digits > 0,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
@@ -222,10 +256,18 @@ static kefir_result_t match_hexadecimal_exponent(struct kefir_mem *mem, struct k
 
     struct kefir_source_location exponent_location = cursor->location;
     kefir_size_t exponent_digits = 0;
-    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr);
+    for (chr = kefir_lexer_source_cursor_at(cursor, 0); kefir_isdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
-        REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
-        exponent_digits++;
+        if (chr == U'\'') {
+            REQUIRE(exponent_digits > 0,
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+            kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            REQUIRE(kefir_isdigit32(next_chr),
+                    KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match hexadecimal floating constant"));
+        } else {
+            REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
+            exponent_digits++;
+        }
     }
     REQUIRE(exponent_digits > 0, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &exponent_location,
                                                         "Expected one or more floating point exponent digits"));
