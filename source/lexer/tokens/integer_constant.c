@@ -349,7 +349,7 @@ static kefir_result_t next_hexadecimal_constant(struct kefir_mem *mem, struct ke
     for (; kefir_ishexdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
         if (chr == U'\'') {
-            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+            if (!kefir_ishexdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
                 break;
             }
         } else {
@@ -372,7 +372,8 @@ static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_l
     for (; chr == U'0' || chr == U'1' || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
         if (chr == U'\'') {
-            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+            const kefir_char32_t next_chr = kefir_lexer_source_cursor_at(cursor, 1);
+            if (next_chr != U'0' && next_chr != U'1') {
                 break;
             }
         } else {
@@ -386,13 +387,12 @@ static kefir_result_t next_binary_constant(struct kefir_mem *mem, struct kefir_l
 static kefir_result_t next_octal_constant(struct kefir_mem *mem, struct kefir_lexer_source_cursor *cursor,
                                           struct kefir_string_buffer *strbuf, kefir_size_t *base) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(cursor, 0);
-    kefir_char32_t chr2 = kefir_lexer_source_cursor_at(cursor, 1);
-    REQUIRE(chr == U'0' && chr2 != U'\'', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
+    REQUIRE(chr == U'0', KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match octal integer constant"));
 
     for (; kefir_isoctdigit32(chr) || chr == U'\'';
          kefir_lexer_source_cursor_next(cursor, 1), chr = kefir_lexer_source_cursor_at(cursor, 0)) {
         if (chr == U'\'') {
-            if (!kefir_isdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
+            if (!kefir_isoctdigit32(kefir_lexer_source_cursor_at(cursor, 1))) {
                 break;
             }
         } else {

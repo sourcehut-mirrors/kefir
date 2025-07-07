@@ -23,7 +23,10 @@
 #include <assert.h>
 #include "./definitions.h"
 
+extern unsigned long x[3], y[3], z[3], a[3];
+
 int main(void) {
+#define MASK(_x, _y) ((_x) & ((1ull << (_y)) - 1))
     assert(arr[0] == 1000);
     assert(arr[1] == 0x1000);
     assert(arr[2] == 8);
@@ -34,5 +37,21 @@ int main(void) {
     assert(arr[7] == 07771115553333l);
     assert(arr[8] == 1239871236541230ull);
     assert(arr[9] == 0x1239871236541230ull);
+
+    assert(x[0] == 0x44321defa0000011ull);
+    assert(x[1] == 0xd1234efdc0987123ull);
+    assert(MASK(x[2], 52) == 0xabc);
+
+    assert(y[0] == (unsigned long) -1148669705926492162ll);
+    assert(y[1] == 240);
+    assert(MASK(y[2], 52) == 0);
+
+    assert(z[0] == (unsigned long) -3290091646667557752ll);
+    assert(z[1] == 22976149868412);
+    assert(MASK(z[2], 52) == 16368);
+
+    assert(a[0] == (unsigned long) 8312942291372959420ull);
+    assert(a[1] == 2959064529720148950ull);
+    assert(MASK(a[2], 52) == 567829143ull);
     return EXIT_SUCCESS;
 }

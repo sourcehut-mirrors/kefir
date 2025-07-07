@@ -1,6 +1,14 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.global a
+.type a, @object
+.global x
+.type x, @object
+.global y
+.type y, @object
+.global z
+.type z, @object
 .global arr
 .type arr, @object
 
@@ -9,6 +17,114 @@ __kefir_text_section_begin:
 __kefir_text_section_end:
 
 .section .data
+    .align 8
+a:
+    .byte 188
+    .byte 102
+    .byte 155
+    .byte 91
+    .byte 248
+    .byte 128
+    .byte 93
+    .byte 115
+    .byte 214
+    .byte 131
+    .byte 109
+    .byte 17
+    .byte 131
+    .byte 181
+    .byte 16
+    .byte 41
+    .byte 151
+    .byte 98
+    .byte 216
+    .byte 33
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+x:
+    .byte 17
+    .byte 0
+    .byte 0
+    .byte 160
+    .byte 239
+    .byte 29
+    .byte 50
+    .byte 68
+    .byte 35
+    .byte 113
+    .byte 152
+    .byte 192
+    .byte 253
+    .byte 78
+    .byte 35
+    .byte 209
+    .byte 188
+    .byte 10
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+y:
+    .byte 254
+    .byte 191
+    .byte 255
+    .byte 5
+    .byte 253
+    .byte 26
+    .byte 15
+    .byte 240
+    .byte 240
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
+    .align 8
+z:
+    .byte 136
+    .byte 116
+    .byte 230
+    .byte 57
+    .byte 20
+    .byte 63
+    .byte 87
+    .byte 210
+    .byte 124
+    .byte 79
+    .byte 64
+    .byte 141
+    .byte 229
+    .byte 20
+    .byte 0
+    .byte 0
+    .byte 240
+    .byte 63
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+
     .align 16
 arr:
     .quad 1000

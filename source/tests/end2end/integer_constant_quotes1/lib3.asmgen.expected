@@ -177,6 +177,178 @@
         "punctuator": ";"
     },
     {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_BitInt"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 180
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "a"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "bitprecise",
+        "value": "0x21d862972910b583116d83d6735d80f85b9b66bc",
+        "width": 159
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_BitInt"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 180
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "bitprecise",
+        "value": "0x0abcd1234efdc098712344321defa0000011",
+        "width": 141
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_BitInt"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 180
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "bitprecise",
+        "value": "0x0f0f00f1afd05ffbffe",
+        "width": 73
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "_BitInt"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 180
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "z"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "bitprecise",
+        "value": "0x3ff0000014e58d404f7cd2573f1439e67488",
+        "width": 143
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
         "class": "sentinel",
         "preprocessor": false
     }

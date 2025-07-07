@@ -179,6 +179,146 @@
                     }
                 }
             ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 180
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "a",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "bitprecise",
+                            "value": "0x21d862972910b583116d83d6735d80f85b9b66bc",
+                            "width": 159
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 180
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "x",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "bitprecise",
+                            "value": "0x0abcd1234efdc098712344321defa0000011",
+                            "width": 141
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 180
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "y",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "bitprecise",
+                            "value": "0x0f0f00f1afd05ffbffe",
+                            "width": 73
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "bitint",
+                    "width": {
+                        "class": "constant",
+                        "type": "integer",
+                        "value": 180
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "z",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "bitprecise",
+                            "value": "0x3ff0000014e58d404f7cd2573f1439e67488",
+                            "width": 143
+                        }
+                    }
+                }
+            ]
         }
     ]
 }
