@@ -37,41 +37,6 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "double"
-    },
-    {
-        "class": "identifier",
-        "preprocessor": false,
-        "identifier": "a"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": ","
-    },
-    {
-        "class": "identifier",
-        "preprocessor": false,
-        "identifier": "b"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": ";"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "extern"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
         "keyword": "complex"
     },
     {
@@ -184,68 +149,6 @@
         "class": "punctuator",
         "preprocessor": false,
         "punctuator": "}"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": ";"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "long"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "double"
-    },
-    {
-        "class": "identifier",
-        "preprocessor": false,
-        "identifier": "a"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": "="
-    },
-    {
-        "class": "constant",
-        "preprocessor": false,
-        "type": "long_double",
-        "value": "0x8.98bbb01bc0800f4p+134"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": ";"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "long"
-    },
-    {
-        "class": "keyword",
-        "preprocessor": false,
-        "keyword": "double"
-    },
-    {
-        "class": "identifier",
-        "preprocessor": false,
-        "identifier": "b"
-    },
-    {
-        "class": "punctuator",
-        "preprocessor": false,
-        "punctuator": "="
-    },
-    {
-        "class": "constant",
-        "preprocessor": false,
-        "type": "long_double",
-        "value": "0xa.bbeeecccc6322e3p-76"
     },
     {
         "class": "punctuator",

@@ -26,13 +26,7 @@
 #include "./definitions.h"
 
 int main(void) {
-    assert(fabs(arr[0] - 3.14159) < 1e-6);
-    assert(fabs(arr[1] - 2.718281828) < 1e-6);
-    assert(fabs(arr[2] - 3.14159) < 1e-6);
-    assert(fabs(arr[3] - 2.718281828) < 1e-6);
-    assert(fabs(arr[4] - 0xaabbe.555221P+10) < 1e-6);
-    assert(fabs(arr[5] - 0x123498765.9172bedap-1001) < 1e-6);
-    assert(fabsl(crealf(c) - 3.14159f) < 1e-5);
-    assert(fabsl(cimagf(c) - 2.71828f) < 1e-5);
+    assert(fabsl(a - 18721767.18171e34l) < 1e-7);
+    assert(fabsl(b - 0xabbeeecccc.6322e32ep-112l) < 1e-7);
     return EXIT_SUCCESS;
 }

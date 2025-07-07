@@ -22,7 +22,6 @@
 #define DEFINITIONS_H_
 
 extern double arr[];
-extern long double a, b;
 extern _Complex float c;
 
 #endif

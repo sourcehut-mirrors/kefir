@@ -27,7 +27,4 @@ double arr[] = {3.14'159f,
                 0xaa'bb'e.555'22'1P+0'10,
                 0x1234'9876'5.9172'bed'ap-100'1};
 
-long double a = 1872'17'67.18'17'1e3'4l;
-long double b = 0xa'bb'eee'cccc.6322'e32'ep-11'2l;
-
 _Complex float c = 0'3.14'159 + 2.7'1828fi;
