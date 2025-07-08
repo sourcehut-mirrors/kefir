@@ -217,24 +217,20 @@ MACRO_PP_NUMBER_FMT(pdp_endian, 64, "%" KEFIR_INT_FMT, 3412)
 MACRO_PP_NUMBER_FMT(char_bit, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->scalar_width.char_bits)
 MACRO_PP_NUMBER_FMT(schar_max, 64, "%" KEFIR_UINT64_FMT,
-                    (kefir_uint64_t) (1ul
-                                      << (preprocessor->context->environment.data_model->scalar_width.char_bits - 1)) -
-                        1)
+                    (kefir_uint64_t)
+                        kefir_data_model_descriptor_signed_char_max(preprocessor->context->environment.data_model))
 MACRO_PP_NUMBER_FMT(shrt_max, 64, "%" KEFIR_UINT64_FMT,
-                    (kefir_uint64_t) (1ul
-                                      << (preprocessor->context->environment.data_model->scalar_width.short_bits - 1)) -
-                        1)
+                    (kefir_uint64_t)
+                        kefir_data_model_descriptor_signed_short_max(preprocessor->context->environment.data_model))
 MACRO_PP_NUMBER_FMT(int_max, 64, "%" KEFIR_UINT64_FMT,
-                    (kefir_uint64_t) (1ul
-                                      << (preprocessor->context->environment.data_model->scalar_width.int_bits - 1)) -
-                        1)
+                    (kefir_uint64_t)
+                        kefir_data_model_descriptor_signed_int_max(preprocessor->context->environment.data_model))
 MACRO_PP_NUMBER_FMT(long_max, 64, "%" KEFIR_UINT64_FMT "L",
-                    (kefir_uint64_t) (1ul
-                                      << (preprocessor->context->environment.data_model->scalar_width.long_bits - 1)) -
-                        1)
-MACRO_PP_NUMBER_FMT(
-    long_long_max, 64, "%" KEFIR_UINT64_FMT "L",
-    (kefir_uint64_t) (1ul << (preprocessor->context->environment.data_model->scalar_width.long_long_bits - 1)) - 1)
+                    (kefir_uint64_t)
+                        kefir_data_model_descriptor_signed_long_max(preprocessor->context->environment.data_model))
+MACRO_PP_NUMBER_FMT(long_long_max, 64, "%" KEFIR_UINT64_FMT "L",
+                    (kefir_uint64_t)
+                        kefir_data_model_descriptor_signed_long_long_max(preprocessor->context->environment.data_model))
 MACRO_PP_NUMBER_FMT(schar_width, 64, "%" KEFIR_UINT64_FMT,
                     (kefir_uint64_t) preprocessor->context->environment.data_model->scalar_width.char_bits)
 MACRO_PP_NUMBER_FMT(shrt_width, 64, "%" KEFIR_UINT64_FMT,

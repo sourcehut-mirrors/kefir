@@ -55,4 +55,17 @@ typedef struct kefir_data_model_descriptor {
     } scalar_width;
 } kefir_data_model_descriptor_t;
 
+#define DECL_MIN_MAX(_name)                                                                                     \
+    kefir_int64_t kefir_data_model_descriptor_signed_##_name##_min(const struct kefir_data_model_descriptor *); \
+    kefir_int64_t kefir_data_model_descriptor_signed_##_name##_max(const struct kefir_data_model_descriptor *); \
+    kefir_uint64_t kefir_data_model_descriptor_unsigned_##_name##_max(const struct kefir_data_model_descriptor *)
+
+DECL_MIN_MAX(char);
+DECL_MIN_MAX(short);
+DECL_MIN_MAX(int);
+DECL_MIN_MAX(long);
+DECL_MIN_MAX(long_long);
+
+#undef DECL_MIN_MAX
+
 #endif
