@@ -267,6 +267,23 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
     return KEFIR_OK;
 }
 
+static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *context,
+                                                kefir_ast_constant_expression_int_t value,
+                                                const struct kefir_ast_type **type) {
+    kefir_bool_t fits;
+    REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(context->type_traits, *type, value, &fits));
+    REQUIRE(!fits, KEFIR_OK);
+
+    kefir_bool_t is_signed;
+    REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, *type, &is_signed));
+    if (is_signed) {
+        *type = kefir_ast_type_signed_long();
+    } else {
+        *type = kefir_ast_type_unsigned_long();
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                         const struct kefir_ast_declarator_specifier *decl_specifier,
                                         const struct kefir_ast_type **base_type, kefir_uint64_t flags) {
@@ -283,9 +300,14 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                                           context->type_traits->underlying_enumeration_type, &enum_type);
         REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to allocate AST enum type"));
 
-        kefir_ast_constant_expression_int_t constant_value = 0;
-        kefir_ast_constant_expression_int_t min_constant = KEFIR_AST_CONSTANT_EXPRESSION_INT_MAX;
-        kefir_ast_constant_expression_int_t max_constant = KEFIR_AST_CONSTANT_EXPRESSION_INT_MIN;
+        kefir_int64_t constant_value = 0;
+        kefir_int64_t min_constant = KEFIR_INT_MAX;
+        kefir_int64_t max_constant = KEFIR_INT_MIN;
+
+        kefir_bool_t has_overflow64 = false;
+        kefir_bool_t has_negative = false;
+
+        const struct kefir_ast_type *enumerator_constant_processing_type = kefir_ast_type_signed_int();
         for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
@@ -299,23 +321,92 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                 constant_value = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(entry->value)->integer;
                 REQUIRE_OK(kefir_ast_enumeration_type_constant(mem, context->symbols, enum_type, entry->constant,
                                                                constant_value));
+                kefir_bool_t is_signed;
+                kefir_bool_t fits;
+                REQUIRE_OK(kefir_ast_type_is_signed(
+                    context->type_traits, kefir_ast_unqualified_type(entry->value->properties.type), &is_signed));
+                if (is_signed) {
+                    REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(
+                        context->type_traits, kefir_ast_type_signed_int(), constant_value, &fits));
+                } else {
+                    fits =
+                        ((kefir_uint64_t) constant_value) <=
+                        (kefir_uint64_t) kefir_data_model_descriptor_signed_int_max(context->type_traits->data_model);
+                }
+
+                if (fits) {
+                    enumerator_constant_processing_type = kefir_ast_type_signed_int();
+                } else {
+                    enumerator_constant_processing_type = kefir_ast_unqualified_type(entry->value->properties.type);
+                }
+
+                REQUIRE_OK(
+                    kefir_ast_type_is_signed(context->type_traits, enumerator_constant_processing_type, &is_signed));
+                if (is_signed && constant_value < 0) {
+                    has_negative = true;
+                }
             } else {
+                if (constant_value == KEFIR_INT64_MIN) {
+                    has_overflow64 = true;
+                }
+                REQUIRE_OK(update_enum_constant_type(context, constant_value, &enumerator_constant_processing_type));
                 REQUIRE_OK(kefir_ast_enumeration_type_constant_auto(mem, context->symbols, enum_type, entry->constant));
             }
 
             min_constant = MIN(min_constant, constant_value);
             max_constant = MAX(max_constant, constant_value);
-            REQUIRE_OK(context->define_constant(
-                mem, context, entry->constant, &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value++),
-                context->type_traits->underlying_enumeration_type, &decl_specifier->source_location));
+            REQUIRE_OK(context->define_constant(mem, context, entry->constant,
+                                                &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value),
+                                                enumerator_constant_processing_type, &decl_specifier->source_location));
+
+            if (constant_value == KEFIR_INT64_MAX) {
+                constant_value = KEFIR_INT64_MIN;
+            } else {
+                constant_value++;
+            }
         }
 
-        if (!context->configuration->analysis.fixed_enum_type && kefir_list_length(&specifier->entries) > 0) {
-            if (min_constant >= 0) {
-                enum_type->underlying_type = kefir_ast_type_unsigned_int();
+        kefir_bool_t fits_min, fits_max;
+        if (kefir_list_length(&specifier->entries) > 0) {
+            if (has_negative) {
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(context->type_traits, kefir_ast_type_signed_int(),
+                                                                     min_constant, &fits_min));
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(context->type_traits, kefir_ast_type_signed_int(),
+                                                                     max_constant, &fits_max));
+                if (fits_min && fits_max) {
+                    enum_type->underlying_type = kefir_ast_type_signed_int();
+                } else {
+                    enum_type->underlying_type = kefir_ast_type_signed_long();
+                }
+            } else if (has_overflow64) {
+                enum_type->underlying_type = kefir_ast_type_unsigned_long();
             } else {
-                enum_type->underlying_type = kefir_ast_type_signed_int();
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(
+                    context->type_traits, kefir_ast_type_unsigned_int(), min_constant, &fits_min));
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(
+                    context->type_traits, kefir_ast_type_unsigned_int(), max_constant, &fits_max));
+                if (fits_min && fits_max) {
+                    enum_type->underlying_type = kefir_ast_type_unsigned_int();
+                } else {
+                    enum_type->underlying_type = kefir_ast_type_unsigned_long();
+                }
             }
+        }
+
+        const struct kefir_ast_type *enumeration_member_type = enum_type->underlying_type;
+        REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(context->type_traits, kefir_ast_type_signed_int(),
+                                                             min_constant, &fits_min));
+        REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(context->type_traits, kefir_ast_type_signed_int(),
+                                                             max_constant, &fits_max));
+        if (fits_min && fits_max) {
+            enumeration_member_type = kefir_ast_type_signed_int();
+        }
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;
+             kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
+            REQUIRE_OK(context->refine_constant_type(mem, context, entry->constant, enumeration_member_type,
+                                                     &decl_specifier->source_location));
         }
     } else {
         if (specifier->identifier != NULL) {

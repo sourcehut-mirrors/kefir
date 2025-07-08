@@ -169,6 +169,79 @@ static kefir_result_t default_integral_type_fits(const struct kefir_ast_type_tra
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_type_traits_integral_const_fits(const struct kefir_ast_type_traits *type_traits,
+                                                         const struct kefir_ast_type *type, kefir_int64_t value,
+                                                         kefir_bool_t *result) {
+    REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
+
+    switch (type->tag) {
+        case KEFIR_AST_TYPE_SCALAR_CHAR:
+            if (type_traits->character_type_signedness) {
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(type_traits, kefir_ast_type_signed_char(), value,
+                                                                     result));
+            } else {
+                REQUIRE_OK(kefir_ast_type_traits_integral_const_fits(type_traits, kefir_ast_type_unsigned_char(), value,
+                                                                     result));
+            }
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
+            *result =
+                ((kefir_uint64_t) value) <= kefir_data_model_descriptor_unsigned_char_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
+            *result = value >= kefir_data_model_descriptor_signed_char_min(type_traits->data_model) &&
+                      value <= kefir_data_model_descriptor_signed_char_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
+            *result =
+                ((kefir_uint64_t) value) <= kefir_data_model_descriptor_unsigned_short_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
+            *result = value >= kefir_data_model_descriptor_signed_short_min(type_traits->data_model) &&
+                      value <= kefir_data_model_descriptor_signed_short_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
+            *result = ((kefir_uint64_t) value) <= kefir_data_model_descriptor_unsigned_int_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
+            *result = value >= kefir_data_model_descriptor_signed_int_min(type_traits->data_model) &&
+                      value <= kefir_data_model_descriptor_signed_int_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
+            *result =
+                ((kefir_uint64_t) value) <= kefir_data_model_descriptor_unsigned_long_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
+            *result = value >= kefir_data_model_descriptor_signed_long_min(type_traits->data_model) &&
+                      value <= kefir_data_model_descriptor_signed_long_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
+            *result =
+                ((kefir_uint64_t) value) <= kefir_data_model_descriptor_unsigned_long_long_max(type_traits->data_model);
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
+            *result = value >= kefir_data_model_descriptor_signed_long_long_min(type_traits->data_model) &&
+                      value <= kefir_data_model_descriptor_signed_long_long_max(type_traits->data_model);
+            break;
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected non-boolean standard integral type");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t default_pointer_type_fits(const struct kefir_ast_type_traits *type_traits,
                                                 const struct kefir_ast_type *type, kefir_bool_t *result) {
     REQUIRE(type_traits != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type traits"));
@@ -245,6 +318,7 @@ kefir_result_t kefir_ast_type_traits_init(const struct kefir_data_model_descript
                                                    .underlying_enumeration_type = kefir_ast_type_signed_int(),
                                                    .incomplete_type_substitute = kefir_ast_type_char(),
                                                    .character_type_signedness = true,
+                                                   .data_model = data_model,
                                                    .payload = (kefir_uptr_t) data_model};
 
     switch (data_model->model) {

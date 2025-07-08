@@ -81,6 +81,7 @@ typedef struct kefir_ast_type_traits {
     const struct kefir_ast_type *unicode32_char_type;
     const struct kefir_ast_type *incomplete_type_substitute;
     kefir_bool_t character_type_signedness;
+    const struct kefir_data_model_descriptor *data_model;
 
     kefir_uptr_t payload;
 } kefir_ast_type_traits_t;
@@ -91,6 +92,8 @@ typedef struct kefir_ast_type_bundle {
 } kefir_ast_type_bundle_t;
 
 kefir_result_t kefir_ast_type_traits_init(const struct kefir_data_model_descriptor *, struct kefir_ast_type_traits *);
+kefir_result_t kefir_ast_type_traits_integral_const_fits(const struct kefir_ast_type_traits *,
+                                                         const struct kefir_ast_type *, kefir_int64_t, kefir_bool_t *);
 kefir_bool_t kefir_ast_type_is_complete(const struct kefir_ast_type *);
 kefir_result_t kefir_ast_type_list_variable_modificators(const struct kefir_ast_type *,
                                                          kefir_result_t (*)(const struct kefir_ast_node_base *, void *),

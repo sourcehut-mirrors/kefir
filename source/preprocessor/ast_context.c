@@ -66,6 +66,18 @@ static kefir_result_t pp_define_constant(struct kefir_mem *mem, const struct kef
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement constant defintion");
 }
 
+static kefir_result_t pp_refine_constant_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                              const char *identifier, const struct kefir_ast_type *type,
+                                              const struct kefir_source_location *source_location) {
+    UNUSED(mem);
+    UNUSED(context);
+    UNUSED(identifier);
+    UNUSED(type);
+    UNUSED(source_location);
+    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
+                           "Preprocessor AST context does not implement constant type refinement");
+}
+
 static kefir_result_t pp_define_identifier(
     struct kefir_mem *mem, const struct kefir_ast_context *context, kefir_bool_t definition, const char *identifier,
     const struct kefir_ast_type *type, kefir_ast_scoped_identifier_storage_t storage,
@@ -174,6 +186,7 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     context->context.allocate_temporary_value = pp_allocate_temporary_value;
     context->context.define_tag = pp_define_tag;
     context->context.define_constant = pp_define_constant;
+    context->context.refine_constant_type = pp_refine_constant_type;
     context->context.define_identifier = pp_define_identifier;
     context->context.reference_label = pp_reference_label;
     context->context.reference_public_label = pp_reference_public_label;

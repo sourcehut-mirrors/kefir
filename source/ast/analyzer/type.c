@@ -37,11 +37,19 @@ static kefir_result_t analyze_enum(struct kefir_mem *mem, const struct kefir_ast
 
             ASSIGN_DECL_CAST(struct kefir_ast_enum_enumerator *, enumerator, iter->value);
             if (enumerator->has_value) {
-                next_value = enumerator->value + 1;
+                if (enumerator->value == KEFIR_INT64_MAX) {
+                    next_value = KEFIR_INT64_MIN;
+                } else {
+                    next_value = enumerator->value + 1;
+                }
             } else {
                 enumerator->has_value = true;
                 enumerator->value = next_value;
-                next_value++;
+                if (next_value == KEFIR_INT64_MAX) {
+                    next_value = KEFIR_INT64_MIN;
+                } else {
+                    next_value++;
+                }
             }
         }
     }

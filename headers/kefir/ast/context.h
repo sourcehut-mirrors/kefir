@@ -84,6 +84,8 @@ typedef struct kefir_ast_context {
     kefir_result_t (*define_constant)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
                                       const struct kefir_ast_constant_expression_value *, const struct kefir_ast_type *,
                                       const struct kefir_source_location *);
+    kefir_result_t (*refine_constant_type)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
+                                           const struct kefir_ast_type *, const struct kefir_source_location *);
     kefir_result_t (*define_identifier)(struct kefir_mem *, const struct kefir_ast_context *, kefir_bool_t,
                                         const char *, const struct kefir_ast_type *,
                                         kefir_ast_scoped_identifier_storage_t, kefir_ast_function_specifier_t,

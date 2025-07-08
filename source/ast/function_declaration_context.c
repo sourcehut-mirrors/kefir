@@ -125,7 +125,11 @@ static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
         struct kefir_ast_scoped_identifier *scoped_id = NULL;
         kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->ordinary_scope, identifier, &scoped_id);
         if (res == KEFIR_OK) {
-            return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant");
+            kefir_bool_t equal_values;
+            REQUIRE_OK(
+                kefir_ast_constant_expression_value_equal(&scoped_id->enum_constant.value, value, &equal_values));
+            REQUIRE(equal_values, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant"));
+            scoped_id->enum_constant.type = type;
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
@@ -137,6 +141,30 @@ static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
                     KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
             REQUIRE_OK(kefir_ast_identifier_flat_scope_insert(mem, &context->ordinary_scope, id, scoped_id));
         }
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t scoped_context_refine_constant_type(struct kefir_mem *mem,
+                                                          struct kefir_ast_function_declaration_context *context,
+                                                          const char *identifier, const struct kefir_ast_type *type,
+                                                          const struct kefir_source_location *location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
+    REQUIRE(!kefir_ast_type_is_variably_modified(type),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Constant cannot have variably-modified type"));
+
+    if (context->function_definition_context) {
+        REQUIRE_OK(context->parent->refine_constant_type(mem, context->parent, identifier, type, location));
+    } else {
+        struct kefir_ast_scoped_identifier *scoped_id = NULL;
+        kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->ordinary_scope, identifier, &scoped_id);
+        if (res == KEFIR_NOT_FOUND) {
+            res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to refine unknown constant type");
+        }
+        REQUIRE_OK(res);
+        scoped_id->enum_constant.type = type;
     }
     return KEFIR_OK;
 }
@@ -243,6 +271,18 @@ static kefir_result_t context_define_constant(struct kefir_mem *mem, const struc
 
     ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_ctx, context->payload);
     REQUIRE_OK(scoped_context_define_constant(mem, fn_ctx, identifier, value, type, location));
+    return KEFIR_OK;
+}
+
+static kefir_result_t context_refine_constant_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                   const char *identifier, const struct kefir_ast_type *type,
+                                                   const struct kefir_source_location *location) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
+    REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_ctx, context->payload);
+    REQUIRE_OK(scoped_context_refine_constant_type(mem, fn_ctx, identifier, type, location));
     return KEFIR_OK;
 }
 
@@ -396,6 +436,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     context->context.allocate_temporary_value = context_allocate_temporary_value;
     context->context.define_tag = context_define_tag;
     context->context.define_constant = context_define_constant;
+    context->context.refine_constant_type = context_refine_constant_type;
     context->context.define_identifier = context_define_identifier;
     context->context.reference_label = context_reference_label;
     context->context.reference_public_label = context_reference_public_label;
