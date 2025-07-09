@@ -79,9 +79,9 @@ int main(void) {
     assert(arr[42] == sizeof(long));
     assert(arr[43] == sizeof(long));
 
-    assert(arr[44] == 1);
+    assert(arr[44] == 4);
     assert(arr[45] == 4);
-    assert(arr[46] == sizeof(int));
+    assert(arr[46] == sizeof(long));
     assert(arr[47] == sizeof(long));
     return EXIT_SUCCESS;
 }
