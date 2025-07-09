@@ -289,7 +289,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
     struct kefir_ast_context *context = &global_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enumeration1", true);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enumeration1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "XVAL",
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 1000))));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "YVAL", NULL));
@@ -802,7 +802,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "A", NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "B", NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "C", NULL));
@@ -822,8 +822,8 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
         NULL, NULL);
     ASSERT_OK(kefir_ast_declarator_specifier_list_append(
         &kft_mem, &param2->specifiers,
-        kefir_ast_type_specifier_enum(&kft_mem,
-                                      kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false))));
+        kefir_ast_type_specifier_enum(
+            &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false, NULL))));
 
     struct kefir_ast_declaration *param3 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_pointer(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)), NULL,

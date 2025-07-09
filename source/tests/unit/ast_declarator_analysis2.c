@@ -243,7 +243,7 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false, NULL);
     ASSERT(specifier1 != NULL);
 
     const struct kefir_ast_type *type1 = kefir_ast_type_incomplete_enumeration(
@@ -254,7 +254,7 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
                            kefir_ast_storage_class_specifier_extern(&kft_mem));
 
     struct kefir_ast_enum_specifier *specifier2 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "A", NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "B",
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
@@ -282,7 +282,8 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
         kefir_ast_storage_class_specifier_thread_local(&kft_mem), kefir_ast_type_specifier_enum(&kft_mem, specifier2),
         kefir_ast_type_qualifier_volatile(&kft_mem), kefir_ast_storage_class_specifier_static(&kft_mem));
 
-    struct kefir_ast_enum_specifier *specifier3 = kefir_ast_enum_specifier_init(&kft_mem, context->symbols, NULL, true);
+    struct kefir_ast_enum_specifier *specifier3 =
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, NULL, true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(
         &kft_mem, specifier3, context->symbols, "ONE",
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(

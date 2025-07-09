@@ -210,7 +210,7 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     struct kefir_ast_context *context = &local_context.context;
 
     struct kefir_ast_enum_specifier *specifier1 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_A",
                                               KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100))));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_B", NULL));
@@ -220,7 +220,7 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_E", NULL));
 
     struct kefir_ast_enum_specifier *specifier2 =
-        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true);
+        kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ONE_THING", NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ANOTHER_THING", NULL));
 
@@ -241,19 +241,21 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, context->symbols, enum_type2, "ANOTHER_THING"));
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type2, NULL));
 
-    ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
-                           kefir_ast_type_incomplete_enumeration(&kft_mem, context->type_bundle, "enum1",
-                                                                 context->type_traits->underlying_enumeration_type),
-                           KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
-                           kefir_ast_type_specifier_enum(
-                               &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false)));
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context,
+        kefir_ast_type_incomplete_enumeration(&kft_mem, context->type_bundle, "enum1",
+                                              context->type_traits->underlying_enumeration_type),
+        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+        kefir_ast_type_specifier_enum(&kft_mem,
+                                      kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false, NULL)));
 
-    ASSERT_IDENTIFIER_TYPE(&kft_mem, context,
-                           kefir_ast_type_incomplete_enumeration(&kft_mem, context->type_bundle, "enum2",
-                                                                 context->type_traits->underlying_enumeration_type),
-                           KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
-                           kefir_ast_type_specifier_enum(
-                               &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", false)));
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context,
+        kefir_ast_type_incomplete_enumeration(&kft_mem, context->type_bundle, "enum2",
+                                              context->type_traits->underlying_enumeration_type),
+        KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+        kefir_ast_type_specifier_enum(&kft_mem,
+                                      kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", false, NULL)));
 
     ASSERT_IDENTIFIER_TYPE(&kft_mem, context, type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
                            KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
@@ -263,15 +265,15 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
                            KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
                            kefir_ast_type_specifier_enum(&kft_mem, specifier2));
 
-    ASSERT_IDENTIFIER_TYPE(&kft_mem, context, type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                           KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
-                           kefir_ast_type_specifier_enum(
-                               &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false)));
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context, type1, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+        kefir_ast_type_specifier_enum(&kft_mem,
+                                      kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", false, NULL)));
 
-    ASSERT_IDENTIFIER_TYPE(&kft_mem, context, type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                           KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
-                           kefir_ast_type_specifier_enum(
-                               &kft_mem, kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", false)));
+    ASSERT_IDENTIFIER_TYPE(
+        &kft_mem, context, type2, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, KEFIR_AST_FUNCTION_SPECIFIER_NONE, 0, 1,
+        kefir_ast_type_specifier_enum(&kft_mem,
+                                      kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", false, NULL)));
 
 #define ASSERT_CONSTANT(_id, _value)                                                         \
     do {                                                                                     \

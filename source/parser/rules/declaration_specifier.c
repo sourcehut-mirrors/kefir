@@ -368,17 +368,43 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
         identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
         REQUIRE_OK(PARSER_SHIFT(parser));
-        complete = PARSER_TOKEN_IS_LEFT_BRACE(parser, 0);
+        complete =
+            PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON);
     } else {
-        REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
+        REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                        "Anonymous enumeration shall have complete body"));
         complete = true;
     }
 
-    struct kefir_ast_enum_specifier *specifier =
-        kefir_ast_enum_specifier_init(mem, parser->symbols, identifier, complete);
-    REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST enum specifier"));
+    kefir_bool_t enum_type_spec_present = false;
+    struct kefir_ast_declarator_specifier_list enum_type_spec;
+    if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        enum_type_spec_present = true;
+        REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&enum_type_spec));
+
+        res = parser->ruleset.declaration_specifier_list(mem, parser, &enum_type_spec, NULL);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
+            return res;
+        });
+    }
+
+    struct kefir_ast_enum_specifier *specifier = kefir_ast_enum_specifier_init(
+        mem, parser->symbols, identifier, complete, enum_type_spec_present ? &enum_type_spec : NULL);
+    REQUIRE_ELSE(specifier != NULL, {
+        if (enum_type_spec_present) {
+            kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
+        }
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST enum specifier");
+    });
+    res = kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_enum_specifier_free(mem, specifier);
+        return res;
+    });
+
     if (complete) {
         res = scan_enum_specifier_body(mem, parser, specifier);
         REQUIRE_ELSE(res == KEFIR_OK, {

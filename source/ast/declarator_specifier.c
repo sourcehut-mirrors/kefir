@@ -428,8 +428,9 @@ static kefir_result_t remove_enum_entry(struct kefir_mem *mem, struct kefir_list
     return KEFIR_OK;
 }
 
-struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                                               const char *identifier, kefir_bool_t complete) {
+struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(
+    struct kefir_mem *mem, struct kefir_string_pool *symbols, const char *identifier, kefir_bool_t complete,
+    const struct kefir_ast_declarator_specifier_list *enum_type_spec) {
     REQUIRE(mem != NULL, NULL);
 
     if (symbols != NULL && identifier != NULL) {
@@ -447,6 +448,21 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem 
         REQUIRE(kefir_list_on_remove(&specifier->entries, remove_enum_entry, NULL) == KEFIR_OK, NULL);
     }
 
+    specifier->type_spec.present = enum_type_spec != NULL;
+    if (specifier->type_spec.present) {
+        kefir_result_t res = kefir_ast_declarator_specifier_list_init(&specifier->type_spec.specifier_list);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            KEFIR_FREE(mem, specifier);
+            return NULL;
+        });
+        res = kefir_ast_declarator_specifier_list_clone(mem, &specifier->type_spec.specifier_list, enum_type_spec);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_declarator_specifier_list_free(mem, &specifier->type_spec.specifier_list);
+            KEFIR_FREE(mem, specifier);
+            return NULL;
+        });
+    }
+
     return specifier;
 }
 
@@ -454,6 +470,9 @@ kefir_result_t kefir_ast_enum_specifier_free(struct kefir_mem *mem, struct kefir
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST enum specifier"));
 
+    if (specifier->type_spec.present) {
+        REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &specifier->type_spec.specifier_list));
+    }
     if (specifier->complete) {
         REQUIRE_OK(kefir_list_free(mem, &specifier->entries));
     }
@@ -469,7 +488,8 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
     REQUIRE(specifier != NULL, NULL);
 
     struct kefir_ast_enum_specifier *clone =
-        kefir_ast_enum_specifier_init(mem, NULL, specifier->identifier, specifier->complete);
+        kefir_ast_enum_specifier_init(mem, NULL, specifier->identifier, specifier->complete,
+                                      specifier->type_spec.present ? &specifier->type_spec.specifier_list : NULL);
     REQUIRE(clone != NULL, NULL);
     if (clone->complete) {
         for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;

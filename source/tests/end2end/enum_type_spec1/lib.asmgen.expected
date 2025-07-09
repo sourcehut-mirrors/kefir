@@ -1,0 +1,3104 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "A",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "A1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "A2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "A2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "A3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "A3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "A5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "A5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "A6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "A6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "B",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "B1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "B2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "B2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "B3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "B3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "B5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "B5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "B6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "B6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "C",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "C1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "C2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "C2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "C3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "C3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "C5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "C5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "C6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "char",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "C6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "D",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "D1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "D2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "D2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "D3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "D3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "D5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "D5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "D6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "D6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "E1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "E2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "E3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "E5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "E6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "F",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "F1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "F2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "F2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "F3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "F3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "F5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "F5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "F6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "short",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "F6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "G",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "G1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "G2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "G2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "G3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "G3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "G5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "G5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "G6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "G6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "H",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "H1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "H2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "H2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "H3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "H3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "H5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "H5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "H6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "H6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "I",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "I1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "I2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "I2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "I3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "I3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "I5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "I5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "I6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "I6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "J",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "J1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "J2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "J2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "J3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "J3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "J5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "J5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "J6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "J6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "K",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "K1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "K2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "K2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "K3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "K3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "K5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "K5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "K6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "K6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "L",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "L1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "L2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "L2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "L3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "L3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "L5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "L5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "L6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "L6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "M",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "M1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "M2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "M2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "M3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "M3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "M5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "M5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "M6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "M6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "N",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "N1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "N2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "N2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "N3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "N3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "N5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "N5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "N6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "N6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "O",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "O1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "O2",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "O2",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "O3",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "O3",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "O5",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "volatile",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "const",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "O5",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "O6",
+                    "type_spec": [
+                        {
+                            "class": "type_qualifier",
+                            "qualifier": "atomic",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "signed",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "O6",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "X",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "typeof",
+                            "qualified": true,
+                            "node": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 100
+                            },
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "X1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "Y",
+                    "type_spec": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "typeof",
+                            "qualified": true,
+                            "node": {
+                                "class": "constant",
+                                "type": "long_long",
+                                "value": 100
+                            },
+                            "attributes": []
+                        }
+                    ],
+                    "members": [
+                        {
+                            "identifier": "Y1",
+                            "value": null
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        }
+    ]
+}

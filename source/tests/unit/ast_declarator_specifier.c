@@ -107,7 +107,8 @@ DEFINE_CASE(ast_declarator_specifier_construction5,
     struct kefir_string_pool symbols;
     ASSERT_OK(kefir_string_pool_init(&symbols));
 
-    struct kefir_ast_enum_specifier *enum_specifier = kefir_ast_enum_specifier_init(&kft_mem, &symbols, "enum1", false);
+    struct kefir_ast_enum_specifier *enum_specifier =
+        kefir_ast_enum_specifier_init(&kft_mem, &symbols, "enum1", false, NULL);
     struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_enum(&kft_mem, enum_specifier);
     ASSERT(specifier != NULL);
     ASSERT(specifier->klass == KEFIR_AST_TYPE_SPECIFIER);

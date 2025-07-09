@@ -47,7 +47,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_module module;
     REQUIRE_OK(kefir_ir_module_alloc(mem, &module));
 
-    struct kefir_ast_enum_specifier *specifier1 = kefir_ast_enum_specifier_init(mem, context->symbols, "enum1", true);
+    struct kefir_ast_enum_specifier *specifier1 =
+        kefir_ast_enum_specifier_init(mem, context->symbols, "enum1", true, NULL);
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier1, context->symbols, "A", NULL));
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier1, context->symbols, "B", NULL));
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier1, context->symbols, "C", NULL));
@@ -253,7 +254,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
                                                           kefir_ast_type_specifier_void(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(
         mem, &TYPES[15]->type_decl.specifiers,
-        kefir_ast_type_specifier_enum(mem, kefir_ast_enum_specifier_init(mem, context->symbols, "enum1", false))));
+        kefir_ast_type_specifier_enum(mem,
+                                      kefir_ast_enum_specifier_init(mem, context->symbols, "enum1", false, NULL))));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(mem, &TYPES[16]->type_decl.specifiers,
                                                           kefir_ast_type_specifier_short(mem)));
     REQUIRE_OK(kefir_ast_declarator_specifier_list_append(

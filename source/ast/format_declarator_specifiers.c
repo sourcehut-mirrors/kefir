@@ -92,6 +92,11 @@ static kefir_result_t format_enum(struct kefir_json_output *json,
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
     }
+    if (specifier->type_specifier.value.enumeration->type_spec.present) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "type_spec"));
+        REQUIRE_OK(kefir_ast_format_declarator_specifier_list(
+            json, &specifier->type_specifier.value.enumeration->type_spec.specifier_list, display_source_location));
+    }
     REQUIRE_OK(kefir_json_output_object_key(json, "members"));
     if (specifier->type_specifier.value.enumeration->complete) {
         REQUIRE_OK(kefir_json_output_array_begin(json));

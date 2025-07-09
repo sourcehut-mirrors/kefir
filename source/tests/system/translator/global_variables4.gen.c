@@ -38,7 +38,7 @@
 
 static kefir_result_t define_unit1(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                    struct kefir_list *unit) {
-    struct kefir_ast_enum_specifier *specifier0 = kefir_ast_enum_specifier_init(mem, NULL, NULL, true);
+    struct kefir_ast_enum_specifier *specifier0 = kefir_ast_enum_specifier_init(mem, NULL, NULL, true, NULL);
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier0, context->symbols, "MULTIVALUE_INT", NULL));
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier0, context->symbols, "MULTIVALUE_FLOAT", NULL));
     REQUIRE_OK(kefir_ast_enum_specifier_append(mem, specifier0, context->symbols, "MULTIVALUE_PTR", NULL));

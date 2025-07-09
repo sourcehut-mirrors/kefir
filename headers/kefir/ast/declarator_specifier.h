@@ -112,10 +112,16 @@ typedef struct kefir_ast_enum_specifier {
     const char *identifier;
     kefir_bool_t complete;
     struct kefir_list entries;
+
+    struct {
+        kefir_bool_t present;
+        struct kefir_ast_declarator_specifier_list specifier_list;
+    } type_spec;
 } kefir_ast_enum_specifier_t;
 
 struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(struct kefir_mem *, struct kefir_string_pool *,
-                                                               const char *, kefir_bool_t);
+                                                               const char *, kefir_bool_t,
+                                                               const struct kefir_ast_declarator_specifier_list *);
 
 kefir_result_t kefir_ast_enum_specifier_free(struct kefir_mem *, struct kefir_ast_enum_specifier *);
 
