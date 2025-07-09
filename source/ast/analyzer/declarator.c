@@ -365,10 +365,30 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
     const struct kefir_ast_enum_specifier *specifier = decl_specifier->type_specifier.value.enumeration;
     kefir_bool_t resolved = false;
     const struct kefir_ast_type *type = NULL;
+
+    const struct kefir_ast_type *fixed_underlying_type = NULL;
+    if (specifier->type_spec.present) {
+        kefir_ast_scoped_identifier_storage_t storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
+        kefir_ast_function_specifier_t function = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
+        kefir_size_t alignment = 0;
+        REQUIRE_OK(kefir_ast_analyze_declaration_specifiers(
+            mem, context, &specifier->type_spec.specifier_list, &fixed_underlying_type, &storage, &function, &alignment,
+            KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &decl_specifier->source_location));
+        fixed_underlying_type = kefir_ast_unqualified_type(fixed_underlying_type);
+        REQUIRE(
+            KEFIR_AST_TYPE_IS_NONENUM_INTEGRAL_TYPE(fixed_underlying_type) &&
+                !KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(fixed_underlying_type),
+            KEFIR_SET_SOURCE_ERROR(
+                KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                "Expected fixed underlying type of enumeration specifier to be non-enum non-bitprecise integral type"));
+    }
+
     if (specifier->complete) {
         struct kefir_ast_enum_type *enum_type = NULL;
-        type = kefir_ast_type_enumeration(mem, context->type_bundle, specifier->identifier,
-                                          context->type_traits->underlying_enumeration_type, &enum_type);
+        type = kefir_ast_type_enumeration(
+            mem, context->type_bundle, specifier->identifier,
+            fixed_underlying_type != NULL ? fixed_underlying_type : context->type_traits->underlying_enumeration_type,
+            &enum_type);
         REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to allocate AST enum type"));
 
         kefir_int64_t constant_value = 0;
@@ -378,7 +398,8 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
         kefir_bool_t has_overflow64 = false;
         kefir_bool_t has_negative = false;
 
-        const struct kefir_ast_type *enumerator_constant_processing_type = kefir_ast_type_signed_int();
+        const struct kefir_ast_type *enumerator_constant_processing_type =
+            fixed_underlying_type != NULL ? fixed_underlying_type : kefir_ast_type_signed_int();
         for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
@@ -407,10 +428,12 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                         (kefir_uint64_t) kefir_data_model_descriptor_signed_int_max(context->type_traits->data_model);
                 }
 
-                if (fits_int) {
-                    enumerator_constant_processing_type = kefir_ast_type_signed_int();
-                } else {
-                    enumerator_constant_processing_type = kefir_ast_unqualified_type(entry->value->properties.type);
+                if (fixed_underlying_type == NULL) {
+                    if (fits_int) {
+                        enumerator_constant_processing_type = kefir_ast_type_signed_int();
+                    } else {
+                        enumerator_constant_processing_type = kefir_ast_unqualified_type(entry->value->properties.type);
+                    }
                 }
 
                 REQUIRE_OK(
@@ -422,7 +445,10 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                 if (constant_value == KEFIR_INT64_MIN) {
                     has_overflow64 = true;
                 }
-                REQUIRE_OK(update_enum_constant_type(context, constant_value, &enumerator_constant_processing_type));
+                if (fixed_underlying_type == NULL) {
+                    REQUIRE_OK(
+                        update_enum_constant_type(context, constant_value, &enumerator_constant_processing_type));
+                }
                 REQUIRE_OK(kefir_ast_enumeration_type_constant_auto(mem, context->symbols, enum_type, entry->constant));
             }
 
@@ -467,7 +493,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             }
         }
 
-        if (kefir_list_length(&specifier->entries) > 0) {
+        if (fixed_underlying_type == NULL && kefir_list_length(&specifier->entries) > 0) {
             if (has_negative) {
                 kefir_bool_t fits_int;
                 REQUIRE_OK(enum_constant_range_fits_signed_int(context->type_traits, min_constant_value,
@@ -494,7 +520,9 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
         }
 
         const struct kefir_ast_type *enumeration_member_type = kefir_ast_type_signed_int();
-        if (kefir_list_length(&specifier->entries) > 0) {
+        if (fixed_underlying_type != NULL) {
+            enumeration_member_type = fixed_underlying_type;
+        } else if (kefir_list_length(&specifier->entries) > 0) {
             kefir_bool_t fits_int;
             REQUIRE_OK(enum_constant_range_fits_signed_int(context->type_traits, min_constant_value, max_constant_value,
                                                            min_constant_type, max_constant_type, &fits_int));
@@ -526,7 +554,9 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
 
         if (!resolved) {
             type = kefir_ast_type_incomplete_enumeration(mem, context->type_bundle, specifier->identifier,
-                                                         context->type_traits->underlying_enumeration_type);
+                                                         fixed_underlying_type != NULL
+                                                             ? fixed_underlying_type
+                                                             : context->type_traits->underlying_enumeration_type);
             REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Unable to allocate AST enum type"));
         }
     }
