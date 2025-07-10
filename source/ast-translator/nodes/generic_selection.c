@@ -35,7 +35,9 @@ kefir_result_t kefir_ast_translate_generic_selection_node(struct kefir_mem *mem,
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST generic selection node"));
 
     const struct kefir_ast_type *control_type =
-        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->control->properties.type);
+        node->control->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION
+            ? KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->control->properties.type)
+            : node->control->properties.type;
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->associations); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_generic_selection_assoc *, assoc, iter->value);

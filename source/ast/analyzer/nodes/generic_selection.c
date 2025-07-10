@@ -35,7 +35,9 @@ kefir_result_t kefir_ast_analyze_generic_selection_node(struct kefir_mem *mem, c
 
     REQUIRE_OK(kefir_ast_analyze_node(mem, context, node->control));
     const struct kefir_ast_type *control_type =
-        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->control->properties.type);
+        node->control->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION
+            ? KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, node->control->properties.type)
+            : node->control->properties.type;
 
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     kefir_bool_t matched = false;
