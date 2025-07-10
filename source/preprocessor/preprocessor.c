@@ -221,6 +221,8 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
                 break;
 
             case KEFIR_PREPROCESSOR_DIRECTIVE_ELIF:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_ELIFDEF:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_ELIFNDEF:
             case KEFIR_PREPROCESSOR_DIRECTIVE_ELSE:
                 if (nested_ifs == 0) {
                     REQUIRE_OK(
@@ -735,6 +737,46 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
                                               "Unexpected else directive");
             } else if ((kefir_uptr_t) top_condition->value == IF_CONDITION_FAIL) {
                 top_condition->value = (void *) (kefir_uptr_t) IF_CONDITION_SUCCESS;
+            } else {
+                REQUIRE_OK(kefir_preprocessor_skip_group(mem, preprocessor));
+            }
+        } break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_ELIFDEF: {
+            struct kefir_list_entry *const top_condition = kefir_list_tail(condition_stack);
+            if (top_condition == NULL) {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location,
+                                              "Unexpected elifdef directive");
+            } else if ((kefir_uptr_t) top_condition->value == IF_CONDITION_FAIL) {
+                const struct kefir_preprocessor_macro *macro = NULL;
+                kefir_result_t res =
+                    preprocessor->macros->locate(preprocessor->macros, directive->ifdef_directive.identifier, &macro);
+                if (res == KEFIR_NOT_FOUND) {
+                    REQUIRE_OK(kefir_preprocessor_skip_group(mem, preprocessor));
+                } else {
+                    REQUIRE_OK(res);
+                    top_condition->value = (void *) (kefir_uptr_t) IF_CONDITION_SUCCESS;
+                }
+            } else {
+                REQUIRE_OK(kefir_preprocessor_skip_group(mem, preprocessor));
+            }
+        } break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_ELIFNDEF: {
+            struct kefir_list_entry *const top_condition = kefir_list_tail(condition_stack);
+            if (top_condition == NULL) {
+                return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location,
+                                              "Unexpected elifdef directive");
+            } else if ((kefir_uptr_t) top_condition->value == IF_CONDITION_FAIL) {
+                const struct kefir_preprocessor_macro *macro = NULL;
+                kefir_result_t res =
+                    preprocessor->macros->locate(preprocessor->macros, directive->ifdef_directive.identifier, &macro);
+                if (res == KEFIR_NOT_FOUND) {
+                    top_condition->value = (void *) (kefir_uptr_t) IF_CONDITION_SUCCESS;
+                } else {
+                    REQUIRE_OK(res);
+                    REQUIRE_OK(kefir_preprocessor_skip_group(mem, preprocessor));
+                }
             } else {
                 REQUIRE_OK(kefir_preprocessor_skip_group(mem, preprocessor));
             }
