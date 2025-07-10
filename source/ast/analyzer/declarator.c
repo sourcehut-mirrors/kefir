@@ -399,7 +399,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
         kefir_bool_t has_negative = false;
 
         const struct kefir_ast_type *enumerator_constant_processing_type =
-            fixed_underlying_type != NULL ? fixed_underlying_type : kefir_ast_type_signed_int();
+            fixed_underlying_type != NULL ? type : kefir_ast_type_signed_int();
         for (const struct kefir_list_entry *iter = kefir_list_head(&specifier->entries); iter != NULL;
              kefir_list_next(&iter)) {
             ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, entry, iter->value);
@@ -521,13 +521,13 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
 
         const struct kefir_ast_type *enumeration_member_type = kefir_ast_type_signed_int();
         if (fixed_underlying_type != NULL) {
-            enumeration_member_type = fixed_underlying_type;
+            enumeration_member_type = type;
         } else if (kefir_list_length(&specifier->entries) > 0) {
             kefir_bool_t fits_int;
             REQUIRE_OK(enum_constant_range_fits_signed_int(context->type_traits, min_constant_value, max_constant_value,
                                                            min_constant_type, max_constant_type, &fits_int));
             if (!fits_int) {
-                enumeration_member_type = enum_type->underlying_type;
+                enumeration_member_type = type;
             }
         }
 
