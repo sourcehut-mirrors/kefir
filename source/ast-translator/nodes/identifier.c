@@ -55,7 +55,7 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
 static kefir_result_t translate_enum_constant(struct kefir_irbuilder_block *builder,
                                               const struct kefir_ast_type_traits *type_traits,
                                               const struct kefir_ast_scoped_identifier *scoped_identifier) {
-    REQUIRE(KEFIR_AST_TYPE_IS_NONENUM_INTEGRAL_TYPE(scoped_identifier->enum_constant.type),
+    REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(scoped_identifier->enum_constant.type),
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Enum constant cannot have non-integral type"));
 
     kefir_bool_t signedness;
