@@ -55,6 +55,15 @@ kefir_result_t kefir_token_buffer_free(struct kefir_mem *mem, struct kefir_token
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_token_buffer_reset(struct kefir_mem *mem, struct kefir_token_buffer *buffer) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
+
+    REQUIRE_OK(kefir_hashtree_clean(mem, &buffer->chunks));
+    buffer->length = 0;
+    return KEFIR_OK;
+}
+
 #define INIT_CHUNK_CAPACITY 32
 #define MAX_CHUNK_LENGTH 4096
 #define CHUNK_SIZEOF(_len) (sizeof(struct kefir_token_buffer_chunk) + (_len) * sizeof(const struct kefir_token *))
@@ -265,7 +274,7 @@ kefir_result_t kefir_token_buffer_cursor_handle(const struct kefir_token_buffer 
     REQUIRE(handle_ptr != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token cursor handle"));
 
-    *handle_ptr = (struct kefir_token_cursor_handle){
+    *handle_ptr = (struct kefir_token_cursor_handle) {
         .get_token = token_cursor_get_token, .length = token_cursor_length, .payload = {(kefir_uptr_t) buffer}};
     return KEFIR_OK;
 }

@@ -539,6 +539,170 @@ static kefir_result_t match_concatenation(
     return KEFIR_OK;
 }
 
+static kefir_result_t match_va_opt_impl(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                        struct kefir_token_allocator *token_allocator,
+                                        struct kefir_preprocessor_token_sequence *seq,
+                                        const struct kefir_preprocessor_user_macro *user_macro,
+                                        const struct kefir_hashtree *arg_tree, struct kefir_token_buffer *subst_buffer,
+                                        struct kefir_token_buffer *arg_buffer) {
+    REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, NULL, NULL));
+    const struct kefir_token *current_token;
+    kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &current_token, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Unterminated __VA_OPT__");
+    }
+    REQUIRE_OK(res);
+    REQUIRE(
+        current_token->klass == KEFIR_TOKEN_PUNCTUATOR && current_token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE,
+        KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Unterminated __VA_OPT__"));
+
+    kefir_size_t paren_depth = 1;
+    while (paren_depth > 0) {
+        res = kefir_preprocessor_token_sequence_next(mem, seq, &current_token, NULL);
+        if (res == KEFIR_ITERATOR_END) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &current_token->source_location, "Unterminated __VA_OPT__");
+        }
+        REQUIRE_OK(res);
+
+        if (current_token->klass == KEFIR_TOKEN_PUNCTUATOR &&
+            current_token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE) {
+            paren_depth++;
+        } else if (current_token->klass == KEFIR_TOKEN_PUNCTUATOR &&
+                   current_token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE) {
+            paren_depth--;
+        }
+
+        if (paren_depth > 0) {
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, subst_buffer, current_token));
+        }
+    }
+
+    const char *vararg_parameter = user_macro_vararg_name(user_macro);
+    struct kefir_hashtree_node *node;
+    REQUIRE_OK(kefir_hashtree_at(arg_tree, (kefir_hashtree_key_t) vararg_parameter, &node));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_value, node->value);
+    REQUIRE_OK(kefir_token_buffer_copy(mem, arg_buffer, arg_value));
+    REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, token_allocator, arg_buffer, NULL,
+                                                    KEFIR_PREPROCESSOR_SUBSTITUTION_NORMAL));
+
+    kefir_bool_t has_nonws_tokens = false;
+    for (kefir_size_t i = 0; !has_nonws_tokens && i < kefir_token_buffer_length(arg_buffer); i++) {
+        current_token = kefir_token_buffer_at(arg_buffer, i);
+        if (current_token->klass != KEFIR_TOKEN_PP_WHITESPACE) {
+            has_nonws_tokens = true;
+        }
+    }
+    if (!has_nonws_tokens) {
+        struct kefir_token token = PlacemakerToken;
+        REQUIRE_OK(kefir_token_buffer_reset(mem, subst_buffer));
+        REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &current_token));
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, subst_buffer, current_token));
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t run_replacement_list_substitutions(struct kefir_mem *, struct kefir_preprocessor *,
+                                                         struct kefir_string_pool *, struct kefir_token_allocator *,
+                                                         const struct kefir_preprocessor_user_macro *,
+                                                         const struct kefir_token_buffer *,
+                                                         const struct kefir_hashtree *, struct kefir_token_buffer *);
+
+static kefir_result_t match_va_opt(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                   struct kefir_string_pool *symbols, struct kefir_token_allocator *token_allocator,
+                                   struct kefir_preprocessor_token_sequence *seq,
+                                   const struct kefir_preprocessor_user_macro *user_macro,
+                                   const struct kefir_hashtree *arg_tree) {
+    struct kefir_token_buffer subst_buffer, arg_buffer;
+    REQUIRE_OK(kefir_token_buffer_init(&subst_buffer));
+    REQUIRE_OK(kefir_token_buffer_init(&arg_buffer));
+    kefir_result_t res =
+        match_va_opt_impl(mem, preprocessor, token_allocator, seq, user_macro, arg_tree, &subst_buffer, &arg_buffer);
+    REQUIRE_CHAIN(&res, kefir_token_buffer_reset(mem, &arg_buffer));
+    REQUIRE_CHAIN(&res, run_replacement_list_substitutions(mem, preprocessor, symbols, token_allocator, user_macro,
+                                                           &subst_buffer, arg_tree, &arg_buffer));
+    REQUIRE_CHAIN(&res, kefir_preprocessor_token_sequence_push_front(mem, seq, &arg_buffer,
+                                                                     KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &arg_buffer);
+        kefir_token_buffer_free(mem, &subst_buffer);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &arg_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &subst_buffer);
+        return res;
+    });
+    REQUIRE_OK(kefir_token_buffer_free(mem, &subst_buffer));
+    return KEFIR_OK;
+}
+
+static kefir_result_t match_va_opt_stringification_impl(
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
+    struct kefir_token_allocator *token_allocator, struct kefir_preprocessor_token_sequence *seq,
+    const struct kefir_preprocessor_user_macro *user_macro, const struct kefir_hashtree *arg_tree,
+    struct kefir_token_buffer *result_buffer, struct kefir_token_buffer *subst_buffer,
+    struct kefir_token_buffer *arg_buffer, const struct kefir_source_location *source_location) {
+    REQUIRE_OK(
+        match_va_opt_impl(mem, preprocessor, token_allocator, seq, user_macro, arg_tree, subst_buffer, arg_buffer));
+    REQUIRE_OK(kefir_token_buffer_reset(mem, arg_buffer));
+    REQUIRE_OK(run_replacement_list_substitutions(mem, preprocessor, symbols, token_allocator, user_macro, subst_buffer,
+                                                  arg_tree, arg_buffer));
+    REQUIRE_OK(kefir_token_buffer_reset(mem, subst_buffer));
+    kefir_bool_t found_nonws = false;
+    for (kefir_size_t i = 0; i < kefir_token_buffer_length(arg_buffer); i++) {
+        const struct kefir_token *current_token = kefir_token_buffer_at(arg_buffer, i);
+        if ((current_token->klass != KEFIR_TOKEN_PP_WHITESPACE && current_token->klass != KEFIR_TOKEN_PP_PLACEMAKER) ||
+            found_nonws) {
+            found_nonws = true;
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, subst_buffer, current_token));
+        }
+    }
+    char *string = NULL;
+    kefir_size_t string_sz = 0;
+    REQUIRE_OK(kefir_preprocessor_format_string(mem, &string, &string_sz, subst_buffer,
+                                                KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
+
+    struct kefir_token *allocated_token;
+    kefir_result_t res = kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token);
+    REQUIRE_CHAIN(&res, kefir_token_new_string_literal_raw_from_escaped_multibyte(
+                            mem, KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE, string, string_sz - 1, allocated_token));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, string);
+        return res;
+    });
+    KEFIR_FREE(mem, string);
+    allocated_token->source_location = *source_location;
+    REQUIRE_OK(kefir_token_buffer_emplace(mem, result_buffer, allocated_token));
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t match_va_opt_stringification(
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
+    struct kefir_token_allocator *token_allocator, struct kefir_preprocessor_token_sequence *seq,
+    const struct kefir_preprocessor_user_macro *user_macro, const struct kefir_hashtree *arg_tree,
+    struct kefir_token_buffer *result_buffer, const struct kefir_source_location *source_location) {
+    struct kefir_token_buffer subst_buffer, arg_buffer;
+    REQUIRE_OK(kefir_token_buffer_init(&subst_buffer));
+    REQUIRE_OK(kefir_token_buffer_init(&arg_buffer));
+    kefir_result_t res =
+        match_va_opt_stringification_impl(mem, preprocessor, symbols, token_allocator, seq, user_macro, arg_tree,
+                                          result_buffer, &subst_buffer, &arg_buffer, source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &arg_buffer);
+        kefir_token_buffer_free(mem, &subst_buffer);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &arg_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &subst_buffer);
+        return res;
+    });
+    REQUIRE_OK(kefir_token_buffer_free(mem, &subst_buffer));
+    return KEFIR_OK;
+}
+
 static kefir_result_t run_replacement_list_substitutions_impl(
     struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols,
     struct kefir_token_allocator *token_allocator, const struct kefir_preprocessor_user_macro *user_macro,
@@ -559,11 +723,23 @@ static kefir_result_t run_replacement_list_substitutions_impl(
         }
 
         kefir_bool_t matched = false;
-        res = match_concatenation(mem, preprocessor, symbols, token_allocator, user_macro, seq, result, arg_tree,
-                                  current_token, true);
-        if (res != KEFIR_NO_MATCH) {
-            REQUIRE_OK(res);
-            matched = true;
+
+        if (!matched && arg_tree != NULL && current_token->klass == KEFIR_TOKEN_IDENTIFIER &&
+            strcmp(current_token->identifier, "__VA_OPT__") == 0) {
+            res = match_va_opt(mem, preprocessor, symbols, token_allocator, seq, user_macro, arg_tree);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                matched = true;
+            }
+        }
+
+        if (!matched) {
+            res = match_concatenation(mem, preprocessor, symbols, token_allocator, user_macro, seq, result, arg_tree,
+                                      current_token, true);
+            if (res != KEFIR_NO_MATCH) {
+                REQUIRE_OK(res);
+                matched = true;
+            }
         }
 
         if (!matched && arg_tree != NULL && current_token->klass == KEFIR_TOKEN_IDENTIFIER) {
@@ -584,10 +760,20 @@ static kefir_result_t run_replacement_list_substitutions_impl(
                     KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &source_location,
                                            "Expected # to be followed by macro parameter"));
             const char *identifier = param_token->identifier;
-            REQUIRE_OK(fn_macro_parameter_stringification(mem, arg_tree, token_allocator, result, identifier,
-                                                          &source_location));
-            REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
-            matched = true;
+            if (strcmp(identifier, "__VA_OPT__") == 0) {
+                REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
+                res = match_va_opt_stringification(mem, preprocessor, symbols, token_allocator, seq, user_macro,
+                                                   arg_tree, result, &current_token->source_location);
+                if (res != KEFIR_NO_MATCH) {
+                    REQUIRE_OK(res);
+                    matched = true;
+                }
+            } else {
+                REQUIRE_OK(fn_macro_parameter_stringification(mem, arg_tree, token_allocator, result, identifier,
+                                                              &source_location));
+                REQUIRE_OK(kefir_preprocessor_token_sequence_next(mem, seq, NULL, NULL));
+                matched = true;
+            }
         }
 
         if (!matched) {
