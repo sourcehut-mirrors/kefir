@@ -4,10 +4,10 @@
 "worldworld worldworld worldworld world"
 ""
 int hello ;
-int [] world  = { 1, 2, 3, 4, 5 } ;
+int[] world = {1, 2, 3, 4, 5};
 xy
 xBBB  AAAy
-test(HELLOCRUELWORLD, I, AM HERE)
+test(HELLOCRUELWORLD,  I, AM HERE)
 3
 3
 a 123
