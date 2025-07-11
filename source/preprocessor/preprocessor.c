@@ -58,6 +58,7 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     context->source_locator = locator;
     context->ast_context = ast_context;
     context->parser_scope = NULL;
+    context->warning_output = stderr;
 
     // Predefined macros
     context->environment.timestamp = time(NULL);
@@ -252,6 +253,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF:
             case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
             case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
             case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
             case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
             case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
@@ -627,6 +629,23 @@ static kefir_result_t process_error(struct kefir_mem *mem, struct kefir_preproce
     return res;
 }
 
+static kefir_result_t process_warning(struct kefir_mem *mem, struct kefir_preprocessor_directive *directive,
+                                      FILE *warning_output) {
+    char *error_message;
+    kefir_size_t error_length;
+    REQUIRE_OK(kefir_preprocessor_format_string(mem, &error_message, &error_length, &directive->pp_tokens,
+                                                KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
+    if (directive->source_location.source != NULL) {
+        fprintf(warning_output, "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %s\n",
+                directive->source_location.source, directive->source_location.line, directive->source_location.column,
+                error_message);
+    } else {
+        fprintf(warning_output, "warning: %s\n", error_message);
+    }
+    KEFIR_FREE(mem, error_message);
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
                                    struct kefir_token_allocator *token_allocator,
                                    struct kefir_preprocessor_directive *directive) {
@@ -806,6 +825,12 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
             REQUIRE_OK(process_error(mem, directive));
+            break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
+            if (preprocessor->context->warning_output != NULL) {
+                REQUIRE_OK(process_warning(mem, directive, preprocessor->context->warning_output));
+            }
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:

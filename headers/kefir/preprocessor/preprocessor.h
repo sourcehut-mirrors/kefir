@@ -99,6 +99,7 @@ typedef struct kefir_preprocessor_context {
     struct kefir_hashtreeset builltin_prefixes;
     const struct kefir_preprocessor_context_extensions *extensions;
     struct kefir_parser_scope *parser_scope;
+    FILE *warning_output;
     struct {
         kefir_uint_t counter;
     } state;

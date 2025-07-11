@@ -195,6 +195,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
                            {U"define", KEFIR_PREPROCESSOR_DIRECTIVE_DEFINE},
                            {U"undef", KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF},
                            {U"error", KEFIR_PREPROCESSOR_DIRECTIVE_ERROR},
+                           {U"warning", KEFIR_PREPROCESSOR_DIRECTIVE_WARNING},
                            {U"line", KEFIR_PREPROCESSOR_DIRECTIVE_LINE},
                            {U"pragma", KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA}};
     for (kefir_size_t i = 0; i < sizeof(KnownDirectives) / sizeof(KnownDirectives[0]); i++) {
@@ -488,8 +489,9 @@ static kefir_result_t next_undef(struct kefir_mem *mem, struct kefir_preprocesso
 
 static kefir_result_t next_error(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
                                  struct kefir_token_allocator *token_allocator,
-                                 struct kefir_preprocessor_directive *directive) {
-    directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_ERROR;
+                                 struct kefir_preprocessor_directive *directive,
+                                 kefir_preprocessor_directive_type_t type) {
+    directive->type = type;
     REQUIRE_OK(kefir_token_buffer_init(&directive->pp_tokens));
 
     kefir_result_t res =
@@ -638,7 +640,13 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
-            REQUIRE_OK(next_error(mem, directive_scanner, token_allocator, directive));
+            REQUIRE_OK(
+                next_error(mem, directive_scanner, token_allocator, directive, KEFIR_PREPROCESSOR_DIRECTIVE_ERROR));
+            break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
+            REQUIRE_OK(
+                next_error(mem, directive_scanner, token_allocator, directive, KEFIR_PREPROCESSOR_DIRECTIVE_WARNING));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
@@ -685,6 +693,7 @@ kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *mem,
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT:
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
+        case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
         case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
             REQUIRE_OK(kefir_token_buffer_free(mem, &directive->pp_tokens));
