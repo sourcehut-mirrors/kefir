@@ -32,7 +32,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_string_pool_init(&symbols));
 
     kefir_size_t counter = 0;
-    REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "__builtin_va_start", &TOKENS[counter++]));
+    REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "__builtin_c23_va_start", &TOKENS[counter++]));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_LEFT_PARENTHESE, &TOKENS[counter++]));
     REQUIRE_OK(kefir_token_new_identifier(mem, &symbols, "vararg", &TOKENS[counter++]));
     REQUIRE_OK(kefir_token_new_punctuator(KEFIR_PUNCTUATOR_COMMA, &TOKENS[counter++]));

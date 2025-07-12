@@ -42,22 +42,15 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
                 context->surrounding_function != NULL && context->surrounding_function->type->function_type.ellipsis,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                        "va_start builtin cannot be used outside of vararg function"));
-            REQUIRE(kefir_list_length(&node->arguments) == 2,
+            REQUIRE(kefir_list_length(&node->arguments) >= 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
-                                           "va_start builtin invocation should have exactly two parameters"));
+                                           "va_start builtin invocation should have at least one parameter"));
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, vararg_list, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, vararg_list));
             REQUIRE(vararg_list->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &vararg_list->source_location,
                                            "Expected an expression referencing va_list"));
-            kefir_list_next(&iter);
-            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, paramN, iter->value);
-            REQUIRE_OK(kefir_ast_analyze_node(mem, context, paramN));
-            REQUIRE(paramN->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        paramN->properties.expression_props.identifier != NULL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &paramN->source_location,
-                                           "Expected parameter identifier"));
             base->properties.type = kefir_ast_type_void();
         } break;
 

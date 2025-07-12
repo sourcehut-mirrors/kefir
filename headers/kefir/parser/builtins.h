@@ -24,7 +24,7 @@
 #include "kefir/parser/parser.h"
 #include "kefir/ast/constants.h"
 
-#define KEFIR_PARSER_BUILTIN_VA_START "__builtin_va_start"
+#define KEFIR_PARSER_BUILTIN_VA_START "__builtin_c23_va_start"
 #define KEFIR_PARSER_BUILTIN_VA_END "__builtin_va_end"
 #define KEFIR_PARSER_BUILTIN_VA_ARG "__builtin_va_arg"
 #define KEFIR_PARSER_BUILTIN_VA_COPY "__builtin_va_copy"

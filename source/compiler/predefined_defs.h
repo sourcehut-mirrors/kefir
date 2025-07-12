@@ -546,6 +546,7 @@ extern int __kefir_builtin_parityll(long);
 extern int __kefir_builtin_flt_rounds(void);
 
 // Builtins
+#define __builtin_va_start(_vlist, _arg) __builtin_c23_va_start((_vlist), (_arg))
 #define __builtin_expect(_exp, _c) ((_c), (_exp))
 #define __builtin_expect_with_probability(_expr, _c, _prob) ((_prob), (_c), (_exp))
 #define __builtin_prefetch(_addr, ...) \
