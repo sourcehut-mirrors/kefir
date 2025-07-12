@@ -23,7 +23,9 @@ char file1[] = {
 };
 
 char file2[] = {
-#embed < file2.txt>
+// clang-format off
+#embed <file2.txt>
+    // clang-format on
 };
 
 #define FILE(N) file##N

@@ -225,8 +225,10 @@ static kefir_result_t embed_close(struct kefir_mem *mem, struct kefir_preprocess
     ASSIGN_DECL_CAST(struct embed_file_data *, file_data, embed_file->payload);
     REQUIRE(file_data != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Embed file reader has already been closed"));
 
-    int err = munmap(file_data->data, file_data->length);
-    REQUIRE(err == 0, KEFIR_SET_OS_ERROR("Failed to unmap file"));
+    if (file_data->length > 0) {
+        int err = munmap(file_data->data, file_data->length);
+        REQUIRE(err == 0, KEFIR_SET_OS_ERROR("Failed to unmap file"));
+    }
 
     KEFIR_FREE(mem, file_data);
     embed_file->payload = NULL;

@@ -296,10 +296,7 @@ static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_str
 }
 
 static kefir_result_t scan_include_path_impl(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
-                                             struct kefir_token_buffer *buffer, struct kefir_string_pool *symbols,
-                                             const char **result) {
-    REQUIRE_OK(
-        kefir_preprocessor_token_sequence_push_front(mem, seq, buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL));
+                                             struct kefir_string_pool *symbols, const char **result) {
     REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, NULL, NULL));
 
     const struct kefir_token *current_token;
@@ -362,7 +359,9 @@ kefir_result_t kefir_preprocessor_construct_system_header_name_from_buffer(struc
 
     struct kefir_preprocessor_token_sequence seq;
     REQUIRE_OK(kefir_preprocessor_token_sequence_init(&seq, NULL));
-    kefir_result_t res = scan_include_path_impl(mem, &seq, buffer, symbols, result);
+    kefir_result_t res =
+        kefir_preprocessor_token_sequence_push_front(mem, &seq, buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
+    REQUIRE_CHAIN(&res, scan_include_path_impl(mem, &seq, symbols, result));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);
         return res;
@@ -439,11 +438,14 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
 }
 
 static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocator *token_allocator,
-                               struct kefir_token_buffer *buffer, struct kefir_preprocessor_embed_file *embed_file) {
+                               struct kefir_token_buffer *buffer, struct kefir_preprocessor_embed_file *embed_file,
+                               kefir_size_t limit, struct kefir_token_buffer *prefix_buffer,
+                               struct kefir_token_buffer *suffix_buffer, struct kefir_token_buffer *if_empty_buffer) {
     char buf[32];
     struct kefir_token token;
     const struct kefir_token *allocated_token;
-    for (kefir_size_t length = 0;; length++) {
+    kefir_size_t length = 0;
+    for (; length < limit; length++) {
         kefir_bool_t eof;
         kefir_uint8_t value;
         REQUIRE_OK(embed_file->read_next(mem, embed_file, &value, &eof));
@@ -459,6 +461,8 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
             REQUIRE_OK(kefir_token_new_pp_whitespace(length % 16 == 0, &token));
             REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
             REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+        } else {
+            REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, prefix_buffer));
         }
 
         int len = snprintf(buf, sizeof(buf) - 1, "%" KEFIR_UINT8_FMT, value);
@@ -472,9 +476,138 @@ static kefir_result_t do_embed(struct kefir_mem *mem, struct kefir_token_allocat
         REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
     }
 
+    if (length > 0) {
+        REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, suffix_buffer));
+    } else {
+        REQUIRE_OK(kefir_token_buffer_copy(mem, buffer, if_empty_buffer));
+    }
+
     REQUIRE_OK(kefir_token_new_pp_whitespace(true, &token));
     REQUIRE_OK(kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token));
     REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, allocated_token));
+    return KEFIR_OK;
+}
+
+static kefir_result_t parse_pp_tokens(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *,
+                                      struct kefir_token_buffer *, struct kefir_source_location *,
+                                      struct kefir_ast_node_base **);
+
+static kefir_result_t collect_parentheses_into(struct kefir_mem *mem, struct kefir_preprocessor_token_sequence *seq,
+                                               struct kefir_token_buffer *buffer,
+                                               const struct kefir_source_location *source_location) {
+    const struct kefir_token *token;
+    kefir_result_t res = kefir_preprocessor_token_sequence_next(mem, seq, &token, NULL);
+    if (res == KEFIR_ITERATOR_END) {
+        res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected left parenthese");
+    }
+    REQUIRE_OK(res);
+    REQUIRE(token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Expected left parenthese"));
+
+    kefir_size_t paren_depth = 1;
+    for (; paren_depth > 0;) {
+        res = kefir_preprocessor_token_sequence_next(mem, seq, &token, NULL);
+        if (res == KEFIR_ITERATOR_END) {
+            res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected right parenthese");
+        }
+        REQUIRE_OK(res);
+
+        if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_RIGHT_PARENTHESE) {
+            paren_depth--;
+        } else if (token->klass == KEFIR_TOKEN_PUNCTUATOR && token->punctuator == KEFIR_PUNCTUATOR_LEFT_PARENTHESE) {
+            paren_depth++;
+        }
+
+        if (paren_depth > 0) {
+            REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, token));
+        }
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t process_embed_impl(
+    struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_token_allocator *token_allocator,
+    struct kefir_preprocessor_token_sequence *seq, struct kefir_token_buffer *buffer,
+    struct kefir_preprocessor_directive *directive, struct kefir_token_buffer *limit_buffer,
+    struct kefir_token_buffer *prefix_buffer, struct kefir_token_buffer *suffix_buffer,
+    struct kefir_token_buffer *if_empty_buffer) {
+    const struct kefir_token *token;
+    REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &token, NULL));
+    REQUIRE(token != NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected file path"));
+
+    const char *embed_path = NULL;
+    kefir_bool_t system_embed = false;
+    if (token->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
+        embed_path = token->pp_header_name.header_name;
+        system_embed = token->pp_header_name.system;
+    } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
+               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
+               token->string_literal.raw_literal) {
+        REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &embed_path));
+    } else {
+        REQUIRE_OK(scan_include_path_impl(mem, seq, preprocessor->lexer.symbols, &embed_path));
+        system_embed = true;
+    }
+
+    kefir_size_t limit = KEFIR_SIZE_MAX;
+    kefir_result_t res = KEFIR_OK;
+    for (;;) {
+        const struct kefir_token *token;
+        res = kefir_preprocessor_token_sequence_next(mem, seq, &token, NULL);
+        if (res != KEFIR_ITERATOR_END) {
+            REQUIRE_OK(res);
+        } else {
+            break;
+        }
+
+        if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "limit") == 0) {
+            struct kefir_source_location source_location = token->source_location;
+            REQUIRE_OK(collect_parentheses_into(mem, seq, limit_buffer, &source_location));
+
+            struct kefir_ast_node_base *expression;
+            REQUIRE_OK(
+                parse_pp_tokens(mem, preprocessor, token_allocator, limit_buffer, &source_location, &expression));
+            struct kefir_ast_constant_expression_value expr_value =
+                *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression);
+            REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, expression));
+
+            switch (expr_value.klass) {
+                case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+                    limit = expr_value.integer;
+                    break;
+
+                case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+                case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+                case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+                case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &source_location,
+                                                  "Expected integral constant expression");
+            }
+        } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "prefix") == 0) {
+            struct kefir_source_location source_location = token->source_location;
+            REQUIRE_OK(collect_parentheses_into(mem, seq, prefix_buffer, &source_location));
+        } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "suffix") == 0) {
+            struct kefir_source_location source_location = token->source_location;
+            REQUIRE_OK(collect_parentheses_into(mem, seq, suffix_buffer, &source_location));
+        } else if (token->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(token->identifier, "if_empty") == 0) {
+            struct kefir_source_location source_location = token->source_location;
+            REQUIRE_OK(collect_parentheses_into(mem, seq, if_empty_buffer, &source_location));
+        }
+    }
+
+    struct kefir_preprocessor_embed_file embed_file;
+    REQUIRE_OK(preprocessor->context->source_locator->open_embed(
+        mem, preprocessor->context->source_locator, embed_path, system_embed, preprocessor->current_file, &embed_file));
+
+    res = do_embed(mem, token_allocator, buffer, &embed_file, limit, prefix_buffer, suffix_buffer, if_empty_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        embed_file.close(mem, &embed_file);
+        return res;
+    });
+
+    REQUIRE_OK(embed_file.close(mem, &embed_file));
     return KEFIR_OK;
 }
 
@@ -486,33 +619,54 @@ static kefir_result_t process_embed(struct kefir_mem *mem, struct kefir_preproce
     const kefir_size_t pp_tokens_length = kefir_token_buffer_length(&directive->pp_tokens);
     REQUIRE(pp_tokens_length > 0,
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Expected file path"));
-    const struct kefir_token *token = kefir_token_buffer_at(&directive->pp_tokens, 0);
-    const char *embed_path = NULL;
-    kefir_bool_t system_embed = false;
-    if (token->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
-        embed_path = token->pp_header_name.header_name;
-        system_embed = token->pp_header_name.system;
-    } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-               token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
-               token->string_literal.raw_literal) {
-        REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &embed_path));
-    } else {
-        REQUIRE_OK(kefir_preprocessor_construct_system_header_name_from_buffer(
-            mem, &directive->pp_tokens, preprocessor->lexer.symbols, &embed_path));
-        system_embed = true;
-    }
 
-    struct kefir_preprocessor_embed_file embed_file;
-    REQUIRE_OK(preprocessor->context->source_locator->open_embed(
-        mem, preprocessor->context->source_locator, embed_path, system_embed, preprocessor->current_file, &embed_file));
+    struct kefir_token_buffer limit_buffer, prefix_buffer, suffix_buffer, if_empty_buffer;
+    struct kefir_preprocessor_token_sequence seq;
+    REQUIRE_OK(kefir_token_buffer_init(&limit_buffer));
+    REQUIRE_OK(kefir_token_buffer_init(&prefix_buffer));
+    REQUIRE_OK(kefir_token_buffer_init(&suffix_buffer));
+    REQUIRE_OK(kefir_token_buffer_init(&if_empty_buffer));
+    REQUIRE_OK(kefir_preprocessor_token_sequence_init(&seq, NULL));
 
-    kefir_result_t res = do_embed(mem, token_allocator, buffer, &embed_file);
+    kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, &seq, &directive->pp_tokens,
+                                                                      KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
+    REQUIRE_CHAIN(&res, process_embed_impl(mem, preprocessor, token_allocator, &seq, buffer, directive, &limit_buffer,
+                                           &prefix_buffer, &suffix_buffer, &if_empty_buffer));
     REQUIRE_ELSE(res == KEFIR_OK, {
-        embed_file.close(mem, &embed_file);
+        kefir_token_buffer_free(mem, &if_empty_buffer);
+        kefir_token_buffer_free(mem, &prefix_buffer);
+        kefir_token_buffer_free(mem, &suffix_buffer);
+        kefir_token_buffer_free(mem, &limit_buffer);
+        kefir_preprocessor_token_sequence_free(mem, &seq);
         return res;
     });
-
-    REQUIRE_OK(embed_file.close(mem, &embed_file));
+    res = kefir_token_buffer_free(mem, &if_empty_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &prefix_buffer);
+        kefir_token_buffer_free(mem, &suffix_buffer);
+        kefir_token_buffer_free(mem, &limit_buffer);
+        kefir_preprocessor_token_sequence_free(mem, &seq);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &prefix_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &suffix_buffer);
+        kefir_token_buffer_free(mem, &limit_buffer);
+        kefir_preprocessor_token_sequence_free(mem, &seq);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &suffix_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_buffer_free(mem, &limit_buffer);
+        kefir_preprocessor_token_sequence_free(mem, &seq);
+        return res;
+    });
+    res = kefir_token_buffer_free(mem, &limit_buffer);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_preprocessor_token_sequence_free(mem, &seq);
+        return res;
+    });
+    REQUIRE_OK(kefir_preprocessor_token_sequence_free(mem, &seq));
     return KEFIR_OK;
 }
 
@@ -580,10 +734,11 @@ static kefir_result_t process_undef(struct kefir_mem *mem, struct kefir_preproce
     return KEFIR_OK;
 }
 
-static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
-                                         struct kefir_token_allocator *token_allocator,
-                                         struct kefir_token_buffer *pp_tokens,
-                                         struct kefir_source_location *source_location, kefir_bool_t *result) {
+static kefir_result_t parse_pp_tokens(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                      struct kefir_token_allocator *token_allocator,
+                                      struct kefir_token_buffer *pp_tokens,
+                                      struct kefir_source_location *source_location,
+                                      struct kefir_ast_node_base **result_node) {
     REQUIRE_OK(kefir_preprocessor_run_substitutions(mem, preprocessor, token_allocator, pp_tokens, NULL,
                                                     KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION));
     struct kefir_token_buffer tokens;
@@ -631,6 +786,17 @@ static kefir_result_t evaluate_pp_tokens(struct kefir_mem *mem, struct kefir_pre
         KEFIR_AST_NODE_FREE(mem, expression);
         return res;
     });
+
+    *result_node = expression;
+    return KEFIR_OK;
+}
+
+static kefir_result_t evaluate_pp_tokens_as_bool(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                                 struct kefir_token_allocator *token_allocator,
+                                                 struct kefir_token_buffer *pp_tokens,
+                                                 struct kefir_source_location *source_location, kefir_bool_t *result) {
+    struct kefir_ast_node_base *expression;
+    REQUIRE_OK(parse_pp_tokens(mem, preprocessor, token_allocator, pp_tokens, source_location, &expression));
     struct kefir_ast_constant_expression_value expr_value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression);
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, expression));
 
@@ -663,8 +829,8 @@ static kefir_result_t process_if(struct kefir_mem *mem, struct kefir_preprocesso
                                  struct kefir_preprocessor_directive *directive, struct kefir_list *condition_stack,
                                  struct kefir_token_allocator *token_allocator) {
     kefir_bool_t condition;
-    REQUIRE_OK(evaluate_pp_tokens(mem, preprocessor, token_allocator, &directive->pp_tokens,
-                                  &directive->source_location, &condition));
+    REQUIRE_OK(evaluate_pp_tokens_as_bool(mem, preprocessor, token_allocator, &directive->pp_tokens,
+                                          &directive->source_location, &condition));
     if (!condition) {
         REQUIRE_OK(kefir_list_insert_after(mem, condition_stack, kefir_list_tail(condition_stack),
                                            (void *) (kefir_uptr_t) IF_CONDITION_FAIL));
@@ -684,8 +850,8 @@ static kefir_result_t process_elif(struct kefir_mem *mem, struct kefir_preproces
         return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &directive->source_location, "Unexpected elif directive");
     } else if ((kefir_uptr_t) top_condition->value == IF_CONDITION_FAIL) {
         kefir_bool_t condition;
-        REQUIRE_OK(evaluate_pp_tokens(mem, preprocessor, token_allocator, &directive->pp_tokens,
-                                      &directive->source_location, &condition));
+        REQUIRE_OK(evaluate_pp_tokens_as_bool(mem, preprocessor, token_allocator, &directive->pp_tokens,
+                                              &directive->source_location, &condition));
         if (condition) {
             top_condition->value = (void *) (kefir_uptr_t) IF_CONDITION_SUCCESS;
         } else {

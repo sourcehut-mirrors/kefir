@@ -18,21 +18,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define TEMP1 2
+#define TEMP2 5
+
 char file1[] = {
-#embed "dir1/file1.txt"
+#embed "file1.txt" limit(0)
 };
 
 char file2[] = {
-// clang-format off
-#embed <file2.txt>
-    // clang-format on
+#embed "file1.txt" limit(4)
 };
 
-#define DIR(N) dir##N
-#define FILE(N) file##N
-#define TXT txt
-#define FILE3 <DIR(3)/FILE(3).TXT>
-
 char file3[] = {
-#embed FILE3
+#embed "file1.txt" limit(4 + 1)
+};
+
+char file4[] = {
+#embed "file1.txt" limit((TEMP1 << 2) * TEMP2)
+};
+
+char file5[] = {
+#embed "file1.txt" limit(~0ull)
 };
