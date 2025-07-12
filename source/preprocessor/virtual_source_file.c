@@ -26,7 +26,7 @@
 static kefir_result_t close_source(struct kefir_mem *mem, struct kefir_preprocessor_source_file *source_file) {
     UNUSED(mem);
     REQUIRE(source_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source file"));
-    *source_file = (struct kefir_preprocessor_source_file){0};
+    *source_file = (struct kefir_preprocessor_source_file) {0};
     return KEFIR_OK;
 }
 
@@ -55,6 +55,19 @@ static kefir_result_t open_source(struct kefir_mem *mem, const struct kefir_prep
     return KEFIR_OK;
 }
 
+static kefir_result_t open_embed(struct kefir_mem *mem, const struct kefir_preprocessor_source_locator *source_locator,
+                                 const char *filepath, kefir_bool_t system,
+                                 const struct kefir_preprocessor_source_file_info *file_info,
+                                 struct kefir_preprocessor_embed_file *embed_file) {
+    UNUSED(mem);
+    UNUSED(source_locator);
+    UNUSED(filepath);
+    UNUSED(system);
+    UNUSED(file_info);
+    UNUSED(embed_file);
+    return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find request embed file");
+}
+
 kefir_result_t kefir_preprocessor_virtual_source_locator_init(
     struct kefir_preprocessor_virtual_source_locator *locator) {
     REQUIRE(locator != NULL,
@@ -63,6 +76,7 @@ kefir_result_t kefir_preprocessor_virtual_source_locator_init(
     REQUIRE_OK(kefir_hashtree_init(&locator->sources, &kefir_hashtree_str_ops));
     locator->locator.payload = &locator;
     locator->locator.open = open_source;
+    locator->locator.open_embed = open_embed;
     return KEFIR_OK;
 }
 

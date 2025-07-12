@@ -127,6 +127,9 @@ Add directory to preprocessor include path for quoted includes exclusively (proc
 .It Fl idirafter Ar directory
 Add directory to preprocessor system include path (after processing other system include directories)
 .\"
+.It Fl \-embed-dir= Ar directory
+Add directory to preprocessor embed search path
+.\"
 .It Fl M
 Output a make rule describing the dependencies of source file (including the dependencies from system path)
 .\"
@@ -348,6 +351,9 @@ Load extension library
 .\"
 .It Fl \-system-include-dir Ar dir
 Add directory to include search path and mark it as a system include path (used for dependency output)
+.\"
+.It Fl \-embed-dir Ar directory
+Add directory to preprocessor embed search path
 .\"
 .It Fl \-debug-info
 Include debug information into produced output

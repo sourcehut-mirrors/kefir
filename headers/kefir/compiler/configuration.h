@@ -53,6 +53,7 @@ typedef struct kefir_compiler_runner_configuration {
     kefir_bool_t debug_info;
     kefir_bool_t skip_preprocessor;
     struct kefir_list include_path;
+    struct kefir_list embed_path;
     struct kefir_hashtreeset quote_include_directories;
     struct kefir_hashtreeset system_include_directories;
     struct kefir_list include_files;

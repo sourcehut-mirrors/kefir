@@ -52,6 +52,26 @@ static kefir_result_t dependencies_source_locator_open(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+static kefir_result_t dependencies_open_embed(struct kefir_mem *mem,
+                                              const struct kefir_preprocessor_source_locator *source_locator,
+                                              const char *filepath, kefir_bool_t system,
+                                              const struct kefir_preprocessor_source_file_info *file_info,
+                                              struct kefir_preprocessor_embed_file *embed_file) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(source_locator != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid filesystem source locator"));
+    REQUIRE(filepath != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid file path"));
+    REQUIRE(embed_file != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to embed file"));
+    ASSIGN_DECL_CAST(struct kefir_preprocessor_dependencies_source_locator *, locator, source_locator);
+
+    REQUIRE_OK(locator->base_locator->open_embed(mem, locator->base_locator, filepath, system, file_info, embed_file));
+    if (!kefir_hashtree_has(&locator->includes, (kefir_hashtree_key_t) embed_file->info.filepath)) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &locator->includes, (kefir_hashtree_key_t) embed_file->info.filepath,
+                                         (kefir_hashtree_value_t) 0));
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_preprocessor_dependencies_source_locator_init(
     struct kefir_preprocessor_source_locator *base_locator,
     kefir_result_t (*is_system_include_dir)(const char *, kefir_bool_t *, void *), void *is_system_include_dir_payload,
@@ -66,6 +86,7 @@ kefir_result_t kefir_preprocessor_dependencies_source_locator_init(
     locator->is_system_include_dir = is_system_include_dir;
     locator->is_system_include_dir_payload = is_system_include_dir_payload;
     locator->locator.open = dependencies_source_locator_open;
+    locator->locator.open_embed = dependencies_open_embed;
     locator->locator.payload = locator;
     REQUIRE_OK(kefir_hashtree_init(&locator->includes, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&locator->direct_system_includes, &kefir_hashtree_str_ops));

@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E --embed-dir $(dirname $SRC_FILE)/dir1/dir2"

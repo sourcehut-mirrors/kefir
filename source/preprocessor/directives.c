@@ -192,6 +192,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
                            {U"endif", KEFIR_PREPROCESSOR_DIRECTIVE_ENDIF},
                            {U"include", KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE},
                            {U"include_next", KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT},
+                           {U"embed", KEFIR_PREPROCESSOR_DIRECTIVE_EMBED},
                            {U"define", KEFIR_PREPROCESSOR_DIRECTIVE_DEFINE},
                            {U"undef", KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF},
                            {U"error", KEFIR_PREPROCESSOR_DIRECTIVE_ERROR},
@@ -311,6 +312,48 @@ static kefir_result_t next_include(struct kefir_mem *mem,
             return res;
         });
         res = kefir_preprocessor_directive_scanner_skip_line(mem, directive_scanner);
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_buffer_free(mem, &directive->pp_tokens);
+            return res;
+        });
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t next_embed(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
+                                 struct kefir_token_allocator *token_allocator,
+                                 struct kefir_preprocessor_directive *directive) {
+    REQUIRE_OK(kefir_token_buffer_init(&directive->pp_tokens));
+
+    struct kefir_lexer_source_cursor_state state;
+    struct kefir_token token;
+    kefir_result_t res = kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &state);
+    REQUIRE_CHAIN(&res,
+                  skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
+    REQUIRE_CHAIN(&res, kefir_lexer_match_pp_header_name(mem, directive_scanner->lexer, &token));
+    if (res == KEFIR_NO_MATCH) {
+        res = kefir_lexer_source_cursor_restore(directive_scanner->lexer->cursor, &state);
+        REQUIRE_CHAIN(
+            &res, skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
+        REQUIRE_CHAIN(&res, scan_pp_tokens(mem, directive_scanner, token_allocator, &directive->pp_tokens));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_buffer_free(mem, &directive->pp_tokens);
+            return res;
+        });
+    } else {
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_buffer_free(mem, &directive->pp_tokens);
+            return res;
+        });
+        const struct kefir_token *allocated_token;
+        res = kefir_token_allocator_emplace(mem, token_allocator, &token, &allocated_token);
+        REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &directive->pp_tokens, allocated_token));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_token_free(mem, &token);
+            kefir_token_buffer_free(mem, &directive->pp_tokens);
+            return res;
+        });
+        res = scan_pp_tokens(mem, directive_scanner, token_allocator, &directive->pp_tokens);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &directive->pp_tokens);
             return res;
@@ -631,6 +674,11 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
             REQUIRE_OK(next_include(mem, directive_scanner, token_allocator, directive));
             break;
 
+        case KEFIR_PREPROCESSOR_DIRECTIVE_EMBED:
+            directive->type = directive_type;
+            REQUIRE_OK(next_embed(mem, directive_scanner, token_allocator, directive));
+            break;
+
         case KEFIR_PREPROCESSOR_DIRECTIVE_DEFINE:
             REQUIRE_OK(next_define(mem, directive_scanner, token_allocator, directive));
             break;
@@ -691,6 +739,7 @@ kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *mem,
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE:
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT:
+        case KEFIR_PREPROCESSOR_DIRECTIVE_EMBED:
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
         case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:

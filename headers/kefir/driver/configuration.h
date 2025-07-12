@@ -128,6 +128,7 @@ typedef struct kefir_driver_configuration {
     struct kefir_list include_directories;
     struct kefir_list quote_include_directories;
     struct kefir_list system_include_directories;
+    struct kefir_list embed_directories;
     struct kefir_list after_include_directories;
     struct kefir_list include_files;
     struct kefir_driver_target target;
@@ -203,6 +204,8 @@ kefir_result_t kefir_driver_configuration_add_quote_include_directory(struct kef
 kefir_result_t kefir_driver_configuration_add_after_include_directory(struct kefir_mem *, struct kefir_string_pool *,
                                                                       struct kefir_driver_configuration *,
                                                                       const char *);
+kefir_result_t kefir_driver_configuration_add_embed_directory(struct kefir_mem *, struct kefir_string_pool *,
+                                                              struct kefir_driver_configuration *, const char *);
 kefir_result_t kefir_driver_configuration_add_include_file(struct kefir_mem *, struct kefir_string_pool *,
                                                            struct kefir_driver_configuration *, const char *);
 

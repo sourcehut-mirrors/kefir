@@ -38,6 +38,14 @@ typedef struct kefir_preprocessor_source_file {
     void *payload;
 } kefir_preprocessor_source_file_t;
 
+typedef struct kefir_preprocessor_embed_file {
+    struct kefir_preprocessor_source_file_info info;
+    kefir_result_t (*read_next)(struct kefir_mem *, struct kefir_preprocessor_embed_file *, kefir_uint8_t *,
+                                kefir_bool_t *);
+    kefir_result_t (*close)(struct kefir_mem *, struct kefir_preprocessor_embed_file *);
+    void *payload;
+} kefir_preprocessor_embed_file_t;
+
 typedef enum kefir_preprocessor_source_locator_mode {
     KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL,
     KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT
@@ -47,6 +55,9 @@ typedef struct kefir_preprocessor_source_locator {
     kefir_result_t (*open)(struct kefir_mem *, const struct kefir_preprocessor_source_locator *, const char *,
                            kefir_bool_t, const struct kefir_preprocessor_source_file_info *,
                            kefir_preprocessor_source_locator_mode_t, struct kefir_preprocessor_source_file *);
+    kefir_result_t (*open_embed)(struct kefir_mem *, const struct kefir_preprocessor_source_locator *, const char *,
+                                 kefir_bool_t, const struct kefir_preprocessor_source_file_info *,
+                                 struct kefir_preprocessor_embed_file *);
     void *payload;
 } kefir_preprocessor_source_locator_t;
 

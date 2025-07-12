@@ -67,6 +67,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
         .target_profile_config = {.char_signedness = KEFIR_COMPILER_PROFILE_CHAR_SIGNEDNESS_DEFAULT},
         .extension_lib = NULL};
     REQUIRE_OK(kefir_list_init(&options->include_path));
+    REQUIRE_OK(kefir_list_init(&options->embed_path));
     REQUIRE_OK(kefir_hashtreeset_init(&options->system_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&options->quote_include_directories, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_list_init(&options->include_files));
@@ -85,6 +86,7 @@ kefir_result_t kefir_compiler_runner_configuration_free(struct kefir_mem *mem,
     REQUIRE_OK(kefir_hashtreeset_free(mem, &options->system_include_directories));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &options->quote_include_directories));
     REQUIRE_OK(kefir_list_free(mem, &options->include_path));
+    REQUIRE_OK(kefir_list_free(mem, &options->embed_path));
     REQUIRE_OK(kefir_hashtree_free(mem, &options->defines));
     REQUIRE_OK(kefir_list_free(mem, &options->undefines));
     return KEFIR_OK;

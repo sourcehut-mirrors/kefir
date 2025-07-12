@@ -176,6 +176,16 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     }
 #undef ADD_INCLUDE_DIR
 
+    for (const struct kefir_list_entry *iter = kefir_list_head(&config->embed_directories); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(const char *, embed_dir, iter->value);
+        embed_dir = kefir_string_pool_insert(mem, symbols, embed_dir, NULL);
+        REQUIRE(embed_dir != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert embed directory into string pool"));
+        REQUIRE_OK(kefir_list_insert_after(mem, &compiler_config->embed_path,
+                                           kefir_list_tail(&compiler_config->embed_path), (void *) embed_dir));
+    }
+
     REQUIRE_OK(kefir_driver_apply_target_compiler_configuration(mem, symbols, externals, compiler_config,
                                                                 &config->target, config));
 
@@ -338,10 +348,10 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         REQUIRE_CHAIN(&res, kefir_string_array_append(mem, &extra_args_buf, iter->value));
     }
     kefir_size_t positional_args = extra_args_buf.length;
-    REQUIRE_CHAIN(&res,
-                  kefir_parse_cli_options(mem, symbols, compiler_config, &positional_args,
-                                          KefirCompilerConfigurationOptions, KefirCompilerConfigurationOptionCount,
-                                          extra_args_buf.array, extra_args_buf.length, externals->driver_cli_quiet ? NULL : stderr));
+    REQUIRE_CHAIN(&res, kefir_parse_cli_options(mem, symbols, compiler_config, &positional_args,
+                                                KefirCompilerConfigurationOptions,
+                                                KefirCompilerConfigurationOptionCount, extra_args_buf.array,
+                                                extra_args_buf.length, externals->driver_cli_quiet ? NULL : stderr));
     REQUIRE_CHAIN_SET(
         &res, positional_args == extra_args_buf.length,
         KEFIR_SET_ERROR(KEFIR_UI_ERROR, "Passing positional arguments directly to compiler is not permitted"));

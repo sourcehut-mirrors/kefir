@@ -128,6 +128,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
     REQUIRE_OK(kefir_list_init(&config->quote_include_directories));
     REQUIRE_OK(kefir_list_init(&config->system_include_directories));
     REQUIRE_OK(kefir_list_init(&config->after_include_directories));
+    REQUIRE_OK(kefir_list_init(&config->embed_directories));
     REQUIRE_OK(kefir_list_init(&config->include_files));
     REQUIRE_OK(kefir_driver_target_default(&config->target));
     REQUIRE_OK(kefir_list_init(&config->run.args));
@@ -183,6 +184,7 @@ kefir_result_t kefir_driver_configuration_free(struct kefir_mem *mem, struct kef
     REQUIRE_OK(kefir_list_free(mem, &config->quote_include_directories));
     REQUIRE_OK(kefir_list_free(mem, &config->system_include_directories));
     REQUIRE_OK(kefir_list_free(mem, &config->after_include_directories));
+    REQUIRE_OK(kefir_list_free(mem, &config->embed_directories));
     REQUIRE_OK(kefir_list_free(mem, &config->include_files));
 
     return KEFIR_OK;
@@ -372,6 +374,24 @@ kefir_result_t kefir_driver_configuration_add_after_include_directory(struct kef
 
     REQUIRE_OK(kefir_list_insert_after(mem, &config->after_include_directories,
                                        kefir_list_tail(&config->after_include_directories), (void *) dir));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_driver_configuration_add_embed_directory(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                                              struct kefir_driver_configuration *config,
+                                                              const char *dir) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(config != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver configuration"));
+    REQUIRE(dir != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid include directory"));
+
+    if (symbols != NULL) {
+        dir = kefir_string_pool_insert(mem, symbols, dir, NULL);
+        REQUIRE(dir != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert include directory into symbol table"));
+    }
+
+    REQUIRE_OK(kefir_list_insert_after(mem, &config->embed_directories, kefir_list_tail(&config->embed_directories),
+                                       (void *) dir));
     return KEFIR_OK;
 }
 

@@ -348,6 +348,15 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             }
 
             REQUIRE_OK(kefir_driver_configuration_add_after_include_directory(mem, symbols, config, directory));
+        } else if (STRNCMP("--embed-dir=", arg) == 0) {
+            // Add directory to embed search path
+            const char *directory = &arg[12];
+            REQUIRE_OK(kefir_driver_configuration_add_embed_directory(mem, symbols, config, directory));
+        } else if (STRNCMP("--embed-dir", arg) == 0) {
+            // Add directory to embed search path
+            EXPECT_ARG;
+            const char *directory = argv[++index];
+            REQUIRE_OK(kefir_driver_configuration_add_embed_directory(mem, symbols, config, directory));
         } else if (strcmp("-include", arg) == 0) {
             // Include file
             EXPECT_ARG;
