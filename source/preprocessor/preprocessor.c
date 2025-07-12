@@ -268,8 +268,14 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
 
 enum if_condition_state { IF_CONDITION_SUCCESS, IF_CONDITION_FAIL };
 
-static kefir_result_t process_raw_string(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                         const struct kefir_token *token, const char **str) {
+kefir_result_t kefir_preprocessor_convert_raw_string_into_multibyte(struct kefir_mem *mem,
+                                                                    struct kefir_string_pool *symbols,
+                                                                    const struct kefir_token *token, const char **str) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(symbols != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string pool"));
+    REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token"));
+    REQUIRE(str != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to multibyte string"));
+
     struct kefir_list list;
     REQUIRE_OK(kefir_list_init(&list));
     REQUIRE_OK(kefir_list_insert_after(mem, &list, kefir_list_tail(&list), (void *) token));
@@ -387,7 +393,8 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
                token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
                token->string_literal.raw_literal) {
-        REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &include_path));
+        REQUIRE_OK(kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token,
+                                                                        &include_path));
     } else {
         REQUIRE_OK(kefir_preprocessor_construct_system_header_name_from_buffer(
             mem, &directive->pp_tokens, preprocessor->lexer.symbols, &include_path));
@@ -545,7 +552,8 @@ static kefir_result_t process_embed_impl(
     } else if (token->klass == KEFIR_TOKEN_STRING_LITERAL &&
                token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE &&
                token->string_literal.raw_literal) {
-        REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &embed_path));
+        REQUIRE_OK(
+            kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token, &embed_path));
     } else {
         REQUIRE_OK(scan_include_path_impl(mem, seq, preprocessor->lexer.symbols, &embed_path));
         system_embed = true;
@@ -918,7 +926,8 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
                         token->string_literal.raw_literal,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &token->source_location, "Expected valid file name"));
 
-            REQUIRE_OK(process_raw_string(mem, preprocessor->lexer.symbols, token, &source_file));
+            REQUIRE_OK(kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, token,
+                                                                            &source_file));
         }
     }
 

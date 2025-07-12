@@ -318,9 +318,15 @@ FUNCTION_MACRO(has_include) {
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                        "Macro __has_include expects a single header name argument"));
 
-        res = preprocessor->context->source_locator->open(
-            mem, preprocessor->context->source_locator, arg->string_literal.literal, false, preprocessor->current_file,
-            KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
+        const char *filepath = arg->string_literal.literal;
+        if (arg->string_literal.raw_literal) {
+            REQUIRE_OK(
+                kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
+        }
+
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator, filepath, false,
+                                                          preprocessor->current_file,
+                                                          KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NORMAL, &source_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
@@ -369,9 +375,15 @@ FUNCTION_MACRO(has_include_next) {
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                        "Macro __has_include_next expects a single header name argument"));
 
-        res = preprocessor->context->source_locator->open(
-            mem, preprocessor->context->source_locator, arg->string_literal.literal, false, preprocessor->current_file,
-            KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
+        const char *filepath = arg->string_literal.literal;
+        if (arg->string_literal.raw_literal) {
+            REQUIRE_OK(
+                kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
+        }
+
+        res = preprocessor->context->source_locator->open(mem, preprocessor->context->source_locator, filepath, false,
+                                                          preprocessor->current_file,
+                                                          KEFIR_PREPROCESSOR_SOURCE_LOCATOR_MODE_NEXT, &source_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
