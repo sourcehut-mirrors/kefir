@@ -306,8 +306,14 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
 
 static kefir_result_t scan_function_parameter_list(struct kefir_mem *mem, struct kefir_parser *parser,
                                                    struct kefir_ast_declarator *declarator) {
-    REQUIRE_OK(scan_function_parameter(mem, parser, declarator));
     kefir_bool_t scan_parameters = true;
+    if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ELLIPSIS)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        declarator->function.ellipsis = true;
+        scan_parameters = false;
+    } else {
+        REQUIRE_OK(scan_function_parameter(mem, parser, declarator));
+    }
     while (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA) && scan_parameters) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         kefir_result_t res = scan_function_parameter(mem, parser, declarator);

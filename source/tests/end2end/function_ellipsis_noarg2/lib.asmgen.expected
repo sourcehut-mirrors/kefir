@@ -1,0 +1,241 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "function_definition",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test1",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "function",
+                                    "declarator": {
+                                        "class": "pointer",
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "fn",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "type_qualifiers": [],
+                                        "attributes": []
+                                    },
+                                    "ellipsis": true,
+                                    "parameters": [],
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": [
+                            {
+                                "class": "storage_class",
+                                "storage": "static",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_qualifier",
+                                "qualifier": "const",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_specifier",
+                                "specifier": "char",
+                                "attributes": []
+                            }
+                        ],
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test1\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "function_call",
+                            "function": {
+                                "class": "identifier",
+                                "identifier": "fn"
+                            },
+                            "arguments": [
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 10
+                                },
+                                {
+                                    "class": "identifier",
+                                    "identifier": "x"
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 0
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 1
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                },
+                                {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 3
+                                },
+                                {
+                                    "class": "unary_operation",
+                                    "type": "negate",
+                                    "argument": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 9
+                                    }
+                                },
+                                {
+                                    "class": "unary_operation",
+                                    "type": "negate",
+                                    "argument": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 8
+                                    }
+                                },
+                                {
+                                    "class": "unary_operation",
+                                    "type": "negate",
+                                    "argument": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 7
+                                    }
+                                },
+                                {
+                                    "class": "binary_operation",
+                                    "type": "shift_left",
+                                    "left": {
+                                        "class": "constant",
+                                        "type": "unsigned_long_long",
+                                        "value": 1
+                                    },
+                                    "right": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 18
+                                    }
+                                },
+                                {
+                                    "class": "binary_operation",
+                                    "type": "subtract",
+                                    "left": {
+                                        "class": "binary_operation",
+                                        "type": "shift_left",
+                                        "left": {
+                                            "class": "constant",
+                                            "type": "unsigned_long_long",
+                                            "value": 1
+                                        },
+                                        "right": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 18
+                                        }
+                                    },
+                                    "right": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    ]
+}
