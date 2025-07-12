@@ -21,3 +21,11 @@
 #ifndef __has_include
 #error "Missing __has_include"
 #endif
+
+#ifndef __has_include_next
+#error "Missing __has_include_next"
+#endif
+
+#ifndef __has_embed
+#error "Missing __has_include"
+#endif

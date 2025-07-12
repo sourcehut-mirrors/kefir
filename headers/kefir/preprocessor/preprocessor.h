@@ -153,7 +153,13 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *, struc
 kefir_result_t kefir_preprocessor_construct_system_header_name_from_buffer(struct kefir_mem *,
                                                                            struct kefir_token_buffer *,
                                                                            struct kefir_string_pool *, const char **);
+kefir_result_t kefir_preprocessor_construct_system_header_name_from_sequence(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
+                                             struct kefir_string_pool *, const char **);
 kefir_result_t kefir_preprocessor_convert_raw_string_into_multibyte(struct kefir_mem *, struct kefir_string_pool *,
                                                                     const struct kefir_token *, const char **);
+kefir_result_t kefir_preprocessor_scan_embed_limit(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *, struct kefir_preprocessor_token_sequence *, const struct kefir_source_location *, kefir_size_t *);
+kefir_result_t kefir_preprocessor_collect_balanced_parentheses_into(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
+                                               struct kefir_token_buffer *,
+                                               const struct kefir_source_location *);
 
 #endif

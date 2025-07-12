@@ -132,6 +132,11 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 
 #define __BITINT_MAXWIDTH__ 65535
 
+// Has embed
+#define __STDC_EMBED_NOT_FOUND__ 0
+#define __STDC_EMBED_FOUND__ 1
+#define __STDC_EMBED_EMPTY__ 2
+
 // Type size
 #ifdef __LP64__
 #define __SIZEOF_POINTER__ __SIZEOF_LONG__

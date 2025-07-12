@@ -74,7 +74,8 @@ static kefir_result_t preprocessor_next_impl(struct kefir_mem *mem, struct kefir
         res = kefir_lexer_match_identifier(mem, lexer, token);
         if (res == KEFIR_OK &&
             (strcmp(token->identifier, "__has_include") == 0 ||
-             strcmp(token->identifier, "__has_include_next") == 0)) {
+             strcmp(token->identifier, "__has_include_next") == 0 ||
+             strcmp(token->identifier, "__has_embed") == 0)) {
             next_tokenizer_state = KEFIR_PREPROCESSOR_TOKENIZER_HAS_INCLUDE1;
         }
     }
