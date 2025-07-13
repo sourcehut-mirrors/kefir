@@ -25,10 +25,10 @@
 
 int main(void) {
     assert(sum(0) == 0);
-    assert(sum(0, 1) == 0);
-    assert(sum(1, 1) == 1);
-    assert(sum(1, 1, 10) == 1);
-    assert(sum(2, 1, 10) == 11);
-    assert(sum(7, 1, 2, 3, 4, 5, 6, 7) == 28);
+    assert(sum(0, 1l) == 0);
+    assert(sum(1, 1l) == 1);
+    assert(sum(1, 1l, 10l) == 1);
+    assert(sum(2, 1l, 10l) == 11);
+    assert(sum(7, 1l, 2l, 3l, 4l, 5l, 6l, 7l) == 28);
     return EXIT_SUCCESS;
 }
