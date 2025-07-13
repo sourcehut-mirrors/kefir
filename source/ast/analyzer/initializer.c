@@ -365,7 +365,8 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
 
     if (kefir_hashtreeset_has(&param->repeated_nodes, (kefir_hashtreeset_entry_t) expression)) {
         REQUIRE_OK(param->context->allocate_temporary_value(
-            param->mem, param->context, expression->properties.type, NULL, &expression->source_location,
+            param->mem, param->context, expression->properties.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN, NULL,
+            &expression->source_location,
             &expression->properties.expression_props.preserve_after_eval.temporary_identifier));
         expression->properties.expression_props.preserve_after_eval.enabled = true;
     }

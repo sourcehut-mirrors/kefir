@@ -29,12 +29,14 @@ static kefir_result_t pp_resolve_label_identifier(const struct kefir_ast_context
 
 static kefir_result_t pp_allocate_temporary_value(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                   const struct kefir_ast_type *type,
+                                                  kefir_ast_scoped_identifier_storage_t storage,
                                                   struct kefir_ast_initializer *initializer,
                                                   const struct kefir_source_location *source_location,
                                                   struct kefir_ast_temporary_identifier *temp_id) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(type);
+    UNUSED(storage);
     UNUSED(initializer);
     UNUSED(source_location);
     UNUSED(temp_id);

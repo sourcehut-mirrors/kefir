@@ -1,0 +1,261 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global gs1
+.type gs1, @object
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+.global get4
+.type get4, @function
+.global get5
+.type get5, @function
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get1_label0:
+    lea __kefir_function_get1_static___kefir_local_temporary_0_3(%rip), %rax
+    pop %rbp
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+.extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_get2_label0:
+    data16     lea __kefir_function_get2_static___kefir_local_temporary_0_5@tlsgd(%rip), %rdi
+    .word 26214
+    rex.W     call __tls_get_addr@PLT
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdi, %rdx
+_kefir_func_get3_label0:
+    leaq -32(%rbp), %rdi
+    mov $0, %rax
+    mov $32, %rcx
+    rep stosb
+    mov $1, %rax
+    neg %eax
+    movl %eax, -32(%rbp)
+    leaq -32(%rbp), %rdi
+    add $4, %rdi
+    mov $2, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $8, %rdi
+    mov $3, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $12, %rdi
+    mov $4, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $16, %rdi
+    mov $5, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $20, %rdi
+    mov $6, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $24, %rdi
+    mov $7, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $28, %rdi
+    mov $8, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    mov %rdx, %rax
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get3_end:
+
+get4:
+__kefir_text_func_get4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdi, %rdx
+_kefir_func_get4_label0:
+    leaq -32(%rbp), %rdi
+    mov $0, %rax
+    mov $32, %rcx
+    rep stosb
+    mov $8, %rax
+    neg %eax
+    movl %eax, -32(%rbp)
+    leaq -32(%rbp), %rdi
+    add $4, %rdi
+    mov $7, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $8, %rdi
+    mov $6, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $12, %rdi
+    mov $5, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $16, %rdi
+    mov $4, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $20, %rdi
+    mov $3, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $24, %rdi
+    mov $2, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    leaq -32(%rbp), %rdi
+    add $28, %rdi
+    mov $1, %rax
+    neg %eax
+    movl %eax, (%rdi)
+    mov %rdx, %rax
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get4_end:
+
+get5:
+__kefir_text_func_get5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_get5_label0:
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %eax
+    test %eax, %eax
+    jz _kefir_func_get5_label3
+_kefir_func_get5_label1:
+    lea __kefir_function_get5_static___kefir_local_temporary_0_12(%rip), %rax
+    mov %rax, %rcx
+_kefir_func_get5_label2:
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_get5_label3:
+    lea __kefir_function_get5_static___kefir_local_temporary_1_13(%rip), %rax
+    mov %rax, %rcx
+    jmp _kefir_func_get5_label2
+__kefir_text_func_get5_end:
+
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_test1_label0:
+    movq %rdi, -8(%rbp)
+    mov $8, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+gs1:
+    .quad __kefir_temporary_0
+
+    .align 4
+__kefir_temporary_0:
+    .long 100
+    .long 200
+    .long 300
+    .long 400
+    .long 500
+    .long 600
+    .long 700
+    .long 800
+
+    .align 4
+__kefir_function_get1_static___kefir_local_temporary_0_3:
+    .long 1
+    .long 2
+    .long 3
+    .long 4
+    .long 5
+    .long 6
+    .long 7
+    .long 8
+
+    .align 4
+__kefir_function_get5_static___kefir_local_temporary_0_12:
+    .long 4294967196
+    .long 4294967096
+    .long 4294966996
+    .long 4294966896
+    .long 4294966796
+    .long 4294966696
+    .long 4294966596
+    .long 4294966496
+
+    .align 4
+__kefir_function_get5_static___kefir_local_temporary_1_13:
+    .long 4294966496
+    .long 4294966596
+    .long 4294966696
+    .long 4294966796
+    .long 4294966896
+    .long 4294966996
+    .long 4294967096
+    .long 4294967196
+
+.section .tdata
+    .align 4
+__kefir_function_get2_static___kefir_local_temporary_0_5:
+    .long 8
+    .long 7
+    .long 6
+    .long 5
+    .long 4
+    .long 3
+    .long 2
+    .long 1
+

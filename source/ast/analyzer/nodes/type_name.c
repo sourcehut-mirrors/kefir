@@ -39,9 +39,9 @@ kefir_result_t kefir_ast_analyze_type_name_node(struct kefir_mem *mem, const str
     base->properties.category = KEFIR_AST_NODE_CATEGORY_TYPE;
     base->properties.type_props.alignment = 0;
     REQUIRE_OK(kefir_ast_analyze_declaration(
-        mem, context, &node->type_decl.specifiers, node->type_decl.declarator, NULL, &base->properties.type, NULL, NULL,
-        &base->properties.type_props.alignment, KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER, NULL,
-        &base->source_location));
+        mem, context, &node->type_decl.specifiers, node->type_decl.declarator, NULL, &base->properties.type,
+        &base->properties.type_props.storage, NULL, &base->properties.type_props.alignment,
+        KEFIR_AST_DECLARATION_ANALYSIS_IGNORE_ALIGNMENT_SPECIFIER, NULL, &base->source_location));
     REQUIRE(!KEFIR_AST_TYPE_IS_AUTO(base->properties.type),
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location, "Unexpected auto type specifier"));
     return KEFIR_OK;

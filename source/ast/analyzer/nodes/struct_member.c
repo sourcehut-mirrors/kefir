@@ -97,7 +97,8 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type);
     if (base->properties.expression_props.atomic &&
         (KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(unqualified_type))) {
-        REQUIRE_OK(context->allocate_temporary_value(mem, context, type, NULL, &base->source_location,
+        REQUIRE_OK(context->allocate_temporary_value(mem, context, type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+                                                     NULL, &base->source_location,
                                                      &base->properties.expression_props.temporary_identifier));
     }
 

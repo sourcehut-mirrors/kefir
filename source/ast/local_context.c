@@ -68,6 +68,7 @@ static kefir_result_t context_resolve_label_identifier(const struct kefir_ast_co
 
 static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                        const struct kefir_ast_type *type,
+                                                       kefir_ast_scoped_identifier_storage_t storage,
                                                        struct kefir_ast_initializer *initializer,
                                                        const struct kefir_source_location *location,
                                                        struct kefir_ast_temporary_identifier *temp_identifier) {
@@ -78,6 +79,10 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(temp_identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to temporary identifier"));
+
+    if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN) {
+        storage = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO;
+    }
 
     ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
     kefir_id_t temp_id = local_ctx->temporary_ids.next_id++;
@@ -90,8 +95,9 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
     REQUIRE(temp_identifier->identifier != NULL,
             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert temporary identifier into symbol table"));
 
-    REQUIRE_OK(kefir_ast_local_context_define_auto(mem, local_ctx, buf, type, NULL, initializer, NULL, location,
-                                                   &temp_identifier->scoped_id));
+    REQUIRE_OK(local_ctx->context.define_identifier(mem, &local_ctx->context, initializer == NULL, buf, type, storage,
+                                                    KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, initializer, NULL,
+                                                    location, &temp_identifier->scoped_id));
 #undef BUFSIZE
     return KEFIR_OK;
 }

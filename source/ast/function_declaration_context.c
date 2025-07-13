@@ -234,16 +234,39 @@ static kefir_result_t context_resolve_label_identifier(const struct kefir_ast_co
 
 static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                        const struct kefir_ast_type *type,
+                                                       kefir_ast_scoped_identifier_storage_t storage,
                                                        struct kefir_ast_initializer *initializer,
                                                        const struct kefir_source_location *location,
-                                                       struct kefir_ast_temporary_identifier *temp_id) {
-    UNUSED(mem);
-    UNUSED(context);
-    UNUSED(type);
-    UNUSED(initializer);
+                                                       struct kefir_ast_temporary_identifier *temp_identifier) {
     UNUSED(location);
-    UNUSED(temp_id);
-    return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "AST context does not support temporary values");
+    UNUSED(initializer);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(temp_identifier != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to temporary identifier"));
+
+    ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_decl_ctx, context->payload);
+    if (fn_decl_ctx->function_definition_context) {
+        REQUIRE_OK(fn_decl_ctx->parent->allocate_temporary_value(mem, fn_decl_ctx->parent, type, storage, initializer,
+                                                                 location, temp_identifier));
+    } else {
+        kefir_id_t temp_id = fn_decl_ctx->temporary_ids.next_id++;
+
+#define BUFSIZE 128
+        char buf[BUFSIZE] = {0};
+        snprintf(buf, sizeof(buf) - 1, KEFIR_AST_TRANSLATOR_TEMPORARY_LOCAL_IDENTIFIER, temp_id);
+
+        temp_identifier->identifier = kefir_string_pool_insert(mem, context->symbols, buf, NULL);
+        REQUIRE(temp_identifier->identifier != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert temporary identifier into symbol table"));
+
+        REQUIRE_OK(fn_decl_ctx->context.define_identifier(mem, &fn_decl_ctx->context, true, buf, type, storage,
+                                                          KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, NULL, location,
+                                                          &temp_identifier->scoped_id));
+#undef BUFSIZE
+    }
+    return KEFIR_OK;
 }
 
 static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
@@ -422,6 +445,7 @@ kefir_result_t kefir_ast_function_declaration_context_init(struct kefir_mem *mem
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     context->parent = parent;
     context->function_definition_context = function_definition_context;
+    context->temporary_ids.next_id = 0;
 
     REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_on_removal(&context->ordinary_scope,

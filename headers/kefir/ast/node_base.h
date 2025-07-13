@@ -93,6 +93,7 @@ typedef struct kefir_ast_node_properties {
 
     struct {
         kefir_size_t alignment;
+        kefir_ast_scoped_identifier_storage_t storage;
     } type_props;
 
     struct {
