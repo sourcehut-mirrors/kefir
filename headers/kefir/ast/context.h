@@ -22,6 +22,7 @@
 #define KEFIR_AST_CONTEXT_H_
 
 #include "kefir/core/mem.h"
+#include "kefir/core/standard_version.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/scope.h"
 #include "kefir/ast/target_environment.h"
@@ -36,6 +37,7 @@
 typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
 
 typedef struct kefir_ast_context_configuration {
+    kefir_c_language_standard_version_t standard_version;
     struct {
         kefir_bool_t permissive_pointer_conv;
         kefir_bool_t non_strict_qualifiers;

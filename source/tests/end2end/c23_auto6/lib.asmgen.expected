@@ -1,0 +1,72 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global fn1
+.type fn1, @function
+.global fn2
+.type fn2, @function
+.global fn3
+.type fn3, @function
+
+.section .text
+__kefir_text_section_begin:
+fn1:
+__kefir_text_func_fn1_begin:
+    ret
+__kefir_text_func_fn1_end:
+
+fn2:
+__kefir_text_func_fn2_begin:
+    ret
+__kefir_text_func_fn2_end:
+
+fn3:
+__kefir_text_func_fn3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_fn3_label1:
+    cmp $0, %edi
+    jg _kefir_func_fn3_label3
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_fn3_label3:
+    movq %rdi, -16(%rbp)
+    call fn1
+    movq -16(%rbp), %rdi
+    mov %rdi, %rax
+    add $-1, %eax
+    mov %rax, %rdi
+    jmp _kefir_func_fn3_label1
+__kefir_text_func_fn3_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+a:
+    .quad 11529215046068469760, 16385
+
+    .align 8
+c:
+    .quad 0
+
+.section .tdata
+    .align 8
+b:
+    .byte 1
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+

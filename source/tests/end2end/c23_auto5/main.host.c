@@ -18,18 +18,17 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CORE_STANDARD_VERSION_H_
-#define KEFIR_CORE_STANDARD_VERSION_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <complex.h>
+#include "./definitions.h"
 
-#include "kefir/core/base.h"
-
-typedef enum kefir_c_language_standard_version {
-    KEFIR_C17_STANDARD_VERSION = 201710,
-    KEFIR_C23_STANDARD_VERSION = 202311
-} kefir_c_language_standard_version_t;
-
-#define KEFIR_DEFAULT_STANDARD_VERSION KEFIR_C17_STANDARD_VERSION
-
-#define KEFIR_STANDARD_VERSION_AT_LEAST_C23(_version) ((_version) == KEFIR_C23_STANDARD_VERSION)
-
-#endif
+int main(void) {
+    for (unsigned long i = 0; i < 4096; i++) {
+        assert(sum(i) == (i << 3) + i);
+        assert(sum2(i) == ((unsigned char) (i << 3)) + i);
+    }
+    return EXIT_SUCCESS;
+}

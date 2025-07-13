@@ -18,18 +18,28 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CORE_STANDARD_VERSION_H_
-#define KEFIR_CORE_STANDARD_VERSION_H_
+#include <stdlib.h>
+#include <stdio.h>
+#include <assert.h>
+#include <math.h>
+#include <complex.h>
+#include "./definitions.h"
 
-#include "kefir/core/base.h"
-
-typedef enum kefir_c_language_standard_version {
-    KEFIR_C17_STANDARD_VERSION = 201710,
-    KEFIR_C23_STANDARD_VERSION = 202311
-} kefir_c_language_standard_version_t;
-
-#define KEFIR_DEFAULT_STANDARD_VERSION KEFIR_C17_STANDARD_VERSION
-
-#define KEFIR_STANDARD_VERSION_AT_LEAST_C23(_version) ((_version) == KEFIR_C23_STANDARD_VERSION)
-
-#endif
+int main(void) {
+    assert(a == 0xcafebabe0l);
+    assert(fabs(b - 3.14159f) < 1e-5);
+    assert(fabs(creal(c)) < 1e-5);
+    assert(fabs(cimag(c) + 2.71) < 1e-5);
+    assert(d[0] == 1);
+    assert(d[1] == 2);
+    assert(d[2] == 3);
+    assert(d[3] == 4);
+    assert(d[4] == -5);
+    assert(e.a == 100);
+    assert(fabs(e.b - 200.2) < 1e-6);
+    assert(e.c == 300);
+    assert(f->a == -300);
+    assert(fabs(f->b + 200.2) < 1e-6);
+    assert(f->c == -100);
+    return EXIT_SUCCESS;
+}

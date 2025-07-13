@@ -1,0 +1,29 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global fn1
+.type fn1, @function
+.global fn2
+.type fn2, @function
+.global fn3
+.type fn3, @function
+
+.section .text
+__kefir_text_section_begin:
+fn1:
+__kefir_text_func_fn1_begin:
+    ret
+__kefir_text_func_fn1_end:
+
+fn2:
+__kefir_text_func_fn2_begin:
+    ret
+__kefir_text_func_fn2_end:
+
+fn3:
+__kefir_text_func_fn3_begin:
+    ret
+__kefir_text_func_fn3_end:
+
+__kefir_text_section_end:
+

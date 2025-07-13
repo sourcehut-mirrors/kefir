@@ -18,18 +18,12 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CORE_STANDARD_VERSION_H_
-#define KEFIR_CORE_STANDARD_VERSION_H_
+unsigned long sum(unsigned long x) {
+    const volatile auto y = x << 3;
+    return x + y;
+}
 
-#include "kefir/core/base.h"
-
-typedef enum kefir_c_language_standard_version {
-    KEFIR_C17_STANDARD_VERSION = 201710,
-    KEFIR_C23_STANDARD_VERSION = 202311
-} kefir_c_language_standard_version_t;
-
-#define KEFIR_DEFAULT_STANDARD_VERSION KEFIR_C17_STANDARD_VERSION
-
-#define KEFIR_STANDARD_VERSION_AT_LEAST_C23(_version) ((_version) == KEFIR_C23_STANDARD_VERSION)
-
-#endif
+unsigned long sum2(unsigned long x) {
+    const volatile auto unsigned char y = x << 3;
+    return x + y;
+}

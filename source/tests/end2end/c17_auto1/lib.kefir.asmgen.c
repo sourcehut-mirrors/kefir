@@ -18,18 +18,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CORE_STANDARD_VERSION_H_
-#define KEFIR_CORE_STANDARD_VERSION_H_
+#define ASSERT_TYPE(_expr, _type) _Static_assert(_Generic(_expr, _type: 1, default: 0))
 
-#include "kefir/core/base.h"
+void fn1(void) {
+    auto x = (unsigned short) 3;
+    ASSERT_TYPE(x, int);
+}
 
-typedef enum kefir_c_language_standard_version {
-    KEFIR_C17_STANDARD_VERSION = 201710,
-    KEFIR_C23_STANDARD_VERSION = 202311
-} kefir_c_language_standard_version_t;
+void fn2(void) {
+    auto int x = (unsigned short) 3;
+    ASSERT_TYPE(x, int);
+}
 
-#define KEFIR_DEFAULT_STANDARD_VERSION KEFIR_C17_STANDARD_VERSION
-
-#define KEFIR_STANDARD_VERSION_AT_LEAST_C23(_version) ((_version) == KEFIR_C23_STANDARD_VERSION)
-
-#endif
+void fn3(void) {
+    auto long x = (unsigned short) 3;
+    ASSERT_TYPE(x, long);
+}

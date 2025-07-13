@@ -21,6 +21,7 @@
 #include "kefir/ast/analyzer/initializer.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/type_traversal.h"
+#include "kefir/ast/type_conv.h"
 #include "kefir/ast/initializer_traversal.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/hashtreeset.h"
@@ -335,7 +336,8 @@ static kefir_result_t analyze_auto_type(struct kefir_mem *mem, const struct kefi
                                    "Declaration with auto type shall be initialized with an expression"));
 
     struct kefir_ast_node_base *expr = initializer->expression;
-    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(expr->properties.type);
+    const struct kefir_ast_type *unqualified_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, expr->properties.type);
     REQUIRE(unqualified_type->tag != KEFIR_AST_TYPE_VOID,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
                                    "Declaration with auto type shall be initialized with a void type expression"));

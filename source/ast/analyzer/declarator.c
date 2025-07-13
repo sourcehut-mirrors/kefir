@@ -902,10 +902,10 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
         case KEFIR_AST_TYPE_SPECIFIER_AUTO_TYPE:
             REQUIRE(*seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "Cannot combine referenced typeof specifier with others"));
+                                           "Cannot combine auto type specifier with others"));
             REQUIRE(*real_class == REAL_SCALAR,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "Typeof cannot be combined with complex type specifier"));
+                                           "Auto type specifier cannot be combined with complex type specifier"));
 
             *base_type = kefir_ast_type_auto();
             *seq_state = TYPE_SPECIFIER_SEQUENCE_TYPEDEF;
@@ -1060,8 +1060,10 @@ static kefir_result_t resolve_qualification(kefir_ast_type_qualifier_type_t qual
     return KEFIR_OK;
 }
 
-static kefir_result_t resolve_storage_class(const struct kefir_ast_declarator_specifier *decl_specifier,
-                                            kefir_ast_scoped_identifier_storage_t *storage_class) {
+static kefir_result_t resolve_storage_class(const struct kefir_ast_context *context,
+                                            const struct kefir_ast_declarator_specifier *decl_specifier,
+                                            kefir_ast_scoped_identifier_storage_t *storage_class,
+                                            kefir_bool_t *c23_auto_inference) {
     kefir_ast_storage_class_specifier_type_t specifier = decl_specifier->storage_class;
     switch (specifier) {
         case KEFIR_AST_STORAGE_SPECIFIER_TYPEDEF:
@@ -1108,10 +1110,17 @@ static kefir_result_t resolve_storage_class(const struct kefir_ast_declarator_sp
             break;
 
         case KEFIR_AST_STORAGE_SPECIFIER_AUTO:
-            REQUIRE(*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                           "Auto storage class cannot be combined with others"));
-            *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO;
+            if (KEFIR_STANDARD_VERSION_AT_LEAST_C23(context->configuration->standard_version)) {
+                REQUIRE(!*c23_auto_inference,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                               "Duplicate auto storage class specifier"));
+                *c23_auto_inference = true;
+            } else {
+                REQUIRE(*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                               "Auto storage class cannot be combined with others"));
+                *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO;
+            }
             break;
 
         case KEFIR_AST_STORAGE_SPECIFIER_REGISTER:
@@ -1625,6 +1634,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_scoped_identifier_storage_t storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN;
     kefir_ast_function_specifier_t function_specifier = KEFIR_AST_FUNCTION_SPECIFIER_NONE;
+    kefir_bool_t c23_auto_inference = false;
     kefir_size_t alignment_specifier = 0;
 
     kefir_bool_t alignment_specifier_present = false;
@@ -1643,7 +1653,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(
                 break;
 
             case KEFIR_AST_STORAGE_CLASS_SPECIFIER:
-                REQUIRE_OK(resolve_storage_class(declatator_specifier, &storage_class));
+                REQUIRE_OK(resolve_storage_class(context, declatator_specifier, &storage_class, &c23_auto_inference));
                 REQUIRE(storage_class != KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF || !alignment_specifier_present,
                         KEFIR_SET_SOURCE_ERROR(
                             KEFIR_ANALYSIS_ERROR, &declatator_specifier->source_location,
@@ -1667,6 +1677,19 @@ static kefir_result_t analyze_declaration_specifiers_impl(
                 break;
         }
     }
+
+    if (c23_auto_inference) {
+        if (base_type == NULL && seq_state == TYPE_SPECIFIER_SEQUENCE_EMPTY) {
+            base_type = kefir_ast_type_auto();
+        } else {
+            REQUIRE(storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+                    KEFIR_SET_SOURCE_ERROR(
+                        KEFIR_ANALYSIS_ERROR, source_location,
+                        "Auto storage specifier cannot be combined with others in presence of type specifiers"));
+            storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO;
+        }
+    }
+
     REQUIRE_OK(apply_type_signedness(mem, context->type_bundle, signedness,
                                      kefir_ast_declarator_specifier_list_source_location(specifiers), &base_type));
     if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {

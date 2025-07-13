@@ -18,18 +18,16 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_CORE_STANDARD_VERSION_H_
-#define KEFIR_CORE_STANDARD_VERSION_H_
+static auto a = 0xcafebabe0l;
+static auto b = 3.14159f;
+static auto c = -2.71i;
+static auto d = &(static short[]) {1, 2, 3, 4, -5};
+static auto e = (struct S1 {
+    int a;
+    double b;
+    long c : 43;
+}) {100, 200.2, 300};
 
-#include "kefir/core/base.h"
+static auto f = &(struct S1) {-300, -200.2, -100};
 
-typedef enum kefir_c_language_standard_version {
-    KEFIR_C17_STANDARD_VERSION = 201710,
-    KEFIR_C23_STANDARD_VERSION = 202311
-} kefir_c_language_standard_version_t;
-
-#define KEFIR_DEFAULT_STANDARD_VERSION KEFIR_C17_STANDARD_VERSION
-
-#define KEFIR_STANDARD_VERSION_AT_LEAST_C23(_version) ((_version) == KEFIR_C23_STANDARD_VERSION)
-
-#endif
+void *arr[] = {&a, &b, &c, &d, &e, &f};
