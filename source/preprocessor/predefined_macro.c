@@ -53,9 +53,9 @@ static kefir_result_t make_pp_number(struct kefir_mem *mem, struct kefir_token_a
     return KEFIR_OK;
 }
 
-static kefir_result_t make_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols, struct kefir_token_allocator *token_allocator,
-                                     struct kefir_token_buffer *buffer, const char *buf,
-                                     const struct kefir_source_location *source_location) {
+static kefir_result_t make_identifier(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                      struct kefir_token_allocator *token_allocator, struct kefir_token_buffer *buffer,
+                                      const char *buf, const struct kefir_source_location *source_location) {
     struct kefir_token *allocated_token;
     REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
     REQUIRE_OK(kefir_token_new_identifier(mem, symbols, buf, allocated_token));
@@ -216,7 +216,7 @@ MACRO_END
 
 MACRO_PP_NUMBER_FMT(stdc_hosted, 64, "%d", macro_payload->scope->preprocessor->context->environment.hosted ? 1 : 0)
 MACRO_PP_NUMBER_FMT(stdc_version, 64, "%" KEFIR_ULONG_FMT "L",
-                    macro_payload->scope->preprocessor->context->environment.version)
+                    (kefir_ulong_t) macro_payload->scope->preprocessor->context->preprocessor_config->standard_version)
 MACRO_PP_NUMBER_FMT(stdc_iso_10646, 64, "%" KEFIR_ULONG_FMT "L",
                     macro_payload->scope->preprocessor->context->environment.stdc_iso10646)
 MACRO_PP_NUMBER_FMT(stdc_lib_ext1, 64, "%" KEFIR_ULONG_FMT "L",
@@ -419,19 +419,25 @@ FUNCTION_MACRO(has_include_next) {
 }
 MACRO_END
 
-static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor, struct kefir_string_pool *symbols, struct kefir_token_buffer *buffer, struct kefir_token_allocator *token_allocator, struct kefir_preprocessor_token_sequence *seq, const struct kefir_source_location *source_location) {
+static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preprocessor *preprocessor,
+                                     struct kefir_string_pool *symbols, struct kefir_token_buffer *buffer,
+                                     struct kefir_token_allocator *token_allocator,
+                                     struct kefir_preprocessor_token_sequence *seq,
+                                     const struct kefir_source_location *source_location) {
     const struct kefir_token *arg;
     REQUIRE_OK(kefir_preprocessor_token_sequence_skip_whitespaces(mem, seq, &arg, NULL));
-    REQUIRE(arg != NULL, KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+    REQUIRE(arg != NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_embed expects a single header name argument with optional parameters"));
 
     struct kefir_preprocessor_embed_file embed_file;
     kefir_result_t res;
     if (arg->klass == KEFIR_TOKEN_STRING_LITERAL) {
-        REQUIRE(arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
-                    arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
-                                       "Macro __has_embed expects a single header name argument with optional parameters"));
+        REQUIRE(
+            arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE ||
+                arg->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_UNICODE8,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                   "Macro __has_embed expects a single header name argument with optional parameters"));
 
         const char *filepath = arg->string_literal.literal;
         if (arg->string_literal.raw_literal) {
@@ -439,9 +445,8 @@ static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preproc
                 kefir_preprocessor_convert_raw_string_into_multibyte(mem, preprocessor->lexer.symbols, arg, &filepath));
         }
 
-        res = preprocessor->context->source_locator->open_embed(
-            mem, preprocessor->context->source_locator, filepath, false, preprocessor->current_file,
-            &embed_file);
+        res = preprocessor->context->source_locator->open_embed(mem, preprocessor->context->source_locator, filepath,
+                                                                false, preprocessor->current_file, &embed_file);
     } else if (arg->klass == KEFIR_TOKEN_PP_HEADER_NAME) {
         res = preprocessor->context->source_locator->open_embed(
             mem, preprocessor->context->source_locator, arg->pp_header_name.header_name, arg->pp_header_name.system,
@@ -449,10 +454,10 @@ static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preproc
     } else {
         const char *header_name;
         res = kefir_preprocessor_construct_system_header_name_from_sequence(mem, seq, preprocessor->lexer.symbols,
-                                                                          &header_name);
-        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open_embed(mem, preprocessor->context->source_locator,
-                                                                        header_name, true, preprocessor->current_file,
-                                                                        &embed_file));
+                                                                            &header_name);
+        REQUIRE_CHAIN(&res, preprocessor->context->source_locator->open_embed(
+                                mem, preprocessor->context->source_locator, header_name, true,
+                                preprocessor->current_file, &embed_file));
     }
 
     kefir_bool_t found = false;
@@ -476,17 +481,16 @@ static kefir_result_t has_embed_impl(struct kefir_mem *mem, struct kefir_preproc
             break;
         }
         REQUIRE_OK(res);
-        if (arg->klass == KEFIR_TOKEN_IDENTIFIER &&
-            strcmp(arg->identifier, "limit") == 0) {
+        if (arg->klass == KEFIR_TOKEN_IDENTIFIER && strcmp(arg->identifier, "limit") == 0) {
             kefir_size_t limit;
-            REQUIRE_OK(kefir_preprocessor_scan_embed_limit(mem, preprocessor, token_allocator, seq, &arg->source_location, &limit));
+            REQUIRE_OK(kefir_preprocessor_scan_embed_limit(mem, preprocessor, token_allocator, seq,
+                                                           &arg->source_location, &limit));
             if (limit == 0) {
                 empty = true;
             }
         } else if (arg->klass == KEFIR_TOKEN_IDENTIFIER &&
-            (strcmp(arg->identifier, "prefix") == 0 ||
-             strcmp(arg->identifier, "suffix") == 0 ||
-             strcmp(arg->identifier, "if_empty") == 0)) {
+                   (strcmp(arg->identifier, "prefix") == 0 || strcmp(arg->identifier, "suffix") == 0 ||
+                    strcmp(arg->identifier, "if_empty") == 0)) {
             REQUIRE_OK(kefir_preprocessor_collect_balanced_parentheses_into(mem, seq, NULL, &arg->source_location));
         } else if (arg->klass == KEFIR_TOKEN_IDENTIFIER) {
             has_nonstandard_params = true;
@@ -516,7 +520,8 @@ FUNCTION_MACRO(has_embed) {
 
     struct kefir_preprocessor_token_sequence seq;
     REQUIRE_OK(kefir_preprocessor_token_sequence_init(&seq, NULL));
-    kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, &seq, arg_buffer, KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
+    kefir_result_t res = kefir_preprocessor_token_sequence_push_front(mem, &seq, arg_buffer,
+                                                                      KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL);
     REQUIRE_CHAIN(&res, has_embed_impl(mem, preprocessor, symbols, buffer, token_allocator, &seq, source_location));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_preprocessor_token_sequence_free(mem, &seq);

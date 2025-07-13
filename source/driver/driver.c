@@ -144,6 +144,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     REQUIRE_OK(kefir_compiler_runner_configuration_init(compiler_config));
 
     compiler_config->verbose = config->flags.verbose;
+    compiler_config->standard_version = config->standard_version;
 
 #define ADD_INCLUDE_DIR(_iter, _quote, _system)                                                                     \
     do {                                                                                                            \

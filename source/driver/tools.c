@@ -31,6 +31,15 @@
 static kefir_result_t output_compiler_config(FILE *output,
                                              const struct kefir_compiler_runner_configuration *configuration) {
     fprintf(output, "+ kefir -cc1");
+    switch (configuration->standard_version) {
+        case KEFIR_C17_STANDARD_VERSION:
+            fprintf(output, "--c17-standard");
+            break;
+
+        case KEFIR_C23_STANDARD_VERSION:
+            fprintf(output, "--c23-standard");
+            break;
+    }
     if (configuration->dependency_output.output_dependencies) {
         fprintf(output, " --dump-dependencies");
         if (configuration->dependency_output.output_system_deps) {

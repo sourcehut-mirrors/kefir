@@ -201,6 +201,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;
     compiler.preprocessor_configuration.include_next = options->features.include_next;
     compiler.preprocessor_configuration.va_args_concat = options->features.va_args_concat;
+    compiler.preprocessor_configuration.standard_version = options->standard_version;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
     for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES; *attribute != NULL; ++attribute) {
         REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_attributes,

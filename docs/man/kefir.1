@@ -84,6 +84,9 @@ Preprocess C-language source files, print results to standard output
 .It Fl P
 Preprocess C-language source files, print results to standard output
 .\"
+.It Fl std= Ar standard
+Determine language standard [work in progress].
+.\"
 .It Fl preprocess\-save
 Preprocess C-language source files, save results
 .\"
@@ -328,6 +331,12 @@ flag)
 .Ss COMPILER OPTIONS
 Extra compiler options available via -W switch:
 .Bl -tag -width Ds
+.\"
+.It Fl \-c17-standard
+Use C17 language language standard.
+.\"
+.It Fl \-c23-standard
+Use C23 language language standard [work in progress].
 .\"
 .It Fl \-pp-timestamp Ar timestamp
 Override preprocessor timestamp

@@ -33,6 +33,7 @@
 #include "kefir/core/data_model.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/core/standard_version.h"
 #include <time.h>
 
 typedef struct kefir_preprocessor_context kefir_preprocessor_context_t;
@@ -61,7 +62,6 @@ typedef struct kefir_preprocessor_context_extensions {
 typedef struct kefir_preprocessor_environment {
     time_t timestamp;
     kefir_bool_t hosted;
-    kefir_ulong_t version;
     kefir_ulong_t stdc_iso10646;
     kefir_bool_t stdc_mb_might_neq_wc;
     kefir_bool_t stdc_utf16;
@@ -84,6 +84,7 @@ typedef struct kefir_preprocessor_configuration {
     kefir_bool_t include_next;
     kefir_bool_t va_args_concat;
     kefir_bool_t assembly_mode;
+    kefir_c_language_standard_version_t standard_version;
 } kefir_preprocessor_configuration_t;
 
 kefir_result_t kefir_preprocessor_configuration_default(struct kefir_preprocessor_configuration *);
@@ -153,13 +154,18 @@ kefir_result_t kefir_preprocessor_token_convert_buffer(struct kefir_mem *, struc
 kefir_result_t kefir_preprocessor_construct_system_header_name_from_buffer(struct kefir_mem *,
                                                                            struct kefir_token_buffer *,
                                                                            struct kefir_string_pool *, const char **);
-kefir_result_t kefir_preprocessor_construct_system_header_name_from_sequence(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
-                                             struct kefir_string_pool *, const char **);
+kefir_result_t kefir_preprocessor_construct_system_header_name_from_sequence(struct kefir_mem *,
+                                                                             struct kefir_preprocessor_token_sequence *,
+                                                                             struct kefir_string_pool *, const char **);
 kefir_result_t kefir_preprocessor_convert_raw_string_into_multibyte(struct kefir_mem *, struct kefir_string_pool *,
                                                                     const struct kefir_token *, const char **);
-kefir_result_t kefir_preprocessor_scan_embed_limit(struct kefir_mem *, struct kefir_preprocessor *, struct kefir_token_allocator *, struct kefir_preprocessor_token_sequence *, const struct kefir_source_location *, kefir_size_t *);
-kefir_result_t kefir_preprocessor_collect_balanced_parentheses_into(struct kefir_mem *, struct kefir_preprocessor_token_sequence *,
-                                               struct kefir_token_buffer *,
-                                               const struct kefir_source_location *);
+kefir_result_t kefir_preprocessor_scan_embed_limit(struct kefir_mem *, struct kefir_preprocessor *,
+                                                   struct kefir_token_allocator *,
+                                                   struct kefir_preprocessor_token_sequence *,
+                                                   const struct kefir_source_location *, kefir_size_t *);
+kefir_result_t kefir_preprocessor_collect_balanced_parentheses_into(struct kefir_mem *,
+                                                                    struct kefir_preprocessor_token_sequence *,
+                                                                    struct kefir_token_buffer *,
+                                                                    const struct kefir_source_location *);
 
 #endif

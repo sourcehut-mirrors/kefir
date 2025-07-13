@@ -26,6 +26,7 @@
 #include "kefir/core/list.h"
 #include "kefir/core/hashtree.h"
 #include "kefir/core/hashtreeset.h"
+#include "kefir/core/standard_version.h"
 #include "kefir/compiler/profile.h"
 #include <time.h>
 
@@ -64,6 +65,7 @@ typedef struct kefir_compiler_runner_configuration {
     const char *optimizer_pipeline_spec;
     kefir_bool_t verbose;
     kefir_bool_t preprocessor_assembly_mode;
+    kefir_c_language_standard_version_t standard_version;
 
     struct kefir_compiler_profile_configuration target_profile_config;
 

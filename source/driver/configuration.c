@@ -117,6 +117,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
 
     config->stage = KEFIR_DRIVER_STAGE_LINK;
     config->output_file = NULL;
+    config->standard_version = KEFIR_DEFAULT_STANDARD_VERSION;
 
     REQUIRE_OK(kefir_list_init(&config->arguments));
     REQUIRE_OK(kefir_list_on_remove(&config->arguments, list_entry_free, NULL));

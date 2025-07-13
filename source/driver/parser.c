@@ -225,7 +225,16 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Compiler flags
-        else if (STRNCMP("-O", arg) == 0) {
+        else if (STRNCMP("-std=", arg) == 0) {
+            const char *standard_string = arg + 5;
+            if (strcmp(standard_string, "c23") == 0 || strcmp(standard_string, "c2x") == 0 ||
+                strcmp(standard_string, "iso9899:2024") == 0 || strcmp(standard_string, "gnu23") == 0 ||
+                strcmp(standard_string, "gnu2x") == 0) {
+                config->standard_version = KEFIR_C23_STANDARD_VERSION;
+            } else {
+                config->standard_version = KEFIR_C17_STANDARD_VERSION;
+            }
+        } else if (STRNCMP("-O", arg) == 0) {
             kefir_uint_t level;
             if (strlen(arg) == 2) {
                 EXPECT_ARG;

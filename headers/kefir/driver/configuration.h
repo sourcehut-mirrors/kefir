@@ -23,6 +23,7 @@
 
 #include "kefir/core/list.h"
 #include "kefir/core/string_pool.h"
+#include "kefir/core/standard_version.h"
 #include "kefir/driver/target.h"
 
 typedef enum kefir_driver_assembler_target {
@@ -132,6 +133,7 @@ typedef struct kefir_driver_configuration {
     struct kefir_list after_include_directories;
     struct kefir_list include_files;
     struct kefir_driver_target target;
+    kefir_c_language_standard_version_t standard_version;
 
     struct {
         kefir_int_t optimization_level;

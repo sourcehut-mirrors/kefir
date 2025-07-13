@@ -227,6 +227,10 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
         SIMPLE(0, "no-codegen-" name, false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, field)
 
     SIMPLE('o', "output", true, KEFIR_CLI_OPTION_ACTION_ASSIGN_STRARG, 0, output_filepath),
+    SIMPLE(0, "c17-standard", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_C17_STANDARD_VERSION,
+           standard_version),
+    SIMPLE(0, "c23-standard", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_C23_STANDARD_VERSION,
+           standard_version),
     PREHOOK('p', "preprocess", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
             action, preprocess_hook),
     PREHOOK('P', "skip-preprocessor", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, skip_preprocessor,
