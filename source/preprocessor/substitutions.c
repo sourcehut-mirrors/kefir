@@ -318,13 +318,19 @@ static kefir_result_t insert_pp_number(struct kefir_mem *mem, struct kefir_token
 }
 
 static kefir_result_t substitute_unknown_identifier(struct kefir_mem *mem,
+                                                    kefir_c_language_standard_version_t standard_version,
                                                     struct kefir_token_allocator *token_allocator,
                                                     struct kefir_preprocessor_token_sequence *seq,
+                                                    const char *identifier,
                                                     kefir_preprocessor_substitution_context_t subst_context,
                                                     const struct kefir_source_location *source_location) {
     REQUIRE(subst_context == KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION,
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Macro not found for specified identifier"));
-    REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "0", source_location));
+    if (strcmp(identifier, "true") == 0 && KEFIR_STANDARD_VERSION_AT_LEAST_C23(standard_version)) {
+        REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "1", source_location));
+    } else {
+        REQUIRE_OK(insert_pp_number(mem, token_allocator, seq, "0", source_location));
+    }
     return KEFIR_OK;
 }
 
@@ -396,7 +402,8 @@ static kefir_result_t substitute_identifier(struct kefir_mem *mem, struct kefir_
         kefir_result_t res = preprocessor->macros->locate(preprocessor->macros, identifier, &macro);
         if (res != KEFIR_OK) {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
-            REQUIRE_OK(substitute_unknown_identifier(mem, token_allocator, seq, subst_context, source_location));
+            REQUIRE_OK(substitute_unknown_identifier(mem, preprocessor->context->preprocessor_config->standard_version,
+                                                     token_allocator, seq, identifier, subst_context, source_location));
             return KEFIR_OK;
         }
 
@@ -408,7 +415,8 @@ static kefir_result_t substitute_identifier(struct kefir_mem *mem, struct kefir_
         }
 
         if (res == KEFIR_NO_MATCH && subst_context == KEFIR_PREPROCESSOR_SUBSTITUTION_IF_CONDITION) {
-            REQUIRE_OK(substitute_unknown_identifier(mem, token_allocator, seq, subst_context, source_location));
+            REQUIRE_OK(substitute_unknown_identifier(mem, preprocessor->context->preprocessor_config->standard_version,
+                                                     token_allocator, seq, identifier, subst_context, source_location));
         } else {
             REQUIRE_OK(res);
         }

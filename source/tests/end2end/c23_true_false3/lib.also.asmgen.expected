@@ -1,0 +1,35 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global F
+.type F, @object
+.global T
+.type T, @object
+.global getF
+.type getF, @function
+.global getT
+.type getT, @function
+
+.section .text
+__kefir_text_section_begin:
+getF:
+__kefir_text_func_getF_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_getF_end:
+
+getT:
+__kefir_text_func_getT_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_getT_end:
+
+__kefir_text_section_end:
+
+.section .data
+F:
+    .byte 0
+
+T:
+    .byte 1
+

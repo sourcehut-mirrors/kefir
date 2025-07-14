@@ -80,6 +80,8 @@ static const struct KeywordEntry {
                 {U"_Atomic", KEFIR_KEYWORD_ATOMIC, KEFIR_C17_STANDARD_VERSION},
                 {U"_Bool", KEFIR_KEYWORD_BOOL, KEFIR_C17_STANDARD_VERSION},
                 {U"bool", KEFIR_KEYWORD_BOOL, KEFIR_C23_STANDARD_VERSION},
+                {U"true", KEFIR_KEYWORD_TRUE, KEFIR_C23_STANDARD_VERSION},
+                {U"false", KEFIR_KEYWORD_FALSE, KEFIR_C23_STANDARD_VERSION},
                 {U"_Complex", KEFIR_KEYWORD_COMPLEX, KEFIR_C17_STANDARD_VERSION},
                 {U"__complex__", KEFIR_KEYWORD_COMPLEX, KEFIR_C17_STANDARD_VERSION},
                 {U"_Generic", KEFIR_KEYWORD_GENERIC, KEFIR_C17_STANDARD_VERSION},

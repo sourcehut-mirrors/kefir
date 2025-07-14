@@ -25,6 +25,19 @@
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                      struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
+
+    if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_TRUE)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, true)),
+                      "Failed to allocate AST constant");
+        return KEFIR_OK;
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FALSE)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)),
+                      "Failed to allocate AST constant");
+        return KEFIR_OK;
+    }
+
     REQUIRE(PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_CONSTANT),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Expected constant token"));
     const struct kefir_token *token = PARSER_CURSOR(parser, 0);

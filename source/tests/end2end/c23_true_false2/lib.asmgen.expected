@@ -1,0 +1,56 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "bool"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "true"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "bool"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "false"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]
