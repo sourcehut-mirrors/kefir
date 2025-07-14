@@ -1,0 +1,7 @@
+
+
+alignas(long) bool y = 0;
+static_assert(1);
+thread_local int x = alignof(y);
+typeof(x) z = ~0;
+typeof_unqual(z) w = -1;

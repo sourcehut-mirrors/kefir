@@ -1,0 +1,215 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "alignas"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "long"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "bool"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 0
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "static_assert"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 1
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "thread_local"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "alignof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "typeof"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "z"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "~"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 0
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "typeof_unqual"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "("
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "z"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")"
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "w"
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "="
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "-"
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 1
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";"
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false
+    }
+]

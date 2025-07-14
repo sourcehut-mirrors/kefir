@@ -50,6 +50,7 @@ typedef struct kefir_lexer {
     struct kefir_lexer_source_cursor *cursor;
     const struct kefir_lexer_context *context;
     kefir_lexer_mode_t mode;
+    kefir_c_language_standard_version_t standard_version;
 
     struct kefir_trie punctuators;
     struct kefir_trie keywords;
@@ -61,8 +62,9 @@ typedef struct kefir_lexer {
 typedef kefir_result_t (*kefir_lexer_callback_fn_t)(struct kefir_mem *, struct kefir_lexer *, void *);
 
 kefir_result_t kefir_lexer_init(struct kefir_mem *, struct kefir_lexer *, kefir_lexer_mode_t,
-                                struct kefir_string_pool *, struct kefir_lexer_source_cursor *,
-                                const struct kefir_lexer_context *, const struct kefir_lexer_extensions *);
+                                kefir_c_language_standard_version_t, struct kefir_string_pool *,
+                                struct kefir_lexer_source_cursor *, const struct kefir_lexer_context *,
+                                const struct kefir_lexer_extensions *);
 kefir_result_t kefir_lexer_free(struct kefir_mem *, struct kefir_lexer *);
 kefir_result_t kefir_lexer_apply(struct kefir_mem *, struct kefir_lexer *, kefir_lexer_callback_fn_t, void *);
 kefir_result_t kefir_lexer_next(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);

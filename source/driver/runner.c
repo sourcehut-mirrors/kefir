@@ -195,7 +195,8 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     REQUIRE_OK(load_extension_lib(mem, options, &extensions, &extension_lib));
 
     REQUIRE_OK(kefir_compiler_profile(mem, &profile, options->target_profile, &options->target_profile_config));
-    REQUIRE_OK(kefir_compiler_context_init(mem, &compiler, &profile, source_locator, extensions));
+    REQUIRE_OK(
+        kefir_compiler_context_init(mem, &compiler, options->standard_version, &profile, source_locator, extensions));
 
     compiler.preprocessor_configuration.assembly_mode = options->preprocessor_assembly_mode;
     compiler.preprocessor_configuration.named_macro_vararg = options->features.named_macro_vararg;

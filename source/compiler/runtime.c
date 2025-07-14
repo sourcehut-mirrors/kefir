@@ -136,7 +136,7 @@ static kefir_result_t generate_runtime_functions(struct kefir_mem *mem, FILE *ou
     struct kefir_compiler_profile profile = *hooks->compiler_context->profile;
     profile.runtime_hooks_enabled = false;
     struct kefir_compiler_context context;
-    REQUIRE_OK(kefir_compiler_context_init(mem, &context, &profile, &source_locator, NULL));
+    REQUIRE_OK(kefir_compiler_context_init(mem, &context, KEFIR_C17_STANDARD_VERSION, &profile, &source_locator, NULL));
 
     context.codegen_configuration = hooks->compiler_context->codegen_configuration;
     context.codegen_configuration.debug_info = false;

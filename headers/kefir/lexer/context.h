@@ -24,6 +24,7 @@
 #include "kefir/lexer/base.h"
 #include "kefir/core/basic-types.h"
 #include "kefir/core/data_model.h"
+#include "kefir/core/standard_version.h"
 
 typedef struct kefir_lexer_context {
     kefir_uint64_t integer_max_value;

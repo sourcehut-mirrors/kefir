@@ -56,8 +56,8 @@ kefir_result_t make_unit(struct kefir_mem *mem, const struct kefir_ast_context *
     struct kefir_token_allocator token_allocator;
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, SOURCE_CODE, sizeof(SOURCE_CODE), ""));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
-    REQUIRE_OK(
-        kefir_lexer_init(mem, &lexer, KEFIR_LEXER_C_MODE, context->symbols, &source_cursor, &parser_context, NULL));
+    REQUIRE_OK(kefir_lexer_init(mem, &lexer, KEFIR_LEXER_C_MODE, KEFIR_DEFAULT_STANDARD_VERSION, context->symbols,
+                                &source_cursor, &parser_context, NULL));
     REQUIRE_OK(kefir_token_buffer_init(&tokens));
     REQUIRE_OK(kefir_token_allocator_init(&token_allocator));
     REQUIRE_OK(kefir_lexer_populate_buffer(mem, &token_allocator, &tokens, &lexer));

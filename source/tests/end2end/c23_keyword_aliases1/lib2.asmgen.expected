@@ -1,0 +1,174 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "alignment_specifier",
+                    "alignment": {
+                        "class": "type_name",
+                        "specifiers": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "long",
+                                "attributes": []
+                            }
+                        ],
+                        "declarator": {
+                            "class": "abstract",
+                            "attributes": []
+                        }
+                    },
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "bool",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "y",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 0
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "static_assertion",
+            "assertion": {
+                "class": "constant",
+                "type": "integer",
+                "value": 1
+            },
+            "string_literal": null
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "storage_class",
+                    "storage": "thread_local",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "x",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "alignof",
+                            "argument": {
+                                "class": "identifier",
+                                "identifier": "y"
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "typeof",
+                    "qualified": true,
+                    "node": {
+                        "class": "identifier",
+                        "identifier": "x"
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "z",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "invert",
+                            "argument": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 0
+                            }
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "typeof",
+                    "qualified": false,
+                    "node": {
+                        "class": "identifier",
+                        "identifier": "z"
+                    },
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "w",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "negate",
+                            "argument": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 1
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

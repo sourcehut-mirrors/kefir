@@ -21,80 +21,87 @@
 #include "kefir/lexer/lexer.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/standard_version.h"
 #include "kefir/util/char32.h"
 
 static const struct KeywordEntry {
     const kefir_char32_t *literal;
     kefir_keyword_token_t keyword;
-} KEYWORDS[] = {
-    {U"auto", KEFIR_KEYWORD_AUTO},
-    {U"break", KEFIR_KEYWORD_BREAK},
-    {U"case", KEFIR_KEYWORD_CASE},
-    {U"char", KEFIR_KEYWORD_CHAR},
-    {U"__const", KEFIR_KEYWORD_CONST},
-    {U"const", KEFIR_KEYWORD_CONST},
-    {U"continue", KEFIR_KEYWORD_CONTINUE},
-    {U"default", KEFIR_KEYWORD_DEFAULT},
-    {U"do", KEFIR_KEYWORD_DO},
-    {U"double", KEFIR_KEYWORD_DOUBLE},
-    {U"else", KEFIR_KEYWORD_ELSE},
-    {U"enum", KEFIR_KEYWORD_ENUM},
-    {U"extern", KEFIR_KEYWORD_EXTERN},
-    {U"float", KEFIR_KEYWORD_FLOAT},
-    {U"for", KEFIR_KEYWORD_FOR},
-    {U"goto", KEFIR_KEYWORD_GOTO},
-    {U"if", KEFIR_KEYWORD_IF},
-    {U"inline", KEFIR_KEYWORD_INLINE},
-    {U"__inline__", KEFIR_KEYWORD_INLINE},
-    {U"__inline", KEFIR_KEYWORD_INLINE},
-    {U"int", KEFIR_KEYWORD_INT},
-    {U"long", KEFIR_KEYWORD_LONG},
-    {U"register", KEFIR_KEYWORD_REGISTER},
-    {U"restrict", KEFIR_KEYWORD_RESTRICT},
-    {U"__restrict__", KEFIR_KEYWORD_RESTRICT},
-    {U"__restrict", KEFIR_KEYWORD_RESTRICT},
-    {U"return", KEFIR_KEYWORD_RETURN},
-    {U"short", KEFIR_KEYWORD_SHORT},
-    {U"signed", KEFIR_KEYWORD_SIGNED},
-    {U"__signed__", KEFIR_KEYWORD_SIGNED},
-    {U"__signed", KEFIR_KEYWORD_SIGNED},
-    {U"sizeof", KEFIR_KEYWORD_SIZEOF},
-    {U"static", KEFIR_KEYWORD_STATIC},
-    {U"struct", KEFIR_KEYWORD_STRUCT},
-    {U"switch", KEFIR_KEYWORD_SWITCH},
-    {U"typedef", KEFIR_KEYWORD_TYPEDEF},
-    {U"union", KEFIR_KEYWORD_UNION},
-    {U"unsigned", KEFIR_KEYWORD_UNSIGNED},
-    {U"void", KEFIR_KEYWORD_VOID},
-    {U"volatile", KEFIR_KEYWORD_VOLATILE},
-    {U"__volatile__", KEFIR_KEYWORD_VOLATILE},
-    {U"__volatile", KEFIR_KEYWORD_VOLATILE},
-    {U"while", KEFIR_KEYWORD_WHILE},
-    {U"_Alignas", KEFIR_KEYWORD_ALIGNAS},
-    {U"_Alignof", KEFIR_KEYWORD_ALIGNOF},
-    {U"__alignof__", KEFIR_KEYWORD_ALIGNOF},
-    {U"__alignof", KEFIR_KEYWORD_ALIGNOF},
-    {U"_Atomic", KEFIR_KEYWORD_ATOMIC},
-    {U"_Bool", KEFIR_KEYWORD_BOOL},
-    {U"_Complex", KEFIR_KEYWORD_COMPLEX},
-    {U"__complex__", KEFIR_KEYWORD_COMPLEX},
-    {U"_Generic", KEFIR_KEYWORD_GENERIC},
-    {U"_Imaginary", KEFIR_KEYWORD_IMAGINARY},
-    {U"_Noreturn", KEFIR_KEYWORD_NORETURN},
-    {U"_Static_assert", KEFIR_KEYWORD_STATIC_ASSERT},
-    {U"_Thread_local", KEFIR_KEYWORD_THREAD_LOCAL},
-    {U"__attribute__", KEFIR_KEYWORD_ATTRIBUTE},
-    {U"__attribute", KEFIR_KEYWORD_ATTRIBUTE},
-    {U"asm", KEFIR_KEYWORD_ASM},
-    {U"__asm__", KEFIR_KEYWORD_ASM},
-    {U"__asm", KEFIR_KEYWORD_ASM},
-    {U"__typeof__", KEFIR_KEYWORD_TYPEOF},
-    {U"__typeof", KEFIR_KEYWORD_TYPEOF},
-    {U"__typeof_unqual__", KEFIR_KEYWORD_TYPEOF_UNQUAL},
-    {U"__typeof_unqual", KEFIR_KEYWORD_TYPEOF_UNQUAL},
-    {U"__auto_type", KEFIR_KEYWORD_AUTO_TYPE},
-    {U"_BitInt", KEFIR_KEYWORD_BITINT},
-};
+    kefir_c_language_standard_version_t min_standard_version;
+} KEYWORDS[] = {{U"auto", KEFIR_KEYWORD_AUTO, KEFIR_C17_STANDARD_VERSION},
+                {U"break", KEFIR_KEYWORD_BREAK, KEFIR_C17_STANDARD_VERSION},
+                {U"case", KEFIR_KEYWORD_CASE, KEFIR_C17_STANDARD_VERSION},
+                {U"char", KEFIR_KEYWORD_CHAR, KEFIR_C17_STANDARD_VERSION},
+                {U"__const", KEFIR_KEYWORD_CONST, KEFIR_C17_STANDARD_VERSION},
+                {U"const", KEFIR_KEYWORD_CONST, KEFIR_C17_STANDARD_VERSION},
+                {U"continue", KEFIR_KEYWORD_CONTINUE, KEFIR_C17_STANDARD_VERSION},
+                {U"default", KEFIR_KEYWORD_DEFAULT, KEFIR_C17_STANDARD_VERSION},
+                {U"do", KEFIR_KEYWORD_DO, KEFIR_C17_STANDARD_VERSION},
+                {U"double", KEFIR_KEYWORD_DOUBLE, KEFIR_C17_STANDARD_VERSION},
+                {U"else", KEFIR_KEYWORD_ELSE, KEFIR_C17_STANDARD_VERSION},
+                {U"enum", KEFIR_KEYWORD_ENUM, KEFIR_C17_STANDARD_VERSION},
+                {U"extern", KEFIR_KEYWORD_EXTERN, KEFIR_C17_STANDARD_VERSION},
+                {U"float", KEFIR_KEYWORD_FLOAT, KEFIR_C17_STANDARD_VERSION},
+                {U"for", KEFIR_KEYWORD_FOR, KEFIR_C17_STANDARD_VERSION},
+                {U"goto", KEFIR_KEYWORD_GOTO, KEFIR_C17_STANDARD_VERSION},
+                {U"if", KEFIR_KEYWORD_IF, KEFIR_C17_STANDARD_VERSION},
+                {U"inline", KEFIR_KEYWORD_INLINE, KEFIR_C17_STANDARD_VERSION},
+                {U"__inline__", KEFIR_KEYWORD_INLINE, KEFIR_C17_STANDARD_VERSION},
+                {U"__inline", KEFIR_KEYWORD_INLINE, KEFIR_C17_STANDARD_VERSION},
+                {U"int", KEFIR_KEYWORD_INT, KEFIR_C17_STANDARD_VERSION},
+                {U"long", KEFIR_KEYWORD_LONG, KEFIR_C17_STANDARD_VERSION},
+                {U"register", KEFIR_KEYWORD_REGISTER, KEFIR_C17_STANDARD_VERSION},
+                {U"restrict", KEFIR_KEYWORD_RESTRICT, KEFIR_C17_STANDARD_VERSION},
+                {U"__restrict__", KEFIR_KEYWORD_RESTRICT, KEFIR_C17_STANDARD_VERSION},
+                {U"__restrict", KEFIR_KEYWORD_RESTRICT, KEFIR_C17_STANDARD_VERSION},
+                {U"return", KEFIR_KEYWORD_RETURN, KEFIR_C17_STANDARD_VERSION},
+                {U"short", KEFIR_KEYWORD_SHORT, KEFIR_C17_STANDARD_VERSION},
+                {U"signed", KEFIR_KEYWORD_SIGNED, KEFIR_C17_STANDARD_VERSION},
+                {U"__signed__", KEFIR_KEYWORD_SIGNED, KEFIR_C17_STANDARD_VERSION},
+                {U"__signed", KEFIR_KEYWORD_SIGNED, KEFIR_C17_STANDARD_VERSION},
+                {U"sizeof", KEFIR_KEYWORD_SIZEOF, KEFIR_C17_STANDARD_VERSION},
+                {U"static", KEFIR_KEYWORD_STATIC, KEFIR_C17_STANDARD_VERSION},
+                {U"struct", KEFIR_KEYWORD_STRUCT, KEFIR_C17_STANDARD_VERSION},
+                {U"switch", KEFIR_KEYWORD_SWITCH, KEFIR_C17_STANDARD_VERSION},
+                {U"typedef", KEFIR_KEYWORD_TYPEDEF, KEFIR_C17_STANDARD_VERSION},
+                {U"union", KEFIR_KEYWORD_UNION, KEFIR_C17_STANDARD_VERSION},
+                {U"unsigned", KEFIR_KEYWORD_UNSIGNED, KEFIR_C17_STANDARD_VERSION},
+                {U"void", KEFIR_KEYWORD_VOID, KEFIR_C17_STANDARD_VERSION},
+                {U"volatile", KEFIR_KEYWORD_VOLATILE, KEFIR_C17_STANDARD_VERSION},
+                {U"__volatile__", KEFIR_KEYWORD_VOLATILE, KEFIR_C17_STANDARD_VERSION},
+                {U"__volatile", KEFIR_KEYWORD_VOLATILE, KEFIR_C17_STANDARD_VERSION},
+                {U"while", KEFIR_KEYWORD_WHILE, KEFIR_C17_STANDARD_VERSION},
+                {U"_Alignas", KEFIR_KEYWORD_ALIGNAS, KEFIR_C17_STANDARD_VERSION},
+                {U"alignas", KEFIR_KEYWORD_ALIGNAS, KEFIR_C23_STANDARD_VERSION},
+                {U"_Alignof", KEFIR_KEYWORD_ALIGNOF, KEFIR_C17_STANDARD_VERSION},
+                {U"__alignof__", KEFIR_KEYWORD_ALIGNOF, KEFIR_C17_STANDARD_VERSION},
+                {U"__alignof", KEFIR_KEYWORD_ALIGNOF, KEFIR_C17_STANDARD_VERSION},
+                {U"alignof", KEFIR_KEYWORD_ALIGNOF, KEFIR_C23_STANDARD_VERSION},
+                {U"_Atomic", KEFIR_KEYWORD_ATOMIC, KEFIR_C17_STANDARD_VERSION},
+                {U"_Bool", KEFIR_KEYWORD_BOOL, KEFIR_C17_STANDARD_VERSION},
+                {U"bool", KEFIR_KEYWORD_BOOL, KEFIR_C23_STANDARD_VERSION},
+                {U"_Complex", KEFIR_KEYWORD_COMPLEX, KEFIR_C17_STANDARD_VERSION},
+                {U"__complex__", KEFIR_KEYWORD_COMPLEX, KEFIR_C17_STANDARD_VERSION},
+                {U"_Generic", KEFIR_KEYWORD_GENERIC, KEFIR_C17_STANDARD_VERSION},
+                {U"_Imaginary", KEFIR_KEYWORD_IMAGINARY, KEFIR_C17_STANDARD_VERSION},
+                {U"_Noreturn", KEFIR_KEYWORD_NORETURN, KEFIR_C17_STANDARD_VERSION},
+                {U"_Static_assert", KEFIR_KEYWORD_STATIC_ASSERT, KEFIR_C17_STANDARD_VERSION},
+                {U"static_assert", KEFIR_KEYWORD_STATIC_ASSERT, KEFIR_C23_STANDARD_VERSION},
+                {U"_Thread_local", KEFIR_KEYWORD_THREAD_LOCAL, KEFIR_C17_STANDARD_VERSION},
+                {U"thread_local", KEFIR_KEYWORD_THREAD_LOCAL, KEFIR_C23_STANDARD_VERSION},
+                {U"__attribute__", KEFIR_KEYWORD_ATTRIBUTE, KEFIR_C17_STANDARD_VERSION},
+                {U"__attribute", KEFIR_KEYWORD_ATTRIBUTE, KEFIR_C17_STANDARD_VERSION},
+                {U"asm", KEFIR_KEYWORD_ASM, KEFIR_C17_STANDARD_VERSION},
+                {U"__asm__", KEFIR_KEYWORD_ASM, KEFIR_C17_STANDARD_VERSION},
+                {U"__asm", KEFIR_KEYWORD_ASM, KEFIR_C17_STANDARD_VERSION},
+                {U"__typeof__", KEFIR_KEYWORD_TYPEOF, KEFIR_C17_STANDARD_VERSION},
+                {U"__typeof", KEFIR_KEYWORD_TYPEOF, KEFIR_C17_STANDARD_VERSION},
+                {U"typeof", KEFIR_KEYWORD_TYPEOF, KEFIR_C23_STANDARD_VERSION},
+                {U"__typeof_unqual__", KEFIR_KEYWORD_TYPEOF_UNQUAL, KEFIR_C17_STANDARD_VERSION},
+                {U"__typeof_unqual", KEFIR_KEYWORD_TYPEOF_UNQUAL, KEFIR_C17_STANDARD_VERSION},
+                {U"typeof_unqual", KEFIR_KEYWORD_TYPEOF_UNQUAL, KEFIR_C23_STANDARD_VERSION},
+                {U"__auto_type", KEFIR_KEYWORD_AUTO_TYPE, KEFIR_C17_STANDARD_VERSION},
+                {U"_BitInt", KEFIR_KEYWORD_BITINT, KEFIR_C17_STANDARD_VERSION}};
 static const kefir_size_t KEYWORDS_LENGTH = sizeof(KEYWORDS) / sizeof(KEYWORDS[0]);
 
 #define KEYWORD_NONE (~((kefir_trie_value_t) 0))
@@ -131,11 +138,13 @@ kefir_result_t kefir_lexer_init_keywords(struct kefir_mem *mem, struct kefir_lex
 
     REQUIRE_OK(kefir_trie_init(&lexer->keywords, KEYWORD_NONE));
     for (kefir_size_t i = 0; i < KEYWORDS_LENGTH; i++) {
-        kefir_result_t res = insert_keyword(mem, &lexer->keywords, KEYWORDS[i].literal, KEYWORDS[i].keyword);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_trie_free(mem, &lexer->keywords);
-            return res;
-        });
+        if (KEFIR_STANDARD_VERSION_AT_LEAST(lexer->standard_version, KEYWORDS[i].min_standard_version)) {
+            kefir_result_t res = insert_keyword(mem, &lexer->keywords, KEYWORDS[i].literal, KEYWORDS[i].keyword);
+            REQUIRE_ELSE(res == KEFIR_OK, {
+                kefir_trie_free(mem, &lexer->keywords);
+                return res;
+            });
+        }
     }
     return KEFIR_OK;
 }

@@ -96,6 +96,7 @@ static kefir_result_t load_predefined_defs(struct kefir_mem *mem, struct kefir_c
 }
 
 kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_compiler_context *context,
+                                           kefir_c_language_standard_version_t standard_version,
                                            struct kefir_compiler_profile *profile,
                                            const struct kefir_preprocessor_source_locator *source_locator,
                                            const struct kefir_compiler_extensions *extensions) {
@@ -104,6 +105,7 @@ kefir_result_t kefir_compiler_context_init(struct kefir_mem *mem, struct kefir_c
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
     REQUIRE(source_locator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler source locator"));
 
+    context->standard_version = standard_version;
     REQUIRE_OK(kefir_preprocessor_configuration_default(&context->preprocessor_configuration));
     REQUIRE_OK(kefir_parser_configuration_default(&context->parser_configuration));
     REQUIRE_OK(kefir_ast_translator_configuration_default(&context->translator_configuration));
@@ -231,8 +233,8 @@ kefir_result_t kefir_compiler_preprocessor_tokenize(struct kefir_mem *mem, struc
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, content, length, source_id));
     const kefir_lexer_mode_t lexer_mode =
         context->preprocessor_configuration.assembly_mode ? KEFIR_LEXER_ASSEMBLY_MODE : KEFIR_LEXER_C_MODE;
-    REQUIRE_OK(kefir_lexer_init(mem, &lexer, lexer_mode, &context->ast_global_context.symbols, &source_cursor,
-                                &context->profile->lexer_context,
+    REQUIRE_OK(kefir_lexer_init(mem, &lexer, lexer_mode, context->standard_version,
+                                &context->ast_global_context.symbols, &source_cursor, &context->profile->lexer_context,
                                 context->extensions != NULL ? context->extensions->lexer : NULL));
 
     kefir_result_t res = preprocessor_tokenize_impl(mem, allocator, buffer, &lexer);
@@ -364,8 +366,8 @@ kefir_result_t kefir_compiler_lex(struct kefir_mem *mem, struct kefir_compiler_c
     REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, content, length, source_id));
     const kefir_lexer_mode_t lexer_mode =
         context->preprocessor_configuration.assembly_mode ? KEFIR_LEXER_ASSEMBLY_MODE : KEFIR_LEXER_C_MODE;
-    REQUIRE_OK(kefir_lexer_init(mem, &lexer, lexer_mode, &context->ast_global_context.symbols, &source_cursor,
-                                &context->profile->lexer_context,
+    REQUIRE_OK(kefir_lexer_init(mem, &lexer, lexer_mode, context->standard_version,
+                                &context->ast_global_context.symbols, &source_cursor, &context->profile->lexer_context,
                                 context->extensions != NULL ? context->extensions->lexer : NULL));
     kefir_result_t res = kefir_lexer_populate_buffer(mem, allocator, buffer, &lexer);
     REQUIRE_ELSE(res == KEFIR_OK, {

@@ -154,8 +154,10 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
     preprocessor->context = preprocessor_context;
     const kefir_lexer_mode_t lexer_mode =
         preprocessor->context->preprocessor_config->assembly_mode ? KEFIR_LEXER_ASSEMBLY_MODE : KEFIR_LEXER_C_MODE;
-    REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, lexer_mode, symbols, cursor, context,
+    REQUIRE_OK(kefir_lexer_init(mem, &preprocessor->lexer, lexer_mode,
+                                preprocessor->context->preprocessor_config->standard_version, symbols, cursor, context,
                                 extensions != NULL ? extensions->lexer_extensions : NULL));
+    preprocessor->lexer.standard_version = preprocessor->context->preprocessor_config->standard_version;
     kefir_result_t res = kefir_preprocessor_directive_scanner_init(&preprocessor->directive_scanner,
                                                                    &preprocessor->lexer, preprocessor->context);
     REQUIRE_CHAIN(&res,

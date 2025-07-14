@@ -59,6 +59,7 @@ typedef struct kefir_compiler_codegen_runtime_hooks {
 } kefir_compiler_codegen_runtime_hooks_t;
 
 typedef struct kefir_compiler_context {
+    kefir_c_language_standard_version_t standard_version;
     struct kefir_compiler_profile *profile;
     const struct kefir_preprocessor_source_locator *source_locator;
     struct kefir_preprocessor_configuration preprocessor_configuration;
@@ -81,7 +82,7 @@ kefir_result_t kefir_compiler_init_runtime_hooks(const struct kefir_compiler_con
 
 struct kefir_mem *kefir_system_memalloc(void);
 kefir_result_t kefir_compiler_context_init(struct kefir_mem *, struct kefir_compiler_context *,
-                                           struct kefir_compiler_profile *,
+                                           kefir_c_language_standard_version_t, struct kefir_compiler_profile *,
                                            const struct kefir_preprocessor_source_locator *,
                                            const struct kefir_compiler_extensions *);
 kefir_result_t kefir_compiler_context_free(struct kefir_mem *, struct kefir_compiler_context *);

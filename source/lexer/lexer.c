@@ -26,8 +26,8 @@
 #include <string.h>
 
 kefir_result_t kefir_lexer_init(struct kefir_mem *mem, struct kefir_lexer *lexer, kefir_lexer_mode_t mode,
-                                struct kefir_string_pool *symbols, struct kefir_lexer_source_cursor *cursor,
-                                const struct kefir_lexer_context *context,
+                                kefir_c_language_standard_version_t standard_version, struct kefir_string_pool *symbols,
+                                struct kefir_lexer_source_cursor *cursor, const struct kefir_lexer_context *context,
                                 const struct kefir_lexer_extensions *extensions) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
@@ -38,6 +38,7 @@ kefir_result_t kefir_lexer_init(struct kefir_mem *mem, struct kefir_lexer *lexer
     lexer->cursor = cursor;
     lexer->context = context;
     lexer->mode = mode;
+    lexer->standard_version = standard_version;
     REQUIRE_OK(kefir_lexer_init_punctuators(mem, lexer));
     kefir_result_t res = kefir_lexer_init_keywords(mem, lexer);
     REQUIRE_ELSE(res == KEFIR_OK, {
