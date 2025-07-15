@@ -1008,9 +1008,64 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
         case KEFIR_AST_OPERATION_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (ANY_OF(node->arg1, node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
-                                       "Constant expressions with address comparisons are not supported");
+            if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                    KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                    KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER) {
+                value->integer =
+                    strcmp(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.literal,
+                           KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.literal) == 0 &&
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset ==
+                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset
+                        ? 1
+                        : 0;
+            } else if (ANY_OF(node->arg1, node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
+                kefir_uint64_t addr1, addr2;
+                if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                    KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->uinteger;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->uinteger;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset;
+                } else {
+                    return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                           "Unable to compute address comparison constant expression");
+                }
+
+                value->integer = addr1 == addr2 ? 1 : 0;
             } else {
                 struct kefir_ast_constant_expression_value lhs_value, rhs_value;
                 REQUIRE_OK(kefir_ast_constant_expression_value_cast(
@@ -1054,9 +1109,64 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
 
         case KEFIR_AST_OPERATION_NOT_EQUAL:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
-            if (ANY_OF(node->arg1, node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
-                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
-                                       "Constant expressions with address comparisons are not supported");
+            if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                    KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER &&
+                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                    KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER) {
+                value->integer =
+                    strcmp(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.literal,
+                           KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.literal) != 0 ||
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset !=
+                                KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset
+                        ? 1
+                        : 0;
+            } else if (ANY_OF(node->arg1, node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
+                kefir_uint64_t addr1, addr2;
+                if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                    KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->pointer.offset;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->uinteger;
+                } else if (KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg2,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS) &&
+                           KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->arg1,
+                                                                    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER)) {
+                    REQUIRE(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.type ==
+                                KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER,
+                            KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                            "Unable to compute address comparison constant expression"));
+                    addr1 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg1)->uinteger;
+                    addr2 = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.base.integral +
+                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->arg2)->pointer.offset;
+                } else {
+                    return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT,
+                                           "Unable to compute address comparison constant expression");
+                }
+
+                value->integer = addr1 != addr2 ? 1 : 0;
             } else {
                 struct kefir_ast_constant_expression_value lhs_value, rhs_value;
                 REQUIRE_OK(kefir_ast_constant_expression_value_cast(
