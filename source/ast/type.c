@@ -175,7 +175,7 @@ static kefir_result_t default_pointer_type_fits(const struct kefir_ast_type_trai
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
     REQUIRE(result != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid result pointer"));
     REQUIRE((KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type) || type->tag == KEFIR_AST_TYPE_SCALAR_BOOL ||
-             type->tag == KEFIR_AST_TYPE_SCALAR_POINTER),
+             type->tag == KEFIR_AST_TYPE_SCALAR_POINTER || type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER),
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected type to be basic or pointer type"));
 
     ASSIGN_DECL_CAST(const struct kefir_data_model_descriptor *, data_model, type_traits->payload);
@@ -425,7 +425,7 @@ kefir_result_t kefir_ast_type_classify(const struct kefir_ast_type *type, kefir_
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_ENUMERAL_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_BOOLEAN_TYPE_CLASS;
-    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+    } else if (type->tag == KEFIR_AST_TYPE_SCALAR_POINTER || type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         *klass_ptr = __KEFIR_IMPL_TYPECLASS_POINTER_TYPE_CLASS;
     } else if (type->tag == KEFIR_AST_TYPE_SCALAR_FLOAT || type->tag == KEFIR_AST_TYPE_SCALAR_DOUBLE ||
                type->tag == KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE) {
@@ -533,6 +533,7 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
             break;
 
         case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, type_traits->uintptr_type, classification_ptr));
             break;
 

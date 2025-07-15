@@ -22,6 +22,7 @@
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 
 struct visitor_param {
     const struct kefir_ast_context *context;
@@ -104,10 +105,15 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         *param->constant = *param->constant && node->array->properties.expression_props.constant_expression &&
                            node->subscript->properties.expression_props.constant_expression;
+    } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location, "Unexpected null pointer");
     } else if (subscript_type->tag == KEFIR_AST_TYPE_ARRAY) {
         REQUIRE_OK(KEFIR_AST_NODE_VISIT(visitor, node->subscript, payload));
         *param->constant = *param->constant && node->array->properties.expression_props.constant_expression;
     } else {
+        REQUIRE(
+            subscript_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->subscript->source_location, "Unexpected null pointer"));
         *param->constant = *param->constant && node->array->properties.expression_props.constant_expression &&
                            node->subscript->properties.expression_props.constant_expression;
     }

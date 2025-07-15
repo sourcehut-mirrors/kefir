@@ -86,6 +86,9 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     struct kefir_ast_node_base *subscript_node;
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         subscript_node = subscript->subscript;
+    } else if (array_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &subscript->array->source_location,
+                                      "Unexpected null pointer");
     } else {
         subscript_node = subscript->array;
     }

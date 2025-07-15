@@ -62,6 +62,8 @@
     _separator _case(ast_type_analysis_arithmetic_conversion1)                               \
     _separator _case(ast_type_analysis_arithmetic_conversion2)                               \
     _separator _case(ast_type_analysis_arithmetic_conversion3)                               \
+    _separator _case(ast_nullptr_type1)                                                      \
+    _separator _case(ast_nullptr_assignable1)                                                \
     _separator _case(ast_ordinary_scope_objects1)                                            \
     _separator _case(ast_ordinary_scope_objects2)                                            \
     _separator _case(ast_ordinary_scope_objects3)                                            \

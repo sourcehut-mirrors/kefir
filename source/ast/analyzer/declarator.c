@@ -962,6 +962,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
+                case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
                 case KEFIR_AST_TYPE_STRUCTURE:
                 case KEFIR_AST_TYPE_UNION:
@@ -1020,6 +1021,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
                 case KEFIR_AST_TYPE_SCALAR_POINTER:
+                case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
                 case KEFIR_AST_TYPE_ENUMERATION:
                 case KEFIR_AST_TYPE_STRUCTURE:
                 case KEFIR_AST_TYPE_UNION:

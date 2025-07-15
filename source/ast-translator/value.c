@@ -155,6 +155,9 @@ static kefir_result_t resolve_bitfield_layout(struct kefir_mem *mem, struct kefi
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->structure->properties.type);
     if (structure_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         structure_type = kefir_ast_unqualified_type(structure_type->referenced_type);
+    } else if (structure_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->structure->source_location,
+                                      "Unexpected null pointer");
     } else if (KEFIR_AST_TYPE_IS_INCOMPLETE(structure_type)) {
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &structure_type, structure_type));
     }

@@ -33,6 +33,7 @@
 #include "kefir/ast/type_conv.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 #include "kefir/core/extensions.h"
 
 static kefir_result_t local_static_identifier(struct kefir_mem *mem, struct kefir_ir_module *module,
@@ -173,6 +174,9 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
                                 mem, context->module, builder, context->ast_context->type_traits,
                                 node->subscript->properties.type, context->ast_context->type_traits->ptrdiff_type));
     } else {
+        REQUIRE_CHAIN_SET(
+            &res, array_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location, "Unexpected null pointer"));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
         REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(

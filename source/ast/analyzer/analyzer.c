@@ -180,6 +180,10 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *mem, const s
             KEFIR_OK);
 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+    if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        *is_null = true;
+        return KEFIR_OK;
+    }
     REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type) ||
                 (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER &&
                  unqualified_type->referenced_type->tag == KEFIR_AST_TYPE_VOID),

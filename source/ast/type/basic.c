@@ -122,6 +122,7 @@ SCALAR_TYPE(signed_long_long, KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG)
 SCALAR_TYPE(float, KEFIR_AST_TYPE_SCALAR_FLOAT)
 SCALAR_TYPE(double, KEFIR_AST_TYPE_SCALAR_DOUBLE)
 SCALAR_TYPE(long_double, KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE)
+SCALAR_TYPE(nullptr, KEFIR_AST_TYPE_SCALAR_NULL_POINTER)
 
 #undef SCALAR_TYPE
 
@@ -320,6 +321,7 @@ kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *type
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             *signedness = false;
             break;
 

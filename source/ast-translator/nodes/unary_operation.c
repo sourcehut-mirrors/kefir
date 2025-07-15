@@ -329,6 +329,9 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
         });
         REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
     } else {
+        REQUIRE(normalized_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location, "Unexpected null pointer"));
+
         kefir_ast_type_data_model_classification_t normalized_type_classification;
         REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type,
                                                       &normalized_type_classification));

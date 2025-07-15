@@ -676,9 +676,14 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_origin)) {
                 REQUIRE_OK(cast_to_integer(type_traits, builder, normalized_origin, type_traits->uintptr_type));
             } else {
-                REQUIRE(normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+                REQUIRE(normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
+                            normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
                         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin type to be integral or pointer"));
             }
+            break;
+
+        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:

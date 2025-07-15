@@ -37,6 +37,8 @@ static kefir_result_t resolve_vararg(struct kefir_mem *mem, struct kefir_ast_tra
     if (vararg->properties.type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         REQUIRE_OK(kefir_ast_translate_expression(mem, vararg, builder, context));
     } else {
+        REQUIRE(vararg->properties.type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &vararg->source_location, "Unexpected null pointer"));
         REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, vararg));
     }
     return KEFIR_OK;

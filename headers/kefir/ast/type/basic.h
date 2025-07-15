@@ -46,6 +46,7 @@ SCALAR_TYPE(signed_long_long);
 SCALAR_TYPE(float);
 SCALAR_TYPE(double);
 SCALAR_TYPE(long_double);
+SCALAR_TYPE(nullptr);
 #undef SCALAR_TYPE
 
 #define COMPLEX_TYPE(id) const struct kefir_ast_type *kefir_ast_type_complex_##id(void)
@@ -92,8 +93,9 @@ const struct kefir_ast_type *kefir_ast_type_unsigned_bitprecise(struct kefir_mem
     (KEFIR_AST_TYPE_IS_REAL_FLOATING_POINT(base) || KEFIR_AST_TYPE_IS_COMPLEX_TYPE(base))
 #define KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) \
     (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(base) || KEFIR_AST_TYPE_IS_FLOATING_POINT(base))
-#define KEFIR_AST_TYPE_IS_SCALAR_TYPE(base) \
-    (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) || (base)->tag == KEFIR_AST_TYPE_SCALAR_POINTER)
+#define KEFIR_AST_TYPE_IS_SCALAR_TYPE(base)                                                     \
+    (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(base) || (base)->tag == KEFIR_AST_TYPE_SCALAR_POINTER || \
+     (base)->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER)
 #define KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(base) \
     (!KEFIR_AST_TYPE_IS_SCALAR_TYPE(base) && (base)->tag != KEFIR_AST_TYPE_VOID)
 

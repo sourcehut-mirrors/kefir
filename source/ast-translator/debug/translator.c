@@ -438,6 +438,22 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
                                                           &KEFIR_IR_DEBUG_ENTRY_ATTR_TYPE(referenced_entry_type_id)));
         } break;
 
+        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
+            REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,
+                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
+                                                          *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("nullptr_t")));
+            REQUIRE_OK(
+                kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                                                   &KEFIR_IR_DEBUG_ENTRY_ATTR_SIZE(type_layout->properties.size)));
+            REQUIRE_OK(kefir_ir_debug_entry_add_attribute(
+                mem, &module->debug_info.entries, &module->symbols, *entry_id_ptr,
+                &KEFIR_IR_DEBUG_ENTRY_ATTR_ALIGNMENT(type_layout->properties.alignment)));
+            REQUIRE_OK(kefir_hashtree_insert(mem, &debug_entries->type_index, (kefir_hashtree_key_t) type,
+                                             (kefir_hashtree_value_t) *entry_id_ptr));
+            break;
+
         case KEFIR_AST_TYPE_ENUMERATION: {
             REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_ENUMERATION,
                                                 entry_id_ptr));

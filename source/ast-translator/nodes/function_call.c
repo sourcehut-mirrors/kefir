@@ -28,6 +28,7 @@
 #include "kefir/ast-translator/util.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
+#include "kefir/core/source_error.h"
 #include <stdio.h>
 
 static kefir_result_t translate_parameters(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
@@ -67,6 +68,8 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST function call node"));
 
     const struct kefir_ast_type *function_type = kefir_ast_translator_normalize_type(node->function->properties.type);
+    REQUIRE(function_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->function->source_location, "Unexpected null pointer"));
     if (function_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         function_type = function_type->referenced_type;
     }

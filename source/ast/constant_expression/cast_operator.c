@@ -361,6 +361,12 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
         }
+    } else if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
+        value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER;
+        value->pointer.base.integral = 0;
+        value->pointer.offset = 0;
+        value->pointer.pointer_node = node;
     } else {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location, "Expected constant expression");
     }

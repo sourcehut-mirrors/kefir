@@ -32,7 +32,8 @@ kefir_result_t kefir_ast_type_assignable(struct kefir_mem *mem, const struct kef
     REQUIRE(value_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid value AST type"));
     REQUIRE(target_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target AST type"));
 
-    if (target_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL && value_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
+    if (target_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL &&
+        (value_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER || value_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER)) {
         // Intentionally left empty
     } else if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(target_type)) {
         REQUIRE(KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(value_type),
@@ -40,6 +41,10 @@ kefir_result_t kefir_ast_type_assignable(struct kefir_mem *mem, const struct kef
     } else if (target_type->tag == KEFIR_AST_TYPE_STRUCTURE || target_type->tag == KEFIR_AST_TYPE_UNION) {
         REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, target_type, value_type),
                 KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Both assignable operands shall be compatible"));
+    } else if ((target_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER ||
+                target_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) &&
+               value_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        // Intentionally left blank
     } else if (target_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER && value_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         if (context->configuration->analysis.permissive_pointer_conv) {
             return KEFIR_OK;

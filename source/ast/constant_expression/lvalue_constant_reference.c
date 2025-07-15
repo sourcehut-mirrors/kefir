@@ -134,7 +134,8 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
     const struct kefir_ast_type *array_type = kefir_ast_type_lvalue_conversion(node->array->properties.type);
     struct kefir_ast_node_base *array = node->array;
     struct kefir_ast_node_base *subscript = node->subscript;
-    if (array_type->tag != KEFIR_AST_TYPE_ARRAY && array_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER) {
+    if (array_type->tag != KEFIR_AST_TYPE_ARRAY && array_type->tag != KEFIR_AST_TYPE_SCALAR_POINTER &&
+        array_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         array = node->subscript;
         subscript = node->array;
         array_type = kefir_ast_type_lvalue_conversion(node->subscript->properties.type);
