@@ -85,6 +85,10 @@ static kefir_result_t visit_constant(const struct kefir_ast_visitor *visitor, co
     REQUIRE_OK(kefir_json_output_string(json, "constant"));
     REQUIRE_OK(kefir_json_output_object_key(json, "type"));
     switch (node->type) {
+        case KEFIR_AST_NULLPTR_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "nullptr"));
+            break;
+
         case KEFIR_AST_BOOL_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "boolean"));
             REQUIRE_OK(kefir_json_output_object_key(json, "value"));

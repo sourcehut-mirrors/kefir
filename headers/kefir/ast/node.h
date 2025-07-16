@@ -272,6 +272,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_inline_assembly, {
     struct kefir_list jump_labels;
 });
 
+struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *);
 struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *, kefir_bool_t);
 struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *, kefir_int_t);
 struct kefir_ast_constant *kefir_ast_new_constant_wide_char(struct kefir_mem *, kefir_wchar_t);

@@ -94,6 +94,7 @@ typedef enum kefir_ast_node_category {
 } kefir_ast_node_category_t;
 
 typedef enum kefir_ast_constant_type {
+    KEFIR_AST_NULLPTR_CONSTANT,
     KEFIR_AST_BOOL_CONSTANT,
     KEFIR_AST_CHAR_CONSTANT,
     KEFIR_AST_WIDE_CHAR_CONSTANT,

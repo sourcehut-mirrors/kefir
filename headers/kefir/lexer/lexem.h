@@ -101,6 +101,7 @@ typedef enum kefir_keyword_token {
     KEFIR_KEYWORD_TYPEOF_UNQUAL,
     KEFIR_KEYWORD_AUTO_TYPE,
     KEFIR_KEYWORD_BITINT,
+    KEFIR_KEYWORD_NULLPTR,
 
     // Extensions
     KEFIR_KEYWORD_ATTRIBUTE,

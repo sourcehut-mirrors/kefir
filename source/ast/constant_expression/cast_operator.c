@@ -219,7 +219,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
-                    value->integer = (bool) source->floating_point;
+                    value->integer = (kefir_bool_t) source->floating_point;
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
                                                              source->floating_point, &node->source_location));
@@ -228,7 +228,7 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
                 if (unqualified_destination_type->tag == KEFIR_AST_TYPE_SCALAR_BOOL) {
-                    value->integer = (bool) source->complex_floating_point.real;
+                    value->integer = (kefir_bool_t) source->complex_floating_point.real;
                 } else {
                     REQUIRE_OK(cast_integral_type_from_float(mem, context, unqualified_destination_type, value,
                                                              source->complex_floating_point.real,
@@ -237,9 +237,13 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
-                value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
-                value->pointer = source->pointer;
-                value->pointer.pointer_node = node;
+                if (source->pointer.type == KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER) {
+                    value->integer = source->pointer.base.integral + source->pointer.offset;
+                } else {
+                    value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
+                    value->pointer = source->pointer;
+                    value->pointer.pointer_node = node;
+                }
                 break;
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:

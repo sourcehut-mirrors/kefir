@@ -36,6 +36,11 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(constant)(struct kefir_mem *mem, stru
         REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(mem, false)),
                       "Failed to allocate AST constant");
         return KEFIR_OK;
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_NULLPTR)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_ALLOC(result, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_nullptr(mem)),
+                      "Failed to allocate AST constant");
+        return KEFIR_OK;
     }
 
     REQUIRE(PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_CONSTANT),

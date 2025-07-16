@@ -185,6 +185,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
             REQUIRE_OK(kefir_json_output_string(json, "false"));
             break;
 
+        case KEFIR_KEYWORD_NULLPTR:
+            REQUIRE_OK(kefir_json_output_string(json, "nullptr"));
+            break;
+
         case KEFIR_KEYWORD_COMPLEX:
             REQUIRE_OK(kefir_json_output_string(json, "complex"));
             break;

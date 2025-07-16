@@ -1,0 +1,317 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global is
+.type is, @function
+.global get
+.type get, @function
+.global is2
+.type is2, @function
+.global or1
+.type or1, @function
+.global or2
+.type or2, @function
+.global or3
+.type or3, @function
+.global and1
+.type and1, @function
+.global and2
+.type and2, @function
+.global and3
+.type and3, @function
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global set1
+.type set1, @function
+.global set2
+.type set2, @function
+.global set3
+.type set3, @function
+.global conv1
+.type conv1, @function
+.global conv2
+.type conv2, @function
+.global conv3
+.type conv3, @function
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+is:
+__kefir_text_func_is_begin:
+    xor %eax, %eax
+    cmp $0, %rdi
+    sete %al
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_is_end:
+
+get:
+__kefir_text_func_get_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_get_end:
+
+is2:
+__kefir_text_func_is2_begin:
+    mov $1, %rax
+    ret
+__kefir_text_func_is2_end:
+
+or1:
+__kefir_text_func_or1_begin:
+    xor %eax, %eax
+    test $0, %rax
+    setne %al
+    movzx %al, %rax
+    or %al, %dil
+    setne %dil
+    movzx %dil, %rdi
+    test %edi, %edi
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_or1_end:
+
+or2:
+__kefir_text_func_or2_begin:
+    xor %eax, %eax
+    or %dil, %al
+    setne %al
+    movzx %al, %rax
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_or2_end:
+
+or3:
+__kefir_text_func_or3_begin:
+    xor %eax, %eax
+    or $0, %rax
+    setne %al
+    movzx %al, %rax
+    test %eax, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_or3_end:
+
+and1:
+__kefir_text_func_and1_begin:
+    xor %eax, %eax
+    test $0, %rax
+    setne %al
+    movzx %al, %rax
+    test %dil, %dil
+    setne %cl
+    test %al, %al
+    setne %al
+    and %cl, %al
+    movzx %al, %rcx
+    test %ecx, %ecx
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_and1_end:
+
+and2:
+__kefir_text_func_and2_begin:
+    xor %eax, %eax
+    test $0, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_and2_end:
+
+and3:
+__kefir_text_func_and3_begin:
+    xor %eax, %eax
+    test $0, %eax
+    setne %al
+    movzx %al, %rax
+    ret
+__kefir_text_func_and3_end:
+
+get1:
+__kefir_text_func_get1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $208, %rsp
+    test %al, %al
+    je _kefir_func_get2_label3
+    movdqu %xmm0, -160(%rbp)
+    movdqu %xmm1, -144(%rbp)
+    movdqu %xmm2, -128(%rbp)
+    movdqu %xmm3, -112(%rbp)
+    movdqu %xmm4, -96(%rbp)
+    movdqu %xmm5, -80(%rbp)
+    movdqu %xmm6, -64(%rbp)
+    movdqu %xmm7, -48(%rbp)
+_kefir_func_get2_label3:
+    mov %rdi, -208(%rbp)
+    mov %rsi, -200(%rbp)
+    mov %rdx, -192(%rbp)
+    mov %rcx, -184(%rbp)
+    mov %r8, -176(%rbp)
+    mov %r9, -168(%rbp)
+    movl $0, -32(%rbp)
+    movl $48, -28(%rbp)
+    lea 16(%rbp), %rax
+    movq %rax, -24(%rbp)
+    lea -208(%rbp), %rax
+    movq %rax, -16(%rbp)
+    movl -32(%rbp), %eax
+    cmp $48, %eax
+    jae _kefir_func_get2_label1
+    lea 8(%rax), %rax
+    movl %eax, -32(%rbp)
+    add -16(%rbp), %rax
+    mov -8(%rax), %rax
+    jmp _kefir_func_get2_label2
+_kefir_func_get2_label1:
+    mov -24(%rbp), %rax
+    lea 8(%rax), %rax
+    mov %rax, -24(%rbp)
+    mov -8(%rax), %rax
+_kefir_func_get2_label2:
+    xor %eax, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+set1:
+__kefir_text_func_set1_begin:
+    movq $0, (%rdi)
+    ret
+__kefir_text_func_set1_end:
+
+set2:
+__kefir_text_func_set2_begin:
+    movb $0, (%rdi)
+    ret
+__kefir_text_func_set2_end:
+
+set3:
+__kefir_text_func_set3_begin:
+    movq $0, (%rdi)
+    ret
+__kefir_text_func_set3_end:
+
+conv1:
+__kefir_text_func_conv1_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_conv1_end:
+
+conv2:
+__kefir_text_func_conv2_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_conv2_end:
+
+conv3:
+__kefir_text_func_conv3_begin:
+    xor %eax, %eax
+    ret
+__kefir_text_func_conv3_end:
+
+test1:
+__kefir_text_func_test1_begin:
+    mov %rdi, %rax
+    movl $1, (%rax)
+    mov %rax, %rdi
+    add $4, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $8, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $12, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $16, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $20, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $24, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $28, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $32, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $36, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $40, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $44, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $48, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $52, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $56, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $60, %rdi
+    movl $1, (%rdi)
+    mov %rax, %rdi
+    add $64, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $68, %rdi
+    movl $0, (%rdi)
+    mov %rax, %rdi
+    add $72, %rdi
+    movl $1, (%rdi)
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .quad 0
+
+b:
+    .byte 0
+
+    .align 4
+c:
+    .long 8
+
+    .align 4
+d:
+    .long 8
+

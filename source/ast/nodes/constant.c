@@ -61,6 +61,27 @@ struct kefir_ast_constant *kefir_ast_new_constant_bool(struct kefir_mem *mem, ke
     return constant;
 }
 
+struct kefir_ast_constant *kefir_ast_new_constant_nullptr(struct kefir_mem *mem) {
+    REQUIRE(mem != NULL, NULL);
+    struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));
+    REQUIRE(constant != NULL, NULL);
+    constant->base.refcount = 1;
+    constant->base.klass = &AST_CONSTANT_CLASS;
+    constant->base.self = constant;
+    kefir_result_t res = kefir_ast_node_properties_init(&constant->base.properties);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    res = kefir_source_location_empty(&constant->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, constant);
+        return NULL;
+    });
+    constant->type = KEFIR_AST_NULLPTR_CONSTANT;
+    return constant;
+}
+
 struct kefir_ast_constant *kefir_ast_new_constant_char(struct kefir_mem *mem, kefir_int_t value) {
     REQUIRE(mem != NULL, NULL);
     struct kefir_ast_constant *constant = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_constant));

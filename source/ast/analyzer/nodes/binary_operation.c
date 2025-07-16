@@ -177,24 +177,15 @@ static kefir_result_t analyze_equality(struct kefir_mem *mem, const struct kefir
     UNUSED(context);
     if (KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type1) && KEFIR_AST_TYPE_IS_ARITHMETIC_TYPE(type2)) {
         base->properties.type = kefir_ast_type_signed_int();
-    } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        base->properties.type = kefir_ast_type_signed_int();
-    } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER && type2->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
-        base->properties.type = kefir_ast_type_signed_int();
-    } else if (type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        REQUIRE((KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2) && node2->properties.expression_props.constant_expression) ||
-                    type2->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
-                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node2->source_location,
-                                       "Second equality operator operand shall be NULL pointer"));
-        base->properties.type = kefir_ast_type_signed_int();
     } else {
-        REQUIRE((KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type1) && node1->properties.expression_props.constant_expression) ||
+        REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type1) || type1->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
                     type1->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node1->source_location,
-                                       "First equality operator operand shall be NULL pointer"));
-        REQUIRE(type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+                                       "First equality operator operand shall be of arithmetic type or a pointer"));
+        REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(type2) || type2->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
+                    type2->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node2->source_location,
-                                       "Second equality operator operand shall be pointer"));
+                                       "Second equality operator operand shall be of arithmetic type or a pointer"));
         base->properties.type = kefir_ast_type_signed_int();
     }
     return KEFIR_OK;

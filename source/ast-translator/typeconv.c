@@ -612,6 +612,9 @@ kefir_result_t kefir_ast_translate_typeconv_to_bool(const struct kefir_ast_type_
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_TRUNCATE_1BIT, 0));
     } else if (origin->tag == KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE) {
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_TRUNCATE_1BIT, 0));
+    } else if (origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
     } else {
         kefir_ast_type_data_model_classification_t origin_type_data_model;
         REQUIRE_OK(kefir_ast_type_data_model_classify(type_traits, origin, &origin_type_data_model));
@@ -665,6 +668,14 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin AST type to be scalar"));
     REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(normalized_destination) || normalized_destination->tag == KEFIR_AST_TYPE_VOID,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected destination AST type to be scalar or void"));
+
+    if (normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER &&
+        normalized_destination->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
+        return KEFIR_OK;
+    }
+
     REQUIRE(!KEFIR_AST_TYPE_SAME(normalized_origin, normalized_destination), KEFIR_OK);
 
     switch (normalized_destination->tag) {
@@ -675,14 +686,17 @@ kefir_result_t kefir_ast_translate_typeconv(struct kefir_mem *mem, struct kefir_
         case KEFIR_AST_TYPE_SCALAR_POINTER:
             if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(normalized_origin)) {
                 REQUIRE_OK(cast_to_integer(type_traits, builder, normalized_origin, type_traits->uintptr_type));
+            } else if (normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
             } else {
-                REQUIRE(normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
-                            normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                REQUIRE(normalized_origin->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
                         KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected origin type to be integral or pointer"));
             }
             break;
 
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 0));
             break;
 

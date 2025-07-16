@@ -36,6 +36,15 @@ kefir_result_t kefir_ast_evaluate_scalar_node(struct kefir_mem *mem, const struc
                                    "Expected constant expression AST node"));
 
     switch (node->type) {
+        case KEFIR_AST_NULLPTR_CONSTANT:
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
+            value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER;
+            value->pointer.base.integral = 0;
+            value->pointer.offset = 0;
+            value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
+            value->pointer.scoped_id = NULL;
+            break;
+
         case KEFIR_AST_BOOL_CONSTANT:
             value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
             value->integer = node->value.boolean;

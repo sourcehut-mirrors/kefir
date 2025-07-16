@@ -33,6 +33,10 @@ kefir_result_t kefir_ast_translate_constant_node(struct kefir_mem *mem, struct k
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant node"));
 
     switch (node->type) {
+        case KEFIR_AST_NULLPTR_CONSTANT:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0ull));
+            break;
+
         case KEFIR_AST_BOOL_CONSTANT:
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
                                                        (kefir_uint64_t) node->value.boolean));

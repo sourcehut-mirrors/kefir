@@ -32,6 +32,10 @@ kefir_result_t kefir_ast_analyze_constant_node(struct kefir_mem *mem, const stru
     REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));
     base->properties.category = KEFIR_AST_NODE_CATEGORY_EXPRESSION;
     switch (node->type) {
+        case KEFIR_AST_NULLPTR_CONSTANT:
+            base->properties.type = kefir_ast_type_nullptr();
+            break;
+
         case KEFIR_AST_BOOL_CONSTANT:
             base->properties.type = kefir_ast_type_boolean();
             break;
