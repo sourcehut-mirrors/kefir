@@ -45,6 +45,9 @@ kefir_result_t kefir_ast_type_assignable(struct kefir_mem *mem, const struct kef
                 target_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) &&
                value_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
         // Intentionally left blank
+    } else if (target_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER) {
+        REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(value_type) || value_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER,
+                KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Right assignable operand shall have an integral or pointer type"));
     } else if (target_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER && value_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
         if (context->configuration->analysis.permissive_pointer_conv) {
             return KEFIR_OK;

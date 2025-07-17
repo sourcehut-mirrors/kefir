@@ -74,23 +74,23 @@ DEFINE_CASE(ast_nullptr_assignable1, "AST Type analysis - nullptr type assignabl
         &kft_mem, &global_context.context, nullptr_type, false,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int())));
 
-    ASSERT_NOK(
+    ASSERT_OK(
         kefir_ast_type_assignable(&kft_mem, &global_context.context, kefir_ast_type_signed_int(), true, nullptr_type));
-    ASSERT_NOK(
+    ASSERT_OK(
         kefir_ast_type_assignable(&kft_mem, &global_context.context, kefir_ast_type_signed_int(), false, nullptr_type));
-    ASSERT_NOK(kefir_ast_type_assignable(
+    ASSERT_OK(kefir_ast_type_assignable(
         &kft_mem, &global_context.context,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_void()), true,
         nullptr_type));
-    ASSERT_NOK(kefir_ast_type_assignable(
+    ASSERT_OK(kefir_ast_type_assignable(
         &kft_mem, &global_context.context,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_void()), false,
         nullptr_type));
-    ASSERT_NOK(kefir_ast_type_assignable(
+    ASSERT_OK(kefir_ast_type_assignable(
         &kft_mem, &global_context.context,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int()), true,
         nullptr_type));
-    ASSERT_NOK(kefir_ast_type_assignable(
+    ASSERT_OK(kefir_ast_type_assignable(
         &kft_mem, &global_context.context,
         kefir_ast_type_pointer(&kft_mem, global_context.context.type_bundle, kefir_ast_type_signed_int()), false,
         nullptr_type));

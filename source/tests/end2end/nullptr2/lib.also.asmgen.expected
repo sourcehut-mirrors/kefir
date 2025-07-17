@@ -1,0 +1,91 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global f
+.type f, @object
+.global g
+.type g, @object
+.global h
+.type h, @object
+.global i
+.type i, @object
+.global j
+.type j, @object
+.global get1
+.type get1, @function
+.global set1
+.type set1, @function
+.global set2
+.type set2, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    movq a@GOTPCREL(%rip), %rax
+    movq (%rax), %rax
+    xor %eax, %eax
+    ret
+__kefir_text_func_get1_end:
+
+set1:
+__kefir_text_func_set1_begin:
+    movq a@GOTPCREL(%rip), %rax
+    movq $0, (%rax)
+    ret
+__kefir_text_func_set1_end:
+
+set2:
+__kefir_text_func_set2_begin:
+    movq a@GOTPCREL(%rip), %rax
+    movq $0, (%rax)
+    ret
+__kefir_text_func_set2_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .quad 0
+
+    .align 8
+b:
+    .quad 0
+
+    .align 8
+c:
+    .quad 0
+
+d:
+    .byte 1
+
+e:
+    .byte 0
+
+    .align 8
+f:
+    .quad 0
+
+g:
+    .byte 0
+
+h:
+    .byte 0
+
+i:
+    .byte 1
+
+j:
+    .byte 1
+
