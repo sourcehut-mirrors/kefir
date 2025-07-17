@@ -440,8 +440,8 @@ static kefir_result_t translate_debug_type(struct kefir_mem *mem, const struct k
 
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
             REQUIRE(type_layout != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected valid AST type layout"));
-            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries, KEFIR_IR_DEBUG_ENTRY_TYPE_SIGNED_INT,
-                                                entry_id_ptr));
+            REQUIRE_OK(kefir_ir_debug_entry_new(mem, &module->debug_info.entries,
+                                                KEFIR_IR_DEBUG_ENTRY_TYPE_UNSIGNED_INT, entry_id_ptr));
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
                                                           *entry_id_ptr, &KEFIR_IR_DEBUG_ENTRY_ATTR_NAME("nullptr_t")));
             REQUIRE_OK(

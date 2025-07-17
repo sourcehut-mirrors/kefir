@@ -433,7 +433,7 @@ __kefir_debug_info_section_entry_17:
     .ascii "nullptr_t\000"
     .byte 8
     .byte 8
-    .byte 5
+    .byte 7
 __kefir_debug_info_section_entry_18:
     .byte 11
     .byte 24
