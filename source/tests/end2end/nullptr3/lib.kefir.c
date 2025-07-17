@@ -18,7 +18,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-typeof(nullptr) N = nullptr;
+static volatile typeof(nullptr) N = nullptr;
 
 long sum(...) {
     __builtin_va_list args;

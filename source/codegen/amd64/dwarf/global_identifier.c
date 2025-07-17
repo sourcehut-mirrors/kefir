@@ -453,8 +453,8 @@ kefir_result_t kefir_codegen_amd64_dwarf_generate_global_identifiers(
          identifier_name != NULL; identifier_name = kefir_ir_module_identifiers_next(&iter, &identifier)) {
 
         if (identifier->debug_info.entry == KEFIR_IR_DEBUG_ENTRY_ID_NONE ||
-            !kefir_opt_module_is_symbol_alive(liveness, identifier_name) ||
-            (identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_EXPORT &&
+            (!kefir_opt_module_is_symbol_alive(liveness, identifier_name) &&
+             identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_EXPORT &&
              identifier->scope != KEFIR_IR_IDENTIFIER_SCOPE_EXPORT_WEAK)) {
             continue;
         }
