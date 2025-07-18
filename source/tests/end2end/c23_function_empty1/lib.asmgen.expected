@@ -1,0 +1,16 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern test
+.global test2
+.type test2, @function
+
+.section .text
+__kefir_text_section_begin:
+test2:
+__kefir_text_func_test2_begin:
+    jmp test@PLT
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+

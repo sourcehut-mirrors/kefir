@@ -1368,6 +1368,13 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
         }
     }
 
+    if (res == KEFIR_OK && kefir_list_head(&declarator->function.parameters) == NULL &&
+        !declarator->function.ellipsis &&
+        KEFIR_STANDARD_VERSION_AT_LEAST_C23(context->configuration->standard_version)) {
+        REQUIRE_CHAIN(
+            &res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type, kefir_ast_type_void(), NULL));
+    }
+
     REQUIRE_CHAIN(&res, kefir_ast_type_function_ellipsis(func_type, declarator->function.ellipsis));
 
     if (declarator->function.declarator != NULL &&
