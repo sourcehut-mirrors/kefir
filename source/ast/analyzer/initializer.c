@@ -420,7 +420,7 @@ static kefir_result_t obtain_temporaries_for_ranges(struct kefir_mem *mem, const
     initializer_traversal.visit_value = traverse_scalar;
     initializer_traversal.payload = &param;
 
-    kefir_result_t res = kefi_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
+    kefir_result_t res = kefir_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &param.repeated_nodes);
         return res;

@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/constant_expression_impl.h"
+#include "kefir/ast/initializer_traversal.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -53,6 +54,52 @@ static kefir_result_t calculate_member_offset(struct kefir_mem *mem, const struc
     return KEFIR_OK;
 }
 
+struct compound_traversal_param {
+    struct kefir_mem *mem;
+    const struct kefir_ast_context *context;
+    const char *member_name;
+    struct kefir_ast_node_base **initializer_expr;
+};
+
+static kefir_result_t retrieve_scalar_initializer_visit_value(const struct kefir_ast_designator *designator,
+                                                              struct kefir_ast_node_base *expression, void *payload) {
+    REQUIRE(designator != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST designator"));
+    REQUIRE(expression != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid AST expression node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct compound_traversal_param *, param, payload);
+
+    if (designator->next == NULL && designator->type == KEFIR_AST_DESIGNATOR_MEMBER &&
+        strcmp(designator->member, param->member_name) == 0) {
+        *param->initializer_expr = expression;
+        return KEFIR_YIELD;
+    }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t retrieve_scalar_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                  const char *member_name, const struct kefir_ast_type *type,
+                                                  const struct kefir_ast_initializer *initializer,
+                                                  struct kefir_ast_node_base **initializer_expr) {
+    struct kefir_ast_initializer_traversal initializer_traversal;
+    KEFIR_AST_INITIALIZER_TRAVERSAL_INIT(&initializer_traversal);
+
+    struct compound_traversal_param param = {
+        .mem = mem, .context = context, .member_name = member_name, .initializer_expr = initializer_expr};
+
+    initializer_traversal.visit_value = retrieve_scalar_initializer_visit_value;
+    initializer_traversal.payload = &param;
+
+    *initializer_expr = NULL;
+    kefir_result_t res = kefir_ast_traverse_initializer(mem, context, initializer, type, &initializer_traversal);
+    if (res == KEFIR_YIELD) {
+        res = KEFIR_OK;
+    }
+    REQUIRE_OK(res);
+
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                      const struct kefir_ast_struct_member *node,
                                                      struct kefir_ast_constant_expression_value *value) {
@@ -66,24 +113,50 @@ kefir_result_t kefir_ast_evaluate_struct_member_node(struct kefir_mem *mem, cons
                                    "Expected constant expression AST node"));
 
     const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->base.properties.type);
-    REQUIRE(unqualified_type->tag == KEFIR_AST_TYPE_ARRAY,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                   "Expected constant expression AST node"));
+    if (unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
+        kefir_size_t member_offset = 0;
+        REQUIRE_OK(calculate_member_offset(mem, context, node, &member_offset));
 
-    kefir_size_t member_offset = 0;
-    REQUIRE_OK(calculate_member_offset(mem, context, node, &member_offset));
-
-    if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
-        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS),
+        if (node->base.klass->type == KEFIR_AST_STRUCTURE_INDIRECT_MEMBER) {
+            REQUIRE(
+                KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
                                        "Expected constant expression of pointer type"));
-        *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure);
+            *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure);
+        } else {
+            REQUIRE_OK(kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, node->structure,
+                                                                                     &value->pointer));
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
+        }
+        value->pointer.offset += member_offset;
+        value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
+    } else if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type)) {
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node->structure, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->structure->source_location,
+                                       "Expected compound constant expression"));
+
+        struct kefir_ast_node_base *initializer_expr = NULL;
+        REQUIRE_OK(retrieve_scalar_initializer(
+            mem, context, node->member, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.type,
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->compound.initializer, &initializer_expr));
+        if (initializer_expr != NULL) {
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer_expr),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &initializer_expr->source_location,
+                                           "Expected constant expression"));
+            REQUIRE_OK(kefir_ast_constant_expression_value_cast(
+                mem, context, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(initializer_expr), initializer_expr,
+                node->base.properties.type, initializer_expr->properties.type));
+        } else {
+            struct kefir_ast_constant_expression_value zero_value = {
+                .klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER, .integer = 0};
+            REQUIRE_OK(kefir_ast_constant_expression_value_cast(mem, context, value, &zero_value,
+                                                                KEFIR_AST_NODE_BASE(node), node->base.properties.type,
+                                                                kefir_ast_type_signed_int()));
+        }
     } else {
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate_lvalue_reference(mem, context, node->structure,
-                                                                                 &value->pointer));
-        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
+        return KEFIR_SET_ERROR(
+            KEFIR_NOT_CONSTANT,
+            "Structure member constant expression access for non-scalar non-array members is not implemented yet");
     }
-    value->pointer.offset += member_offset;
-    value->pointer.pointer_node = KEFIR_AST_NODE_BASE(node);
     return KEFIR_OK;
 }

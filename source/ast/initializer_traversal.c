@@ -41,11 +41,11 @@
         }                                                                                       \
     } while (0)
 
-static kefir_result_t kefi_ast_traverse_initializer_impl(struct kefir_mem *, const struct kefir_ast_context *,
-                                                         const struct kefir_ast_designator *,
-                                                         const struct kefir_ast_initializer *,
-                                                         const struct kefir_ast_type *,
-                                                         const struct kefir_ast_initializer_traversal *);
+static kefir_result_t kefir_ast_traverse_initializer_impl(struct kefir_mem *, const struct kefir_ast_context *,
+                                                          const struct kefir_ast_designator *,
+                                                          const struct kefir_ast_initializer *,
+                                                          const struct kefir_ast_type *,
+                                                          const struct kefir_ast_initializer_traversal *);
 
 static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designator,
                                       const struct kefir_ast_initializer *initializer,
@@ -360,7 +360,7 @@ static kefir_result_t traverse_array(struct kefir_mem *mem, const struct kefir_a
     return KEFIR_OK;
 }
 
-static kefir_result_t kefi_ast_traverse_initializer_impl(
+static kefir_result_t kefir_ast_traverse_initializer_impl(
     struct kefir_mem *mem, const struct kefir_ast_context *context, const struct kefir_ast_designator *designator,
     const struct kefir_ast_initializer *initializer, const struct kefir_ast_type *type,
     const struct kefir_ast_initializer_traversal *initializer_traversal) {
@@ -379,10 +379,10 @@ static kefir_result_t kefi_ast_traverse_initializer_impl(
     return KEFIR_OK;
 }
 
-kefir_result_t kefi_ast_traverse_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                             const struct kefir_ast_initializer *initializer,
-                                             const struct kefir_ast_type *type,
-                                             const struct kefir_ast_initializer_traversal *initializer_traversal) {
+kefir_result_t kefir_ast_traverse_initializer(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                              const struct kefir_ast_initializer *initializer,
+                                              const struct kefir_ast_type *type,
+                                              const struct kefir_ast_initializer_traversal *initializer_traversal) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(initializer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer"));
@@ -390,5 +390,5 @@ kefir_result_t kefi_ast_traverse_initializer(struct kefir_mem *mem, const struct
     REQUIRE(initializer_traversal != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST initializer traversal"));
 
-    return kefi_ast_traverse_initializer_impl(mem, context, NULL, initializer, type, initializer_traversal);
+    return kefir_ast_traverse_initializer_impl(mem, context, NULL, initializer, type, initializer_traversal);
 }

@@ -259,7 +259,7 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
     initializer_traversal.payload = &param;
 
     REQUIRE_CHAIN(&res,
-                  kefi_ast_traverse_initializer(mem, context->ast_context, initializer, type, &initializer_traversal));
+                  kefir_ast_traverse_initializer(mem, context->ast_context, initializer, type, &initializer_traversal));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_translator_type_free(mem, param.translator_type);
         return res;

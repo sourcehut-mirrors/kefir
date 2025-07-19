@@ -154,7 +154,7 @@ static kefir_result_t resolve_flexible_array_member(struct kefir_mem *mem, const
     initializer_traversal.visit_value = resolve_flexible_array_member_visit_value;
     initializer_traversal.visit_initializer_list = resolve_flexible_array_member_visit_initializer_list;
     initializer_traversal.payload = &payload;
-    REQUIRE_OK(kefi_ast_traverse_initializer(mem, context, initializer, object_type, &initializer_traversal));
+    REQUIRE_OK(kefir_ast_traverse_initializer(mem, context, initializer, object_type, &initializer_traversal));
     REQUIRE(payload.flexible_array_member_size > 0, KEFIR_OK);
 
     struct kefir_ast_struct_type *updated_struct;

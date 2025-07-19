@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .quad 1234
+
+    .align 8
+b:
+    .quad 4616341614542182154
+
+    .align 8
+c:
+    .quad 9223372036854775808, 13871544249138282496
+
+    .align 8
+d:
+    .quad a
+

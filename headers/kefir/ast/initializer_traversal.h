@@ -46,8 +46,8 @@ typedef struct kefir_ast_initializer_traversal {
         (_traversal)->payload = NULL;                    \
     } while (0)
 
-kefir_result_t kefi_ast_traverse_initializer(struct kefir_mem *, const struct kefir_ast_context *,
-                                             const struct kefir_ast_initializer *, const struct kefir_ast_type *,
-                                             const struct kefir_ast_initializer_traversal *);
+kefir_result_t kefir_ast_traverse_initializer(struct kefir_mem *, const struct kefir_ast_context *,
+                                              const struct kefir_ast_initializer *, const struct kefir_ast_type *,
+                                              const struct kefir_ast_initializer_traversal *);
 
 #endif

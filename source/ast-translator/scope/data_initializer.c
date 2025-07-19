@@ -481,7 +481,7 @@ kefir_result_t kefir_ast_translate_data_initializer(struct kefir_mem *mem, const
 
     REQUIRE_OK(kefir_ir_type_tree_init(mem, type, &param.ir_type_tree));
     kefir_result_t res =
-        kefi_ast_traverse_initializer(mem, context, initializer, type_layout->type, &initializer_traversal);
+        kefir_ast_traverse_initializer(mem, context, initializer, type_layout->type, &initializer_traversal);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ir_type_tree_free(mem, &param.ir_type_tree);
         return res;

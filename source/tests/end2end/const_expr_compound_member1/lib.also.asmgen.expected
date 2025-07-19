@@ -1,0 +1,79 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global b
+.type b, @object
+.global c
+.type c, @object
+.global d
+.type d, @object
+.global e
+.type e, @object
+.global f
+.type f, @object
+.global g
+.type g, @object
+.global h
+.type h, @object
+.global i
+.type i, @object
+.global j
+.type j, @object
+.global s1
+.type s1, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .quad s1 + 16
+
+    .align 8
+b:
+    .quad 4641241242825727672
+
+    .align 8
+c:
+    .quad 18446744073709551366
+
+    .align 4
+d:
+    .long 1120442778, 0
+
+    .align 8
+e:
+    .quad a
+
+    .align 8
+f:
+    .quad 0
+
+    .align 8
+g:
+    .quad 0
+
+    .align 16
+h:
+    .quad 0, 0
+
+    .align 8
+i:
+    .quad 0, 0
+
+    .align 8
+j:
+    .quad __kefir_temporary_8
+
+__kefir_temporary_8:
+    .byte 0x48, 0x65, 0x6c, 0x6c, 0x6f
+
+.section .bss
+    .align 8
+s1:
+    .skip 72
+
