@@ -20,7 +20,12 @@
 
 int test();
 int test(void);
+int test2(...);
 
-int test2() {
+int test3() {
     return test();
+}
+
+int test4() {
+    return test2(1, 2, 3, 4);
 }

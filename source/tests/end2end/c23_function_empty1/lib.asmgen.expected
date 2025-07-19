@@ -2,15 +2,32 @@
 .section .note.GNU-stack,"",%progbits
 
 .extern test
-.global test2
-.type test2, @function
+.extern test2
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
 
 .section .text
 __kefir_text_section_begin:
-test2:
-__kefir_text_func_test2_begin:
+test3:
+__kefir_text_func_test3_begin:
     jmp test@PLT
-__kefir_text_func_test2_end:
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    mov $1, %rdi
+    mov $2, %rsi
+    mov $3, %rdx
+    mov $4, %rcx
+    xor %eax, %eax
+    call test2@PLT
+    pop %rbp
+    ret
+__kefir_text_func_test4_end:
 
 __kefir_text_section_end:
 
