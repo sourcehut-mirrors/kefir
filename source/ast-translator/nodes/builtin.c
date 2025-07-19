@@ -201,15 +201,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             } else {
                 const struct kefir_ast_constant_expression_value *node_value =
                     KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(
-                    builder, KEFIR_IR_OPCODE_UINT_CONST,
-                    (node_value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
-                     node_value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
-                     node_value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT ||
-                     (node_value->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
-                      node_value->pointer.type != KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
-                        ? 1
-                        : 0));
+                kefir_bool_t is_statically_known;
+                REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(node_value, &is_statically_known));
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, is_statically_known ? 1 : 0));
             }
         } break;
 

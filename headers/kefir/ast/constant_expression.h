@@ -31,7 +31,8 @@ typedef enum kefir_ast_constant_expression_class {
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT,
     KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT,
-    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS
+    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS,
+    KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND
 } kefir_ast_constant_expression_class_t;
 
 typedef enum kefir_ast_constant_expression_pointer_base_type {
@@ -77,6 +78,10 @@ typedef struct kefir_ast_constant_expression_value {
         kefir_ast_constant_expression_float_t imaginary;
     } complex_floating_point;
     struct kefir_ast_constant_expression_pointer pointer;
+    struct {
+        const struct kefir_ast_type *type;
+        const struct kefir_ast_initializer *initializer;
+    } compound;
 } kefir_ast_constant_expression_value_t;
 
 #define KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(_value)                                                  \
@@ -102,5 +107,8 @@ kefir_result_t kefir_ast_evaluate_comparison(struct kefir_mem *, const struct ke
 kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_constant_expression_value *,
                                                          const struct kefir_ast_constant_expression_value *,
                                                          kefir_bool_t *);
+
+kefir_result_t kefir_ast_constant_expression_is_statically_known(const struct kefir_ast_constant_expression_value *,
+                                                                 kefir_bool_t *);
 
 #endif

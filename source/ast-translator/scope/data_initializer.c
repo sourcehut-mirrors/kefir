@@ -193,29 +193,22 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
     REQUIRE_OK(resolve_designated_slot(param->type_layout, designator, &param->ir_type_tree, param->base_slot,
                                        &resolved_layout, &slot, &expression->source_location));
 
-    struct kefir_ast_compound_literal *compound_literal;
-    kefir_result_t res = kefir_ast_downcast_compound_literal(expression, &compound_literal, false);
-    if (res != KEFIR_NO_MATCH) {
-        REQUIRE_OK(res);
-        const struct kefir_ast_type *expr_type = kefir_ast_unqualified_type(expression->properties.type);
-        if (!KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type) && expr_type->tag != KEFIR_AST_TYPE_ARRAY) {
-            REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(param->context->type_traits, expr_type, resolved_layout->type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
-                                           "Compound literal type mismatch"));
-            REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
-                                                            param->type, compound_literal->initializer, param->data,
-                                                            slot));
-            return KEFIR_OK;
-        }
-    }
-
     struct kefir_ast_constant_expression_value value;
     REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(expression),
             KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &expression->source_location,
                                    "Unable to evaluate constant expression"));
-    REQUIRE_OK(kefir_ast_constant_expression_value_cast(
-        param->mem, param->context, &value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression), expression,
-        resolved_layout->type, expression->properties.type));
+    if (KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression)->klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND) {
+        const struct kefir_ast_type *expr_type =
+            kefir_ast_unqualified_type(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression)->compound.type);
+        REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(param->context->type_traits, resolved_layout->type, expr_type),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
+                                       "Compound literal type mismatch"));
+        value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression);
+    } else {
+        REQUIRE_OK(kefir_ast_constant_expression_value_cast(
+            param->mem, param->context, &value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression), expression,
+            resolved_layout->type, expression->properties.type));
+    }
     struct kefir_ir_typeentry *target_typeentry = kefir_ir_type_at(param->type, resolved_layout->value);
     REQUIRE(target_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Cannot obtain target IR type entry"));
     switch (value.klass) {
@@ -394,6 +387,12 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                         kefir_ir_data_set_string_pointer(param->mem, param->data, slot, id, value.pointer.offset));
                 } break;
             }
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+            REQUIRE_OK(kefir_ast_translate_data_initializer(param->mem, param->context, param->module, resolved_layout,
+                                                            param->type, value.compound.initializer, param->data,
+                                                            slot));
             break;
     }
 

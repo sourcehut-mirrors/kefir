@@ -212,6 +212,7 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *mem, const s
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
             // Intentionally left blank
             break;
     }

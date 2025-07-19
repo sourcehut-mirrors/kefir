@@ -23,6 +23,26 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
+static kefir_result_t is_initializer_constant(const struct kefir_ast_initializer *initializer, kefir_bool_t *constant) {
+    switch (initializer->type) {
+        case KEFIR_AST_INITIALIZER_EXPRESSION:
+            *constant = initializer->expression->properties.expression_props.constant_expression;
+            break;
+
+        case KEFIR_AST_INITIALIZER_LIST:
+            *constant = true;
+            for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers);
+                 iter != NULL && *constant; kefir_list_next(&iter)) {
+                ASSIGN_DECL_CAST(const struct kefir_ast_initializer_list_entry *, entry, iter->value);
+                kefir_bool_t is_constant_entry = true;
+                REQUIRE_OK(is_initializer_constant(entry->value, &is_constant_entry));
+                *constant = *constant && is_constant_entry;
+            }
+            break;
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                         const struct kefir_ast_compound_literal *node,
                                                         struct kefir_ast_constant_expression_value *value) {
@@ -53,12 +73,19 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         value->pointer.scoped_id = scoped_id;
     } else {
         const struct kefir_ast_node_base *initializer = kefir_ast_initializer_head(node->initializer);
-        REQUIRE(KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL &&
-                    KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
-                                       "Constant compound literal shall be either scalar with an initializer, or an "
-                                       "array with external/static storage"));
-        *value = initializer->properties.expression_props.constant_expression_value;
+        if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL &&
+            KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer)) {
+            *value = initializer->properties.expression_props.constant_expression_value;
+        } else {
+            kefir_bool_t is_constant = false;
+            REQUIRE_OK(is_initializer_constant(node->initializer, &is_constant));
+            REQUIRE(is_constant, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                                        "Compound literal initializer is not constant"));
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND;
+            value->compound.type = unqualified_type;
+            value->compound.initializer = node->initializer;
+        }
     }
     return KEFIR_OK;
 }

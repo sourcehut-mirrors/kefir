@@ -151,6 +151,9 @@ kefir_result_t kefir_ast_constant_expression_value_to_boolean(const struct kefir
             }
             break;
 
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
+
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
     }
@@ -273,6 +276,54 @@ kefir_result_t kefir_ast_constant_expression_value_equal(const struct kefir_ast_
                 }
             }
             break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+            return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to compare compound constant expressions");
     }
+    return KEFIR_OK;
+}
+
+static kefir_result_t is_initializer_statically_known(const struct kefir_ast_initializer *initializer,
+                                                      kefir_bool_t *is_statically_known) {
+    if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION) {
+        REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(
+            &initializer->expression->properties.expression_props.constant_expression_value, is_statically_known));
+    } else {
+        *is_statically_known = true;
+        for (const struct kefir_list_entry *iter = kefir_list_head(&initializer->list.initializers);
+             iter != NULL && *is_statically_known; kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const struct kefir_ast_initializer_list_entry *, entry, iter->value);
+            kefir_bool_t is_entry_known;
+            REQUIRE_OK(is_initializer_statically_known(entry->value, &is_entry_known));
+            *is_statically_known = *is_statically_known && is_entry_known;
+        }
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_constant_expression_is_statically_known(
+    const struct kefir_ast_constant_expression_value *value, kefir_bool_t *is_statically_known) {
+    REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid constant expression value"));
+    REQUIRE(is_statically_known != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    switch (value->klass) {
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
+            *is_statically_known = true;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+            *is_statically_known = value->pointer.type != KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
+            break;
+
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+            REQUIRE_OK(is_initializer_statically_known(value->compound.initializer, is_statically_known));
+            break;
+    }
+
     return KEFIR_OK;
 }

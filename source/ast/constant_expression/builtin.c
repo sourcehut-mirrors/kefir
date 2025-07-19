@@ -215,15 +215,10 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             if (!node->properties.expression_props.constant_expression) {
                 value->integer = 0;
             } else {
-                kefir_ast_constant_expression_class_t klass = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->klass;
-                value->integer = (klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER ||
-                                  klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT ||
-                                  klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT ||
-                                  (klass == KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS &&
-                                   KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->pointer.type !=
-                                       KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER))
-                                     ? 1
-                                     : 0;
+                kefir_bool_t is_statically_known;
+                REQUIRE_OK(kefir_ast_constant_expression_is_statically_known(
+                    KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node), &is_statically_known));
+                value->integer = is_statically_known ? 1 : 0;
             }
         } break;
 

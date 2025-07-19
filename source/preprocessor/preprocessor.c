@@ -588,6 +588,7 @@ kefir_result_t kefir_preprocessor_scan_embed_limit(struct kefir_mem *mem, struct
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
             return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected integral constant expression");
     }
     return KEFIR_OK;

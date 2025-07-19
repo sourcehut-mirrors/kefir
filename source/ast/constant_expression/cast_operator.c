@@ -246,6 +246,9 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 }
                 break;
 
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
         }
@@ -288,6 +291,9 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                               "Address to floating point cast is not a constant expression");
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
@@ -335,6 +341,9 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->complex_floating_point.imaginary = source->complex_floating_point.imaginary;
                 break;
 
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
+
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
                                               "Address to floating point cast is not a constant expression");
@@ -361,6 +370,9 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
                 value->pointer = source->pointer;
                 value->pointer.pointer_node = node;
                 break;
+
+            case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPOUND:
+                return KEFIR_SET_ERROR(KEFIR_NOT_CONSTANT, "Unable to cast compound constant expression");
 
             case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE:
                 return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Non-evaluated constant expression");
