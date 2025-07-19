@@ -345,6 +345,20 @@ static kefir_result_t context_current_flow_control_point(struct kefir_mem *mem, 
     return KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Control flow cannot be referenced in a global context");
 }
 
+static kefir_result_t free_owned_object(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
+                                        kefir_hashtree_value_t value, void *payload) {
+    UNUSED(tree);
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    ASSIGN_DECL_CAST(void *, object, key);
+    ASSIGN_DECL_CAST(kefir_ast_global_context_owned_object_destructor_t, destructor, value);
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object"));
+    REQUIRE(destructor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid owned object destructor"));
+
+    REQUIRE_OK(destructor(mem, object));
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct kefir_ast_type_traits *type_traits,
                                              const struct kefir_ast_target_environment *target_env,
                                              struct kefir_ast_global_context *context,
@@ -379,6 +393,8 @@ kefir_result_t kefir_ast_global_context_init(struct kefir_mem *mem, const struct
                                                           kefir_ast_context_free_scoped_identifier, NULL));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_init(&context->ordinary_scope));
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
+    REQUIRE_OK(kefir_hashtree_init(&context->owned_objects, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtree_on_removal(&context->owned_objects, free_owned_object, NULL));
 
     context->context.resolve_ordinary_identifier = context_resolve_ordinary_identifier;
     context->context.resolve_tag_identifier = context_resolve_tag_identifier;
@@ -433,6 +449,7 @@ kefir_result_t kefir_ast_global_context_free(struct kefir_mem *mem, struct kefir
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->type_identifiers));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->function_identifiers));
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->object_identifiers));
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->owned_objects));
     REQUIRE_OK(kefir_list_free(mem, &context->function_decl_contexts));
     REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
@@ -1375,5 +1392,19 @@ kefir_result_t kefir_ast_global_context_define_static_function(
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
     ASSIGN_PTR(scoped_id, ordinary_id);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_global_context_add_owned_object(
+    struct kefir_mem *mem, const struct kefir_ast_global_context *context, void *object,
+    kefir_ast_global_context_owned_object_destructor_t destructor) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(object != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST global context owned object"));
+    REQUIRE(destructor != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST global context owned object destructor"));
+
+    REQUIRE_OK(kefir_hashtree_insert(mem, (struct kefir_hashtree *) &context->owned_objects,
+                                     (kefir_hashtree_key_t) object, (kefir_hashtree_value_t) destructor));
     return KEFIR_OK;
 }

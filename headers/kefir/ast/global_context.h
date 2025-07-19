@@ -26,6 +26,8 @@
 #include "kefir/ast/scope.h"
 #include "kefir/ast/context.h"
 
+typedef kefir_result_t (*kefir_ast_global_context_owned_object_destructor_t)(struct kefir_mem *, void *);
+
 typedef struct kefir_ast_global_context {
     struct kefir_ast_context context;
 
@@ -43,6 +45,8 @@ typedef struct kefir_ast_global_context {
 
     struct kefir_ast_identifier_flat_scope ordinary_scope;
     struct kefir_ast_identifier_flat_scope tag_scope;
+
+    struct kefir_hashtree owned_objects;
 
     struct {
         kefir_id_t next_id;
@@ -126,5 +130,8 @@ kefir_result_t kefir_ast_global_context_define_static_function(struct kefir_mem 
                                                                const struct kefir_ast_declarator_attributes *,
                                                                const struct kefir_source_location *,
                                                                const struct kefir_ast_scoped_identifier **);
+
+kefir_result_t kefir_ast_global_context_add_owned_object(struct kefir_mem *, const struct kefir_ast_global_context *,
+                                                         void *, kefir_ast_global_context_owned_object_destructor_t);
 
 #endif
