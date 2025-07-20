@@ -175,6 +175,7 @@ static kefir_result_t translate_local_scoped_identifier_object(
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL:
             break;
 
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
             REQUIRE_OK(translate_static_identifier(mem, context, module, env, local_layout, identifier,
                                                    scoped_identifier, source_location));
@@ -189,6 +190,7 @@ static kefir_result_t translate_local_scoped_identifier_object(
                                                                 scoped_identifier, source_location));
             break;
 
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
             if (wrapper_structure != NULL) {
@@ -265,7 +267,8 @@ static kefir_result_t local_scope_empty(struct kefir_mem *mem, const struct kefi
          res = kefir_ast_identifier_flat_scope_next(scope, &iter)) {
         if (iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT) {
             if (iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-                iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER) {
+                iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+                iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
                 *empty = false;
                 return KEFIR_OK;
             }

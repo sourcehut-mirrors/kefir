@@ -216,7 +216,8 @@ kefir_result_t kefir_ast_translator_mark_flat_scope_objects_lifetime(
          res = kefir_ast_identifier_flat_scope_next(scope, &scope_iter)) {
         if (scope_iter.value->klass == KEFIR_AST_SCOPE_IDENTIFIER_OBJECT &&
             (scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
-             scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER)) {
+             scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+             scope_iter.value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR)) {
             ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                              scope_iter.value->payload.ptr);
             if (KEFIR_AST_TYPE_IS_VL_ARRAY(scope_iter.value->object.type)) {

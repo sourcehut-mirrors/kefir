@@ -1,0 +1,99 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global getx2
+.type getx2, @function
+.global getx3
+.type getx3, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+
+.section .text
+__kefir_text_section_begin:
+getx2:
+__kefir_text_func_getx2_begin:
+    lea x2(%rip), %rax
+    movq (%rax), %rax
+    ret
+__kefir_text_func_getx2_end:
+
+getx3:
+__kefir_text_func_getx3_begin:
+    lea __kefir_function_getx3_static___kefir_local_temporary_0_11(%rip), %rax
+    ret
+__kefir_text_func_getx3_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    mov %rdi, %rdx
+    leaq -24(%rbp), %rdi
+    xor %eax, %eax
+    mov $24, %rcx
+    rep stosb
+    movl $-100, -24(%rbp)
+    movl $3, -20(%rbp)
+    movl $5, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $6, -8(%rbp)
+    movl $-5, -4(%rbp)
+    mov %rdx, %rax
+    movq -24(%rbp), %rcx
+    movq %rcx, (%rax)
+    movq -16(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -8(%rbp), %rcx
+    movq %rcx, 16(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    mov $1, %rax
+_kefir_func_test3_label1:
+    mov %rdi, %rcx
+    add $-1, %ecx
+    mov %rax, %rdx
+    imul %edi, %edx
+    cmp $0, %edi
+    jle _kefir_func_test3_label2
+_kefir_func_test3_label3:
+    mov %rcx, %rdi
+    mov %rdx, %rax
+    jmp _kefir_func_test3_label1
+_kefir_func_test3_label2:
+    ret
+__kefir_text_func_test3_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+x2:
+    .quad __kefir_temporary_6
+
+    .align 8
+__kefir_temporary_6:
+    .quad 0
+    .long 4294967172
+    .zero 4
+    .byte 0
+    .byte 0
+    .byte 0
+    .byte 0
+    .zero 4
+
+    .align 8
+__kefir_function_getx3_static___kefir_local_temporary_0_11:
+    .quad 212855725
+    .long 0
+    .zero 4
+    .byte 0x68, 0x65, 0x68, 0x65
+    .zero 4
+

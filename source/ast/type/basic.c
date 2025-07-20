@@ -342,6 +342,10 @@ kefir_result_t kefir_ast_type_is_signed(const struct kefir_ast_type_traits *type
             REQUIRE_OK(kefir_ast_type_is_signed(type_traits, type->enumeration_type.underlying_type, signedness));
             break;
 
+        case KEFIR_AST_TYPE_QUALIFIED:
+            REQUIRE_OK(kefir_ast_type_is_signed(type_traits, type->qualified_type.type, signedness));
+            break;
+
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected integral AST type");
     }

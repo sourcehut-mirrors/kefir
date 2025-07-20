@@ -251,6 +251,8 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
                 res = KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
                                              "Invalid function definition storage specifier");
 

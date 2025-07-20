@@ -61,6 +61,10 @@ typedef struct kefir_ast_scoped_identifier {
             const char *alias;
             const char *defining_function;
             struct {
+                kefir_bool_t present;
+                struct kefir_ast_constant_expression_value value;
+            } constant_expression;
+            struct {
                 kefir_bool_t weak;
             } flags;
         } object;

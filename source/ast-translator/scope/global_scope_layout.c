@@ -386,6 +386,7 @@ static kefir_result_t translate_global_scoped_identifier_object(
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
             REQUIRE_OK(translate_static_identifier(mem, context, module, env, layout, identifier, scoped_identifier,
                                                    source_location));
             break;
@@ -395,6 +396,7 @@ static kefir_result_t translate_global_scoped_identifier_object(
                                                                 scoped_identifier, source_location));
             break;
 
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
             return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "File-scope variable cannot have auto/register storage");
@@ -452,6 +454,7 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
             REQUIRE_OK(kefir_ir_debug_entry_add_attribute(mem, &module->debug_info.entries, &module->symbols,
                                                           scoped_identifier_layout->debug_info.variable,
                                                           &KEFIR_IR_DEBUG_ENTRY_ATTR_GLOBAL_VARIABLE(identifier_id)));
@@ -470,6 +473,7 @@ static kefir_result_t generate_object_debug_entry(struct kefir_mem *mem, const s
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
@@ -601,6 +605,7 @@ static kefir_result_t translate_global_scoped_identifier_function(
             break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
             REQUIRE_OK(kefir_ast_translator_scoped_identifier_insert(mem, identifier, scoped_identifier,
                                                                      &layout->static_objects));
             break;

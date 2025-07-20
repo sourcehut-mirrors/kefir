@@ -129,6 +129,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
             REQUIRE_OK(kefir_json_output_string(json, "static"));
             break;
 
+        case KEFIR_KEYWORD_CONSTEXPR:
+            REQUIRE_OK(kefir_json_output_string(json, "constexpr"));
+            break;
+
         case KEFIR_KEYWORD_STRUCT:
             REQUIRE_OK(kefir_json_output_string(json, "struct"));
             break;

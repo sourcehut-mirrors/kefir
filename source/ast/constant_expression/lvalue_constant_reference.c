@@ -54,7 +54,8 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
             REQUIRE(
                 scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC ||
-                    scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN,
+                    scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                    scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location, "Not a constant expression"));
         } break;
 

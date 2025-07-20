@@ -51,7 +51,8 @@ static kefir_result_t visit_identifier(const struct kefir_ast_visitor *visitor, 
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT: {
             *param->constant = scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC ||
-                               scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN;
+                               scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
+                               scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC;
         } break;
 
         case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:

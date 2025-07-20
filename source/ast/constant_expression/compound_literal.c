@@ -62,9 +62,9 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         REQUIRE(unqualified_type->tag == KEFIR_AST_TYPE_ARRAY &&
                     (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN ||
                      scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC),
-                KEFIR_SET_SOURCE_ERROR(
-                    KEFIR_NOT_CONSTANT, &node->base.source_location,
-                    "Constant compound literal shall be either scalar, or an array with external/static storage"));
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
+                                       "Constant compound literal shall be either scalar, compound, or an array with "
+                                       "external/static storage"));
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS;
         value->pointer.type = KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER;
         value->pointer.base.literal = node->base.properties.expression_props.temporary_identifier.identifier;
@@ -75,7 +75,9 @@ kefir_result_t kefir_ast_evaluate_compound_literal_node(struct kefir_mem *mem, c
         const struct kefir_ast_node_base *initializer = kefir_ast_initializer_head(node->initializer);
         if (KEFIR_AST_TYPE_IS_SCALAR_TYPE(unqualified_type) && initializer != NULL &&
             KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(initializer)) {
-            *value = initializer->properties.expression_props.constant_expression_value;
+            REQUIRE_OK(kefir_ast_constant_expression_value_cast(
+                mem, context, value, KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(initializer), initializer,
+                node->base.properties.type, initializer->properties.type));
         } else {
             kefir_bool_t is_constant = false;
             REQUIRE_OK(is_initializer_constant(node->initializer, &is_constant));

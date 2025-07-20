@@ -155,6 +155,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, str
                 *offset = value->pointer.offset;
                 break;
 
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  value->pointer.scoped_id->payload.ptr);
@@ -163,6 +164,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem, str
                 *offset = resolve_identifier_offset(identifier_data->layout) + value->pointer.offset;
             } break;
 
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL:

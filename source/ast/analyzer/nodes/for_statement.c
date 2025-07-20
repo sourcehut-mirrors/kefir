@@ -75,7 +75,9 @@ kefir_result_t kefir_ast_analyze_for_statement_node(struct kefir_mem *mem, const
                 REQUIRE(
                     init_declarator->properties.declaration_props.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO ||
                         init_declarator->properties.declaration_props.storage ==
-                            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER,
+                            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
+                        init_declarator->properties.declaration_props.storage ==
+                            KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
                     KEFIR_SET_SOURCE_ERROR(
                         KEFIR_ANALYSIS_ERROR, &node->init->source_location,
                         "Expected the first clause of for statement to declare only auto or register identifiers"));

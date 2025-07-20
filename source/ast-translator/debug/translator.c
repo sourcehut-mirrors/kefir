@@ -894,7 +894,8 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                                                                       &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(true)));
                     } break;
 
-                    case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
+                    case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
+                    case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC: {
                         kefir_id_t id;
                         if (iter.value->object.defining_function == NULL) {
                             REQUIRE(kefir_ir_module_symbol(mem, module, iter.identifier, &id) != NULL,
@@ -932,6 +933,7 @@ kefir_result_t kefir_ast_translator_generate_object_scope_debug_information(
                                                                       &KEFIR_IR_DEBUG_ENTRY_ATTR_EXTERNAL(false)));
                     } break;
 
+                    case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
                     case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
                         REQUIRE_OK(kefir_ir_debug_entry_add_attribute(

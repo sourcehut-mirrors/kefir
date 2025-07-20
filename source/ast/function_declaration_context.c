@@ -355,6 +355,8 @@ static kefir_result_t context_define_identifier(
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN_THREAD_LOCAL:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC:
+        case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
             return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                           "Provided specifier is not permitted in declaration of function");

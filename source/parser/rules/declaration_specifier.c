@@ -45,6 +45,9 @@ static kefir_result_t scan_storage_class(struct kefir_mem *mem, struct kefir_par
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_STATIC)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         specifier = kefir_ast_storage_class_specifier_static(mem);
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_CONSTEXPR)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        specifier = kefir_ast_storage_class_specifier_constexpr(mem);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_THREAD_LOCAL)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         specifier = kefir_ast_storage_class_specifier_thread_local(mem);

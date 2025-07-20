@@ -61,6 +61,7 @@ static const struct KeywordEntry {
                 {U"__signed", KEFIR_KEYWORD_SIGNED, KEFIR_C17_STANDARD_VERSION},
                 {U"sizeof", KEFIR_KEYWORD_SIZEOF, KEFIR_C17_STANDARD_VERSION},
                 {U"static", KEFIR_KEYWORD_STATIC, KEFIR_C17_STANDARD_VERSION},
+                {U"constexpr", KEFIR_KEYWORD_CONSTEXPR, KEFIR_C23_STANDARD_VERSION},
                 {U"struct", KEFIR_KEYWORD_STRUCT, KEFIR_C17_STANDARD_VERSION},
                 {U"switch", KEFIR_KEYWORD_SWITCH, KEFIR_C17_STANDARD_VERSION},
                 {U"typedef", KEFIR_KEYWORD_TYPEDEF, KEFIR_C17_STANDARD_VERSION},

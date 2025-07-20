@@ -1,0 +1,75 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global geta
+.type geta, @function
+.global getx
+.type getx, @function
+.global gety
+.type gety, @function
+.global getz
+.type getz, @function
+.global get_w
+.type get_w, @function
+
+.section .text
+__kefir_text_section_begin:
+geta:
+__kefir_text_func_geta_begin:
+    lea a(%rip), %rax
+    ret
+__kefir_text_func_geta_end:
+
+getx:
+__kefir_text_func_getx_begin:
+    lea x(%rip), %rax
+    ret
+__kefir_text_func_getx_end:
+
+gety:
+__kefir_text_func_gety_begin:
+    lea y(%rip), %rax
+    ret
+__kefir_text_func_gety_end:
+
+getz:
+__kefir_text_func_getz_begin:
+    lea z(%rip), %rax
+    ret
+__kefir_text_func_getz_end:
+
+get_w:
+__kefir_text_func_get_w_begin:
+    lea w(%rip), %rax
+    ret
+__kefir_text_func_get_w_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 8
+a:
+    .long 100
+    .zero 4
+    .quad 3405688845
+    .quad __kefir_string_literal5
+
+    .align 8
+w:
+    .quad x
+
+    .align 4
+x:
+    .long 1000
+
+    .align 8
+y:
+    .quad 4614256656431372362
+
+    .align 4
+z:
+    .long 1120403456, 3276282266
+
+.section .rodata
+__kefir_string_literal5:
+    .ascii "Hello, world!\000"

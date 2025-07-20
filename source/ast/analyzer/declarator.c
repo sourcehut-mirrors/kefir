@@ -1089,11 +1089,25 @@ static kefir_result_t resolve_storage_class(const struct kefir_ast_context *cont
         case KEFIR_AST_STORAGE_SPECIFIER_STATIC:
             if (*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN) {
                 *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC;
+            } else if (*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
+                *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC;
             } else {
                 REQUIRE(*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_THREAD_LOCAL,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
-                                               "Static storage class can only be colocated with thread_local"));
+                        KEFIR_SET_SOURCE_ERROR(
+                            KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                            "Static storage class can only be colocated with thread_local or constexpr"));
                 *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC_THREAD_LOCAL;
+            }
+            break;
+
+        case KEFIR_AST_STORAGE_SPECIFIER_CONSTEXPR:
+            if (*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC) {
+                *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC;
+            } else {
+                REQUIRE(*storage_class == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN,
+                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                               "Constexpr storage class can only be combined with static"));
+                *storage_class = KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR;
             }
             break;
 

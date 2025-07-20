@@ -71,7 +71,8 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
                 REQUIRE_OK(kefir_ir_data_set_pointer(mem, data, base_slot, literal, value->pointer.offset));
             } break;
 
-            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC: {
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_STATIC:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC: {
                 ASSIGN_DECL_CAST(struct kefir_ast_translator_scoped_identifier_object *, identifier_data,
                                  value->pointer.scoped_id->payload.ptr);
                 const char *identifier = value->pointer.base.literal;
@@ -95,6 +96,7 @@ static kefir_result_t translate_pointer_to_identifier(struct kefir_mem *mem,
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO:
+            case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
                 return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected storage class of addressed variable");

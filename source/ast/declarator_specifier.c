@@ -757,6 +757,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_bitint(struct ke
 STORAGE_CLASS_SPECIFIER(typedef, KEFIR_AST_STORAGE_SPECIFIER_TYPEDEF)
 STORAGE_CLASS_SPECIFIER(extern, KEFIR_AST_STORAGE_SPECIFIER_EXTERN)
 STORAGE_CLASS_SPECIFIER(static, KEFIR_AST_STORAGE_SPECIFIER_STATIC)
+STORAGE_CLASS_SPECIFIER(constexpr, KEFIR_AST_STORAGE_SPECIFIER_CONSTEXPR)
 STORAGE_CLASS_SPECIFIER(thread_local, KEFIR_AST_STORAGE_SPECIFIER_THREAD_LOCAL)
 STORAGE_CLASS_SPECIFIER(auto, KEFIR_AST_STORAGE_SPECIFIER_AUTO)
 STORAGE_CLASS_SPECIFIER(register, KEFIR_AST_STORAGE_SPECIFIER_REGISTER)
@@ -964,6 +965,10 @@ struct kefir_ast_declarator_specifier *kefir_ast_declarator_specifier_clone(
 
                 case KEFIR_AST_STORAGE_SPECIFIER_STATIC:
                     clone = kefir_ast_storage_class_specifier_static(mem);
+                    break;
+
+                case KEFIR_AST_STORAGE_SPECIFIER_CONSTEXPR:
+                    clone = kefir_ast_storage_class_specifier_constexpr(mem);
                     break;
 
                 case KEFIR_AST_STORAGE_SPECIFIER_THREAD_LOCAL:

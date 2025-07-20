@@ -266,6 +266,10 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "static"));
                     break;
 
+                case KEFIR_AST_STORAGE_SPECIFIER_CONSTEXPR:
+                    REQUIRE_OK(kefir_json_output_string(json, "constexpr"));
+                    break;
+
                 case KEFIR_AST_STORAGE_SPECIFIER_THREAD_LOCAL:
                     REQUIRE_OK(kefir_json_output_string(json, "thread_local"));
                     break;
