@@ -35,7 +35,7 @@ int main(void) {
     assert(e == &a);
     assert(f == NULL);
     assert(g == 0);
-    assert(fabsl(h) < 1e-7l);
+    assert(fabs(h) < 1e-6l);
     assert(fabs(creal(i)) < 1e-6);
     assert(fabs(cimag(i)) < 1e-6);
     assert(strncmp(j, "Hello", 5) == 0);

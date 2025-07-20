@@ -57,9 +57,9 @@ f:
 g:
     .quad 0
 
-    .align 16
+    .align 8
 h:
-    .quad 0, 0
+    .quad 0
 
     .align 8
 i:

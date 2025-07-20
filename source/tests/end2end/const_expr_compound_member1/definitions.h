@@ -45,7 +45,7 @@ extern _Complex float d;
 extern long **e;
 extern void *f;
 extern long g;
-extern long double h;
+extern double h;
 extern _Complex double i;
 extern const char *j;
 

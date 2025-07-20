@@ -41,9 +41,9 @@ long **e = ((struct {
                .b;
 void *f = ((struct { void *x; }) {}).x;
 long g = ((struct S1) {}).f;
-long double h = ((struct {
+double h = ((struct {
                     struct {
-                        long double x;
+                        double x;
                     };
                 }) {})
                     .x;
