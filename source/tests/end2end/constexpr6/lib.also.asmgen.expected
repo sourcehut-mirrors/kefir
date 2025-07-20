@@ -11,45 +11,27 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    stmxcsr -8(%rbp)
     mov %rdi, %rdx
-    leaq -12(%rbp), %rdi
+    leaq -4(%rbp), %rdi
     xor %eax, %eax
     mov $4, %rcx
     rep stosb
-    movl $1234, -12(%rbp)
+    movl $1234, -4(%rbp)
     xor %eax, %eax
     test %edx, %edx
     sete %al
     test %al, %al
     jz _kefir_func_test1_label2
-    movl -12(%rbp), %eax
-    ldmxcsr -8(%rbp)
+    movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_test1_label2:
-    movd _kefir_func_test1_label3(%rip), %xmm0
-    xorps __kefir_constant_float32_neg(%rip), %xmm0
-    cvttss2si %xmm0, %rax
-    xor $-765506, %rax
-    ldmxcsr -8(%rbp)
+    mov $756091, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 __kefir_text_func_test1_end:
-.section .rodata
-    .align 4
-_kefir_func_test1_label3:
-    .long 1176300749
-.section .text
 
 __kefir_text_section_end:
 
-.section .rodata
-    .align 16
-__kefir_constant_float32_neg:
-    .long 2147483648
-    .long 0
-    .long 0
-    .long 0

@@ -35,19 +35,27 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
                                                   struct kefir_irbuilder_block *builder,
                                                   const struct kefir_ast_identifier *node,
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
-    REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, node->identifier, scoped_identifier));
-    if (node->base.properties.expression_props.atomic) {
-        kefir_bool_t atomic_aggregate;
-        REQUIRE_OK(kefir_ast_translator_atomic_load_value(
-            scoped_identifier->object.type, context->ast_context->type_traits, builder, &atomic_aggregate));
-        if (atomic_aggregate) {
-            REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
-                mem, node->base.properties.type, context, builder,
-                &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+    kefir_bool_t skip_translate_expr = false;
+    if (scoped_identifier->object.constant_expression.present && !node->base.properties.expression_props.atomic) {
+        REQUIRE_OK(kefir_ast_try_translate_constant(mem, KEFIR_AST_NODE_BASE(node),
+                                                    &scoped_identifier->object.constant_expression.value, builder,
+                                                    context, &skip_translate_expr));
+    }
+    if (!skip_translate_expr) {
+        REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder, node->identifier, scoped_identifier));
+        if (node->base.properties.expression_props.atomic) {
+            kefir_bool_t atomic_aggregate;
+            REQUIRE_OK(kefir_ast_translator_atomic_load_value(
+                scoped_identifier->object.type, context->ast_context->type_traits, builder, &atomic_aggregate));
+            if (atomic_aggregate) {
+                REQUIRE_OK(kefir_ast_translator_load_atomic_aggregate_value(
+                    mem, node->base.properties.type, context, builder,
+                    &node->base.properties.expression_props.temporary_identifier, &node->base.source_location));
+            }
+        } else {
+            REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type,
+                                                       context->ast_context->type_traits, builder));
         }
-    } else {
-        REQUIRE_OK(kefir_ast_translator_load_value(scoped_identifier->object.type, context->ast_context->type_traits,
-                                                   builder));
     }
     return KEFIR_OK;
 }

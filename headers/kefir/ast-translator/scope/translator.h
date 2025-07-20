@@ -39,4 +39,6 @@ kefir_result_t kefir_ast_translate_data_initializer(struct kefir_mem *, const st
                                                     const struct kefir_ir_type *, const struct kefir_ast_initializer *,
                                                     struct kefir_ir_data *, kefir_size_t);
 
+extern const kefir_ir_string_literal_type_t KefirAstIrStringLiteralTypes[];
+
 #endif

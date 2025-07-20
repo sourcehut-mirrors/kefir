@@ -256,8 +256,9 @@ kefir_result_t kefir_ast_translate_compound_literal_lvalue(struct kefir_mem *mem
         node->base.properties.expression_props.temporary_identifier.scoped_id->object.storage;
     if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_AUTO || storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER ||
         storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
-        REQUIRE_OK(
-            kefir_ast_translate_initializer(mem, context, builder, node->base.properties.type, node->initializer));
+        REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->base.properties.type,
+                                                   storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
+                                                   node->initializer));
     }
     return KEFIR_OK;
 }

@@ -177,7 +177,7 @@ struct traversal_param {
     struct kefir_ir_type_tree ir_type_tree;
 };
 
-static const kefir_ir_string_literal_type_t StringLiteralTypes[] = {
+const kefir_ir_string_literal_type_t KefirAstIrStringLiteralTypes[] = {
     [KEFIR_AST_STRING_LITERAL_MULTIBYTE] = KEFIR_IR_STRING_LITERAL_MULTIBYTE,
     [KEFIR_AST_STRING_LITERAL_UNICODE8] = KEFIR_IR_STRING_LITERAL_MULTIBYTE,
     [KEFIR_AST_STRING_LITERAL_UNICODE16] = KEFIR_IR_STRING_LITERAL_UNICODE16,
@@ -383,7 +383,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
                     kefir_id_t id;
                     REQUIRE_OK(kefir_ir_module_string_literal(
-                        param->mem, param->module, StringLiteralTypes[value.pointer.base.string.type], true,
+                        param->mem, param->module, KefirAstIrStringLiteralTypes[value.pointer.base.string.type], true,
                         value.pointer.base.string.content, value.pointer.base.string.length, &id));
                     REQUIRE_OK(
                         kefir_ir_data_set_string_pointer(param->mem, param->data, slot, id, value.pointer.offset));
@@ -410,8 +410,8 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_designator *de
     ASSIGN_DECL_CAST(struct traversal_param *, param, payload);
 
     kefir_id_t string_id;
-    REQUIRE_OK(kefir_ir_module_string_literal(param->mem, param->module, StringLiteralTypes[type], false, string,
-                                              length, &string_id));
+    REQUIRE_OK(kefir_ir_module_string_literal(param->mem, param->module, KefirAstIrStringLiteralTypes[type], false,
+                                              string, length, &string_id));
 
     kefir_ir_string_literal_type_t ir_string_type;
     kefir_bool_t public;
@@ -431,8 +431,8 @@ static kefir_result_t visit_string_literal(const struct kefir_ast_designator *de
         string_length = MIN(string_length, (kefir_size_t) resolved_layout->type->array_type.const_length);
     }
 
-    REQUIRE_OK(kefir_ir_data_set_string(param->mem, param->data, slot, StringLiteralTypes[type], string_content,
-                                        string_length));
+    REQUIRE_OK(kefir_ir_data_set_string(param->mem, param->data, slot, KefirAstIrStringLiteralTypes[type],
+                                        string_content, string_length));
     return KEFIR_OK;
 }
 

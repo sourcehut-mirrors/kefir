@@ -1,0 +1,85 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get1
+.type get1, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $96, %rsp
+    stmxcsr -8(%rbp)
+    mov %rdi, %rdx
+    leaq -88(%rbp), %rdi
+    xor %eax, %eax
+    mov $80, %rcx
+    rep stosb
+    movl $58472, -88(%rbp)
+    lea __kefir_string_literal0(%rip), %rax
+    movq %rax, -80(%rbp)
+    movq $58580, -72(%rbp)
+    movq _kefir_func_get1_label1(%rip), %xmm0
+    movq %xmm0, -64(%rbp)
+    movd _kefir_func_get1_label2(%rip), %xmm0
+    movd _kefir_func_get1_label3(%rip), %xmm1
+    insertps $16, %xmm1, %xmm0
+    xorps __kefir_constant_complex_float32_neg(%rip), %xmm0
+    movaps %xmm0, %xmm1
+    shufps $1, %xmm1, %xmm1
+    movd %xmm0, -56(%rbp)
+    movd %xmm1, -52(%rbp)
+    movl $1, -48(%rbp)
+    leaq -48(%rbp), %rax
+    add $4, %rax
+    movl $2, (%rax)
+    leaq -48(%rbp), %rax
+    add $8, %rax
+    movl $-1, (%rax)
+    movw $50, -32(%rbp)
+    leaq -32(%rbp), %rax
+    add $8, %rax
+    movq $-4451786, (%rax)
+    leaq -32(%rbp), %rax
+    add $16, %rax
+    movd _kefir_func_get1_label4(%rip), %xmm0
+    movd %xmm0, (%rax)
+    mov %rdx, %rax
+    mov %rax, %rdi
+    leaq -88(%rbp), %rsi
+    cld
+    mov $10, %rcx
+    rep movsq
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get1_end:
+.section .rodata
+    .align 8
+_kefir_func_get1_label1:
+    .quad 4617793822760025908
+    .align 4
+_kefir_func_get1_label2:
+    .long 0
+    .align 4
+_kefir_func_get1_label3:
+    .long 1169584333
+    .align 4
+_kefir_func_get1_label4:
+    .long 1085116776
+.section .text
+
+__kefir_text_section_end:
+
+.section .rodata
+    .align 16
+__kefir_constant_complex_float32_neg:
+    .long 2147483648
+    .long 2147483648
+    .long 2147483648
+    .long 2147483648
+__kefir_string_literal0:
+    .ascii "Test123\000"

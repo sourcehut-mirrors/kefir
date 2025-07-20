@@ -41,6 +41,7 @@ struct traversal_param {
     struct kefir_ast_translator_type *translator_type;
     const struct kefir_source_location *source_location;
     struct kefir_hashtreeset *repeated_expressions;
+    kefir_bool_t use_constant_values;
 };
 
 static kefir_result_t zero_type(struct kefir_irbuilder_block *builder, kefir_id_t ir_type_id,
@@ -73,14 +74,12 @@ static kefir_result_t kefir_ast_translate_initializer_impl(struct kefir_mem *, s
                                                            struct kefir_irbuilder_block *,
                                                            const struct kefir_ast_type *,
                                                            const struct kefir_ast_initializer *,
-                                                           struct kefir_hashtreeset *, kefir_bool_t);
+                                                           struct kefir_hashtreeset *, kefir_bool_t, kefir_bool_t);
 
-static kefir_result_t initialize_aggregate_with_scalar(struct kefir_mem *mem,
-                                                       struct kefir_ast_translator_context *context,
-                                                       struct kefir_irbuilder_block *builder,
-                                                       struct kefir_ast_type_layout *type_layout,
-                                                       struct kefir_ast_node_base *expression,
-                                                       struct kefir_hashtreeset *repeated_expressions) {
+static kefir_result_t initialize_aggregate_with_scalar(
+    struct kefir_mem *mem, struct kefir_ast_translator_context *context, struct kefir_irbuilder_block *builder,
+    struct kefir_ast_type_layout *type_layout, struct kefir_ast_node_base *expression,
+    struct kefir_hashtreeset *repeated_expressions, kefir_bool_t use_constant_values) {
     REQUIRE(context->ast_context->configuration->analysis.missing_braces_subobj,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &expression->source_location,
                                    "Expected braces for subobject initialization"));
@@ -100,8 +99,9 @@ static kefir_result_t initialize_aggregate_with_scalar(struct kefir_mem *mem,
                                        kefir_list_tail(&virtual_initializer.list.initializers),
                                        &virtual_expr_initializer_entry));
 
-    kefir_result_t res = kefir_ast_translate_initializer_impl(mem, context, builder, type_layout->type,
-                                                              &virtual_initializer, repeated_expressions, true);
+    kefir_result_t res =
+        kefir_ast_translate_initializer_impl(mem, context, builder, type_layout->type, &virtual_initializer,
+                                             repeated_expressions, true, use_constant_values);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &virtual_initializer.list.initializers);
         return res;
@@ -137,10 +137,18 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
 
     if (!KEFIR_AST_TYPE_IS_SCALAR_TYPE(type_layout->type) && KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type)) {
         REQUIRE_OK(initialize_aggregate_with_scalar(param->mem, param->context, param->builder, type_layout, expression,
-                                                    param->repeated_expressions));
+                                                    param->repeated_expressions, param->use_constant_values));
     } else {
         if (!kefir_hashtreeset_has(param->repeated_expressions, (kefir_hashtreeset_entry_t) expression)) {
-            REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
+            kefir_bool_t skip_translate_expr = false;
+            if (param->use_constant_values) {
+                REQUIRE_OK(kefir_ast_try_translate_constant(param->mem, expression,
+                                                            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression),
+                                                            param->builder, param->context, &skip_translate_expr));
+            }
+            if (!skip_translate_expr) {
+                REQUIRE_OK(kefir_ast_translate_expression(param->mem, expression, param->builder, param->context));
+            }
             REQUIRE_OK(
                 kefir_hashtreeset_add(param->mem, param->repeated_expressions, (kefir_hashtreeset_entry_t) expression));
         } else {
@@ -218,7 +226,8 @@ static kefir_result_t traverse_initializer_list(const struct kefir_ast_designato
 
     REQUIRE_OK(translate_address(param->translator_type, designator, param->builder));
     REQUIRE_OK(kefir_ast_translate_initializer_impl(param->mem, param->context, param->builder, type_layout->type,
-                                                    initializer, param->repeated_expressions, true));
+                                                    initializer, param->repeated_expressions, true,
+                                                    param->use_constant_values));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(param->builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     return KEFIR_OK;
 }
@@ -226,7 +235,7 @@ static kefir_result_t traverse_initializer_list(const struct kefir_ast_designato
 static kefir_result_t kefir_ast_translate_initializer_impl(
     struct kefir_mem *mem, struct kefir_ast_translator_context *context, struct kefir_irbuilder_block *builder,
     const struct kefir_ast_type *type, const struct kefir_ast_initializer *initializer,
-    struct kefir_hashtreeset *repeated_expressions, kefir_bool_t nested) {
+    struct kefir_hashtreeset *repeated_expressions, kefir_bool_t nested, kefir_bool_t use_constant_values) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -240,7 +249,8 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
                                     .context = context,
                                     .builder = builder,
                                     .source_location = &initializer->source_location,
-                                    .repeated_expressions = repeated_expressions};
+                                    .repeated_expressions = repeated_expressions,
+                                    .use_constant_values = use_constant_values};
     REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module, type, 0,
                                              &param.translator_type, &initializer->source_location));
 
@@ -270,7 +280,9 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
 
 kefir_result_t kefir_ast_translate_initializer(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                                struct kefir_irbuilder_block *builder, const struct kefir_ast_type *type,
+                                               kefir_bool_t use_constant_values,
                                                const struct kefir_ast_initializer *initializer) {
+    UNUSED(use_constant_values);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translator context"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
@@ -280,8 +292,8 @@ kefir_result_t kefir_ast_translate_initializer(struct kefir_mem *mem, struct kef
     struct kefir_hashtreeset repeated_expressions;
     REQUIRE_OK(kefir_hashtreeset_init(&repeated_expressions, &kefir_hashtree_uint_ops));
 
-    kefir_result_t res =
-        kefir_ast_translate_initializer_impl(mem, context, builder, type, initializer, &repeated_expressions, false);
+    kefir_result_t res = kefir_ast_translate_initializer_impl(mem, context, builder, type, initializer,
+                                                              &repeated_expressions, false, use_constant_values);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &repeated_expressions);
         return res;
