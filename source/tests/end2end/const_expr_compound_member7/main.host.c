@@ -29,16 +29,16 @@
 int main(void) {
     assert(a.a == 100);
     assert(fabs(a.b - 3.14159f) < 1e-5);
-    assert(fabsl(creall(a.c) - 384.0L) < 1e-7);
-    assert(fabsl(cimagl(a.c) + 4.564L) < 1e-7);
+    assert(fabs(creal(a.c) - 384.0) < 1e-6);
+    assert(fabs(cimag(a.c) + 4.564) < 1e-6);
     assert(a.d[0] == 0xcafe);
     assert(a.d[1] == 0xbabe);
     assert(strcmp(a.x, "Hello") == 0);
 
     assert(b.b.a == ~100);
     assert(fabs(b.b.b + 3.14159f) < 1e-5);
-    assert(fabsl(creall(b.b.c) + 384.0L) < 1e-7);
-    assert(fabsl(cimagl(b.b.c) - 4.564L) < 1e-7);
+    assert(fabs(creal(b.b.c) + 384.0) < 1e-6);
+    assert(fabs(cimag(b.b.c) - 4.564) < 1e-6);
     assert(b.b.d[0] == ~0xcafe);
     assert(b.b.d[1] == ~0xbabe);
     assert(strcmp(b.b.x, "Goodbye") == 0);

@@ -11,29 +11,23 @@ __kefir_text_section_begin:
 __kefir_text_section_end:
 
 .section .data
-    .align 16
+    .align 8
 a:
     .long 100
     .long 1078530000
-    .zero 8
-    .quad 13835058055282163712, 16391
-    .quad 10523867494051299197, 49153
+    .quad 4645463015632666624, 13840196662456993448
     .quad 51966
     .quad 47806
     .quad __kefir_string_literal0
-    .zero 8
 
-    .align 16
+    .align 8
 b:
     .long 4294967195
     .long 3226013648
-    .zero 8
-    .quad 13835058055282163712, 49159
-    .quad 10523867494051299197, 16385
+    .quad 13868835052487442432, 4616824625602217640
     .quad 18446744073709499649
     .quad 18446744073709503809
     .quad __kefir_string_literal1
-    .zero 8
 
 .section .rodata
 __kefir_string_literal0:

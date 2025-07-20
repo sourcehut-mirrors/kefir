@@ -24,7 +24,7 @@
 struct S1 {
     int a;
     float b;
-    _Complex long double c;
+    _Complex double c;
     long d[2];
     const char *x;
 };

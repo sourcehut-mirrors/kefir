@@ -25,7 +25,7 @@ struct S1 a = ((union S3) {
         .b = {
             100,
             3.14159f,
-            -4.564Li + 384.0L,
+            -4.564i + 384.0,
             0xcafe,
             0xbabe,
             "Hello"
@@ -38,7 +38,7 @@ union S2 b = ((union S3) {
         .b = {
             ~100,
             -3.14159f,
-            4.564Li - 384.0L,
+            4.564i - 384.0,
             ~0xcafe,
             ~0xbabe,
             "Goodbye"
