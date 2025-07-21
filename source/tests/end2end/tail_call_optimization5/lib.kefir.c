@@ -27,3 +27,9 @@ void factorial(long x) {
         fact *= x--;
     } while (1);
 }
+
+int test1();
+
+int test2() {
+    test1();
+}

@@ -1,12 +1,25 @@
 .att_syntax
 .section .note.GNU-stack,"",%progbits
 
+.extern test1
+.global test2
+.type test2, @function
 .global factorial
 .type factorial, @function
 .extern set_value
 
 .section .text
 __kefir_text_section_begin:
+test2:
+__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    call test1@PLT
+    xor %rax, %rax
+    pop %rbp
+    ret
+__kefir_text_func_test2_end:
+
 factorial:
 __kefir_text_func_factorial_begin:
     mov $1, %rax

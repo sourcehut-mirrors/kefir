@@ -24,4 +24,7 @@
 void set_value(long);
 void factorial(long);
 
+int test1(void);
+int test2(void);
+
 #endif

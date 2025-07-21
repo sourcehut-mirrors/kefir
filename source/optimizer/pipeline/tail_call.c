@@ -208,7 +208,8 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, prev_tail_instr_ref, &prev_tail_instr));
         if (prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
             prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
-            REQUIRE(prev_tail_instr_ref == tail_instr->operation.parameters.refs[0] || tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE, KEFIR_OK);
+            REQUIRE(prev_tail_instr_ref == tail_instr->operation.parameters.refs[0] ||
+                (tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE && kefir_ir_type_length(func->ir_func->declaration->result) == 0), KEFIR_OK);
             call_instr_ref = prev_tail_instr_ref;
             call_instr = prev_tail_instr;
         } else {

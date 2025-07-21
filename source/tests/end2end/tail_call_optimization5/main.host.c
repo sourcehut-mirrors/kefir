@@ -36,10 +36,15 @@ void set_value(long x) {
     value = x;
 }
 
+int test1() {
+    return 10;
+}
+
 int main(void) {
     for (long i = -10; i <= 10; i++) {
         factorial(i);
         assert(value == test_fact(i));
     }
+    assert(test2() == 0);
     return EXIT_SUCCESS;
 }
