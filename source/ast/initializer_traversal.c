@@ -318,22 +318,14 @@ static kefir_result_t traverse_array(struct kefir_mem *mem, const struct kefir_a
     }
 
     if (!is_string) {
-        if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION &&
-            initializer->expression->klass->type == KEFIR_AST_COMPOUND_LITERAL) {
-            const struct kefir_ast_type *unqualified_element_type =
-                kefir_ast_unqualified_type(type->array_type.element_type);
-            const struct kefir_ast_type *unqualified_compound_element_type =
-                kefir_ast_unqualified_type(initializer->expression->properties.type->array_type.element_type);
-            REQUIRE(initializer->expression->properties.type->tag == KEFIR_AST_TYPE_ARRAY &&
-                        KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified_element_type,
-                                                  unqualified_compound_element_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->expression->source_location,
-                                           "Expected array compound literal with compatible element type"));
-            REQUIRE(initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
-                        initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->expression->source_location,
-                                           "Expected array compound literal with statically known length"));
-
+        if (designator == NULL && initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION &&
+            initializer->expression->klass->type == KEFIR_AST_COMPOUND_LITERAL &&
+            initializer->expression->properties.type->tag == KEFIR_AST_TYPE_ARRAY &&
+            (initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
+             initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) &&
+            KEFIR_AST_TYPE_COMPATIBLE(
+                context->type_traits, kefir_ast_unqualified_type(type->array_type.element_type),
+                kefir_ast_unqualified_type(initializer->expression->properties.type->array_type.element_type))) {
             struct kefir_ast_compound_literal *compound_literal;
             REQUIRE_OK(kefir_ast_downcast_compound_literal(initializer->expression, &compound_literal, false));
 
@@ -347,7 +339,7 @@ static kefir_result_t traverse_array(struct kefir_mem *mem, const struct kefir_a
         } else {
             REQUIRE(initializer->type == KEFIR_AST_INITIALIZER_LIST,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->source_location,
-                                           "Unable to initialize array by non-string literal expression"));
+                                           "Unable to initialize array by non-string/compound literal expression"));
 
             INVOKE_TRAVERSAL(initializer_traversal, begin_array, designator, initializer);
             struct kefir_ast_type_traversal traversal;

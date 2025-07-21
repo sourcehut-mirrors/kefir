@@ -301,20 +301,13 @@ static kefir_result_t analyze_array(struct kefir_mem *mem, const struct kefir_as
 
     if (!is_string) {
         if (initializer->type == KEFIR_AST_INITIALIZER_EXPRESSION &&
-            initializer->expression->klass->type == KEFIR_AST_COMPOUND_LITERAL) {
-            const struct kefir_ast_type *unqualified_element_type =
-                kefir_ast_unqualified_type(type->array_type.element_type);
-            const struct kefir_ast_type *unqualified_compound_element_type =
-                kefir_ast_unqualified_type(initializer->expression->properties.type->array_type.element_type);
-            REQUIRE(initializer->expression->properties.type->tag == KEFIR_AST_TYPE_ARRAY &&
-                        KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified_element_type,
-                                                  unqualified_compound_element_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->expression->source_location,
-                                           "Expected array compound literal with compatible element type"));
-            REQUIRE(initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
-                        initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &initializer->expression->source_location,
-                                           "Expected array compound literal with statically known length"));
+            initializer->expression->klass->type == KEFIR_AST_COMPOUND_LITERAL &&
+            initializer->expression->properties.type->tag == KEFIR_AST_TYPE_ARRAY &&
+            (initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED ||
+             initializer->expression->properties.type->array_type.boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC) &&
+            KEFIR_AST_TYPE_COMPATIBLE(
+                context->type_traits, kefir_ast_unqualified_type(type->array_type.element_type),
+                kefir_ast_unqualified_type(initializer->expression->properties.type->array_type.element_type))) {
             if (type->array_type.boundary == KEFIR_AST_ARRAY_UNBOUNDED) {
                 array_length = MAX(initializer->expression->properties.type->array_type.const_length, array_length);
             }
