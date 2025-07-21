@@ -40,50 +40,52 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
     REQUIRE(success_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     *success_ptr = false;
+    const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(base->properties.type);
     switch (value->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
             if (value->bitprecise != NULL) {
                 // Intentionally left blank
-            } else {
-                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value->integer));
-                REQUIRE_OK(kefir_ast_translate_typeconv(
-                    mem, context->module, builder, context->ast_context->type_traits, kefir_ast_type_signed_long_long(),
-                    kefir_ast_unqualified_type(base->properties.type)));
+            } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type) &&
+                       !KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type)) {
+                kefir_bool_t signed_type;
+                REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, unqualified_type, &signed_type));
+                if (signed_type) {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value->integer));
+                } else {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                               (kefir_uint64_t) value->integer));
+                }
                 *success_ptr = true;
             }
             break;
 
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT: {
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(base->properties.type);
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_FLOAT:
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_SCALAR_FLOAT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                                                                (kefir_float32_t) value->floating_point, 0.0f));
+                    *success_ptr = true;
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_DOUBLE:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                                (kefir_float64_t) value->floating_point));
+                    *success_ptr = true;
                     break;
 
                 case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                         value->floating_point));
+                    *success_ptr = true;
                     break;
 
                 default:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                        value->floating_point));
-                    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder,
-                                                            context->ast_context->type_traits,
-                                                            kefir_ast_type_long_double(), unqualified_type));
+                    // Intentionally left blank
                     break;
             }
-            *success_ptr = true;
-        } break;
+            break;
 
-        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT: {
-            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(base->properties.type);
+        case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_COMPLEX_FLOAT:
             switch (unqualified_type->tag) {
                 case KEFIR_AST_TYPE_COMPLEX_FLOAT:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDF32(builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
@@ -93,6 +95,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                         builder, KEFIR_IR_OPCODE_FLOAT32_CONST,
                         (kefir_float32_t) value->complex_floating_point.imaginary, 0.0f));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
+                    *success_ptr = true;
                     break;
 
                 case KEFIR_AST_TYPE_COMPLEX_DOUBLE:
@@ -102,6 +105,7 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                         KEFIR_IRBUILDER_BLOCK_APPENDF64(builder, KEFIR_IR_OPCODE_FLOAT64_CONST,
                                                         (kefir_float64_t) value->complex_floating_point.imaginary));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_FLOAT64_FROM, 0));
+                    *success_ptr = true;
                     break;
 
                 case KEFIR_AST_TYPE_COMPLEX_LONG_DOUBLE:
@@ -110,77 +114,75 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
                                                                         value->complex_floating_point.imaginary));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
+                    *success_ptr = true;
                     break;
 
                 default:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                        value->complex_floating_point.real));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPEND_LONG_DOUBLE(builder, KEFIR_IR_OPCODE_LONG_DOUBLE_CONST,
-                                                                        value->complex_floating_point.imaginary));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_COMPLEX_LONG_DOUBLE_FROM, 0));
-                    REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder,
-                                                            context->ast_context->type_traits,
-                                                            kefir_ast_type_complex_long_double(), unqualified_type));
+                    // Intentionally left blank
                     break;
             }
             *success_ptr = true;
-        } break;
+            break;
 
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_ADDRESS:
-            switch (value->pointer.type) {
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
-                        builder, KEFIR_IR_OPCODE_UINT_CONST,
-                        value->pointer.offset + (kefir_uint64_t) value->pointer.base.integral));
-                    *success_ptr = true;
-                    break;
+            if (unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER ||
+                unqualified_type->tag == KEFIR_AST_TYPE_SCALAR_NULL_POINTER ||
+                unqualified_type->tag == KEFIR_AST_TYPE_FUNCTION || unqualified_type->tag == KEFIR_AST_TYPE_ARRAY) {
+                switch (value->pointer.type) {
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_INTEGER:
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(
+                            builder, KEFIR_IR_OPCODE_UINT_CONST,
+                            value->pointer.offset + (kefir_uint64_t) value->pointer.base.integral));
+                        *success_ptr = true;
+                        break;
 
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
-                    kefir_id_t id;
-                    REQUIRE_OK(kefir_ir_module_string_literal(
-                        mem, context->module, KefirAstIrStringLiteralTypes[value->pointer.base.string.type], true,
-                        value->pointer.base.string.content, value->pointer.base.string.length, &id));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_STRING_REF, id));
-                    REQUIRE_OK(
-                        KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value->pointer.offset));
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-                    *success_ptr = true;
-                } break;
-
-                case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
-                    switch (value->pointer.scoped_id->klass) {
-                        case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
-                            REQUIRE_OK(kefir_ast_translator_object_lvalue(
-                                mem, context, builder, value->pointer.base.literal, value->pointer.scoped_id));
-                            *success_ptr = true;
-                            break;
-
-                        case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
-                            REQUIRE_OK(kefir_ast_translator_function_lvalue(mem, context, builder,
-                                                                            value->pointer.base.literal));
-                            *success_ptr = true;
-                            break;
-
-                        case KEFIR_AST_SCOPE_IDENTIFIER_LABEL: {
-                            kefir_id_t id;
-                            const char *literal =
-                                kefir_ir_module_symbol(mem, context->module, value->pointer.base.literal, &id);
-                            REQUIRE(literal != NULL,
-                                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into IR module"));
-                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
-                            *success_ptr = true;
-                        } break;
-
-                        default:
-                            // Intentionally left blank
-                            break;
-                    }
-                    if (*success_ptr && value->pointer.offset != 0) {
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_LITERAL: {
+                        kefir_id_t id;
+                        REQUIRE_OK(kefir_ir_module_string_literal(
+                            mem, context->module, KefirAstIrStringLiteralTypes[value->pointer.base.string.type], true,
+                            value->pointer.base.string.content, value->pointer.base.string.length, &id));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_STRING_REF, id));
                         REQUIRE_OK(
                             KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value->pointer.offset));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-                    }
-                    break;
+                        *success_ptr = true;
+                    } break;
+
+                    case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
+                        switch (value->pointer.scoped_id->klass) {
+                            case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
+                                REQUIRE_OK(kefir_ast_translator_object_lvalue(
+                                    mem, context, builder, value->pointer.base.literal, value->pointer.scoped_id));
+                                *success_ptr = true;
+                                break;
+
+                            case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
+                                REQUIRE_OK(kefir_ast_translator_function_lvalue(mem, context, builder,
+                                                                                value->pointer.base.literal));
+                                *success_ptr = true;
+                                break;
+
+                            case KEFIR_AST_SCOPE_IDENTIFIER_LABEL: {
+                                kefir_id_t id;
+                                const char *literal =
+                                    kefir_ir_module_symbol(mem, context->module, value->pointer.base.literal, &id);
+                                REQUIRE(literal != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                                                         "Failed to insert symbol into IR module"));
+                                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
+                                *success_ptr = true;
+                            } break;
+
+                            default:
+                                // Intentionally left blank
+                                break;
+                        }
+                        if (*success_ptr && value->pointer.offset != 0) {
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
+                                                                       value->pointer.offset));
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+                        }
+                        break;
+                }
             }
             break;
 
