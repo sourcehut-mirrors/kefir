@@ -1,0 +1,29 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global factorial
+.type factorial, @function
+.extern set_value
+
+.section .text
+__kefir_text_section_begin:
+factorial:
+__kefir_text_func_factorial_begin:
+    mov $1, %rax
+_kefir_func_factorial_label1:
+    mov %rdi, %rcx
+    add $-1, %rcx
+    mov %rax, %rdx
+    imul %rdi, %rdx
+    cmp $1, %rdi
+    jle _kefir_func_factorial_label2
+    mov %rcx, %rdi
+    mov %rdx, %rax
+    jmp _kefir_func_factorial_label1
+_kefir_func_factorial_label2:
+    mov %rax, %rdi
+    jmp set_value@PLT
+__kefir_text_func_factorial_end:
+
+__kefir_text_section_end:
+

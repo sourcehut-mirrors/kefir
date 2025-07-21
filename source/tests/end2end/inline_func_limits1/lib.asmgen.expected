@@ -53,9 +53,8 @@ __kefir_text_func_main_begin:
     mov $1000, %rdi
     call test1
     mov $2000, %rdi
-    call test2
     pop %rbp
-    ret
+    jmp test2
 __kefir_text_func_main_end:
 
 test1:

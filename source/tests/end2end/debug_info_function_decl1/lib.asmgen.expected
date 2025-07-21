@@ -98,16 +98,14 @@ _kefir_func_temp_label14:
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-.loc 0 37 5
+.loc 0 34 5
 _kefir_func_temp_label16:
     mov $100, %rdi
-    call test7@PLT
-_kefir_func_temp_label17:
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
-    ret
+    jmp test7@PLT
 __kefir_text_func_temp_end:
 .section .rodata
     .align 8

@@ -30,69 +30,44 @@ __kefir_text_func_main_begin:
     call test3
     call test4
     call test5
-    call test6
     pop %rbp
-    ret
+    jmp test6
 __kefir_text_func_main_end:
 
 test1:
 __kefir_text_func_test1_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $100, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $101, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $200, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test3_end:
 
 test4:
 __kefir_text_func_test4_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $201, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test4_end:
 
 test5:
 __kefir_text_func_test5_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $300, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test5_end:
 
 test6:
 __kefir_text_func_test6_begin:
-    push %rbp
-    mov %rsp, %rbp
     mov $301, %rdi
-    call test@PLT
-    pop %rbp
-    ret
+    jmp test@PLT
 __kefir_text_func_test6_end:
 
 __kefir_text_section_end:

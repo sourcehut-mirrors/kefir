@@ -13,47 +13,27 @@
 __kefir_text_section_begin:
 main:
 __kefir_text_func_main_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call test0@PLT
-    pop %rbp
-    ret
+    jmp test0@PLT
 __kefir_text_func_main_end:
 
 main1:
 __kefir_text_func_main1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call test1
-    pop %rbp
-    ret
+    jmp test1
 __kefir_text_func_main1_end:
 
 main2:
 __kefir_text_func_main2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call test2
-    pop %rbp
-    ret
+    jmp test2
 __kefir_text_func_main2_end:
 
 test1:
 __kefir_text_func_test1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call test0@PLT
-    pop %rbp
-    ret
+    jmp test0@PLT
 __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    call test0@PLT
-    pop %rbp
-    ret
+    jmp test1
 __kefir_text_func_test2_end:
 
 __kefir_text_section_end:
