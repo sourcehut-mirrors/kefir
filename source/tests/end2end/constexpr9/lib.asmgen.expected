@@ -47,8 +47,7 @@ __kefir_text_func_get_b_end:
 
 get_c:
 __kefir_text_func_get_c_begin:
-    lea c(%rip), %rax
-    movq (%rax), %rax
+    lea a(%rip), %rax
     ret
 __kefir_text_func_get_c_end:
 
@@ -107,10 +106,6 @@ b:
     .byte 0
     .byte 0
     .byte 0
-
-    .align 8
-c:
-    .quad a
 
     .align 4
 d:

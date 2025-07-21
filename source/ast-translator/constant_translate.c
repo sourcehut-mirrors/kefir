@@ -21,6 +21,7 @@
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/scope/translator.h"
 #include "kefir/ast-translator/typeconv.h"
+#include "kefir/ast-translator/lvalue.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
@@ -147,7 +148,38 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
                 } break;
 
                 case KEFIR_AST_CONSTANT_EXPRESSION_POINTER_IDENTIFER:
-                    // Intentionally left blank
+                    switch (value->pointer.scoped_id->klass) {
+                        case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
+                            REQUIRE_OK(kefir_ast_translator_object_lvalue(
+                                mem, context, builder, value->pointer.base.literal, value->pointer.scoped_id));
+                            *success_ptr = true;
+                            break;
+
+                        case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
+                            REQUIRE_OK(kefir_ast_translator_function_lvalue(mem, context, builder,
+                                                                            value->pointer.base.literal));
+                            *success_ptr = true;
+                            break;
+
+                        case KEFIR_AST_SCOPE_IDENTIFIER_LABEL: {
+                            kefir_id_t id;
+                            const char *literal =
+                                kefir_ir_module_symbol(mem, context->module, value->pointer.base.literal, &id);
+                            REQUIRE(literal != NULL,
+                                    KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert symbol into IR module"));
+                            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_GET_GLOBAL, id));
+                            *success_ptr = true;
+                        } break;
+
+                        default:
+                            // Intentionally left blank
+                            break;
+                    }
+                    if (*success_ptr && value->pointer.offset != 0) {
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, value->pointer.offset));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
+                    }
                     break;
             }
             break;

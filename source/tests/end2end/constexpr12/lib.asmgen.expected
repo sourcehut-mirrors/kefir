@@ -1,0 +1,69 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern x
+.global get1
+.type get1, @function
+.global get2
+.type get2, @function
+.global get3
+.type get3, @function
+
+.section .text
+__kefir_text_section_begin:
+get1:
+__kefir_text_func_get1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    leaq -8(%rbp), %rdi
+    xor %eax, %eax
+    mov $8, %rcx
+    rep stosb
+    movq x@GOTPCREL(%rip), %rax
+    add $8, %rax
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get1_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    leaq -8(%rbp), %rdi
+    xor %eax, %eax
+    mov $8, %rcx
+    rep stosb
+    movq get1@GOTPCREL(%rip), %rax
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get2_end:
+
+get3:
+__kefir_text_func_get3_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_get3_label1:
+_kefir_local_public_label_get3_label1:
+    leaq -8(%rbp), %rdi
+    xor %eax, %eax
+    mov $8, %rcx
+    rep stosb
+    lea _kefir_local_public_label_get3_label1(%rip), %rax
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get3_end:
+
+__kefir_text_section_end:
+

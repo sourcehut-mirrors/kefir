@@ -14,8 +14,7 @@
 __kefir_text_section_begin:
 getx2:
 __kefir_text_func_getx2_begin:
-    lea x2(%rip), %rax
-    movq (%rax), %rax
+    lea __kefir_temporary_6(%rip), %rax
     ret
 __kefir_text_func_getx2_end:
 
@@ -74,10 +73,6 @@ __kefir_text_func_test3_end:
 __kefir_text_section_end:
 
 .section .data
-    .align 8
-x2:
-    .quad __kefir_temporary_6
-
     .align 8
 __kefir_temporary_6:
     .quad 0
