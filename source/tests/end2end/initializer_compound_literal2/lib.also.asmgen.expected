@@ -1,0 +1,113 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $848, %rsp
+    stmxcsr -8(%rbp)
+    mov %rdi, %rdx
+    leaq -848(%rbp), %rdi
+    xor %eax, %eax
+    mov $568, %rcx
+    rep stosb
+    movw $10, -848(%rbp)
+    movl $11, -840(%rbp)
+    leaq -840(%rbp), %rax
+    add $8, %rax
+    movq $12, (%rax)
+    leaq -840(%rbp), %rax
+    add $16, %rax
+    mov $13, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    mov $14, %rax
+    cvtsi2sd %rax, %xmm0
+    movq %xmm0, -816(%rbp)
+    movl $15, -808(%rbp)
+    leaq -808(%rbp), %rax
+    add $8, %rax
+    movq $16, (%rax)
+    leaq -808(%rbp), %rax
+    add $16, %rax
+    mov $17, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    movl $18, -736(%rbp)
+    leaq -736(%rbp), %rax
+    add $8, %rax
+    movq $19, (%rax)
+    leaq -736(%rbp), %rax
+    add $16, %rax
+    mov $20, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    movl $21, -712(%rbp)
+    leaq -712(%rbp), %rax
+    add $8, %rax
+    movq $22, (%rax)
+    leaq -712(%rbp), %rax
+    add $16, %rax
+    mov $23, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    leaq -280(%rbp), %rdi
+    xor %eax, %eax
+    mov $136, %rcx
+    rep stosb
+    movw $-1, -280(%rbp)
+    leaq -144(%rbp), %rdi
+    leaq -280(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    leaq -688(%rbp), %rdi
+    leaq -280(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    leaq -552(%rbp), %rdi
+    leaq -144(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    movw $24, -416(%rbp)
+    leaq -416(%rbp), %rax
+    add $8, %rax
+    movl $25, (%rax)
+    movq $26, -400(%rbp)
+    mov $27, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, -392(%rbp)
+    leaq -416(%rbp), %rax
+    add $32, %rax
+    mov $28, %rcx
+    cvtsi2sd %rcx, %xmm0
+    movq %xmm0, (%rax)
+    leaq -416(%rbp), %rax
+    add $112, %rax
+    movl $29, (%rax)
+    movq $30, -296(%rbp)
+    mov $31, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, -288(%rbp)
+    mov %rdx, %rax
+    mov %rax, %rdi
+    leaq -848(%rbp), %rsi
+    cld
+    mov $71, %rcx
+    rep movsq
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+

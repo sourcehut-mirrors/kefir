@@ -1,0 +1,162 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $848, %rsp
+    stmxcsr -8(%rbp)
+    mov %rdi, %r8
+    mov %rsi, %rdx
+    leaq -848(%rbp), %rdi
+    xor %eax, %eax
+    mov $568, %rcx
+    rep stosb
+    movw %dx, -848(%rbp)
+    mov %rdx, %rsi
+    add $1, %esi
+    movl %esi, -840(%rbp)
+    leaq -840(%rbp), %rax
+    add $8, %rax
+    mov %rdx, %rsi
+    add $2, %esi
+    movsx %esi, %rcx
+    movq %rcx, (%rax)
+    leaq -840(%rbp), %rax
+    add $16, %rax
+    mov %rdx, %rsi
+    add $3, %esi
+    movsx %esi, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    mov %rdx, %rsi
+    add $4, %esi
+    movsx %esi, %rax
+    cvtsi2sd %rax, %xmm0
+    movq %xmm0, -816(%rbp)
+    mov %rdx, %rsi
+    add $5, %esi
+    movl %esi, -808(%rbp)
+    leaq -808(%rbp), %rax
+    add $8, %rax
+    mov %rdx, %rsi
+    add $6, %esi
+    movsx %esi, %rcx
+    movq %rcx, (%rax)
+    leaq -808(%rbp), %rax
+    add $16, %rax
+    mov %rdx, %rsi
+    add $7, %esi
+    movsx %esi, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    mov %rdx, %rsi
+    add $8, %esi
+    movl %esi, -736(%rbp)
+    leaq -736(%rbp), %rax
+    add $8, %rax
+    mov %rdx, %rsi
+    add $9, %esi
+    movsx %esi, %rcx
+    movq %rcx, (%rax)
+    leaq -736(%rbp), %rax
+    add $16, %rax
+    mov %rdx, %rsi
+    add $10, %esi
+    movsx %esi, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    mov %rdx, %rsi
+    add $11, %esi
+    movl %esi, -712(%rbp)
+    leaq -712(%rbp), %rax
+    add $8, %rax
+    mov %rdx, %rsi
+    add $12, %esi
+    movsx %esi, %rcx
+    movq %rcx, (%rax)
+    leaq -712(%rbp), %rax
+    add $16, %rax
+    mov %rdx, %rsi
+    add $13, %esi
+    movsx %esi, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd %xmm0, (%rax)
+    leaq -280(%rbp), %rdi
+    xor %eax, %eax
+    mov $136, %rcx
+    rep stosb
+    movw $-1, -280(%rbp)
+    leaq -144(%rbp), %rdi
+    leaq -280(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    leaq -688(%rbp), %rdi
+    leaq -280(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    leaq -552(%rbp), %rdi
+    leaq -144(%rbp), %rsi
+    cld
+    mov $17, %rcx
+    rep movsq
+    mov %rdx, %rsi
+    add $14, %esi
+    movw %si, -416(%rbp)
+    leaq -416(%rbp), %rax
+    add $8, %rax
+    mov %rdx, %rsi
+    add $15, %esi
+    movl %esi, (%rax)
+    mov %rdx, %rsi
+    add $16, %esi
+    movsx %esi, %rax
+    movq %rax, -400(%rbp)
+    mov %rdx, %rsi
+    add $17, %esi
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, -392(%rbp)
+    leaq -416(%rbp), %rax
+    add $32, %rax
+    mov %rdx, %rsi
+    add $18, %esi
+    movsx %esi, %rcx
+    cvtsi2sd %rcx, %xmm0
+    movq %xmm0, (%rax)
+    leaq -416(%rbp), %rax
+    add $112, %rax
+    mov %rdx, %rsi
+    add $19, %esi
+    movl %esi, (%rax)
+    mov %rdx, %rsi
+    add $20, %esi
+    movsx %esi, %rax
+    movq %rax, -296(%rbp)
+    mov %rdx, %rsi
+    add $21, %esi
+    movsx %esi, %rax
+    cvtsi2ss %rax, %xmm0
+    movd %xmm0, -288(%rbp)
+    mov %r8, %rax
+    mov %rax, %rdi
+    leaq -848(%rbp), %rsi
+    cld
+    mov $71, %rcx
+    rep movsq
+    ldmxcsr -8(%rbp)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+

@@ -26,6 +26,7 @@
 #include "kefir/ast-translator/value.h"
 #include "kefir/ast-translator/misc.h"
 #include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/hashtreeset.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
@@ -42,6 +43,7 @@ struct traversal_param {
     const struct kefir_source_location *source_location;
     struct kefir_hashtreeset *repeated_expressions;
     kefir_bool_t use_constant_values;
+    kefir_bool_t zeroed;
 };
 
 static kefir_result_t zero_type(struct kefir_irbuilder_block *builder, kefir_id_t ir_type_id,
@@ -138,6 +140,17 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
     if (!KEFIR_AST_TYPE_IS_SCALAR_TYPE(type_layout->type) && KEFIR_AST_TYPE_IS_SCALAR_TYPE(expr_type)) {
         REQUIRE_OK(initialize_aggregate_with_scalar(param->mem, param->context, param->builder, type_layout, expression,
                                                     param->repeated_expressions, param->use_constant_values));
+    } else if (expression->klass->type == KEFIR_AST_COMPOUND_LITERAL &&
+               (expr_type->tag == KEFIR_AST_TYPE_STRUCTURE || expr_type->tag == KEFIR_AST_TYPE_UNION) &&
+               KEFIR_AST_TYPE_COMPATIBLE(param->context->ast_context->type_traits, expr_type, type_layout->type) &&
+               !expression->properties.expression_props.preserve_after_eval.enabled) {
+        struct kefir_ast_compound_literal *compound_literal;
+        REQUIRE_OK(kefir_ast_downcast_compound_literal(expression, &compound_literal, false));
+
+        REQUIRE_OK(kefir_ast_translate_initializer_impl(param->mem, param->context, param->builder, type_layout->type,
+                                                        compound_literal->initializer, param->repeated_expressions,
+                                                        param->zeroed, param->use_constant_values));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(param->builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     } else {
         if (!kefir_hashtreeset_has(param->repeated_expressions, (kefir_hashtreeset_entry_t) expression)) {
             kefir_bool_t skip_translate_expr = false;
@@ -250,7 +263,8 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
                                     .builder = builder,
                                     .source_location = &initializer->source_location,
                                     .repeated_expressions = repeated_expressions,
-                                    .use_constant_values = use_constant_values};
+                                    .use_constant_values = use_constant_values,
+                                    .zeroed = nested};
     REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module, type, 0,
                                              &param.translator_type, &initializer->source_location));
 
@@ -259,6 +273,7 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
         (initializer->type != KEFIR_AST_INITIALIZER_EXPRESSION ||
          !KEFIR_AST_TYPE_SAME(unqualified_type, initializer->expression->properties.type))) {
         res = zero_type(builder, param.translator_type->object.ir_type_id, param.translator_type->object.layout);
+        param.zeroed = true;
     }
 
     struct kefir_ast_initializer_traversal initializer_traversal;
