@@ -75,6 +75,7 @@ typedef struct kefir_ast_node_properties {
         kefir_bool_t static_assertion;
         const struct kefir_ast_type *original_type;
         const struct kefir_ast_scoped_identifier *scoped_id;
+        struct kefir_ast_temporary_identifier temporary_identifier;
     } declaration_props;
 
     struct {

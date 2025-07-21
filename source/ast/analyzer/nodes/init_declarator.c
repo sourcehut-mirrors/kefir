@@ -86,6 +86,13 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
                 base->properties.type = scoped_id->object.type;
                 base->properties.declaration_props.storage = scoped_id->object.storage;
+                if (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR &&
+                    !KEFIR_AST_TYPE_IS_SCALAR_TYPE(kefir_ast_unqualified_type(scoped_id->object.type))) {
+                    REQUIRE_OK(context->allocate_temporary_value(
+                        mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
+                        node->initializer, &node->base.source_location,
+                        &base->properties.declaration_props.temporary_identifier));
+                }
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:

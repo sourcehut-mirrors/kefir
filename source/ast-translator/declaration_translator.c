@@ -22,10 +22,14 @@
 #include "kefir/ast-translator/lvalue.h"
 #include "kefir/ast-translator/initializer.h"
 #include "kefir/ast-translator/misc.h"
+#include "kefir/ast-translator/temporaries.h"
+#include "kefir/ast-translator/type.h"
 #include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/extensions.h"
+
+#define CONSTEXPR_INIT_THRESHOLD 3
 
 static kefir_result_t translate_vla_declaration(struct kefir_mem *mem, const struct kefir_ast_node_base *node,
                                                 struct kefir_irbuilder_block *builder,
@@ -110,15 +114,39 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
         REQUIRE_OK(kefir_ast_translator_object_lvalue(mem, context, builder,
                                                       node->properties.declaration_props.identifier,
                                                       node->properties.declaration_props.scoped_id));
-        if (init_decl->initializer != NULL) {
-            REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->properties.type,
-                                                       storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
-                                                       init_decl->initializer));
-        } else {
-            REQUIRE_OK(kefir_ast_translate_default_initializer(mem, context, builder, node->properties.type,
-                                                               &node->source_location));
+        kefir_bool_t constant_init = false;
+        if (storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR &&
+            !KEFIR_AST_TYPE_IS_SCALAR_TYPE(kefir_ast_unqualified_type(node->properties.type))) {
+            struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
+                                                     node->properties.type, 0, &translator_type,
+                                                     &node->source_location));
+
+            const kefir_id_t type_id = translator_type->object.ir_type_id;
+            const kefir_size_t type_index = translator_type->object.layout->value;
+            const kefir_size_t size = translator_type->object.layout->properties.size;
+            REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+
+            if (size > context->ast_context->type_traits->data_model->scalar_width.long_long_bits / CHAR_BIT *
+                           CONSTEXPR_INIT_THRESHOLD) {
+                REQUIRE_OK(kefir_ast_translator_fetch_temporary(
+                    mem, context, builder, &node->properties.declaration_props.temporary_identifier));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_COPY_MEMORY, type_id, type_index));
+                constant_init = true;
+            }
         }
-        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+
+        if (!constant_init) {
+            if (init_decl->initializer != NULL) {
+                REQUIRE_OK(kefir_ast_translate_initializer(mem, context, builder, node->properties.type,
+                                                           storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR,
+                                                           init_decl->initializer));
+            } else {
+                REQUIRE_OK(kefir_ast_translate_default_initializer(mem, context, builder, node->properties.type,
+                                                                   &node->source_location));
+            }
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+        }
     }
     return KEFIR_OK;
 }
