@@ -14,10 +14,7 @@
 __kefir_text_section_begin:
 get_a:
 __kefir_text_func_get_a_begin:
-    lea a(%rip), %rax
-    movq (%rax), %rax
-    shl $22, %rax
-    shr $22, %rax
+    movabs $3405691582, %rax
     ret
 __kefir_text_func_get_a_end:
 
@@ -26,13 +23,12 @@ __kefir_text_func_get_b_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea b(%rip), %rax
-    movq (%rax), %rcx
-    movq %rcx, -32(%rbp)
-    movq 8(%rax), %rcx
-    movq %rcx, -24(%rbp)
-    movq 16(%rax), %rcx
-    movq %rcx, -16(%rbp)
+    movl $4369, -32(%rbp)
+    movl $4008640511, -28(%rbp)
+    movl $3435978205, -24(%rbp)
+    movl $2863315899, -20(%rbp)
+    movl $5, -16(%rbp)
+    movl $0, -12(%rbp)
     mov %rdi, %rax
     movq -32(%rbp), %rcx
     movq %rcx, (%rax)
@@ -75,33 +71,6 @@ a:
     .byte 186
     .byte 254
     .byte 202
-    .byte 0
-    .byte 0
-    .byte 0
-    .byte 0
-
-    .align 8
-b:
-    .byte 17
-    .byte 17
-    .byte 0
-    .byte 0
-    .byte 255
-    .byte 255
-    .byte 238
-    .byte 238
-    .byte 221
-    .byte 221
-    .byte 204
-    .byte 204
-    .byte 187
-    .byte 187
-    .byte 170
-    .byte 170
-    .byte 5
-    .byte 0
-    .byte 0
-    .byte 0
     .byte 0
     .byte 0
     .byte 0

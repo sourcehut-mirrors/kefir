@@ -44,7 +44,14 @@ kefir_result_t kefir_ast_try_translate_constant(struct kefir_mem *mem, const str
     switch (value->klass) {
         case KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER:
             if (value->bitprecise != NULL) {
-                // Intentionally left blank
+                if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type) &&
+                    unqualified_type->bitprecise.width == value->bitprecise->bitwidth) {
+                    kefir_id_t bigint_id;
+                    REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, value->bitprecise, &bigint_id));
+                    REQUIRE_OK(
+                        KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
+                    *success_ptr = true;
+                }
             } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type) &&
                        !KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type)) {
                 kefir_bool_t signed_type;
