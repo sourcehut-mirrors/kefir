@@ -148,6 +148,7 @@ __kefir_function_getarr_static_arr_0:
     .long 0
     .zero 892
 
+.section .rodata
     .align 8
 __kefir_function_getarr_static_len_1:
     .quad 350

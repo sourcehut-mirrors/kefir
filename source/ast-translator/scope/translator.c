@@ -117,9 +117,13 @@ static kefir_result_t translate_externals(struct kefir_mem *mem, const struct ke
                         ir_identifier.scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT;
                     }
                 } else {
-                    struct kefir_ir_data *data =
-                        kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
-                                                       KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
+                    const kefir_ir_data_storage_t storage =
+                        scoped_identifier->value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC
+                            ? KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE
+                            : KEFIR_IR_DATA_GLOBAL_STORAGE;
+
+                    struct kefir_ir_data *data = kefir_ir_module_new_named_data(
+                        mem, module, scoped_identifier->identifier, storage, identifier_data->type_id);
                     REQUIRE(data != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR named data"));
                     if (scoped_identifier->value->object.initializer != NULL) {
                         REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
@@ -232,9 +236,13 @@ static kefir_result_t translate_static(struct kefir_mem *mem, const struct kefir
                     .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT,
                     .alias = NULL,
                     .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
+                const kefir_ir_data_storage_t storage =
+                    scoped_identifier->value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC
+                        ? KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE
+                        : KEFIR_IR_DATA_GLOBAL_STORAGE;
 
-                struct kefir_ir_data *data = kefir_ir_module_new_named_data(
-                    mem, module, scoped_identifier->identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
+                struct kefir_ir_data *data = kefir_ir_module_new_named_data(mem, module, scoped_identifier->identifier,
+                                                                            storage, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
                     REQUIRE_OK(initialize_data(mem, context, module, identifier_data->type, identifier_data->layout,
                                                scoped_identifier->value->object.initializer, data));
@@ -423,8 +431,13 @@ static kefir_result_t translate_local_static(struct kefir_mem *mem, const struct
                     .alias = NULL,
                     .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
-                struct kefir_ir_data *data = kefir_ir_module_new_named_data(
-                    mem, module, identifier, KEFIR_IR_DATA_GLOBAL_STORAGE, identifier_data->type_id);
+                const kefir_ir_data_storage_t storage =
+                    scoped_identifier->value->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC
+                        ? KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE
+                        : KEFIR_IR_DATA_GLOBAL_STORAGE;
+
+                struct kefir_ir_data *data =
+                    kefir_ir_module_new_named_data(mem, module, identifier, storage, identifier_data->type_id);
                 if (scoped_identifier->value->object.initializer != NULL) {
                     if (scoped_identifier->value->definition_scope != NULL) {
                         REQUIRE_OK(context->push_external_ordinary_scope(

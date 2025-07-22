@@ -28,6 +28,7 @@
 
 typedef enum kefir_ir_data_storage {
     KEFIR_IR_DATA_GLOBAL_STORAGE,
+    KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE,
     KEFIR_IR_DATA_THREAD_LOCAL_STORAGE
 } kefir_ir_data_storage_t;
 

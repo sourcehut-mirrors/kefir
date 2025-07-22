@@ -1253,6 +1253,10 @@ static kefir_result_t format_data(struct kefir_json_output *json, const struct k
                 REQUIRE_OK(kefir_json_output_string(json, "global"));
                 break;
 
+            case KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE:
+                REQUIRE_OK(kefir_json_output_string(json, "global_readonly"));
+                break;
+
             case KEFIR_IR_DATA_THREAD_LOCAL_STORAGE:
                 REQUIRE_OK(kefir_json_output_string(json, "thread_local"));
                 break;

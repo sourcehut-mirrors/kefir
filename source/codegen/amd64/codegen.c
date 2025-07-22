@@ -503,7 +503,13 @@ static kefir_result_t translate_data(struct kefir_mem *mem, struct kefir_codegen
     REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
                                       KEFIR_IR_DATA_GLOBAL_STORAGE, true, ".data", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
+                                      KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE, true, ".rodata",
+                                      KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
                                       KEFIR_IR_DATA_GLOBAL_STORAGE, false, ".bss", KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
+    REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module, codegen_module->liveness,
+                                      KEFIR_IR_DATA_GLOBAL_READONLY_STORAGE, false, ".bss",
+                                      KEFIR_AMD64_XASMGEN_SECTION_NOATTR));
     if (!codegen_module->codegen->config->emulated_tls) {
         REQUIRE_OK(translate_data_storage(mem, codegen_module->codegen, codegen_module->module,
                                           codegen_module->liveness, KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, true, ".tdata",

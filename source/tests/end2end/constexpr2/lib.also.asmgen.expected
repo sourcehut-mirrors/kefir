@@ -46,7 +46,7 @@ __kefir_text_func_get_w_end:
 
 __kefir_text_section_end:
 
-.section .data
+.section .rodata
     .align 8
 a:
     .long 100

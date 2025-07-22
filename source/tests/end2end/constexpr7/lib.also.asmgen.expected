@@ -72,7 +72,7 @@ __kefir_text_func_test3_end:
 
 __kefir_text_section_end:
 
-.section .data
+.section .rodata
     .align 8
 __kefir_temporary_6:
     .quad 0
