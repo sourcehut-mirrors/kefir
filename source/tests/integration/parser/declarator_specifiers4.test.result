@@ -7,7 +7,8 @@
             "members": [
                 {
                     "identifier": "constant1",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 },
                 {
                     "identifier": "constant2",
@@ -15,15 +16,18 @@
                         "class": "constant",
                         "type": "integer",
                         "value": 10
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "identifier": "constant3",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 },
                 {
                     "identifier": "constant4",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 },
                 {
                     "identifier": "constant5",
@@ -47,7 +51,8 @@
                             "type": "integer",
                             "value": 1
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             ],
             "attributes": []
@@ -65,15 +70,18 @@
                         "class": "constant",
                         "type": "integer",
                         "value": 1
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "identifier": "enum2",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 },
                 {
                     "identifier": "enum3",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 },
                 {
                     "identifier": "enum4",
@@ -93,11 +101,13 @@
                             "type": "integer",
                             "value": 1
                         }
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "identifier": "enum5",
-                    "value": null
+                    "value": null,
+                    "attributes": []
                 }
             ],
             "attributes": []

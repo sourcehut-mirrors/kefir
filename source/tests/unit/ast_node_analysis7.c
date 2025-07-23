@@ -291,10 +291,10 @@ DEFINE_CASE(ast_node_analysis_init_declarators5, "AST node analysis - declaratio
     struct kefir_ast_enum_specifier *specifier1 =
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enumeration1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "XVAL",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 1000))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "YVAL", NULL));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 1000)), NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "YVAL", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "AVAL",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 0))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long(&kft_mem, 0)), NULL));
 
     struct kefir_ast_init_declarator *decl1 = NULL;
     struct kefir_ast_declaration *decl1_list = kefir_ast_new_single_declaration(
@@ -803,9 +803,9 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
 
     struct kefir_ast_enum_specifier *specifier1 =
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true, NULL);
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "A", NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "B", NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "C", NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "A", NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "B", NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "C", NULL, NULL));
 
     struct kefir_ast_declaration *param1 = kefir_ast_new_single_declaration(
         &kft_mem, kefir_ast_declarator_identifier(&kft_mem, context->symbols, "p1"), NULL, NULL);

@@ -24,7 +24,8 @@
                             },
                             "bitwidth": null
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "static_assert",
@@ -70,7 +71,8 @@
                             },
                             "bitwidth": null
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "declaration",
@@ -106,7 +108,8 @@
                                             },
                                             "bitwidth": null
                                         }
-                                    ]
+                                    ],
+                                    "attributes": []
                                 },
                                 {
                                     "type": "static_assert",
@@ -132,7 +135,8 @@
                             "attributes": []
                         }
                     ],
-                    "declarators": []
+                    "declarators": [],
+                    "attributes": []
                 },
                 {
                     "type": "static_assert",

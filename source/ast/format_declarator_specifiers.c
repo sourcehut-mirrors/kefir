@@ -72,6 +72,16 @@ static kefir_result_t format_struct(struct kefir_json_output *json,
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
+
+                REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+                REQUIRE_OK(kefir_json_output_array_begin(json));
+                for (const struct kefir_list_entry *iter = kefir_list_head(&entry->declaration.attributes.attributes);
+                     iter != NULL; kefir_list_next(&iter)) {
+
+                    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
+                    REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
+                }
+                REQUIRE_OK(kefir_json_output_array_end(json));
             }
             REQUIRE_OK(kefir_json_output_object_end(json));
         }
@@ -112,6 +122,15 @@ static kefir_result_t format_enum(struct kefir_json_output *json,
             } else {
                 REQUIRE_OK(kefir_json_output_null(json));
             }
+            REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+            REQUIRE_OK(kefir_json_output_array_begin(json));
+            for (const struct kefir_list_entry *iter = kefir_list_head(&entry->attributes.attributes); iter != NULL;
+                 kefir_list_next(&iter)) {
+
+                ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
+                REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
+            }
+            REQUIRE_OK(kefir_json_output_array_end(json));
             REQUIRE_OK(kefir_json_output_object_end(json));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));

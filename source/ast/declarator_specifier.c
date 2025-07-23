@@ -277,6 +277,14 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                         return NULL;
                     });
                 }
+
+                res = kefir_ast_node_attributes_clone(mem, &entry_clone->declaration.attributes,
+                                                      &entry->declaration.attributes);
+                REQUIRE_ELSE(res == KEFIR_OK, {
+                    kefir_ast_structure_declaration_entry_free(mem, entry_clone);
+                    kefir_ast_structure_specifier_free(mem, clone);
+                    return NULL;
+                });
             }
 
             res = kefir_ast_structure_specifier_append_entry(mem, clone, entry_clone);
@@ -350,6 +358,14 @@ struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_en
         return NULL;
     });
 
+    res = kefir_ast_node_attributes_init(&entry->declaration.attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &entry->declaration.declarators);
+        kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers);
+        KEFIR_FREE(mem, entry);
+        return NULL;
+    });
+
     return entry;
 }
 
@@ -379,6 +395,7 @@ kefir_result_t kefir_ast_structure_declaration_entry_free(struct kefir_mem *mem,
     } else {
         REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers));
         REQUIRE_OK(kefir_list_free(mem, &entry->declaration.declarators));
+        REQUIRE_OK(kefir_ast_node_attributes_free(mem, &entry->declaration.attributes));
     }
     KEFIR_FREE(mem, entry);
     return KEFIR_OK;
@@ -419,6 +436,7 @@ static kefir_result_t remove_enum_entry(struct kefir_mem *mem, struct kefir_list
     REQUIRE(entry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid list entry"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_enum_specifier_entry *, enum_entry, entry->value);
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &enum_entry->attributes));
     if (enum_entry->value != NULL) {
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, enum_entry->value));
     }
@@ -449,8 +467,9 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_init(
     }
 
     specifier->type_spec.present = enum_type_spec != NULL;
+    kefir_result_t res;
     if (specifier->type_spec.present) {
-        kefir_result_t res = kefir_ast_declarator_specifier_list_init(&specifier->type_spec.specifier_list);
+        res = kefir_ast_declarator_specifier_list_init(&specifier->type_spec.specifier_list);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, specifier);
             return NULL;
@@ -501,7 +520,8 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
                 return NULL;
             });
 
-            kefir_result_t res = kefir_ast_enum_specifier_append(mem, clone, NULL, entry->constant, value);
+            kefir_result_t res =
+                kefir_ast_enum_specifier_append(mem, clone, NULL, entry->constant, value, &entry->attributes);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_AST_NODE_FREE(mem, value);
                 kefir_ast_enum_specifier_free(mem, clone);
@@ -514,7 +534,8 @@ struct kefir_ast_enum_specifier *kefir_ast_enum_specifier_clone(struct kefir_mem
 
 kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kefir_ast_enum_specifier *specifier,
                                                struct kefir_string_pool *symbols, const char *identifier,
-                                               struct kefir_ast_node_base *value) {
+                                               struct kefir_ast_node_base *value,
+                                               const struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(specifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST enum specifier"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST enum entry identifier"));
@@ -532,11 +553,26 @@ kefir_result_t kefir_ast_enum_specifier_append(struct kefir_mem *mem, struct kef
     entry->constant = identifier;
     entry->value = value;
 
-    kefir_result_t res = kefir_list_insert_after(mem, &specifier->entries, kefir_list_tail(&specifier->entries), entry);
+    kefir_result_t res = kefir_ast_node_attributes_init(&entry->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, entry);
         return res;
     });
+    if (attributes != NULL) {
+        REQUIRE_CHAIN(&res, kefir_ast_node_attributes_clone(mem, &entry->attributes, attributes));
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_ast_node_attributes_free(mem, &entry->attributes);
+            KEFIR_FREE(mem, entry);
+            return res;
+        });
+    }
+
+    res = kefir_list_insert_after(mem, &specifier->entries, kefir_list_tail(&specifier->entries), entry);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, entry);
+        return res;
+    });
+
     return KEFIR_OK;
 }
 

@@ -1,0 +1,455 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                },
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "storage_class",
+                    "storage": "static",
+                    "attributes": []
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "var1",
+                        "asm_label": null,
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr1",
+                                        "parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr2",
+                                        "parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr3",
+                                        "parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr4",
+                                        "parameters": []
+                                    }
+                                ]
+                            },
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "var",
+                                        "name": "attr5",
+                                        "parameters": []
+                                    }
+                                ]
+                            }
+                        ]
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "struct",
+                    "identifier": "S1",
+                    "members": [
+                        {
+                            "type": "declaration",
+                            "specifiers": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                }
+                            ],
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "x",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ],
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "struct_member",
+                                            "name": "attr1",
+                                            "parameters": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "struct_member",
+                                            "name": "attr2",
+                                            "parameters": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "struct_member",
+                                            "name": "attr3",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "declaration",
+                            "specifiers": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "short",
+                                    "attributes": []
+                                }
+                            ],
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "y",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "bitwidth": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    }
+                                }
+                            ],
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "struct_member",
+                                            "name": "attrx",
+                                            "parameters": []
+                                        },
+                                        {
+                                            "prefix": "struct_meber",
+                                            "name": "attry",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "type": "declaration",
+                            "specifiers": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "float",
+                                    "attributes": []
+                                }
+                            ],
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "z",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ],
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "struct_member",
+                                            "name": "attr0",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "struct",
+                                    "name": "attr1",
+                                    "parameters": []
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "struct",
+                                    "name": "attr2",
+                                    "parameters": []
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "struct",
+                                    "name": "attr3",
+                                    "parameters": []
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "struct",
+                                    "name": "attr4",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "struct",
+                    "identifier": "S2",
+                    "members": null,
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "struct",
+                                    "name": "attrx",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E1",
+                    "members": [
+                        {
+                            "identifier": "E1C1",
+                            "value": null,
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "enum_const",
+                                            "name": "attr1",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "identifier": "E1C2",
+                            "value": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 2
+                            },
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "enum_const",
+                                            "name": "attr2",
+                                            "parameters": []
+                                        },
+                                        {
+                                            "prefix": "enum_const",
+                                            "name": "attr3",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "identifier": "E1C3",
+                            "value": null,
+                            "attributes": []
+                        },
+                        {
+                            "identifier": "E1C4",
+                            "value": null,
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "enum_const",
+                                            "name": "attr4",
+                                            "parameters": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": "enum_const",
+                                            "name": "attr5",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ],
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "enum",
+                                    "name": "attr1",
+                                    "parameters": []
+                                }
+                            ]
+                        },
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "enum",
+                                    "name": "attr2",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "enum",
+                    "identifier": "E2",
+                    "members": null,
+                    "attributes": [
+                        {
+                            "class": "attribute_list",
+                            "attributes": [
+                                {
+                                    "prefix": "enum",
+                                    "name": "attrx",
+                                    "parameters": []
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        }
+    ]
+}

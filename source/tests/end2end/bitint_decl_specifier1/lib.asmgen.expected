@@ -88,7 +88,8 @@
                                 "class": "constant",
                                 "type": "integer",
                                 "value": 1
-                            }
+                            },
+                            "attributes": []
                         },
                         {
                             "identifier": "B",
@@ -100,7 +101,8 @@
                                     "type": "integer",
                                     "value": 1
                                 }
-                            }
+                            },
+                            "attributes": []
                         }
                     ],
                     "attributes": []

@@ -205,7 +205,8 @@
                                 },
                                 "bitwidth": null
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     {
                         "type": "declaration",
@@ -226,7 +227,8 @@
                                 },
                                 "bitwidth": null
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     {
                         "type": "declaration",
@@ -252,7 +254,8 @@
                                 },
                                 "bitwidth": null
                             }
-                        ]
+                        ],
+                        "attributes": []
                     }
                 ],
                 "attributes": []

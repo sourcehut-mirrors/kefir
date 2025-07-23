@@ -24,7 +24,8 @@
                             },
                             "bitwidth": null
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "declaration",
@@ -69,7 +70,8 @@
                             },
                             "bitwidth": null
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "declaration",
@@ -137,7 +139,8 @@
                                 "identifier": "X"
                             }
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "declaration",
@@ -160,7 +163,8 @@
                             },
                             "bitwidth": null
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 {
                     "type": "declaration",
@@ -189,7 +193,8 @@
                                             },
                                             "bitwidth": null
                                         }
-                                    ]
+                                    ],
+                                    "attributes": []
                                 },
                                 {
                                     "type": "declaration",
@@ -210,13 +215,15 @@
                                             },
                                             "bitwidth": null
                                         }
-                                    ]
+                                    ],
+                                    "attributes": []
                                 }
                             ],
                             "attributes": []
                         }
                     ],
-                    "declarators": []
+                    "declarators": [],
+                    "attributes": []
                 }
             ],
             "attributes": []
@@ -288,19 +295,22 @@
                                                                 "value": 1
                                                             }
                                                         }
-                                                    ]
+                                                    ],
+                                                    "attributes": []
                                                 }
                                             ],
                                             "attributes": []
                                         }
                                     ],
-                                    "declarators": []
+                                    "declarators": [],
+                                    "attributes": []
                                 }
                             ],
                             "attributes": []
                         }
                     ],
-                    "declarators": []
+                    "declarators": [],
+                    "attributes": []
                 }
             ],
             "attributes": []

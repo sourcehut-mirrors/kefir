@@ -35,11 +35,11 @@ DEFINE_CASE(ast_enum_declaration1, "AST Declarations - enum declaration #1") {
     ASSERT(strcmp(specifier->identifier, "test123") == 0);
     ASSERT(!specifier->complete);
 
-    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, NULL, NULL));
-    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "A", NULL));
+    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, NULL, NULL, NULL));
+    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "A", NULL, NULL));
 
     struct kefir_ast_node_base *value1 = KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1));
-    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "A", value1));
+    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "A", value1, NULL));
     ASSERT_OK(KEFIR_AST_NODE_FREE(&kft_mem, value1));
 
     ASSERT_OK(kefir_ast_enum_specifier_free(&kft_mem, specifier));
@@ -59,16 +59,16 @@ DEFINE_CASE(ast_enum_declaration2, "AST Declarations - enum declaration #2") {
     ASSERT(strcmp(specifier->identifier, "some_enum") == 0);
     ASSERT(specifier->complete);
 
-    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, NULL, NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field1", NULL));
+    ASSERT_NOK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, NULL, NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field1", NULL, NULL));
 
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field2",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)), NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field3",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field4", NULL));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)), NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field4", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier, &symbols, "field5",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 20))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 20)), NULL));
 
     const struct kefir_list_entry *iter = NULL;
     do {

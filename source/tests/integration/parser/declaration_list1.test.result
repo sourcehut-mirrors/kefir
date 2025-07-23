@@ -134,7 +134,8 @@
                                 },
                                 "bitwidth": null
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     {
                         "type": "declaration",
@@ -173,7 +174,8 @@
                                     }
                                 }
                             }
-                        ]
+                        ],
+                        "attributes": []
                     }
                 ],
                 "attributes": []

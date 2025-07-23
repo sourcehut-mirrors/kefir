@@ -255,14 +255,14 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
 
     struct kefir_ast_enum_specifier *specifier2 =
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true, NULL);
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "A", NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "A", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "B",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)), NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "C",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "D", NULL));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 2)), NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "D", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "CONST1",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 200))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 200)), NULL));
 
     struct kefir_ast_enum_type *enum_type2 = NULL;
     const struct kefir_ast_type *type2 = kefir_ast_type_enumeration(
@@ -287,11 +287,13 @@ DEFINE_CASE(ast_declarator_analysis9, "AST declarator analysis - enum declarator
     ASSERT_OK(kefir_ast_enum_specifier_append(
         &kft_mem, specifier3, context->symbols, "ONE",
         KEFIR_AST_NODE_BASE(kefir_ast_new_unary_operation(
-            &kft_mem, KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1))))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "TWO", NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "THREE", NULL));
+            &kft_mem, KEFIR_AST_OPERATION_NEGATE, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, -1)))),
+        NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "TWO", NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "THREE", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier3, context->symbols, "TEN",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(&kft_mem, 10))));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_long_long(&kft_mem, 10)),
+                                              NULL));
 
     struct kefir_ast_enum_type *enum_type3 = NULL;
     const struct kefir_ast_type *type3 = kefir_ast_type_enumeration(

@@ -83,8 +83,8 @@ static kefir_result_t scan_struct_field_declaration(struct kefir_mem *mem, struc
     struct kefir_ast_structure_declaration_entry *entry = kefir_ast_structure_declaration_entry_alloc(mem);
     REQUIRE(entry != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST structure declaration entry"));
-    kefir_result_t res =
-        parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers, param->attributes);
+    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &entry->declaration.specifiers,
+                                                                    &entry->declaration.attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_structure_declaration_entry_free(mem, entry);
         return res;
@@ -241,6 +241,7 @@ static kefir_result_t scan_struct_specifier(struct kefir_mem *mem, struct kefir_
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
         identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
         res = PARSER_SHIFT(parser);
+        SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
         complete = PARSER_TOKEN_IS_LEFT_BRACE(parser, 0);
     } else {
         if (!PARSER_TOKEN_IS_LEFT_BRACE(parser, 0)) {
@@ -311,8 +312,13 @@ static kefir_result_t scan_enum_field_declaration(struct kefir_mem *mem, struct 
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     kefir_result_t res = KEFIR_OK;
-    SKIP_ATTRIBUTES(&res, mem, parser);
-    REQUIRE_OK(res);
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
 
     struct kefir_ast_node_base *value = NULL;
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_ASSIGN)) {
@@ -322,11 +328,13 @@ static kefir_result_t scan_enum_field_declaration(struct kefir_mem *mem, struct 
                                                 "Expected constant expression"));
     }
 
-    res = kefir_ast_enum_specifier_append(mem, specifier, parser->symbols, identifier, value);
+    res = kefir_ast_enum_specifier_append(mem, specifier, parser->symbols, identifier, value, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
         KEFIR_AST_NODE_FREE(mem, value);
         return res;
     });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
 
     REQUIRE_OK(kefir_parser_scope_declare_variable(mem, parser->scope, identifier));
     return KEFIR_OK;
@@ -365,31 +373,44 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     kefir_bool_t complete;
     kefir_result_t res = KEFIR_OK;
 
-    SKIP_ATTRIBUTES(&res, mem, parser);
-    REQUIRE_OK(res);
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
 
     if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
         identifier = kefir_parser_token_cursor_at(parser->cursor, 0)->identifier;
-        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
         complete =
             PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON);
     } else {
-        REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Anonymous enumeration shall have complete body"));
+        REQUIRE_CHAIN_SET(
+            &res,
+            PARSER_TOKEN_IS_LEFT_BRACE(parser, 0) || PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                   "Anonymous enumeration shall have complete body"));
         complete = true;
     }
+
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
 
     kefir_bool_t enum_type_spec_present = false;
     struct kefir_ast_declarator_specifier_list enum_type_spec;
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COLON)) {
-        REQUIRE_OK(PARSER_SHIFT(parser));
+        REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
         enum_type_spec_present = true;
-        REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&enum_type_spec));
+        REQUIRE_CHAIN(&res, kefir_ast_declarator_specifier_list_init(&enum_type_spec));
 
-        res = parser->ruleset.declaration_specifier_list(mem, parser, &enum_type_spec, NULL);
+        REQUIRE_CHAIN(&res, parser->ruleset.declaration_specifier_list(mem, parser, &enum_type_spec, NULL));
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
+            kefir_ast_node_attributes_free(mem, &attributes);
             return res;
         });
     }
@@ -400,12 +421,14 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
         if (enum_type_spec_present) {
             kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
         }
+        kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST enum specifier");
     });
     if (enum_type_spec_present) {
         res = kefir_ast_declarator_specifier_list_free(mem, &enum_type_spec);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_enum_specifier_free(mem, specifier);
+            kefir_ast_node_attributes_free(mem, &attributes);
             return res;
         });
     }
@@ -414,6 +437,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
         res = scan_enum_specifier_body(mem, parser, specifier);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_enum_specifier_free(mem, specifier);
+            kefir_ast_node_attributes_free(mem, &attributes);
             return res;
         });
     }
@@ -421,7 +445,19 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     struct kefir_ast_declarator_specifier *decl_specifier = kefir_ast_type_specifier_enum(mem, specifier);
     REQUIRE_ELSE(decl_specifier != NULL, {
         kefir_ast_enum_specifier_free(mem, specifier);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST declarator specifier");
+    });
+    res = kefir_ast_node_attributes_move(&decl_specifier->attributes, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_specifier_free(mem, decl_specifier);
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_specifier_free(mem, decl_specifier);
+        return res;
     });
 
     *specifier_ptr = decl_specifier;

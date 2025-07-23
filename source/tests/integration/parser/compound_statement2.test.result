@@ -191,7 +191,8 @@
                                         "members": [
                                             {
                                                 "identifier": "T",
-                                                "value": null
+                                                "value": null,
+                                                "attributes": []
                                             }
                                         ],
                                         "attributes": []

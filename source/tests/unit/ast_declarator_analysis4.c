@@ -212,17 +212,17 @@ DEFINE_CASE(ast_declarator_analysis18, "AST declarator analysis - enum type tags
     struct kefir_ast_enum_specifier *specifier1 =
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum1", true, NULL);
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_A",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_B", NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_C", NULL));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 100)), NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_B", NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_C", NULL, NULL));
     ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_D",
-                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1))));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_E", NULL));
+                                              KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 1)), NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier1, context->symbols, "CONST_E", NULL, NULL));
 
     struct kefir_ast_enum_specifier *specifier2 =
         kefir_ast_enum_specifier_init(&kft_mem, context->symbols, "enum2", true, NULL);
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ONE_THING", NULL));
-    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ANOTHER_THING", NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ONE_THING", NULL, NULL));
+    ASSERT_OK(kefir_ast_enum_specifier_append(&kft_mem, specifier2, context->symbols, "ANOTHER_THING", NULL, NULL));
 
     struct kefir_ast_enum_type *enum_type1 = NULL;
     const struct kefir_ast_type *type1 = kefir_ast_type_enumeration(
