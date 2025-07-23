@@ -96,10 +96,16 @@ kefir_result_t kefir_token_new_sentinel(struct kefir_token *token) {
 }
 
 kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t keyword, struct kefir_token *token) {
+    return kefir_token_new_keyword_with_spelling(keyword, NULL, token);
+}
+
+kefir_result_t kefir_token_new_keyword_with_spelling(kefir_keyword_token_t keyword, const char *spelling,
+                                                     struct kefir_token *token) {
     REQUIRE(token != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to token"));
     REQUIRE_OK(kefir_source_location_empty(&token->source_location));
     token->klass = KEFIR_TOKEN_KEYWORD;
     token->keyword = keyword;
+    token->keyword_spelling = spelling;
     token->macro_expansions = NULL;
     return KEFIR_OK;
 }

@@ -2,7 +2,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "double"
+        "keyword": "double",
+        "spelling": "double"
     },
     {
         "class": "identifier",

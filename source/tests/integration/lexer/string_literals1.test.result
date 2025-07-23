@@ -46,7 +46,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "for"
+        "keyword": "for",
+        "spelling": "for"
     },
     {
         "class": "identifier",
@@ -56,7 +57,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "punctuator",

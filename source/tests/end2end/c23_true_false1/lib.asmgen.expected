@@ -2,7 +2,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "bool"
+        "keyword": "bool",
+        "spelling": "bool"
     },
     {
         "class": "identifier",
@@ -17,7 +18,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "true"
+        "keyword": "true",
+        "spelling": "true"
     },
     {
         "class": "punctuator",
@@ -27,7 +29,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "bool"
+        "keyword": "bool",
+        "spelling": "bool"
     },
     {
         "class": "identifier",
@@ -42,7 +45,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "false"
+        "keyword": "false",
+        "spelling": "false"
     },
     {
         "class": "punctuator",

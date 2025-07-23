@@ -2,7 +2,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "bool"
+        "keyword": "bool",
+        "spelling": "_Bool"
     },
     {
         "class": "identifier",
@@ -27,7 +28,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "bool"
+        "keyword": "bool",
+        "spelling": "_Bool"
     },
     {
         "class": "identifier",

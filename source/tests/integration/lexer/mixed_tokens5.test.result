@@ -88,7 +88,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "identifier",
@@ -129,7 +130,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "if"
+        "keyword": "if",
+        "spelling": "if"
     },
     {
         "class": "punctuator",

@@ -2,12 +2,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -33,12 +35,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -64,12 +68,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -95,12 +101,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -126,12 +134,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -157,12 +167,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -177,7 +189,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "punctuator",
@@ -192,7 +205,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "constant",
@@ -213,12 +227,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -233,7 +249,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "punctuator",
@@ -248,7 +265,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "constant",
@@ -269,12 +287,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -289,7 +309,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "punctuator",
@@ -304,7 +325,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "constant",
@@ -325,12 +347,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -345,7 +369,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "punctuator",
@@ -360,7 +385,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "constant",
@@ -381,12 +407,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -401,7 +429,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "punctuator",
@@ -416,7 +445,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "constant",

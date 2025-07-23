@@ -12,7 +12,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "punctuator",
@@ -79,7 +80,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "identifier",

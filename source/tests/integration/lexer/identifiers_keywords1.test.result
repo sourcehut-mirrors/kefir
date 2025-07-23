@@ -2,27 +2,32 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "const"
+        "keyword": "const",
+        "spelling": "const"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "identifier",
@@ -37,12 +42,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "float"
+        "keyword": "float",
+        "spelling": "float"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "thread_local"
+        "keyword": "thread_local",
+        "spelling": "_Thread_local"
     },
     {
         "class": "identifier",
@@ -52,7 +59,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "identifier",
@@ -72,7 +80,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "identifier",
@@ -82,7 +91,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "complex"
+        "keyword": "complex",
+        "spelling": "_Complex"
     },
     {
         "class": "identifier",
@@ -112,12 +122,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "if"
+        "keyword": "if",
+        "spelling": "if"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "else"
+        "keyword": "else",
+        "spelling": "else"
     },
     {
         "class": "sentinel",

@@ -2,12 +2,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "extern"
+        "keyword": "extern",
+        "spelling": "extern"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "identifier",
@@ -32,7 +34,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "identifier",
@@ -179,7 +182,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "_BitInt"
+        "keyword": "_BitInt",
+        "spelling": "_BitInt"
     },
     {
         "class": "punctuator",
@@ -222,7 +226,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "_BitInt"
+        "keyword": "_BitInt",
+        "spelling": "_BitInt"
     },
     {
         "class": "punctuator",
@@ -265,7 +270,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "_BitInt"
+        "keyword": "_BitInt",
+        "spelling": "_BitInt"
     },
     {
         "class": "punctuator",
@@ -308,7 +314,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "_BitInt"
+        "keyword": "_BitInt",
+        "spelling": "_BitInt"
     },
     {
         "class": "punctuator",

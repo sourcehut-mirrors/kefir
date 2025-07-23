@@ -2,7 +2,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "identifier",
@@ -99,7 +100,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "for"
+        "keyword": "for",
+        "spelling": "for"
     },
     {
         "class": "identifier",
@@ -109,7 +111,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "while"
+        "keyword": "while",
+        "spelling": "while"
     },
     {
         "class": "identifier",

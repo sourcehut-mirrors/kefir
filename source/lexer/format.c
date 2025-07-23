@@ -22,7 +22,8 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
-static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keyword_token_t keyword) {
+static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keyword_token_t keyword,
+                                     const char *spelling) {
     REQUIRE_OK(kefir_json_output_object_key(json, "keyword"));
     switch (keyword) {
         case KEFIR_KEYWORD_AUTO:
@@ -240,6 +241,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
         case KEFIR_KEYWORD_BITINT:
             REQUIRE_OK(kefir_json_output_string(json, "_BitInt"));
             break;
+    }
+    if (spelling) {
+        REQUIRE_OK(kefir_json_output_object_key(json, "spelling"));
+        REQUIRE_OK(kefir_json_output_string(json, spelling));
     }
     return KEFIR_OK;
 }
@@ -709,7 +714,7 @@ kefir_result_t kefir_token_format(struct kefir_json_output *json, const struct k
             REQUIRE_OK(kefir_json_output_string(json, "keyword"));
             REQUIRE_OK(kefir_json_output_object_key(json, "preprocessor"));
             REQUIRE_OK(kefir_json_output_boolean(json, false));
-            REQUIRE_OK(format_keyword(json, token->keyword));
+            REQUIRE_OK(format_keyword(json, token->keyword, token->keyword_spelling));
             break;
 
         case KEFIR_TOKEN_IDENTIFIER:

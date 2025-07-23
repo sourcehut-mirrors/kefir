@@ -98,6 +98,7 @@
         "class": "keyword",
         "preprocessor": false,
         "keyword": "for",
+        "spelling": "for",
         "source_location": {
             "source": "source_file_identifier",
             "line": 2,
@@ -118,6 +119,7 @@
         "class": "keyword",
         "preprocessor": false,
         "keyword": "int",
+        "spelling": "int",
         "source_location": {
             "source": "source_file_identifier",
             "line": 2,
@@ -169,6 +171,7 @@
         "class": "keyword",
         "preprocessor": false,
         "keyword": "float",
+        "spelling": "float",
         "source_location": {
             "source": "source_file_identifier",
             "line": 6,

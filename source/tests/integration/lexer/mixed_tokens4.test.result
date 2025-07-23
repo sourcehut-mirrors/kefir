@@ -74,7 +74,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "sizeof"
+        "keyword": "sizeof",
+        "spelling": "sizeof"
     },
     {
         "class": "punctuator",
@@ -84,12 +85,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "punctuator",
@@ -185,7 +188,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "float"
+        "keyword": "float",
+        "spelling": "float"
     },
     {
         "class": "identifier",

@@ -37,7 +37,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "identifier",
@@ -52,12 +53,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "const"
+        "keyword": "const",
+        "spelling": "const"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "identifier",
@@ -77,7 +80,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "if"
+        "keyword": "if",
+        "spelling": "if"
     },
     {
         "class": "punctuator",
@@ -97,7 +101,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "identifier",
@@ -117,17 +122,20 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "else"
+        "keyword": "else",
+        "spelling": "else"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "thread_local"
+        "keyword": "thread_local",
+        "spelling": "_Thread_local"
     },
     {
         "class": "identifier",
@@ -157,7 +165,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "for"
+        "keyword": "for",
+        "spelling": "for"
     },
     {
         "class": "punctuator",
@@ -182,12 +191,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "while"
+        "keyword": "while",
+        "spelling": "while"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "do"
+        "keyword": "do",
+        "spelling": "do"
     },
     {
         "class": "identifier",

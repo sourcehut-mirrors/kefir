@@ -268,7 +268,10 @@ typedef struct kefir_token {
     kefir_token_class_t klass;
     struct kefir_token_macro_expansions *macro_expansions;
     union {
-        kefir_keyword_token_t keyword;
+        struct {
+            kefir_keyword_token_t keyword;
+            const char *keyword_spelling;
+        };
         const char *identifier;
         struct kefir_constant_token constant;
         struct kefir_string_literal_token string_literal;
@@ -292,6 +295,7 @@ kefir_bool_t kefir_token_macro_expansions_has(const struct kefir_token_macro_exp
 
 kefir_result_t kefir_token_new_sentinel(struct kefir_token *);
 kefir_result_t kefir_token_new_keyword(kefir_keyword_token_t, struct kefir_token *);
+kefir_result_t kefir_token_new_keyword_with_spelling(kefir_keyword_token_t, const char *, struct kefir_token *);
 kefir_result_t kefir_token_new_identifier(struct kefir_mem *, struct kefir_string_pool *, const char *,
                                           struct kefir_token *);
 kefir_result_t kefir_token_new_constant_int(kefir_int64_t, struct kefir_token *);

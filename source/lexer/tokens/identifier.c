@@ -80,25 +80,29 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, str
         }
     }
 
+    char mb_identifier[MB_LEN_MAX * MAX_IDENTIFIER_LENGTH];
+    char *mb_identifier_ptr = &mb_identifier[0];
+    mbstate_t mbstate = {0};
+    for (kefir_size_t i = 0; i <= length; i++) {
+        size_t sz = c32rtomb(mb_identifier_ptr, identifier[i], &mbstate);
+        if (sz == (size_t) -1) {
+            *mb_identifier_ptr = (char) identifier[i];
+            sz = 1;
+            mbstate = (mbstate_t) {0};
+        }
+        mb_identifier_ptr += sz;
+    }
+
     kefir_keyword_token_t keyword;
     kefir_result_t res = keywords != NULL ? kefir_lexer_get_keyword(keywords, identifier, &keyword) : KEFIR_NO_MATCH;
     if (res == KEFIR_NO_MATCH) {
-        char mb_identifier[MB_LEN_MAX * MAX_IDENTIFIER_LENGTH];
-        char *mb_identifier_ptr = &mb_identifier[0];
-        mbstate_t mbstate = {0};
-        for (kefir_size_t i = 0; i <= length; i++) {
-            size_t sz = c32rtomb(mb_identifier_ptr, identifier[i], &mbstate);
-            if (sz == (size_t) -1) {
-                *mb_identifier_ptr = (char) identifier[i];
-                sz = 1;
-                mbstate = (mbstate_t) {0};
-            }
-            mb_identifier_ptr += sz;
-        }
         REQUIRE_OK(kefir_token_new_identifier(mem, symbols, mb_identifier, token));
     } else {
         REQUIRE_OK(res);
-        REQUIRE_OK(kefir_token_new_keyword(keyword, token));
+        const char *keyword_spelling = kefir_string_pool_insert(mem, symbols, mb_identifier, NULL);
+        REQUIRE(keyword_spelling != NULL,
+                KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to insert identifier into symbol table"));
+        REQUIRE_OK(kefir_token_new_keyword_with_spelling(keyword, keyword_spelling, token));
     }
     return KEFIR_OK;
 }

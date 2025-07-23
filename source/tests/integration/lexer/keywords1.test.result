@@ -2,232 +2,278 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "extern"
+        "keyword": "extern",
+        "spelling": "extern"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "static"
+        "keyword": "static",
+        "spelling": "static"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "alignof"
+        "keyword": "alignof",
+        "spelling": "_Alignof"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "restrict"
+        "keyword": "restrict",
+        "spelling": "restrict"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "struct"
+        "keyword": "struct",
+        "spelling": "struct"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "static_assert"
+        "keyword": "static_assert",
+        "spelling": "_Static_assert"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "break"
+        "keyword": "break",
+        "spelling": "break"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "default"
+        "keyword": "default",
+        "spelling": "default"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "unsigned"
+        "keyword": "unsigned",
+        "spelling": "unsigned"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "if"
+        "keyword": "if",
+        "spelling": "if"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "register"
+        "keyword": "register",
+        "spelling": "register"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "signed"
+        "keyword": "signed",
+        "spelling": "signed"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "union"
+        "keyword": "union",
+        "spelling": "union"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "return"
+        "keyword": "return",
+        "spelling": "return"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "for"
+        "keyword": "for",
+        "spelling": "for"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "imaginary"
+        "keyword": "imaginary",
+        "spelling": "_Imaginary"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "long"
+        "keyword": "long",
+        "spelling": "long"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "enum"
+        "keyword": "enum",
+        "spelling": "enum"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "case"
+        "keyword": "case",
+        "spelling": "case"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "double"
+        "keyword": "double",
+        "spelling": "double"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "complex"
+        "keyword": "complex",
+        "spelling": "_Complex"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "void"
+        "keyword": "void",
+        "spelling": "void"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "switch"
+        "keyword": "switch",
+        "spelling": "switch"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "sizeof"
+        "keyword": "sizeof",
+        "spelling": "sizeof"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "noreturn"
+        "keyword": "noreturn",
+        "spelling": "_Noreturn"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "alignas"
+        "keyword": "alignas",
+        "spelling": "_Alignas"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "char"
+        "keyword": "char",
+        "spelling": "char"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "inline"
+        "keyword": "inline",
+        "spelling": "inline"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "short"
+        "keyword": "short",
+        "spelling": "short"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "float"
+        "keyword": "float",
+        "spelling": "float"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "typedef"
+        "keyword": "typedef",
+        "spelling": "typedef"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "int"
+        "keyword": "int",
+        "spelling": "int"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "goto"
+        "keyword": "goto",
+        "spelling": "goto"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "thread_local"
+        "keyword": "thread_local",
+        "spelling": "_Thread_local"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "continue"
+        "keyword": "continue",
+        "spelling": "continue"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "bool"
+        "keyword": "bool",
+        "spelling": "_Bool"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "while"
+        "keyword": "while",
+        "spelling": "while"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "do"
+        "keyword": "do",
+        "spelling": "do"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "volatile"
+        "keyword": "volatile",
+        "spelling": "volatile"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "else"
+        "keyword": "else",
+        "spelling": "else"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "auto"
+        "keyword": "auto",
+        "spelling": "auto"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "atomic"
+        "keyword": "atomic",
+        "spelling": "_Atomic"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "generic"
+        "keyword": "generic",
+        "spelling": "_Generic"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "const"
+        "keyword": "const",
+        "spelling": "const"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "__attribute__"
+        "keyword": "__attribute__",
+        "spelling": "__attribute__"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "asm"
+        "keyword": "asm",
+        "spelling": "asm"
     },
     {
         "class": "identifier",
@@ -242,7 +288,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "_BitInt"
+        "keyword": "_BitInt",
+        "spelling": "_BitInt"
     },
     {
         "class": "sentinel",

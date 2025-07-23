@@ -2,12 +2,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "extern"
+        "keyword": "extern",
+        "spelling": "extern"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "double"
+        "keyword": "double",
+        "spelling": "double"
     },
     {
         "class": "identifier",
@@ -32,17 +34,20 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "extern"
+        "keyword": "extern",
+        "spelling": "extern"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "complex"
+        "keyword": "complex",
+        "spelling": "_Complex"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "float"
+        "keyword": "float",
+        "spelling": "float"
     },
     {
         "class": "identifier",
@@ -57,7 +62,8 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "double"
+        "keyword": "double",
+        "spelling": "double"
     },
     {
         "class": "identifier",
@@ -158,12 +164,14 @@
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "complex"
+        "keyword": "complex",
+        "spelling": "_Complex"
     },
     {
         "class": "keyword",
         "preprocessor": false,
-        "keyword": "float"
+        "keyword": "float",
+        "spelling": "float"
     },
     {
         "class": "identifier",
