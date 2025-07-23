@@ -196,9 +196,9 @@ similarly, though, thus basic use cases shall be compatible). Additionally,
 
 Kefir supports `__attribute__(...)` syntax, however only a few attributes are
 actually implemented. Presence of attribute in source code can be turned into a syntax error
-by CLI option. For the list of supported attributes see:
+by CLI option. For the list of supported GNU attributes see:
 ```bash
-echo '__KEFIRCC_SUPPORTED_ATTRIBUTES__' | kefir -E -
+echo '__KEFIRCC_SUPPORTED_GNU_ATTRIBUTES__' | kefir -E -
 ```
 
 

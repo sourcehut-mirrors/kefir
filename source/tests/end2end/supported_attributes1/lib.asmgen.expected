@@ -15,9 +15,11 @@ visibility
 __aligned__
 constructor
 __returns_twice__
+__destructor__
 __gnu_inline__
 __visibility__
 returns_twice
 __noinline__
 always_inline
+__constructor__
 __always_inline__

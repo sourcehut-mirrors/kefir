@@ -439,7 +439,7 @@ DEFINE_CASE(ast_nodes_attribute_list1, "AST nodes - attribute list #1") {
     ASSERT(kefir_list_length(&list1->list) == 0);
 
     struct kefir_ast_attribute *attr1 = NULL;
-    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute1", list1, &attr1));
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, NULL, "attribute1", list1, &attr1));
     ASSERT(attr1 != NULL);
     ASSERT(strcmp(attr1->name, "attribute1") == 0);
     ASSERT(kefir_list_length(&attr1->parameters) == 0);
@@ -454,7 +454,7 @@ DEFINE_CASE(ast_nodes_attribute_list1, "AST nodes - attribute list #1") {
                                       kefir_ast_new_constant_int(&kft_mem, 300)));
 
     struct kefir_ast_attribute *attr2 = NULL;
-    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute2", list1, &attr2));
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, NULL, "attribute2", list1, &attr2));
     ASSERT(attr2 != NULL);
     ASSERT(attr2 != attr1);
     ASSERT(strcmp(attr2->name, "attribute2") == 0);
@@ -477,7 +477,7 @@ DEFINE_CASE(ast_nodes_attribute_list1, "AST nodes - attribute list #1") {
     ASSERT(kefir_list_length(&list2->list) == 0);
 
     struct kefir_ast_attribute *attr3 = NULL;
-    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, "attribute3", list2, &attr3));
+    ASSERT_OK(kefir_ast_attribute_list_append(&kft_mem, &symbols, NULL, "attribute3", list2, &attr3));
     ASSERT(attr3 != NULL);
     ASSERT(attr3 != attr1 && attr3 != attr2);
     ASSERT(strcmp(attr3->name, "attribute3") == 0);
@@ -503,7 +503,7 @@ DEFINE_CASE(ast_nodes_inline_assembly1, "AST nodes - inline assembly #1") {
     ASSERT_OK(kefir_ast_type_bundle_init(&type_bundle, &symbols));
 
     struct kefir_ast_inline_assembly *inline_asm1 = kefir_ast_new_inline_assembly(
-        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers){.inline_qualifier = true}, "Hello, assembly!");
+        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.inline_qualifier = true}, "Hello, assembly!");
     ASSERT(inline_asm1 != NULL);
     ASSERT(inline_asm1->base.klass->type == KEFIR_AST_INLINE_ASSEMBLY);
     ASSERT(inline_asm1->base.self == inline_asm1);
@@ -583,7 +583,7 @@ DEFINE_CASE(ast_nodes_inline_assembly1, "AST nodes - inline assembly #1") {
     ASSERT(jump != NULL && strcmp(jump, "jump2") == 0);
 
     struct kefir_ast_inline_assembly *inline_asm2 = kefir_ast_new_inline_assembly(
-        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers){.volatile_qualifier = true, .goto_qualifier = true},
+        &kft_mem, (struct kefir_ast_inline_assembly_qualifiers) {.volatile_qualifier = true, .goto_qualifier = true},
         "Goodbye, assembly!");
     ASSERT(inline_asm2 != NULL);
     ASSERT(inline_asm2 != inline_asm1);

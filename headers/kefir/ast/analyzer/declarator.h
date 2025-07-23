@@ -26,7 +26,7 @@
 #include "kefir/ast/context.h"
 #include "kefir/ast/alignment.h"
 
-extern const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[];
+extern const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[];
 
 #define KEFIR_AST_DECLARATION_ANALYSIS_NORMAL (0ull)
 #define KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT (1ull)

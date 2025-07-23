@@ -17,6 +17,7 @@
                 "class": "attribute_list",
                 "attributes": [
                     {
+                        "prefix": "gnu",
                         "name": "fn1_attr1",
                         "parameters": [
                             {
@@ -31,6 +32,7 @@
                 "class": "attribute_list",
                 "attributes": [
                     {
+                        "prefix": "gnu",
                         "name": "fn1_attr2",
                         "parameters": [
                             {
@@ -40,6 +42,7 @@
                         ]
                     },
                     {
+                        "prefix": "gnu",
                         "name": "something_else",
                         "parameters": []
                     }
@@ -49,6 +52,7 @@
                 "class": "attribute_list",
                 "attributes": [
                     {
+                        "prefix": "gnu",
                         "name": "fn1_attr3",
                         "parameters": [
                             {

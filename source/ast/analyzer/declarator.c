@@ -32,29 +32,12 @@
 #include "kefir/ast/type_completion.h"
 #include "kefir/core/source_error.h"
 
-const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES[] = {"aligned",
-                                                                "__aligned__",
-                                                                "gnu_inline",
-                                                                "__gnu_inline__",
-                                                                "always_inline",
-                                                                "__always_inline__",
-                                                                "noinline",
-                                                                "__noinline__",
-                                                                "noipa",
-                                                                "__noipa__",
-                                                                "returns_twice",
-                                                                "__returns_twice__",
-                                                                "weak",
-                                                                "__weak__",
-                                                                "alias",
-                                                                "__alias__",
-                                                                "visibility",
-                                                                "__visibility__",
-                                                                "constructor",
-                                                                "destructor",
-                                                                "packed",
-                                                                "__packed__",
-                                                                NULL};
+const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[] = {
+    "aligned",           "__aligned__",       "gnu_inline",     "__gnu_inline__", "always_inline",
+    "__always_inline__", "noinline",          "__noinline__",   "noipa",          "__noipa__",
+    "returns_twice",     "__returns_twice__", "weak",           "__weak__",       "alias",
+    "__alias__",         "visibility",        "__visibility__", "constructor",    "__constructor__",
+    "destructor",        "__destructor__",    "packed",         "__packed__",     NULL};
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
@@ -1483,95 +1466,103 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
-            // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_ATTRIBUTES macro upon changing this !!!
-            if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
-                REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(
-                    mem, context, attribute, base_type, alignment, flags, attributes, &declarator->source_location));
-            } else if (strcmp(attribute->name, "constructor") == 0 && attributes != NULL) {
-                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                               "Attribute constructor can only be used on function declarators"));
-                REQUIRE(kefir_list_length(&attribute->parameters) == 0,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                               "Attribute constructor with priority is not supported"));
-                attributes->constructor = true;
-            } else if (strcmp(attribute->name, "destructor") == 0 && attributes != NULL) {
-                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                               "Attribute destructor can only be used on function declarators"));
-                REQUIRE(kefir_list_length(&attribute->parameters) == 0,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                               "Attribute destructor with priority is not supported"));
-                attributes->destructor = true;
-            } else if ((strcmp(attribute->name, "gnu_inline") == 0 || strcmp(attribute->name, "__gnu_inline__") == 0) &&
-                       attributes != NULL) {
-                attributes->gnu_inline = true;
-            } else if ((strcmp(attribute->name, "always_inline") == 0 ||
-                        strcmp(attribute->name, "__always_inline__") == 0) &&
-                       attributes != NULL) {
-                attributes->always_inline = true;
-            } else if ((strcmp(attribute->name, "noinline") == 0 || strcmp(attribute->name, "__noinline__") == 0) &&
-                       attributes != NULL) {
-                attributes->no_inline = true;
-            } else if ((strcmp(attribute->name, "noipa") == 0 || strcmp(attribute->name, "noipa") == 0) &&
-                       attributes != NULL) {
-                attributes->no_ipa = true;
-            } else if ((strcmp(attribute->name, "returns_twice") == 0 ||
-                        strcmp(attribute->name, "__returns_twice__") == 0)) {
-                REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
-                        KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                               "Attribute returns_twice can only be used on function declarators"));
-            } else if (strcmp(attribute->name, "weak") == 0 || strcmp(attribute->name, "__weak__") == 0) {
-                attributes->weak = true;
-            } else if (strcmp(attribute->name, "alias") == 0 || strcmp(attribute->name, "__alias__") == 0) {
-                const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
-                REQUIRE(parameter != NULL && parameter->value,
+            // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES macro upon changing this !!!
+            if (strcmp(attribute->prefix, "gnu") == 0) {
+                if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
+                    REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(mem, context, attribute, base_type,
+                                                                                  alignment, flags, attributes,
+                                                                                  &declarator->source_location));
+                } else if (strcmp(attribute->name, "constructor") == 0 && attributes != NULL) {
+                    REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Attribute constructor can only be used on function declarators"));
+                    REQUIRE(kefir_list_length(&attribute->parameters) == 0,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Attribute constructor with priority is not supported"));
+                    attributes->constructor = true;
+                } else if (strcmp(attribute->name, "destructor") == 0 && attributes != NULL) {
+                    REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Attribute destructor can only be used on function declarators"));
+                    REQUIRE(kefir_list_length(&attribute->parameters) == 0,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Attribute destructor with priority is not supported"));
+                    attributes->destructor = true;
+                } else if ((strcmp(attribute->name, "gnu_inline") == 0 ||
+                            strcmp(attribute->name, "__gnu_inline__") == 0) &&
+                           attributes != NULL) {
+                    attributes->gnu_inline = true;
+                } else if ((strcmp(attribute->name, "always_inline") == 0 ||
+                            strcmp(attribute->name, "__always_inline__") == 0) &&
+                           attributes != NULL) {
+                    attributes->always_inline = true;
+                } else if ((strcmp(attribute->name, "noinline") == 0 || strcmp(attribute->name, "__noinline__") == 0) &&
+                           attributes != NULL) {
+                    attributes->no_inline = true;
+                } else if ((strcmp(attribute->name, "noipa") == 0 || strcmp(attribute->name, "noipa") == 0) &&
+                           attributes != NULL) {
+                    attributes->no_ipa = true;
+                } else if ((strcmp(attribute->name, "returns_twice") == 0 ||
+                            strcmp(attribute->name, "__returns_twice__") == 0)) {
+                    REQUIRE(declarator->klass == KEFIR_AST_DECLARATOR_FUNCTION,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Attribute returns_twice can only be used on function declarators"));
+                } else if (strcmp(attribute->name, "weak") == 0 || strcmp(attribute->name, "__weak__") == 0) {
+                    attributes->weak = true;
+                } else if (strcmp(attribute->name, "alias") == 0 || strcmp(attribute->name, "__alias__") == 0) {
+                    const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
+                    REQUIRE(
+                        parameter != NULL && parameter->value,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
                                                "Expected alias attribute to have multibyte string literal parameter"));
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
-                REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
+                    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
+                    REQUIRE(
+                        parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
                                                "Expected alias attribute to have multibyte string literal parameter"));
-                struct kefir_ast_string_literal *string_literal;
-                REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
-                REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+                    struct kefir_ast_string_literal *string_literal;
+                    REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
+                    REQUIRE(
+                        string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
                                                "Expected alias attribute to have multibyte string literal parameter"));
-                const char *alias =
-                    kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
-                REQUIRE(alias != NULL,
-                        KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert declarator alias into string pool"));
-                attributes->alias = alias;
-            } else if (strcmp(attribute->name, "visibility") == 0 || strcmp(attribute->name, "__visibility__") == 0) {
-                const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
-                REQUIRE(
-                    parameter != NULL && parameter->value,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
-                                           "Expected visibility attribute to have multibyte string literal parameter"));
-                ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
-                REQUIRE(
-                    parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
-                                           "Expected visibility attribute to have multibyte string literal parameter"));
-                struct kefir_ast_string_literal *string_literal;
-                REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
-                REQUIRE(
-                    string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
-                                           "Expected visibility attribute to have multibyte string literal parameter"));
+                    const char *alias =
+                        kefir_string_pool_insert(mem, context->symbols, (const char *) string_literal->literal, NULL);
+                    REQUIRE(alias != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                                           "Failed to insert declarator alias into string pool"));
+                    attributes->alias = alias;
+                } else if (strcmp(attribute->name, "visibility") == 0 ||
+                           strcmp(attribute->name, "__visibility__") == 0) {
+                    const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
+                    REQUIRE(parameter != NULL && parameter->value,
+                            KEFIR_SET_SOURCE_ERROR(
+                                KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                "Expected visibility attribute to have multibyte string literal parameter"));
+                    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
+                    REQUIRE(parameter_node->klass->type == KEFIR_AST_STRING_LITERAL,
+                            KEFIR_SET_SOURCE_ERROR(
+                                KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                "Expected visibility attribute to have multibyte string literal parameter"));
+                    struct kefir_ast_string_literal *string_literal;
+                    REQUIRE_OK(kefir_ast_downcast_string_literal(parameter_node, &string_literal, false));
+                    REQUIRE(string_literal->type == KEFIR_AST_STRING_LITERAL_MULTIBYTE,
+                            KEFIR_SET_SOURCE_ERROR(
+                                KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                "Expected visibility attribute to have multibyte string literal parameter"));
 
-                if (strcmp((const char *) string_literal->literal, "default") == 0) {
-                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
-                } else if (strcmp((const char *) string_literal->literal, "hidden") == 0) {
-                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN;
-                } else if (strcmp((const char *) string_literal->literal, "internal") == 0) {
-                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL;
-                } else if (strcmp((const char *) string_literal->literal, "protected") == 0) {
-                    attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED;
-                } else {
-                    return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
-                                                   "Unknown visibility attribute value \"%s\"",
-                                                   (const char *) string_literal->literal);
+                    if (strcmp((const char *) string_literal->literal, "default") == 0) {
+                        attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
+                    } else if (strcmp((const char *) string_literal->literal, "hidden") == 0) {
+                        attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN;
+                    } else if (strcmp((const char *) string_literal->literal, "internal") == 0) {
+                        attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL;
+                    } else if (strcmp((const char *) string_literal->literal, "protected") == 0) {
+                        attributes->visibility = KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED;
+                    } else {
+                        return KEFIR_SET_SOURCE_ERRORF(KEFIR_ANALYSIS_ERROR, &parameter_node->source_location,
+                                                       "Unknown visibility attribute value \"%s\"",
+                                                       (const char *) string_literal->literal);
+                    }
                 }
             }
         }

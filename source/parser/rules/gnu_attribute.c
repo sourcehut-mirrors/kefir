@@ -22,12 +22,15 @@
 #include "kefir/parser/builder.h"
 #include "kefir/core/source_error.h"
 
+#define GNU_ATTRIBUTE_PREFIX "gnu"
+
 static kefir_result_t consume_attribute_list_entry(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
                                                    struct kefir_parser *parser) {
     REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
                                    "Expected either identifier or closing parentheses"));
-    REQUIRE_OK(kefir_parser_ast_builder_attribute(mem, builder, PARSER_CURSOR(parser, 0)->identifier));
+    REQUIRE_OK(
+        kefir_parser_ast_builder_attribute(mem, builder, GNU_ATTRIBUTE_PREFIX, PARSER_CURSOR(parser, 0)->identifier));
     REQUIRE_OK(PARSER_SHIFT(parser));
 
     if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
@@ -102,8 +105,8 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     return KEFIR_OK;
 }
 
-kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(attribute_list)(struct kefir_mem *mem, struct kefir_parser *parser,
-                                                           struct kefir_ast_node_base **result, void *payload) {
+kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(gnu_attribute_list)(struct kefir_mem *mem, struct kefir_parser *parser,
+                                                               struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
     REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
     return KEFIR_OK;

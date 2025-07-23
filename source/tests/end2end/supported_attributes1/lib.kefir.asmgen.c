@@ -18,4 +18,4 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-__KEFIRCC_SUPPORTED_ATTRIBUTES__
+__KEFIRCC_SUPPORTED_GNU_ATTRIBUTES__

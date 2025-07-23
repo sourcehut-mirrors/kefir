@@ -945,8 +945,9 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
 
     REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.supported_builtins,
                                                 "__KEFIRCC_SUPPORTED_BUILTINS__", macro_supported_builtins_apply));
-    REQUIRE_CHAIN(&res, define_predefined_macro(mem, preprocessor, scope, &scope->macros.supported_attributes,
-                                                "__KEFIRCC_SUPPORTED_ATTRIBUTES__", macro_supported_attributes_apply));
+    REQUIRE_CHAIN(&res,
+                  define_predefined_macro(mem, preprocessor, scope, &scope->macros.supported_attributes,
+                                          "__KEFIRCC_SUPPORTED_GNU_ATTRIBUTES__", macro_supported_attributes_apply));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtree_free(mem, &scope->macro_tree);

@@ -1410,7 +1410,7 @@ kefir_result_t kefir_parser_ast_builder_attribute_list(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
-                                                  const char *name) {
+                                                  const char *prefix, const char *name) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid attribute name"));
@@ -1425,7 +1425,7 @@ kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *mem, struct 
     ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, list, list_node->self);
 
     struct kefir_ast_attribute *attr = NULL;
-    kefir_result_t res = kefir_ast_attribute_list_append(mem, builder->parser->symbols, name, list, &attr);
+    kefir_result_t res = kefir_ast_attribute_list_append(mem, builder->parser->symbols, prefix, name, list, &attr);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, list_node);
         return res;

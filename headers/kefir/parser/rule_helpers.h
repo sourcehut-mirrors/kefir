@@ -71,37 +71,37 @@
         REQUIRE(*(_ptr) != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, (_error))); \
     } while (0)
 
-#define SKIP_ATTRIBUTES(_res, _mem, _parser)                                                  \
-    do {                                                                                      \
-        while (*(_res) == KEFIR_OK) {                                                         \
-            struct kefir_ast_node_base *attribute = NULL;                                     \
-            *(_res) = KEFIR_PARSER_RULE_APPLY((_mem), (_parser), attribute_list, &attribute); \
-            if (*(_res) == KEFIR_OK && attribute != NULL) {                                   \
-                *(_res) = KEFIR_AST_NODE_FREE(mem, attribute);                                \
-                attribute = NULL;                                                             \
-            }                                                                                 \
-        }                                                                                     \
-        if (*(_res) == KEFIR_NO_MATCH) {                                                      \
-            *(_res) = KEFIR_OK;                                                               \
-        }                                                                                     \
+#define SKIP_ATTRIBUTES(_res, _mem, _parser)                                                      \
+    do {                                                                                          \
+        while (*(_res) == KEFIR_OK) {                                                             \
+            struct kefir_ast_node_base *attribute = NULL;                                         \
+            *(_res) = KEFIR_PARSER_RULE_APPLY((_mem), (_parser), gnu_attribute_list, &attribute); \
+            if (*(_res) == KEFIR_OK && attribute != NULL) {                                       \
+                *(_res) = KEFIR_AST_NODE_FREE(mem, attribute);                                    \
+                attribute = NULL;                                                                 \
+            }                                                                                     \
+        }                                                                                         \
+        if (*(_res) == KEFIR_NO_MATCH) {                                                          \
+            *(_res) = KEFIR_OK;                                                                   \
+        }                                                                                         \
     } while (0)
 
-#define SCAN_ATTRIBUTES(_res, _mem, _parser, _attrs)                                           \
-    do {                                                                                       \
-        while (*(_res) == KEFIR_OK) {                                                          \
-            struct kefir_ast_node_base *attribute = NULL;                                      \
-            *(_res) = KEFIR_PARSER_RULE_APPLY((_mem), (_parser), attribute_list, &attribute);  \
-            if (*(_res) == KEFIR_OK && attribute != NULL) {                                    \
-                *(_res) = kefir_ast_node_attributes_append((_mem), (_attrs), attribute->self); \
-                attribute = NULL;                                                              \
-            }                                                                                  \
-        }                                                                                      \
-        if (*(_res) == KEFIR_NO_MATCH) {                                                       \
-            *(_res) = KEFIR_OK;                                                                \
-        }                                                                                      \
+#define SCAN_ATTRIBUTES(_res, _mem, _parser, _attrs)                                              \
+    do {                                                                                          \
+        while (*(_res) == KEFIR_OK) {                                                             \
+            struct kefir_ast_node_base *attribute = NULL;                                         \
+            *(_res) = KEFIR_PARSER_RULE_APPLY((_mem), (_parser), gnu_attribute_list, &attribute); \
+            if (*(_res) == KEFIR_OK && attribute != NULL) {                                       \
+                *(_res) = kefir_ast_node_attributes_append((_mem), (_attrs), attribute->self);    \
+                attribute = NULL;                                                                 \
+            }                                                                                     \
+        }                                                                                         \
+        if (*(_res) == KEFIR_NO_MATCH) {                                                          \
+            *(_res) = KEFIR_OK;                                                                   \
+        }                                                                                         \
     } while (0)
 
 kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem, struct kefir_parser *parser,
-                                   struct kefir_ast_declaration *);
+                                                          struct kefir_ast_declaration *);
 
 #endif

@@ -244,6 +244,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_extension_node, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_label_address, { const char *label; });
 
 typedef struct kefir_ast_attribute {
+    const char *prefix;
     const char *name;
     struct kefir_list parameters;
 } kefir_ast_attribute_t;

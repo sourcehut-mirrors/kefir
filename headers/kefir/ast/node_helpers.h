@@ -47,7 +47,8 @@ struct kefir_ast_declaration *kefir_ast_new_single_declaration(struct kefir_mem 
 kefir_result_t kefir_ast_declaration_unpack_single(struct kefir_ast_declaration *, struct kefir_ast_init_declarator **);
 
 kefir_result_t kefir_ast_attribute_list_append(struct kefir_mem *, struct kefir_string_pool *, const char *,
-                                               struct kefir_ast_attribute_list *, struct kefir_ast_attribute **);
+                                               const char *, struct kefir_ast_attribute_list *,
+                                               struct kefir_ast_attribute **);
 
 kefir_result_t kefir_ast_inline_assembly_add_output(struct kefir_mem *, struct kefir_string_pool *,
                                                     struct kefir_ast_inline_assembly *, const char *, const char *,

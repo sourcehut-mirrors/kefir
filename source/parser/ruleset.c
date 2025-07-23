@@ -69,7 +69,7 @@ kefir_result_t kefir_parser_ruleset_init(struct kefir_parser_ruleset *ruleset) {
     DEFINE_RULE(function_definition);
     DEFINE_RULE(external_declaration);
     DEFINE_RULE(translation_unit);
-    DEFINE_RULE(attribute_list);
+    DEFINE_RULE(gnu_attribute_list);
     DEFINE_RULE(assembly);
     DEFINE_RULE(statement_expression);
 #undef DEFINE_RULE

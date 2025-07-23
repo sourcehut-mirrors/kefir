@@ -113,7 +113,8 @@ kefir_result_t kefir_parser_ast_builder_statement_expression_append(struct kefir
                                                                     struct kefir_parser_ast_builder *);
 
 kefir_result_t kefir_parser_ast_builder_attribute_list(struct kefir_mem *, struct kefir_parser_ast_builder *);
-kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *, struct kefir_parser_ast_builder *, const char *);
+kefir_result_t kefir_parser_ast_builder_attribute(struct kefir_mem *, struct kefir_parser_ast_builder *, const char *,
+                                                  const char *);
 kefir_result_t kefir_parser_ast_builder_attribute_parameter(struct kefir_mem *, struct kefir_parser_ast_builder *);
 
 kefir_result_t kefir_parser_ast_builder_inline_assembly(struct kefir_mem *, struct kefir_parser_ast_builder *,

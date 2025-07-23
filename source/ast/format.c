@@ -1431,6 +1431,12 @@ static kefir_result_t visit_attribute_list(const struct kefir_ast_visitor *visit
     for (const struct kefir_list_entry *iter = kefir_list_head(&node->list); iter != NULL; kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attr, iter->value);
         REQUIRE_OK(kefir_json_output_object_begin(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "prefix"));
+        if (attr->prefix != NULL) {
+            REQUIRE_OK(kefir_json_output_string(json, attr->prefix));
+        } else {
+            REQUIRE_OK(kefir_json_output_null(json));
+        }
         REQUIRE_OK(kefir_json_output_object_key(json, "name"));
         REQUIRE_OK(kefir_json_output_string(json, attr->name));
         REQUIRE_OK(kefir_json_output_object_key(json, "parameters"));

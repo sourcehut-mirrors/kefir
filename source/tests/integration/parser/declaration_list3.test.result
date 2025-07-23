@@ -26,6 +26,7 @@
                             "class": "attribute_list",
                             "attributes": [
                                 {
+                                    "prefix": "gnu",
                                     "name": "__inline__",
                                     "parameters": []
                                 }
@@ -35,6 +36,7 @@
                             "class": "attribute_list",
                             "attributes": [
                                 {
+                                    "prefix": "gnu",
                                     "name": "__another_annotation__",
                                     "parameters": []
                                 }
@@ -77,10 +79,12 @@
                             "class": "attribute_list",
                             "attributes": [
                                 {
+                                    "prefix": "gnu",
                                     "name": "some_attribute",
                                     "parameters": []
                                 },
                                 {
+                                    "prefix": "gnu",
                                     "name": "another_attribute",
                                     "parameters": [
                                         {
@@ -95,6 +99,7 @@
                             "class": "attribute_list",
                             "attributes": [
                                 {
+                                    "prefix": "gnu",
                                     "name": "__another_annotation__",
                                     "parameters": []
                                 }
