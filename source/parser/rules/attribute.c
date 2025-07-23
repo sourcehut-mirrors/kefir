@@ -70,10 +70,25 @@ static kefir_result_t skip_nongnu_attribute_parameters(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
+static kefir_result_t get_identifier(struct kefir_parser *parser, const char **identifier) {
+    if (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
+        *identifier = PARSER_CURSOR(parser, 0)->identifier;
+    } else if (PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD)) {
+        REQUIRE(PARSER_CURSOR(parser, 0)->keyword_spelling != NULL,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected keyword spelling to be available"));
+        *identifier = PARSER_CURSOR(parser, 0)->keyword_spelling;
+    } else {
+        return KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                      "Expected an identifier or a keyword");
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t consume_attribute(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
                                         struct kefir_parser *parser) {
     const char *prefix = NULL;
-    const char *name = PARSER_CURSOR(parser, 0)->identifier;
+    const char *name = NULL;
+    REQUIRE_OK(get_identifier(parser, &name));
 
     REQUIRE_OK(PARSER_SHIFT(parser));
 
@@ -83,10 +98,11 @@ static kefir_result_t consume_attribute(struct kefir_mem *mem, struct kefir_pars
         REQUIRE_OK(PARSER_SHIFT(parser));
         REQUIRE_OK(PARSER_SHIFT(parser));
 
-        REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected an identifier"));
+        REQUIRE(PARSER_TOKEN_IS_IDENTIFIER(parser, 0) || PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
+                                       "Expected an identifier or a keyword"));
         prefix = name;
-        name = PARSER_CURSOR(parser, 0)->identifier;
+        REQUIRE_OK(get_identifier(parser, &name));
 
         REQUIRE_OK(PARSER_SHIFT(parser));
     }
@@ -127,7 +143,7 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
 
     REQUIRE_OK(kefir_parser_ast_builder_attribute_list(mem, builder));
 
-    while (PARSER_TOKEN_IS_IDENTIFIER(parser, 0)) {
+    while (PARSER_TOKEN_IS_IDENTIFIER(parser, 0) || PARSER_TOKEN_IS(parser, 0, KEFIR_TOKEN_KEYWORD)) {
         REQUIRE_OK(consume_attribute(mem, builder, parser));
 
         if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_COMMA)) {
