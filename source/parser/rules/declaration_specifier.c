@@ -463,7 +463,7 @@ static kefir_result_t scan_enum_specifier(struct kefir_mem *mem, struct kefir_pa
     *specifier_ptr = decl_specifier;
 
     if (complete) {
-        SKIP_ATTRIBUTES(&res, mem, parser);
+        SCAN_ATTRIBUTES(&res, mem, parser, &decl_specifier->attributes);
         REQUIRE_OK(res);
     }
 

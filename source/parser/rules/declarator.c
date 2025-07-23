@@ -49,12 +49,23 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_STAR),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Cannot match AST pointer declarator"));
     REQUIRE_OK(PARSER_SHIFT(parser));
+
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+
     struct kefir_ast_type_qualifier_list type_qualifiers;
     REQUIRE_OK(kefir_ast_type_qualifier_list_init(&type_qualifiers));
 
-    kefir_result_t res = scan_type_qualifier_list(mem, parser, &type_qualifiers);
+    res = scan_type_qualifier_list(mem, parser, &type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return res;
     });
 
@@ -62,6 +73,7 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
     res = scan_declarator(mem, parser, &subdeclarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return res;
     });
 
@@ -69,9 +81,24 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
     REQUIRE_ELSE(declarator != NULL, {
         kefir_ast_declarator_free(mem, subdeclarator);
         kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST pointer declarator");
     });
     declarator->source_location = source_location;
+
+    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_type_qualifier_list_free(mem, &type_qualifiers);
+        return res;
+    });
 
     res = kefir_ast_type_qualifier_list_clone(mem, &declarator->pointer.type_qualifiers, &type_qualifiers);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -192,6 +219,7 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
         }
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST array declarator");
     });
+
     declarator->source_location = source_location;
 
     declarator->array.static_array = static_array;
@@ -202,6 +230,9 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
         kefir_ast_declarator_free(mem, declarator);
         return res;
     });
+
+    SCAN_ATTRIBUTES(&res, mem, parser, &declarator->attributes);
+    REQUIRE_OK(res);
 
     *declarator_ptr = declarator;
     return KEFIR_OK;
@@ -254,11 +285,19 @@ static kefir_result_t scan_function_parameter_declarator(struct kefir_mem *mem, 
 
 static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefir_parser *parser,
                                               struct kefir_ast_declarator *func_declarator) {
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
     struct kefir_ast_declarator_specifier_list specifiers;
-    REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&specifiers));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers, NULL);
+    kefir_result_t res = kefir_ast_declarator_specifier_list_init(&specifiers);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    res = parser->ruleset.declaration_specifier_list(mem, parser, &specifiers, &attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
         return res;
     });
 
@@ -266,6 +305,21 @@ static kefir_result_t scan_function_parameter(struct kefir_mem *mem, struct kefi
     struct kefir_ast_declarator *declarator = NULL;
     res = scan_function_parameter_declarator(mem, parser, &declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+
+    res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, declarator);
         kefir_ast_declarator_specifier_list_free(mem, &specifiers);
         return res;
     });
