@@ -409,7 +409,7 @@ static kefir_result_t scan_direct_declarator_tail(struct kefir_mem *mem, struct 
     kefir_result_t res = KEFIR_OK;
     kefir_bool_t scan_declarators = true;
     while (scan_declarators && res == KEFIR_OK) {
-        if (PARSER_TOKEN_IS_LEFT_BRACKET(parser, 0)) {
+        if (PARSER_TOKEN_IS_LEFT_BRACKET(parser, 0) && !PARSER_TOKEN_IS_LEFT_BRACKET(parser, 1)) {
             res = scan_array(mem, parser, declarator_ptr);
         } else if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
             res = scan_function(mem, parser, abstract, declarator_ptr);

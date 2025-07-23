@@ -1467,7 +1467,7 @@ static kefir_result_t analyze_declaration_declarator_attributes(struct kefir_mem
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
             // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES macro upon changing this !!!
-            if (strcmp(attribute->prefix, "gnu") == 0) {
+            if (attribute->prefix != NULL && strcmp(attribute->prefix, "gnu") == 0) {
                 if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                     REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(mem, context, attribute, base_type,
                                                                                   alignment, flags, attributes,
