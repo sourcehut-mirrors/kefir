@@ -106,7 +106,8 @@
                     {
                         "class": "labeled_statement",
                         "label": "label1",
-                        "statement": null
+                        "statement": null,
+                        "attributes": []
                     }
                 ]
             }
@@ -219,7 +220,8 @@
                             {
                                 "class": "labeled_statement",
                                 "label": "label1",
-                                "statement": null
+                                "statement": null,
+                                "attributes": []
                             }
                         ]
                     },
@@ -229,7 +231,8 @@
                             {
                                 "class": "labeled_statement",
                                 "label": "label2",
-                                "statement": null
+                                "statement": null,
+                                "attributes": []
                             }
                         ]
                     },
@@ -239,14 +242,16 @@
                             {
                                 "class": "labeled_statement",
                                 "label": "label3",
-                                "statement": null
+                                "statement": null,
+                                "attributes": []
                             }
                         ]
                     },
                     {
                         "class": "labeled_statement",
                         "label": "label4",
-                        "statement": null
+                        "statement": null,
+                        "attributes": []
                     }
                 ]
             }
@@ -380,12 +385,14 @@
                                     "initializer": null
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "labeled_statement",
                         "label": "label2",
-                        "statement": null
+                        "statement": null,
+                        "attributes": []
                     }
                 ]
             }
@@ -526,12 +533,14 @@
                                     }
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "labeled_statement",
                         "label": "label2",
-                        "statement": null
+                        "statement": null,
+                        "attributes": []
                     }
                 ]
             }
@@ -716,12 +725,14 @@
                                     }
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "labeled_statement",
                         "label": "label2",
-                        "statement": null
+                        "statement": null,
+                        "attributes": []
                     }
                 ]
             }

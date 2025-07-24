@@ -32,7 +32,8 @@
                             }
                         },
                         "attributes": []
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "case_statement",
@@ -58,7 +59,8 @@
                             }
                         },
                         "attributes": []
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "case_statement",
@@ -84,7 +86,8 @@
                             }
                         },
                         "attributes": []
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "case_statement",
@@ -106,7 +109,8 @@
                             }
                         },
                         "attributes": []
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         }

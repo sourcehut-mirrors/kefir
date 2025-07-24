@@ -791,7 +791,8 @@ kefir_result_t kefir_parser_ast_builder_compound_statement_append(struct kefir_m
 
 kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem *mem,
                                                                 struct kefir_parser_ast_builder *builder,
-                                                                const char *identifier) {
+                                                                const char *identifier,
+                                                                struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
@@ -800,7 +801,12 @@ kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem
         kefir_ast_new_labeled_statement(mem, builder->parser->symbols, identifier, NULL);
     REQUIRE(labeled_stmt != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement"));
 
-    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt));
+    kefir_result_t res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&labeled_stmt->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(labeled_stmt));
         return res;
@@ -810,7 +816,8 @@ kefir_result_t kefir_parser_ast_builder_empty_labeled_statement(struct kefir_mem
 
 kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
                                                           struct kefir_parser_ast_builder *builder,
-                                                          const char *identifier) {
+                                                          const char *identifier,
+                                                          struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
@@ -825,7 +832,12 @@ kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement");
     });
 
-    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt));
+    kefir_result_t res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&labeled_stmt->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(labeled_stmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(labeled_stmt));
         return res;
@@ -833,8 +845,8 @@ kefir_result_t kefir_parser_ast_builder_labeled_statement(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem,
-                                                       struct kefir_parser_ast_builder *builder) {
+kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                                       struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
@@ -853,7 +865,12 @@ kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST case statement");
     });
 
-    res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt));
+    res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(case_stmt));
         return res;
@@ -862,7 +879,8 @@ kefir_result_t kefir_parser_ast_builder_case_statement(struct kefir_mem *mem,
 }
 
 kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *mem,
-                                                             struct kefir_parser_ast_builder *builder) {
+                                                             struct kefir_parser_ast_builder *builder,
+                                                             struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
@@ -888,7 +906,12 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *m
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST case statement");
     });
 
-    res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt));
+    res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(case_stmt));
         return res;
@@ -897,7 +920,8 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *m
 }
 
 kefir_result_t kefir_parser_ast_builder_default_statement(struct kefir_mem *mem,
-                                                          struct kefir_parser_ast_builder *builder) {
+                                                          struct kefir_parser_ast_builder *builder,
+                                                          struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
@@ -910,7 +934,12 @@ kefir_result_t kefir_parser_ast_builder_default_statement(struct kefir_mem *mem,
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST labeled statement");
     });
 
-    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt));
+    kefir_result_t res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&case_stmt->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(case_stmt)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(case_stmt));
         return res;

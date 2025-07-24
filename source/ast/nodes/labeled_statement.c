@@ -32,6 +32,7 @@ kefir_result_t ast_labeled_statement_free(struct kefir_mem *mem, struct kefir_as
     if (node->statement != NULL) {
         KEFIR_AST_NODE_FREE(mem, node->statement);
     }
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -60,6 +61,11 @@ struct kefir_ast_labeled_statement *kefir_ast_new_labeled_statement(struct kefir
         return NULL;
     });
     res = kefir_source_location_empty(&labeled_stmt->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, labeled_stmt);
+        return NULL;
+    });
+    res = kefir_ast_node_attributes_init(&labeled_stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, labeled_stmt);
         return NULL;

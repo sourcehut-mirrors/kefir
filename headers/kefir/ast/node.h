@@ -156,12 +156,14 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_static_assertion, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_labeled_statement, {
     const char *label;
     struct kefir_ast_node_base *statement;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_case_statement, {
     struct kefir_ast_node_base *expression;
     struct kefir_ast_node_base *range_end_expression;
     struct kefir_ast_node_base *statement;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_expression_statement, {

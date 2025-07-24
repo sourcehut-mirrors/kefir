@@ -206,7 +206,8 @@
                                     }
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "for_statement",
@@ -274,7 +275,8 @@
                             {
                                 "class": "labeled_statement",
                                 "label": "test2",
-                                "statement": null
+                                "statement": null,
+                                "attributes": []
                             }
                         ]
                     },
