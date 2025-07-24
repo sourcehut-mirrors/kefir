@@ -22,10 +22,8 @@
 #include "kefir/parser/builder.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, void *payload) {
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
+static kefir_result_t parse_selection_statement(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                                struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
 
     REQUIRE(PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_IF) ||
@@ -54,13 +52,34 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             REQUIRE_MATCH_OK(
                 &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected statement"));
-            REQUIRE_OK(kefir_parser_ast_builder_if_else_statement(mem, builder));
+            REQUIRE_OK(kefir_parser_ast_builder_if_else_statement(mem, builder, attributes));
         } else {
-            REQUIRE_OK(kefir_parser_ast_builder_if_statement(mem, builder));
+            REQUIRE_OK(kefir_parser_ast_builder_if_statement(mem, builder, attributes));
         }
     } else {
-        REQUIRE_OK(kefir_parser_ast_builder_switch_statement(mem, builder));
+        REQUIRE_OK(kefir_parser_ast_builder_switch_statement(mem, builder, attributes));
     }
+
+    return KEFIR_OK;
+}
+
+static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, void *payload) {
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
+    struct kefir_parser *parser = builder->parser;
+
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_CHAIN(&res, parse_selection_statement(mem, builder, &attributes));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
 
     return KEFIR_OK;
 }

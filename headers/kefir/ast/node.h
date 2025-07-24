@@ -177,11 +177,13 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_conditional_statement, {
     struct kefir_ast_node_base *condition;
     struct kefir_ast_node_base *thenBranch;
     struct kefir_ast_node_base *elseBranch;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_switch_statement, {
     struct kefir_ast_node_base *expression;
     struct kefir_ast_node_base *statement;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_while_statement, {

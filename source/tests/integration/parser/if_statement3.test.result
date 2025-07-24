@@ -45,14 +45,18 @@
                                         "class": "compound_statement",
                                         "items": []
                                     },
-                                    "elseBranch": null
+                                    "elseBranch": null,
+                                    "attributes": []
                                 }
                             ]
-                        }
-                    }
+                        },
+                        "attributes": []
+                    },
+                    "attributes": []
                 }
             ]
         },
-        "elseBranch": null
+        "elseBranch": null,
+        "attributes": []
     }
 ]

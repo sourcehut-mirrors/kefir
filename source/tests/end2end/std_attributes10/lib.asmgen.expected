@@ -318,7 +318,8 @@
                                         ]
                                     }
                                 ]
-                            }
+                            },
+                            "attributes": []
                         },
                         "attributes": [
                             {

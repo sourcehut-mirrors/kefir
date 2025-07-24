@@ -11,7 +11,8 @@
             "expression": null,
             "attributes": []
         },
-        "elseBranch": null
+        "elseBranch": null,
+        "attributes": []
     },
     {
         "class": "if_statement",
@@ -43,7 +44,8 @@
                 "arguments": []
             },
             "attributes": []
-        }
+        },
+        "attributes": []
     },
     {
         "class": "if_statement",
@@ -74,7 +76,8 @@
                 }
             ]
         },
-        "elseBranch": null
+        "elseBranch": null,
+        "attributes": []
     },
     {
         "class": "if_statement",
@@ -157,6 +160,7 @@
                     "attributes": []
                 }
             ]
-        }
+        },
+        "attributes": []
     }
 ]

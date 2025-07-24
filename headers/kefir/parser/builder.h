@@ -87,9 +87,12 @@ kefir_result_t kefir_parser_ast_builder_range_case_statement(struct kefir_mem *,
                                                              struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_ast_builder_default_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                                           struct kefir_ast_node_attributes *);
-kefir_result_t kefir_parser_ast_builder_if_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
-kefir_result_t kefir_parser_ast_builder_if_else_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
-kefir_result_t kefir_parser_ast_builder_switch_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
+kefir_result_t kefir_parser_ast_builder_if_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
+                                                     struct kefir_ast_node_attributes *);
+kefir_result_t kefir_parser_ast_builder_if_else_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
+                                                          struct kefir_ast_node_attributes *);
+kefir_result_t kefir_parser_ast_builder_switch_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
+                                                         struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_ast_builder_while_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
 kefir_result_t kefir_parser_ast_builder_do_while_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
 kefir_result_t kefir_parser_ast_builder_for_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
