@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global sum
+.type sum, @function
+
+.section .text
+__kefir_text_section_begin:
+sum:
+__kefir_text_func_sum_begin:
+    add %esi, %edi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_sum_end:
+
+__kefir_text_section_end:
+

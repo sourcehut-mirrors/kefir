@@ -173,10 +173,14 @@ kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem,
 kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(declaration)(struct kefir_mem *mem, struct kefir_parser *parser,
                                                         struct kefir_ast_node_base **result, void *payload) {
     APPLY_PROLOGUE(mem, parser, result, payload);
+
+    kefir_result_t res = KEFIR_PARSER_RULE_APPLY(mem, parser, attribute_declaration, result);
+    REQUIRE(res == KEFIR_NO_MATCH, res);
+
     REQUIRE_OK(kefir_parser_ast_builder_wrap(mem, parser, result, builder_callback, NULL));
 
     struct kefir_ast_declaration *decl_list = NULL;
-    kefir_result_t res = kefir_ast_downcast_declaration(*result, &decl_list, false);
+    res = kefir_ast_downcast_declaration(*result, &decl_list, false);
     if (res == KEFIR_OK) {
         res = kefir_parser_update_scope_with_declaration(mem, parser, decl_list);
     } else if (res == KEFIR_NO_MATCH) {

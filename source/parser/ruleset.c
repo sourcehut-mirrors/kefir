@@ -59,6 +59,7 @@ kefir_result_t kefir_parser_ruleset_init(struct kefir_parser_ruleset *ruleset) {
     DEFINE_RULE(type_name);
     DEFINE_RULE(static_assertion);
     DEFINE_RULE(declaration);
+    DEFINE_RULE(attribute_declaration);
     DEFINE_RULE(labeled_statement);
     DEFINE_RULE(compound_statement);
     DEFINE_RULE(expression_statement);

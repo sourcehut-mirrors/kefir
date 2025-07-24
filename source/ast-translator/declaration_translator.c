@@ -166,7 +166,9 @@ kefir_result_t kefir_ast_translate_declaration(struct kefir_mem *mem, const stru
 
     const kefir_size_t begin_ir_index = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
 
-    if (node->klass->type == KEFIR_AST_EXTENSION_NODE) {
+    if (node->klass->type == KEFIR_AST_ATTRIBUTE_DECLARATION) {
+        // Intentionally left blank
+    } else if (node->klass->type == KEFIR_AST_EXTENSION_NODE) {
         kefir_result_t res;
         struct kefir_ast_extension_node *ext_node = NULL;
         REQUIRE_MATCH(&res, kefir_ast_downcast_extension_node(node, &ext_node, true),

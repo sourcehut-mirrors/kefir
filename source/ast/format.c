@@ -845,6 +845,30 @@ static kefir_result_t visit_declaration(const struct kefir_ast_visitor *visitor,
     return KEFIR_OK;
 }
 
+static kefir_result_t visit_attribute_declaration(const struct kefir_ast_visitor *visitor,
+                                                  const struct kefir_ast_attribute_declaration *node, void *payload) {
+    UNUSED(visitor);
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration node"));
+    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid payload"));
+    ASSIGN_DECL_CAST(struct visitor_param *, param, payload);
+    struct kefir_json_output *json = param->json;
+
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "class"));
+    REQUIRE_OK(kefir_json_output_string(json, "attribute_declaration"));
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&node->attributes.attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), param->display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t visit_init_declarator(const struct kefir_ast_visitor *visitor,
                                             const struct kefir_ast_init_declarator *node, void *payload) {
     UNUSED(visitor);
@@ -1569,6 +1593,7 @@ kefir_result_t kefir_ast_format(struct kefir_json_output *json, const struct kef
     visitor.comma_operator = visit_comma_operator;
     visitor.type_name = visit_type_name;
     visitor.declaration = visit_declaration;
+    visitor.attribute_declaration = visit_attribute_declaration;
     visitor.init_declarator = visit_init_declarator;
     visitor.static_assertion = visit_static_assertion;
     visitor.generic_selection = visit_generic_selection;

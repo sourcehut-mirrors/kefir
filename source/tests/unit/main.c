@@ -362,6 +362,7 @@
     _separator _case(ast_node_analysis_init_declarators11)                                   \
     _separator _case(ast_node_analysis_init_declarators12)                                   \
     _separator _case(ast_node_analysis_init_declarators13)                                   \
+    _separator _case(ast_attribute_declaration1)                                             \
     _separator _case(ast_node_analysis_static_assertions1)                                   \
     _separator _case(ast_node_analysis_expression_statements1)                               \
     _separator _case(ast_node_analysis_labeled_statements1)                                  \

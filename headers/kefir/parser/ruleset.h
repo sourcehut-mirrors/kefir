@@ -61,6 +61,7 @@ typedef enum kefir_parser_ruleset_identifier {
     DECLARE_RULE(type_name),
     DECLARE_RULE(static_assertion),
     DECLARE_RULE(declaration),
+    DECLARE_RULE(attribute_declaration),
     DECLARE_RULE(labeled_statement),
     DECLARE_RULE(compound_statement),
     DECLARE_RULE(expression_statement),
