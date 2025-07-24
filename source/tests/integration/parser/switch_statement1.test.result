@@ -30,7 +30,8 @@
                                 "type": "integer",
                                 "value": 1
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 },
                 {
@@ -55,7 +56,8 @@
                                 "type": "integer",
                                 "value": 2
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 },
                 {
@@ -80,7 +82,8 @@
                                 "type": "integer",
                                 "value": 3
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 },
                 {
@@ -101,7 +104,8 @@
                                 "type": "integer",
                                 "value": 4
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 }
             ]

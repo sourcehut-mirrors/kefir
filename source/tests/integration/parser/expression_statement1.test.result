@@ -1,7 +1,8 @@
 [
     {
         "class": "expression_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "expression_statement",
@@ -25,7 +26,8 @@
                     }
                 ]
             }
-        }
+        },
+        "attributes": []
     },
     {
         "class": "expression_statement",
@@ -36,19 +38,23 @@
                 "class": "identifier",
                 "identifier": "counter"
             }
-        }
+        },
+        "attributes": []
     },
     {
         "class": "expression_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "expression_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "expression_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "expression_statement",
@@ -72,6 +78,7 @@
                     "value": 2
                 }
             }
-        }
+        },
+        "attributes": []
     }
 ]

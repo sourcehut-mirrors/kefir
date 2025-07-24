@@ -38,7 +38,8 @@
                 "class": "constant",
                 "type": "character",
                 "value": 67
-            }
+            },
+            "attributes": []
         }
     },
     {
@@ -50,7 +51,8 @@
                     "class": "constant",
                     "type": "character",
                     "value": 68
-                }
+                },
+                "attributes": []
             }
         ],
         "result": {
@@ -59,7 +61,8 @@
                 "class": "constant",
                 "type": "character",
                 "value": 69
-            }
+            },
+            "attributes": []
         }
     }
 ]

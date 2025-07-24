@@ -15,7 +15,8 @@
                     "identifier": "doSomething1"
                 },
                 "arguments": []
-            }
+            },
+            "attributes": []
         },
         "elseBranch": {
             "class": "if_statement",
@@ -33,7 +34,8 @@
                         "identifier": "doSomething2"
                     },
                     "arguments": []
-                }
+                },
+                "attributes": []
             },
             "elseBranch": {
                 "class": "if_statement",
@@ -51,7 +53,8 @@
                             "identifier": "doSomething3"
                         },
                         "arguments": []
-                    }
+                    },
+                    "attributes": []
                 },
                 "elseBranch": {
                     "class": "expression_statement",
@@ -62,7 +65,8 @@
                             "identifier": "doSomething4"
                         },
                         "arguments": []
-                    }
+                    },
+                    "attributes": []
                 }
             }
         }

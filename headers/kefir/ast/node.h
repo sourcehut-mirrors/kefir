@@ -164,7 +164,10 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_case_statement, {
     struct kefir_ast_node_base *statement;
 });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_expression_statement, { struct kefir_ast_node_base *expression; });
+KEFIR_AST_NODE_STRUCT(kefir_ast_expression_statement, {
+    struct kefir_ast_node_base *expression;
+    struct kefir_ast_node_attributes attributes;
+});
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_compound_statement, { struct kefir_list block_items; });
 

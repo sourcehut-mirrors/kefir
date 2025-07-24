@@ -27,16 +27,14 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
     struct kefir_ast_node_base *expression = NULL;
     kefir_result_t res = KEFIR_OK;
 
-    if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_ATTRIBUTE)) {
-        SKIP_ATTRIBUTES(&res, mem, parser);
-        REQUIRE_OK(res);
-        REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON),
-                KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0),
-                                       "Attributes cannot be specified for non-null expression statement"));
-    }
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
 
-    if (!PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
-        REQUIRE_OK(KEFIR_PARSER_NEXT_EXPRESSION(mem, parser, &expression));
+    if (res == KEFIR_OK && !PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON)) {
+        REQUIRE_CHAIN(&res, KEFIR_PARSER_NEXT_EXPRESSION(mem, parser, &expression));
+    } else if (res == KEFIR_OK && kefir_list_length(&attributes.attributes) > 0) {
+        res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match expression statement");
     }
 
     REQUIRE_CHAIN_SET(
@@ -45,6 +43,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
     REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
         if (expression != NULL) {
             KEFIR_AST_NODE_FREE(mem, expression);
         }
@@ -52,10 +51,23 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(expression_statement)(struct kefir_me
     });
     struct kefir_ast_expression_statement *stmt = kefir_ast_new_expression_statement(mem, expression);
     REQUIRE_ELSE(stmt != NULL, {
+        kefir_ast_node_attributes_free(mem, &attributes);
         if (expression != NULL) {
             KEFIR_AST_NODE_FREE(mem, expression);
         }
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST expression statement");
+    });
+
+    res = kefir_ast_node_attributes_move(&stmt->attributes, &attributes);
+    REQUIRE_ELSE(stmt != NULL, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(stmt));
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(stmt != NULL, {
+        KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(stmt));
+        return res;
     });
     *result = KEFIR_AST_NODE_BASE(stmt);
     return KEFIR_OK;

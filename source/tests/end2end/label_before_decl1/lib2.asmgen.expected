@@ -250,7 +250,8 @@
                                             "class": "identifier",
                                             "identifier": "x"
                                         }
-                                    }
+                                    },
+                                    "attributes": []
                                 },
                                 {
                                     "class": "expression_statement",
@@ -261,7 +262,8 @@
                                             "class": "identifier",
                                             "identifier": "x"
                                         }
-                                    }
+                                    },
+                                    "attributes": []
                                 }
                             ]
                         }

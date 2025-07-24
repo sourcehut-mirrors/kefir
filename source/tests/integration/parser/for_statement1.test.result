@@ -6,7 +6,8 @@
         "tail": null,
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -28,7 +29,8 @@
         "tail": null,
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -45,7 +47,8 @@
         },
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -86,7 +89,8 @@
         "tail": null,
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -108,7 +112,8 @@
         "tail": null,
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -168,7 +173,8 @@
         },
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -209,7 +215,8 @@
         },
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     }
 ]

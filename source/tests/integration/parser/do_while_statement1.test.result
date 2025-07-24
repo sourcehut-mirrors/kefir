@@ -50,7 +50,8 @@
                             "type": "unsigned_integer",
                             "value": 1
                         }
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "expression_statement",
@@ -61,7 +62,8 @@
                             "class": "identifier",
                             "identifier": "i"
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         }
@@ -84,7 +86,8 @@
                             "class": "identifier",
                             "identifier": "i"
                         }
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "do_while_statement",
@@ -104,7 +107,8 @@
                                         "class": "identifier",
                                         "identifier": "j"
                                     }
-                                }
+                                },
+                                "attributes": []
                             },
                             {
                                 "class": "do_while_statement",
@@ -124,7 +128,8 @@
                                                     "class": "identifier",
                                                     "identifier": "k"
                                                 }
-                                            }
+                                            },
+                                            "attributes": []
                                         }
                                     ]
                                 }

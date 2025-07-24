@@ -1,7 +1,8 @@
 [
     {
         "class": "expression_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "expression_statement",
@@ -33,7 +34,8 @@
                     }
                 }
             ]
-        }
+        },
+        "attributes": []
     },
     {
         "class": "expression_statement",
@@ -55,6 +57,7 @@
                 },
                 "arguments": []
             }
-        }
+        },
+        "attributes": []
     }
 ]

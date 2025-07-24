@@ -8,7 +8,8 @@
         },
         "body": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         }
     },
     {
@@ -30,7 +31,8 @@
                     "class": "identifier",
                     "identifier": "i"
                 }
-            }
+            },
+            "attributes": []
         }
     },
     {
@@ -65,7 +67,8 @@
                             "type": "unsigned_integer",
                             "value": 1
                         }
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "expression_statement",
@@ -89,7 +92,8 @@
                                 }
                             }
                         ]
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         }

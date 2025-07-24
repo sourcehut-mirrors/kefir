@@ -14,7 +14,8 @@
                             "identifier": "fn1"
                         },
                         "arguments": []
-                    }
+                    },
+                    "attributes": []
                 }
             },
             {
@@ -41,7 +42,8 @@
                                     "class": "identifier",
                                     "identifier": "increment"
                                 }
-                            }
+                            },
+                            "attributes": []
                         },
                         {
                             "class": "expression_statement",
@@ -52,7 +54,8 @@
                                     "class": "identifier",
                                     "identifier": "index"
                                 }
-                            }
+                            },
+                            "attributes": []
                         }
                     ]
                 }
@@ -90,7 +93,8 @@
                             "type": "integer",
                             "value": -1
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             }
         ]

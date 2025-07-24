@@ -47,15 +47,18 @@
                         "class": "identifier",
                         "identifier": "i"
                     }
-                }
+                },
+                "attributes": []
             },
             {
                 "class": "expression_statement",
-                "expression": null
+                "expression": null,
+                "attributes": []
             },
             {
                 "class": "expression_statement",
-                "expression": null
+                "expression": null,
+                "attributes": []
             },
             {
                 "class": "expression_statement",
@@ -71,11 +74,13 @@
                             "identifier": "i"
                         }
                     ]
-                }
+                },
+                "attributes": []
             },
             {
                 "class": "expression_statement",
-                "expression": null
+                "expression": null,
+                "attributes": []
             }
         ]
     },
@@ -114,7 +119,8 @@
                         "class": "identifier",
                         "identifier": "x"
                     }
-                }
+                },
+                "attributes": []
             },
             {
                 "class": "compound_statement",
@@ -195,7 +201,8 @@
                         "class": "identifier",
                         "identifier": "x"
                     }
-                }
+                },
+                "attributes": []
             }
         ]
     }

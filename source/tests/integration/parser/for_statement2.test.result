@@ -100,7 +100,8 @@
                                 "value": 2
                             }
                         }
-                    }
+                    },
+                    "attributes": []
                 },
                 {
                     "class": "declaration",
@@ -354,7 +355,8 @@
                                                         }
                                                     }
                                                 ]
-                                            }
+                                            },
+                                            "attributes": []
                                         }
                                     ]
                                 }

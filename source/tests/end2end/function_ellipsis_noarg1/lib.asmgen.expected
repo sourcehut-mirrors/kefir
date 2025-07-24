@@ -250,7 +250,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "expression_statement",
@@ -267,7 +268,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "expression_statement",
@@ -280,7 +282,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -408,7 +411,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "declaration",
@@ -475,7 +479,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -606,7 +611,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "declaration",
@@ -727,7 +733,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -866,7 +873,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "declaration",
@@ -1003,7 +1011,8 @@
                                                 }
                                             ]
                                         }
-                                    }
+                                    },
+                                    "attributes": []
                                 }
                             ]
                         }
@@ -1019,7 +1028,8 @@
                                     "identifier": "args"
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",

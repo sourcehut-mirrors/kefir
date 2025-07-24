@@ -8,7 +8,8 @@
         },
         "thenBranch": {
             "class": "expression_statement",
-            "expression": null
+            "expression": null,
+            "attributes": []
         },
         "elseBranch": null
     },
@@ -28,7 +29,8 @@
                     "identifier": "fn1"
                 },
                 "arguments": []
-            }
+            },
+            "attributes": []
         },
         "elseBranch": {
             "class": "expression_statement",
@@ -39,7 +41,8 @@
                     "identifier": "fn2"
                 },
                 "arguments": []
-            }
+            },
+            "attributes": []
         }
     },
     {
@@ -66,7 +69,8 @@
                             "type": "unsigned_integer",
                             "value": 1
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         },
@@ -128,7 +132,8 @@
                                 "value": 0
                             }
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         },
@@ -148,7 +153,8 @@
                                 "identifier": "idx"
                             }
                         }
-                    }
+                    },
+                    "attributes": []
                 }
             ]
         }

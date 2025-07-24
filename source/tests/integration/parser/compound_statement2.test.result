@@ -15,7 +15,8 @@
                         "class": "identifier",
                         "identifier": "a"
                     }
-                }
+                },
+                "attributes": []
             },
             {
                 "class": "compound_statement",
@@ -158,7 +159,8 @@
                                         "class": "identifier",
                                         "identifier": "a"
                                     }
-                                }
+                                },
+                                "attributes": []
                             }
                         ]
                     },
@@ -237,7 +239,8 @@
                                         "class": "identifier",
                                         "identifier": "a"
                                     }
-                                }
+                                },
+                                "attributes": []
                             }
                         ]
                     }

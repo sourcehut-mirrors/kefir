@@ -32,6 +32,7 @@ kefir_result_t ast_expression_statement_free(struct kefir_mem *mem, struct kefir
     if (node->expression != NULL) {
         KEFIR_AST_NODE_FREE(mem, node->expression);
     }
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -50,6 +51,11 @@ struct kefir_ast_expression_statement *kefir_ast_new_expression_statement(struct
     expr_stmt->base.klass = &AST_EXPRESSION_STATEMENT_CLASS;
     expr_stmt->base.self = expr_stmt;
     kefir_result_t res = kefir_ast_node_properties_init(&expr_stmt->base.properties);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, expr_stmt);
+        return NULL;
+    });
+    res = kefir_ast_node_attributes_init(&expr_stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, expr_stmt);
         return NULL;

@@ -789,7 +789,8 @@
                                 "class": "identifier",
                                 "identifier": "z"
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ]
             }
