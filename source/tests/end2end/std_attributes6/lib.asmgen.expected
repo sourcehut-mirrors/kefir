@@ -431,18 +431,7 @@
                                                     "attributes": []
                                                 },
                                                 "type_qualifiers": [],
-                                                "attributes": [
-                                                    {
-                                                        "class": "attribute_list",
-                                                        "attributes": [
-                                                            {
-                                                                "prefix": "decl6",
-                                                                "name": "attr5",
-                                                                "parameters": []
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
+                                                "attributes": []
                                             },
                                             "type_qualifiers": [
                                                 "const"
@@ -454,6 +443,16 @@
                                                         {
                                                             "prefix": "decl6",
                                                             "name": "attr4",
+                                                            "parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl6",
+                                                            "name": "attr5",
                                                             "parameters": []
                                                         }
                                                     ]
@@ -565,18 +564,7 @@
                                                         },
                                                         "static": true,
                                                         "type_qualifiers": [],
-                                                        "attributes": [
-                                                            {
-                                                                "class": "attribute_list",
-                                                                "attributes": [
-                                                                    {
-                                                                        "prefix": "decl7",
-                                                                        "name": "attr6",
-                                                                        "parameters": []
-                                                                    }
-                                                                ]
-                                                            }
-                                                        ]
+                                                        "attributes": []
                                                     },
                                                     "type": "bounded",
                                                     "length": {
@@ -586,32 +574,10 @@
                                                     },
                                                     "static": false,
                                                     "type_qualifiers": [],
-                                                    "attributes": [
-                                                        {
-                                                            "class": "attribute_list",
-                                                            "attributes": [
-                                                                {
-                                                                    "prefix": "decl7",
-                                                                    "name": "attr7",
-                                                                    "parameters": []
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
+                                                    "attributes": []
                                                 },
                                                 "type_qualifiers": [],
-                                                "attributes": [
-                                                    {
-                                                        "class": "attribute_list",
-                                                        "attributes": [
-                                                            {
-                                                                "prefix": "decl7",
-                                                                "name": "attr5",
-                                                                "parameters": []
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
+                                                "attributes": []
                                             },
                                             "type_qualifiers": [
                                                 "const"
@@ -623,6 +589,36 @@
                                                         {
                                                             "prefix": "decl7",
                                                             "name": "attr4",
+                                                            "parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr5",
+                                                            "parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr7",
+                                                            "parameters": []
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": "decl7",
+                                                            "name": "attr6",
                                                             "parameters": []
                                                         }
                                                     ]
