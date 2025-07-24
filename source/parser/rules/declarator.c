@@ -87,7 +87,6 @@ static kefir_result_t scan_pointer(struct kefir_mem *mem, struct kefir_parser *p
     declarator->source_location = source_location;
 
     res = kefir_ast_node_attributes_move(&declarator->attributes, &attributes);
-    REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&declarator->attributes, &declarator->pointer.declarator->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         kefir_ast_declarator_free(mem, declarator);
@@ -234,7 +233,6 @@ static kefir_result_t scan_array_impl(struct kefir_mem *mem, struct kefir_parser
 
     SCAN_ATTRIBUTES(&res, mem, parser, &declarator->attributes);
     REQUIRE_OK(res);
-    REQUIRE_OK(kefir_ast_node_attributes_move(&declarator->attributes, &declarator->array.declarator->attributes));
 
     *declarator_ptr = declarator;
     return KEFIR_OK;
@@ -450,7 +448,6 @@ static kefir_result_t scan_function(struct kefir_mem *mem, struct kefir_parser *
     struct kefir_source_location source_location = *PARSER_TOKEN_LOCATION(parser, 0);
     struct kefir_ast_declarator *declarator = kefir_ast_declarator_function(mem, *declarator_ptr);
     kefir_result_t res = scan_function_impl(mem, parser, abstract, declarator);
-    REQUIRE_CHAIN(&res, kefir_ast_node_attributes_move(&declarator->attributes, &declarator->function.declarator->attributes));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, declarator);
         *declarator_ptr = NULL;
