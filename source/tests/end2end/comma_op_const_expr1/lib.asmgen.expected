@@ -3,18 +3,21 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "extern",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -40,18 +43,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "extern",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "double",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "double",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -67,23 +73,26 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "extern",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "complex",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "float",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "complex",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "float",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -99,18 +108,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "extern",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -131,75 +143,78 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "enum",
-                    "identifier": null,
-                    "members": [
-                        {
-                            "identifier": "Y",
-                            "value": {
-                                "class": "comma_operator",
-                                "expressions": [
-                                    {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 1
-                                    },
-                                    {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 2
-                                    },
-                                    {
-                                        "class": "comma_operator",
-                                        "expressions": [
-                                            {
-                                                "class": "constant",
-                                                "type": "integer",
-                                                "value": 2
-                                            },
-                                            {
-                                                "class": "constant",
-                                                "type": "integer",
-                                                "value": 3
-                                            },
-                                            {
-                                                "class": "comma_operator",
-                                                "expressions": [
-                                                    {
-                                                        "class": "constant",
-                                                        "type": "integer",
-                                                        "value": 3
-                                                    },
-                                                    {
-                                                        "class": "comma_operator",
-                                                        "expressions": [
-                                                            {
-                                                                "class": "constant",
-                                                                "type": "integer",
-                                                                "value": 4
-                                                            },
-                                                            {
-                                                                "class": "constant",
-                                                                "type": "integer",
-                                                                "value": 5
-                                                            }
-                                                        ]
-                                                    }
-                                                ]
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            "attributes": []
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "enum",
+                        "identifier": null,
+                        "members": [
+                            {
+                                "identifier": "Y",
+                                "value": {
+                                    "class": "comma_operator",
+                                    "expressions": [
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        },
+                                        {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 2
+                                        },
+                                        {
+                                            "class": "comma_operator",
+                                            "expressions": [
+                                                {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 2
+                                                },
+                                                {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 3
+                                                },
+                                                {
+                                                    "class": "comma_operator",
+                                                    "expressions": [
+                                                        {
+                                                            "class": "constant",
+                                                            "type": "integer",
+                                                            "value": 3
+                                                        },
+                                                        {
+                                                            "class": "comma_operator",
+                                                            "expressions": [
+                                                                {
+                                                                    "class": "constant",
+                                                                    "type": "integer",
+                                                                    "value": 4
+                                                                },
+                                                                {
+                                                                    "class": "constant",
+                                                                    "type": "integer",
+                                                                    "value": 5
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -210,13 +225,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -339,13 +357,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -367,13 +388,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "double",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "double",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -446,18 +470,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "complex",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "float",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "complex",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "float",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -545,13 +572,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",

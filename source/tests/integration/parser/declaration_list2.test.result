@@ -9,13 +9,16 @@
                 "type": "sizeof",
                 "argument": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "float",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "float",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "abstract",
                         "attributes": []
@@ -37,18 +40,21 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_qualifier",
-                "qualifier": "const",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "int",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -180,87 +186,96 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "union",
-                "identifier": null,
-                "members": [
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "int",
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "union",
+                    "identifier": null,
+                    "members": [
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "int",
+                                        "attributes": []
+                                    }
+                                ],
                                 "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "identifier",
-                                    "identifier": "field1",
-                                    "asm_label": null,
-                                    "attributes": []
-                                },
-                                "bitwidth": null
-                            }
-                        ],
-                        "attributes": []
-                    },
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "float",
-                                "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "identifier",
-                                    "identifier": "field2",
-                                    "asm_label": null,
-                                    "attributes": []
-                                },
-                                "bitwidth": null
-                            }
-                        ],
-                        "attributes": []
-                    },
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "void",
-                                "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "pointer",
+                            },
+                            "declarators": [
+                                {
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "field3",
+                                        "identifier": "field1",
                                         "asm_label": null,
                                         "attributes": []
                                     },
-                                    "type_qualifiers": [],
-                                    "attributes": []
-                                },
-                                "bitwidth": null
-                            }
-                        ],
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            }
-        ],
+                                    "bitwidth": null
+                                }
+                            ]
+                        },
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "float",
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": []
+                            },
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "field2",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ]
+                        },
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "void",
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": []
+                            },
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "pointer",
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "field3",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "type_qualifiers": [],
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ]
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",

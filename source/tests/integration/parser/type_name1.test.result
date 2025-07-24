@@ -1,13 +1,16 @@
 [
     {
         "class": "type_name",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "int",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "declarator": {
             "class": "abstract",
             "attributes": []
@@ -15,28 +18,31 @@
     },
     {
         "class": "type_name",
-        "specifiers": [
-            {
-                "class": "type_qualifier",
-                "qualifier": "const",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "unsigned",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "long",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "int",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "unsigned",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "declarator": {
             "class": "pointer",
             "declarator": {
@@ -51,13 +57,16 @@
     },
     {
         "class": "type_name",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "void",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "void",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "declarator": {
             "class": "pointer",
             "declarator": {
@@ -89,38 +98,43 @@
     },
     {
         "class": "type_name",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "struct",
-                "identifier": null,
-                "members": [
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "float",
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "struct",
+                    "identifier": null,
+                    "members": [
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "float",
+                                        "attributes": []
+                                    }
+                                ],
                                 "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "identifier",
-                                    "identifier": "X",
-                                    "asm_label": null,
-                                    "attributes": []
-                                },
-                                "bitwidth": null
-                            }
-                        ],
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            }
-        ],
+                            },
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "X",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ]
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "declarator": {
             "class": "array",
             "declarator": {
@@ -135,13 +149,16 @@
     },
     {
         "class": "type_name",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "double",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "double",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "declarator": {
             "class": "pointer",
             "declarator": {

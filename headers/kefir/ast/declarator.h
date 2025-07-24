@@ -94,6 +94,8 @@ struct kefir_ast_declarator *kefir_ast_declarator_clone(struct kefir_mem *, cons
 kefir_result_t kefir_ast_declarator_free(struct kefir_mem *, struct kefir_ast_declarator *);
 
 kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *, kefir_bool_t *);
+kefir_result_t kefir_ast_declarator_unpack_nested(struct kefir_ast_declarator *, struct kefir_ast_declarator **);
+kefir_result_t kefir_ast_declarator_unpack_innermost(struct kefir_ast_declarator *, struct kefir_ast_declarator **);
 kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *,
                                                       struct kefir_ast_declarator_identifier **);
 kefir_result_t kefir_ast_declarator_unpack_function(const struct kefir_ast_declarator *,

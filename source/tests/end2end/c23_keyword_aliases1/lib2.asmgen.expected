@@ -3,31 +3,37 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "alignment_specifier",
-                    "alignment": {
-                        "class": "type_name",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "long",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "alignment_specifier",
+                        "alignment": {
+                            "class": "type_name",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "long",
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": []
+                            },
+                            "declarator": {
+                                "class": "abstract",
                                 "attributes": []
                             }
-                        ],
-                        "declarator": {
-                            "class": "abstract",
-                            "attributes": []
-                        }
+                        },
+                        "attributes": []
                     },
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "bool",
-                    "attributes": []
-                }
-            ],
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bool",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -59,18 +65,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "thread_local",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "thread_local",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -96,18 +105,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "typeof",
-                    "qualified": true,
-                    "node": {
-                        "class": "identifier",
-                        "identifier": "x"
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "typeof",
+                        "qualified": true,
+                        "node": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -134,18 +146,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "typeof",
-                    "qualified": false,
-                    "node": {
-                        "class": "identifier",
-                        "identifier": "z"
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "typeof",
+                        "qualified": false,
+                        "node": {
+                            "class": "identifier",
+                            "identifier": "z"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",

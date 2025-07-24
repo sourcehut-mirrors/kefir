@@ -3,13 +3,16 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -51,13 +54,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -106,13 +112,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -159,13 +168,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -213,13 +225,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -235,55 +250,58 @@
                         "parameters": [
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "float",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "float",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr0",
+                                                    "parameters": []
+                                                },
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr1",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr2",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr3",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
                                         "declarator": {
                                             "class": "abstract",
-                                            "attributes": [
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr0",
-                                                            "parameters": []
-                                                        },
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr1",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr2",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr3",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                }
-                                            ]
+                                            "attributes": []
                                         },
                                         "initializer": null
                                     }
@@ -298,13 +316,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -320,13 +341,42 @@
                         "parameters": [
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "float",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "float",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr0",
+                                                    "parameters": []
+                                                },
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr1",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl5",
+                                                    "name": "attr2",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
@@ -344,31 +394,6 @@
                                                             "parameters": []
                                                         }
                                                     ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr0",
-                                                            "parameters": []
-                                                        },
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr1",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl5",
-                                                            "name": "attr2",
-                                                            "parameters": []
-                                                        }
-                                                    ]
                                                 }
                                             ]
                                         },
@@ -385,13 +410,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -407,18 +435,57 @@
                         "parameters": [
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "float",
-                                        "attributes": []
-                                    },
-                                    {
-                                        "class": "type_qualifier",
-                                        "qualifier": "const",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "float",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_qualifier",
+                                            "qualifier": "const",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl6",
+                                                    "name": "attr0",
+                                                    "parameters": []
+                                                },
+                                                {
+                                                    "prefix": "decl6",
+                                                    "name": "attr1",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl6",
+                                                    "name": "attr2",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl6",
+                                                    "name": "attr3",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
@@ -457,41 +524,6 @@
                                                             "parameters": []
                                                         }
                                                     ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl6",
-                                                            "name": "attr0",
-                                                            "parameters": []
-                                                        },
-                                                        {
-                                                            "prefix": "decl6",
-                                                            "name": "attr1",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl6",
-                                                            "name": "attr2",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl6",
-                                                            "name": "attr3",
-                                                            "parameters": []
-                                                        }
-                                                    ]
                                                 }
                                             ]
                                         },
@@ -508,13 +540,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -530,18 +565,57 @@
                         "parameters": [
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "float",
-                                        "attributes": []
-                                    },
-                                    {
-                                        "class": "type_qualifier",
-                                        "qualifier": "const",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "float",
+                                            "attributes": []
+                                        },
+                                        {
+                                            "class": "type_qualifier",
+                                            "qualifier": "const",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl7",
+                                                    "name": "attr0",
+                                                    "parameters": []
+                                                },
+                                                {
+                                                    "prefix": "decl7",
+                                                    "name": "attr1",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl7",
+                                                    "name": "attr2",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": "decl7",
+                                                    "name": "attr3",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
@@ -623,41 +697,6 @@
                                                         {
                                                             "prefix": "decl7",
                                                             "name": "attr4",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl7",
-                                                            "name": "attr0",
-                                                            "parameters": []
-                                                        },
-                                                        {
-                                                            "prefix": "decl7",
-                                                            "name": "attr1",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl7",
-                                                            "name": "attr2",
-                                                            "parameters": []
-                                                        }
-                                                    ]
-                                                },
-                                                {
-                                                    "class": "attribute_list",
-                                                    "attributes": [
-                                                        {
-                                                            "prefix": "decl7",
-                                                            "name": "attr3",
                                                             "parameters": []
                                                         }
                                                     ]

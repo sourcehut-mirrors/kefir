@@ -299,6 +299,58 @@ kefir_result_t kefir_ast_declarator_is_abstract(struct kefir_ast_declarator *dec
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_ast_declarator_unpack_nested(struct kefir_ast_declarator *decl,
+                                                  struct kefir_ast_declarator **nested_ptr) {
+    REQUIRE(nested_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));
+
+    if (decl == NULL) {
+        *nested_ptr = NULL;
+        return KEFIR_OK;
+    }
+
+    switch (decl->klass) {
+        case KEFIR_AST_DECLARATOR_IDENTIFIER:
+            *nested_ptr = NULL;
+            break;
+
+        case KEFIR_AST_DECLARATOR_POINTER:
+            *nested_ptr = decl->pointer.declarator;
+            break;
+
+        case KEFIR_AST_DECLARATOR_ARRAY:
+            *nested_ptr = decl->array.declarator;
+            break;
+
+        case KEFIR_AST_DECLARATOR_FUNCTION:
+            *nested_ptr = decl->function.declarator;
+            break;
+    }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_declarator_unpack_innermost(struct kefir_ast_declarator *decl,
+                                                     struct kefir_ast_declarator **innermost_ptr) {
+    REQUIRE(innermost_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));
+
+    if (decl == NULL) {
+        *innermost_ptr = NULL;
+        return KEFIR_OK;
+    }
+
+    struct kefir_ast_declarator *innermost = decl;
+    for (;;) {
+        struct kefir_ast_declarator *nested = NULL;
+        REQUIRE_OK(kefir_ast_declarator_unpack_nested(innermost, &nested));
+        if (nested != NULL) {
+            innermost = nested;
+        } else {
+            break;
+        }
+    }
+    *innermost_ptr = innermost;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_ast_declarator_unpack_identifier(struct kefir_ast_declarator *decl,
                                                       struct kefir_ast_declarator_identifier **identifier_ptr) {
     REQUIRE(identifier_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to identifier"));

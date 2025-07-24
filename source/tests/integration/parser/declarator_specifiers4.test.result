@@ -1,116 +1,122 @@
 [
-    [
-        {
-            "class": "type_specifier",
-            "specifier": "enum",
-            "identifier": "enumeration",
-            "members": [
-                {
-                    "identifier": "constant1",
-                    "value": null,
-                    "attributes": []
-                },
-                {
-                    "identifier": "constant2",
-                    "value": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 10
+    {
+        "list": [
+            {
+                "class": "type_specifier",
+                "specifier": "enum",
+                "identifier": "enumeration",
+                "members": [
+                    {
+                        "identifier": "constant1",
+                        "value": null,
+                        "attributes": []
                     },
-                    "attributes": []
-                },
-                {
-                    "identifier": "constant3",
-                    "value": null,
-                    "attributes": []
-                },
-                {
-                    "identifier": "constant4",
-                    "value": null,
-                    "attributes": []
-                },
-                {
-                    "identifier": "constant5",
-                    "value": {
-                        "class": "binary_operation",
-                        "type": "add",
-                        "left": {
+                    {
+                        "identifier": "constant2",
+                        "value": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 10
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "identifier": "constant3",
+                        "value": null,
+                        "attributes": []
+                    },
+                    {
+                        "identifier": "constant4",
+                        "value": null,
+                        "attributes": []
+                    },
+                    {
+                        "identifier": "constant5",
+                        "value": {
                             "class": "binary_operation",
-                            "type": "multiply",
+                            "type": "add",
                             "left": {
-                                "class": "identifier",
-                                "identifier": "constant1"
+                                "class": "binary_operation",
+                                "type": "multiply",
+                                "left": {
+                                    "class": "identifier",
+                                    "identifier": "constant1"
+                                },
+                                "right": {
+                                    "class": "identifier",
+                                    "identifier": "constant4"
+                                }
                             },
                             "right": {
-                                "class": "identifier",
-                                "identifier": "constant4"
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 1
                             }
                         },
-                        "right": {
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "type_specifier",
+                "specifier": "enum",
+                "identifier": "enumeration2",
+                "members": [
+                    {
+                        "identifier": "enum1",
+                        "value": {
                             "class": "constant",
                             "type": "integer",
                             "value": 1
-                        }
+                        },
+                        "attributes": []
                     },
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "type_specifier",
-            "specifier": "enum",
-            "identifier": "enumeration2",
-            "members": [
-                {
-                    "identifier": "enum1",
-                    "value": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 1
+                    {
+                        "identifier": "enum2",
+                        "value": null,
+                        "attributes": []
                     },
-                    "attributes": []
-                },
-                {
-                    "identifier": "enum2",
-                    "value": null,
-                    "attributes": []
-                },
-                {
-                    "identifier": "enum3",
-                    "value": null,
-                    "attributes": []
-                },
-                {
-                    "identifier": "enum4",
-                    "value": {
-                        "class": "binary_operation",
-                        "type": "bitwise_and",
-                        "left": {
-                            "class": "unary_operation",
-                            "type": "negate",
-                            "argument": {
-                                "class": "identifier",
-                                "identifier": "constant1"
+                    {
+                        "identifier": "enum3",
+                        "value": null,
+                        "attributes": []
+                    },
+                    {
+                        "identifier": "enum4",
+                        "value": {
+                            "class": "binary_operation",
+                            "type": "bitwise_and",
+                            "left": {
+                                "class": "unary_operation",
+                                "type": "negate",
+                                "argument": {
+                                    "class": "identifier",
+                                    "identifier": "constant1"
+                                }
+                            },
+                            "right": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 1
                             }
                         },
-                        "right": {
-                            "class": "constant",
-                            "type": "integer",
-                            "value": 1
-                        }
+                        "attributes": []
                     },
-                    "attributes": []
-                },
-                {
-                    "identifier": "enum5",
-                    "value": null,
-                    "attributes": []
-                }
-            ],
-            "attributes": []
-        }
-    ]
+                    {
+                        "identifier": "enum5",
+                        "value": null,
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    }
 ]

@@ -9,13 +9,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "int",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "abstract",
                         "attributes": []
@@ -30,18 +33,21 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "long",
-                            "attributes": []
-                        },
-                        {
-                            "class": "type_specifier",
-                            "specifier": "int",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "long",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "array",
                         "declarator": {
@@ -63,13 +69,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "float",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "float",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "pointer",
                         "declarator": {
@@ -91,13 +100,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "void",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "void",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "function",
                         "declarator": {
@@ -108,13 +120,16 @@
                         "parameters": [
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "int",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
@@ -128,13 +143,16 @@
                             },
                             {
                                 "class": "declaration",
-                                "specifiers": [
-                                    {
-                                        "class": "type_specifier",
-                                        "specifier": "char",
-                                        "attributes": []
-                                    }
-                                ],
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "char",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
                                 "init_declarators": [
                                     {
                                         "class": "init_declarator",
@@ -200,13 +218,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "int",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "abstract",
                         "attributes": []
@@ -242,13 +263,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "float",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "float",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "abstract",
                         "attributes": []
@@ -270,13 +294,16 @@
             {
                 "type_name": {
                     "class": "type_name",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "long",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "long",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "declarator": {
                         "class": "abstract",
                         "attributes": []
@@ -287,28 +314,31 @@
                     "type": "sizeof",
                     "argument": {
                         "class": "type_name",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "unsigned",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "long",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "long",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "int",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "unsigned",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "long",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "long",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "declarator": {
                             "class": "abstract",
                             "attributes": []

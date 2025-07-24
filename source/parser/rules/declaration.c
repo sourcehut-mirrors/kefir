@@ -25,11 +25,10 @@
 #include "kefir/core/source_error.h"
 #include "kefir/ast/downcast.h"
 
-static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
-                                      struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
     struct kefir_ast_declarator_specifier_list list;
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&list));
-    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list, attributes);
+    kefir_result_t res = builder->parser->ruleset.declaration_specifier_list(mem, builder->parser, &list);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, &list);
         return res;
@@ -70,7 +69,9 @@ static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_
         kefir_ast_declarator_free(mem, declarator);
         return res;
     });
-    REQUIRE_OK(kefir_ast_node_attributes_clone(mem, &init_declarator->declarator->attributes, attributes));
+    struct kefir_ast_declarator *innermost_declarator;
+    REQUIRE_OK(kefir_ast_declarator_unpack_innermost(init_declarator->declarator, &innermost_declarator));
+    REQUIRE_OK(kefir_ast_node_attributes_clone(mem, &innermost_declarator->attributes, attributes));
     init_declarator->base.source_location = source_location;
     return KEFIR_OK;
 }
@@ -88,7 +89,10 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     struct kefir_ast_node_attributes attributes;
     REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
 
-    res = scan_specifiers(mem, builder, &attributes);
+    res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+
+    REQUIRE_CHAIN(&res, scan_specifiers(mem, builder));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_node_attributes_free(mem, &attributes);
         return res;

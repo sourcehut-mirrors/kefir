@@ -1,13 +1,27 @@
 [
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "void",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "void",
+                    "attributes": []
+                }
+            ],
+            "attributes": [
+                {
+                    "class": "attribute_list",
+                    "attributes": [
+                        {
+                            "prefix": "gnu",
+                            "name": "__another_annotation__",
+                            "parameters": []
+                        }
+                    ]
+                }
+            ]
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -17,32 +31,22 @@
                         "class": "identifier",
                         "identifier": "integers",
                         "asm_label": null,
-                        "attributes": []
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "__inline__",
+                                        "parameters": []
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     "ellipsis": false,
                     "parameters": [],
-                    "attributes": [
-                        {
-                            "class": "attribute_list",
-                            "attributes": [
-                                {
-                                    "prefix": "gnu",
-                                    "name": "__inline__",
-                                    "parameters": []
-                                }
-                            ]
-                        },
-                        {
-                            "class": "attribute_list",
-                            "attributes": [
-                                {
-                                    "prefix": "gnu",
-                                    "name": "__another_annotation__",
-                                    "parameters": []
-                                }
-                            ]
-                        }
-                    ]
+                    "attributes": []
                 },
                 "initializer": null
             }
@@ -50,18 +54,32 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "storage_class",
-                "storage": "extern",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "long",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "storage_class",
+                    "storage": "extern",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "attributes": [
+                {
+                    "class": "attribute_list",
+                    "attributes": [
+                        {
+                            "prefix": "gnu",
+                            "name": "__another_annotation__",
+                            "parameters": []
+                        }
+                    ]
+                }
+            ]
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -71,41 +89,31 @@
                         "class": "identifier",
                         "identifier": "value_x",
                         "asm_label": null,
-                        "attributes": []
+                        "attributes": [
+                            {
+                                "class": "attribute_list",
+                                "attributes": [
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "some_attribute",
+                                        "parameters": []
+                                    },
+                                    {
+                                        "prefix": "gnu",
+                                        "name": "another_attribute",
+                                        "parameters": [
+                                            {
+                                                "class": "identifier",
+                                                "identifier": "integers"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     "type_qualifiers": [],
-                    "attributes": [
-                        {
-                            "class": "attribute_list",
-                            "attributes": [
-                                {
-                                    "prefix": "gnu",
-                                    "name": "some_attribute",
-                                    "parameters": []
-                                },
-                                {
-                                    "prefix": "gnu",
-                                    "name": "another_attribute",
-                                    "parameters": [
-                                        {
-                                            "class": "identifier",
-                                            "identifier": "integers"
-                                        }
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            "class": "attribute_list",
-                            "attributes": [
-                                {
-                                    "prefix": "gnu",
-                                    "name": "__another_annotation__",
-                                    "parameters": []
-                                }
-                            ]
-                        }
-                    ]
+                    "attributes": []
                 },
                 "initializer": null
             }

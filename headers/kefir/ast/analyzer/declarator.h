@@ -41,6 +41,7 @@ kefir_result_t kefir_ast_analyze_declaration_specifiers(struct kefir_mem *, cons
                                                         kefir_uint64_t, const struct kefir_source_location *);
 
 kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *, const struct kefir_ast_context *,
+                                                        const struct kefir_ast_declarator_specifier_list *,
                                                         const struct kefir_ast_declarator *, const char **,
                                                         const struct kefir_ast_type **, kefir_size_t *, kefir_uint64_t,
                                                         struct kefir_ast_declarator_attributes *);

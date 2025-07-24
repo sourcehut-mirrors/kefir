@@ -25,18 +25,21 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "storage_class",
-                "storage": "typedef",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "int",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "storage_class",
+                    "storage": "typedef",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -52,14 +55,17 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "typedef",
-                "identifier": "A",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "typedef",
+                    "identifier": "A",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -92,18 +98,21 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "storage_class",
-                "storage": "typedef",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "long",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "storage_class",
+                    "storage": "typedef",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "long",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -119,14 +128,17 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "typedef",
-                "identifier": "A",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "typedef",
+                    "identifier": "A",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -147,14 +159,17 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "typedef",
-                "identifier": "B",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "typedef",
+                    "identifier": "B",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",

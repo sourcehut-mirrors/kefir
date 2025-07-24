@@ -59,8 +59,8 @@ kefir_result_t kefir_ast_analyze_declaration_node(struct kefir_mem *mem, const s
                                        "Declaration list shall contain exclusively init declarators"));
         ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_decl, subnode->self);
 
-        REQUIRE_OK(kefir_ast_analyze_init_declarator_node(mem, context, init_decl, subnode, base_type, storage,
-                                                          function, alignment));
+        REQUIRE_OK(kefir_ast_analyze_init_declarator_node(mem, context, &node->specifiers, init_decl, subnode,
+                                                          base_type, storage, function, alignment));
     }
     return KEFIR_OK;
 }

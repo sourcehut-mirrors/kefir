@@ -26,13 +26,16 @@
             "parameters": [
                 {
                     "class": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "int",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "int",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "init_declarators": [
                         {
                             "class": "init_declarator",
@@ -46,13 +49,16 @@
                 },
                 {
                     "class": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "void",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "void",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "init_declarators": [
                         {
                             "class": "init_declarator",
@@ -66,13 +72,16 @@
                                 "parameters": [
                                     {
                                         "class": "declaration",
-                                        "specifiers": [
-                                            {
-                                                "class": "type_specifier",
-                                                "specifier": "char",
-                                                "attributes": []
-                                            }
-                                        ],
+                                        "specifiers": {
+                                            "list": [
+                                                {
+                                                    "class": "type_specifier",
+                                                    "specifier": "char",
+                                                    "attributes": []
+                                                }
+                                            ],
+                                            "attributes": []
+                                        },
                                         "init_declarators": [
                                             {
                                                 "class": "init_declarator",
@@ -93,13 +102,16 @@
                 },
                 {
                     "class": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "short",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "short",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "init_declarators": [
                         {
                             "class": "init_declarator",

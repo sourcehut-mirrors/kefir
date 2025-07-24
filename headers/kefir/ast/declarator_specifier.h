@@ -34,6 +34,7 @@ typedef struct kefir_ast_declarator kefir_ast_declarator_t;
 
 typedef struct kefir_ast_declarator_specifier_list {
     struct kefir_list list;
+    struct kefir_ast_node_attributes attributes;
 } kefir_ast_declarator_specifier_list_t;
 
 kefir_result_t kefir_ast_declarator_specifier_list_init(struct kefir_ast_declarator_specifier_list *);
@@ -69,7 +70,6 @@ typedef struct kefir_ast_structure_declaration_entry {
         struct {
             struct kefir_ast_declarator_specifier_list specifiers;
             struct kefir_list declarators;
-            struct kefir_ast_node_attributes attributes;
         } declaration;
     };
 } kefir_ast_structure_declaration_entry_t;

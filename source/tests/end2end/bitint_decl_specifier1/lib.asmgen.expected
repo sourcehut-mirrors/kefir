@@ -3,18 +3,21 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 10
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 10
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -37,23 +40,26 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "unsigned",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 12
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "unsigned",
+                        "attributes": []
                     },
-                    "attributes": []
-                }
-            ],
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 12
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -76,38 +82,41 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "enum",
-                    "identifier": null,
-                    "members": [
-                        {
-                            "identifier": "A",
-                            "value": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 1
-                            },
-                            "attributes": []
-                        },
-                        {
-                            "identifier": "B",
-                            "value": {
-                                "class": "unary_operation",
-                                "type": "negate",
-                                "argument": {
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "enum",
+                        "identifier": null,
+                        "members": [
+                            {
+                                "identifier": "A",
+                                "value": {
                                     "class": "constant",
                                     "type": "integer",
                                     "value": 1
-                                }
+                                },
+                                "attributes": []
                             },
-                            "attributes": []
-                        }
-                    ],
-                    "attributes": []
-                }
-            ],
+                            {
+                                "identifier": "B",
+                                "value": {
+                                    "class": "unary_operation",
+                                    "type": "negate",
+                                    "argument": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    }
+                                },
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -118,40 +127,43 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_qualifier",
-                    "qualifier": "const",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "binary_operation",
-                        "type": "add",
-                        "left": {
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_qualifier",
+                        "qualifier": "const",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
                             "class": "binary_operation",
-                            "type": "multiply",
+                            "type": "add",
                             "left": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 2
+                                "class": "binary_operation",
+                                "type": "multiply",
+                                "left": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                },
+                                "right": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                }
                             },
                             "right": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 2
+                                "class": "identifier",
+                                "identifier": "A"
                             }
                         },
-                        "right": {
-                            "class": "identifier",
-                            "identifier": "A"
-                        }
-                    },
-                    "attributes": []
-                }
-            ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -178,50 +190,53 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_qualifier",
-                    "qualifier": "const",
-                    "attributes": []
-                },
-                {
-                    "class": "type_qualifier",
-                    "qualifier": "volatile",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "unsigned",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "binary_operation",
-                        "type": "add",
-                        "left": {
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_qualifier",
+                        "qualifier": "const",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_qualifier",
+                        "qualifier": "volatile",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "unsigned",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
                             "class": "binary_operation",
-                            "type": "multiply",
+                            "type": "add",
                             "left": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 2
+                                "class": "binary_operation",
+                                "type": "multiply",
+                                "left": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                },
+                                "right": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 2
+                                }
                             },
                             "right": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 2
+                                "class": "identifier",
+                                "identifier": "B"
                             }
                         },
-                        "right": {
-                            "class": "identifier",
-                            "identifier": "B"
-                        }
-                    },
-                    "attributes": []
-                }
-            ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",

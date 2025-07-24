@@ -3,18 +3,21 @@
         "class": "cast_operator",
         "type_name": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "long",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "abstract",
                 "attributes": []
@@ -30,18 +33,21 @@
         "class": "cast_operator",
         "type_name": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_qualifier",
-                    "qualifier": "const",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_qualifier",
+                        "qualifier": "const",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "pointer",
                 "declarator": {

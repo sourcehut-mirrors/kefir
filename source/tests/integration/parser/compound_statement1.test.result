@@ -8,13 +8,16 @@
         "items": [
             {
                 "class": "declaration",
-                "specifiers": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "long",
-                        "attributes": []
-                    }
-                ],
+                "specifiers": {
+                    "list": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        }
+                    ],
+                    "attributes": []
+                },
                 "init_declarators": [
                     {
                         "class": "init_declarator",
@@ -118,18 +121,21 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "typedef",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "typedef",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -145,14 +151,17 @@
                     },
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "typedef",
-                                "identifier": "T",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "typedef",
+                                    "identifier": "T",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",

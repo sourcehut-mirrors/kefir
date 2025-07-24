@@ -1,151 +1,169 @@
 [
-    [
-        {
-            "class": "storage_class",
-            "storage": "extern",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "int",
-            "attributes": []
-        },
-        {
-            "class": "alignment_specifier",
-            "alignment": {
-                "class": "constant",
-                "type": "unsigned_integer",
-                "value": 1
+    {
+        "list": [
+            {
+                "class": "storage_class",
+                "storage": "extern",
+                "attributes": []
             },
-            "attributes": []
-        },
-        {
-            "class": "type_qualifier",
-            "qualifier": "atomic",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "unsigned",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "long",
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "storage_class",
-            "storage": "static",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "double",
-            "attributes": []
-        },
-        {
-            "class": "storage_class",
-            "storage": "thread_local",
-            "attributes": []
-        },
-        {
-            "class": "alignment_specifier",
-            "alignment": {
-                "class": "constant",
-                "type": "unsigned_integer",
-                "value": 8
+            {
+                "class": "type_specifier",
+                "specifier": "int",
+                "attributes": []
             },
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "storage_class",
-            "storage": "auto",
-            "attributes": []
-        },
-        {
-            "class": "type_qualifier",
-            "qualifier": "const",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "float",
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "type_qualifier",
-            "qualifier": "volatile",
-            "attributes": []
-        },
-        {
-            "class": "storage_class",
-            "storage": "register",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "signed",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "char",
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "storage_class",
-            "storage": "thread_local",
-            "attributes": []
-        },
-        {
-            "class": "type_qualifier",
-            "qualifier": "restrict",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "short",
-            "attributes": []
-        },
-        {
-            "class": "alignment_specifier",
-            "alignment": {
-                "class": "constant",
-                "type": "unsigned_integer",
-                "value": 4
+            {
+                "class": "alignment_specifier",
+                "alignment": {
+                    "class": "constant",
+                    "type": "unsigned_integer",
+                    "value": 1
+                },
+                "attributes": []
             },
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "signed",
-            "attributes": []
-        }
-    ],
-    [
-        {
-            "class": "function_specifier",
-            "specifier": "inline",
-            "attributes": []
-        },
-        {
-            "class": "type_specifier",
-            "specifier": "void",
-            "attributes": []
-        },
-        {
-            "class": "function_specifier",
-            "specifier": "noreturn",
-            "attributes": []
-        }
-    ]
+            {
+                "class": "type_qualifier",
+                "qualifier": "atomic",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "unsigned",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "long",
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "storage_class",
+                "storage": "static",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "double",
+                "attributes": []
+            },
+            {
+                "class": "storage_class",
+                "storage": "thread_local",
+                "attributes": []
+            },
+            {
+                "class": "alignment_specifier",
+                "alignment": {
+                    "class": "constant",
+                    "type": "unsigned_integer",
+                    "value": 8
+                },
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "storage_class",
+                "storage": "auto",
+                "attributes": []
+            },
+            {
+                "class": "type_qualifier",
+                "qualifier": "const",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "float",
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "type_qualifier",
+                "qualifier": "volatile",
+                "attributes": []
+            },
+            {
+                "class": "storage_class",
+                "storage": "register",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "signed",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "char",
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "storage_class",
+                "storage": "thread_local",
+                "attributes": []
+            },
+            {
+                "class": "type_qualifier",
+                "qualifier": "restrict",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "short",
+                "attributes": []
+            },
+            {
+                "class": "alignment_specifier",
+                "alignment": {
+                    "class": "constant",
+                    "type": "unsigned_integer",
+                    "value": 4
+                },
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "signed",
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    },
+    {
+        "list": [
+            {
+                "class": "function_specifier",
+                "specifier": "inline",
+                "attributes": []
+            },
+            {
+                "class": "type_specifier",
+                "specifier": "void",
+                "attributes": []
+            },
+            {
+                "class": "function_specifier",
+                "specifier": "noreturn",
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    }
 ]

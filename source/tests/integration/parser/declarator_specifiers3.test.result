@@ -1,174 +1,185 @@
 [
-    [
-        {
-            "class": "type_specifier",
-            "specifier": "struct",
-            "identifier": "structure",
-            "members": [
-                {
-                    "type": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "short",
-                            "attributes": []
-                        }
-                    ],
-                    "declarators": [
-                        {
-                            "declarator": {
-                                "class": "identifier",
-                                "identifier": "field1",
-                                "asm_label": null,
-                                "attributes": []
-                            },
-                            "bitwidth": null
-                        }
-                    ],
-                    "attributes": []
-                },
-                {
-                    "type": "static_assert",
-                    "assertion": {
-                        "class": "static_assertion",
-                        "assertion": {
-                            "class": "unary_operation",
-                            "type": "logical_negate",
-                            "argument": {
-                                "class": "identifier",
-                                "identifier": "SOMETHING"
-                            }
-                        },
-                        "string_literal": {
-                            "class": "string_literal",
-                            "type": "multibyte",
-                            "content": "Hello, world!\u0000",
-                            "length": 14
-                        }
-                    }
-                },
-                {
-                    "type": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "long",
-                            "attributes": []
-                        },
-                        {
-                            "class": "type_specifier",
-                            "specifier": "double",
-                            "attributes": []
-                        }
-                    ],
-                    "declarators": [
-                        {
-                            "declarator": {
-                                "class": "identifier",
-                                "identifier": "field2",
-                                "asm_label": null,
-                                "attributes": []
-                            },
-                            "bitwidth": null
-                        }
-                    ],
-                    "attributes": []
-                },
-                {
-                    "type": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "struct",
-                            "identifier": null,
-                            "members": [
+    {
+        "list": [
+            {
+                "class": "type_specifier",
+                "specifier": "struct",
+                "identifier": "structure",
+                "members": [
+                    {
+                        "type": "declaration",
+                        "specifiers": {
+                            "list": [
                                 {
-                                    "type": "declaration",
-                                    "specifiers": [
-                                        {
-                                            "class": "type_specifier",
-                                            "specifier": "float",
-                                            "attributes": []
-                                        }
-                                    ],
-                                    "declarators": [
-                                        {
-                                            "declarator": {
-                                                "class": "pointer",
-                                                "declarator": {
-                                                    "class": "identifier",
-                                                    "identifier": "field3",
-                                                    "asm_label": null,
-                                                    "attributes": []
-                                                },
-                                                "type_qualifiers": [
-                                                    "volatile"
-                                                ],
-                                                "attributes": []
-                                            },
-                                            "bitwidth": null
-                                        }
-                                    ],
+                                    "class": "type_specifier",
+                                    "specifier": "short",
                                     "attributes": []
-                                },
-                                {
-                                    "type": "static_assert",
-                                    "assertion": {
-                                        "class": "static_assertion",
-                                        "assertion": {
-                                            "class": "unary_operation",
-                                            "type": "negate",
-                                            "argument": {
-                                                "class": "identifier",
-                                                "identifier": "SOMETHING_ELSE"
-                                            }
-                                        },
-                                        "string_literal": {
-                                            "class": "string_literal",
-                                            "type": "multibyte",
-                                            "content": "Goodbye, world!\u0000",
-                                            "length": 16
-                                        }
-                                    }
                                 }
                             ],
                             "attributes": []
-                        }
-                    ],
-                    "declarators": [],
-                    "attributes": []
-                },
-                {
-                    "type": "static_assert",
-                    "assertion": {
-                        "class": "static_assertion",
+                        },
+                        "declarators": [
+                            {
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "field1",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "bitwidth": null
+                            }
+                        ]
+                    },
+                    {
+                        "type": "static_assert",
                         "assertion": {
-                            "class": "binary_operation",
-                            "type": "add",
-                            "left": {
+                            "class": "static_assertion",
+                            "assertion": {
                                 "class": "unary_operation",
-                                "type": "invert",
+                                "type": "logical_negate",
                                 "argument": {
                                     "class": "identifier",
-                                    "identifier": "EVERYTHING"
+                                    "identifier": "SOMETHING"
                                 }
                             },
-                            "right": {
-                                "class": "constant",
-                                "type": "integer",
-                                "value": 1
+                            "string_literal": {
+                                "class": "string_literal",
+                                "type": "multibyte",
+                                "content": "Hello, world!\u0000",
+                                "length": 14
                             }
+                        }
+                    },
+                    {
+                        "type": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "long",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "double",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
                         },
-                        "string_literal": {
-                            "class": "string_literal",
-                            "type": "multibyte",
-                            "content": "What is this?\n\n\u0000",
-                            "length": 16
+                        "declarators": [
+                            {
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "field2",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "bitwidth": null
+                            }
+                        ]
+                    },
+                    {
+                        "type": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "struct",
+                                    "identifier": null,
+                                    "members": [
+                                        {
+                                            "type": "declaration",
+                                            "specifiers": {
+                                                "list": [
+                                                    {
+                                                        "class": "type_specifier",
+                                                        "specifier": "float",
+                                                        "attributes": []
+                                                    }
+                                                ],
+                                                "attributes": []
+                                            },
+                                            "declarators": [
+                                                {
+                                                    "declarator": {
+                                                        "class": "pointer",
+                                                        "declarator": {
+                                                            "class": "identifier",
+                                                            "identifier": "field3",
+                                                            "asm_label": null,
+                                                            "attributes": []
+                                                        },
+                                                        "type_qualifiers": [
+                                                            "volatile"
+                                                        ],
+                                                        "attributes": []
+                                                    },
+                                                    "bitwidth": null
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "type": "static_assert",
+                                            "assertion": {
+                                                "class": "static_assertion",
+                                                "assertion": {
+                                                    "class": "unary_operation",
+                                                    "type": "negate",
+                                                    "argument": {
+                                                        "class": "identifier",
+                                                        "identifier": "SOMETHING_ELSE"
+                                                    }
+                                                },
+                                                "string_literal": {
+                                                    "class": "string_literal",
+                                                    "type": "multibyte",
+                                                    "content": "Goodbye, world!\u0000",
+                                                    "length": 16
+                                                }
+                                            }
+                                        }
+                                    ],
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "declarators": []
+                    },
+                    {
+                        "type": "static_assert",
+                        "assertion": {
+                            "class": "static_assertion",
+                            "assertion": {
+                                "class": "binary_operation",
+                                "type": "add",
+                                "left": {
+                                    "class": "unary_operation",
+                                    "type": "invert",
+                                    "argument": {
+                                        "class": "identifier",
+                                        "identifier": "EVERYTHING"
+                                    }
+                                },
+                                "right": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 1
+                                }
+                            },
+                            "string_literal": {
+                                "class": "string_literal",
+                                "type": "multibyte",
+                                "content": "What is this?\n\n\u0000",
+                                "length": 16
+                            }
                         }
                     }
-                }
-            ],
-            "attributes": []
-        }
-    ]
+                ],
+                "attributes": []
+            }
+        ],
+        "attributes": []
+    }
 ]

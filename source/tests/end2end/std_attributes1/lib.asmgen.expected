@@ -3,13 +3,16 @@
     "external_declarations": [
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -33,23 +36,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -83,13 +89,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -119,23 +128,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -169,13 +181,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -210,23 +225,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -260,13 +278,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -301,23 +322,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -351,13 +375,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -392,23 +419,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -442,13 +472,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -483,23 +516,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -533,13 +569,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -574,23 +613,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -624,13 +666,16 @@
         },
         {
             "class": "function_definition",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "void",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -685,23 +730,26 @@
                 "items": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "storage_class",
-                                "storage": "static",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_qualifier",
-                                "qualifier": "const",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",

@@ -84,13 +84,16 @@
             "items": [
                 {
                     "class": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "double",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "double",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "init_declarators": [
                         {
                             "class": "init_declarator",

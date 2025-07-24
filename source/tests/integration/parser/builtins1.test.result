@@ -37,28 +37,31 @@
             },
             {
                 "class": "type_name",
-                "specifiers": [
-                    {
-                        "class": "type_specifier",
-                        "specifier": "long",
-                        "attributes": []
-                    },
-                    {
-                        "class": "type_specifier",
-                        "specifier": "long",
-                        "attributes": []
-                    },
-                    {
-                        "class": "type_specifier",
-                        "specifier": "unsigned",
-                        "attributes": []
-                    },
-                    {
-                        "class": "type_specifier",
-                        "specifier": "int",
-                        "attributes": []
-                    }
-                ],
+                "specifiers": {
+                    "list": [
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "long",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "unsigned",
+                            "attributes": []
+                        },
+                        {
+                            "class": "type_specifier",
+                            "specifier": "int",
+                            "attributes": []
+                        }
+                    ],
+                    "attributes": []
+                },
                 "declarator": {
                     "class": "abstract",
                     "attributes": []

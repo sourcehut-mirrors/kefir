@@ -13,13 +13,16 @@
         "class": "for_statement",
         "init": {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -101,18 +104,21 @@
                 },
                 {
                     "class": "declaration",
-                    "specifiers": [
-                        {
-                            "class": "type_specifier",
-                            "specifier": "unsigned",
-                            "attributes": []
-                        },
-                        {
-                            "class": "type_specifier",
-                            "specifier": "char",
-                            "attributes": []
-                        }
-                    ],
+                    "specifiers": {
+                        "list": [
+                            {
+                                "class": "type_specifier",
+                                "specifier": "unsigned",
+                                "attributes": []
+                            },
+                            {
+                                "class": "type_specifier",
+                                "specifier": "char",
+                                "attributes": []
+                            }
+                        ],
+                        "attributes": []
+                    },
                     "init_declarators": [
                         {
                             "class": "init_declarator",
@@ -148,13 +154,16 @@
         "class": "for_statement",
         "init": {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -203,13 +212,16 @@
                     "class": "for_statement",
                     "init": {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "int",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
@@ -258,13 +270,16 @@
                                 "class": "for_statement",
                                 "init": {
                                     "class": "declaration",
-                                    "specifiers": [
-                                        {
-                                            "class": "type_specifier",
-                                            "specifier": "int",
-                                            "attributes": []
-                                        }
-                                    ],
+                                    "specifiers": {
+                                        "list": [
+                                            {
+                                                "class": "type_specifier",
+                                                "specifier": "int",
+                                                "attributes": []
+                                            }
+                                        ],
+                                        "attributes": []
+                                    },
                                     "init_declarators": [
                                         {
                                             "class": "init_declarator",

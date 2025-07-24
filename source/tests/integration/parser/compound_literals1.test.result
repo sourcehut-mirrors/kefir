@@ -3,23 +3,26 @@
         "class": "compound_literal",
         "type": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "unsigned",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "short",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "unsigned",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "short",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "abstract",
                 "attributes": []
@@ -46,15 +49,18 @@
         "class": "compound_literal",
         "type": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "struct",
-                    "identifier": "packet",
-                    "members": null,
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "struct",
+                        "identifier": "packet",
+                        "members": null,
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "abstract",
                 "attributes": []
@@ -103,15 +109,18 @@
         "class": "compound_literal",
         "type": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "struct",
-                    "identifier": "packet",
-                    "members": null,
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "struct",
+                        "identifier": "packet",
+                        "members": null,
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "array",
                 "declarator": {

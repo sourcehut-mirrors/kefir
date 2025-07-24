@@ -22,10 +22,9 @@
 #include "kefir/ast/downcast.h"
 
 static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser *parser,
-                                      struct kefir_ast_declarator_specifier_list *specifiers,
-                                      struct kefir_ast_node_attributes *attributes) {
+                                      struct kefir_ast_declarator_specifier_list *specifiers) {
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(specifiers));
-    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, specifiers, attributes);
+    kefir_result_t res = parser->ruleset.declaration_specifier_list(mem, parser, specifiers);
     if (res == KEFIR_NO_MATCH && parser->configuration->implicit_function_definition_int) {
         res = KEFIR_OK;
         struct kefir_ast_declarator_specifier *specifier = kefir_ast_type_specifier_int(mem);
@@ -109,20 +108,22 @@ static kefir_result_t update_function_parameter_scope(struct kefir_mem *mem, str
 static kefir_result_t scan_components(struct kefir_mem *mem, struct kefir_parser *parser,
                                       struct kefir_ast_declarator_specifier_list *specifiers,
                                       struct kefir_ast_declarator **declarator, struct kefir_list *declaration_list,
-                                      struct kefir_ast_node_base **compound_statement) {
-    struct kefir_ast_node_attributes forward_attributes;
-    REQUIRE_OK(kefir_ast_node_attributes_init(&forward_attributes));
-    REQUIRE_OK(scan_specifiers(mem, parser, specifiers, &forward_attributes));
+                                      struct kefir_ast_node_base **compound_statement,
+                                      struct kefir_ast_node_attributes *attributes) {
+    REQUIRE_OK(scan_specifiers(mem, parser, specifiers));
     kefir_result_t res = parser->ruleset.declarator(mem, parser, declarator);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_node_attributes_free(mem, &forward_attributes);
+        kefir_ast_declarator_specifier_list_free(mem, specifiers);
+        return res;
+    });
+    res = kefir_ast_node_attributes_move(&(*declarator)->attributes, attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;
     });
     res = kefir_parser_scope_push_block(mem, parser->scope);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_declarator_free(mem, *declarator);
-        kefir_ast_node_attributes_free(mem, &forward_attributes);
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;
     });
@@ -130,15 +131,6 @@ static kefir_result_t scan_components(struct kefir_mem *mem, struct kefir_parser
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_parser_scope_pop_block(mem, parser->scope);
         kefir_ast_declarator_free(mem, *declarator);
-        kefir_ast_node_attributes_free(mem, &forward_attributes);
-        kefir_ast_declarator_specifier_list_free(mem, specifiers);
-        return res;
-    });
-    res = kefir_ast_node_attributes_move(&(*declarator)->attributes, &forward_attributes);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_parser_scope_pop_block(mem, parser->scope);
-        kefir_ast_declarator_free(mem, *declarator);
-        kefir_ast_node_attributes_free(mem, &forward_attributes);
         kefir_ast_declarator_specifier_list_free(mem, specifiers);
         return res;
     });
@@ -175,9 +167,25 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(function_definition)(struct kefir_mem
     struct kefir_list declaration_list;
     struct kefir_ast_node_base *compound_statement_node = NULL;
 
-    REQUIRE_OK(scan_components(mem, parser, &specifiers, &declarator, &declaration_list, &compound_statement_node));
+    kefir_result_t res = KEFIR_OK;
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_CHAIN(&res, scan_components(mem, parser, &specifiers, &declarator, &declaration_list,
+                                        &compound_statement_node, &attributes));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    res = kefir_ast_node_attributes_free(mem, &attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_AST_NODE_FREE(mem, compound_statement_node);
+        kefir_list_free(mem, &declaration_list);
+        kefir_ast_declarator_free(mem, declarator);
+        kefir_ast_declarator_specifier_list_free(mem, &specifiers);
+        return res;
+    });
 
-    kefir_result_t res;
     struct kefir_ast_compound_statement *compound_statement = NULL;
     REQUIRE_MATCH_OK(
         &res, kefir_ast_downcast_compound_statement(compound_statement_node, &compound_statement, true),

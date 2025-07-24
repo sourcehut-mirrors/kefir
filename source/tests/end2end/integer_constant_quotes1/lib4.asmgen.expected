@@ -3,18 +3,21 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "storage_class",
-                    "storage": "extern",
-                    "attributes": []
-                },
-                {
-                    "class": "type_specifier",
-                    "specifier": "long",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "storage_class",
+                        "storage": "extern",
+                        "attributes": []
+                    },
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -37,13 +40,16 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "long",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -182,18 +188,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 180
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 180
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -217,18 +226,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 180
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 180
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -252,18 +264,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 180
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 180
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -287,18 +302,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "bitint",
-                    "width": {
-                        "class": "constant",
-                        "type": "integer",
-                        "value": 180
-                    },
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "bitint",
+                        "width": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 180
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",

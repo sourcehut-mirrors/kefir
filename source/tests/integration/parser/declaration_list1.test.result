@@ -1,13 +1,16 @@
 [
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "int",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "int",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -30,18 +33,21 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_qualifier",
-                "qualifier": "const",
-                "attributes": []
-            },
-            {
-                "class": "type_specifier",
-                "specifier": "void",
-                "attributes": []
-            }
-        ],
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_qualifier",
+                    "qualifier": "const",
+                    "attributes": []
+                },
+                {
+                    "class": "type_specifier",
+                    "specifier": "void",
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",
@@ -92,95 +98,102 @@
     },
     {
         "class": "declaration",
-        "specifiers": [
-            {
-                "class": "type_specifier",
-                "specifier": "struct",
-                "identifier": "network_address",
-                "members": [
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "unsigned",
+        "specifiers": {
+            "list": [
+                {
+                    "class": "type_specifier",
+                    "specifier": "struct",
+                    "identifier": "network_address",
+                    "members": [
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "unsigned",
+                                        "attributes": []
+                                    },
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "char",
+                                        "attributes": []
+                                    }
+                                ],
                                 "attributes": []
                             },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "char",
+                            "declarators": [
+                                {
+                                    "declarator": {
+                                        "class": "array",
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "ip",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "type": "bounded",
+                                        "length": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 4
+                                        },
+                                        "static": false,
+                                        "type_qualifiers": [],
+                                        "attributes": []
+                                    },
+                                    "bitwidth": null
+                                }
+                            ]
+                        },
+                        {
+                            "type": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "unsigned",
+                                        "attributes": []
+                                    },
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "int",
+                                        "attributes": []
+                                    }
+                                ],
                                 "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "array",
+                            },
+                            "declarators": [
+                                {
                                     "declarator": {
                                         "class": "identifier",
-                                        "identifier": "ip",
+                                        "identifier": "port",
                                         "asm_label": null,
                                         "attributes": []
                                     },
-                                    "type": "bounded",
-                                    "length": {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 4
-                                    },
-                                    "static": false,
-                                    "type_qualifiers": [],
-                                    "attributes": []
-                                },
-                                "bitwidth": null
-                            }
-                        ],
-                        "attributes": []
-                    },
-                    {
-                        "type": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "unsigned",
-                                "attributes": []
-                            },
-                            {
-                                "class": "type_specifier",
-                                "specifier": "int",
-                                "attributes": []
-                            }
-                        ],
-                        "declarators": [
-                            {
-                                "declarator": {
-                                    "class": "identifier",
-                                    "identifier": "port",
-                                    "asm_label": null,
-                                    "attributes": []
-                                },
-                                "bitwidth": {
-                                    "class": "binary_operation",
-                                    "type": "multiply",
-                                    "left": {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 4
-                                    },
-                                    "right": {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 8
+                                    "bitwidth": {
+                                        "class": "binary_operation",
+                                        "type": "multiply",
+                                        "left": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 4
+                                        },
+                                        "right": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 8
+                                        }
                                     }
                                 }
-                            }
-                        ],
-                        "attributes": []
-                    }
-                ],
-                "attributes": []
-            }
-        ],
+                            ]
+                        }
+                    ],
+                    "attributes": []
+                }
+            ],
+            "attributes": []
+        },
         "init_declarators": [
             {
                 "class": "init_declarator",

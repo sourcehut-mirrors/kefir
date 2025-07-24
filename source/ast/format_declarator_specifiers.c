@@ -72,16 +72,6 @@ static kefir_result_t format_struct(struct kefir_json_output *json,
                     REQUIRE_OK(kefir_json_output_object_end(json));
                 }
                 REQUIRE_OK(kefir_json_output_array_end(json));
-
-                REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
-                REQUIRE_OK(kefir_json_output_array_begin(json));
-                for (const struct kefir_list_entry *iter = kefir_list_head(&entry->declaration.attributes.attributes);
-                     iter != NULL; kefir_list_next(&iter)) {
-
-                    ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
-                    REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
-                }
-                REQUIRE_OK(kefir_json_output_array_end(json));
             }
             REQUIRE_OK(kefir_json_output_object_end(json));
         }
@@ -370,6 +360,8 @@ kefir_result_t kefir_ast_format_declarator_specifier_list(struct kefir_json_outp
     REQUIRE(specifiers != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
+    REQUIRE_OK(kefir_json_output_object_begin(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "list"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
     struct kefir_ast_declarator_specifier *specifier = NULL;
     struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &specifier);
@@ -379,5 +371,15 @@ kefir_result_t kefir_ast_format_declarator_specifier_list(struct kefir_json_outp
     }
     REQUIRE_OK(res);
     REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_key(json, "attributes"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    for (const struct kefir_list_entry *iter = kefir_list_head(&specifiers->attributes.attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attribute_list, iter->value);
+        REQUIRE_OK(kefir_ast_format(json, KEFIR_AST_NODE_BASE(attribute_list), display_source_location));
+    }
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }

@@ -41,6 +41,7 @@ kefir_result_t kefir_ast_declarator_specifier_list_init(struct kefir_ast_declara
 
     REQUIRE_OK(kefir_list_init(&list->list));
     REQUIRE_OK(kefir_list_on_remove(&list->list, remove_declarator_specifier, NULL));
+    REQUIRE_OK(kefir_ast_node_attributes_init(&list->attributes));
     return KEFIR_OK;
 }
 
@@ -49,6 +50,7 @@ kefir_result_t kefir_ast_declarator_specifier_list_free(struct kefir_mem *mem,
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(list != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &list->attributes));
     REQUIRE_OK(kefir_list_free(mem, &list->list));
     return KEFIR_OK;
 }
@@ -120,6 +122,7 @@ kefir_result_t kefir_ast_declarator_specifier_list_clone(struct kefir_mem *mem,
             return res;
         });
     }
+    REQUIRE_OK(kefir_ast_node_attributes_clone(mem, &dst->attributes, &src->attributes));
     return KEFIR_OK;
 }
 
@@ -131,6 +134,7 @@ kefir_result_t kefir_ast_declarator_specifier_list_move_all(struct kefir_ast_dec
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source AST declarator specifier list"));
 
     REQUIRE_OK(kefir_list_move_all(&dst->list, &src->list));
+    REQUIRE_OK(kefir_ast_node_attributes_move(&dst->attributes, &src->attributes));
     return KEFIR_OK;
 }
 
@@ -277,14 +281,6 @@ struct kefir_ast_structure_specifier *kefir_ast_structure_specifier_clone(
                         return NULL;
                     });
                 }
-
-                res = kefir_ast_node_attributes_clone(mem, &entry_clone->declaration.attributes,
-                                                      &entry->declaration.attributes);
-                REQUIRE_ELSE(res == KEFIR_OK, {
-                    kefir_ast_structure_declaration_entry_free(mem, entry_clone);
-                    kefir_ast_structure_specifier_free(mem, clone);
-                    return NULL;
-                });
             }
 
             res = kefir_ast_structure_specifier_append_entry(mem, clone, entry_clone);
@@ -358,14 +354,6 @@ struct kefir_ast_structure_declaration_entry *kefir_ast_structure_declaration_en
         return NULL;
     });
 
-    res = kefir_ast_node_attributes_init(&entry->declaration.attributes);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_list_free(mem, &entry->declaration.declarators);
-        kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers);
-        KEFIR_FREE(mem, entry);
-        return NULL;
-    });
-
     return entry;
 }
 
@@ -395,7 +383,6 @@ kefir_result_t kefir_ast_structure_declaration_entry_free(struct kefir_mem *mem,
     } else {
         REQUIRE_OK(kefir_ast_declarator_specifier_list_free(mem, &entry->declaration.specifiers));
         REQUIRE_OK(kefir_list_free(mem, &entry->declaration.declarators));
-        REQUIRE_OK(kefir_ast_node_attributes_free(mem, &entry->declaration.attributes));
     }
     KEFIR_FREE(mem, entry);
     return KEFIR_OK;

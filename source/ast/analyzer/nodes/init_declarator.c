@@ -28,6 +28,7 @@
 #include "kefir/core/source_error.h"
 
 kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                                      const struct kefir_ast_declarator_specifier_list *specifiers,
                                                       const struct kefir_ast_init_declarator *node,
                                                       struct kefir_ast_node_base *base,
                                                       const struct kefir_ast_type *type,
@@ -35,6 +36,8 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
                                                       kefir_ast_function_specifier_t function, kefir_size_t aligment) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(specifiers != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST init declarator"));
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST base node"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
@@ -43,8 +46,8 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
     base->properties.category = KEFIR_AST_NODE_CATEGORY_INIT_DECLARATOR;
     const char *identifier = NULL;
     struct kefir_ast_declarator_attributes attributes;
-    REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, node->declarator, &identifier, &type, &aligment,
-                                                        KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &attributes));
+    REQUIRE_OK(kefir_ast_analyze_declaration_declarator(mem, context, specifiers, node->declarator, &identifier, &type,
+                                                        &aligment, KEFIR_AST_DECLARATION_ANALYSIS_NORMAL, &attributes));
     base->properties.declaration_props.function = function;
     base->properties.declaration_props.alignment = aligment;
 

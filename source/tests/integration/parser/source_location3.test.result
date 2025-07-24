@@ -3,18 +3,21 @@
     "external_declarations": [
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": [],
-                    "source_location": {
-                        "source": "<stdin>",
-                        "line": 1,
-                        "column": 1
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": [],
+                        "source_location": {
+                            "source": "<stdin>",
+                            "line": 1,
+                            "column": 1
+                        }
                     }
-                }
-            ],
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -189,18 +192,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "char",
-                    "attributes": [],
-                    "source_location": {
-                        "source": "<stdin>",
-                        "line": 2,
-                        "column": 1
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "char",
+                        "attributes": [],
+                        "source_location": {
+                            "source": "<stdin>",
+                            "line": 2,
+                            "column": 1
+                        }
                     }
-                }
-            ],
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",
@@ -300,18 +306,21 @@
         },
         {
             "class": "declaration",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "int",
-                    "attributes": [],
-                    "source_location": {
-                        "source": "<stdin>",
-                        "line": 3,
-                        "column": 1
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": [],
+                        "source_location": {
+                            "source": "<stdin>",
+                            "line": 3,
+                            "column": 1
+                        }
                     }
-                }
-            ],
+                ],
+                "attributes": []
+            },
             "init_declarators": [
                 {
                     "class": "init_declarator",

@@ -71,7 +71,8 @@ kefir_result_t kefir_ast_is_null_pointer_constant(struct kefir_mem *, const stru
                                                   const struct kefir_ast_node_base *, kefir_bool_t *);
 
 kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                                      const struct kefir_ast_init_declarator *node,
+                                                      const struct kefir_ast_declarator_specifier_list *,
+                                                      const struct kefir_ast_init_declarator *,
                                                       struct kefir_ast_node_base *, const struct kefir_ast_type *,
                                                       kefir_ast_scoped_identifier_storage_t,
                                                       kefir_ast_function_specifier_t, kefir_size_t);

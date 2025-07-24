@@ -92,11 +92,9 @@ typedef struct kefir_parser_ruleset {
     kefir_parser_rule_fn_t rules[KEFIR_PARSER_RULESET_CAPACITY];
 
     kefir_result_t (*declaration_specifier)(struct kefir_mem *, struct kefir_parser *,
-                                            struct kefir_ast_declarator_specifier_list *,
-                                            struct kefir_ast_node_attributes *);
+                                            struct kefir_ast_declarator_specifier_list *);
     kefir_result_t (*declaration_specifier_list)(struct kefir_mem *, struct kefir_parser *,
-                                                 struct kefir_ast_declarator_specifier_list *,
-                                                 struct kefir_ast_node_attributes *);
+                                                 struct kefir_ast_declarator_specifier_list *);
     kefir_result_t (*declarator)(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_declarator **);
     kefir_result_t (*abstract_declarator)(struct kefir_mem *, struct kefir_parser *, struct kefir_ast_declarator **);
     kefir_result_t (*initializer_designation)(struct kefir_mem *, struct kefir_parser *,

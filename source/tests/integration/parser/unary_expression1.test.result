@@ -68,13 +68,16 @@
         "type": "sizeof",
         "argument": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "long",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "long",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "array",
                 "declarator": {
@@ -98,13 +101,16 @@
         "type": "alignof",
         "argument": {
             "class": "type_name",
-            "specifiers": [
-                {
-                    "class": "type_specifier",
-                    "specifier": "char",
-                    "attributes": []
-                }
-            ],
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "char",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
             "declarator": {
                 "class": "function",
                 "declarator": {
@@ -120,13 +126,16 @@
                 "parameters": [
                     {
                         "class": "declaration",
-                        "specifiers": [
-                            {
-                                "class": "type_specifier",
-                                "specifier": "int",
-                                "attributes": []
-                            }
-                        ],
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
                         "init_declarators": [
                             {
                                 "class": "init_declarator",
