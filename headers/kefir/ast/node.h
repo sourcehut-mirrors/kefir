@@ -243,6 +243,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_builtin, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_statement_expression, {
     struct kefir_list block_items;
     struct kefir_ast_node_base *result;
+    struct kefir_ast_node_attributes attributes;
 });
 
 typedef struct kefir_ast_extension_node kefir_ast_extension_node_t;

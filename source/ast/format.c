@@ -1448,6 +1448,7 @@ static kefir_result_t visit_statement_expression(const struct kefir_ast_visitor 
     } else {
         REQUIRE_OK(kefir_json_output_null(json));
     }
+    REQUIRE_OK(format_attributes(json, &node->attributes, param->display_source_location));
 
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));

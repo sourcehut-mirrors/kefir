@@ -1410,14 +1410,20 @@ kefir_result_t kefir_parser_ast_builder_goto_address_statement(struct kefir_mem 
 }
 
 kefir_result_t kefir_parser_ast_builder_statement_expression(struct kefir_mem *mem,
-                                                             struct kefir_parser_ast_builder *builder) {
+                                                             struct kefir_parser_ast_builder *builder,
+                                                             struct kefir_ast_node_attributes *attributes) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
 
     struct kefir_ast_statement_expression *expr = kefir_ast_new_statement_expression(mem);
     REQUIRE(expr != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST statement expression"));
 
-    kefir_result_t res = kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(expr));
+    kefir_result_t res = KEFIR_OK;
+    if (attributes != NULL) {
+        res = kefir_ast_node_attributes_move(&expr->attributes, attributes);
+    }
+
+    REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, KEFIR_AST_NODE_BASE(expr)));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_AST_NODE_FREE(mem, KEFIR_AST_NODE_BASE(expr));
         return KEFIR_OK;
