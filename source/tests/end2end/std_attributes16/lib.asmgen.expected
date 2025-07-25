@@ -332,16 +332,79 @@
                                     "attributes": []
                                 }
                             ],
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": null,
+                                            "name": "aaa",
+                                            "parameters": []
+                                        },
+                                        {
+                                            "prefix": null,
+                                            "name": "bbbb",
+                                            "parameters": []
+                                        }
+                                    ]
+                                },
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": null,
+                                            "name": "ccc",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        "elseBranch": {
+                            "class": "if_statement",
+                            "expression": {
+                                "class": "unary_operation",
+                                "type": "logical_negate",
+                                "argument": {
+                                    "class": "identifier",
+                                    "identifier": "a"
+                                }
+                            },
+                            "thenBranch": {
+                                "class": "compound_statement",
+                                "items": [
+                                    {
+                                        "class": "return_statement",
+                                        "expression": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 0
+                                        }
+                                    }
+                                ],
+                                "attributes": [
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": [
+                                            {
+                                                "prefix": null,
+                                                "name": "ddd",
+                                                "parameters": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            "elseBranch": null,
                             "attributes": []
                         },
-                        "elseBranch": null,
                         "attributes": []
                     },
                     {
-                        "class": "while_statement",
+                        "class": "do_while_statement",
                         "controlling_expression": {
                             "class": "unary_operation",
-                            "type": "postfix_decrement",
+                            "type": "prefix_decrement",
                             "argument": {
                                 "class": "identifier",
                                 "identifier": "a"
@@ -367,35 +430,25 @@
                                     "attributes": []
                                 }
                             ],
-                            "attributes": []
+                            "attributes": [
+                                {
+                                    "class": "attribute_list",
+                                    "attributes": [
+                                        {
+                                            "prefix": null,
+                                            "name": "eeee",
+                                            "parameters": []
+                                        },
+                                        {
+                                            "prefix": null,
+                                            "name": "ffff",
+                                            "parameters": []
+                                        }
+                                    ]
+                                }
+                            ]
                         },
-                        "attributes": [
-                            {
-                                "class": "attribute_list",
-                                "attributes": [
-                                    {
-                                        "prefix": null,
-                                        "name": "aaa",
-                                        "parameters": []
-                                    },
-                                    {
-                                        "prefix": null,
-                                        "name": "bbbb",
-                                        "parameters": []
-                                    }
-                                ]
-                            },
-                            {
-                                "class": "attribute_list",
-                                "attributes": [
-                                    {
-                                        "prefix": null,
-                                        "name": "cccc",
-                                        "parameters": []
-                                    }
-                                ]
-                            }
-                        ]
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",

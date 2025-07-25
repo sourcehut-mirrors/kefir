@@ -74,7 +74,8 @@
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "elseBranch": null,
         "attributes": []
@@ -138,7 +139,8 @@
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "elseBranch": {
             "class": "compound_statement",
@@ -159,7 +161,8 @@
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "attributes": []
     }

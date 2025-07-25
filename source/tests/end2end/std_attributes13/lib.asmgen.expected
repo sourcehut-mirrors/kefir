@@ -331,7 +331,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "elseBranch": null,
                         "attributes": []
@@ -409,7 +410,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": [
                             {
@@ -454,7 +456,8 @@
                             }
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

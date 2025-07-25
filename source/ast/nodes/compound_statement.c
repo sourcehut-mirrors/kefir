@@ -30,6 +30,7 @@ kefir_result_t ast_compound_statement_free(struct kefir_mem *mem, struct kefir_a
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_compound_statement *, node, base->self);
     REQUIRE_OK(kefir_list_free(mem, &node->block_items));
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -75,6 +76,12 @@ struct kefir_ast_compound_statement *kefir_ast_new_compound_statement(struct kef
     });
 
     res = kefir_list_on_remove(&stmt->block_items, free_block_item, NULL);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stmt);
+        return NULL;
+    });
+
+    res = kefir_ast_node_attributes_init(&stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;

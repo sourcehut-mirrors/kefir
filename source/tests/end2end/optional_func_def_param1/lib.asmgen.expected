@@ -476,7 +476,8 @@
                             }
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         },
         {
@@ -757,7 +758,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": []
                     },
@@ -768,7 +770,8 @@
                             "identifier": "sum"
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

@@ -267,7 +267,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": []
                     },
@@ -280,7 +281,8 @@
                                 "statement": null,
                                 "attributes": []
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -289,7 +291,8 @@
                             "identifier": "fact"
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

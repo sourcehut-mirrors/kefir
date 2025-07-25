@@ -162,7 +162,8 @@
                                 },
                                 "attributes": []
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     {
                         "class": "compound_statement",
@@ -242,10 +243,13 @@
                                 },
                                 "attributes": []
                             }
-                        ]
+                        ],
+                        "attributes": []
                     }
-                ]
+                ],
+                "attributes": []
             }
-        ]
+        ],
+        "attributes": []
     }
 ]

@@ -22,16 +22,14 @@
 #include "kefir/parser/builder.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, void *payload) {
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
+static kefir_result_t parse_compound_statement(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                               struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
 
     REQUIRE(PARSER_TOKEN_IS_LEFT_BRACE(parser, 0),
             KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match compound statement"));
     REQUIRE_OK(PARSER_SHIFT(parser));
-    REQUIRE_OK(kefir_parser_ast_builder_compound_statement(mem, builder));
+    REQUIRE_OK(kefir_parser_ast_builder_compound_statement(mem, builder, attributes));
     REQUIRE_OK(kefir_parser_scope_push_block(mem, parser->scope));
 
     while (!PARSER_TOKEN_IS_RIGHT_BRACE(parser, 0)) {
@@ -54,6 +52,26 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected right brace"));
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE_OK(kefir_parser_scope_pop_block(mem, parser->scope));
+    return KEFIR_OK;
+}
+
+static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder, void *payload) {
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
+    struct kefir_parser *parser = builder->parser;
+
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
+    REQUIRE_CHAIN(&res, parse_compound_statement(mem, builder, &attributes));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
     return KEFIR_OK;
 }
 

@@ -293,7 +293,8 @@
                             "value": 51966
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         },
         {
@@ -493,7 +494,8 @@
                             }
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         },
         {
@@ -755,7 +757,8 @@
                             }
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         },
         {
@@ -1014,7 +1017,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": []
                     },
@@ -1039,7 +1043,8 @@
                             "identifier": "sum"
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

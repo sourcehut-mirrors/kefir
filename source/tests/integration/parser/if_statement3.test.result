@@ -18,7 +18,8 @@
                     },
                     "thenBranch": {
                         "class": "compound_statement",
-                        "items": []
+                        "items": [],
+                        "attributes": []
                     },
                     "elseBranch": {
                         "class": "if_statement",
@@ -29,7 +30,8 @@
                         },
                         "thenBranch": {
                             "class": "compound_statement",
-                            "items": []
+                            "items": [],
+                            "attributes": []
                         },
                         "elseBranch": {
                             "class": "compound_statement",
@@ -43,18 +45,21 @@
                                     },
                                     "thenBranch": {
                                         "class": "compound_statement",
-                                        "items": []
+                                        "items": [],
+                                        "attributes": []
                                     },
                                     "elseBranch": null,
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": []
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "elseBranch": null,
         "attributes": []

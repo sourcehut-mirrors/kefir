@@ -331,7 +331,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "elseBranch": {
                             "class": "if_statement",
@@ -354,7 +355,8 @@
                                             "value": 0
                                         }
                                     }
-                                ]
+                                ],
+                                "attributes": []
                             },
                             "elseBranch": null,
                             "attributes": []
@@ -390,7 +392,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": [
                             {
@@ -435,7 +438,8 @@
                             }
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

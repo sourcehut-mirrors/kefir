@@ -97,7 +97,8 @@
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "attributes": []
     },
@@ -139,15 +140,18 @@
                                 },
                                 "body": {
                                     "class": "compound_statement",
-                                    "items": []
+                                    "items": [],
+                                    "attributes": []
                                 },
                                 "attributes": []
                             }
-                        ]
+                        ],
+                        "attributes": []
                     },
                     "attributes": []
                 }
-            ]
+            ],
+            "attributes": []
         },
         "attributes": []
     }

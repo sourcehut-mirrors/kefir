@@ -295,7 +295,8 @@
                     "source": "<stdin>",
                     "line": 3,
                     "column": 15
-                }
+                },
+                "attributes": []
             },
             "source_location": {
                 "source": "<stdin>",

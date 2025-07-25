@@ -233,7 +233,8 @@
                                         "identifier": "b"
                                     }
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "elseBranch": null,
                         "attributes": [
@@ -297,7 +298,8 @@
                                         }
                                     }
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "elseBranch": {
                             "class": "compound_statement",
@@ -309,7 +311,8 @@
                                         "identifier": "a"
                                     }
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": [
                             {
@@ -324,7 +327,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

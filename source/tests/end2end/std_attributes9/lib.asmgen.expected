@@ -373,7 +373,8 @@
                             "identifier": "result"
                         }
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]

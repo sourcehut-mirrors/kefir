@@ -58,7 +58,8 @@
                             },
                             "attributes": []
                         }
-                    ]
+                    ],
+                    "attributes": []
                 },
                 "attributes": []
             },
@@ -100,6 +101,7 @@
                 },
                 "attributes": []
             }
-        ]
+        ],
+        "attributes": []
     }
 ]

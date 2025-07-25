@@ -269,7 +269,8 @@
                                     },
                                     "attributes": []
                                 }
-                            ]
+                            ],
+                            "attributes": []
                         },
                         "attributes": [
                             {
@@ -299,7 +300,8 @@
                             }
                         ]
                     }
-                ]
+                ],
+                "attributes": []
             }
         }
     ]
