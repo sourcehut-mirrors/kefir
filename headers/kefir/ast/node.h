@@ -189,11 +189,13 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_switch_statement, {
 KEFIR_AST_NODE_STRUCT(kefir_ast_while_statement, {
     struct kefir_ast_node_base *controlling_expr;
     struct kefir_ast_node_base *body;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_do_while_statement, {
     struct kefir_ast_node_base *controlling_expr;
     struct kefir_ast_node_base *body;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_for_statement, {
@@ -201,6 +203,7 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_for_statement, {
     struct kefir_ast_node_base *controlling_expr;
     struct kefir_ast_node_base *tail;
     struct kefir_ast_node_base *body;
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_goto_statement, {

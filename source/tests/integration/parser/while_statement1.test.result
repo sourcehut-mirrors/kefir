@@ -10,7 +10,8 @@
             "class": "expression_statement",
             "expression": null,
             "attributes": []
-        }
+        },
+        "attributes": []
     },
     {
         "class": "while_statement",
@@ -33,7 +34,8 @@
                 }
             },
             "attributes": []
-        }
+        },
+        "attributes": []
     },
     {
         "class": "while_statement",
@@ -96,7 +98,8 @@
                     "attributes": []
                 }
             ]
-        }
+        },
+        "attributes": []
     },
     {
         "class": "while_statement",
@@ -137,12 +140,15 @@
                                 "body": {
                                     "class": "compound_statement",
                                     "items": []
-                                }
+                                },
+                                "attributes": []
                             }
                         ]
-                    }
+                    },
+                    "attributes": []
                 }
             ]
-        }
+        },
+        "attributes": []
     }
 ]

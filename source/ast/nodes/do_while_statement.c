@@ -33,6 +33,7 @@ kefir_result_t ast_do_while_statement_free(struct kefir_mem *mem, struct kefir_a
     node->controlling_expr = NULL;
     REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->body));
     node->body = NULL;
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -58,6 +59,11 @@ struct kefir_ast_do_while_statement *kefir_ast_new_do_while_statement(struct kef
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stmt);
+        return NULL;
+    });
+    res = kefir_ast_node_attributes_init(&stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;

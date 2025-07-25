@@ -9,7 +9,8 @@
         "body": {
             "class": "compound_statement",
             "items": []
-        }
+        },
+        "attributes": []
     },
     {
         "class": "do_while_statement",
@@ -66,7 +67,8 @@
                     "attributes": []
                 }
             ]
-        }
+        },
+        "attributes": []
     },
     {
         "class": "do_while_statement",
@@ -132,12 +134,15 @@
                                             "attributes": []
                                         }
                                     ]
-                                }
+                                },
+                                "attributes": []
                             }
                         ]
-                    }
+                    },
+                    "attributes": []
                 }
             ]
-        }
+        },
+        "attributes": []
     }
 ]

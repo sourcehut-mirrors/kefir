@@ -1015,7 +1015,8 @@
                                     "attributes": []
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "expression_statement",

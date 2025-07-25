@@ -22,7 +22,8 @@
 #include "kefir/parser/builder.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t scan_while(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_while(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                 struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
@@ -38,11 +39,12 @@ static kefir_result_t scan_while(struct kefir_mem *mem, struct kefir_parser_ast_
     REQUIRE_MATCH_OK(
         &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL),
         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected statement"));
-    REQUIRE_OK(kefir_parser_ast_builder_while_statement(mem, builder));
+    REQUIRE_OK(kefir_parser_ast_builder_while_statement(mem, builder, attributes));
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_do_while(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_do_while(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                                    struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     kefir_result_t res;
@@ -64,11 +66,12 @@ static kefir_result_t scan_do_while(struct kefir_mem *mem, struct kefir_parser_a
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_SEMICOLON),
             KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected semicolon"));
     REQUIRE_OK(PARSER_SHIFT(parser));
-    REQUIRE_OK(kefir_parser_ast_builder_do_while_statement(mem, builder));
+    REQUIRE_OK(kefir_parser_ast_builder_do_while_statement(mem, builder, attributes));
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_for(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
+static kefir_result_t scan_for(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
+                               struct kefir_ast_node_attributes *attributes) {
     struct kefir_parser *parser = builder->parser;
     REQUIRE_OK(PARSER_SHIFT(parser));
     REQUIRE(PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE),
@@ -119,7 +122,7 @@ static kefir_result_t scan_for(struct kefir_mem *mem, struct kefir_parser_ast_bu
     REQUIRE_MATCH_OK(
         &res, kefir_parser_ast_builder_scan(mem, builder, KEFIR_PARSER_RULE_FN(parser, statement), NULL),
         KEFIR_SET_SOURCE_ERROR(KEFIR_SYNTAX_ERROR, PARSER_TOKEN_LOCATION(parser, 0), "Expected statement"));
-    REQUIRE_OK(kefir_parser_ast_builder_for_statement(mem, builder, clauses[0], clauses[1], clauses[2]));
+    REQUIRE_OK(kefir_parser_ast_builder_for_statement(mem, builder, clauses[0], clauses[1], clauses[2], attributes));
     return KEFIR_OK;
 }
 
@@ -129,15 +132,26 @@ static kefir_result_t builder_callback(struct kefir_mem *mem, struct kefir_parse
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser AST builder"));
     struct kefir_parser *parser = builder->parser;
 
+    struct kefir_ast_node_attributes attributes;
+    REQUIRE_OK(kefir_ast_node_attributes_init(&attributes));
+
+    kefir_result_t res = KEFIR_OK;
+    SCAN_ATTRIBUTES(&res, mem, parser, &attributes);
     if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_WHILE)) {
-        REQUIRE_OK(scan_while(mem, builder));
+        REQUIRE_CHAIN(&res, scan_while(mem, builder, &attributes));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_DO)) {
-        REQUIRE_OK(scan_do_while(mem, builder));
+        REQUIRE_CHAIN(&res, scan_do_while(mem, builder, &attributes));
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_FOR)) {
-        REQUIRE_OK(scan_for(mem, builder));
+        REQUIRE_CHAIN(&res, scan_for(mem, builder, &attributes));
     } else {
-        return KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match iterative statement");
+        res = KEFIR_SET_ERROR(KEFIR_NO_MATCH, "Unable to match iterative statement");
     }
+
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_node_attributes_free(mem, &attributes);
+        return res;
+    });
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &attributes));
 
     return KEFIR_OK;
 }

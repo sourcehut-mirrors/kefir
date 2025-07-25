@@ -758,7 +758,8 @@
                                     "attributes": []
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",

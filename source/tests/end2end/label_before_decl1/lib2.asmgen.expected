@@ -268,7 +268,8 @@
                                     "attributes": []
                                 }
                             ]
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "compound_statement",
