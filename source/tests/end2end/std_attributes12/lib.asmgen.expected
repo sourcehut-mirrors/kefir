@@ -230,7 +230,8 @@
                                         "expression": {
                                             "class": "identifier",
                                             "identifier": "b"
-                                        }
+                                        },
+                                        "attributes": []
                                     },
                                     "attributes": []
                                 },
@@ -263,7 +264,8 @@
                                                     "class": "identifier",
                                                     "identifier": "b"
                                                 }
-                                            }
+                                            },
+                                            "attributes": []
                                         },
                                         "attributes": []
                                     },

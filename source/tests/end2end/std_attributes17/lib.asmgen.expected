@@ -515,7 +515,8 @@
                         "expression": {
                             "class": "identifier",
                             "identifier": "result"
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

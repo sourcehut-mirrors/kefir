@@ -248,7 +248,8 @@
                                 "class": "identifier",
                                 "identifier": "b"
                             }
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "attribute_declaration",

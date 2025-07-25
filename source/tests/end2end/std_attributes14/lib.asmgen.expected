@@ -410,7 +410,8 @@
                                 "class": "identifier",
                                 "identifier": "sign"
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

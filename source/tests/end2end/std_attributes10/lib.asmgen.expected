@@ -210,7 +210,8 @@
                     },
                     {
                         "class": "goto_statement",
-                        "identifier": "label"
+                        "identifier": "label",
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -218,7 +219,8 @@
                             "class": "constant",
                             "type": "integer",
                             "value": 0
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "labeled_statement",
@@ -245,7 +247,8 @@
                                             "expression": {
                                                 "class": "identifier",
                                                 "identifier": "b"
-                                            }
+                                            },
+                                            "attributes": []
                                         },
                                         "attributes": [
                                             {
@@ -289,7 +292,8 @@
                                                         "class": "identifier",
                                                         "identifier": "b"
                                                     }
-                                                }
+                                                },
+                                                "attributes": []
                                             },
                                             "attributes": [
                                                 {

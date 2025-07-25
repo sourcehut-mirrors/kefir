@@ -474,7 +474,8 @@
                                 "class": "identifier",
                                 "identifier": "b"
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -768,7 +769,8 @@
                         "expression": {
                             "class": "identifier",
                             "identifier": "sum"
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

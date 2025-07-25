@@ -1,7 +1,8 @@
 [
     {
         "class": "return_statement",
-        "expression": null
+        "expression": null,
+        "attributes": []
     },
     {
         "class": "return_statement",
@@ -36,17 +37,21 @@
                     }
                 }
             }
-        }
+        },
+        "attributes": []
     },
     {
         "class": "goto_statement",
-        "identifier": "label1"
+        "identifier": "label1",
+        "attributes": []
     },
     {
-        "class": "continue_statement"
+        "class": "continue_statement",
+        "attributes": []
     },
     {
-        "class": "break_statement"
+        "class": "break_statement",
+        "attributes": []
     },
     {
         "class": "goto_address_statement",

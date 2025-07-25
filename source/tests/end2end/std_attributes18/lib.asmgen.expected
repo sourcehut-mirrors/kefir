@@ -213,8 +213,13 @@
                         "specifiers": {
                             "list": [
                                 {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
                                     "class": "type_specifier",
-                                    "specifier": "int",
+                                    "specifier": "void",
                                     "attributes": []
                                 }
                             ],
@@ -224,21 +229,101 @@
                             {
                                 "class": "init_declarator",
                                 "declarator": {
-                                    "class": "identifier",
-                                    "identifier": "prod",
-                                    "asm_label": null,
+                                    "class": "pointer",
+                                    "declarator": {
+                                        "class": "array",
+                                        "declarator": {
+                                            "class": "identifier",
+                                            "identifier": "labels",
+                                            "asm_label": null,
+                                            "attributes": []
+                                        },
+                                        "type": "unbounded",
+                                        "static": false,
+                                        "type_qualifiers": [],
+                                        "attributes": []
+                                    },
+                                    "type_qualifiers": [],
                                     "attributes": []
                                 },
                                 "initializer": {
-                                    "type": "expression",
-                                    "expression": {
-                                        "class": "constant",
-                                        "type": "integer",
-                                        "value": 0
-                                    }
+                                    "type": "list",
+                                    "list": [
+                                        {
+                                            "designation": null,
+                                            "initializer": {
+                                                "type": "expression",
+                                                "expression": {
+                                                    "class": "label_address",
+                                                    "label": "begin"
+                                                }
+                                            }
+                                        }
+                                    ]
                                 }
                             }
                         ]
+                    },
+                    {
+                        "class": "goto_address_statement",
+                        "target": {
+                            "class": "array_subscript",
+                            "array": {
+                                "class": "identifier",
+                                "identifier": "labels"
+                            },
+                            "subscript": {
+                                "class": "constant",
+                                "type": "integer",
+                                "value": 0
+                            }
+                        }
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "constant",
+                            "type": "integer",
+                            "value": 0
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "labeled_statement",
+                        "label": "begin",
+                        "statement": {
+                            "class": "declaration",
+                            "specifiers": {
+                                "list": [
+                                    {
+                                        "class": "type_specifier",
+                                        "specifier": "int",
+                                        "attributes": []
+                                    }
+                                ],
+                                "attributes": []
+                            },
+                            "init_declarators": [
+                                {
+                                    "class": "init_declarator",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "prod",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "initializer": {
+                                        "type": "expression",
+                                        "expression": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 0
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "declaration",
@@ -334,7 +419,61 @@
                             ],
                             "attributes": []
                         },
-                        "elseBranch": null,
+                        "elseBranch": {
+                            "class": "if_statement",
+                            "expression": {
+                                "class": "binary_operation",
+                                "type": "equal",
+                                "left": {
+                                    "class": "identifier",
+                                    "identifier": "a"
+                                },
+                                "right": {
+                                    "class": "constant",
+                                    "type": "integer",
+                                    "value": 0
+                                }
+                            },
+                            "thenBranch": {
+                                "class": "compound_statement",
+                                "items": [
+                                    {
+                                        "class": "goto_statement",
+                                        "identifier": "exit_label",
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "ggg",
+                                                        "parameters": []
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "hhh",
+                                                        "parameters": []
+                                                    },
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "iii",
+                                                        "parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ],
+                                "attributes": []
+                            },
+                            "elseBranch": null,
+                            "attributes": []
+                        },
                         "attributes": []
                     },
                     {
@@ -371,18 +510,7 @@
                                 }
                             ]
                         },
-                        "controlling_expression": {
-                            "class": "binary_operation",
-                            "type": "less",
-                            "left": {
-                                "class": "identifier",
-                                "identifier": "i"
-                            },
-                            "right": {
-                                "class": "identifier",
-                                "identifier": "a"
-                            }
-                        },
+                        "controlling_expression": null,
                         "tail": {
                             "class": "unary_operation",
                             "type": "postfix_increment",
@@ -394,6 +522,47 @@
                         "body": {
                             "class": "compound_statement",
                             "items": [
+                                {
+                                    "class": "if_statement",
+                                    "expression": {
+                                        "class": "unary_operation",
+                                        "type": "logical_negate",
+                                        "argument": {
+                                            "class": "binary_operation",
+                                            "type": "less",
+                                            "left": {
+                                                "class": "identifier",
+                                                "identifier": "i"
+                                            },
+                                            "right": {
+                                                "class": "identifier",
+                                                "identifier": "a"
+                                            }
+                                        }
+                                    },
+                                    "thenBranch": {
+                                        "class": "break_statement",
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "ddd",
+                                                        "parameters": []
+                                                    },
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "eee",
+                                                        "parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "elseBranch": null,
+                                    "attributes": []
+                                },
                                 {
                                     "class": "expression_statement",
                                     "expression": {
@@ -409,51 +578,45 @@
                                         }
                                     },
                                     "attributes": []
+                                },
+                                {
+                                    "class": "continue_statement",
+                                    "attributes": [
+                                        {
+                                            "class": "attribute_list",
+                                            "attributes": [
+                                                {
+                                                    "prefix": null,
+                                                    "name": "fff",
+                                                    "parameters": []
+                                                }
+                                            ]
+                                        }
+                                    ]
                                 }
                             ],
                             "attributes": []
                         },
-                        "attributes": [
-                            {
-                                "class": "attribute_list",
-                                "attributes": [
-                                    {
-                                        "prefix": null,
-                                        "name": "aaa",
-                                        "parameters": []
-                                    },
-                                    {
-                                        "prefix": null,
-                                        "name": "bbbb",
-                                        "parameters": []
-                                    }
-                                ]
-                            },
-                            {
-                                "class": "attribute_list",
-                                "attributes": [
-                                    {
-                                        "prefix": null,
-                                        "name": "cccc",
-                                        "parameters": []
-                                    }
-                                ]
-                            }
-                        ]
+                        "attributes": []
                     },
                     {
-                        "class": "return_statement",
-                        "expression": {
-                            "class": "binary_operation",
-                            "type": "multiply",
-                            "left": {
-                                "class": "identifier",
-                                "identifier": "prod"
+                        "class": "labeled_statement",
+                        "label": "exit_label",
+                        "statement": {
+                            "class": "return_statement",
+                            "expression": {
+                                "class": "binary_operation",
+                                "type": "multiply",
+                                "left": {
+                                    "class": "identifier",
+                                    "identifier": "prod"
+                                },
+                                "right": {
+                                    "class": "identifier",
+                                    "identifier": "sign"
+                                }
                             },
-                            "right": {
-                                "class": "identifier",
-                                "identifier": "sign"
-                            }
+                            "attributes": []
                         },
                         "attributes": []
                     }

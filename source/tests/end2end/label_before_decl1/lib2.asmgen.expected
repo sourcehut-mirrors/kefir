@@ -162,7 +162,8 @@
                     },
                     {
                         "class": "goto_statement",
-                        "identifier": "test1"
+                        "identifier": "test1",
+                        "attributes": []
                     },
                     {
                         "class": "return_statement",
@@ -170,7 +171,8 @@
                             "class": "constant",
                             "type": "integer",
                             "value": 0
-                        }
+                        },
+                        "attributes": []
                     },
                     {
                         "class": "labeled_statement",
@@ -234,7 +236,8 @@
                                     },
                                     "thenBranch": {
                                         "class": "goto_statement",
-                                        "identifier": "test2"
+                                        "identifier": "test2",
+                                        "attributes": []
                                     },
                                     "elseBranch": null,
                                     "attributes": []
@@ -289,7 +292,8 @@
                         "expression": {
                             "class": "identifier",
                             "identifier": "fact"
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

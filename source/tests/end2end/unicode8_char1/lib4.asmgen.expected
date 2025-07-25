@@ -299,7 +299,8 @@
                             "class": "constant",
                             "type": "unicode8_character",
                             "value": 97
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -418,7 +419,8 @@
                             "class": "constant",
                             "type": "unicode8_character",
                             "value": -15957
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -537,7 +539,8 @@
                             "class": "constant",
                             "type": "unicode8_character",
                             "value": 126
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -656,7 +659,8 @@
                             "class": "constant",
                             "type": "unicode8_character",
                             "value": 1701604463
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -775,7 +779,8 @@
                             "class": "constant",
                             "type": "unicode8_character",
                             "value": 120
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

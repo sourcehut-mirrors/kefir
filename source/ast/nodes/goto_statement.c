@@ -36,6 +36,7 @@ kefir_result_t ast_goto_statement_free(struct kefir_mem *mem, struct kefir_ast_n
         REQUIRE_OK(KEFIR_AST_NODE_FREE(mem, node->target));
         node->target = NULL;
     }
+    REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -72,6 +73,11 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_statement(struct kefir_mem *
         KEFIR_FREE(mem, stmt);
         return NULL;
     });
+    res = kefir_ast_node_attributes_init(&stmt->attributes);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stmt);
+        return NULL;
+    });
 
     stmt->identifier = identifier;
     return stmt;
@@ -93,6 +99,11 @@ struct kefir_ast_goto_statement *kefir_ast_new_goto_address_statement(struct kef
         return NULL;
     });
     res = kefir_source_location_empty(&stmt->base.source_location);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, stmt);
+        return NULL;
+    });
+    res = kefir_ast_node_attributes_init(&stmt->attributes);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, stmt);
         return NULL;

@@ -284,6 +284,7 @@
                                 "column": 12
                             }
                         },
+                        "attributes": [],
                         "source_location": {
                             "source": "<stdin>",
                             "line": 4,

@@ -451,7 +451,8 @@
                                     }
                                 }
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []

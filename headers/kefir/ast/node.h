@@ -214,17 +214,21 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_goto_statement, {
         const char *identifier;
         struct kefir_ast_node_base *target;
     };
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_continue_statement, {
-    int payload;  // Dummy payload for non-empty struct
+    struct kefir_ast_node_attributes attributes;
 });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_break_statement, {
-    int payload;  // Dummy payload for non-empty struct
+    struct kefir_ast_node_attributes attributes;
 });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_return_statement, { struct kefir_ast_node_base *expression; });
+KEFIR_AST_NODE_STRUCT(kefir_ast_return_statement, {
+    struct kefir_ast_node_base *expression;
+    struct kefir_ast_node_attributes attributes;
+});
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_function_definition, {
     struct kefir_ast_declarator_specifier_list specifiers;

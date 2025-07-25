@@ -101,12 +101,12 @@ kefir_result_t kefir_parser_ast_builder_do_while_statement(struct kefir_mem *, s
 kefir_result_t kefir_parser_ast_builder_for_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                                       kefir_bool_t, kefir_bool_t, kefir_bool_t,
                                                       struct kefir_ast_node_attributes *);
-kefir_result_t kefir_parser_ast_builder_return_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
-kefir_result_t kefir_parser_ast_builder_return_value_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
+kefir_result_t kefir_parser_ast_builder_return_statement(struct kefir_mem *, struct kefir_parser_ast_builder *, struct kefir_ast_node_attributes *);
+kefir_result_t kefir_parser_ast_builder_return_value_statement(struct kefir_mem *, struct kefir_parser_ast_builder *, struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_ast_builder_goto_statement(struct kefir_mem *, struct kefir_parser_ast_builder *,
-                                                       const char *);
-kefir_result_t kefir_parser_ast_builder_continue_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
-kefir_result_t kefir_parser_ast_builder_break_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
+                                                       const char *, struct kefir_ast_node_attributes *);
+kefir_result_t kefir_parser_ast_builder_continue_statement(struct kefir_mem *, struct kefir_parser_ast_builder *, struct kefir_ast_node_attributes *);
+kefir_result_t kefir_parser_ast_builder_break_statement(struct kefir_mem *, struct kefir_parser_ast_builder *, struct kefir_ast_node_attributes *);
 kefir_result_t kefir_parser_ast_builder_translation_unit(struct kefir_mem *, struct kefir_parser_ast_builder *);
 kefir_result_t kefir_parser_ast_builder_translation_unit_append(struct kefir_mem *, struct kefir_parser_ast_builder *);
 
@@ -116,7 +116,7 @@ kefir_result_t kefir_parser_ast_builder_builtin_append(struct kefir_mem *, struc
 
 kefir_result_t kefir_parser_ast_builder_label_address(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                                       const char *);
-kefir_result_t kefir_parser_ast_builder_goto_address_statement(struct kefir_mem *, struct kefir_parser_ast_builder *);
+kefir_result_t kefir_parser_ast_builder_goto_address_statement(struct kefir_mem *, struct kefir_parser_ast_builder *, struct kefir_ast_node_attributes *);
 
 kefir_result_t kefir_parser_ast_builder_statement_expression(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                                              struct kefir_ast_node_attributes *);

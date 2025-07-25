@@ -291,7 +291,8 @@
                             "class": "constant",
                             "type": "integer",
                             "value": 51966
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -492,7 +493,8 @@
                                 "class": "identifier",
                                 "identifier": "x"
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -755,7 +757,8 @@
                                 "class": "identifier",
                                 "identifier": "y"
                             }
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
@@ -1041,7 +1044,8 @@
                         "expression": {
                             "class": "identifier",
                             "identifier": "sum"
-                        }
+                        },
+                        "attributes": []
                     }
                 ],
                 "attributes": []
