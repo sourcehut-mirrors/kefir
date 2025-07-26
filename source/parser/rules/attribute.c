@@ -51,8 +51,9 @@ static kefir_result_t consume_gnu_attribute_parameters(struct kefir_mem *mem, st
     return KEFIR_OK;
 }
 
-static kefir_result_t skip_nongnu_attribute_parameters(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
-                                                       struct kefir_parser *parser) {
+static kefir_result_t consume_nongnu_attribute_parameters(struct kefir_mem *mem,
+                                                          struct kefir_parser_ast_builder *builder,
+                                                          struct kefir_parser *parser) {
     UNUSED(mem);
     UNUSED(builder);
     kefir_size_t depth = 1;
@@ -62,6 +63,11 @@ static kefir_result_t skip_nongnu_attribute_parameters(struct kefir_mem *mem, st
             depth--;
         } else if (PARSER_TOKEN_IS_PUNCTUATOR(parser, 0, KEFIR_PUNCTUATOR_LEFT_PARENTHESE)) {
             depth++;
+        }
+
+        if (depth > 0) {
+            REQUIRE_CHAIN(&res, kefir_parser_ast_builder_attribute_unstructured_parameter(mem, builder,
+                                                                                          PARSER_CURSOR(parser, 0)));
         }
 
         REQUIRE_CHAIN(&res, PARSER_SHIFT(parser));
@@ -114,7 +120,7 @@ static kefir_result_t consume_attribute(struct kefir_mem *mem, struct kefir_pars
         if (prefix != NULL && strcmp(prefix, "gnu") == 0) {
             REQUIRE_OK(consume_gnu_attribute_parameters(mem, builder, parser));
         } else {
-            REQUIRE_OK(skip_nongnu_attribute_parameters(mem, builder, parser));
+            REQUIRE_OK(consume_nongnu_attribute_parameters(mem, builder, parser));
         }
     }
 

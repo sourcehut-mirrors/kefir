@@ -117,7 +117,8 @@
                             {
                                 "prefix": null,
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -210,12 +211,14 @@
                             {
                                 "prefix": null,
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             },
                             {
                                 "prefix": null,
                                 "name": "yyy",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -308,12 +311,14 @@
                             {
                                 "prefix": null,
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             },
                             {
                                 "prefix": null,
                                 "name": "yyy",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -406,12 +411,55 @@
                             {
                                 "prefix": null,
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": [
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "{"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "{"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "{"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "{"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "}"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "{"
+                                    }
+                                ]
                             },
                             {
                                 "prefix": null,
                                 "name": "yyy",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -504,12 +552,95 @@
                             {
                                 "prefix": null,
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             },
                             {
                                 "prefix": null,
                                 "name": "yyy",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": [
+                                    {
+                                        "class": "identifier",
+                                        "preprocessor": false,
+                                        "identifier": "___"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": "("
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ")"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -602,12 +733,14 @@
                             {
                                 "prefix": "kefir",
                                 "name": "xxx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             },
                             {
                                 "prefix": "gnu",
                                 "name": "yyy",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -700,7 +833,25 @@
                             {
                                 "prefix": "x",
                                 "name": "x123xx",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": [
+                                    {
+                                        "class": "identifier",
+                                        "preprocessor": false,
+                                        "identifier": "a1232nj"
+                                    },
+                                    {
+                                        "class": "punctuator",
+                                        "preprocessor": false,
+                                        "punctuator": ","
+                                    },
+                                    {
+                                        "class": "constant",
+                                        "preprocessor": false,
+                                        "type": "integer",
+                                        "value": 382
+                                    }
+                                ]
                             },
                             {
                                 "prefix": "gnu",
@@ -725,7 +876,8 @@
                                         "type": "integer",
                                         "value": 2
                                     }
-                                ]
+                                ],
+                                "unstructured_parameters": []
                             }
                         ]
                     }

@@ -16,7 +16,8 @@
                         {
                             "prefix": "gnu",
                             "name": "__another_annotation__",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 }
@@ -38,7 +39,8 @@
                                     {
                                         "prefix": "gnu",
                                         "name": "__inline__",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -74,7 +76,8 @@
                         {
                             "prefix": "gnu",
                             "name": "__another_annotation__",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 }
@@ -96,7 +99,8 @@
                                     {
                                         "prefix": "gnu",
                                         "name": "some_attribute",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": "gnu",
@@ -106,7 +110,8 @@
                                                 "class": "identifier",
                                                 "identifier": "integers"
                                             }
-                                        ]
+                                        ],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

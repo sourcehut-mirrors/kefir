@@ -403,12 +403,14 @@
                                     {
                                         "prefix": null,
                                         "name": "aaa",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "bbbb",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -418,7 +420,8 @@
                                     {
                                         "prefix": null,
                                         "name": "cccc",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

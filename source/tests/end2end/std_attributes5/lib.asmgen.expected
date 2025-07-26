@@ -28,7 +28,8 @@
                             {
                                 "prefix": "var",
                                 "name": "attr2",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     },
@@ -38,7 +39,8 @@
                             {
                                 "prefix": "var",
                                 "name": "attr3",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     },
@@ -48,7 +50,8 @@
                             {
                                 "prefix": "var",
                                 "name": "attr4",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     },
@@ -58,7 +61,8 @@
                             {
                                 "prefix": "var",
                                 "name": "attr5",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -78,7 +82,8 @@
                                     {
                                         "prefix": "var",
                                         "name": "attr1",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -186,7 +191,8 @@
                                     {
                                         "prefix": "struct",
                                         "name": "attr1",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -196,7 +202,8 @@
                                     {
                                         "prefix": "struct",
                                         "name": "attr2",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -206,7 +213,8 @@
                                     {
                                         "prefix": "struct",
                                         "name": "attr3",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -216,7 +224,8 @@
                                     {
                                         "prefix": "struct",
                                         "name": "attr4",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -249,7 +258,8 @@
                                     {
                                         "prefix": "struct",
                                         "name": "attrx",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -285,7 +295,8 @@
                                             {
                                                 "prefix": "enum_const",
                                                 "name": "attr1",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": []
                                             }
                                         ]
                                     }
@@ -305,12 +316,14 @@
                                             {
                                                 "prefix": "enum_const",
                                                 "name": "attr2",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": []
                                             },
                                             {
                                                 "prefix": "enum_const",
                                                 "name": "attr3",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": []
                                             }
                                         ]
                                     }
@@ -331,7 +344,8 @@
                                             {
                                                 "prefix": "enum_const",
                                                 "name": "attr4",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": []
                                             }
                                         ]
                                     },
@@ -341,7 +355,14 @@
                                             {
                                                 "prefix": "enum_const",
                                                 "name": "attr5",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": [
+                                                    {
+                                                        "class": "identifier",
+                                                        "preprocessor": false,
+                                                        "identifier": "test"
+                                                    }
+                                                ]
                                             }
                                         ]
                                     }
@@ -355,7 +376,8 @@
                                     {
                                         "prefix": "enum",
                                         "name": "attr1",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -365,7 +387,8 @@
                                     {
                                         "prefix": "enum",
                                         "name": "attr2",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -398,7 +421,8 @@
                                     {
                                         "prefix": "enum",
                                         "name": "attrx",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

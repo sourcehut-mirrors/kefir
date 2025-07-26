@@ -281,12 +281,14 @@
                                     {
                                         "prefix": null,
                                         "name": "xxx",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "yyyy",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -296,7 +298,8 @@
                                     {
                                         "prefix": null,
                                         "name": "zzz",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

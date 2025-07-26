@@ -21,7 +21,8 @@
                                 "class": "identifier",
                                 "identifier": "param1"
                             }
-                        ]
+                        ],
+                        "unstructured_parameters": []
                     }
                 ]
             },
@@ -36,12 +37,14 @@
                                 "class": "identifier",
                                 "identifier": "param2"
                             }
-                        ]
+                        ],
+                        "unstructured_parameters": []
                     },
                     {
                         "prefix": "gnu",
                         "name": "something_else",
-                        "parameters": []
+                        "parameters": [],
+                        "unstructured_parameters": []
                     }
                 ]
             },
@@ -60,7 +63,8 @@
                                 "class": "identifier",
                                 "identifier": "param4"
                             }
-                        ]
+                        ],
+                        "unstructured_parameters": []
                     }
                 ]
             }

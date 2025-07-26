@@ -317,12 +317,14 @@
                                     {
                                         "prefix": null,
                                         "name": "aaa",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "bbb",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -332,7 +334,8 @@
                                     {
                                         "prefix": null,
                                         "name": "ccc",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -360,7 +363,8 @@
                                     {
                                         "prefix": null,
                                         "name": "ddd",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

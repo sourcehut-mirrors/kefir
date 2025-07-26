@@ -26,6 +26,8 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/ast/initializer.h"
 #include "kefir/ast/declarator.h"
+#include "kefir/lexer/buffer.h"
+#include "kefir/lexer/allocator.h"
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_constant, {
     kefir_ast_constant_type_t type;
@@ -217,13 +219,9 @@ KEFIR_AST_NODE_STRUCT(kefir_ast_goto_statement, {
     struct kefir_ast_node_attributes attributes;
 });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_continue_statement, {
-    struct kefir_ast_node_attributes attributes;
-});
+KEFIR_AST_NODE_STRUCT(kefir_ast_continue_statement, { struct kefir_ast_node_attributes attributes; });
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_break_statement, {
-    struct kefir_ast_node_attributes attributes;
-});
+KEFIR_AST_NODE_STRUCT(kefir_ast_break_statement, { struct kefir_ast_node_attributes attributes; });
 
 KEFIR_AST_NODE_STRUCT(kefir_ast_return_statement, {
     struct kefir_ast_node_base *expression;
@@ -267,9 +265,13 @@ typedef struct kefir_ast_attribute {
     const char *prefix;
     const char *name;
     struct kefir_list parameters;
+    struct kefir_token_buffer unstructured_parameters;
 } kefir_ast_attribute_t;
 
-KEFIR_AST_NODE_STRUCT(kefir_ast_attribute_list, { struct kefir_list list; });
+KEFIR_AST_NODE_STRUCT(kefir_ast_attribute_list, {
+    struct kefir_list list;
+    struct kefir_token_allocator unstructured_parameter_token_allocator;
+});
 
 typedef struct kefir_ast_inline_assembly_parameter {
     const char *parameter_name;

@@ -10,12 +10,14 @@
                         {
                             "prefix": null,
                             "name": "attr1",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         },
                         {
                             "prefix": null,
                             "name": "attr2",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 },
@@ -25,7 +27,8 @@
                         {
                             "prefix": null,
                             "name": "attr3",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 },
@@ -35,7 +38,8 @@
                         {
                             "prefix": null,
                             "name": "attr4",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 }
@@ -50,7 +54,8 @@
                         {
                             "prefix": null,
                             "name": "attr5",
-                            "parameters": []
+                            "parameters": [],
+                            "unstructured_parameters": []
                         }
                     ]
                 }
@@ -194,17 +199,20 @@
                                     {
                                         "prefix": null,
                                         "name": "attr6",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "attr7",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "attr8",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -214,7 +222,8 @@
                                     {
                                         "prefix": null,
                                         "name": "attr9",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -229,7 +238,8 @@
                                     {
                                         "prefix": null,
                                         "name": "attr10",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -260,12 +270,14 @@
                                     {
                                         "prefix": null,
                                         "name": "attr11",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     },
                                     {
                                         "prefix": null,
                                         "name": "attr12",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

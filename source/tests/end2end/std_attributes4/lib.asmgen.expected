@@ -27,7 +27,8 @@
                                     {
                                         "prefix": null,
                                         "name": "struct",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             },
@@ -37,7 +38,8 @@
                                     {
                                         "prefix": null,
                                         "name": "union",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -73,7 +75,8 @@
                                     {
                                         "prefix": "test1",
                                         "name": "int",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -109,7 +112,8 @@
                                     {
                                         "prefix": "float",
                                         "name": "alignas",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

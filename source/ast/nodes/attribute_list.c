@@ -30,6 +30,7 @@ kefir_result_t ast_attribute_list_free(struct kefir_mem *mem, struct kefir_ast_n
     REQUIRE(base != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST node base"));
     ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, node, base->self);
     REQUIRE_OK(kefir_list_free(mem, &node->list));
+    REQUIRE_OK(kefir_token_allocator_free(mem, &node->unstructured_parameter_token_allocator));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
 }
@@ -58,6 +59,7 @@ static kefir_result_t attribute_free(struct kefir_mem *mem, struct kefir_list *l
     ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, entry->value);
 
     REQUIRE_OK(kefir_list_free(mem, &attribute->parameters));
+    REQUIRE_OK(kefir_token_buffer_free(mem, &attribute->unstructured_parameters));
     attribute->name = NULL;
     KEFIR_FREE(mem, attribute);
     return KEFIR_OK;
@@ -75,6 +77,7 @@ struct kefir_ast_attribute_list *kefir_ast_new_attribute_list(struct kefir_mem *
     REQUIRE_CHAIN(&res, kefir_source_location_empty(&attribute_list->base.source_location));
     REQUIRE_CHAIN(&res, kefir_list_init(&attribute_list->list));
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&attribute_list->list, attribute_free, NULL));
+    REQUIRE_CHAIN(&res, kefir_token_allocator_init(&attribute_list->unstructured_parameter_token_allocator));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, attribute_list);
         return NULL;
@@ -109,6 +112,7 @@ kefir_result_t kefir_ast_attribute_list_append(struct kefir_mem *mem, struct kef
     attr->name = name;
     kefir_result_t res = kefir_list_init(&attr->parameters);
     REQUIRE_CHAIN(&res, kefir_list_on_remove(&attr->parameters, attribute_param_free, NULL));
+    REQUIRE_CHAIN(&res, kefir_token_buffer_init(&attr->unstructured_parameters));
     REQUIRE_CHAIN(&res,
                   kefir_list_insert_after(mem, &attribute_list->list, kefir_list_tail(&attribute_list->list), attr));
     REQUIRE_ELSE(res == KEFIR_OK, {

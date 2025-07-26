@@ -19,6 +19,7 @@
 */
 
 #include "kefir/ast/format.h"
+#include "kefir/lexer/format.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 
@@ -1491,6 +1492,13 @@ static kefir_result_t visit_attribute_list(const struct kefir_ast_visitor *visit
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, attr_param, iter2->value);
             REQUIRE_OK(kefir_ast_format(json, attr_param, param->display_source_location));
+        }
+        REQUIRE_OK(kefir_json_output_array_end(json));
+        REQUIRE_OK(kefir_json_output_object_key(json, "unstructured_parameters"));
+        REQUIRE_OK(kefir_json_output_array_begin(json));
+        for (kefir_size_t i = 0; i < kefir_token_buffer_length(&attr->unstructured_parameters); i++) {
+            REQUIRE_OK(kefir_token_format(json, kefir_token_buffer_at(&attr->unstructured_parameters, i),
+                                          param->display_source_location));
         }
         REQUIRE_OK(kefir_json_output_array_end(json));
         REQUIRE_OK(kefir_json_output_object_end(json));

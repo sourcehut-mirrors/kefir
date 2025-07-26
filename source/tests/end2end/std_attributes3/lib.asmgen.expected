@@ -54,7 +54,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "weak",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -171,7 +172,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "noipa",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -288,7 +290,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "packed",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -405,7 +408,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__weak__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -522,7 +526,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "noinline",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -639,7 +644,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__noipa__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -756,7 +762,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__packed__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -873,7 +880,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "destructor",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -990,7 +998,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "gnu_inline",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1114,7 +1123,8 @@
                                         "content": "hidden\u0000",
                                         "length": 7
                                     }
-                                ]
+                                ],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1231,7 +1241,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "constructor",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1348,7 +1359,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__returns_twice__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1465,7 +1477,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__destructor__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1582,7 +1595,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__gnu_inline__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1706,7 +1720,8 @@
                                         "content": "hidden\u0000",
                                         "length": 7
                                     }
-                                ]
+                                ],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1823,7 +1838,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "returns_twice",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -1940,7 +1956,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__noinline__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -2057,7 +2074,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "always_inline",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -2174,7 +2192,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__constructor__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -2291,7 +2310,8 @@
                             {
                                 "prefix": "gnu",
                                 "name": "__always_inline__",
-                                "parameters": []
+                                "parameters": [],
+                                "unstructured_parameters": []
                             }
                         ]
                     }
@@ -2386,7 +2406,8 @@
                                     {
                                         "prefix": "gnu",
                                         "name": "aligned",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -2434,7 +2455,8 @@
                                                 "content": "TEST\u0000",
                                                 "length": 5
                                             }
-                                        ]
+                                        ],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -2475,7 +2497,8 @@
                                     {
                                         "prefix": "gnu",
                                         "name": "__aligned__",
-                                        "parameters": []
+                                        "parameters": [],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }
@@ -2523,7 +2546,8 @@
                                                 "content": "test\u0000",
                                                 "length": 5
                                             }
-                                        ]
+                                        ],
+                                        "unstructured_parameters": []
                                     }
                                 ]
                             }

@@ -339,12 +339,14 @@
                                         {
                                             "prefix": null,
                                             "name": "aaa",
-                                            "parameters": []
+                                            "parameters": [],
+                                            "unstructured_parameters": []
                                         },
                                         {
                                             "prefix": null,
                                             "name": "bbbb",
-                                            "parameters": []
+                                            "parameters": [],
+                                            "unstructured_parameters": []
                                         }
                                     ]
                                 },
@@ -354,7 +356,8 @@
                                         {
                                             "prefix": null,
                                             "name": "ccc",
-                                            "parameters": []
+                                            "parameters": [],
+                                            "unstructured_parameters": []
                                         }
                                     ]
                                 }
@@ -390,7 +393,8 @@
                                             {
                                                 "prefix": null,
                                                 "name": "ddd",
-                                                "parameters": []
+                                                "parameters": [],
+                                                "unstructured_parameters": []
                                             }
                                         ]
                                     }
@@ -438,12 +442,14 @@
                                         {
                                             "prefix": null,
                                             "name": "eeee",
-                                            "parameters": []
+                                            "parameters": [],
+                                            "unstructured_parameters": []
                                         },
                                         {
                                             "prefix": null,
                                             "name": "ffff",
-                                            "parameters": []
+                                            "parameters": [],
+                                            "unstructured_parameters": []
                                         }
                                     ]
                                 }
