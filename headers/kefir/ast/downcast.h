@@ -41,6 +41,7 @@ DECLARE_DOWNCAST(inline_assembly, struct kefir_ast_inline_assembly);
 DECLARE_DOWNCAST(string_literal, struct kefir_ast_string_literal);
 DECLARE_DOWNCAST(compound_literal, struct kefir_ast_compound_literal);
 DECLARE_DOWNCAST(unary_operation, struct kefir_ast_unary_operation);
+DECLARE_DOWNCAST(function_call, struct kefir_ast_function_call);
 
 #undef DECLARE_DOWNCAST
 

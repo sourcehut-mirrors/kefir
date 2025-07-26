@@ -49,6 +49,7 @@ static kefir_bool_t same_enumeration_type(const struct kefir_ast_type *type1, co
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
                 strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0,
             false);
+    REQUIRE(type1->enumeration_type.flags.no_discard == type2->enumeration_type.flags.no_discard, false);
     if (type1->enumeration_type.complete) {
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
                     kefir_list_length(&type2->enumeration_type.enumerators),
@@ -121,7 +122,11 @@ const struct kefir_ast_type *composite_enum_types(struct kefir_mem *mem, struct 
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
-    return type1;
+    if (!type1->enumeration_type.flags.no_discard && type2->enumeration_type.flags.no_discard) {
+        return type2;
+    } else {
+        return type1;
+    }
 }
 
 static kefir_result_t free_enumeration_type(struct kefir_mem *mem, const struct kefir_ast_type *type) {
@@ -165,6 +170,8 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_enumeration(struct kefir_
     type->enumeration_type.complete = false;
     type->enumeration_type.identifier = identifier;
     type->enumeration_type.underlying_type = underlying_type;
+    type->enumeration_type.flags.no_discard = false;
+    type->enumeration_type.flags.no_discard_message = NULL;
     return type;
 }
 
@@ -276,6 +283,8 @@ const struct kefir_ast_type *kefir_ast_type_enumeration(struct kefir_mem *mem,
     type->enumeration_type.complete = true;
     type->enumeration_type.identifier = identifier;
     type->enumeration_type.underlying_type = underlying_type;
+    type->enumeration_type.flags.no_discard = false;
+    type->enumeration_type.flags.no_discard_message = NULL;
     kefir_result_t res = kefir_hashtree_init(&type->enumeration_type.enumerator_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);

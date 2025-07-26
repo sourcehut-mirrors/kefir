@@ -23,9 +23,36 @@
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/declarator.h"
 #include "kefir/ast/type_conv.h"
+#include "kefir/ast/downcast.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+
+static kefir_result_t is_nodicard_call(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                       const struct kefir_ast_function_call *call, kefir_bool_t *nodiscard,
+                                       const char **nodiscard_message) {
+    *nodiscard = false;
+    const struct kefir_ast_type *return_type = kefir_ast_unqualified_type(call->base.properties.type);
+
+    const struct kefir_ast_type *func_type =
+        KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->type_bundle, call->function->properties.type);
+    if (func_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER && func_type->referenced_type->tag == KEFIR_AST_TYPE_FUNCTION) {
+        const struct kefir_ast_type *function_type = func_type->referenced_type;
+        *nodiscard = function_type->function_type.attributes.no_discard;
+        *nodiscard_message = function_type->function_type.attributes.no_discard_message;
+    }
+
+    if (!*nodiscard) {
+        if (return_type->tag == KEFIR_AST_TYPE_STRUCTURE || return_type->tag == KEFIR_AST_TYPE_UNION) {
+            *nodiscard = return_type->structure_type.flags.no_discard;
+            *nodiscard_message = return_type->structure_type.flags.no_discard_message;
+        } else if (return_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
+            *nodiscard = return_type->enumeration_type.flags.no_discard;
+            *nodiscard_message = return_type->enumeration_type.flags.no_discard_message;
+        }
+    }
+    return KEFIR_OK;
+}
 
 kefir_result_t kefir_ast_analyze_expression_statement_node(struct kefir_mem *mem,
                                                            const struct kefir_ast_context *context,
@@ -44,6 +71,28 @@ kefir_result_t kefir_ast_analyze_expression_statement_node(struct kefir_mem *mem
         REQUIRE(node->expression->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->expression->source_location,
                                        "Expected AST expression node as part of expression statement"));
+
+        struct kefir_ast_function_call *function_call;
+        kefir_result_t res = kefir_ast_downcast_function_call(node->expression, &function_call, false);
+        if (res != KEFIR_NO_MATCH) {
+            REQUIRE_OK(res);
+
+            kefir_bool_t is_nodiscard = false;
+            const char *nodiscard_message = NULL;
+            REQUIRE_OK(is_nodicard_call(mem, context, function_call, &is_nodiscard, &nodiscard_message));
+            if (is_nodiscard) {
+                if (nodiscard_message == NULL) {
+                    nodiscard_message = "nodiscard call return value ignored";
+                }
+                if (base->source_location.source != NULL) {
+                    fprintf(context->configuration->warning_output,
+                            "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %s\n", base->source_location.source,
+                            base->source_location.line, base->source_location.column, nodiscard_message);
+                } else {
+                    fprintf(context->configuration->warning_output, "warning: %s\n", nodiscard_message);
+                }
+            }
+        }
     }
     return KEFIR_OK;
 }

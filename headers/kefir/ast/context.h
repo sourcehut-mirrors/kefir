@@ -33,6 +33,7 @@
 #include "kefir/ast/constants.h"
 #include "kefir/ast/declarator.h"
 #include "kefir/util/bigint.h"
+#include <stdio.h>
 
 typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
 
@@ -47,6 +48,8 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t missing_braces_subobj;
         kefir_bool_t int_to_pointer;
     } analysis;
+
+    FILE *warning_output;
 } kefir_ast_context_configuration_t;
 
 kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context_configuration *);

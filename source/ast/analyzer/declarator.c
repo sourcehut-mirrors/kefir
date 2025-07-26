@@ -177,8 +177,49 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
     return KEFIR_OK;
 }
 
+static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                                    const struct kefir_token *token, const char **literal) {
+    if (token != NULL && token->klass == KEFIR_TOKEN_STRING_LITERAL &&
+        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
+        *literal = kefir_string_pool_insert(mem, symbols, token->string_literal.literal, NULL);
+        REQUIRE(*literal != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert nodiscard message into string pool"));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                             const struct kefir_ast_node_attributes *attributes,
+                                             struct kefir_ast_struct_type *struct_type) {
+
+    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+            if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
+                struct_type->flags.no_discard = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &struct_type->flags.no_discard_message));
+            } else if (attribute->prefix != NULL &&
+                       (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
+                if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
+                    struct_type->packed = true;
+                }
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                           const struct kefir_ast_declarator_specifier *decl_specifier,
+                                          const struct kefir_ast_declarator_specifier_list *specifiers,
                                           const struct kefir_ast_type **base_type, kefir_uint64_t flags,
                                           const struct kefir_source_location *source_location) {
     if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT) != 0) {
@@ -205,19 +246,8 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
             }
         }
 
-        for (const struct kefir_list_entry *iter = kefir_list_head(&decl_specifier->attributes.attributes);
-             iter != NULL; kefir_list_next(&iter)) {
-            ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
-
-            for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
-                 kefir_list_next(&iter2)) {
-                ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
-
-                if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
-                    struct_type->packed = true;
-                }
-            }
-        }
+        REQUIRE_OK(scan_struct_attributes(mem, context->symbols, &decl_specifier->attributes, struct_type));
+        REQUIRE_OK(scan_struct_attributes(mem, context->symbols, &specifiers->attributes, struct_type));
     } else {
         if (specifier->identifier != NULL) {
             const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;
@@ -338,8 +368,32 @@ static kefir_result_t update_enum_constant_type(const struct kefir_ast_context *
     return KEFIR_OK;
 }
 
+static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                           const struct kefir_ast_node_attributes *attributes,
+                                           struct kefir_ast_enum_type *enum_type) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+            if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
+                enum_type->flags.no_discard = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.no_discard_message));
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                         const struct kefir_ast_declarator_specifier *decl_specifier,
+                                        const struct kefir_ast_declarator_specifier_list *specifiers,
                                         const struct kefir_ast_type **base_type, kefir_uint64_t flags) {
     if ((flags & KEFIR_AST_DECLARATION_ANALYSIS_FUNCTION_DEFINITION_CONTEXT) != 0) {
         context = &context->global_context->context;
@@ -520,6 +574,9 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
             REQUIRE_OK(context->refine_constant_type(mem, context, entry->constant, enumeration_member_type,
                                                      &decl_specifier->source_location));
         }
+
+        REQUIRE_OK(scan_enum_attributes(mem, context->symbols, &specifiers->attributes, enum_type));
+        REQUIRE_OK(scan_enum_attributes(mem, context->symbols, &decl_specifier->attributes, enum_type));
     } else {
         if (specifier->identifier != NULL) {
             const struct kefir_ast_scoped_identifier *scoped_identifier = NULL;
@@ -579,7 +636,8 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                                    enum signedness *signedness, enum real_class *real_class,
                                    enum type_specifier_sequence_state *seq_state, kefir_bool_t *atomic_type,
                                    const struct kefir_ast_type **base_type, kefir_size_t *alignment,
-                                   const struct kefir_ast_declarator_specifier *decl_specifier, kefir_uint64_t flags) {
+                                   const struct kefir_ast_declarator_specifier *decl_specifier,
+                                   const struct kefir_ast_declarator_specifier_list *specifiers, kefir_uint64_t flags) {
     const struct kefir_ast_type_specifier *specifier = &decl_specifier->type_specifier;
     switch (specifier->specifier) {
         case KEFIR_AST_TYPE_SPECIFIER_VOID:
@@ -831,8 +889,8 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
                 *real_class == REAL_SCALAR,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                        "Struct/union type specifier cannot be combined with complex type specifier"));
-            REQUIRE_OK(
-                resolve_struct_type(mem, context, decl_specifier, base_type, flags, &decl_specifier->source_location));
+            REQUIRE_OK(resolve_struct_type(mem, context, decl_specifier, specifiers, base_type, flags,
+                                           &decl_specifier->source_location));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
@@ -843,7 +901,7 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             REQUIRE(*real_class == REAL_SCALAR,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
                                            "Enum type specifier cannot be combined with complex type specifier"));
-            REQUIRE_OK(resolve_enum_type(mem, context, decl_specifier, base_type, flags));
+            REQUIRE_OK(resolve_enum_type(mem, context, decl_specifier, specifiers, base_type, flags));
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
@@ -1301,7 +1359,8 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_function_attributes(const struct kefir_ast_node_attributes *attribute_lists,
+static kefir_result_t scan_function_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                               const struct kefir_ast_node_attributes *attribute_lists,
                                                struct kefir_ast_function_type *func_type) {
 
     for (const struct kefir_list_entry *iter = kefir_list_head(&attribute_lists->attributes); iter != NULL;
@@ -1322,6 +1381,11 @@ static kefir_result_t scan_function_attributes(const struct kefir_ast_node_attri
             } else if (attribute->prefix == NULL && (strcmp(attribute->name, "unsequenced") == 0 ||
                                                      strcmp(attribute->name, "__unsequenced__") == 0)) {
                 // Intentionally left blank
+            } else if (attribute->prefix == NULL &&
+                       (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
+                func_type->attributes.no_discard = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &func_type->attributes.no_discard_message));
             }
         }
     }
@@ -1416,11 +1480,11 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
     }
 
     for (; res == KEFIR_OK && declarator != NULL;) {
-        REQUIRE_CHAIN(&res, scan_function_attributes(&declarator->attributes, func_type));
+        REQUIRE_CHAIN(&res, scan_function_attributes(mem, context->symbols, &declarator->attributes, func_type));
         REQUIRE_CHAIN(&res, kefir_ast_declarator_unpack_nested((struct kefir_ast_declarator *) declarator,
                                                                (struct kefir_ast_declarator **) &declarator));
     }
-    REQUIRE_CHAIN(&res, scan_function_attributes(&specifiers->attributes, func_type));
+    REQUIRE_CHAIN(&res, scan_function_attributes(mem, context->symbols, &specifiers->attributes, func_type));
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_function_declaration_context_free(mem, decl_context);
@@ -1691,7 +1755,7 @@ static kefir_result_t analyze_declaration_specifiers_impl(
         switch (declatator_specifier->klass) {
             case KEFIR_AST_TYPE_SPECIFIER:
                 REQUIRE_OK(resolve_type(mem, context, &signedness, &real_class, &seq_state, &qualification.atomic_type,
-                                        &base_type, alignment, declatator_specifier, flags));
+                                        &base_type, alignment, declatator_specifier, specifiers, flags));
                 break;
 
             case KEFIR_AST_TYPE_QUALIFIER:

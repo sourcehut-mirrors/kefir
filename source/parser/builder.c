@@ -1610,10 +1610,16 @@ kefir_result_t kefir_parser_ast_builder_attribute_unstructured_parameter(struct 
     });
 
     struct kefir_ast_attribute *attr = kefir_list_tail(&list->list)->value;
-    struct kefir_token token_copy = *token;
+    struct kefir_token token_copy;
     const struct kefir_token *allocated_token;
-    kefir_result_t res = kefir_token_allocator_emplace(mem, &list->unstructured_parameter_token_allocator, &token_copy,
-                                                       &allocated_token);
+    kefir_result_t res = kefir_token_copy(mem, &token_copy, token);
+    REQUIRE_CHAIN(&res, kefir_token_allocator_emplace(mem, &list->unstructured_parameter_token_allocator, &token_copy,
+                                                      &allocated_token));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_token_free(mem, &token_copy);
+        KEFIR_AST_NODE_FREE(mem, list_node);
+        return res;
+    });
     REQUIRE_CHAIN(&res, kefir_token_buffer_emplace(mem, &attr->unstructured_parameters, allocated_token));
     REQUIRE_CHAIN(&res, kefir_parser_ast_builder_push(mem, builder, list_node));
     REQUIRE_ELSE(res == KEFIR_OK, {

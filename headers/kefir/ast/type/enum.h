@@ -21,6 +21,9 @@
 #ifndef KEFIR_AST_TYPE_ENUM_H_
 #define KEFIR_AST_TYPE_ENUM_H_
 
+#include "kefir/core/list.h"
+#include "kefir/core/hashtree.h"
+#include "kefir/core/string_pool.h"
 #include "kefir/ast/base.h"
 #include "kefir/ast/type/base.h"
 #include "kefir/ast/constant_expression.h"
@@ -37,6 +40,11 @@ typedef struct kefir_ast_enum_type {
     const struct kefir_ast_type *underlying_type;
     struct kefir_list enumerators;
     struct kefir_hashtree enumerator_index;
+
+    struct {
+        kefir_bool_t no_discard;
+        const char *no_discard_message;
+    } flags;
 } kefir_ast_enum_type_t;
 
 kefir_result_t kefir_ast_enumeration_get(const struct kefir_ast_enum_type *, const char *, kefir_bool_t *,

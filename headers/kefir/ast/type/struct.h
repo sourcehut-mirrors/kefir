@@ -38,6 +38,11 @@ typedef struct kefir_ast_struct_type {
     const char *identifier;
     struct kefir_list fields;
     struct kefir_hashtree field_index;
+
+    struct {
+        kefir_bool_t no_discard;
+        const char *no_discard_message;
+    } flags;
 } kefir_ast_struct_type_t;
 
 const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_mem *, struct kefir_ast_type_bundle *,

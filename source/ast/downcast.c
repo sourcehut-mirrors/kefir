@@ -64,5 +64,7 @@ DEFINE_DOWNCAST(compound_literal, struct kefir_ast_compound_literal, node->klass
                 "AST compound literal node")
 DEFINE_DOWNCAST(unary_operation, struct kefir_ast_unary_operation, node->klass->type == KEFIR_AST_UNARY_OPERATION,
                 "AST unary operation node")
+DEFINE_DOWNCAST(function_call, struct kefir_ast_function_call, node->klass->type == KEFIR_AST_FUNCTION_CALL,
+                "AST function call node")
 
 #undef DEFINE_DOWNCAST
