@@ -1312,8 +1312,16 @@ static kefir_result_t scan_function_attributes(const struct kefir_ast_node_attri
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
-            if (strcmp(attribute->name, "returns_twice") == 0 || strcmp(attribute->name, "__returns_twice__") == 0) {
+            if (attribute->prefix != NULL &&
+                (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0) &&
+                (strcmp(attribute->name, "returns_twice") == 0 || strcmp(attribute->name, "__returns_twice__") == 0)) {
                 func_type->attributes.returns_twice = true;
+            } else if (attribute->prefix == NULL && (strcmp(attribute->name, "reproducible") == 0 ||
+                                                     strcmp(attribute->name, "__reproducible__") == 0)) {
+                // Intentionally left blank
+            } else if (attribute->prefix == NULL && (strcmp(attribute->name, "unsequenced") == 0 ||
+                                                     strcmp(attribute->name, "__unsequenced__") == 0)) {
+                // Intentionally left blank
             }
         }
     }
@@ -1478,8 +1486,16 @@ static kefir_result_t analyze_declaration_declarator_attributes(
              kefir_list_next(&iter2)) {
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
+            if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "maybe_unused") == 0 || strcmp(attribute->name, "__maybe_unused__") == 0)) {
+                // Intentionally left blank
+            } else if (attribute->prefix == NULL && (strcmp(attribute->name, "fallthrough") == 0 ||
+                                                     strcmp(attribute->name, "__fallthrough__") == 0)) {
+                // Intentionally left blank
+            }
             // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES macro upon changing this !!!
-            if (attribute->prefix != NULL && strcmp(attribute->prefix, "gnu") == 0) {
+            else if (attribute->prefix != NULL &&
+                     (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
                 if (strcmp(attribute->name, "aligned") == 0 || strcmp(attribute->name, "__aligned__") == 0) {
                     REQUIRE_OK(analyze_declaration_declarator_alignment_attribute(mem, context, attribute, base_type,
                                                                                   alignment, flags, attributes,
