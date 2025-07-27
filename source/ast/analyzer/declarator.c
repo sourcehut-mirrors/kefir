@@ -1455,6 +1455,10 @@ static kefir_result_t scan_function_attributes(struct kefir_mem *mem, struct kef
             } else if (attribute->prefix == NULL && (strcmp(attribute->name, "unsequenced") == 0 ||
                                                      strcmp(attribute->name, "__unsequenced__") == 0)) {
                 // Intentionally left blank
+            } else if (attribute->prefix == NULL && (strcmp(attribute->name, "noreturn") == 0 ||
+                                                     strcmp(attribute->name, "__noreturn__") == 0 ||
+                                                     strcmp(attribute->name, "_Noreturn") == 0)) {
+                // Intentionally left blank
             } else if (attribute->prefix == NULL &&
                        (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
                 func_type->attributes.no_discard = true;
