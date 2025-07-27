@@ -23,7 +23,13 @@
 
 #include "kefir/ast/context.h"
 
-kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *, const struct kefir_ast_type *, const struct kefir_source_location *);
-kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *, const struct kefir_ast_struct_field *, const struct kefir_source_location *);
+kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *, const struct kefir_ast_type *,
+                                                const struct kefir_source_location *);
+kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *,
+                                                 const struct kefir_ast_struct_field *,
+                                                 const struct kefir_source_location *);
+kefir_result_t kefir_ast_check_scoped_identifier_deprecation(const struct kefir_ast_context *,
+                                                             const struct kefir_ast_scoped_identifier *,
+                                                             const struct kefir_source_location *);
 
-#endif 
+#endif

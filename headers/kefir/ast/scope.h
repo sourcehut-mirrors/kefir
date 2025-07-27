@@ -66,6 +66,8 @@ typedef struct kefir_ast_scoped_identifier {
             } constant_expression;
             struct {
                 kefir_bool_t weak;
+                kefir_bool_t deprecated;
+                const char *deprecated_message;
             } flags;
         } object;
 
@@ -85,6 +87,8 @@ typedef struct kefir_ast_scoped_identifier {
                 kefir_bool_t noinline;
                 kefir_bool_t constructor;
                 kefir_bool_t destructor;
+                kefir_bool_t deprecated;
+                const char *deprecated_message;
             } flags;
             struct kefir_ast_local_context **local_context_ptr;
             struct kefir_ast_local_context *local_context;

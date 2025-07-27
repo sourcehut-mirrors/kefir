@@ -22,6 +22,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include "kefir/ast/deprecation.h"
 
 kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                 const struct kefir_ast_identifier *node,
@@ -34,6 +35,7 @@ kefir_result_t kefir_ast_try_analyze_identifier(struct kefir_mem *mem, const str
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     REQUIRE_OK(context->resolve_ordinary_identifier(context, node->identifier, &scoped_id));
 
+    REQUIRE_OK(kefir_ast_check_scoped_identifier_deprecation(context, scoped_id, &node->base.source_location));
     switch (scoped_id->klass) {
         case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
             REQUIRE_OK(kefir_ast_node_properties_init(&base->properties));

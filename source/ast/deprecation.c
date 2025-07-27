@@ -22,7 +22,9 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *context, const struct kefir_ast_type *type, const struct kefir_source_location *source_location) {
+kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *context,
+                                                const struct kefir_ast_type *type,
+                                                const struct kefir_source_location *source_location) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
@@ -36,7 +38,7 @@ kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *
             deprecated = true;
             deprecated_message = unqualified_type->structure_type.flags.deprecated_message;
         } else if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION &&
-            unqualified_type->enumeration_type.flags.deprecated) {
+                   unqualified_type->enumeration_type.flags.deprecated) {
             deprecated = true;
             deprecated_message = unqualified_type->enumeration_type.flags.deprecated_message;
         }
@@ -58,7 +60,9 @@ kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *context, const struct kefir_ast_struct_field *field, const struct kefir_source_location *source_location) {
+kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *context,
+                                                 const struct kefir_ast_struct_field *field,
+                                                 const struct kefir_source_location *source_location) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(field != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST structure field"));
 
@@ -69,6 +73,49 @@ kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context 
         if (deprecated) {
             if (deprecated_message == NULL) {
                 deprecated_message = "the field has been deprecated";
+            }
+            if (source_location != NULL && source_location->source != NULL) {
+                fprintf(context->configuration->warning_output,
+                        "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %s\n", source_location->source,
+                        source_location->line, source_location->column, deprecated_message);
+            } else {
+                fprintf(context->configuration->warning_output, "warning: %s\n", deprecated_message);
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_check_scoped_identifier_deprecation(const struct kefir_ast_context *context,
+                                                             const struct kefir_ast_scoped_identifier *scoped_id,
+                                                             const struct kefir_source_location *source_location) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST scoped identifier"));
+
+    if (context->configuration->warning_output != NULL) {
+        kefir_bool_t deprecated = false;
+        const char *deprecated_message = NULL;
+
+        switch (scoped_id->klass) {
+            case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
+                deprecated = scoped_id->object.flags.deprecated;
+                deprecated_message = scoped_id->object.flags.deprecated_message;
+                break;
+
+            case KEFIR_AST_SCOPE_IDENTIFIER_FUNCTION:
+                deprecated = scoped_id->function.flags.deprecated;
+                deprecated_message = scoped_id->function.flags.deprecated_message;
+                break;
+
+            default:
+                // Intentionally left blank
+                break;
+        }
+
+        if (deprecated) {
+            if (deprecated_message == NULL) {
+                deprecated_message = "the identifier has been deprecated";
             }
             if (source_location != NULL && source_location->source != NULL) {
                 fprintf(context->configuration->warning_output,

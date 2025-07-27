@@ -84,6 +84,8 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     scoped_id->object.vl_array = KEFIR_ID_NONE;
     scoped_id->object.alias = NULL;
     scoped_id->object.flags.weak = false;
+    scoped_id->object.flags.deprecated = false;
+    scoped_id->object.flags.deprecated_message = NULL;
     scoped_id->object.defining_function = NULL;
     scoped_id->object.constant_expression.present = false;
     if (source_location != NULL) {
@@ -276,6 +278,8 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_function_i
     scoped_id->function.flags.noinline = false;
     scoped_id->function.flags.constructor = false;
     scoped_id->function.flags.destructor = false;
+    scoped_id->function.flags.deprecated = false;
+    scoped_id->function.flags.deprecated_message = NULL;
     scoped_id->function.local_context = NULL;
     scoped_id->function.local_context_ptr = &scoped_id->function.local_context;
     scoped_id->function.asm_label = asm_label;

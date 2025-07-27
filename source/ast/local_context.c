@@ -192,6 +192,8 @@ static kefir_result_t local_context_define_constexpr(struct kefir_mem *mem, stru
     REQUIRE(ordinary_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocte AST scoped identifier"));
     ordinary_id->object.visibility =
         KEFIR_AST_CONTEXT_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+    ordinary_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+    ordinary_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
     ordinary_id->object.defining_function = context->context.surrounding_function_name;
     res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), ordinary_id);
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -745,6 +747,8 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
+                                               &ordinary_id->object.flags.deprecated_message, attributes);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -766,6 +770,8 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&global_ordinary_id->object.flags.deprecated,
+                                               &global_ordinary_id->object.flags.deprecated_message, attributes);
             if (global_ordinary_id->object.asm_label == NULL) {
                 global_ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -786,6 +792,8 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
         ordinary_id->object.defining_function = context->context.surrounding_function_name;
         ordinary_id->object.visibility =
             KEFIR_AST_CONTEXT_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        ordinary_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        ordinary_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res =
             kefir_ast_identifier_flat_scope_insert(mem, &context->global->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -838,6 +846,8 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         if (attributes != NULL) {
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
+                                               &ordinary_id->object.flags.deprecated_message, attributes);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(ordinary_id, attributes);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
@@ -860,6 +870,8 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.weak, attributes->weak);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&global_ordinary_id->object.flags.deprecated,
+                                               &global_ordinary_id->object.flags.deprecated_message, attributes);
             if (global_ordinary_id->object.asm_label == NULL) {
                 global_ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -880,6 +892,8 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         ordinary_id->object.defining_function = context->context.surrounding_function_name;
         ordinary_id->object.visibility =
             KEFIR_AST_CONTEXT_GET_ATTR(attributes, visibility, KEFIR_AST_DECLARATOR_VISIBILITY_UNSET);
+        ordinary_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        ordinary_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res =
             kefir_ast_identifier_flat_scope_insert(mem, &context->global->object_identifiers, identifier, ordinary_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
@@ -939,6 +953,8 @@ kefir_result_t kefir_ast_local_context_define_static(struct kefir_mem *mem, stru
             initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         scoped_id->object.defining_function = context->context.surrounding_function_name;
+        scoped_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        scoped_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
@@ -1007,6 +1023,8 @@ kefir_result_t kefir_ast_local_context_define_static_thread_local(
             false, initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         scoped_id->object.defining_function = context->context.surrounding_function_name;
+        scoped_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        scoped_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
@@ -1106,6 +1124,8 @@ kefir_result_t kefir_ast_local_context_define_auto(struct kefir_mem *mem, struct
             initializer, NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         scoped_id->object.defining_function = context->context.surrounding_function_name;
+        scoped_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        scoped_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
@@ -1180,6 +1200,8 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
             initializer, attributes != NULL ? attributes->asm_label : NULL, location);
         REQUIRE(scoped_id != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
         scoped_id->object.defining_function = context->context.surrounding_function_name;
+        scoped_id->object.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        scoped_id->object.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         res = kefir_list_insert_after(mem, &context->identifiers, kefir_list_tail(&context->identifiers), scoped_id);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
@@ -1413,6 +1435,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.noinline, attributes->no_ipa);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.constructor, attributes->constructor);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->function.flags.destructor, attributes->destructor);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->function.flags.deprecated,
+                                               &ordinary_id->function.flags.deprecated_message, attributes);
         }
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     } else if (global_ordinary_id != NULL) {
@@ -1441,6 +1465,8 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.noinline, attributes->no_ipa);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.constructor, attributes->constructor);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->function.flags.destructor, attributes->destructor);
+            KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&global_ordinary_id->function.flags.deprecated,
+                                               &global_ordinary_id->function.flags.deprecated_message, attributes);
         }
         ASSIGN_PTR(scoped_id_ptr, global_ordinary_id);
     } else {
@@ -1470,6 +1496,9 @@ kefir_result_t kefir_ast_local_context_declare_function(struct kefir_mem *mem, s
         ordinary_id->function.flags.noinline = attributes != NULL && (attributes->no_inline || attributes->no_ipa);
         ordinary_id->function.flags.constructor = attributes != NULL && attributes->constructor;
         ordinary_id->function.flags.destructor = attributes != NULL && attributes->destructor;
+        ordinary_id->function.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        ordinary_id->function.flags.deprecated_message =
+            KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         ASSIGN_PTR(scoped_id_ptr, ordinary_id);
     }
     return KEFIR_OK;

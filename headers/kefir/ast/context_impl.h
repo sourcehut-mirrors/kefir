@@ -129,6 +129,16 @@ kefir_result_t kefir_ast_context_merge_alignment(struct kefir_mem *, struct kefi
         }                                                                                       \
     } while (0)
 
+#define KEFIR_AST_CONTEXT_MERGE_DEPRECATED(_deprecated, _deprecated_msg, _attributes) \
+    do {                                                                              \
+        if ((_attributes) != NULL) {                                                  \
+            *(_deprecated) = *(_deprecated) || (_attributes)->deprecated;             \
+            if (*(_deprecated_msg) == NULL) {                                         \
+                *(_deprecated_msg) = (_attributes)->deprecated_message;               \
+            }                                                                         \
+        }                                                                             \
+    } while (0)
+
 #define KEFIR_AST_CONTEXT_FUNCTION_IDENTIFIER_INSERT(_mem, _context, _identifier, _ordinary_id)                        \
     do {                                                                                                               \
         const char *id = kefir_string_pool_insert((_mem), &(_context)->symbols, (_identifier), NULL);                  \

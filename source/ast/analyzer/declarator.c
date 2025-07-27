@@ -70,7 +70,9 @@ static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struc
     return KEFIR_OK;
 }
 
-static kefir_result_t scan_field_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols, struct kefir_ast_struct_field *field, const struct kefir_ast_node_attributes *attributes) {
+static kefir_result_t scan_field_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                            struct kefir_ast_struct_field *field,
+                                            const struct kefir_ast_node_attributes *attributes) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
@@ -120,7 +122,8 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
         REQUIRE(!kefir_ast_type_is_variably_modified(field_type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry_declarator->declarator->source_location,
                                        "Structure/union field cannot have variably-modified type"));
-        REQUIRE_OK(kefir_ast_check_type_deprecation(context, field_type, &entry_declarator->declarator->source_location));
+        REQUIRE_OK(
+            kefir_ast_check_type_deprecation(context, field_type, &entry_declarator->declarator->source_location));
 
         if (entry_declarator->bitwidth == NULL) {
             struct kefir_ast_alignment *ast_alignment = wrap_alignment(mem, alignment);
@@ -137,8 +140,10 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
 
             struct kefir_ast_struct_field *field = kefir_ast_struct_type_last_field(struct_type);
             if (field != NULL) {
-                REQUIRE_OK(scan_field_attributes(mem, context->symbols, field, &entry_declarator->declarator->attributes));
-                REQUIRE_OK(scan_field_attributes(mem, context->symbols, field, &entry->declaration.specifiers.attributes));
+                REQUIRE_OK(
+                    scan_field_attributes(mem, context->symbols, field, &entry_declarator->declarator->attributes));
+                REQUIRE_OK(
+                    scan_field_attributes(mem, context->symbols, field, &entry->declaration.specifiers.attributes));
             }
         } else {
             REQUIRE(!KEFIR_AST_TYPE_IS_ATOMIC(field_type),
@@ -235,7 +240,7 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, struct kefir
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &struct_type->flags.no_discard_message));
             } else if (attribute->prefix == NULL &&
-                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                       (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
                 struct_type->flags.deprecated = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &struct_type->flags.deprecated_message));
@@ -419,7 +424,7 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_s
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.no_discard_message));
             } else if (attribute->prefix == NULL &&
-                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                       (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
                 enum_type->flags.deprecated = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.deprecated_message));
@@ -1331,7 +1336,7 @@ static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const stru
                                                const struct kefir_ast_declarator *declarator,
                                                const struct kefir_ast_type **base_type) {
     REQUIRE_OK(kefir_ast_check_type_deprecation(context, *base_type, &declarator->source_location));
-    
+
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_type_qualifier_type_t qualifier;
     for (const struct kefir_list_entry *iter =
@@ -1487,7 +1492,8 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
             REQUIRE_CHAIN(&res, kefir_ast_try_analyze_identifier(mem, context, identifier, node));
             if (res == KEFIR_OK) {
                 if (node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
-                    REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, node->properties.type, &declarator->source_location));
+                    REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, node->properties.type,
+                                                                         &declarator->source_location));
                     REQUIRE_CHAIN(&res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type,
                                                                           node->properties.type, NULL));
                 } else {
@@ -1602,6 +1608,12 @@ static kefir_result_t analyze_declaration_declarator_attributes(
             } else if (attribute->prefix == NULL && (strcmp(attribute->name, "fallthrough") == 0 ||
                                                      strcmp(attribute->name, "__fallthrough__") == 0)) {
                 // Intentionally left blank
+            } else if (attribute->prefix == NULL &&
+                       (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0) &&
+                       attributes != NULL) {
+                attributes->deprecated = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, context->symbols, arg, &attributes->deprecated_message));
             }
             // !!! Update KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES macro upon changing this !!!
             else if (attribute->prefix != NULL &&

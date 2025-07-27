@@ -1,0 +1,2 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS --print-ast -std=c23"
+REDIRECT_STRERR="yes"
