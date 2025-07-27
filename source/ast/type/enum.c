@@ -116,17 +116,41 @@ const struct kefir_ast_type *composite_enum_types(struct kefir_mem *mem, struct 
                                                   const struct kefir_ast_type_traits *type_traits,
                                                   const struct kefir_ast_type *type1,
                                                   const struct kefir_ast_type *type2) {
-    UNUSED(mem);
-    UNUSED(type_bundle);
+    REQUIRE(mem != NULL, NULL);
+    REQUIRE(type_bundle != NULL, NULL);
     REQUIRE(type_traits != NULL, NULL);
     REQUIRE(type1 != NULL, NULL);
     REQUIRE(type2 != NULL, NULL);
     REQUIRE(KEFIR_AST_TYPE_COMPATIBLE(type_traits, type1, type2), NULL);
-    if (!type1->enumeration_type.flags.no_discard && type2->enumeration_type.flags.no_discard) {
-        return type2;
+
+    const struct kefir_ast_type *type;
+    if (type1->enumeration_type.complete) {
+        struct kefir_ast_enum_type *enum_type;
+        type = kefir_ast_type_enumeration(mem, type_bundle, type1->enumeration_type.identifier, type1->enumeration_type.underlying_type, &enum_type);
+        REQUIRE(type != NULL, NULL);
+
+        for (const struct kefir_list_entry *iter = kefir_list_head(&type1->enumeration_type.enumerators);
+            iter != NULL;
+            kefir_list_next(&iter)) {
+            ASSIGN_DECL_CAST(const struct kefir_ast_enum_enumerator *, enumerator,
+                iter->value);
+            if (enumerator->has_value) {
+                kefir_result_t res = kefir_ast_enumeration_type_constant(mem, NULL, enum_type, enumerator->identifier, enumerator->value);
+                REQUIRE(res == KEFIR_OK, NULL);
+            } else {
+                kefir_result_t res = kefir_ast_enumeration_type_constant_auto(mem, NULL, enum_type, enumerator->identifier);
+                REQUIRE(res == KEFIR_OK, NULL);
+            }
+        }
+
+        enum_type->flags.no_discard = type1->enumeration_type.flags.no_discard || type2->enumeration_type.flags.no_discard;
+        enum_type->flags.no_discard_message = type1->enumeration_type.flags.no_discard_message != NULL 
+            ? type1->enumeration_type.flags.no_discard_message
+            : type2->enumeration_type.flags.no_discard_message;
     } else {
-        return type1;
+        type = kefir_ast_type_incomplete_enumeration(mem, type_bundle, type1->enumeration_type.identifier, type1->enumeration_type.underlying_type);
     }
+    return type;
 }
 
 static kefir_result_t free_enumeration_type(struct kefir_mem *mem, const struct kefir_ast_type *type) {
