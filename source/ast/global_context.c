@@ -1157,6 +1157,8 @@ kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *mem, s
         kefir_bool_t equal_values;
         REQUIRE_OK(kefir_ast_constant_expression_value_equal(&scoped_id->enum_constant.value, value, &equal_values));
         REQUIRE(equal_values, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant"));
+        KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->enum_constant.flags.deprecated,
+                                            &scoped_id->enum_constant.flags.deprecated_message, attributes);
         scoped_id->enum_constant.type = type;
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1167,6 +1169,8 @@ kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *mem, s
             kefir_ast_context_free_scoped_identifier(mem, scoped_id, NULL);
             return res;
         });
+        scoped_id->enum_constant.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        scoped_id->enum_constant.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         REQUIRE_OK(kefir_ast_identifier_flat_scope_insert(mem, &context->ordinary_scope, identifier, scoped_id));
     }
     ASSIGN_PTR(scoped_id_ptr, scoped_id);

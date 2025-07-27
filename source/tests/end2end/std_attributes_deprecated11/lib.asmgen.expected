@@ -1,0 +1,721 @@
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@27:9 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@29:9 warning: DEPRECATED
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@38:13 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@40:13 warning: DEPRECATED
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@45:13 warning: the identifier has been deprecated
+source/tests/end2end/std_attributes_deprecated11/lib.kefir.asmgen.c@47:13 warning: DEPRECATED
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "enum",
+                        "identifier": "A",
+                        "members": [
+                            {
+                                "identifier": "A",
+                                "value": null,
+                                "attributes": [
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": [
+                                            {
+                                                "prefix": null,
+                                                "name": "deprecated",
+                                                "parameters": [],
+                                                "unstructured_parameters": []
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "identifier": "B",
+                                "value": null,
+                                "attributes": []
+                            },
+                            {
+                                "identifier": "C",
+                                "value": null,
+                                "attributes": [
+                                    {
+                                        "class": "attribute_list",
+                                        "attributes": [
+                                            {
+                                                "prefix": null,
+                                                "name": "deprecated",
+                                                "parameters": [],
+                                                "unstructured_parameters": [
+                                                    {
+                                                        "class": "string_literal",
+                                                        "preprocessor": false,
+                                                        "raw": false,
+                                                        "type": "multibyte",
+                                                        "content": "DEPRECATED\u0000",
+                                                        "length": 11
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": null,
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "a",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "A"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "b",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "B"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "identifier",
+                        "identifier": "c",
+                        "asm_label": null,
+                        "attributes": []
+                    },
+                    "initializer": {
+                        "type": "expression",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "C"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "fn",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "fn\u0000",
+                                        "length": 3
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "enum",
+                                    "identifier": "A2",
+                                    "members": [
+                                        {
+                                            "identifier": "A2",
+                                            "value": null,
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": null,
+                                                            "name": "deprecated",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "identifier": "B2",
+                                            "value": null,
+                                            "attributes": []
+                                        },
+                                        {
+                                            "identifier": "C2",
+                                            "value": null,
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": null,
+                                                            "name": "deprecated",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": [
+                                                                {
+                                                                    "class": "string_literal",
+                                                                    "preprocessor": false,
+                                                                    "raw": false,
+                                                                    "type": "multibyte",
+                                                                    "content": "DEPRECATED\u0000",
+                                                                    "length": 11
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": null,
+                                "initializer": null
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "a",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "A2"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "b",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "B2"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "c",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "C2"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "binary_operation",
+                            "type": "add",
+                            "left": {
+                                "class": "binary_operation",
+                                "type": "add",
+                                "left": {
+                                    "class": "identifier",
+                                    "identifier": "a"
+                                },
+                                "right": {
+                                    "class": "identifier",
+                                    "identifier": "b"
+                                }
+                            },
+                            "right": {
+                                "class": "identifier",
+                                "identifier": "c"
+                            }
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "fn3",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "enum",
+                                    "identifier": null,
+                                    "members": [
+                                        {
+                                            "identifier": "X",
+                                            "value": null,
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": null,
+                                                            "name": "deprecated",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": []
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "identifier": "Y",
+                                            "value": null,
+                                            "attributes": []
+                                        },
+                                        {
+                                            "identifier": "Z",
+                                            "value": null,
+                                            "attributes": [
+                                                {
+                                                    "class": "attribute_list",
+                                                    "attributes": [
+                                                        {
+                                                            "prefix": null,
+                                                            "name": "deprecated",
+                                                            "parameters": [],
+                                                            "unstructured_parameters": [
+                                                                {
+                                                                    "class": "string_literal",
+                                                                    "preprocessor": false,
+                                                                    "raw": false,
+                                                                    "type": "multibyte",
+                                                                    "content": "DEPRECATED\u0000",
+                                                                    "length": 11
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ],
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "fn3\u0000",
+                                        "length": 4
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "a",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "X"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "b",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "Y"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "c",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "identifier",
+                                        "identifier": "Z"
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "binary_operation",
+                            "type": "add",
+                            "left": {
+                                "class": "binary_operation",
+                                "type": "add",
+                                "left": {
+                                    "class": "identifier",
+                                    "identifier": "a"
+                                },
+                                "right": {
+                                    "class": "identifier",
+                                    "identifier": "b"
+                                }
+                            },
+                            "right": {
+                                "class": "identifier",
+                                "identifier": "c"
+                            }
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        }
+    ]
+}

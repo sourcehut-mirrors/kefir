@@ -113,6 +113,11 @@ kefir_result_t kefir_ast_check_scoped_identifier_deprecation(const struct kefir_
                 deprecated_message = scoped_id->type_definition.flags.deprecated_message;
                 break;
 
+            case KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT:
+                deprecated = scoped_id->enum_constant.flags.deprecated;
+                deprecated_message = scoped_id->enum_constant.flags.deprecated_message;
+                break;
+
             default:
                 // Intentionally left blank
                 break;

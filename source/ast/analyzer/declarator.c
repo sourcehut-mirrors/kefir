@@ -435,6 +435,29 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_s
     return KEFIR_OK;
 }
 
+static kefir_result_t scan_enum_constant_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                           const struct kefir_ast_node_attributes *attributes,
+                                           struct kefir_ast_declarator_attributes *decl_attributes) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+            if (attribute->prefix == NULL &&
+                       (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                decl_attributes->deprecated = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &decl_attributes->deprecated_message));
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                         const struct kefir_ast_declarator_specifier *decl_specifier,
                                         const struct kefir_ast_declarator_specifier_list *specifiers,
@@ -563,9 +586,11 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
                 }
             }
 
+            struct kefir_ast_declarator_attributes attributes = {0};
+            REQUIRE_OK(scan_enum_constant_attributes(mem, context->symbols, &entry->attributes, &attributes));
             REQUIRE_OK(context->define_constant(mem, context, entry->constant,
                                                 &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value),
-                                                enumerator_constant_processing_type, NULL, &decl_specifier->source_location));
+                                                enumerator_constant_processing_type, &attributes, &decl_specifier->source_location));
 
             if (constant_value == KEFIR_INT64_MAX) {
                 constant_value = KEFIR_INT64_MIN;
