@@ -78,7 +78,7 @@ DEFINE_CASE(ast_node_analysis_generic_selections, "AST node analysis - generic s
                                                        NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                      kefir_ast_type_unsigned_int(), NULL, NULL));
+                                                      kefir_ast_type_unsigned_int(), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "z", kefir_ast_type_double(), NULL,
                                                        NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(
@@ -313,7 +313,7 @@ DEFINE_CASE(ast_node_analysis_multiplicative_operators, "AST node analysis - mul
                                                      NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "y",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
 #define MULDIV(_oper)                                                                                                \
     ASSERT_BINARY(&kft_mem, context, (_oper),                                                                        \
@@ -424,7 +424,7 @@ DEFINE_CASE(ast_node_analysis_add_operator, "AST node analysis - add operator") 
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -501,7 +501,7 @@ DEFINE_CASE(ast_node_analysis_subtract_operator, "AST node analysis - subtractio
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -593,7 +593,7 @@ DEFINE_CASE(ast_node_analysis_shift_operator, "AST node analysis - shift operato
                                                        NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(7),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),         kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -719,7 +719,7 @@ DEFINE_CASE(ast_node_analysis_relational_operators, "AST node analysis - relatio
         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -1023,7 +1023,7 @@ DEFINE_CASE(ast_node_analysis_bitwise_operators, "AST node analysis - bitwise op
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_int()), NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),
@@ -1206,7 +1206,7 @@ DEFINE_CASE(ast_node_analysis_logical_operators, "AST node analysis - logical op
         kefir_ast_type_pointer(&kft_mem, context->type_bundle, kefir_ast_type_signed_int()), NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),

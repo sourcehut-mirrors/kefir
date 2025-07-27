@@ -98,6 +98,10 @@ typedef struct kefir_ast_scoped_identifier {
         struct {
             const struct kefir_ast_type *type;
             struct kefir_ast_constant_expression_value value;
+            struct {
+                kefir_bool_t deprecated;
+                const char *deprecated_message;
+            } flags;
         } enum_constant;
 
         struct {

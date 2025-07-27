@@ -45,11 +45,12 @@ static kefir_result_t pp_allocate_temporary_value(struct kefir_mem *mem, const s
 }
 
 static kefir_result_t pp_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                    const struct kefir_ast_type *type,
+                                    const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                     const struct kefir_source_location *source_location) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(type);
+    UNUSED(attributes);
     UNUSED(source_location);
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement tag definition");
 }
@@ -57,13 +58,14 @@ static kefir_result_t pp_define_tag(struct kefir_mem *mem, const struct kefir_as
 static kefir_result_t pp_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                          const char *identifier,
                                          const struct kefir_ast_constant_expression_value *cexpr,
-                                         const struct kefir_ast_type *type,
+                                         const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *source_location) {
     UNUSED(mem);
     UNUSED(context);
     UNUSED(identifier);
     UNUSED(cexpr);
     UNUSED(type);
+    UNUSED(attributes);
     UNUSED(source_location);
     return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Preprocessor AST context does not implement constant defintion");
 }

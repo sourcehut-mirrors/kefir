@@ -121,6 +121,8 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_constant(
     scoped_id->cleanup.payload = NULL;
     scoped_id->enum_constant.type = type;
     scoped_id->enum_constant.value = *value;
+    scoped_id->enum_constant.flags.deprecated = false;
+    scoped_id->enum_constant.flags.deprecated_message = NULL;
     if (source_location != NULL) {
         scoped_id->source_location = *source_location;
     } else {

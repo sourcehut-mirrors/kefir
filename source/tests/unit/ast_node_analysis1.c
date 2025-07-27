@@ -323,10 +323,10 @@ DEFINE_CASE(ast_node_analysis_identifiers, "AST node analysis - identifiers") {
                                                         true, "func2", function2_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                      context->type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "Y",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(-150),
-                                                      context->type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     ASSERT_IDENTIFIER_LITERAL(&kft_mem, context, "var1", kefir_ast_type_signed_int(), false, true);
     ASSERT_IDENTIFIER_LITERAL(&kft_mem, context, "var2", kefir_ast_type_float(), false, true);

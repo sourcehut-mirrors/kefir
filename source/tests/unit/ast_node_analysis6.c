@@ -336,7 +336,7 @@ DEFINE_CASE(ast_node_analysis_compound_literal1, "AST node analysis - compound l
                                                        NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     struct kefir_ast_type_name *TYPES[] = {
         kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL)),

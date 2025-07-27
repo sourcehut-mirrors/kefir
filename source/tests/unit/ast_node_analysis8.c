@@ -39,7 +39,7 @@ DEFINE_CASE(ast_node_analysis_static_assertions1, "AST node analysis - static as
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1),
-                                                      context->type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
 #define ASSERT_STATIC_OK(_mem, _context, _cond, _err)                                                         \
     do {                                                                                                      \
@@ -209,7 +209,7 @@ DEFINE_CASE(ast_node_analysis_case_statements1, "AST node analysis - case statem
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1004),
-                                                      context->type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_declare_external(&kft_mem, &local_context, "whatever",
                                                        kefir_ast_type_signed_int(), NULL, NULL, NULL, NULL));
 

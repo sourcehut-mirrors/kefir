@@ -73,7 +73,7 @@ DEFINE_CASE(ast_node_analysis_simple_assignment_operator1, "AST node analysis - 
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "z", type1, NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(300),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "w", kefir_ast_type_unsigned_char(),
                                                         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_declare_external(&kft_mem, &global_context, "a", kefir_ast_type_float(), NULL,

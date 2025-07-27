@@ -91,21 +91,21 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
 }
 
 static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                         const struct kefir_ast_type *type,
+                                         const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
-    REQUIRE_OK(kefir_ast_global_context_define_tag(mem, global_ctx, type, location, NULL));
+    REQUIRE_OK(kefir_ast_global_context_define_tag(mem, global_ctx, type, attributes, location, NULL));
     return KEFIR_OK;
 }
 
 static kefir_result_t context_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                               const char *identifier,
                                               const struct kefir_ast_constant_expression_value *value,
-                                              const struct kefir_ast_type *type,
+                                              const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                               const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
@@ -113,7 +113,7 @@ static kefir_result_t context_define_constant(struct kefir_mem *mem, const struc
     REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_global_context *, global_ctx, context->payload);
-    REQUIRE_OK(kefir_ast_global_context_define_constant(mem, global_ctx, identifier, value, type, location, NULL));
+    REQUIRE_OK(kefir_ast_global_context_define_constant(mem, global_ctx, identifier, value, type, attributes, location, NULL));
     return KEFIR_OK;
 }
 
@@ -1135,9 +1135,10 @@ kefir_result_t kefir_ast_global_context_define_static_thread_local(
 kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *mem, struct kefir_ast_global_context *context,
                                                         const char *identifier,
                                                         const struct kefir_ast_constant_expression_value *value,
-                                                        const struct kefir_ast_type *type,
+                                                        const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                                         const struct kefir_source_location *location,
                                                         const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
+    UNUSED(attributes);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
@@ -1199,9 +1200,10 @@ static kefir_result_t kefir_ast_global_context_refine_constant_type(
 }
 
 kefir_result_t kefir_ast_global_context_define_tag(struct kefir_mem *mem, struct kefir_ast_global_context *context,
-                                                   const struct kefir_ast_type *type,
+                                                   const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                                    const struct kefir_source_location *location,
                                                    const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
+    UNUSED(attributes);
     UNUSED(location);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));

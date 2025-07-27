@@ -314,7 +314,7 @@ static kefir_result_t resolve_struct_type(struct kefir_mem *mem, const struct ke
     }
 
     if (specifier->identifier != NULL && !resolved) {
-        REQUIRE_OK(context->define_tag(mem, context, type, &decl_specifier->source_location));
+        REQUIRE_OK(context->define_tag(mem, context, type, NULL, &decl_specifier->source_location));
     }
     ASSIGN_PTR(base_type, type);
     return KEFIR_OK;
@@ -565,7 +565,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
 
             REQUIRE_OK(context->define_constant(mem, context, entry->constant,
                                                 &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value),
-                                                enumerator_constant_processing_type, &decl_specifier->source_location));
+                                                enumerator_constant_processing_type, NULL, &decl_specifier->source_location));
 
             if (constant_value == KEFIR_INT64_MAX) {
                 constant_value = KEFIR_INT64_MIN;
@@ -648,7 +648,7 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
     REQUIRE_OK(
         kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &decl_specifier->source_location));
     if (specifier->identifier != NULL && !resolved) {
-        REQUIRE_OK(context->define_tag(mem, context, type, &decl_specifier->source_location));
+        REQUIRE_OK(context->define_tag(mem, context, type, NULL, &decl_specifier->source_location));
     }
     ASSIGN_PTR(base_type, type);
     return KEFIR_OK;

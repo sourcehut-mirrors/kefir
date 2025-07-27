@@ -69,7 +69,7 @@ DEFINE_CASE(ast_node_analysis_conditional_operator1, "AST node analysis - condit
                                                         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "X",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(101),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     struct kefir_ast_type_name *TYPES[] = {
         kefir_ast_new_type_name(
@@ -181,7 +181,7 @@ DEFINE_CASE(ast_node_analysis_conditional_operator2, "AST node analysis - condit
                                                         NULL, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(54),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_type *TYPES[] = {
         kefir_ast_type_boolean(),          kefir_ast_type_char(),         kefir_ast_type_unsigned_char(),

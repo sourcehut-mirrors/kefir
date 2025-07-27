@@ -84,13 +84,13 @@ DEFINE_CASE(ast_constant_expression_identifier1, "AST constant expressions - ide
 
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "x",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(0),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "y",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &local_context, "z",
                                                       &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(2),
-                                                      type_traits->underlying_enumeration_type, NULL, NULL));
+                                                      type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_define_auto(
         &kft_mem, &local_context, "var1",

@@ -111,7 +111,9 @@ static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
                                                      const char *identifier,
                                                      const struct kefir_ast_constant_expression_value *value,
                                                      const struct kefir_ast_type *type,
+                                                     const struct kefir_ast_declarator_attributes *attributes,
                                                      const struct kefir_source_location *location) {
+    UNUSED(attributes);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(identifier != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid identifier"));
@@ -120,7 +122,7 @@ static kefir_result_t scoped_context_define_constant(struct kefir_mem *mem,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Constant cannot have variably-modified type"));
 
     if (context->function_definition_context) {
-        REQUIRE_OK(context->parent->define_constant(mem, context->parent, identifier, value, type, location));
+        REQUIRE_OK(context->parent->define_constant(mem, context->parent, identifier, value, type, attributes, location));
     } else {
         struct kefir_ast_scoped_identifier *scoped_id = NULL;
         kefir_result_t res = kefir_ast_identifier_flat_scope_at(&context->ordinary_scope, identifier, &scoped_id);
@@ -172,7 +174,9 @@ static kefir_result_t scoped_context_refine_constant_type(struct kefir_mem *mem,
 static kefir_result_t scoped_context_define_tag(struct kefir_mem *mem,
                                                 struct kefir_ast_function_declaration_context *context,
                                                 const struct kefir_ast_type *type,
+                                                const struct kefir_ast_declarator_attributes *attributes,
                                                 const struct kefir_source_location *location) {
+    UNUSED(attributes);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
@@ -180,7 +184,7 @@ static kefir_result_t scoped_context_define_tag(struct kefir_mem *mem,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Type tag cannot refer to variably-modified type"));
 
     if (context->function_definition_context) {
-        REQUIRE_OK(context->parent->define_tag(mem, context->parent, type, location));
+        REQUIRE_OK(context->parent->define_tag(mem, context->parent, type, attributes, location));
     } else {
         const char *identifier = NULL;
         REQUIRE_OK(kefir_ast_context_type_retrieve_tag(type, &identifier));
@@ -270,15 +274,14 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
 }
 
 static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                         const struct kefir_ast_type *type,
+                                         const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *location) {
-    UNUSED(location);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_ctx, context->payload);
-    REQUIRE_OK(scoped_context_define_tag(mem, fn_ctx, type, location));
+    REQUIRE_OK(scoped_context_define_tag(mem, fn_ctx, type, attributes, location));
     return KEFIR_OK;
 }
 
@@ -286,6 +289,7 @@ static kefir_result_t context_define_constant(struct kefir_mem *mem, const struc
                                               const char *identifier,
                                               const struct kefir_ast_constant_expression_value *value,
                                               const struct kefir_ast_type *type,
+                                              const struct kefir_ast_declarator_attributes *attributes,
                                               const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
@@ -293,7 +297,7 @@ static kefir_result_t context_define_constant(struct kefir_mem *mem, const struc
     REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_function_declaration_context *, fn_ctx, context->payload);
-    REQUIRE_OK(scoped_context_define_constant(mem, fn_ctx, identifier, value, type, location));
+    REQUIRE_OK(scoped_context_define_constant(mem, fn_ctx, identifier, value, type, attributes, location));
     return KEFIR_OK;
 }
 

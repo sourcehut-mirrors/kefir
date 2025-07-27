@@ -98,10 +98,11 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *, struc
 kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *, struct kefir_ast_local_context *,
                                                        const char *, const struct kefir_ast_constant_expression_value *,
                                                        const struct kefir_ast_type *,
+                                                       const struct kefir_ast_declarator_attributes *,
                                                        const struct kefir_source_location *,
                                                        const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *, struct kefir_ast_local_context *,
-                                                  const struct kefir_ast_type *, const struct kefir_source_location *,
+                                                  const struct kefir_ast_type *, const struct kefir_ast_declarator_attributes *, const struct kefir_source_location *,
                                                   const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *, struct kefir_ast_local_context *, const char *,
                                                    const struct kefir_ast_type *, struct kefir_ast_alignment *,

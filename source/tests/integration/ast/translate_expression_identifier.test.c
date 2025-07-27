@@ -53,7 +53,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_ast_local_context_define_constant(mem, &local_context, "X",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
-                                                       context->type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       context->type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     struct kefir_ast_node_base *node1 =
         KEFIR_AST_NODE_BASE(kefir_ast_new_identifier(mem, context->symbols, "extern_variable1"));

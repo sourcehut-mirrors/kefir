@@ -38,7 +38,7 @@ DEFINE_CASE(ast_type_scope1, "AST Declaration scoping - tagged type scoping") {
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL));
+        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "struct1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
     ASSERT(scoped_id->type->tag == KEFIR_AST_TYPE_STRUCTURE);
@@ -46,7 +46,7 @@ DEFINE_CASE(ast_type_scope1, "AST Declaration scoping - tagged type scoping") {
     ASSERT(!scoped_id->type->structure_type.complete);
 
     ASSERT_OK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct2"), NULL, NULL));
+        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct2"), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "struct2", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
     ASSERT(scoped_id->type->tag == KEFIR_AST_TYPE_STRUCTURE);
@@ -57,7 +57,7 @@ DEFINE_CASE(ast_type_scope1, "AST Declaration scoping - tagged type scoping") {
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     ASSERT_OK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL,
+        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL, NULL,
         NULL));
     ASSERT_OK(
         kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "field1", kefir_ast_type_signed_int(), NULL));
@@ -70,7 +70,7 @@ DEFINE_CASE(ast_type_scope1, "AST Declaration scoping - tagged type scoping") {
     ASSERT(&scoped_id->type->structure_type == struct_type1);
 
     ASSERT_OK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL));
+        &kft_mem, &global_context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "struct1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
     ASSERT(scoped_id->type->tag == KEFIR_AST_TYPE_STRUCTURE);
@@ -79,7 +79,7 @@ DEFINE_CASE(ast_type_scope1, "AST Declaration scoping - tagged type scoping") {
     ASSERT(&scoped_id->type->structure_type == struct_type1);
 
     ASSERT_NOK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL,
+        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL, NULL,
         NULL));
 
     ASSERT_OK(kefir_ast_local_context_free(&kft_mem, &context));
@@ -104,7 +104,7 @@ DEFINE_CASE(ast_type_scope2, "AST Declaration scoping - tagged type scoping #2")
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     ASSERT_OK(kefir_ast_global_context_define_tag(
-        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "type1", &struct_type1), NULL,
+        &kft_mem, &global_context, kefir_ast_type_structure(&kft_mem, &type_bundle, "type1", &struct_type1), NULL, NULL,
         NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "field1", kefir_ast_type_double(), NULL));
     ASSERT_OK(
@@ -121,7 +121,7 @@ DEFINE_CASE(ast_type_scope2, "AST Declaration scoping - tagged type scoping #2")
     ASSERT(&scoped_id->type->structure_type == struct_type1);
 
     ASSERT_OK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "type1"), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "type1"), NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "type1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
@@ -131,7 +131,7 @@ DEFINE_CASE(ast_type_scope2, "AST Declaration scoping - tagged type scoping #2")
 
     struct kefir_ast_struct_type *union_type1 = NULL;
     ASSERT_OK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_union(&kft_mem, &type_bundle, "type1", &union_type1), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_union(&kft_mem, &type_bundle, "type1", &union_type1), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, union_type1, "field1", kefir_ast_type_double(), NULL));
     ASSERT_OK(
         kefir_ast_struct_type_field(&kft_mem, &symbols, union_type1, "field2", kefir_ast_type_unsigned_char(), NULL));
@@ -158,7 +158,7 @@ DEFINE_CASE(ast_type_scope2, "AST Declaration scoping - tagged type scoping #2")
         &kft_mem, &context,
         kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "type1",
                                               type_traits->underlying_enumeration_type),
-        NULL, NULL));
+        NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "type1", &scoped_id));
     ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
@@ -172,7 +172,7 @@ DEFINE_CASE(ast_type_scope2, "AST Declaration scoping - tagged type scoping #2")
     ASSERT_OK(kefir_ast_local_context_define_tag(
         &kft_mem, &context,
         kefir_ast_type_enumeration(&kft_mem, &type_bundle, "type1", type_traits->underlying_enumeration_type,
-                                   &enum_type1),
+                                   &enum_type1), NULL,
         NULL, NULL));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, &symbols, enum_type1, "field1"));
     ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, &symbols, enum_type1, "field2"));
@@ -225,7 +225,7 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
     ASSERT_OK(kefir_ast_local_context_init(&kft_mem, &global_context, &context));
 
     ASSERT_OK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL, NULL));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "struct1", &scoped_id));
@@ -235,18 +235,18 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
     ASSERT(!scoped_id->type->structure_type.complete);
 
     ASSERT_NOK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "struct1"), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "struct1"), NULL, NULL, NULL));
     ASSERT_NOK(kefir_ast_local_context_define_tag(
         &kft_mem, &context,
         kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "struct1",
-                                              type_traits->underlying_enumeration_type),
+                                              type_traits->underlying_enumeration_type), NULL,
         NULL, NULL));
     ASSERT_OK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "struct1"), NULL, NULL, NULL));
 
     struct kefir_ast_struct_type *struct_type1 = NULL;
     ASSERT_OK(kefir_ast_local_context_define_tag(
-        &kft_mem, &context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL, NULL));
+        &kft_mem, &context, kefir_ast_type_structure(&kft_mem, &type_bundle, "struct1", &struct_type1), NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "field1", kefir_ast_type_double(), NULL));
     ASSERT_OK(
         kefir_ast_struct_type_field(&kft_mem, &symbols, struct_type1, "field2", kefir_ast_type_unsigned_char(), NULL));
@@ -271,7 +271,7 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
         ASSERT(&scoped_id->type->structure_type == struct_type1);
 
         ASSERT_OK(kefir_ast_local_context_define_tag(
-            &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "union1"), NULL, NULL));
+            &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "union1"), NULL, NULL, NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "union1", &scoped_id));
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
@@ -283,15 +283,15 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
             &kft_mem, &context,
             kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "union1",
                                                   type_traits->underlying_enumeration_type),
-            NULL, NULL));
+            NULL, NULL, NULL));
         ASSERT_NOK(kefir_ast_local_context_define_tag(
-            &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "union1"), NULL, NULL));
+            &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "union1"), NULL, NULL, NULL));
         ASSERT_OK(kefir_ast_local_context_define_tag(
-            &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "union1"), NULL, NULL));
+            &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "union1"), NULL, NULL, NULL));
 
         struct kefir_ast_struct_type *union_type1 = NULL;
         ASSERT_OK(kefir_ast_local_context_define_tag(
-            &kft_mem, &context, kefir_ast_type_union(&kft_mem, &type_bundle, "union1", &union_type1), NULL, NULL));
+            &kft_mem, &context, kefir_ast_type_union(&kft_mem, &type_bundle, "union1", &union_type1), NULL, NULL, NULL));
         ASSERT_OK(
             kefir_ast_struct_type_field(&kft_mem, &symbols, union_type1, "field1", kefir_ast_type_double(), NULL));
         ASSERT_OK(kefir_ast_struct_type_field(&kft_mem, &symbols, union_type1, "field2", kefir_ast_type_unsigned_char(),
@@ -328,7 +328,7 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
                 &kft_mem, &context,
                 kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "enum1",
                                                       type_traits->underlying_enumeration_type),
-                NULL, NULL));
+                NULL, NULL, NULL));
 
             ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "enum1", &scoped_id));
             ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
@@ -339,21 +339,21 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
                                        type_traits->underlying_enumeration_type));
 
             ASSERT_NOK(kefir_ast_local_context_define_tag(
-                &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "enum1"), NULL, NULL));
+                &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "enum1"), NULL, NULL, NULL));
             ASSERT_NOK(kefir_ast_local_context_define_tag(
-                &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "enum1"), NULL, NULL));
+                &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "enum1"), NULL, NULL, NULL));
             ASSERT_OK(kefir_ast_local_context_define_tag(
                 &kft_mem, &context,
                 kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "enum1",
                                                       type_traits->underlying_enumeration_type),
-                NULL, NULL));
+                NULL, NULL, NULL));
 
             struct kefir_ast_enum_type *enum_type1 = NULL;
             ASSERT_OK(kefir_ast_local_context_define_tag(
                 &kft_mem, &context,
                 kefir_ast_type_enumeration(&kft_mem, &type_bundle, "enum1", type_traits->underlying_enumeration_type,
                                            &enum_type1),
-                NULL, NULL));
+                NULL, NULL, NULL));
             ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, &symbols, enum_type1, "field1"));
             ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, &symbols, enum_type1, "field2"));
             ASSERT_OK(kefir_ast_enumeration_type_constant_auto(&kft_mem, &symbols, enum_type1, "field3"));
@@ -371,16 +371,16 @@ DEFINE_CASE(ast_type_scope3, "AST Declaration scoping - tagged type scoping #3")
                 ASSERT_OK(context.context.push_block(&kft_mem, &context.context, NULL, NULL));
 
                 ASSERT_OK(kefir_ast_local_context_define_tag(
-                    &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "enum1"), NULL,
+                    &kft_mem, &context, kefir_ast_type_incomplete_structure(&kft_mem, &type_bundle, "enum1"), NULL, NULL,
                     NULL));
                 ASSERT_OK(kefir_ast_local_context_define_tag(
-                    &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "struct1"), NULL,
+                    &kft_mem, &context, kefir_ast_type_incomplete_union(&kft_mem, &type_bundle, "struct1"), NULL, NULL,
                     NULL));
                 ASSERT_OK(kefir_ast_local_context_define_tag(
                     &kft_mem, &context,
                     kefir_ast_type_incomplete_enumeration(&kft_mem, &type_bundle, "union1",
                                                           type_traits->underlying_enumeration_type),
-                    NULL, NULL));
+                    NULL, NULL, NULL));
 
                 ASSERT_OK(kefir_ast_local_context_resolve_scoped_tag_identifier(&context, "enum1", &scoped_id));
                 ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_TYPE_TAG);
@@ -457,27 +457,27 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
 
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c1",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(1),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c2",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(2),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c3",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(3),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     ASSERT_NOK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c1",
                                                         &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
-                                                        type_traits->underlying_enumeration_type, NULL, NULL));
+                                                        type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_NOK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c2",
                                                         &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
-                                                        type_traits->underlying_enumeration_type, NULL, NULL));
+                                                        type_traits->underlying_enumeration_type, NULL, NULL, NULL));
     ASSERT_NOK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c3",
                                                         &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
-                                                        type_traits->underlying_enumeration_type, NULL, NULL));
+                                                        type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     ASSERT_OK(kefir_ast_global_context_define_constant(&kft_mem, &global_context, "c4",
                                                        &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(40),
-                                                       type_traits->underlying_enumeration_type, NULL, NULL));
+                                                       type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
     ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "c1", &scoped_id));
@@ -525,13 +525,13 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
 
         ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c1",
                                                           &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(10),
-                                                          type_traits->underlying_enumeration_type, NULL, NULL));
+                                                          type_traits->underlying_enumeration_type, NULL, NULL, NULL));
         ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c2",
                                                           &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(20),
-                                                          type_traits->underlying_enumeration_type, NULL, NULL));
+                                                          type_traits->underlying_enumeration_type, NULL, NULL, NULL));
         ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c5",
                                                           &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(50),
-                                                          type_traits->underlying_enumeration_type, NULL, NULL));
+                                                          type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
         ASSERT_OK(kefir_ast_local_context_resolve_scoped_ordinary_identifier(&context, "c1", &scoped_id));
         ASSERT(scoped_id->klass == KEFIR_AST_SCOPE_IDENTIFIER_ENUM_CONSTANT);
@@ -581,11 +581,11 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
 
             ASSERT_NOK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c3",
                                                                &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(300),
-                                                               type_traits->underlying_enumeration_type, NULL, NULL));
+                                                               type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
             ASSERT_OK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c5",
                                                               &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(500),
-                                                              type_traits->underlying_enumeration_type, NULL, NULL));
+                                                              type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
             ASSERT_NOK(kefir_ast_local_context_define_register(&kft_mem, &context, "c5", kefir_ast_type_unsigned_char(),
                                                                NULL, NULL, NULL, NULL, NULL));
@@ -608,13 +608,13 @@ DEFINE_CASE(ast_ordinary_constant_scope1, "AST ordinary scope - constant scoping
 
         ASSERT_NOK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c1",
                                                            &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                           type_traits->underlying_enumeration_type, NULL, NULL));
+                                                           type_traits->underlying_enumeration_type, NULL, NULL, NULL));
         ASSERT_NOK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c2",
                                                            &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                           type_traits->underlying_enumeration_type, NULL, NULL));
+                                                           type_traits->underlying_enumeration_type, NULL, NULL, NULL));
         ASSERT_NOK(kefir_ast_local_context_define_constant(&kft_mem, &context, "c5",
                                                            &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(100),
-                                                           type_traits->underlying_enumeration_type, NULL, NULL));
+                                                           type_traits->underlying_enumeration_type, NULL, NULL, NULL));
 
         ASSERT_OK(context.context.pop_block(&kft_mem, &context.context));
     } while (0);
