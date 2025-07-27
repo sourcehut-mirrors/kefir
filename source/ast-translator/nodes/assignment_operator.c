@@ -519,7 +519,7 @@ static kefir_result_t generate_lshift(const struct generate_op_parameters *param
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
             REQUIRE_OK(kefir_ast_translate_typeconv(
                 params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
-                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+                params->result_normalized_type, params->context->ast_context->type_traits->size_type));
             REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_LSHIFT,
                                                        params->result_normalized_type->bitprecise.width));
             break;
@@ -593,7 +593,7 @@ static kefir_result_t generate_rshift(const struct generate_op_parameters *param
                                                 params->result_normalized_type, &result_type_signed));
             REQUIRE_OK(kefir_ast_translate_typeconv(
                 params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
-                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+                params->result_normalized_type, params->context->ast_context->type_traits->size_type));
             if (result_type_signed) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(params->builder, KEFIR_IR_OPCODE_BITINT_ARSHIFT,
                                                            params->result_normalized_type->bitprecise.width));
