@@ -26,7 +26,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 #include "kefir/ast/type_completion.h"
-#include "kefir/ast/constant_expression.h"
+#include "kefir/ast/deprecation.h"
 
 kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                     const struct kefir_ast_struct_member *node,
@@ -77,6 +77,7 @@ kefir_result_t kefir_ast_analyze_struct_member_node(struct kefir_mem *mem, const
                                       "Cannot find field %s in structure", node->member);
     }
     REQUIRE_OK(res);
+    REQUIRE_OK(kefir_ast_check_field_deprecation(context, field, &node->base.source_location));
     const struct kefir_ast_type *type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &type, field->type));
     if (qualification != NULL) {

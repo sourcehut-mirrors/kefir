@@ -43,7 +43,32 @@ kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *
 
         if (deprecated) {
             if (deprecated_message == NULL) {
-                deprecated_message = "the entity has been deprecated";
+                deprecated_message = "the type has been deprecated";
+            }
+            if (source_location != NULL && source_location->source != NULL) {
+                fprintf(context->configuration->warning_output,
+                        "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %s\n", source_location->source,
+                        source_location->line, source_location->column, deprecated_message);
+            } else {
+                fprintf(context->configuration->warning_output, "warning: %s\n", deprecated_message);
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *context, const struct kefir_ast_struct_field *field, const struct kefir_source_location *source_location) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
+    REQUIRE(field != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST structure field"));
+
+    if (context->configuration->warning_output != NULL) {
+        kefir_bool_t deprecated = field->flags.deprecated;
+        const char *deprecated_message = field->flags.deprecated_message;
+
+        if (deprecated) {
+            if (deprecated_message == NULL) {
+                deprecated_message = "the field has been deprecated";
             }
             if (source_location != NULL && source_location->source != NULL) {
                 fprintf(context->configuration->warning_output,

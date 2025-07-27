@@ -30,6 +30,11 @@ typedef struct kefir_ast_struct_field {
     struct kefir_ast_alignment *alignment;
     kefir_bool_t bitfield;
     kefir_size_t bitwidth;
+
+    struct {
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
+    } flags;
 } kefir_ast_struct_field_t;
 
 typedef struct kefir_ast_struct_type {
@@ -67,6 +72,8 @@ kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *, struct kefir_s
                                               struct kefir_ast_struct_type *, const char *,
                                               const struct kefir_ast_type *, struct kefir_ast_alignment *,
                                               kefir_size_t);
+
+struct kefir_ast_struct_field *kefir_ast_struct_type_last_field(struct kefir_ast_struct_type *);
 
 const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *, struct kefir_ast_type_bundle *, const char *,
                                                       struct kefir_ast_struct_type **);

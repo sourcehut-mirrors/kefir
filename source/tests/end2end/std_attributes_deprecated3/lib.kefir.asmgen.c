@@ -18,12 +18,38 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#ifndef KEFIR_AST_DEPRECATION_H_
-#define KEFIR_AST_DEPRECATION_H_
+struct S1 {
+    int a [[deprecated]];
+    int b [[deprecated("DEPRECATED")]];
+    int c;
+} s1;
 
-#include "kefir/ast/context.h"
+union U1 {
+    int a [[deprecated]];
+    int b [[deprecated("DEPRECATED")]];
+    int c;
+} u1;
 
-kefir_result_t kefir_ast_check_type_deprecation(const struct kefir_ast_context *, const struct kefir_ast_type *, const struct kefir_source_location *);
-kefir_result_t kefir_ast_check_field_deprecation(const struct kefir_ast_context *, const struct kefir_ast_struct_field *, const struct kefir_source_location *);
+int get1() {
+    return s1.a;
+}
 
-#endif 
+int get2() {
+    return s1.b;
+}
+
+int get3() {
+    return s1.c;
+}
+
+int get4() {
+    return u1.a;
+}
+
+int get5() {
+    return u1.b;
+}
+
+int get6() {
+    return u1.c;
+}

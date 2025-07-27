@@ -59,6 +59,38 @@ static struct kefir_ast_alignment *wrap_alignment(struct kefir_mem *mem, kefir_s
     }
 }
 
+static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struct kefir_string_pool *symbols,
+                                                    const struct kefir_token *token, const char **literal) {
+    if (token != NULL && token->klass == KEFIR_TOKEN_STRING_LITERAL &&
+        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
+        *literal = kefir_string_pool_insert(mem, symbols, token->string_literal.literal, NULL);
+        REQUIRE(*literal != NULL,
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert nodiscard message into string pool"));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t scan_field_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols, struct kefir_ast_struct_field *field, const struct kefir_ast_node_attributes *attributes) {
+    for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
+         kefir_list_next(&iter)) {
+        ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
+
+        for (const struct kefir_list_entry *iter2 = kefir_list_head(&attr_list->list); iter2 != NULL;
+             kefir_list_next(&iter2)) {
+            ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
+
+            if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                field->flags.deprecated = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &field->flags.deprecated_message));
+            }
+        }
+    }
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                        struct kefir_ast_struct_type *struct_type,
                                                        struct kefir_ast_structure_declaration_entry *entry,
@@ -102,6 +134,12 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
                 }
                 return res;
             });
+
+            struct kefir_ast_struct_field *field = kefir_ast_struct_type_last_field(struct_type);
+            if (field != NULL) {
+                REQUIRE_OK(scan_field_attributes(mem, context->symbols, field, &entry_declarator->declarator->attributes));
+                REQUIRE_OK(scan_field_attributes(mem, context->symbols, field, &entry->declaration.specifiers.attributes));
+            }
         } else {
             REQUIRE(!KEFIR_AST_TYPE_IS_ATOMIC(field_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry_declarator->declarator->source_location,
@@ -175,17 +213,6 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
             }
             return res;
         });
-    }
-    return KEFIR_OK;
-}
-
-static kefir_result_t multibyte_string_literal_into(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                                    const struct kefir_token *token, const char **literal) {
-    if (token != NULL && token->klass == KEFIR_TOKEN_STRING_LITERAL &&
-        token->string_literal.type == KEFIR_STRING_LITERAL_TOKEN_MULTIBYTE) {
-        *literal = kefir_string_pool_insert(mem, symbols, token->string_literal.literal, NULL);
-        REQUIRE(*literal != NULL,
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert nodiscard message into string pool"));
     }
     return KEFIR_OK;
 }

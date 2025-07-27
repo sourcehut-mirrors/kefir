@@ -52,6 +52,7 @@ static kefir_bool_t same_structure_type(const struct kefir_ast_type *type1, cons
             REQUIRE(field1->alignment->value == field2->alignment->value, false);
             REQUIRE((!field1->bitfield && !field2->bitfield) || (field1->bitwidth == field2->bitwidth), false);
             REQUIRE(KEFIR_AST_TYPE_SAME(field1->type, field2->type), false);
+            REQUIRE(field1->flags.deprecated == field2->flags.deprecated, false);
         }
     }
     return true;
@@ -121,6 +122,15 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
                                                   kefir_ast_alignment_clone(mem, field1->alignment));
             }
             REQUIRE(res == KEFIR_OK, NULL);
+
+            struct kefir_ast_struct_field *composite_field = kefir_ast_struct_type_last_field(composite_struct);
+            if (composite_field != NULL) {
+                composite_field->flags.deprecated =
+                    field1->flags.deprecated || field2->flags.deprecated;
+                composite_field->flags.deprecated_message = field1->flags.deprecated_message != NULL
+                                                                ? field1->flags.deprecated_message
+                                                                : field2->flags.deprecated_message;
+            }
         }
 
         composite_struct->flags.no_discard =
@@ -276,6 +286,15 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
                                                 kefir_ast_alignment_const_expression(mem, field1->alignment->value));
             }
             REQUIRE(res == KEFIR_OK, NULL);
+
+            struct kefir_ast_struct_field *composite_field = kefir_ast_struct_type_last_field(composite_union);
+            if (composite_field != NULL) {
+                composite_field->flags.deprecated =
+                    field1->flags.deprecated || field2->flags.deprecated;
+                composite_field->flags.deprecated_message = field1->flags.deprecated_message != NULL
+                                                                ? field1->flags.deprecated_message
+                                                                : field2->flags.deprecated_message;
+            }
         }
 
         composite_union->flags.no_discard =
@@ -417,6 +436,8 @@ static kefir_result_t kefir_ast_struct_type_field_impl(struct kefir_mem *mem, st
     field->type = type;
     field->bitfield = bitfield;
     field->bitwidth = bitwidth;
+    field->flags.deprecated = false;
+    field->flags.deprecated_message = NULL;
     if (alignment != NULL) {
         field->alignment = alignment;
     } else {
@@ -496,6 +517,17 @@ kefir_result_t kefir_ast_struct_type_bitfield(struct kefir_mem *mem, struct kefi
                                               const struct kefir_ast_type *type, struct kefir_ast_alignment *alignment,
                                               kefir_size_t bitwidth) {
     return kefir_ast_struct_type_field_impl(mem, symbols, struct_type, identifier, type, alignment, true, bitwidth);
+}
+
+struct kefir_ast_struct_field *kefir_ast_struct_type_last_field(struct kefir_ast_struct_type *type) {
+    REQUIRE(type != NULL, NULL);
+
+    const struct kefir_list_entry *tail = kefir_list_tail(&type->fields);
+    REQUIRE(tail != NULL, NULL);
+
+    ASSIGN_DECL_CAST(struct kefir_ast_struct_field *, field,
+        tail->value);
+    return field;
 }
 
 const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
