@@ -267,7 +267,7 @@ static kefir_result_t context_define_identifier(
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Typedef specifier cannot be used for function definition"));
                 REQUIRE_OK(
-                    kefir_ast_global_context_define_type(mem, global_ctx, identifier, type, NULL, location, scoped_id));
+                    kefir_ast_global_context_define_type(mem, global_ctx, identifier, type, NULL, attributes, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN:
@@ -308,7 +308,7 @@ static kefir_result_t context_define_identifier(
                                        "Initializer must be provided to for identifier definition"));
         switch (storage_class) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
-                REQUIRE_OK(kefir_ast_global_context_define_type(mem, global_ctx, identifier, type, alignment, location,
+                REQUIRE_OK(kefir_ast_global_context_define_type(mem, global_ctx, identifier, type, alignment, attributes, location,
                                                                 scoped_id));
                 break;
 
@@ -1240,6 +1240,7 @@ kefir_result_t kefir_ast_global_context_define_tag(struct kefir_mem *mem, struct
 kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *mem, struct kefir_ast_global_context *context,
                                                     const char *identifier, const struct kefir_ast_type *type,
                                                     struct kefir_ast_alignment *alignment,
+                                                    const struct kefir_ast_declarator_attributes *attributes,
                                                     const struct kefir_source_location *location,
                                                     const struct kefir_ast_scoped_identifier **scoped_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -1267,6 +1268,8 @@ kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *mem, struc
         if (KEFIR_AST_TYPE_IS_INCOMPLETE(ordinary_id->type_definition.type) && !KEFIR_AST_TYPE_IS_INCOMPLETE(type)) {
             ordinary_id->type = type;
         }
+        KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->type_definition.flags.deprecated,
+                                            &ordinary_id->type_definition.flags.deprecated_message, attributes);
         REQUIRE_OK(kefir_ast_context_allocate_scoped_type_definition_update_alignment(mem, ordinary_id, alignment));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1278,6 +1281,8 @@ kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *mem, struc
             kefir_ast_context_free_scoped_identifier(mem, ordinary_id, NULL);
             return res;
         });
+        ordinary_id->type_definition.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
+        ordinary_id->type_definition.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
     }
 

@@ -107,6 +107,10 @@ typedef struct kefir_ast_scoped_identifier {
         struct {
             const struct kefir_ast_type *type;
             struct kefir_ast_alignment *alignment;
+            struct {
+                kefir_bool_t deprecated;
+                const char *deprecated_message;
+            } flags;
         } type_definition;
 
         const struct kefir_ast_type *type;
