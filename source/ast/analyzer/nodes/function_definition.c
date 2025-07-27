@@ -29,6 +29,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include "kefir/ast/deprecation.h"
 
 static kefir_result_t analyze_function_parameters(const struct kefir_ast_function_definition *node,
                                                   const struct kefir_ast_declarator_function *decl_func,
@@ -225,6 +226,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location, "Unexpected auto type specifier"));
     REQUIRE_CHAIN(
         &res, kefir_ast_analyze_type(mem, context, context->type_analysis_context, type, &node->base.source_location));
+    REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, type, &node->base.source_location));
 
     REQUIRE_CHAIN_SET(&res, type->tag == KEFIR_AST_TYPE_FUNCTION,
                       KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location,
@@ -265,6 +267,7 @@ kefir_result_t kefir_ast_analyze_function_definition_node(struct kefir_mem *mem,
     }
 
     const struct kefir_ast_scoped_identifier *scoped_id = NULL;
+    REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, type, &base->source_location));
     REQUIRE_CHAIN(&res, context->define_identifier(mem, context, false, base->properties.function_definition.identifier,
                                                    type, storage, base->properties.function_definition.function, NULL,
                                                    NULL, &attributes, &node->base.source_location, &scoped_id));

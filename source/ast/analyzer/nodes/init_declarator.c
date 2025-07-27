@@ -22,7 +22,7 @@
 #include "kefir/ast/analyzer/nodes.h"
 #include "kefir/ast/analyzer/analyzer.h"
 #include "kefir/ast/analyzer/declarator.h"
-#include "kefir/ast/type_conv.h"
+#include "kefir/ast/deprecation.h"
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
@@ -73,10 +73,11 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
         }
 
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
-        kefir_result_t res = context->define_identifier(
+        kefir_result_t res = kefir_ast_check_type_deprecation(context, type, &base->source_location);
+        REQUIRE_CHAIN(&res, context->define_identifier(
             mem, context, node->initializer == NULL, base->properties.declaration_props.identifier, type, storage,
             base->properties.declaration_props.function, alignment, node->initializer, &attributes,
-            &base->source_location, &scoped_id);
+            &base->source_location, &scoped_id));
         REQUIRE_ELSE(res == KEFIR_OK, {
             if (alignment != NULL) {
                 kefir_ast_alignment_free(mem, alignment);

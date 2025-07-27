@@ -50,6 +50,7 @@ static kefir_bool_t same_enumeration_type(const struct kefir_ast_type *type1, co
                 strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0,
             false);
     REQUIRE(type1->enumeration_type.flags.no_discard == type2->enumeration_type.flags.no_discard, false);
+    REQUIRE(type1->enumeration_type.flags.deprecated == type2->enumeration_type.flags.deprecated, false);
     if (type1->enumeration_type.complete) {
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
                     kefir_list_length(&type2->enumeration_type.enumerators),
@@ -147,6 +148,10 @@ const struct kefir_ast_type *composite_enum_types(struct kefir_mem *mem, struct 
         enum_type->flags.no_discard_message = type1->enumeration_type.flags.no_discard_message != NULL 
             ? type1->enumeration_type.flags.no_discard_message
             : type2->enumeration_type.flags.no_discard_message;
+        enum_type->flags.deprecated = type1->enumeration_type.flags.deprecated || type2->enumeration_type.flags.deprecated;
+        enum_type->flags.deprecated_message = type1->enumeration_type.flags.deprecated_message != NULL 
+            ? type1->enumeration_type.flags.deprecated_message
+            : type2->enumeration_type.flags.deprecated_message;
     } else {
         type = kefir_ast_type_incomplete_enumeration(mem, type_bundle, type1->enumeration_type.identifier, type1->enumeration_type.underlying_type);
     }
@@ -196,6 +201,8 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_enumeration(struct kefir_
     type->enumeration_type.underlying_type = underlying_type;
     type->enumeration_type.flags.no_discard = false;
     type->enumeration_type.flags.no_discard_message = NULL;
+    type->enumeration_type.flags.deprecated = false;
+    type->enumeration_type.flags.deprecated_message = NULL;
     return type;
 }
 
@@ -309,6 +316,8 @@ const struct kefir_ast_type *kefir_ast_type_enumeration(struct kefir_mem *mem,
     type->enumeration_type.underlying_type = underlying_type;
     type->enumeration_type.flags.no_discard = false;
     type->enumeration_type.flags.no_discard_message = NULL;
+    type->enumeration_type.flags.deprecated = false;
+    type->enumeration_type.flags.deprecated_message = NULL;
     kefir_result_t res = kefir_hashtree_init(&type->enumeration_type.enumerator_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);

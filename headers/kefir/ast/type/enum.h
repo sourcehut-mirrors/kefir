@@ -44,6 +44,8 @@ typedef struct kefir_ast_enum_type {
     struct {
         kefir_bool_t no_discard;
         const char *no_discard_message;
+        kefir_bool_t deprecated;
+        const char *deprecated_message;
     } flags;
 } kefir_ast_enum_type_t;
 

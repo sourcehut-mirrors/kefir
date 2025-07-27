@@ -21,6 +21,7 @@
 #include "kefir/ast/declarator.h"
 #include "kefir/ast/analyzer/declarator.h"
 #include "kefir/ast/analyzer/analyzer.h"
+#include "kefir/ast/deprecation.h"
 #include "kefir/ast/type_conv.h"
 #include "kefir/ast/global_context.h"
 #include "kefir/ast/type.h"
@@ -87,6 +88,7 @@ static kefir_result_t process_struct_declaration_entry(struct kefir_mem *mem, co
         REQUIRE(!kefir_ast_type_is_variably_modified(field_type),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &entry_declarator->declarator->source_location,
                                        "Structure/union field cannot have variably-modified type"));
+        REQUIRE_OK(kefir_ast_check_type_deprecation(context, field_type, &entry_declarator->declarator->source_location));
 
         if (entry_declarator->bitwidth == NULL) {
             struct kefir_ast_alignment *ast_alignment = wrap_alignment(mem, alignment);
@@ -205,6 +207,11 @@ static kefir_result_t scan_struct_attributes(struct kefir_mem *mem, struct kefir
                 struct_type->flags.no_discard = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &struct_type->flags.no_discard_message));
+            } else if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                struct_type->flags.deprecated = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &struct_type->flags.deprecated_message));
             } else if (attribute->prefix != NULL &&
                        (strcmp(attribute->prefix, "gnu") == 0 || strcmp(attribute->prefix, "__gnu__") == 0)) {
                 if (strcmp(attribute->name, "packed") == 0 || strcmp(attribute->name, "__packed__") == 0) {
@@ -384,6 +391,11 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_s
                 enum_type->flags.no_discard = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.no_discard_message));
+            } else if (attribute->prefix == NULL &&
+                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                enum_type->flags.deprecated = true;
+                const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
+                REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &enum_type->flags.deprecated_message));
             }
         }
     }
@@ -1269,6 +1281,8 @@ static kefir_result_t evaluate_alignment(struct kefir_mem *mem, const struct kef
 static kefir_result_t resolve_pointer_declarator(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                  const struct kefir_ast_declarator *declarator,
                                                  const struct kefir_ast_type **base_type) {
+    REQUIRE_OK(kefir_ast_check_type_deprecation(context, *base_type, &declarator->source_location));
+
     *base_type = kefir_ast_type_pointer(mem, context->type_bundle, *base_type);
     REQUIRE(*base_type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST pointer type"));
 
@@ -1289,6 +1303,8 @@ static kefir_result_t resolve_pointer_declarator(struct kefir_mem *mem, const st
 static kefir_result_t resolve_array_declarator(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                                const struct kefir_ast_declarator *declarator,
                                                const struct kefir_ast_type **base_type) {
+    REQUIRE_OK(kefir_ast_check_type_deprecation(context, *base_type, &declarator->source_location));
+    
     struct kefir_ast_type_qualification qualification = {false};
     kefir_ast_type_qualifier_type_t qualifier;
     for (const struct kefir_list_entry *iter =
@@ -1397,6 +1413,8 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
                                                   const struct kefir_ast_declarator_specifier_list *specifiers,
                                                   const struct kefir_ast_declarator *declarator, kefir_uint64_t flags,
                                                   const struct kefir_ast_type **base_type) {
+    REQUIRE_OK(kefir_ast_check_type_deprecation(context, *base_type, &declarator->source_location));
+
     struct kefir_ast_function_type *func_type = NULL;
     const struct kefir_ast_type *type = kefir_ast_type_function(mem, context->type_bundle, *base_type, &func_type);
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocated AST type"));
@@ -1442,6 +1460,7 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
             REQUIRE_CHAIN(&res, kefir_ast_try_analyze_identifier(mem, context, identifier, node));
             if (res == KEFIR_OK) {
                 if (node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE) {
+                    REQUIRE_CHAIN(&res, kefir_ast_check_type_deprecation(context, node->properties.type, &declarator->source_location));
                     REQUIRE_CHAIN(&res, kefir_ast_type_function_parameter(mem, context->type_bundle, func_type,
                                                                           node->properties.type, NULL));
                 } else {

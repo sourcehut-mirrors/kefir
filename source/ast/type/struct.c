@@ -38,6 +38,7 @@ static kefir_bool_t same_structure_type(const struct kefir_ast_type *type1, cons
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
     REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
     REQUIRE(type1->structure_type.flags.no_discard == type2->structure_type.flags.no_discard, false);
+    REQUIRE(type1->structure_type.flags.deprecated == type2->structure_type.flags.deprecated, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
     if (type1->structure_type.complete) {
         REQUIRE(kefir_list_length(&type1->structure_type.fields) == kefir_list_length(&type2->structure_type.fields),
@@ -127,6 +128,11 @@ const struct kefir_ast_type *composite_struct_types(struct kefir_mem *mem, struc
         composite_struct->flags.no_discard_message = type1->structure_type.flags.no_discard_message != NULL
                                                          ? type1->structure_type.flags.no_discard_message
                                                          : type2->structure_type.flags.no_discard_message;
+        composite_struct->flags.deprecated =
+            type1->structure_type.flags.deprecated || type2->structure_type.flags.deprecated;
+        composite_struct->flags.deprecated_message = type1->structure_type.flags.deprecated_message != NULL
+                                                         ? type1->structure_type.flags.deprecated_message
+                                                         : type2->structure_type.flags.deprecated_message;
     } else {
         composite_type = kefir_ast_type_incomplete_structure(mem, type_bundle, type1->structure_type.identifier);
         REQUIRE(composite_type != NULL, NULL);
@@ -141,6 +147,7 @@ static kefir_bool_t same_union_type(const struct kefir_ast_type *type1, const st
     REQUIRE(type1->structure_type.complete == type2->structure_type.complete, false);
     REQUIRE(type1->structure_type.packed == type2->structure_type.packed, false);
     REQUIRE(type1->structure_type.flags.no_discard == type2->structure_type.flags.no_discard, false);
+    REQUIRE(type1->structure_type.flags.deprecated == type2->structure_type.flags.deprecated, false);
     REQUIRE(strings_same(type1->structure_type.identifier, type2->structure_type.identifier), false);
     if (type1->structure_type.complete) {
         struct kefir_hashtree_node_iterator iter;
@@ -276,6 +283,12 @@ const struct kefir_ast_type *composite_union_types(struct kefir_mem *mem, struct
         composite_union->flags.no_discard_message = type1->structure_type.flags.no_discard_message != NULL
                                                         ? type1->structure_type.flags.no_discard_message
                                                         : type2->structure_type.flags.no_discard_message;
+
+        composite_union->flags.deprecated =
+            type1->structure_type.flags.deprecated || type2->structure_type.flags.deprecated;
+        composite_union->flags.deprecated_message = type1->structure_type.flags.deprecated_message != NULL
+                                                        ? type1->structure_type.flags.deprecated_message
+                                                        : type2->structure_type.flags.deprecated_message;
     } else {
         composite_type = kefir_ast_type_incomplete_union(mem, type_bundle, type1->structure_type.identifier);
         REQUIRE(composite_type != NULL, NULL);
@@ -324,6 +337,8 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_structure(struct kefir_me
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
+    type->structure_type.flags.deprecated = false;
+    type->structure_type.flags.deprecated_message = NULL;
     return type;
 }
 
@@ -357,6 +372,8 @@ const struct kefir_ast_type *kefir_ast_type_incomplete_union(struct kefir_mem *m
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
+    type->structure_type.flags.deprecated = false;
+    type->structure_type.flags.deprecated_message = NULL;
     return type;
 }
 
@@ -513,6 +530,8 @@ const struct kefir_ast_type *kefir_ast_type_structure(struct kefir_mem *mem, str
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
+    type->structure_type.flags.deprecated = false;
+    type->structure_type.flags.deprecated_message = NULL;
     kefir_result_t res = kefir_hashtree_init(&type->structure_type.field_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);
@@ -566,6 +585,8 @@ const struct kefir_ast_type *kefir_ast_type_union(struct kefir_mem *mem, struct 
     type->structure_type.identifier = identifier;
     type->structure_type.flags.no_discard = false;
     type->structure_type.flags.no_discard_message = NULL;
+    type->structure_type.flags.deprecated = false;
+    type->structure_type.flags.deprecated_message = NULL;
     kefir_result_t res = kefir_hashtree_init(&type->structure_type.field_index, &kefir_hashtree_str_ops);
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, type);
