@@ -34,18 +34,26 @@ KEFIR_CFLAGS=" --target host-none -fPIC -pie -I \"$(dirname $SRC_FILE)\" -I \"$(
 
 if [[ "x$ASMGEN" == "xyes" ]]; then
     KEFIR_CFLAGS="$KEFIR_CFLAGS -Wno-codegen-emulated-tls -S"
+    OUTPUT_ARG="-o- >$DST_FILE"
 else
     KEFIR_CFLAGS="$KEFIR_CFLAGS -c"
+    OUTPUT_ARG="-o $DST_FILE"
 fi
 
 if [[ -f "$SRC_FILE.profile" ]]; then
     source "$SRC_FILE.profile"
 fi
 
+if [[ "x$REDIRECT_STRERR" == "xyes" ]]; then
+    STDERR_REDIRECTION="2>&1"
+else
+    STDERR_REDIRECTION=""
+fi
+
 set -e
 
 if [[ "x$USE_VALGRIND" == "xyes" ]]; then
-    eval valgrind $VALGRIND_TEST_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
+    eval valgrind $VALGRIND_TEST_OPTIONS "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
 else
-    eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" -o "$DST_FILE"
+    eval "$KEFIRCC" $KEFIR_CFLAGS "$SRC_FILE" $OUTPUT_ARG $STDERR_REDIRECTION
 fi

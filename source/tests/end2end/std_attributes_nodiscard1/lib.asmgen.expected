@@ -1,3 +1,11 @@
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@52:5 warning: nodiscard call return value ignored
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@53:5 warning: nodiscard call return value ignored
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@54:5 warning: nodiscard call return value ignored
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@55:5 warning: nodiscard call return value ignored
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@56:5 warning: nodiscard!
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@57:5 warning: nodiscard!
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@58:5 warning: nodiscard!
+source/tests/end2end/std_attributes_nodiscard1/lib.kefir.asmgen.c@59:5 warning: nodiscard!
 {
     "class": "translation_unit",
     "external_declarations": [
