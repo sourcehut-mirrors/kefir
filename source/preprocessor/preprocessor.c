@@ -103,7 +103,8 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *mem, struct kef
     context->environment.data_model = NULL;
 
     // Supported attributes & builtins
-    REQUIRE_OK(kefir_hashtreeset_init(&context->environment.supported_attributes, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtree_init(&context->environment.supported_std_attributes, &kefir_hashtree_str_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&context->environment.supported_gnu_attributes, &kefir_hashtree_str_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&context->environment.supported_builtins, &kefir_hashtree_str_ops));
 
     // State
@@ -130,7 +131,8 @@ kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *mem, struct kef
 
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->builltin_prefixes));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->include_once));
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_attributes));
+    REQUIRE_OK(kefir_hashtree_free(mem, &context->environment.supported_std_attributes));
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_gnu_attributes));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &context->environment.supported_builtins));
     REQUIRE_OK(kefir_hashtree_free(mem, &context->undefined_macros));
     REQUIRE_OK(kefir_preprocessor_user_macro_scope_free(mem, &context->user_macros));

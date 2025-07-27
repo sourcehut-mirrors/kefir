@@ -60,6 +60,7 @@ typedef struct kefir_preprocessor_predefined_macro_scope {
         struct kefir_preprocessor_macro has_include_next;
         struct kefir_preprocessor_macro has_embed;
         struct kefir_preprocessor_macro has_builtin;
+        struct kefir_preprocessor_macro has_c_attribute;
         struct kefir_preprocessor_macro define_builtin_prefix;
 
         struct kefir_preprocessor_macro supported_builtins;

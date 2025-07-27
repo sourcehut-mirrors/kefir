@@ -1,0 +1,19 @@
+
+deprecated = 202311L
+__deprecated__ = 202311L
+fallthrough = 202311L
+__fallthrough__ = 202311L
+maybe_unused = 202311L
+__maybe_unused__ = 202311L
+nodiscard = 202311L
+__nodiscard__ = 202311L
+noreturn = 202311L
+__noreturn__ = 202311L
+_Noreturn = 202311L
+reproducible = 202311L
+__reproducible__ = 202311L
+unsequenced = 202311L
+__unsequenced__ = 202311L
+TEST1234 = 0;
+XYZ1 = 0;
+x::XYZ1 = 0;

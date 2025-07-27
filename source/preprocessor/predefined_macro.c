@@ -296,7 +296,7 @@ FUNCTION_MACRO(has_attribute) {
             KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
                                    "Macro __has_attribute expects a single identifier argument"));
 
-    if (kefir_hashtreeset_has(&preprocessor->context->environment.supported_attributes,
+    if (kefir_hashtreeset_has(&preprocessor->context->environment.supported_gnu_attributes,
                               (kefir_hashtreeset_entry_t) arg->identifier)) {
         REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
     } else {
@@ -558,6 +558,73 @@ FUNCTION_MACRO(has_builtin) {
 }
 MACRO_END
 
+FUNCTION_MACRO(has_c_attribute) {
+    const struct kefir_list_entry *args_iter = kefir_list_head(args);
+    REQUIRE(args_iter != NULL && args_iter->next == NULL,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location,
+                                   "Macro __has_c_attribute expects a single attribute"));
+    ASSIGN_DECL_CAST(const struct kefir_token_buffer *, arg_buffer, args_iter->value);
+
+    const char *prefix = NULL;
+    const char *name = NULL;
+    if (kefir_token_buffer_length(arg_buffer) == 1) {
+        const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+        REQUIRE(
+            arg->klass == KEFIR_TOKEN_IDENTIFIER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_c_attribute expects an attribute"));
+        name = arg->identifier;
+    } else {
+        REQUIRE(
+            kefir_token_buffer_length(arg_buffer) >= 4,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_c_attribute expects an attribute"));
+
+        const struct kefir_token *arg = kefir_token_buffer_at(arg_buffer, 0);
+        REQUIRE(
+            arg->klass == KEFIR_TOKEN_IDENTIFIER,
+            KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Macro __has_c_attribute expects an attribute"));
+        prefix = arg->identifier;
+
+        arg = kefir_token_buffer_at(arg_buffer, 1);
+        REQUIRE(arg->klass == KEFIR_TOKEN_PUNCTUATOR && arg->punctuator == KEFIR_PUNCTUATOR_COLON,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &arg->source_location, "Expected colon"));
+        arg = kefir_token_buffer_at(arg_buffer, 2);
+        REQUIRE(arg->klass == KEFIR_TOKEN_PUNCTUATOR && arg->punctuator == KEFIR_PUNCTUATOR_COLON,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &arg->source_location, "Expected colon"));
+
+        arg = kefir_token_buffer_at(arg_buffer, 3);
+        REQUIRE(arg->klass == KEFIR_TOKEN_IDENTIFIER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, source_location, "Expected an identifier"));
+        name = arg->identifier;
+    }
+
+    if (prefix == NULL) {
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_at(&preprocessor->context->environment.supported_std_attributes,
+                                               (kefir_hashtree_key_t) name, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+        } else {
+            REQUIRE_OK(res);
+
+            char buf[128] = {0};
+            snprintf(buf, sizeof(buf) - 1, "%" KEFIR_UINT64_FMT "L", (kefir_uint64_t) node->value);
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, buf, source_location));
+        }
+    } else if (prefix != NULL && (strcmp(prefix, "gnu") == 0 || strcmp(prefix, "__gnu__") == 0)) {
+        if (kefir_hashtreeset_has(&preprocessor->context->environment.supported_gnu_attributes,
+                                  (kefir_hashtreeset_entry_t) name)) {
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "1", source_location));
+        } else {
+            REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+        }
+    } else {
+        REQUIRE_OK(make_pp_number(mem, token_allocator, buffer, "0", source_location));
+    }
+
+    return KEFIR_OK;
+}
+MACRO_END
+
 FUNCTION_MACRO(define_builtin_prefix) {
     const struct kefir_list_entry *args_iter = kefir_list_head(args);
     REQUIRE(args_iter != NULL && args_iter->next == NULL,
@@ -609,8 +676,8 @@ MACRO_END
 MACRO(supported_attributes) {
     struct kefir_hashtreeset_iterator iter;
     kefir_result_t res;
-    for (res = kefir_hashtreeset_iter(&preprocessor->context->environment.supported_attributes, &iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&iter)) {
+    for (res = kefir_hashtreeset_iter(&preprocessor->context->environment.supported_gnu_attributes, &iter);
+         res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {
         ASSIGN_DECL_CAST(const char *, builtin, iter.entry);
         struct kefir_token *allocated_token;
         REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &allocated_token));
@@ -939,6 +1006,8 @@ kefir_result_t kefir_preprocessor_predefined_macro_scope_init(struct kefir_mem *
                                                          "__has_embed", macro_has_embed_apply, 1, false));
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_builtin,
                                                          "__has_builtin", macro_has_builtin_apply, 1, false));
+    REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.has_c_attribute,
+                                                         "__has_c_attribute", macro_has_c_attribute_apply, 1, false));
     REQUIRE_CHAIN(&res, define_predefined_function_macro(mem, preprocessor, scope, &scope->macros.define_builtin_prefix,
                                                          "__kefir_define_builtin_prefix",
                                                          macro_define_builtin_prefix_apply, 1, false));

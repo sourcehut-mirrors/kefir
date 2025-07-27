@@ -26,6 +26,13 @@
 #include "kefir/ast/context.h"
 #include "kefir/ast/alignment.h"
 
+typedef struct kefir_declarator_analyzer_std_attribute_descriptor {
+    const char *attribute;
+    kefir_c_language_standard_version_t version;
+} kefir_declarator_analyzer_std_attribute_descriptor_t;
+
+extern const struct kefir_declarator_analyzer_std_attribute_descriptor
+    KEFIR_DECLARATOR_ANALYZER_SUPPORTED_STD_ATTRIBUTES[];
 extern const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[];
 
 #define KEFIR_AST_DECLARATION_ANALYSIS_NORMAL (0ull)

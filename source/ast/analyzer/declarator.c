@@ -40,6 +40,16 @@ const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[] = {
     "__alias__",         "visibility",        "__visibility__", "constructor",    "__constructor__",
     "destructor",        "__destructor__",    "packed",         "__packed__",     NULL};
 
+const struct kefir_declarator_analyzer_std_attribute_descriptor KEFIR_DECLARATOR_ANALYZER_SUPPORTED_STD_ATTRIBUTES[] = {
+    {"deprecated", KEFIR_C23_STANDARD_VERSION},       {"__deprecated__", KEFIR_C23_STANDARD_VERSION},
+    {"fallthrough", KEFIR_C23_STANDARD_VERSION},      {"__fallthrough__", KEFIR_C23_STANDARD_VERSION},
+    {"maybe_unused", KEFIR_C23_STANDARD_VERSION},     {"__maybe_unused__", KEFIR_C23_STANDARD_VERSION},
+    {"nodiscard", KEFIR_C23_STANDARD_VERSION},        {"__nodiscard__", KEFIR_C23_STANDARD_VERSION},
+    {"noreturn", KEFIR_C23_STANDARD_VERSION},         {"__noreturn__", KEFIR_C23_STANDARD_VERSION},
+    {"_Noreturn", KEFIR_C23_STANDARD_VERSION},        {"reproducible", KEFIR_C23_STANDARD_VERSION},
+    {"__reproducible__", KEFIR_C23_STANDARD_VERSION}, {"unsequenced", KEFIR_C23_STANDARD_VERSION},
+    {"__unsequenced__", KEFIR_C23_STANDARD_VERSION},  {NULL}};
+
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
 enum real_class { REAL_SCALAR, REAL_COMPLEX, REAL_COMPLEX_LONG };
@@ -436,8 +446,8 @@ static kefir_result_t scan_enum_attributes(struct kefir_mem *mem, struct kefir_s
 }
 
 static kefir_result_t scan_enum_constant_attributes(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                           const struct kefir_ast_node_attributes *attributes,
-                                           struct kefir_ast_declarator_attributes *decl_attributes) {
+                                                    const struct kefir_ast_node_attributes *attributes,
+                                                    struct kefir_ast_declarator_attributes *decl_attributes) {
     for (const struct kefir_list_entry *iter = kefir_list_head(&attributes->attributes); iter != NULL;
          kefir_list_next(&iter)) {
         ASSIGN_DECL_CAST(struct kefir_ast_attribute_list *, attr_list, iter->value);
@@ -447,7 +457,7 @@ static kefir_result_t scan_enum_constant_attributes(struct kefir_mem *mem, struc
             ASSIGN_DECL_CAST(struct kefir_ast_attribute *, attribute, iter2->value);
 
             if (attribute->prefix == NULL &&
-                       (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
+                (strcmp(attribute->name, "deprecated") == 0 || strcmp(attribute->name, "__deprecated__") == 0)) {
                 decl_attributes->deprecated = true;
                 const struct kefir_token *arg = kefir_token_buffer_at(&attribute->unstructured_parameters, 0);
                 REQUIRE_OK(multibyte_string_literal_into(mem, symbols, arg, &decl_attributes->deprecated_message));
@@ -588,9 +598,9 @@ static kefir_result_t resolve_enum_type(struct kefir_mem *mem, const struct kefi
 
             struct kefir_ast_declarator_attributes attributes = {0};
             REQUIRE_OK(scan_enum_constant_attributes(mem, context->symbols, &entry->attributes, &attributes));
-            REQUIRE_OK(context->define_constant(mem, context, entry->constant,
-                                                &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value),
-                                                enumerator_constant_processing_type, &attributes, &decl_specifier->source_location));
+            REQUIRE_OK(context->define_constant(
+                mem, context, entry->constant, &KEFIR_AST_CONSTANT_EXPRESSION_INT_VALUE(constant_value),
+                enumerator_constant_processing_type, &attributes, &decl_specifier->source_location));
 
             if (constant_value == KEFIR_INT64_MAX) {
                 constant_value = KEFIR_INT64_MIN;
@@ -1455,9 +1465,9 @@ static kefir_result_t scan_function_attributes(struct kefir_mem *mem, struct kef
             } else if (attribute->prefix == NULL && (strcmp(attribute->name, "unsequenced") == 0 ||
                                                      strcmp(attribute->name, "__unsequenced__") == 0)) {
                 // Intentionally left blank
-            } else if (attribute->prefix == NULL && (strcmp(attribute->name, "noreturn") == 0 ||
-                                                     strcmp(attribute->name, "__noreturn__") == 0 ||
-                                                     strcmp(attribute->name, "_Noreturn") == 0)) {
+            } else if (attribute->prefix == NULL &&
+                       (strcmp(attribute->name, "noreturn") == 0 || strcmp(attribute->name, "__noreturn__") == 0 ||
+                        strcmp(attribute->name, "_Noreturn") == 0)) {
                 // Intentionally left blank
             } else if (attribute->prefix == NULL &&
                        (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {

@@ -205,8 +205,15 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.preprocessor_configuration.standard_version = options->standard_version;
     compiler.preprocessor_context.environment.stdc_no_atomics = !options->features.declare_atomic_support;
     for (const char **attribute = KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES; *attribute != NULL; ++attribute) {
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_attributes,
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_gnu_attributes,
                                          (kefir_hashtreeset_entry_t) *attribute));
+    }
+    for (const struct kefir_declarator_analyzer_std_attribute_descriptor *attribute =
+             &KEFIR_DECLARATOR_ANALYZER_SUPPORTED_STD_ATTRIBUTES[0];
+         attribute->attribute != NULL; ++attribute) {
+        REQUIRE_OK(kefir_hashtree_insert(mem, &compiler.preprocessor_context.environment.supported_std_attributes,
+                                         (kefir_hashtree_key_t) attribute->attribute,
+                                         (kefir_hashtree_value_t) attribute->version));
     }
     for (const char **builtin = KEFIR_PARSER_SUPPORTED_BUILTINS; *builtin != NULL; ++builtin) {
         REQUIRE_OK(kefir_hashtreeset_add(mem, &compiler.preprocessor_context.environment.supported_builtins,
