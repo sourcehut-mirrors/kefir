@@ -37,6 +37,12 @@ kefir_result_t kefir_ast_translate_case_statement_node(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_translator_flow_control_point_resolve(
         mem, node->base.properties.statement_props.target_flow_control_point,
         KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder)));
-    REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
+    if (node->statement != NULL) {
+        if (node->statement->properties.category == KEFIR_AST_NODE_CATEGORY_DECLARATION) {
+            REQUIRE_OK(kefir_ast_translate_declaration(mem, node->statement, builder, context));
+        } else {
+            REQUIRE_OK(kefir_ast_translate_statement(mem, node->statement, builder, context));
+        }
+    }
     return KEFIR_OK;
 }

@@ -1095,7 +1095,11 @@ static kefir_result_t visit_case_statement(const struct kefir_ast_visitor *visit
         REQUIRE_OK(kefir_json_output_null(json));
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "statement"));
-    REQUIRE_OK(kefir_ast_format(json, node->statement, param->display_source_location));
+    if (node->statement != NULL) {
+        REQUIRE_OK(kefir_ast_format(json, node->statement, param->display_source_location));
+    } else {
+        REQUIRE_OK(kefir_json_output_null(json));
+    }
     if (param->display_source_location) {
         REQUIRE_OK(format_source_location(json, KEFIR_AST_NODE_BASE(node)));
     }

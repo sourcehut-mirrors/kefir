@@ -1,0 +1,741 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "function",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "test1",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "ellipsis": false,
+                        "parameters": [
+                            {
+                                "class": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "init_declarators": [
+                                    {
+                                        "class": "init_declarator",
+                                        "declarator": {
+                                            "class": "abstract",
+                                            "attributes": []
+                                        },
+                                        "initializer": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "function",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "test2",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "ellipsis": false,
+                        "parameters": [
+                            {
+                                "class": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "init_declarators": [
+                                    {
+                                        "class": "init_declarator",
+                                        "declarator": {
+                                            "class": "abstract",
+                                            "attributes": []
+                                        },
+                                        "initializer": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "declaration",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "init_declarators": [
+                {
+                    "class": "init_declarator",
+                    "declarator": {
+                        "class": "function",
+                        "declarator": {
+                            "class": "identifier",
+                            "identifier": "test3",
+                            "asm_label": null,
+                            "attributes": []
+                        },
+                        "ellipsis": false,
+                        "parameters": [
+                            {
+                                "class": "declaration",
+                                "specifiers": {
+                                    "list": [
+                                        {
+                                            "class": "type_specifier",
+                                            "specifier": "int",
+                                            "attributes": []
+                                        }
+                                    ],
+                                    "attributes": []
+                                },
+                                "init_declarators": [
+                                    {
+                                        "class": "init_declarator",
+                                        "declarator": {
+                                            "class": "abstract",
+                                            "attributes": []
+                                        },
+                                        "initializer": null
+                                    }
+                                ]
+                            }
+                        ],
+                        "attributes": []
+                    },
+                    "initializer": null
+                }
+            ]
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test1",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test1\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 0
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "attribute_declaration",
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "fallthrough",
+                                                        "parameters": [],
+                                                        "unstructured_parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "return_statement",
+                                        "expression": {
+                                            "class": "unary_operation",
+                                            "type": "invert",
+                                            "argument": {
+                                                "class": "identifier",
+                                                "identifier": "x"
+                                            }
+                                        },
+                                        "attributes": []
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 2
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": null,
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "unary_operation",
+                            "type": "negate",
+                            "argument": {
+                                "class": "identifier",
+                                "identifier": "x"
+                            }
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test2",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test2\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 1
+                                    },
+                                    "range_end_expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 9
+                                    },
+                                    "statement": {
+                                        "class": "attribute_declaration",
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "fallthrough",
+                                                        "parameters": [],
+                                                        "unstructured_parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 10
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "return_statement",
+                                        "expression": {
+                                            "class": "unary_operation",
+                                            "type": "negate",
+                                            "argument": {
+                                                "class": "identifier",
+                                                "identifier": "x"
+                                            }
+                                        },
+                                        "attributes": []
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": null,
+                                    "range_end_expression": null,
+                                    "statement": null,
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        },
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "int",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test3",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test3\u0000",
+                                        "length": 6
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 10
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "attribute_declaration",
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "fallthrough",
+                                                        "parameters": [],
+                                                        "unstructured_parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": null,
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "return_statement",
+                                        "expression": {
+                                            "class": "unary_operation",
+                                            "type": "negate",
+                                            "argument": {
+                                                "class": "identifier",
+                                                "identifier": "x"
+                                            }
+                                        },
+                                        "attributes": []
+                                    },
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 0
+                                    },
+                                    "range_end_expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 9
+                                    },
+                                    "statement": null,
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "return_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        }
+    ]
+}

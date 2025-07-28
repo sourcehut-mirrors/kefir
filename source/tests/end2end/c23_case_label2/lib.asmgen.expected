@@ -1,0 +1,260 @@
+{
+    "class": "translation_unit",
+    "external_declarations": [
+        {
+            "class": "function_definition",
+            "specifiers": {
+                "list": [
+                    {
+                        "class": "type_specifier",
+                        "specifier": "void",
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            },
+            "declarator": {
+                "class": "function",
+                "declarator": {
+                    "class": "identifier",
+                    "identifier": "test",
+                    "asm_label": null,
+                    "attributes": []
+                },
+                "ellipsis": false,
+                "parameters": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "int",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "identifier",
+                                    "identifier": "x",
+                                    "asm_label": null,
+                                    "attributes": []
+                                },
+                                "initializer": null
+                            }
+                        ]
+                    }
+                ],
+                "attributes": []
+            },
+            "declarations": [],
+            "body": {
+                "class": "compound_statement",
+                "items": [
+                    {
+                        "class": "declaration",
+                        "specifiers": {
+                            "list": [
+                                {
+                                    "class": "storage_class",
+                                    "storage": "static",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_qualifier",
+                                    "qualifier": "const",
+                                    "attributes": []
+                                },
+                                {
+                                    "class": "type_specifier",
+                                    "specifier": "char",
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "init_declarators": [
+                            {
+                                "class": "init_declarator",
+                                "declarator": {
+                                    "class": "array",
+                                    "declarator": {
+                                        "class": "identifier",
+                                        "identifier": "__func__",
+                                        "asm_label": null,
+                                        "attributes": []
+                                    },
+                                    "type": "unbounded",
+                                    "static": false,
+                                    "type_qualifiers": [],
+                                    "attributes": []
+                                },
+                                "initializer": {
+                                    "type": "expression",
+                                    "expression": {
+                                        "class": "string_literal",
+                                        "type": "multibyte",
+                                        "content": "test\u0000",
+                                        "length": 5
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": {
+                                        "class": "constant",
+                                        "type": "integer",
+                                        "value": 0
+                                    },
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "case_statement",
+                                        "expression": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 1
+                                        },
+                                        "range_end_expression": null,
+                                        "statement": {
+                                            "class": "case_statement",
+                                            "expression": {
+                                                "class": "constant",
+                                                "type": "integer",
+                                                "value": 2
+                                            },
+                                            "range_end_expression": null,
+                                            "statement": {
+                                                "class": "case_statement",
+                                                "expression": {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 3
+                                                },
+                                                "range_end_expression": {
+                                                    "class": "constant",
+                                                    "type": "integer",
+                                                    "value": 10
+                                                },
+                                                "statement": null,
+                                                "attributes": [
+                                                    {
+                                                        "class": "attribute_list",
+                                                        "attributes": [
+                                                            {
+                                                                "prefix": null,
+                                                                "name": "fallthrough",
+                                                                "parameters": [],
+                                                                "unstructured_parameters": []
+                                                            }
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            "attributes": []
+                                        },
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "fallthrough",
+                                                        "parameters": [],
+                                                        "unstructured_parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": null,
+                                    "range_end_expression": null,
+                                    "statement": null,
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    },
+                    {
+                        "class": "switch_statement",
+                        "expression": {
+                            "class": "identifier",
+                            "identifier": "x"
+                        },
+                        "statement": {
+                            "class": "compound_statement",
+                            "items": [
+                                {
+                                    "class": "case_statement",
+                                    "expression": null,
+                                    "range_end_expression": null,
+                                    "statement": {
+                                        "class": "case_statement",
+                                        "expression": {
+                                            "class": "constant",
+                                            "type": "integer",
+                                            "value": 10
+                                        },
+                                        "range_end_expression": null,
+                                        "statement": null,
+                                        "attributes": [
+                                            {
+                                                "class": "attribute_list",
+                                                "attributes": [
+                                                    {
+                                                        "prefix": null,
+                                                        "name": "fallthrough",
+                                                        "parameters": [],
+                                                        "unstructured_parameters": []
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    },
+                                    "attributes": []
+                                }
+                            ],
+                            "attributes": []
+                        },
+                        "attributes": []
+                    }
+                ],
+                "attributes": []
+            }
+        }
+    ]
+}

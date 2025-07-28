@@ -1,0 +1,82 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    cmp $0, %edi
+    je _kefir_func_test1_label3
+    cmp $1, %edi
+    je _kefir_func_test1_label3
+    mov %rdi, %rax
+    neg %eax
+    ret
+_kefir_func_test1_label3:
+    not %edi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    xor %eax, %eax
+    cmp $1, %edi
+    setge %al
+    xor %ecx, %ecx
+    cmp $9, %edi
+    setle %cl
+    test %al, %al
+    setne %al
+    test %cl, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    test %al, %al
+    jnz _kefir_func_test2_label3
+    cmp $10, %edi
+    je _kefir_func_test2_label3
+    mov %rdi, %rax
+    ret
+_kefir_func_test2_label3:
+    neg %edi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    cmp $10, %edi
+    je _kefir_func_test3_label2
+    xor %eax, %eax
+    cmp $0, %edi
+    setge %al
+    xor %ecx, %ecx
+    cmp $9, %edi
+    setle %cl
+    test %al, %al
+    setne %al
+    test %cl, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    test %al, %al
+    jnz _kefir_func_test3_label3
+_kefir_func_test3_label2:
+    mov %rdi, %rax
+    neg %eax
+    ret
+_kefir_func_test3_label3:
+    mov %rdi, %rax
+    ret
+__kefir_text_func_test3_end:
+
+__kefir_text_section_end:
+

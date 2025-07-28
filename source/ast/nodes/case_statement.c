@@ -35,7 +35,9 @@ kefir_result_t ast_case_statement_free(struct kefir_mem *mem, struct kefir_ast_n
     if (node->range_end_expression != NULL) {
         KEFIR_AST_NODE_FREE(mem, node->range_end_expression);
     }
-    KEFIR_AST_NODE_FREE(mem, node->statement);
+    if (node->statement != NULL) {
+        KEFIR_AST_NODE_FREE(mem, node->statement);
+    }
     REQUIRE_OK(kefir_ast_node_attributes_free(mem, &node->attributes));
     KEFIR_FREE(mem, node);
     return KEFIR_OK;
@@ -48,7 +50,6 @@ struct kefir_ast_case_statement *kefir_ast_new_case_statement(struct kefir_mem *
                                                               struct kefir_ast_node_base *expression,
                                                               struct kefir_ast_node_base *statement) {
     REQUIRE(mem != NULL, NULL);
-    REQUIRE(statement != NULL, NULL);
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
     REQUIRE(case_stmt != NULL, NULL);
@@ -83,7 +84,6 @@ struct kefir_ast_case_statement *kefir_ast_new_range_case_statement(struct kefir
     REQUIRE(mem != NULL, NULL);
     REQUIRE(expression != NULL, NULL);
     REQUIRE(range_end_expression != NULL, NULL);
-    REQUIRE(statement != NULL, NULL);
 
     struct kefir_ast_case_statement *case_stmt = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_case_statement));
     REQUIRE(case_stmt != NULL, NULL);
