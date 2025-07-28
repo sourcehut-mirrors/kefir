@@ -89,15 +89,13 @@ _kefir_func_test6_label0:
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     call fn6@PLT
-    leaq -64(%rbp), %rax
-    mov %rax, %rdi
     movq -16(%rbp), %rcx
     mov %rcx, %rax
-    movdqu (%rdi), %xmm0
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu 16(%rdi), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu 32(%rdi), %xmm0
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, 32(%rax)
     lea (%rbp), %rsp
     pop %rbp

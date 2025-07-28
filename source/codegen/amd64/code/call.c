@@ -627,6 +627,7 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
 
 static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                    const struct kefir_opt_instruction *instruction,
+                                   const struct kefir_opt_call_node *call_node,
                                    struct kefir_abi_amd64_function_decl *abi_func_decl,
                                    kefir_asmcmp_stash_index_t stash_idx,
                                    kefir_asmcmp_virtual_register_index_t return_space_vreg,
@@ -865,17 +866,33 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
             REQUIRE_OK(kefir_asmcmp_register_stash_exclude(mem, &function->code.context, stash_idx, return_vreg));
         } break;
 
-        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY:
+        case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_MEMORY: {
             REQUIRE(return_space_vreg != KEFIR_ID_NONE,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
                                     "Expected return space to be defined for call with multiple register return"));
-            REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
-                                                         KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_vreg));
-            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
-                return_space_vreg, NULL));
-            *result_vreg = return_vreg;
-            break;
+
+            kefir_bool_t is_bigint = false;
+            if (call_node != NULL) {
+                const struct kefir_ir_function_decl *ir_func_decl =
+                    kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);
+                REQUIRE(ir_func_decl != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR function declaration"));
+
+                const struct kefir_ir_typeentry *return_typeentry = kefir_ir_type_at(ir_func_decl->result, 0);
+                if (return_typeentry != NULL && return_typeentry->typecode == KEFIR_IR_TYPE_BITINT) {
+                    *result_vreg = return_space_vreg;
+                    is_bigint = true;
+                }
+            }
+            if (!is_bigint) {
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
+                    return_space_vreg, NULL));
+                *result_vreg = return_vreg;
+            }
+        } break;
 
         case KEFIR_ABI_AMD64_FUNCTION_PARAMETER_LOCATION_X87:
             REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
@@ -1035,7 +1052,8 @@ static kefir_result_t invoke_impl(struct kefir_mem *mem, struct kefir_codegen_am
     }
 
     if (kefir_ir_type_length(ir_func_decl->result) > 0) {
-        REQUIRE_OK(save_returns(mem, function, instruction, abi_func_decl, stash_idx, return_space_vreg, result_vreg));
+        REQUIRE_OK(save_returns(mem, function, instruction, call_node, abi_func_decl, stash_idx, return_space_vreg,
+                                result_vreg));
     }
     REQUIRE_OK(restore_regs(mem, function, stash_idx));
     if (stack_increment > 0) {

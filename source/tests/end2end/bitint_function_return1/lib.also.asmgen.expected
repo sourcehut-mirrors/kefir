@@ -1,0 +1,1195 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern get1
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+#{
+#    "function": {
+#        "code": [
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "function_prologue",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    0
+#                ]
+#            },
+#            {
+#                "opcode": "stash_activate",
+#                "args": [
+#                    {
+#                        "type": "stash_index",
+#                        "index": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "call",
+#                "args": [
+#                    {
+#                        "type": "external_label",
+#                        "type": "plt",
+#                        "label": "get1",
+#                        "offset": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "stash_deactivate",
+#                "args": [
+#                    {
+#                        "type": "stash_index",
+#                        "index": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 4,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 8,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 4,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 8,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "stash_activate",
+#                "args": [
+#                    {
+#                        "type": "stash_index",
+#                        "index": 1
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "call",
+#                "args": [
+#                    {
+#                        "type": "external_label",
+#                        "type": "absolute",
+#                        "label": "__kefir_bigint_invert",
+#                        "offset": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "stash_deactivate",
+#                "args": [
+#                    {
+#                        "type": "stash_index",
+#                        "index": 1
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 8,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 14,
+#                        "offset": 0,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 8,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movdqu",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 14,
+#                        "offset": 16,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "noop",
+#                "args": [],
+#                "labels": []
+#            }
+#        ]
+#    }
+#}
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    mov %rdi, %rcx
+    movq %rcx, -32(%rbp)
+    leaq -64(%rbp), %rax
+    mov %rax, %rdi
+    call get1@PLT
+    movq -32(%rbp), %rcx
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movq %rcx, -64(%rbp)
+    leaq -32(%rbp), %rax
+    mov %rax, %rdi
+    mov $250, %rsi
+    call __kefir_bigint_invert
+    movq -64(%rbp), %rcx
+    mov %rcx, %rax
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+
+.section .text
+__kefir_bigint_invert:
+#{
+#    "function": {
+#        "code": [
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "function_prologue",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 0,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    0
+#                ]
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 1,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "sub",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 5,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 6,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "integer",
+#                        "value": 0
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "div",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 7,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 8,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 9,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 11,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 3
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "cmp",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": [
+#                    1
+#                ]
+#            },
+#            {
+#                "opcode": "jb",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 3
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 1
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 13,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    2
+#                ]
+#            },
+#            {
+#                "opcode": "function_epilogue",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "ret",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 14,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_begin",
+#                "args": [
+#                    {
+#                        "type": "uinteger",
+#                        "value": 2
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    3
+#                ]
+#            },
+#            {
+#                "opcode": "add",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 15,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "movzx",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 15,
+#                        "offset": 0,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "add",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 17,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 16,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "not",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "32bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "mov",
+#                "args": [
+#                    {
+#                        "type": "indirect",
+#                        "basis": "virtual_register",
+#                        "index": 17,
+#                        "offset": 0,
+#                        "variant": "8bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 18,
+#                        "variant": "8bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "add",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "64bit"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 19,
+#                        "variant": "64bit"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_register_link",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    },
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 20,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "jmp",
+#                "args": [
+#                    {
+#                        "type": "internal_label",
+#                        "label": 1
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "virtual_block_end",
+#                "args": [],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "noop",
+#                "args": [],
+#                "labels": []
+#            }
+#        ]
+#    }
+#}
+__kefir_text_func___kefir_bigint_invert_begin:
+    mov %rdi, %r8
+    sub $-7, %rsi
+    mov %rsi, %rax
+    xor %edx, %edx
+    mov $8, %rcx
+    div %rcx
+    xor %ecx, %ecx
+_kefir_func___kefir_bigint_invert_label1:
+    cmp %rax, %rcx
+    jb _kefir_func___kefir_bigint_invert_label3
+    xor %eax, %eax
+    ret
+_kefir_func___kefir_bigint_invert_label3:
+    mov %r8, %rdi
+    add %rcx, %rdi
+    movzxb (%rdi), %rdx
+    mov %r8, %rdi
+    add %rcx, %rdi
+    not %edx
+    movb %dl, (%rdi)
+    mov %rcx, %rdx
+    add $1, %rdx
+    mov %rdx, %rcx
+    jmp _kefir_func___kefir_bigint_invert_label1
+__kefir_text_func___kefir_bigint_invert_end:
+
+
