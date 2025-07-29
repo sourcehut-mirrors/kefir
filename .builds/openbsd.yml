@@ -1,12 +1,12 @@
-image: openbsd/7.6
+image: openbsd/7.7
 packages:
   - gmake
-  - llvm-17.0.6p12
+  - llvm-19.1.7p3
   - binutils
   - coreutils
   - bash
   - wget
-  - python-3.11.10p1
+  - python-3.12.9
 sources:
   - https://git.sr.ht/~jprotopopov/kefir
 tasks:

@@ -1,0 +1,43 @@
+image: ubuntu/noble
+packages:
+  - build-essential
+  - gcc-12
+  - clang-15
+  - valgrind
+  - wget
+  - yasm
+  - cmake
+  - m4
+sources:
+  - https://git.sr.ht/~jprotopopov/kefir
+tasks:
+  - build: |
+      cd kefir
+      make clean
+      LC_ALL=C.UTF-8 make all PROFILE=reldebug CC=gcc-12
+  - lua_tests: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/lua.test.done KEFIR_EXTERNAL_TEST_LUA_CFLAGS="-O1 -fPIC -pie"
+  - c_testsuite: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/c-testsuite.test.done KEFIR_EXTERNAL_TEST_C_TESTSUITE_CFLAGS="-O1 -fPIC -pie"
+  - gcc_torture: |
+      cd kefir
+      export LC_ALL=C.UTF-8
+      make bin/tests/external/gcc-torture.test.done KEFIR_EXTERNAL_TEST_GCC_TORTURE_CFLAGS="-O1 -fPIC -pie"
+  - bootstrap: |
+      cd kefir
+      make clean
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      LC_ALL=C.UTF-8 make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -g" -j$(nproc)
+  - bootstrap_yasm: |
+      cd kefir
+      make clean
+      export KEFIR_RTINC="$HOME/kefir/headers/kefir/runtime"
+      LC_ALL=C.UTF-8 make bootstrap_test BOOTSTRAP_EXTRA_CFLAGS="-O1 -masm=x86_64-yasm" AS=yasm -j$(nproc)
+triggers:
+  - action: email
+    condition: failure
+    to: jevgenij@protopopov.lv
