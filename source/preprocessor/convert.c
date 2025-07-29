@@ -39,9 +39,13 @@ kefir_result_t kefir_preprocessor_token_convert(struct kefir_mem *mem, struct ke
             REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, src->identifier, strlen(src->identifier), ""));
             cursor.location = src->source_location;
 
-            REQUIRE_OK(kefir_lexer_scan_identifier_or_keyword(mem, &cursor, preprocessor->lexer.mode,
-                                                              preprocessor->lexer.symbols,
-                                                              &preprocessor->lexer.keywords, dst));
+            kefir_result_t res =
+                kefir_lexer_scan_identifier_or_keyword(mem, &cursor, preprocessor->lexer.mode,
+                                                       preprocessor->lexer.symbols, &preprocessor->lexer.keywords, dst);
+            if (res == KEFIR_NO_MATCH) {
+                res = KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor.location, "Unexpected character in identifier");
+            }
+            REQUIRE_OK(res);
             REQUIRE_ELSE(cursor.index == cursor.length, {
                 kefir_token_free(mem, dst);
                 return KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &cursor.location,
