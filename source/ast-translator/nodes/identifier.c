@@ -37,7 +37,7 @@ static kefir_result_t translate_object_identifier(struct kefir_mem *mem, struct 
                                                   const struct kefir_ast_scoped_identifier *scoped_identifier) {
     kefir_bool_t skip_translate_expr = false;
     if (scoped_identifier->object.constant_expression.present && !node->base.properties.expression_props.atomic) {
-        REQUIRE_OK(kefir_ast_try_translate_constant(mem, KEFIR_AST_NODE_BASE(node),
+        REQUIRE_OK(kefir_ast_try_translate_constant(mem, node->base.properties.type,
                                                     &scoped_identifier->object.constant_expression.value, builder,
                                                     context, &skip_translate_expr));
     }

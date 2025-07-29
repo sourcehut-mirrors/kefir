@@ -29,11 +29,9 @@ __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -4(%rbp), %rdi
-    xor %eax, %eax
-    mov $4, %rcx
-    rep stosb
-    movl $-12345, -4(%rbp)
+    lea __kefir_function_get1_static___kefir_local_temporary_0_5(%rip), %rax
+    movl (%rax), %ecx
+    movl %ecx, -4(%rbp)
     movq -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -45,12 +43,9 @@ __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    leaq -16(%rbp), %rdi
-    xor %eax, %eax
-    mov $16, %rcx
-    rep stosb
-    movl $-12345, -16(%rbp)
-    movq $51966, -8(%rbp)
+    lea __kefir_function_get2_static___kefir_local_temporary_0_8(%rip), %rax
+    movdqu (%rax), %xmm0
+    movdqu %xmm0, -16(%rbp)
     movq -16(%rbp), %rax
     movq -8(%rbp), %rdx
     lea (%rbp), %rsp
@@ -63,16 +58,14 @@ __kefir_text_func_get3_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    mov %rdi, %rdx
-    leaq -24(%rbp), %rdi
-    xor %eax, %eax
-    mov $24, %rcx
-    rep stosb
-    movl $-12345, -24(%rbp)
-    movq $51966, -16(%rbp)
-    movq _kefir_func_get3_label1(%rip), %xmm0
-    movq %xmm0, -8(%rbp)
-    mov %rdx, %rax
+    lea __kefir_function_get3_static___kefir_local_temporary_0_11(%rip), %rax
+    movq (%rax), %rcx
+    movq %rcx, -24(%rbp)
+    movq 8(%rax), %rcx
+    movq %rcx, -16(%rbp)
+    movq 16(%rax), %rcx
+    movq %rcx, -8(%rbp)
+    mov %rdi, %rax
     movq -24(%rbp), %rcx
     movq %rcx, (%rax)
     movq -16(%rbp), %rcx
@@ -83,18 +76,13 @@ __kefir_text_func_get3_begin:
     pop %rbp
     ret
 __kefir_text_func_get3_end:
-.section .rodata
-    .align 8
-_kefir_func_get3_label1:
-    .quad 4616788596805198676
-.section .text
 
 get4:
 __kefir_text_func_get4_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    lea __kefir_function_get4_static___kefir_local_temporary_0_13(%rip), %rax
+    lea __kefir_function_get4_static___kefir_local_temporary_0_14(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu 16(%rax), %xmm0
@@ -114,7 +102,7 @@ __kefir_text_func_get5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    lea __kefir_function_get5_static___kefir_local_temporary_0_16(%rip), %rax
+    lea __kefir_function_get5_static___kefir_local_temporary_0_17(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, -64(%rbp)
     movdqu 16(%rax), %xmm0
@@ -173,15 +161,32 @@ __kefir_text_section_end:
 
 .section .rodata
     .align 8
-__kefir_function_get4_static___kefir_local_temporary_0_13:
+__kefir_function_get4_static___kefir_local_temporary_0_14:
     .long 4294954951
     .zero 4
     .quad 51966
     .quad 4616788596805198676
     .quad 0
 
+    .align 8
+__kefir_function_get3_static___kefir_local_temporary_0_11:
+    .long 4294954951
+    .zero 4
+    .quad 51966
+    .quad 4616788596805198676
+
+    .align 4
+__kefir_function_get1_static___kefir_local_temporary_0_5:
+    .long 4294954951
+
+    .align 8
+__kefir_function_get2_static___kefir_local_temporary_0_8:
+    .long 4294954951
+    .zero 4
+    .quad 51966
+
     .align 16
-__kefir_function_get5_static___kefir_local_temporary_0_16:
+__kefir_function_get5_static___kefir_local_temporary_0_17:
     .long 4294954951
     .zero 4
     .quad 51966

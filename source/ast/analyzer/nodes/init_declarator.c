@@ -75,9 +75,9 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
         const struct kefir_ast_scoped_identifier *scoped_id = NULL;
         kefir_result_t res = kefir_ast_check_type_deprecation(context, type, &base->source_location);
         REQUIRE_CHAIN(&res, context->define_identifier(
-            mem, context, node->initializer == NULL, base->properties.declaration_props.identifier, type, storage,
-            base->properties.declaration_props.function, alignment, node->initializer, &attributes,
-            &base->source_location, &scoped_id));
+                                mem, context, node->initializer == NULL, base->properties.declaration_props.identifier,
+                                type, storage, base->properties.declaration_props.function, alignment,
+                                node->initializer, &attributes, &base->source_location, &scoped_id));
         REQUIRE_ELSE(res == KEFIR_OK, {
             if (alignment != NULL) {
                 kefir_ast_alignment_free(mem, alignment);
@@ -90,8 +90,7 @@ kefir_result_t kefir_ast_analyze_init_declarator_node(struct kefir_mem *mem, con
             case KEFIR_AST_SCOPE_IDENTIFIER_OBJECT:
                 base->properties.type = scoped_id->object.type;
                 base->properties.declaration_props.storage = scoped_id->object.storage;
-                if (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR &&
-                    !KEFIR_AST_TYPE_IS_SCALAR_TYPE(kefir_ast_unqualified_type(scoped_id->object.type))) {
+                if (scoped_id->object.storage == KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR) {
                     REQUIRE_OK(context->allocate_temporary_value(
                         mem, context, scoped_id->object.type, KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_CONSTEXPR_STATIC,
                         node->initializer, &node->base.source_location,

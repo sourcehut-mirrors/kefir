@@ -155,7 +155,7 @@ static kefir_result_t traverse_scalar(const struct kefir_ast_designator *designa
         if (!kefir_hashtreeset_has(param->repeated_expressions, (kefir_hashtreeset_entry_t) expression)) {
             kefir_bool_t skip_translate_expr = false;
             if (param->use_constant_values) {
-                REQUIRE_OK(kefir_ast_try_translate_constant(param->mem, expression,
+                REQUIRE_OK(kefir_ast_try_translate_constant(param->mem, expression->properties.type,
                                                             KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(expression),
                                                             param->builder, param->context, &skip_translate_expr));
             }
