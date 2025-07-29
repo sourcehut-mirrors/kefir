@@ -1,0 +1,20 @@
+diff --git ./jtckdint.h ./jtckdint.h
+index 7409cf0..529e2f6 100644
+--- ./jtckdint.h
++++ ./jtckdint.h
+@@ -57,11 +57,11 @@
+ #ifndef JTCKDINT_H_
+ #define JTCKDINT_H_
+ 
+-#ifdef __has_include
+-#define __ckd_has_include(x) __has_include(x)
+-#else
++//#ifdef __has_include
++//#define __ckd_has_include(x) __has_include(x)
++//#else
+ #define __ckd_has_include(x) 0
+-#endif
++//#endif
+ 
+ #if __ckd_has_include(<stdckdint.h>) && !defined(__cplusplus)
+ #include <stdckdint.h>
