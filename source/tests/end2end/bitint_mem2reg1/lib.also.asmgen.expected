@@ -343,14 +343,9 @@ __kefir_text_func___kefir_bigint_right_shift_begin:
     push %rbx
     push %r12
     push %r13
-    sub $24, %rsp
+    sub $40, %rsp
     mov %rdx, %rbx
     mov %rdi, %r12
-    mov %rsi, %rax
-    mov %rbx, %rdx
-    cmp %rbx, %rsi
-    cmova %rdx, %rax
-    mov %rax, %r9
     mov %rbx, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
@@ -358,14 +353,35 @@ __kefir_text_func___kefir_bigint_right_shift_begin:
     mov $8, %rcx
     div %rcx
     mov %rax, %r13
-    mov %r9, %rax
+    mov %r13, %rax
+    sub $1, %rax
+    mov %r12, %rdi
+    add %rax, %rdi
+    movzxb (%rdi), %r8
+    mov %r13, %rax
+    sub $1, %rax
+    imul $8, %rax, %rcx
+    mov %rbx, %rdx
+    sub %rcx, %rdx
+    mov $1, %r9
+    mov %rdx, %rcx
+    shl %cl, %r9
+    sub $1, %r9
+    and %r9d, %r8d
+    movb %r8b, (%rdi)
+    mov %rsi, %rcx
+    mov %rbx, %rdx
+    cmp %rbx, %rsi
+    cmova %rdx, %rcx
+    mov %rcx, %r8
+    mov %r8, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r8
-    cmp $0, %r8
+    mov %rax, %r10
+    cmp $0, %r10
     ja _kefir_func___kefir_bigint_right_shift_label6
-    mov %r9, %r11
+    mov %r8, %r11
 _kefir_func___kefir_bigint_right_shift_label1:
     cmp $0, %r11
     jbe _kefir_func___kefir_bigint_right_shift_label2
@@ -389,65 +405,58 @@ _kefir_func___kefir_bigint_right_shift_label3:
     sub $1, %rax
     mov %r12, %rdi
     add %rax, %rdi
-    movzxb (%rdi), %r8
-    mov %r13, %rax
-    sub $1, %rax
-    imul $8, %rax, %rcx
-    mov %rbx, %rdx
-    sub %rcx, %rdx
-    mov $1, %r9
-    mov %rdx, %rcx
-    shl %cl, %r9
-    sub $1, %r9
-    and %r9d, %r8d
-    movb %r8b, (%rdi)
+    movzxb (%rdi), %rcx
+    and %r9d, %ecx
+    movb %cl, (%rdi)
     mov %r13, %rax
     sub $1, %rax
     mov %r12, %rdi
     add %rax, %rdi
     movb (%rdi), %cl
-    mov %rcx, %r8
+    mov %rcx, %rdx
     mov %r11, %rcx
-    shr %cl, %r8b
-    movb %r8b, (%rdi)
+    shr %cl, %dl
+    movb %dl, (%rdi)
     jmp _kefir_func___kefir_bigint_right_shift_label2
 _kefir_func___kefir_bigint_right_shift_label5:
     mov %r12, %rdi
     add %r10, %rdi
     movzxb (%rdi), %rcx
-    mov %r10, %r8
-    add $1, %r8
+    mov %r10, %rdx
+    add $1, %rdx
     mov %r12, %rdi
-    add %r8, %rdi
-    movzxb (%rdi), %r8
+    add %rdx, %rdi
+    movzxb (%rdi), %rdx
     mov %r12, %rdi
     add %r10, %rdi
-    mov %rcx, %r9
+    mov %rcx, %r8
     mov %r11, %rcx
-    sar %cl, %r9d
+    sar %cl, %r8d
     mov $8, %rcx
     sub %r11, %rcx
-    shl %cl, %r8d
-    or %r8d, %r9d
-    movb %r9b, (%rdi)
+    shl %cl, %edx
+    or %edx, %r8d
+    movb %r8b, (%rdi)
     mov %r10, %rcx
     add $1, %rcx
     mov %rcx, %r10
     jmp _kefir_func___kefir_bigint_right_shift_label3
 _kefir_func___kefir_bigint_right_shift_label6:
-    movq %r9, -48(%rbp)
-    movq %r8, -40(%rbp)
-    movq %r11, -32(%rbp)
+    movq %r9, -64(%rbp)
+    movq %r8, -56(%rbp)
+    movq %r10, -48(%rbp)
+    movq %r11, -40(%rbp)
     mov %r12, %rdi
-    mov %r8, %rsi
+    mov %r10, %rsi
     xor %edx, %edx
     mov %rbx, %rcx
     call __kefir_bigint_right_shift_whole_digits
-    movq -48(%rbp), %r9
-    movq -40(%rbp), %r8
-    movq -32(%rbp), %r11
-    imul $8, %r8, %rcx
-    mov %r9, %rsi
+    movq -64(%rbp), %r9
+    movq -56(%rbp), %r8
+    movq -48(%rbp), %r10
+    movq -40(%rbp), %r11
+    imul $8, %r10, %rcx
+    mov %r8, %rsi
     sub %rcx, %rsi
     mov %rsi, %r11
     jmp _kefir_func___kefir_bigint_right_shift_label1
@@ -461,34 +470,31 @@ __kefir_text_func___kefir_bigint_arithmetic_right_shift_begin:
     push %r12
     push %r13
     push %r14
-    sub $32, %rsp
-    mov %rdx, %r10
-    mov %rdi, %r14
-    cmp $0, %r10
-    je _kefir_func___kefir_bigint_arithmetic_right_shift_label11
-    mov %r10, %rdx
+    push %r15
+    sub $24, %rsp
+    mov %rdx, %r14
+    mov %rsi, %r9
+    mov %rdi, %r15
+    cmp $0, %r14
+    je _kefir_func___kefir_bigint_arithmetic_right_shift_label14
+    mov %r14, %rdx
     sub $1, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     mov %rax, %rcx
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %rcx, %rdi
     movzxb (%rdi), %r8
-    mov %rsi, %rax
-    mov %r10, %rdx
-    cmp %r10, %rsi
-    cmova %rdx, %rax
-    mov %rax, %r9
-    mov %r10, %rdx
+    mov %r14, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rsi
     div %rsi
     mov %rax, %rbx
-    mov %r10, %rdx
+    mov %r14, %rdx
     sub $1, %rdx
     imul $8, %rcx, %rcx
     mov %rdx, %r12
@@ -497,37 +503,60 @@ __kefir_text_func___kefir_bigint_arithmetic_right_shift_begin:
     sar %cl, %r8d
     and $1, %r8d
     movsx %r8d, %r13
-    mov %r9, %rax
+    mov %r9, %rsi
+    mov %r14, %rdx
+    cmp %r14, %r9
+    cmova %rdx, %rsi
+    mov %rsi, %r10
+    xor %ecx, %ecx
+    test %r13, %r13
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func___kefir_bigint_arithmetic_right_shift_label13
+    mov %rbx, %rax
+    sub $1, %rax
+    mov %r15, %rdi
+    add %rax, %rdi
+    movzxb (%rdi), %r8
+    mov $1, %r9
+    mov %r12, %rcx
+    shl %cl, %r9
+    sub $1, %r9
+    and %r9d, %r8d
+    movb %r8b, (%rdi)
+_kefir_func___kefir_bigint_arithmetic_right_shift_label3:
+    mov %r10, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
     mov %rax, %r8
     cmp $0, %r8
-    ja _kefir_func___kefir_bigint_arithmetic_right_shift_label10
-    mov %r9, %r11
-_kefir_func___kefir_bigint_arithmetic_right_shift_label2:
+    ja _kefir_func___kefir_bigint_arithmetic_right_shift_label12
+    mov %r10, %r11
+_kefir_func___kefir_bigint_arithmetic_right_shift_label4:
     cmp $0, %r11
-    jbe _kefir_func___kefir_bigint_arithmetic_right_shift_label3
-_kefir_func___kefir_bigint_arithmetic_right_shift_label12:
+    jbe _kefir_func___kefir_bigint_arithmetic_right_shift_label5
+_kefir_func___kefir_bigint_arithmetic_right_shift_label15:
     xor %r10d, %r10d
-    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label4
-_kefir_func___kefir_bigint_arithmetic_right_shift_label3:
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label6
+_kefir_func___kefir_bigint_arithmetic_right_shift_label5:
     xor %eax, %eax
-    lea -32(%rbp), %rsp
+    lea -40(%rbp), %rsp
+    pop %r15
     pop %r14
     pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
-_kefir_func___kefir_bigint_arithmetic_right_shift_label4:
+_kefir_func___kefir_bigint_arithmetic_right_shift_label6:
     mov %rbx, %rax
     sub $1, %rax
     cmp %rax, %r10
-    jb _kefir_func___kefir_bigint_arithmetic_right_shift_label9
+    jb _kefir_func___kefir_bigint_arithmetic_right_shift_label11
     mov %rbx, %rax
     sub $1, %rax
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %rax, %rdi
     movb (%rdi), %cl
     mov %rcx, %r8
@@ -544,10 +573,10 @@ _kefir_func___kefir_bigint_arithmetic_right_shift_label4:
     test %r13, %r13
     sete %cl
     test %cl, %cl
-    jz _kefir_func___kefir_bigint_arithmetic_right_shift_label8
+    jz _kefir_func___kefir_bigint_arithmetic_right_shift_label10
     mov %rbx, %rax
     sub $1, %rax
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %rax, %rdi
     movzxb (%rdi), %rsi
     mov $1, %r8
@@ -556,11 +585,11 @@ _kefir_func___kefir_bigint_arithmetic_right_shift_label4:
     sub $1, %r8
     and %r8d, %esi
     movb %sil, (%rdi)
-    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label3
-_kefir_func___kefir_bigint_arithmetic_right_shift_label8:
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label5
+_kefir_func___kefir_bigint_arithmetic_right_shift_label10:
     mov %rbx, %rax
     sub $1, %rax
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %rax, %rdi
     movzxb (%rdi), %rsi
     mov $1, %r8
@@ -571,17 +600,17 @@ _kefir_func___kefir_bigint_arithmetic_right_shift_label8:
     not %rcx
     or %ecx, %esi
     movb %sil, (%rdi)
-    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label3
-_kefir_func___kefir_bigint_arithmetic_right_shift_label9:
-    mov %r14, %rdi
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label5
+_kefir_func___kefir_bigint_arithmetic_right_shift_label11:
+    mov %r15, %rdi
     add %r10, %rdi
     movzxb (%rdi), %rcx
     mov %r10, %r8
     add $1, %r8
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %r8, %rdi
     movzxb (%rdi), %r8
-    mov %r14, %rdi
+    mov %r15, %rdi
     add %r10, %rdi
     mov %rcx, %r9
     mov %r11, %rcx
@@ -594,27 +623,43 @@ _kefir_func___kefir_bigint_arithmetic_right_shift_label9:
     mov %r10, %rcx
     add $1, %rcx
     mov %rcx, %r10
-    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label4
-_kefir_func___kefir_bigint_arithmetic_right_shift_label10:
-    movq %r9, -64(%rbp)
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label6
+_kefir_func___kefir_bigint_arithmetic_right_shift_label12:
+    movq %r10, -64(%rbp)
     movq %r8, -56(%rbp)
     movq %r11, -48(%rbp)
-    mov %r14, %rdi
+    mov %r15, %rdi
     mov %r8, %rsi
     mov %r13, %rdx
-    mov %r10, %rcx
+    mov %r14, %rcx
     call __kefir_bigint_right_shift_whole_digits
-    movq -64(%rbp), %r9
+    movq -64(%rbp), %r10
     movq -56(%rbp), %r8
     movq -48(%rbp), %r11
     imul $8, %r8, %rcx
-    mov %r9, %rsi
+    mov %r10, %rsi
     sub %rcx, %rsi
     mov %rsi, %r11
-    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label2
-_kefir_func___kefir_bigint_arithmetic_right_shift_label11:
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label4
+_kefir_func___kefir_bigint_arithmetic_right_shift_label13:
+    mov %rbx, %rax
+    sub $1, %rax
+    mov %r15, %rdi
+    add %rax, %rdi
+    movzxb (%rdi), %r8
+    mov $1, %r9
+    mov %r12, %rcx
+    shl %cl, %r9
+    mov %r9, %rcx
+    sub $1, %rcx
+    not %rcx
+    or %ecx, %r8d
+    movb %r8b, (%rdi)
+    jmp _kefir_func___kefir_bigint_arithmetic_right_shift_label3
+_kefir_func___kefir_bigint_arithmetic_right_shift_label14:
     xor %eax, %eax
-    lea -32(%rbp), %rsp
+    lea -40(%rbp), %rsp
+    pop %r15
     pop %r14
     pop %r13
     pop %r12

@@ -37,7 +37,7 @@ int main(void) {
 
         s2 = test3((struct S2) {{i, -1ll}});
         assert(s2.arr[0] == ((i >> 8) | (0xffull << 56)));
-        assert(MASK(s2.arr[1], 36) == 0xffffffffull);
+        assert(MASK(s2.arr[1], 36) == MASK(~0ull, 36) >> 8);
     }
     return EXIT_SUCCESS;
 }

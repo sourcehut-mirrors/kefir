@@ -100,6 +100,9 @@ static __kefir_bigint_result_t __kefir_bigint_right_shift(__KEFIR_BIGINT_DIGIT_T
 
     const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
     const __KEFIR_BIGINT_UNSIGNED_VALUE_T shift_whole_digits = shift / __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_WIDTH_T mask_offset = width - (total_digits - 1) * __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
+    digits[total_digits - 1] &= mask;
     if (shift_whole_digits > 0) {
         (void) __kefir_bigint_right_shift_whole_digits(digits, shift_whole_digits, 0, width);
         shift -= shift_whole_digits * __KEFIR_BIGINT_DIGIT_BIT;
@@ -110,13 +113,9 @@ static __kefir_bigint_result_t __kefir_bigint_right_shift(__KEFIR_BIGINT_DIGIT_T
             digits[i] = (digits[i] >> shift) | (digits[i + 1] << (__KEFIR_BIGINT_DIGIT_BIT - shift));
         }
 
-        const __KEFIR_BIGINT_WIDTH_T mask_offset = width - (total_digits - 1) * __KEFIR_BIGINT_DIGIT_BIT;
-        const __KEFIR_BIGINT_UINT_T mask = (1ull << mask_offset) - 1;
-
         digits[total_digits - 1] &= mask;
         digits[total_digits - 1] >>= shift;
     }
-
     return __KEFIR_BIGINT_OK;
 }
 
@@ -134,6 +133,14 @@ static __kefir_bigint_result_t __kefir_bigint_arithmetic_right_shift(__KEFIR_BIG
     const __KEFIR_BIGINT_WIDTH_T msb_digit_index = (width - 1) / __KEFIR_BIGINT_DIGIT_BIT;
     const __KEFIR_BIGINT_WIDTH_T msb_digit_offset = (width - 1) - msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
     const __KEFIR_BIGINT_WIDTH_T sign = (digits[msb_digit_index] >> msb_digit_offset) & 1;
+
+    if (sign) {
+        const __KEFIR_BIGINT_UINT_T mask = ~((1ull << msb_digit_offset) - 1);
+        digits[total_digits - 1] |= mask;
+    } else {
+        const __KEFIR_BIGINT_UINT_T mask = (1ull << msb_digit_offset) - 1;
+        digits[total_digits - 1] &= mask;
+    }
 
     const __KEFIR_BIGINT_UNSIGNED_VALUE_T shift_whole_digits = shift / __KEFIR_BIGINT_DIGIT_BIT;
     if (shift_whole_digits > 0) {
@@ -157,7 +164,6 @@ static __kefir_bigint_result_t __kefir_bigint_arithmetic_right_shift(__KEFIR_BIG
             digits[total_digits - 1] &= mask;
         }
     }
-
     return __KEFIR_BIGINT_OK;
 }
 
