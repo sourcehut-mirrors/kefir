@@ -99,6 +99,10 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_signed_to_float(__KEFIR_BIGINT_DIGI
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 1, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 128) {  // Saturation to infinity
+        exponent = 128;
+        mantissa = 0;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_FLOAT_T f;
@@ -116,6 +120,10 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_signed_to_double(__KEFIR_BIGINT_DI
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 1, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 1024) {  // Saturation to infinity
+        exponent = 1024;
+        mantissa = 0;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_DOUBLE_T f;
@@ -133,6 +141,10 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_signed_to_long_double(__KEFIR
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 1, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 16384) {  // Saturation to infinity
+        exponent = 16384;
+        mantissa = 1ull << 63;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
         __KEFIR_BIGINT_LONG_DOUBLE_T f;
@@ -150,6 +162,10 @@ static __KEFIR_BIGINT_FLOAT_T __kefir_bigint_unsigned_to_float(__KEFIR_BIGINT_DI
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_FLT_MANT_DIG, 0, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 128) {  // Saturation to infinity
+        exponent = 128;
+        mantissa = 0;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_FLOAT_T f;
@@ -167,6 +183,10 @@ static __KEFIR_BIGINT_DOUBLE_T __kefir_bigint_unsigned_to_double(__KEFIR_BIGINT_
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_DBL_MANT_DIG, 0, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 1024) {  // Saturation to infinity
+        exponent = 1024;
+        mantissa = 0;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u;
         __KEFIR_BIGINT_DOUBLE_T f;
@@ -184,6 +204,10 @@ static __KEFIR_BIGINT_LONG_DOUBLE_T __kefir_bigint_unsigned_to_long_double(__KEF
     __KEFIR_BIGINT_UNSIGNED_VALUE_T sign, exponent, mantissa;
     __KEFIR_BIGINT_TO_IEEE754_IMPL(signed_digits, tmp, width, __KEFIR_BIGINT_LDBL_MANT_DIG, 0, &sign, &exponent,
                                    &mantissa);
+    if (exponent >= 16384) {  // Saturation to infinity
+        exponent = 16384;
+        mantissa = 1ull << 63;
+    }
     union {
         __KEFIR_BIGINT_UNSIGNED_VALUE_T u[2];
         __KEFIR_BIGINT_LONG_DOUBLE_T f;
