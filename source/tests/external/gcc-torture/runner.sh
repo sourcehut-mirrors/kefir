@@ -22,13 +22,7 @@ set -eo pipefail
 SCRIPT_DIR="$(dirname `realpath $0`)"
 OUT_FILE="$1"
 
-TMP_FILE="$(mktemp)"
-
-cleanup () {
-    rm -f "$TMP_FILE"
-}
-
-trap cleanup EXIT HUP INT QUIT PIPE TERM
+TMP_FILE="$OUT_FILE.tmp"
 
 "$SCRIPT_DIR/run_gcc_torture_suite.sh" 2>&1 | tee -i "$TMP_FILE"
 "$SCRIPT_DIR/validate.sh" "$TMP_FILE"

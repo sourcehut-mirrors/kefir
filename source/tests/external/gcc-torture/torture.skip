@@ -43,3 +43,15 @@ skip execute/20000227-1.c
 
 # Memory allocation failre in CI
 skip compile/20050622-1.c
+
+# __attribute__((scalar_storage_order))
+skip execute/20230630-2.c
+skip execute/20230630-4.c
+
+# __attribute__((mode))
+skip execute/memclr.c
+skip execute/memcpy-a1.c
+skip execute/memcpy-a2.c
+skip execute/memcpy-a4.c
+skip execute/memcpy-a8.c
+skip execute/misalign.c
