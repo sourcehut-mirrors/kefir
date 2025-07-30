@@ -1,0 +1,20 @@
+
+
+_ExtInt(6) add1(_ExtInt(6) x, _ExtInt(6) y) {
+return x + y;
+}
+_ExtInt(14) add2(_ExtInt(14) x, _ExtInt(14) y) {
+return x + y;
+}
+_ExtInt(29) add3(_ExtInt(29) x, _ExtInt(29) y) {
+return x + y;
+}
+_ExtInt(58) add4(_ExtInt(58) x, _ExtInt(58) y) {
+return x + y;
+}
+_ExtInt(120) add5(_ExtInt(120) x, _ExtInt(120) y) {
+return x + y;
+}
+_ExtInt(310) add6(_ExtInt(310) x, _ExtInt(310) y) {
+return x + y;
+}
