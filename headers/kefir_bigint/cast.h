@@ -112,7 +112,7 @@ static __kefir_bigint_result_t __kefir_bigint_cast_unsigned(__KEFIR_BIGINT_DIGIT
     const __KEFIR_BIGINT_WIDTH_T current_msb_bit_offset =
         current_width - current_msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
 
-    if (current_msb_bit_offset + 1 < __KEFIR_BIGINT_DIGIT_BIT) {
+    if (current_msb_bit_offset < __KEFIR_BIGINT_DIGIT_BIT) {
         __KEFIR_BIGINT_UINT_T mask = (1ull << current_msb_bit_offset) - 1;
         digits[current_msb_digit_index] &= mask;
     }

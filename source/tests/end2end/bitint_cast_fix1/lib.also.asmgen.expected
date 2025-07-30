@@ -1,0 +1,15 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global result
+.type result, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+result:
+    .long 0
+

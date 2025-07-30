@@ -260,9 +260,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label2:
     sub %rcx, %rax
     movq %rax, -64(%rbp)
     movq -64(%rbp), %rax
-    mov $1, %rdx
-    movsx %edx, %rcx
-    add %rcx, %rax
     mov $8, %rdx
     movsx %edx, %rcx
     mov $1, %rdx
