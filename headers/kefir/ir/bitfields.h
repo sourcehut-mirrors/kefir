@@ -26,8 +26,8 @@
 #include "kefir/ir/builder.h"
 
 typedef struct kefir_ir_bitfield {
-    kefir_uint8_t offset;
-    kefir_uint8_t width;
+    kefir_uint64_t offset;
+    kefir_uint64_t width;
 } kefir_ir_bitfield_t;
 
 typedef struct kefir_ir_bitfield_allocator {
