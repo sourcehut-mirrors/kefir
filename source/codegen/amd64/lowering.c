@@ -1650,7 +1650,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(
                     get_bigint_unsigned_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
                 REQUIRE_OK(
-                    get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                    get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -1837,7 +1837,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(
                     get_bigint_unsigned_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
                 REQUIRE_OK(
-                    get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                    get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
