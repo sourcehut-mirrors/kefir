@@ -437,21 +437,33 @@ kefir_result_t kefir_bigint_signed_compare(const struct kefir_bigint *lhs_bigint
 static kefir_result_t parse10_impl(struct kefir_bigint *bigint, const char *input, kefir_size_t input_length,
                                    struct kefir_bigint *tmp_bigints) {
     REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
-    for (kefir_size_t i = 0; i < input_length; i++) {
-        kefir_uint8_t digit = 0;
-        if (input[i] >= '0' && input[i] <= '9') {
-            digit = input[i] - '0';
-        } else if (input[i] == '\0') {
-            break;
-        } else {
-            return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE, "Unexpected character in decimal big integer: '%c' (%d)",
-                                    input[i], input[i]);
+    kefir_bool_t exit = false;
+    for (kefir_size_t i = 0; !exit && i < input_length;) {
+        kefir_uint64_t chunk = 0;
+        kefir_uint64_t chunk_base = 1;
+#define MAX_CHUNK_SIZE 15
+        kefir_size_t j = 0;
+        for (; j < MAX_CHUNK_SIZE && i + j < input_length; j++) {
+            char chr = input[i + j];
+            if (chr >= '0' && chr <= '9') {
+                chunk_base *= 10;
+                chunk *= 10;
+                chunk += chr - '0';
+            } else if (chr == '\0') {
+                exit = true;
+                break;
+            } else {
+                return KEFIR_SET_ERRORF(KEFIR_INVALID_STATE, "Unexpected character in decimal big integer: '%c' (%d)",
+                                        chr, chr);
+            }
         }
+        i += j;
+#undef MAX_CHUNK_SIZE
 
         REQUIRE_OK(kefir_bigint_copy(&tmp_bigints[0], bigint));
-        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[1], 10));
+        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[1], chunk_base));
         REQUIRE_OK(kefir_bigint_unsigned_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1]));
-        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[0], digit));
+        REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[0], chunk));
         REQUIRE_OK(kefir_bigint_add(bigint, &tmp_bigints[0]));
     }
 
