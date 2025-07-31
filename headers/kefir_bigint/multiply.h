@@ -33,7 +33,6 @@
 #include "kefir_bigint/base.h"
 
 static __kefir_bigint_result_t __kefir_bigint_unsigned_multiply(__KEFIR_BIGINT_DIGIT_T *result_digits,
-                                                                __KEFIR_BIGINT_DIGIT_T *result_row_digits,
                                                                 const __KEFIR_BIGINT_DIGIT_T *lhs_digits,
                                                                 const __KEFIR_BIGINT_DIGIT_T *rhs_digits,
                                                                 __KEFIR_BIGINT_WIDTH_T result_width,
@@ -47,33 +46,34 @@ static __kefir_bigint_result_t __kefir_bigint_unsigned_multiply(__KEFIR_BIGINT_D
     const __KEFIR_BIGINT_WIDTH_T result_total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(result_width);
     const __KEFIR_BIGINT_WIDTH_T operand_mask_offset = operand_width - (total_digits - 1) * __KEFIR_BIGINT_DIGIT_BIT;
     const __KEFIR_BIGINT_DIGIT_T operand_mask = (1ull << operand_mask_offset) - 1;
-    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
-        (void) __kefir_bigint_zero(result_row_digits, result_width);
-        __KEFIR_BIGINT_DIGIT_T lhs_digit = lhs_digits[i];
-        if (i + 1 == total_digits) {
-            lhs_digit &= operand_mask;
+
+    const __KEFIR_BIGINT_UINT_T base = (1ull << __KEFIR_BIGINT_DIGIT_BIT);
+    for (__KEFIR_BIGINT_WIDTH_T j = 0; j < total_digits; j++) {
+        __KEFIR_BIGINT_UINT_T carry = 0;
+        __KEFIR_BIGINT_DIGIT_T rhs_digit = rhs_digits[j];
+        if (j + 1 == total_digits) {
+            rhs_digit &= operand_mask;
+        }
+        for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+            const __KEFIR_BIGINT_WIDTH_T product_idx = i + j;
+            if (product_idx >= result_total_digits) {
+                break;
+            }
+
+            __KEFIR_BIGINT_DIGIT_T lhs_digit = lhs_digits[i];
+            if (i + 1 == total_digits) {
+                lhs_digit &= operand_mask;
+            }
+
+            const __KEFIR_BIGINT_UINT_T value = result_digits[product_idx] + carry + lhs_digit * rhs_digit;
+            result_digits[product_idx] = value % base;
+            carry = value / base;
         }
 
-        for (__KEFIR_BIGINT_WIDTH_T j = 0; j < total_digits; j++) {
-            const __KEFIR_BIGINT_WIDTH_T rhs_index = total_digits - j - 1;
-            __KEFIR_BIGINT_DIGIT_T rhs_digit = rhs_digits[rhs_index];
-            if (rhs_index + 1 == total_digits) {
-                rhs_digit &= operand_mask;
-            }
-            __KEFIR_BIGINT_UINT_T digit_mul = ((__KEFIR_BIGINT_UINT_T) lhs_digit) * (__KEFIR_BIGINT_UINT_T) rhs_digit;
-            (void) __kefir_bigint_left_shift_whole_digits(result_row_digits, 1, result_width);
-            for (__KEFIR_BIGINT_WIDTH_T k = 0; k < result_total_digits && digit_mul != 0;
-                 digit_mul >>= __KEFIR_BIGINT_DIGIT_BIT, k++) {
-                (void) __kefir_bigint_util_add_digit_zero_extended(&result_row_digits[k],
-                                                                   (__KEFIR_BIGINT_DIGIT_T) digit_mul,
-                                                                   result_width - k * __KEFIR_BIGINT_DIGIT_BIT);
-            }
+        const __KEFIR_BIGINT_WIDTH_T product_idx = j + total_digits;
+        if (product_idx < result_total_digits) {
+            result_digits[product_idx] = carry;
         }
-        if (i > 0) {
-            (void) __kefir_bigint_left_shift_whole_digits(result_row_digits, i, result_width);
-        }
-
-        (void) __kefir_bigint_add(result_digits, result_row_digits, result_width);
     }
 
     return __KEFIR_BIGINT_OK;

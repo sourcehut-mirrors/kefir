@@ -418,7 +418,7 @@ kefir_result_t kefir_ast_evaluate_binary_operation_node(struct kefir_mem *mem, c
                         REQUIRE_OK(kefir_bigint_get_signed(value->bitprecise, &value->integer));
                     } else {
                         REQUIRE_OK(kefir_bigint_unsigned_multiply(value->bitprecise, lhs_value.bitprecise,
-                                                                  rhs_value.bitprecise, acc_bigint));
+                                                                  rhs_value.bitprecise));
                         REQUIRE_OK(kefir_bigint_get_unsigned(value->bitprecise, &value->uinteger));
                     }
                 } else {

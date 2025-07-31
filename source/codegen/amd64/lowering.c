@@ -239,8 +239,7 @@ DECL_BIGINT_RUNTIME_FN(bigint_signed_multiply, BIGINT_SIGNED_MULTIPLY_FN, 6, 0, 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
-DECL_BIGINT_RUNTIME_FN(bigint_unsigned_multiply, BIGINT_UNSIGNED_MULTIPLY_FN, 6, 0, {
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+DECL_BIGINT_RUNTIME_FN(bigint_unsigned_multiply, BIGINT_UNSIGNED_MULTIPLY_FN, 5, 0, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
@@ -1525,25 +1524,21 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
 
-                kefir_opt_instruction_ref_t result_value_ref, tmp_value_ref, bitwidth_ref, call_ref;
+                kefir_opt_instruction_ref_t result_value_ref, bitwidth_ref, call_ref;
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(mem, &func->code, block_id,
                                                                    qwords * KEFIR_AMD64_ABI_QWORD,
                                                                    KEFIR_AMD64_ABI_QWORD, &result_value_ref));
-                REQUIRE_OK(kefir_opt_code_builder_temporary_object(
-                    mem, &func->code, block_id, qwords * KEFIR_AMD64_ABI_QWORD, KEFIR_AMD64_ABI_QWORD, &tmp_value_ref));
 
                 kefir_opt_call_id_t call_node_id;
-                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 6, KEFIR_ID_NONE,
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 5, KEFIR_ID_NONE,
                                                              &call_node_id, &call_ref));
                 REQUIRE_OK(
                     kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, result_value_ref));
-                REQUIRE_OK(
-                    kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, tmp_value_ref));
-                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg1_ref));
-                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, arg2_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, arg1_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 2, arg2_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 3, bitwidth_ref));
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 4, bitwidth_ref));
-                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 5, bitwidth_ref));
 
                 REQUIRE_OK(kefir_opt_code_builder_pair(mem, &func->code, block_id, result_value_ref, call_ref,
                                                        replacement_ref));

@@ -338,19 +338,15 @@ kefir_result_t kefir_bigint_arithmetic_right_shift(struct kefir_bigint *lhs_bigi
 }
 
 kefir_result_t kefir_bigint_unsigned_multiply(struct kefir_bigint *result_bigint, const struct kefir_bigint *lhs_bigint,
-                                              const struct kefir_bigint *rhs_bigint, struct kefir_bigint *tmp_bigint) {
+                                              const struct kefir_bigint *rhs_bigint) {
     REQUIRE(result_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(lhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(rhs_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
-    REQUIRE(tmp_bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
     REQUIRE(lhs_bigint->bitwidth == rhs_bigint->bitwidth,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Big integer width mismatch"));
-    REQUIRE(tmp_bigint->bitwidth >= result_bigint->bitwidth,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Temporary big integer shall be at least as large as result"));
 
-    __kefir_bigint_result_t res =
-        __kefir_bigint_unsigned_multiply(result_bigint->digits, tmp_bigint->digits, lhs_bigint->digits,
-                                         rhs_bigint->digits, result_bigint->bitwidth, lhs_bigint->bitwidth);
+    __kefir_bigint_result_t res = __kefir_bigint_unsigned_multiply(
+        result_bigint->digits, lhs_bigint->digits, rhs_bigint->digits, result_bigint->bitwidth, lhs_bigint->bitwidth);
     UNUSED(res);
     return KEFIR_OK;
 }
@@ -454,7 +450,7 @@ static kefir_result_t parse10_impl(struct kefir_bigint *bigint, const char *inpu
 
         REQUIRE_OK(kefir_bigint_copy(&tmp_bigints[0], bigint));
         REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[1], 10));
-        REQUIRE_OK(kefir_bigint_unsigned_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1], &tmp_bigints[2]));
+        REQUIRE_OK(kefir_bigint_unsigned_multiply(bigint, &tmp_bigints[0], &tmp_bigints[1]));
         REQUIRE_OK(kefir_bigint_set_unsigned_value(&tmp_bigints[0], digit));
         REQUIRE_OK(kefir_bigint_add(bigint, &tmp_bigints[0]));
     }
@@ -471,30 +467,21 @@ kefir_result_t kefir_bigint_unsigned_parse10_into(struct kefir_mem *mem, struct 
     struct kefir_bigint tmp_bigints[3];
     REQUIRE_OK(kefir_bigint_init(&tmp_bigints[0]));
     REQUIRE_OK(kefir_bigint_init(&tmp_bigints[1]));
-    REQUIRE_OK(kefir_bigint_init(&tmp_bigints[2]));
     kefir_result_t res = KEFIR_OK;
     REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[0], bigint->bitwidth));
     REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[1], bigint->bitwidth));
-    REQUIRE_CHAIN(&res, kefir_bigint_resize_cast_unsigned(mem, &tmp_bigints[2], bigint->bitwidth));
     REQUIRE_CHAIN(&res, parse10_impl(bigint, input, input_length, tmp_bigints));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_bigint_free(mem, &tmp_bigints[0]);
         kefir_bigint_free(mem, &tmp_bigints[1]);
-        kefir_bigint_free(mem, &tmp_bigints[2]);
         return res;
     });
     res = kefir_bigint_free(mem, &tmp_bigints[0]);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_bigint_free(mem, &tmp_bigints[1]);
-        kefir_bigint_free(mem, &tmp_bigints[2]);
         return res;
     });
-    res = kefir_bigint_free(mem, &tmp_bigints[1]);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_bigint_free(mem, &tmp_bigints[2]);
-        return res;
-    });
-    REQUIRE_OK(kefir_bigint_free(mem, &tmp_bigints[2]));
+    REQUIRE_OK(kefir_bigint_free(mem, &tmp_bigints[1]));
 
     return KEFIR_OK;
 }

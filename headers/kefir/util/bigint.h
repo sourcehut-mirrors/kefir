@@ -70,7 +70,7 @@ kefir_result_t kefir_bigint_right_shift(struct kefir_bigint *, kefir_size_t);
 kefir_result_t kefir_bigint_arithmetic_right_shift(struct kefir_bigint *, kefir_size_t);
 
 kefir_result_t kefir_bigint_unsigned_multiply(struct kefir_bigint *, const struct kefir_bigint *,
-                                              const struct kefir_bigint *, struct kefir_bigint *);
+                                              const struct kefir_bigint *);
 kefir_result_t kefir_bigint_signed_multiply(struct kefir_bigint *, struct kefir_bigint *, const struct kefir_bigint *,
                                             struct kefir_bigint *);
 

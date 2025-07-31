@@ -707,8 +707,8 @@ umul:
 __kefir_text_func_umul_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
-    mov %rdi, %r11
+    sub $112, %rsp
+    mov %rdi, %r10
 _kefir_func_umul_label0:
     lea 16(%rbp), %rax
     movq (%rax), %rcx
@@ -718,45 +718,43 @@ _kefir_func_umul_label0:
     movq 16(%rax), %rcx
     movq %rcx, -8(%rbp)
     movq -24(%rbp), %rax
-    movq %rax, -96(%rbp)
+    movq %rax, -112(%rbp)
     movq -16(%rbp), %rax
-    movq %rax, -88(%rbp)
+    movq %rax, -104(%rbp)
     movq -8(%rbp), %rax
+    movq %rax, -96(%rbp)
+    movq y@GOTPCREL(%rip), %r9
+    movq (%r9), %rax
+    movq %rax, -88(%rbp)
+    movq 8(%r9), %rax
     movq %rax, -80(%rbp)
-    movq y@GOTPCREL(%rip), %r10
-    movq (%r10), %rax
-    movq %rax, -144(%rbp)
-    movq 8(%r10), %rax
-    movq %rax, -136(%rbp)
-    movq 16(%r10), %rax
-    movq %rax, -128(%rbp)
-    movq %r11, -48(%rbp)
+    movq 16(%r9), %rax
+    movq %rax, -72(%rbp)
     movq %r10, -40(%rbp)
-    leaq -72(%rbp), %rax
+    movq %r9, -32(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -120(%rbp), %rax
+    leaq -88(%rbp), %rax
     mov %rax, %rsi
-    leaq -144(%rbp), %rax
+    leaq -112(%rbp), %rax
     mov %rax, %rdx
-    leaq -96(%rbp), %rax
-    mov %rax, %rcx
+    mov $150, %rcx
     mov $150, %r8
-    mov $150, %r9
     call __kefir_bigint_unsigned_multiply
-    movq -48(%rbp), %r11
     movq -40(%rbp), %r10
-    movq -72(%rbp), %rax
-    movq %rax, (%r10)
+    movq -32(%rbp), %r9
     movq -64(%rbp), %rax
-    movq %rax, 8(%r10)
+    movq %rax, (%r9)
     movq -56(%rbp), %rax
-    movq %rax, 16(%r10)
-    mov %r11, %rax
-    movq -72(%rbp), %rcx
-    movq %rcx, (%rax)
+    movq %rax, 8(%r9)
+    movq -48(%rbp), %rax
+    movq %rax, 16(%r9)
+    mov %r10, %rax
     movq -64(%rbp), %rcx
-    movq %rcx, 8(%rax)
+    movq %rcx, (%rax)
     movq -56(%rbp), %rcx
+    movq %rcx, 8(%rax)
+    movq -48(%rbp), %rcx
     movq %rcx, 16(%rax)
     lea (%rbp), %rsp
     pop %rbp
@@ -3299,16 +3297,15 @@ __kefir_text_func___kefir_bigint_unsigned_multiply_begin:
     mov %rsp, %rbp
     sub $112, %rsp
 _kefir_func___kefir_bigint_unsigned_multiply_label0:
-    movq %r9, -96(%rbp)
-    movq %r8, -48(%rbp)
-    movq %rcx, -104(%rbp)
-    movq %rdx, -112(%rbp)
-    movq %rsi, -80(%rbp)
+    movq %r8, -88(%rbp)
+    movq %rcx, -56(%rbp)
+    movq %rdx, -96(%rbp)
+    movq %rsi, -104(%rbp)
     movq %rdi, -72(%rbp)
     movq -72(%rbp), %rdi
-    movq -48(%rbp), %rsi
+    movq -56(%rbp), %rsi
     call __kefir_bigint_zero
-    movq -48(%rbp), %rax
+    movq -56(%rbp), %rax
     mov $0, %rdx
     movsx %edx, %rcx
     mov $0, %rdx
@@ -3318,19 +3315,19 @@ _kefir_func___kefir_bigint_unsigned_multiply_label0:
     setne %sil
     movzx %sil, %rsi
     test %sil, %sil
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label22
+    jz _kefir_func___kefir_bigint_unsigned_multiply_label19
     mov %rsi, %rdi
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label1
-_kefir_func___kefir_bigint_unsigned_multiply_label22:
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label21
+_kefir_func___kefir_bigint_unsigned_multiply_label19:
+    jmp _kefir_func___kefir_bigint_unsigned_multiply_label18
 _kefir_func___kefir_bigint_unsigned_multiply_label1:
     mov $0, %rax
     test %edi, %edi
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label20
+    jz _kefir_func___kefir_bigint_unsigned_multiply_label17
 _kefir_func___kefir_bigint_unsigned_multiply_label2:
-    movq -96(%rbp), %rax
+    movq -88(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
     mov $1, %rdx
@@ -3345,8 +3342,8 @@ _kefir_func___kefir_bigint_unsigned_multiply_label2:
     imul %rcx, %rsi
     mov $0, %rdx
     div %rsi
-    movq %rax, -40(%rbp)
-    movq -48(%rbp), %rax
+    movq %rax, -48(%rbp)
+    movq -56(%rbp), %rax
     mov $8, %rdx
     movsx %edx, %rcx
     mov $1, %rdx
@@ -3361,9 +3358,9 @@ _kefir_func___kefir_bigint_unsigned_multiply_label2:
     imul %rcx, %rsi
     mov $0, %rdx
     div %rsi
-    movq %rax, -88(%rbp)
-    movq -96(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movq %rax, -80(%rbp)
+    movq -88(%rbp), %rax
+    movq -48(%rbp), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     sub %rdx, %rcx
@@ -3380,13 +3377,20 @@ _kefir_func___kefir_bigint_unsigned_multiply_label2:
     mov $1, %rdx
     movsx %edx, %rcx
     sub %rcx, %rax
-    movb %al, -56(%rbp)
+    movb %al, -108(%rbp)
+    mov $8, %rcx
+    movsx %ecx, %rax
+    mov $1, %rcx
+    imul %rax, %rcx
+    mov $1, %rax
+    shl %cl, %rax
+    movl %eax, -112(%rbp)
     mov $0, %rcx
     movsx %ecx, %rax
-    movq %rax, -32(%rbp)
+    movq %rax, -40(%rbp)
 _kefir_func___kefir_bigint_unsigned_multiply_label3:
-    movq -32(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movq -40(%rbp), %rax
+    movq -48(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
@@ -3401,17 +3405,15 @@ _kefir_func___kefir_bigint_unsigned_multiply_label4:
     pop %rbp
     ret
 _kefir_func___kefir_bigint_unsigned_multiply_label5:
-    movq -80(%rbp), %rdi
-    movq -48(%rbp), %rsi
-    call __kefir_bigint_zero
-    movq -112(%rbp), %rax
-    movq -32(%rbp), %rcx
+    movl $0, -32(%rbp)
+    movq -96(%rbp), %rax
+    movq -40(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %al
-    movb %al, -55(%rbp)
-    movq -32(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movb %al, -107(%rbp)
+    movq -40(%rbp), %rax
+    movq -48(%rbp), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     add %rdx, %rax
@@ -3422,14 +3424,14 @@ _kefir_func___kefir_bigint_unsigned_multiply_label5:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label19
+    jz _kefir_func___kefir_bigint_unsigned_multiply_label16
 _kefir_func___kefir_bigint_unsigned_multiply_label6:
     mov $0, %rcx
     movsx %ecx, %rax
-    movq %rax, -24(%rbp)
+    movq %rax, -16(%rbp)
 _kefir_func___kefir_bigint_unsigned_multiply_label7:
-    movq -24(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movq -16(%rbp), %rax
+    movq -48(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
@@ -3439,48 +3441,63 @@ _kefir_func___kefir_bigint_unsigned_multiply_label7:
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_multiply_label11
 _kefir_func___kefir_bigint_unsigned_multiply_label8:
-    movq -32(%rbp), %rax
-    mov $0, %rdx
-    movsx %edx, %rcx
+    movq -40(%rbp), %rax
+    movq -48(%rbp), %rcx
+    add %rcx, %rax
+    movq %rax, -24(%rbp)
+    movq -24(%rbp), %rax
+    movq -80(%rbp), %rcx
     mov $0, %rdx
     cmp %rcx, %rax
-    seta %dl
+    setb %dl
     mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_multiply_label10
 _kefir_func___kefir_bigint_unsigned_multiply_label9:
-    movq -72(%rbp), %rdi
-    movq -80(%rbp), %rsi
-    movq -48(%rbp), %rdx
-    call __kefir_bigint_add
-    movq -32(%rbp), %rax
+    movq -40(%rbp), %rax
     add $1, %rax
-    movq %rax, -32(%rbp)
+    movq %rax, -40(%rbp)
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label3
 _kefir_func___kefir_bigint_unsigned_multiply_label10:
-    movq -80(%rbp), %rdi
-    movq -32(%rbp), %rsi
-    movq -48(%rbp), %rdx
-    call __kefir_bigint_left_shift_whole_digits
+    movl -32(%rbp), %eax
+    movq -72(%rbp), %rcx
+    movq -24(%rbp), %rdx
+    imul $1, %rdx, %rdx
+    add %rdx, %rcx
+    movb %al, (%rcx)
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label9
 _kefir_func___kefir_bigint_unsigned_multiply_label11:
-    movq -40(%rbp), %rax
-    movq -24(%rbp), %rcx
-    sub %rcx, %rax
-    mov $1, %rdx
-    movsx %edx, %rcx
-    sub %rcx, %rax
-    movq %rax, -16(%rbp)
+    movq -16(%rbp), %rax
+    movq -40(%rbp), %rcx
+    add %rcx, %rax
+    movq %rax, -8(%rbp)
+    movq -8(%rbp), %rax
+    movq -80(%rbp), %rcx
+    mov $0, %rdx
+    cmp %rcx, %rax
+    seta %dl
+    mov $0, %rsi
+    cmp %rax, %rcx
+    sete %sil
+    or %rsi, %rdx
+    setne %dl
+    movzx %dl, %rdx
+    mov $0, %rax
+    test %edx, %edx
+    sete %al
+    test %al, %al
+    jz _kefir_func___kefir_bigint_unsigned_multiply_label15
+_kefir_func___kefir_bigint_unsigned_multiply_label12:
     movq -104(%rbp), %rax
     movq -16(%rbp), %rcx
     imul $1, %rcx, %rcx
     add %rcx, %rax
     movb (%rax), %al
-    movb %al, -54(%rbp)
+    movb %al, -106(%rbp)
     movq -16(%rbp), %rax
-    movq -40(%rbp), %rcx
+    movq -48(%rbp), %rcx
     mov $1, %rsi
     movsx %esi, %rdx
     add %rdx, %rax
@@ -3491,116 +3508,68 @@ _kefir_func___kefir_bigint_unsigned_multiply_label11:
     test %edx, %edx
     sete %al
     test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label18
-_kefir_func___kefir_bigint_unsigned_multiply_label12:
-    movb -55(%rbp), %al
-    movb -54(%rbp), %cl
-    and $255, %rax
-    and $255, %rcx
-    imul %ecx, %eax
-    movl %eax, -52(%rbp)
-    movq -80(%rbp), %rdi
-    movq -48(%rbp), %rdx
-    mov $1, %rax
-    movsx %eax, %rsi
-    call __kefir_bigint_left_shift_whole_digits
-    mov $0, %rcx
-    movsx %ecx, %rax
-    movq %rax, -8(%rbp)
+    jz _kefir_func___kefir_bigint_unsigned_multiply_label14
 _kefir_func___kefir_bigint_unsigned_multiply_label13:
-    movq -8(%rbp), %rax
-    movq -88(%rbp), %rcx
-    mov $0, %rdx
-    cmp %rcx, %rax
-    setb %dl
-    test %edx, %edx
-    setne %dl
-    movzx %dl, %rdx
-    mov $0, %rax
-    test %dl, %dl
-    sete %al
-    test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label23
-    mov %rdx, %rsi
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label14
-_kefir_func___kefir_bigint_unsigned_multiply_label23:
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label17
-_kefir_func___kefir_bigint_unsigned_multiply_label14:
-    mov $0, %rax
-    test %esi, %esi
-    sete %al
-    test %al, %al
-    jz _kefir_func___kefir_bigint_unsigned_multiply_label16
-_kefir_func___kefir_bigint_unsigned_multiply_label15:
-    movq -24(%rbp), %rax
-    add $1, %rax
-    movq %rax, -24(%rbp)
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label7
-_kefir_func___kefir_bigint_unsigned_multiply_label16:
-    movq -80(%rbp), %rdi
-    movq -8(%rbp), %rax
-    movl -52(%rbp), %esi
-    movq -48(%rbp), %rdx
+    movq -72(%rbp), %rax
     movq -8(%rbp), %rcx
-    imul $1, %rax, %rax
-    add %rax, %rdi
-    mov $8, %r8
-    movsx %r8d, %rax
-    mov $1, %r8
-    imul %rax, %r8
-    imul %r8, %rcx
-    sub %rcx, %rdx
-    call __kefir_bigint_util_add_digit_zero_extended
-    movl -52(%rbp), %eax
-    mov $8, %rcx
-    movsx %ecx, %rdx
-    mov $1, %rcx
-    imul %rdx, %rcx
-    shr %cl, %eax
-    movl %eax, -52(%rbp)
-    movq -8(%rbp), %rax
+    imul $1, %rcx, %rcx
+    add %rcx, %rax
+    movb (%rax), %al
+    movl -32(%rbp), %ecx
+    movb -106(%rbp), %dl
+    movb -107(%rbp), %sil
+    and $255, %rax
+    add %ecx, %eax
+    mov %rdx, %rcx
+    and $255, %rcx
+    and $255, %rsi
+    imul %esi, %ecx
+    add %ecx, %eax
+    movl %eax, -28(%rbp)
+    movl -28(%rbp), %eax
+    movl -112(%rbp), %ecx
+    movq -72(%rbp), %rdx
+    movq -8(%rbp), %rsi
+    imul $1, %rsi, %rsi
+    mov %rdx, %rdi
+    add %rsi, %rdi
+    mov $0, %edx
+    div %ecx
+    movb %dl, (%rdi)
+    movl -28(%rbp), %eax
+    movl -112(%rbp), %ecx
+    mov $0, %edx
+    div %ecx
+    movl %eax, -32(%rbp)
+    movq -16(%rbp), %rax
     add $1, %rax
-    movq %rax, -8(%rbp)
+    movq %rax, -16(%rbp)
+    jmp _kefir_func___kefir_bigint_unsigned_multiply_label7
+_kefir_func___kefir_bigint_unsigned_multiply_label14:
+    movb -108(%rbp), %al
+    movb -106(%rbp), %cl
+    and $255, %rcx
+    and $255, %rax
+    and %eax, %ecx
+    movb %cl, -106(%rbp)
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label13
-_kefir_func___kefir_bigint_unsigned_multiply_label17:
-    movl -52(%rbp), %eax
-    mov $0, %rcx
-    cmp $0, %eax
-    sete %cl
-    mov $0, %rax
-    test %cl, %cl
-    sete %al
-    test %edx, %edx
-    setne %cl
-    test %eax, %eax
-    setne %al
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %rsi
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label14
-_kefir_func___kefir_bigint_unsigned_multiply_label18:
-    movb -56(%rbp), %al
-    movb -54(%rbp), %cl
+_kefir_func___kefir_bigint_unsigned_multiply_label15:
+    jmp _kefir_func___kefir_bigint_unsigned_multiply_label8
+_kefir_func___kefir_bigint_unsigned_multiply_label16:
+    movb -108(%rbp), %al
+    movb -107(%rbp), %cl
     and $255, %rcx
     and $255, %rax
     and %eax, %ecx
-    movb %cl, -54(%rbp)
-    jmp _kefir_func___kefir_bigint_unsigned_multiply_label12
-_kefir_func___kefir_bigint_unsigned_multiply_label19:
-    movb -56(%rbp), %al
-    movb -55(%rbp), %cl
-    and $255, %rcx
-    and $255, %rax
-    and %eax, %ecx
-    movb %cl, -55(%rbp)
+    movb %cl, -107(%rbp)
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label6
-_kefir_func___kefir_bigint_unsigned_multiply_label20:
+_kefir_func___kefir_bigint_unsigned_multiply_label17:
     mov $0, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
-_kefir_func___kefir_bigint_unsigned_multiply_label21:
-    movq -96(%rbp), %rax
+_kefir_func___kefir_bigint_unsigned_multiply_label18:
+    movq -88(%rbp), %rax
     mov $0, %rdx
     movsx %edx, %rcx
     mov $0, %rdx

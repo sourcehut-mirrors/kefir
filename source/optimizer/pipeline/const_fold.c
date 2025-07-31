@@ -1140,7 +1140,7 @@ static kefir_result_t simplify_bitint_binary_impl(struct kefir_mem *mem, const s
         REQUIRE_OK(kefir_bigint_pool_alloc(mem, bigints, &acc_bigint));
         REQUIRE_OK(kefir_bigint_resize_nocast(mem, result_bigint, arg1_bigint->bitwidth));
         REQUIRE_OK(kefir_bigint_resize_nocast(mem, acc_bigint, result_bigint->bitwidth * 2 + 1));
-        REQUIRE_OK(kefir_bigint_unsigned_multiply(result_bigint, arg1_bigint, arg2_bigint, acc_bigint));
+        REQUIRE_OK(kefir_bigint_unsigned_multiply(result_bigint, arg1_bigint, arg2_bigint));
     } else if (bitint_binary_instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_IDIV) {
         const struct kefir_bigint *arg1_bigint, *arg2_bigint;
         REQUIRE_OK(kefir_ir_module_get_bigint(module->ir_module, arg1_instr->operation.parameters.imm.bitint_ref,
