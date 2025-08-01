@@ -46,6 +46,7 @@ __builtin_huge_valf
 __builtin_huge_vall
 __builtin_popcountl
 __builtin_saddl_overflow
+__builtin_assoc_barrier
 __builtin_alloca_with_align_and_max
 __builtin_classify_type
 __sync_nand_and_fetch

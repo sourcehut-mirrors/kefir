@@ -598,6 +598,8 @@ extern int __kefir_builtin_flt_rounds(void);
 
 #define __builtin_flt_rounds() __kefir_builtin_flt_rounds()
 
+#define __builtin_assoc_barrier(...) (__VA_ARGS__)
+
 #define __builtin_LINE() __LINE__
 #define __builtin_FILE() __FILE__
 #define __builtin_FUNCTION() __FUNCTION__
