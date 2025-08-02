@@ -153,6 +153,8 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW:
         case KEFIR_AST_BUILTIN_FFSG:
+        case KEFIR_AST_BUILTIN_CTZG:
+        case KEFIR_AST_BUILTIN_CLZG:
         case KEFIR_AST_BUILTIN_NAN_FLOAT64:
         case KEFIR_AST_BUILTIN_NAN_FLOAT32:
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE:

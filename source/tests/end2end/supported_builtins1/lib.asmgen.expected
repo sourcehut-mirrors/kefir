@@ -33,7 +33,9 @@ __atomic_clear
 __atomic_store
 __builtin_FILE
 __builtin_LINE
+__builtin_clzg
 __builtin_clzl
+__builtin_ctzg
 __builtin_ctzl
 __builtin_ffsg
 __builtin_ffsl

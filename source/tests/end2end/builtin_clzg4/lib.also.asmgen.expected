@@ -1,0 +1,76 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    movzx %dil, %rax
+    cmp $0, %al
+    je _kefir_func_test1_label2
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label1:
+    bsr %eax, %eax
+    xor $31, %eax
+    sub $24, %eax
+    mov %rax, %rsi
+_kefir_func_test1_label2:
+    mov %rsi, %rax
+    ret
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    cmp $0, %di
+    je _kefir_func_test2_label2
+    jmp _kefir_func_test2_label1
+_kefir_func_test2_label1:
+    movzx %di, %rax
+    bsr %eax, %eax
+    xor $31, %eax
+    sub $16, %eax
+    mov %rax, %rsi
+_kefir_func_test2_label2:
+    mov %rsi, %rax
+    ret
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    cmp $0, %edi
+    je _kefir_func_test3_label2
+    jmp _kefir_func_test3_label1
+_kefir_func_test3_label1:
+    bsr %edi, %eax
+    xor $31, %eax
+    mov %rax, %rsi
+_kefir_func_test3_label2:
+    mov %rsi, %rax
+    ret
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    cmp $0, %rdi
+    je _kefir_func_test4_label2
+    jmp _kefir_func_test4_label1
+_kefir_func_test4_label1:
+    bsr %rdi, %rax
+    xor $63, %eax
+    mov %rax, %rsi
+_kefir_func_test4_label2:
+    mov %rsi, %rax
+    ret
+__kefir_text_func_test4_end:
+
+__kefir_text_section_end:
+
