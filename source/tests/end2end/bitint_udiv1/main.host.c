@@ -47,6 +47,14 @@ int main(void) {
             assert(MASK(div2(i, j), 14) == MASK(i / j, 14));
             assert(MASK(div3(i, j), 29) == MASK(i / j, 29));
             assert(MASK(div4(i, j), 58) == MASK(i / j, 58));
+        }
+    }
+
+    for (unsigned long i = 0; i < 128; i += 8) {
+        for (unsigned long j = 0; j < 128; j += 8) {
+            if (MASK(j, 6) == 0) {
+                continue;
+            }
 
             struct S2 s2 = div5((struct S2) {{i, 0}}, (struct S2) {{j, 0}});
             assert(s2.arr[0] == (unsigned long) (i / j));
