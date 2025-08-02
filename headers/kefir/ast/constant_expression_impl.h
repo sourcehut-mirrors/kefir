@@ -60,6 +60,9 @@ kefir_result_t kefir_ast_evaluate_builtin_ctz_constant_expression_value(kefir_ui
                                                                         const struct kefir_source_location *);
 kefir_result_t kefir_ast_evaluate_builtin_clrsb_constant_expression_value(kefir_uint64_t, kefir_size_t,
                                                                           struct kefir_ast_constant_expression_value *);
-kefir_result_t kefir_ast_evaluate_builtin_popcount_constant_expression_value(kefir_uint64_t, kefir_size_t,
-                                        struct kefir_ast_constant_expression_value *);
+kefir_result_t kefir_ast_evaluate_builtin_popcount_constant_expression_value(
+    kefir_uint64_t, kefir_size_t, struct kefir_ast_constant_expression_value *);
+kefir_result_t kefir_ast_evaluate_builtin_parity_constant_expression_value(
+    kefir_uint64_t, kefir_size_t, struct kefir_ast_constant_expression_value *);
+
 #endif

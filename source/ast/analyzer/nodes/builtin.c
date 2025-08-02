@@ -419,7 +419,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
         case KEFIR_AST_BUILTIN_CLZG:
         case KEFIR_AST_BUILTIN_CTZG:
         case KEFIR_AST_BUILTIN_CLRSBG:
-        case KEFIR_AST_BUILTIN_POPCOUNTG: {
+        case KEFIR_AST_BUILTIN_POPCOUNTG:
+        case KEFIR_AST_BUILTIN_PARITYG: {
             REQUIRE(kefir_list_length(&node->arguments) >= 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                            "ffsg/ctzg/clzg builtin invocation should have at least one parameter"));

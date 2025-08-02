@@ -28,6 +28,7 @@ __builtin_bswap16
 __builtin_bswap32
 __builtin_bswap64
 __builtin_clrsbll
+__builtin_parityg
 __builtin_parityl
 __builtin_va_copy
 __atomic_clear
