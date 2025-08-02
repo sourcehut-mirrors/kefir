@@ -783,7 +783,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             kefir_ast_type_data_model_classification_t classification;
             REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
                                                           &classification));
-#define BUILTIN_CTZ_32BIT(_ir_decl)                                                                               \
+#define BUILTIN_CLRSBG_32BIT(_ir_decl)                                                                               \
     do {                                                                                                          \
         kefir_id_t parameters_type_id, returns_type_id;                                                           \
         struct kefir_ir_type *parameters_type =                                                                   \
@@ -803,7 +803,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8: {
                     const struct kefir_ir_function_decl *ir_decl;
-                    BUILTIN_CTZ_32BIT(&ir_decl);
+                    BUILTIN_CLRSBG_32BIT(&ir_decl);
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_8BITS, 0));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
@@ -813,7 +813,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT16: {
                     const struct kefir_ir_function_decl *ir_decl;
-                    BUILTIN_CTZ_32BIT(&ir_decl);
+                    BUILTIN_CLRSBG_32BIT(&ir_decl);
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SIGN_EXTEND_16BITS, 0));
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
@@ -823,7 +823,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
                 case KEFIR_AST_TYPE_DATA_MODEL_INT32: {
                     const struct kefir_ir_function_decl *ir_decl;
-                    BUILTIN_CTZ_32BIT(&ir_decl);
+                    BUILTIN_CLRSBG_32BIT(&ir_decl);
 
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
                 } break;
@@ -860,7 +860,95 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clrsbg builtin argument type");
             }
-#undef BUILTIN_CTZ_32BIT
+#undef BUILTIN_CLRSBG_32BIT
+        } break;
+
+        case KEFIR_AST_BUILTIN_POPCOUNTG: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
+                unqualified_type = unqualified_type->enumeration_type.underlying_type;
+            }
+
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
+
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
+                                                          &classification));
+#define BUILTIN_POPCOUNTG_32BIT(_ir_decl)                                                                               \
+    do {                                                                                                          \
+        kefir_id_t parameters_type_id, returns_type_id;                                                           \
+        struct kefir_ir_type *parameters_type =                                                                   \
+            kefir_ir_module_new_type(mem, context->module, 1, &parameters_type_id);                               \
+        REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));  \
+        struct kefir_ir_type *returns_type = kefir_ir_module_new_type(mem, context->module, 1, &returns_type_id); \
+        REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
+                                                                                                                  \
+        REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_popcount",     \
+                                                               parameters_type_id, false, returns_type_id);       \
+        REQUIRE(*(_ir_decl) != NULL,                                                                              \
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));           \
+    } while (0)
+
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8: {
+                    const struct kefir_ir_function_decl *ir_decl;
+                    BUILTIN_POPCOUNTG_32BIT(&ir_decl);
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_8BITS, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16: {
+                    const struct kefir_ir_function_decl *ir_decl;
+                    BUILTIN_POPCOUNTG_32BIT(&ir_decl);
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ZERO_EXTEND_16BITS, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32: {
+                    const struct kefir_ir_function_decl *ir_decl;
+                    BUILTIN_POPCOUNTG_32BIT(&ir_decl);
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT64: {
+                    kefir_id_t parameters_type_id, returns_type_id;
+                    struct kefir_ir_type *parameters_type =
+                        kefir_ir_module_new_type(mem, context->module, 1, &parameters_type_id);
+                    REQUIRE(parameters_type != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+                    struct kefir_ir_type *returns_type =
+                        kefir_ir_module_new_type(mem, context->module, 1, &returns_type_id);
+                    REQUIRE(returns_type != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
+
+                    REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
+                        mem, context->module,
+                        context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
+                            ? "__kefir_builtin_popcountl"
+                            : "__kefir_builtin_popcountll",
+                        parameters_type_id, false, returns_type_id);
+                    REQUIRE(ir_decl != NULL,
+                            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));
+
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INVOKE, ir_decl->id));
+                } break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                           "popcountg builtin for bit-precise integers is not implemented yet");
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd popcountg builtin argument type");
+            }
+#undef BUILTIN_POPCOUNTG_32BIT
         } break;
     }
     return KEFIR_OK;

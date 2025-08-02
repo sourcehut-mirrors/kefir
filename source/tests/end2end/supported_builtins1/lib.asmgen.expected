@@ -48,6 +48,7 @@ __builtin_trap
 __builtin_assume_aligned
 __builtin_huge_valf
 __builtin_huge_vall
+__builtin_popcountg
 __builtin_popcountl
 __builtin_saddl_overflow
 __builtin_assoc_barrier

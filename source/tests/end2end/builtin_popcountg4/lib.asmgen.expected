@@ -1,0 +1,45 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+_kefir_func_get_label0:
+    movl %edi, -4(%rbp)
+    movl -4(%rbp), %ecx
+    mov %ecx, %eax
+    shr $1, %eax
+    and $1431655765, %eax
+    sub %eax, %ecx
+    mov %ecx, %eax
+    and $858993459, %eax
+    shr $2, %ecx
+    and $858993459, %ecx
+    add %eax, %ecx
+    mov %ecx, %eax
+    shr $4, %eax
+    add %ecx, %eax
+    and $252645135, %eax
+    imul $16843009, %eax, %eax
+    shr $24, %eax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+x:
+    .long 1
+

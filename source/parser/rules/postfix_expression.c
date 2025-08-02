@@ -156,6 +156,7 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_CTZG:
         case KEFIR_AST_BUILTIN_CLZG:
         case KEFIR_AST_BUILTIN_CLRSBG:
+        case KEFIR_AST_BUILTIN_POPCOUNTG:
         case KEFIR_AST_BUILTIN_NAN_FLOAT64:
         case KEFIR_AST_BUILTIN_NAN_FLOAT32:
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE:

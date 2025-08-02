@@ -454,6 +454,49 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             }
         } break;
 
+        case KEFIR_AST_BUILTIN_POPCOUNTG: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
+                unqualified_type = unqualified_type->enumeration_type.underlying_type;
+            }
+
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(node, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                           "Expected integral constant expression"));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 8, value));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 16, value));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                    REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 32, value));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+                    REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
+                                           "popcountg builtin for bit-precise integers is not implemented yet");
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd popcountg builtin argument type");
+            }
+        } break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:
