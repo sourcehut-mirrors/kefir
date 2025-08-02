@@ -1,0 +1,603 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x0
+.type x0, @object
+.global x1
+.type x1, @object
+.global x2
+.type x2, @object
+.global x3
+.type x3, @object
+.global x4
+.type x4, @object
+.global x5
+.type x5, @object
+.global x6
+.type x6, @object
+.global x7
+.type x7, @object
+.global x8
+.type x8, @object
+.global x9
+.type x9, @object
+.global x10
+.type x10, @object
+.global x11
+.type x11, @object
+.global x12
+.type x12, @object
+.global x13
+.type x13, @object
+.global x14
+.type x14, @object
+.global x15
+.type x15, @object
+.global x16
+.type x16, @object
+.global x17
+.type x17, @object
+.global x18
+.type x18, @object
+.global x19
+.type x19, @object
+.global x20
+.type x20, @object
+.global x21
+.type x21, @object
+.global x22
+.type x22, @object
+.global x23
+.type x23, @object
+.global x24
+.type x24, @object
+.global x25
+.type x25, @object
+.global x26
+.type x26, @object
+.global x27
+.type x27, @object
+.global x28
+.type x28, @object
+.global x29
+.type x29, @object
+.global x30
+.type x30, @object
+.global x31
+.type x31, @object
+.global x32
+.type x32, @object
+.global x33
+.type x33, @object
+.global x34
+.type x34, @object
+.global x35
+.type x35, @object
+.global x36
+.type x36, @object
+.global x37
+.type x37, @object
+.global x38
+.type x38, @object
+.global x39
+.type x39, @object
+.global x40
+.type x40, @object
+.global x41
+.type x41, @object
+.global x42
+.type x42, @object
+.global x43
+.type x43, @object
+.global x44
+.type x44, @object
+.global x45
+.type x45, @object
+.global x46
+.type x46, @object
+.global x47
+.type x47, @object
+.global x48
+.type x48, @object
+.global x49
+.type x49, @object
+.global x50
+.type x50, @object
+.global x51
+.type x51, @object
+.global x52
+.type x52, @object
+.global x53
+.type x53, @object
+.global x54
+.type x54, @object
+.global x55
+.type x55, @object
+.global x56
+.type x56, @object
+.global x57
+.type x57, @object
+.global x58
+.type x58, @object
+.global x59
+.type x59, @object
+.global x60
+.type x60, @object
+.global x61
+.type x61, @object
+.global x62
+.type x62, @object
+.global x63
+.type x63, @object
+.global x64
+.type x64, @object
+.global x65
+.type x65, @object
+.global x66
+.type x66, @object
+.global x67
+.type x67, @object
+.global x68
+.type x68, @object
+.global x69
+.type x69, @object
+.global x70
+.type x70, @object
+.global x71
+.type x71, @object
+.global x72
+.type x72, @object
+.global x73
+.type x73, @object
+.global x74
+.type x74, @object
+.global x75
+.type x75, @object
+.global x76
+.type x76, @object
+.global x77
+.type x77, @object
+.global x78
+.type x78, @object
+.global x79
+.type x79, @object
+.global x80
+.type x80, @object
+.global x81
+.type x81, @object
+.global x82
+.type x82, @object
+.global x83
+.type x83, @object
+.global x84
+.type x84, @object
+.global x85
+.type x85, @object
+.global x86
+.type x86, @object
+.global x87
+.type x87, @object
+.global x88
+.type x88, @object
+.global x89
+.type x89, @object
+.global x90
+.type x90, @object
+.global x91
+.type x91, @object
+.global x92
+.type x92, @object
+.global x93
+.type x93, @object
+.global x94
+.type x94, @object
+.global x95
+.type x95, @object
+.global x96
+.type x96, @object
+.global x97
+.type x97, @object
+.global x98
+.type x98, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+x0:
+    .long 0
+
+    .align 4
+x1:
+    .long 1
+
+    .align 4
+x2:
+    .long 2
+
+    .align 4
+x3:
+    .long 3
+
+    .align 4
+x4:
+    .long 4
+
+    .align 4
+x5:
+    .long 5
+
+    .align 4
+x6:
+    .long 6
+
+    .align 4
+x7:
+    .long 7
+
+    .align 4
+x8:
+    .long 8
+
+    .align 4
+x9:
+    .long 9
+
+    .align 4
+x10:
+    .long 10
+
+    .align 4
+x11:
+    .long 11
+
+    .align 4
+x12:
+    .long 12
+
+    .align 4
+x13:
+    .long 13
+
+    .align 4
+x14:
+    .long 14
+
+    .align 4
+x15:
+    .long 15
+
+    .align 4
+x16:
+    .long 16
+
+    .align 4
+x17:
+    .long 17
+
+    .align 4
+x18:
+    .long 18
+
+    .align 4
+x19:
+    .long 19
+
+    .align 4
+x20:
+    .long 20
+
+    .align 4
+x21:
+    .long 21
+
+    .align 4
+x22:
+    .long 22
+
+    .align 4
+x23:
+    .long 23
+
+    .align 4
+x24:
+    .long 24
+
+    .align 4
+x25:
+    .long 25
+
+    .align 4
+x26:
+    .long 26
+
+    .align 4
+x27:
+    .long 27
+
+    .align 4
+x28:
+    .long 28
+
+    .align 4
+x29:
+    .long 29
+
+    .align 4
+x30:
+    .long 30
+
+    .align 4
+x31:
+    .long 31
+
+    .align 4
+x32:
+    .long 0
+
+    .align 4
+x33:
+    .long 0
+
+    .align 4
+x34:
+    .long 1
+
+    .align 4
+x35:
+    .long 2
+
+    .align 4
+x36:
+    .long 3
+
+    .align 4
+x37:
+    .long 4
+
+    .align 4
+x38:
+    .long 5
+
+    .align 4
+x39:
+    .long 6
+
+    .align 4
+x40:
+    .long 7
+
+    .align 4
+x41:
+    .long 8
+
+    .align 4
+x42:
+    .long 9
+
+    .align 4
+x43:
+    .long 10
+
+    .align 4
+x44:
+    .long 11
+
+    .align 4
+x45:
+    .long 12
+
+    .align 4
+x46:
+    .long 13
+
+    .align 4
+x47:
+    .long 14
+
+    .align 4
+x48:
+    .long 15
+
+    .align 4
+x49:
+    .long 16
+
+    .align 4
+x50:
+    .long 17
+
+    .align 4
+x51:
+    .long 18
+
+    .align 4
+x52:
+    .long 19
+
+    .align 4
+x53:
+    .long 20
+
+    .align 4
+x54:
+    .long 21
+
+    .align 4
+x55:
+    .long 22
+
+    .align 4
+x56:
+    .long 23
+
+    .align 4
+x57:
+    .long 24
+
+    .align 4
+x58:
+    .long 25
+
+    .align 4
+x59:
+    .long 26
+
+    .align 4
+x60:
+    .long 27
+
+    .align 4
+x61:
+    .long 28
+
+    .align 4
+x62:
+    .long 29
+
+    .align 4
+x63:
+    .long 30
+
+    .align 4
+x64:
+    .long 31
+
+    .align 4
+x65:
+    .long 0
+
+    .align 4
+x66:
+    .long 0
+
+    .align 4
+x67:
+    .long 1
+
+    .align 4
+x68:
+    .long 2
+
+    .align 4
+x69:
+    .long 3
+
+    .align 4
+x70:
+    .long 4
+
+    .align 4
+x71:
+    .long 5
+
+    .align 4
+x72:
+    .long 6
+
+    .align 4
+x73:
+    .long 7
+
+    .align 4
+x74:
+    .long 8
+
+    .align 4
+x75:
+    .long 9
+
+    .align 4
+x76:
+    .long 10
+
+    .align 4
+x77:
+    .long 11
+
+    .align 4
+x78:
+    .long 12
+
+    .align 4
+x79:
+    .long 13
+
+    .align 4
+x80:
+    .long 14
+
+    .align 4
+x81:
+    .long 15
+
+    .align 4
+x82:
+    .long 16
+
+    .align 4
+x83:
+    .long 17
+
+    .align 4
+x84:
+    .long 18
+
+    .align 4
+x85:
+    .long 19
+
+    .align 4
+x86:
+    .long 20
+
+    .align 4
+x87:
+    .long 21
+
+    .align 4
+x88:
+    .long 22
+
+    .align 4
+x89:
+    .long 23
+
+    .align 4
+x90:
+    .long 24
+
+    .align 4
+x91:
+    .long 25
+
+    .align 4
+x92:
+    .long 26
+
+    .align 4
+x93:
+    .long 27
+
+    .align 4
+x94:
+    .long 28
+
+    .align 4
+x95:
+    .long 29
+
+    .align 4
+x96:
+    .long 30
+
+    .align 4
+x97:
+    .long 31
+
+    .align 4
+x98:
+    .long 0
+

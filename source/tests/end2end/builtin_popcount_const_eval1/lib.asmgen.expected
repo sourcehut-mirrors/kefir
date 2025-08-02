@@ -1,0 +1,189 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x0
+.type x0, @object
+.global x1
+.type x1, @object
+.global x2
+.type x2, @object
+.global x3
+.type x3, @object
+.global x4
+.type x4, @object
+.global x5
+.type x5, @object
+.global x6
+.type x6, @object
+.global x7
+.type x7, @object
+.global x8
+.type x8, @object
+.global x9
+.type x9, @object
+.global x10
+.type x10, @object
+.global x11
+.type x11, @object
+.global x12
+.type x12, @object
+.global x13
+.type x13, @object
+.global x14
+.type x14, @object
+.global x15
+.type x15, @object
+.global x16
+.type x16, @object
+.global x17
+.type x17, @object
+.global x18
+.type x18, @object
+.global x19
+.type x19, @object
+.global x20
+.type x20, @object
+.global x21
+.type x21, @object
+.global x22
+.type x22, @object
+.global x23
+.type x23, @object
+.global x24
+.type x24, @object
+.global x25
+.type x25, @object
+.global x26
+.type x26, @object
+.global x27
+.type x27, @object
+.global x28
+.type x28, @object
+.global x29
+.type x29, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+x0:
+    .long 0
+
+    .align 4
+x1:
+    .long 1
+
+    .align 4
+x2:
+    .long 1
+
+    .align 4
+x3:
+    .long 2
+
+    .align 4
+x4:
+    .long 1
+
+    .align 4
+x5:
+    .long 0
+
+    .align 4
+x6:
+    .long 32
+
+    .align 4
+x7:
+    .long 31
+
+    .align 4
+x8:
+    .long 31
+
+    .align 4
+x9:
+    .long 30
+
+    .align 4
+x10:
+    .long 0
+
+    .align 4
+x11:
+    .long 1
+
+    .align 4
+x12:
+    .long 1
+
+    .align 4
+x13:
+    .long 2
+
+    .align 4
+x14:
+    .long 1
+
+    .align 4
+x15:
+    .long 0
+
+    .align 4
+x16:
+    .long 64
+
+    .align 4
+x17:
+    .long 63
+
+    .align 4
+x18:
+    .long 63
+
+    .align 4
+x19:
+    .long 62
+
+    .align 4
+x20:
+    .long 0
+
+    .align 4
+x21:
+    .long 1
+
+    .align 4
+x22:
+    .long 1
+
+    .align 4
+x23:
+    .long 2
+
+    .align 4
+x24:
+    .long 1
+
+    .align 4
+x25:
+    .long 0
+
+    .align 4
+x26:
+    .long 64
+
+    .align 4
+x27:
+    .long 63
+
+    .align 4
+x28:
+    .long 63
+
+    .align 4
+x29:
+    .long 62
+

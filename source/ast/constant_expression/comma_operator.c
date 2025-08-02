@@ -38,13 +38,17 @@ kefir_result_t kefir_ast_evaluate_comma_operator_node(struct kefir_mem *mem, con
     const struct kefir_list_entry *iter = kefir_list_head(&node->expressions);
     for (; iter != NULL && iter->next != NULL; iter = iter->next) {
         ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, iter->value);
-        struct kefir_ast_constant_expression_value value;
-        REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, subnode, &value));
+        REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(subnode),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
+                                       "Unable to evaluate constant expression"));
     }
 
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected non-empty AST comma operator"));
 
     ASSIGN_DECL_CAST(const struct kefir_ast_node_base *, subnode, iter->value);
-    REQUIRE_OK(kefir_ast_constant_expression_value_evaluate(mem, context, subnode, value));
+    REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(subnode),
+            KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
+                                   "Unable to evaluate constant expression"));
+    *value = *KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode);
     return KEFIR_OK;
 }
