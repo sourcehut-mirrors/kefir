@@ -2121,6 +2121,30 @@ static kefir_result_t format_intel_mnemonic_suffix(struct kefir_amd64_xasmgen *x
         return KEFIR_OK;                                                                                               \
     }
 
+#define INSTR2_REPEATED_INTEL(_id, _mnemonic)                                                                                   \
+    static kefir_result_t amd64_instr_intel_##_id(struct kefir_amd64_xasmgen *xasmgen,                                 \
+                                                  const struct kefir_asm_amd64_xasmgen_operand *op1,                   \
+                                                  const struct kefir_asm_amd64_xasmgen_operand *op2, kefir_bool_t rep) {                 \
+        REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
+        REQUIRE(op1 != NULL,                                                                                           \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
+        REQUIRE(op2 != NULL,                                                                                           \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
+        ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
+        REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
+        if (rep) { \
+            fprintf(payload->output, "rep ");                                                                          \
+        } \
+        REQUIRE_OK(format_mnemonic(xasmgen, _mnemonic));                                                               \
+        REQUIRE_OK(format_intel_mnemonic_suffix(xasmgen, _mnemonic, op1, op2, NULL));                                  \
+        fprintf(payload->output, " ");                                                                                 \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
+        fprintf(payload->output, ", ");                                                                                \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
+        fprintf(payload->output, "\n");                                                                                \
+        return KEFIR_OK;                                                                                               \
+    }
+
 #define INSTR3_INTEL(_id, _mnemonic)                                                                                   \
     static kefir_result_t amd64_instr_intel_##_id(                                                                     \
         struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asm_amd64_xasmgen_operand *op1,                        \
@@ -2259,6 +2283,29 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
         return KEFIR_OK;                                                                                               \
     }
 
+#define INSTR2_REPEATED_ATT(_id, _mnemonic)                                                                                     \
+    static kefir_result_t amd64_instr_att_##_id(struct kefir_amd64_xasmgen *xasmgen,                                   \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op1,                     \
+                                                const struct kefir_asm_amd64_xasmgen_operand *op2, kefir_bool_t rep) {                   \
+        REQUIRE(xasmgen != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator")); \
+        REQUIRE(op1 != NULL,                                                                                           \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
+        REQUIRE(op2 != NULL,                                                                                           \
+                KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AMD64 assembly generator operand"));          \
+        ASSIGN_DECL_CAST(struct xasmgen_payload *, payload, xasmgen->payload);                                         \
+        REQUIRE_OK(amd64_ident(xasmgen));                                                                              \
+        if (rep) {                                                                                                     \
+            fprintf(payload->output, "rep ");                                                                          \
+        }                                                                                                              \
+        REQUIRE_OK(format_mnemonic(xasmgen, _mnemonic));                                                               \
+        REQUIRE_OK(format_att_mnemonic_suffix(xasmgen, op1, op2, NULL));                                               \
+        REQUIRE_OK(amd64_format_op(xasmgen, op2));                                                                     \
+        fprintf(payload->output, ", ");                                                                                \
+        REQUIRE_OK(amd64_format_op(xasmgen, op1));                                                                     \
+        fprintf(payload->output, "\n");                                                                                \
+        return KEFIR_OK;                                                                                               \
+    }
+
 #define INSTR3_ATT(_id, _mnemonic)                                                                                     \
     static kefir_result_t amd64_instr_att_##_id(                                                                       \
         struct kefir_amd64_xasmgen *xasmgen, const struct kefir_asm_amd64_xasmgen_operand *op1,                        \
@@ -2320,6 +2367,10 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
     INSTR2_ATT(_id, _mnemonic) \
     INSTR2_INTEL(_id, _mnemonic)
 
+#define INSTR_REPEATED2(_id, _mnemonic) \
+    INSTR2_REPEATED_ATT(_id, _mnemonic) \
+    INSTR2_REPEATED_INTEL(_id, _mnemonic)
+
 #define INSTR3(_id, _mnemonic) \
     INSTR3_ATT(_id, _mnemonic) \
     INSTR3_INTEL(_id, _mnemonic)
@@ -2333,7 +2384,9 @@ static kefir_result_t format_att_mnemonic_suffix(struct kefir_amd64_xasmgen *xas
 #define DEFINE_OPCODE1_(_opcode, _mnemonic) INSTR1(_opcode, _mnemonic)
 #define DEFINE_OPCODE1_BRANCH(_opcode, _mnemonic) INSTR1_INTEL(_opcode, _mnemonic) INSTR1_ATT_BR(_opcode, _mnemonic)
 #define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) DEFINE_OPCODE1_##_variant(_opcode, _mnemonic)
-#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) INSTR2(_opcode, _mnemonic)
+#define DEFINE_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2) INSTR2(_opcode, _mnemonic)
+#define DEFINE_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2) INSTR_REPEATED2(_opcode, _mnemonic)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) DEFINE_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
 #define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3) INSTR3(_opcode, _mnemonic)
 KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2, DEFINE_OPCODE3, )
 
@@ -2345,6 +2398,8 @@ KEFIR_AMD64_INSTRUCTION_DATABASE(DEFINE_OPCODE0, DEFINE_OPCODE1, DEFINE_OPCODE2,
 #undef DEFINE_OPCODE1_BRANCH
 #undef DEFINE_OPCODE1
 #undef DEFINE_OPCODE2
+#undef DEFINE_OPCODE2_
+#undef DEFINE_OPCODE2_REPEATABLE
 #undef DEFINE_OPCODE3
 
 #undef INSTR0

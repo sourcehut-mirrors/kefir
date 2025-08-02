@@ -285,9 +285,13 @@ typedef struct kefir_amd64_xasmgen {
 #define DEFINE_OPCODE0(_opcode, _mnemonic, _variant, _flags) DEFINE_OPCODE0_##_variant(_opcode)
 #define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *)
-#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
+#define DEFINE_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
                               const struct kefir_asm_amd64_xasmgen_operand *)
+#define DEFINE_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
+    kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
+                              const struct kefir_asm_amd64_xasmgen_operand *, kefir_bool_t)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) DEFINE_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
 #define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                              \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
                               const struct kefir_asm_amd64_xasmgen_operand *,                               \
@@ -301,6 +305,8 @@ typedef struct kefir_amd64_xasmgen {
 #undef DEFINE_OPCODE0
 #undef DEFINE_OPCODE1
 #undef DEFINE_OPCODE2
+#undef DEFINE_OPCODE2_
+#undef DEFINE_OPCODE2_REPEATABLE
 #undef DEFINE_OPCODE3
     } instr;
 
