@@ -6,6 +6,7 @@ __builtin_ssubl_overflow
 __builtin_smul_overflow
 __builtin_ssub_overflow
 __builtin_alloca
+__builtin_clrsbg
 __builtin_clrsbl
 __builtin_expect
 __builtin_parity

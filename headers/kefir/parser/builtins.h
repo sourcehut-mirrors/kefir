@@ -48,6 +48,7 @@
 #define KEFIR_PARSER_BUILTIN_FFSG "__builtin_ffsg"
 #define KEFIR_PARSER_BUILTIN_CLZG "__builtin_clzg"
 #define KEFIR_PARSER_BUILTIN_CTZG "__builtin_ctzg"
+#define KEFIR_PARSER_BUILTIN_CLRSBG "__builtin_clrsbg"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 

@@ -453,6 +453,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_CLZG:
             REQUIRE_OK(kefir_json_output_string(json, "clzg"));
             break;
+
+        case KEFIR_AST_BUILTIN_CLRSBG:
+            REQUIRE_OK(kefir_json_output_string(json, "clrsbg"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));
