@@ -126,6 +126,10 @@ kefir_result_t kefir_bigint_unsigned_from_float(struct kefir_bigint *, kefir_flo
 kefir_result_t kefir_bigint_unsigned_from_double(struct kefir_bigint *, kefir_float64_t);
 kefir_result_t kefir_bigint_unsigned_from_long_double(struct kefir_bigint *, kefir_long_double_t);
 
+kefir_result_t kefir_bigint_least_significant_nonzero(const struct kefir_bigint *, kefir_size_t *);
+kefir_result_t kefir_bigint_leading_zeros(const struct kefir_bigint *, kefir_size_t *, kefir_size_t);
+kefir_result_t kefir_bigint_trailing_zeros(const struct kefir_bigint *, kefir_size_t *, kefir_size_t);
+
 typedef struct kefir_bigint_pool {
     struct kefir_list bigints;
 } kefir_bigint_pool_t;

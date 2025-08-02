@@ -1186,6 +1186,29 @@ kefir_result_t kefir_bigint_unsigned_from_long_double(struct kefir_bigint *bigin
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_least_significant_nonzero(const struct kefir_bigint *bigint, kefir_size_t *index) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *index = __kefir_bigint_least_significant_nonzero(bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_leading_zeros(const struct kefir_bigint *bigint, kefir_size_t *index,
+                                          kefir_size_t default_value) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *index = __kefir_bigint_leading_zeros(bigint->digits, bigint->bitwidth, default_value);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_trailing_zeros(const struct kefir_bigint *bigint, kefir_size_t *index,
+                                           kefir_size_t default_value) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *index = __kefir_bigint_trailing_zeros(bigint->digits, bigint->bitwidth, default_value);
+    return KEFIR_OK;
+}
+
 static kefir_result_t bigint_pool_entry_free(struct kefir_mem *mem, struct kefir_list *list,
                                              struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);

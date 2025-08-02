@@ -207,4 +207,11 @@ static __kefir_bigint_result_t __kefir_bigint_unsigned_from_long_double(__KEFIR_
                                                                         __KEFIR_BIGINT_LONG_DOUBLE_T,
                                                                         __KEFIR_BIGINT_WIDTH_T);
 
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_least_significant_nonzero(const __KEFIR_BIGINT_DIGIT_T *,
+                                                                       __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_leading_zeros(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
+                                                           __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_trailing_zeros(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
+                                                            __KEFIR_BIGINT_WIDTH_T);
+
 #endif

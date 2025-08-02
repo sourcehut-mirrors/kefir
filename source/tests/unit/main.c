@@ -519,7 +519,10 @@
     _separator _case(bigint_long_double_to_signed1)                                          \
     _separator _case(bigint_float_to_unsigned1)                                              \
     _separator _case(bigint_double_to_unsigned1)                                             \
-    _separator _case(bigint_long_double_to_unsigned1)
+    _separator _case(bigint_long_double_to_unsigned1)                                        \
+    _separator _case(bigint_least_significant_nonzero1)                                      \
+    _separator _case(bigint_leading_zeros1)                                                  \
+    _separator _case(bigint_trailing_zeros1)
 TEST_CASES(DECLARE_CASE, ;);
 
 #define RUN_CASE(_id) &_id

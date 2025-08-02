@@ -2726,6 +2726,263 @@ DEFINE_CASE(bigint_long_double_to_unsigned1, "BigInt - long double to unsigned c
 }
 END_CASE
 
+DEFINE_CASE(bigint_least_significant_nonzero1, "BigInt - least significant non-zero bit #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 7));
+
+    kefir_size_t index;
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 0));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 3));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 4);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 10));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 500));
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 10));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 11);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 100));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 101);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 250));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 251);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1024));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 450));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 461);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 499));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 500);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 500));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 2));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 2);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
+DEFINE_CASE(bigint_leading_zeros1, "BigInt - leading zero bits #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 7));
+
+    kefir_size_t index;
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 0));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 6);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 1));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 5);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 5));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 6));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 7));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 500));
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 0));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 100));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 399);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1024));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 400));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 89);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 497));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 2);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 498));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 499));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 500));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_right_shift(&bigint, 1));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_right_shift(&bigint, 10));
+    ASSERT_OK(kefir_bigint_leading_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 10);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
+DEFINE_CASE(bigint_trailing_zeros1, "BigInt - trailing zero bits #1") {
+    struct kefir_bigint bigint;
+
+    ASSERT_OK(kefir_bigint_init(&bigint));
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 7));
+
+    kefir_size_t index;
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 0));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 1));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 5));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 5);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 6));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 6);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 7));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 2));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 1);
+
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 500));
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 100));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 100);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1024));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 250));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 260);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1026));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 250));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 251);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 498));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 498);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 499));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 499);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 500));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == ~0ull);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 0);
+
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 4));
+    ASSERT_OK(kefir_bigint_negate(&bigint));
+    ASSERT_OK(kefir_bigint_trailing_zeros(&bigint, &index, ~0ull));
+    ASSERT(index == 2);
+
+    ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
+}
+END_CASE
+
 #undef ASSERT_STORE
 #undef ASSERT_USTORE
 #undef ASSERT_LOAD
