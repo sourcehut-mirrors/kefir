@@ -441,6 +441,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW:
             REQUIRE_OK(kefir_json_output_string(json, "mul_overflow"));
             break;
+
+        case KEFIR_AST_BUILTIN_FFSG:
+            REQUIRE_OK(kefir_json_output_string(json, "ffsg"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

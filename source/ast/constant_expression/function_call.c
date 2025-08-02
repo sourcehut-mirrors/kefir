@@ -23,8 +23,11 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t evaluate_ffs(kefir_uint64_t arg, kefir_size_t bits,
-                                   struct kefir_ast_constant_expression_value *value) {
+kefir_result_t kefir_ast_evaluate_builtin_ffs_constant_expression_value(
+    kefir_uint64_t arg, kefir_size_t bits, struct kefir_ast_constant_expression_value *value) {
+    REQUIRE(value != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST constant expression value"));
+
     if (bits < CHAR_BIT * sizeof(kefir_uint64_t)) {
         arg &= (1ull << bits) - 1;
     }
@@ -168,8 +171,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
-        REQUIRE_OK(evaluate_ffs(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
-                                context->type_traits->data_model->scalar_width.int_bits, value));
+        REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
+            context->type_traits->data_model->scalar_width.int_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_ffsl") == 0) {
         REQUIRE(kefir_list_length(&node->arguments) == 1,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
@@ -178,8 +182,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
-        REQUIRE_OK(evaluate_ffs(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
-                                context->type_traits->data_model->scalar_width.long_bits, value));
+        REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
+            context->type_traits->data_model->scalar_width.long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_ffsll") == 0) {
         REQUIRE(kefir_list_length(&node->arguments) == 1,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,
@@ -188,8 +193,9 @@ kefir_result_t kefir_ast_evaluate_function_call_node(struct kefir_mem *mem, cons
         REQUIRE(KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION_OF(subnode, KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER),
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &subnode->source_location,
                                        "Unable to evaluate constant expression"));
-        REQUIRE_OK(evaluate_ffs(KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
-                                context->type_traits->data_model->scalar_width.long_long_bits, value));
+        REQUIRE_OK(kefir_ast_evaluate_builtin_ffs_constant_expression_value(
+            KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(subnode)->uinteger,
+            context->type_traits->data_model->scalar_width.long_long_bits, value));
     } else if (strcmp(function_name, "__kefir_builtin_clz") == 0) {
         REQUIRE(kefir_list_length(&node->arguments) == 1,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->base.source_location,

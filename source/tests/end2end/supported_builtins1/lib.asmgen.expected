@@ -35,6 +35,7 @@ __builtin_FILE
 __builtin_LINE
 __builtin_clzl
 __builtin_ctzl
+__builtin_ffsg
 __builtin_ffsl
 __builtin_inff
 __builtin_infl

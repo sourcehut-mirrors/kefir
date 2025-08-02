@@ -50,4 +50,6 @@ kefir_result_t kefir_ast_constant_expression_value_evaluate_lvalue_reference(
     struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_node_base *,
     struct kefir_ast_constant_expression_pointer *);
 
+kefir_result_t kefir_ast_evaluate_builtin_ffs_constant_expression_value(kefir_uint64_t arg, kefir_size_t bits,
+                                                                        struct kefir_ast_constant_expression_value *);
 #endif
