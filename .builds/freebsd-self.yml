@@ -1,0 +1,25 @@
+image: freebsd/14.x
+packages:
+  - gmake
+  - llvm
+  - binutils
+  - valgrind
+  - coreutils
+  - wget
+  - python3
+  - py311-sqlite3
+sources:
+  - https://git.sr.ht/~jprotopopov/kefir
+tasks:
+  - test_self: |
+      cd kefir
+      gmake clean
+      gmake all CC=clang
+      gmake install prefix=$HOME/kefir-install
+      gmake clean
+      gmake all PROFILE=reldebug USE_EXTENSION_SUPPORT=yes CC=$HOME/kefir-install/bin/kefir EXTRA_CFLAGS="-D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
+      LC_ALL=C.UTF-8 gmake test USE_VALGRIND=yes USE_EXTENSION_SUPPORT=yes KEFIR_END2END_SELECTIVE_VALGRIND=yes PROFILE=reldebug CC=$HOME/kefir-install/bin/kefir EXTRA_CFLAGS="-D__GNUC__=4 -D__GNUC_MINOR__=20 -D__GNUC_STDC_INLINE__=1"
+triggers:
+  - action: email
+    condition: failure
+    to: jevgenij@protopopov.lv
