@@ -2794,6 +2794,12 @@ DEFINE_CASE(bigint_least_significant_nonzero1, "BigInt - least significant non-z
     ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
     ASSERT(index == 2);
 
+    ASSERT_OK(kefir_bigint_resize_nocast(&kft_mem, &bigint, 120));
+    ASSERT_OK(kefir_bigint_set_unsigned_value(&bigint, 1));
+    ASSERT_OK(kefir_bigint_left_shift(&bigint, 112));
+    ASSERT_OK(kefir_bigint_least_significant_nonzero(&bigint, &index));
+    ASSERT(index == 113);
+
     ASSERT_OK(kefir_bigint_free(&kft_mem, &bigint));
 }
 END_CASE

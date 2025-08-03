@@ -63,6 +63,10 @@ struct lowering_param {
         kefir_id_t bigint_xor;
         kefir_id_t bigint_unsigned_compare;
         kefir_id_t bigint_signed_compare;
+        kefir_id_t bigint_least_significant_nonzero;
+
+        kefir_id_t builtin_ffs;
+        kefir_id_t builtin_ffsl;
     } runtime_fn;
 };
 
@@ -72,6 +76,14 @@ struct lowering_param {
         .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT, .alias = NULL, .debug_info = {               \
             .entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE                                                          \
         }                                                                                                  \
+    }
+
+#define BUILTIN_RUNTIME_FN_IDENTIFIER(_name)                                                                \
+    (struct kefir_ir_identifier) {                                                                          \
+        .symbol = (_name), .type = KEFIR_IR_IDENTIFIER_FUNCTION, .scope = KEFIR_IR_IDENTIFIER_SCOPE_IMPORT, \
+        .visibility = KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT, .alias = NULL, .debug_info = {                \
+            .entry = KEFIR_IR_DEBUG_ENTRY_ID_NONE                                                           \
+        }                                                                                                   \
     }
 
 #define DECL_BIGINT_RUNTIME_FN(_id, _name, _params, _returns, _init)                                               \
@@ -105,6 +117,36 @@ struct lowering_param {
         param->runtime_fn._id = func_decl->id;                                                                     \
         *func_decl_id = func_decl->id;                                                                             \
         return KEFIR_OK;                                                                                           \
+    }
+
+#define DECL_BUILTIN_RUNTIME_FN(_id, _name, _params, _returns, _init)                                            \
+    static kefir_result_t get_##_id##_function_decl_id(struct kefir_mem *mem, struct kefir_opt_module *module,   \
+                                                       struct lowering_param *param, kefir_id_t *func_decl_id) { \
+        if (param->runtime_fn._id != KEFIR_ID_NONE) {                                                            \
+            *func_decl_id = param->runtime_fn._id;                                                               \
+            return KEFIR_OK;                                                                                     \
+        }                                                                                                        \
+                                                                                                                 \
+        kefir_id_t parameters_type_id, returns_type_id;                                                          \
+        struct kefir_ir_type *parameters_type =                                                                  \
+            kefir_ir_module_new_type(mem, module->ir_module, (_params), &parameters_type_id);                    \
+        struct kefir_ir_type *returns_type =                                                                     \
+            kefir_ir_module_new_type(mem, module->ir_module, (_returns), &returns_type_id);                      \
+        REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type")); \
+        REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));    \
+        _init                                                                                                    \
+                                                                                                                 \
+            struct kefir_ir_function_decl *func_decl = kefir_ir_module_new_function_declaration(                 \
+                mem, module->ir_module, (_name), parameters_type_id, false, returns_type_id);                    \
+        REQUIRE(func_decl != NULL,                                                                               \
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));          \
+                                                                                                                 \
+        REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,                   \
+                                                      &BUILTIN_RUNTIME_FN_IDENTIFIER(func_decl->name)));         \
+                                                                                                                 \
+        param->runtime_fn._id = func_decl->id;                                                                   \
+        *func_decl_id = func_decl->id;                                                                           \
+        return KEFIR_OK;                                                                                         \
     }
 
 DECL_BIGINT_RUNTIME_FN(bigint_set_signed, BIGINT_GET_SET_SIGNED_INTEGER_FN, 3, 0, {
@@ -285,7 +327,20 @@ DECL_BIGINT_RUNTIME_FN(bigint_signed_compare, BIGINT_SIGNED_COMPARE_FN, 3, 1, {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT8, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BIGINT_RUNTIME_FN(bigint_least_significant_nonzero, BIGINT_LEAST_SIGNIFICANT_NONZERO_FN, 2, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(builtin_ffs, BUILTIN_FFS_FN, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
+})
+DECL_BUILTIN_RUNTIME_FN(builtin_ffsl, BUILTIN_FFSL_FN, 1, 1, {
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
 })
 
 static kefir_result_t new_bitint_type(struct kefir_mem *mem, struct kefir_opt_module *module, kefir_size_t width,
@@ -2358,6 +2413,51 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }
         } break;
 
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS: {
+            const kefir_opt_instruction_ref_t arg_ref = instr->operation.parameters.refs[0];
+            const kefir_size_t bitwidth = instr->operation.parameters.bitwidth;
+
+            if (bitwidth <= QWORD_BITS) {
+                kefir_opt_instruction_ref_t extract_ref;
+
+                kefir_id_t ffs_func_decl_id = KEFIR_ID_NONE;
+                if (bitwidth < 32) {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg_ref, 0,
+                                                                          bitwidth, &extract_ref));
+                    REQUIRE_OK(get_builtin_ffs_function_decl_id(mem, module, param, &ffs_func_decl_id));
+                } else if (bitwidth == 32) {
+                    REQUIRE_OK(get_builtin_ffs_function_decl_id(mem, module, param, &ffs_func_decl_id));
+                    extract_ref = arg_ref;
+                } else if (bitwidth < QWORD_BITS) {
+                    REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg_ref, 0,
+                                                                          bitwidth, &extract_ref));
+                    REQUIRE_OK(get_builtin_ffsl_function_decl_id(mem, module, param, &ffs_func_decl_id));
+                } else {
+                    REQUIRE_OK(get_builtin_ffsl_function_decl_id(mem, module, param, &ffs_func_decl_id));
+                    extract_ref = arg_ref;
+                }
+
+                kefir_opt_call_id_t call_node_id;
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, ffs_func_decl_id, 1,
+                                                             KEFIR_ID_NONE, &call_node_id, replacement_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, extract_ref));
+            } else {
+                kefir_id_t least_significant_nonzero_func_decl_id = KEFIR_ID_NONE;
+                REQUIRE_OK(get_bigint_least_significant_nonzero_function_decl_id(
+                    mem, codegen_module, module, param, &least_significant_nonzero_func_decl_id));
+
+                kefir_opt_call_id_t call_node_id;
+                kefir_opt_instruction_ref_t bitwidth_ref;
+                REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
+                REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id,
+                                                             least_significant_nonzero_func_decl_id, 2, KEFIR_ID_NONE,
+                                                             &call_node_id, replacement_ref));
+
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, arg_ref));
+                REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 1, bitwidth_ref));
+            }
+        } break;
+
         default:
             // Intentionally left blank
             break;
@@ -2453,7 +2553,10 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
                                                   .bigint_or = KEFIR_ID_NONE,
                                                   .bigint_xor = KEFIR_ID_NONE,
                                                   .bigint_unsigned_compare = KEFIR_ID_NONE,
-                                                  .bigint_signed_compare = KEFIR_ID_NONE}};
+                                                  .bigint_signed_compare = KEFIR_ID_NONE,
+                                                  .bigint_least_significant_nonzero = KEFIR_ID_NONE,
+                                                  .builtin_ffs = KEFIR_ID_NONE,
+                                                  .builtin_ffsl = KEFIR_ID_NONE}};
     struct kefir_hashtree_node_iterator iter;
     for (const struct kefir_ir_function *ir_func = kefir_ir_module_function_iter(module->ir_module, &iter);
          ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {

@@ -339,7 +339,8 @@
     OPCODE(BITINT_BELOW, "bitint_below", bitint_ref2) SEPARATOR \
     OPCODE(BITINT_EXTRACT_SIGNED, "bitint_extract_signed", bitint_bitfield) SEPARATOR \
     OPCODE(BITINT_EXTRACT_UNSIGNED, "bitint_extract_unsigned", bitint_bitfield) SEPARATOR \
-    OPCODE(BITINT_INSERT, "bitint_insert", bitint_bitfield)
+    OPCODE(BITINT_INSERT, "bitint_insert", bitint_bitfield) SEPARATOR \
+    OPCODE(BITINT_BUILTIN_FFS, "bitint_builtin_ffs", bitint_ref1)
 
 // clang-format on
 

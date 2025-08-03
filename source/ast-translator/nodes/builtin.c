@@ -323,9 +323,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
-            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
-                                           "ffsg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -399,8 +396,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 } break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "ffsg builtin for bit-precise integers is not implemented yet");
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_FFS,
+                                                               unqualified_type->bitprecise.width));
+                    break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ffsg builtin argument type");

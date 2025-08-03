@@ -281,6 +281,8 @@ BITINT_UNARY_OP(bitint_negate);
 BITINT_UNARY_OP(bitint_invert);
 BITINT_UNARY_OP(bitint_bool_not);
 
+BITINT_UNARY_OP(bitint_builtin_ffs);
+
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP
 
