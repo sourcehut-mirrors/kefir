@@ -173,6 +173,7 @@ struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_float(struct kef
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_double(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_signed(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned(struct kefir_mem *);
+struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_unsigned_override(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_boolean(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_complex(struct kefir_mem *);
 struct kefir_ast_declarator_specifier *kefir_ast_type_specifier_atomic(struct kefir_mem *,

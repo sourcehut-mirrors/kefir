@@ -67,6 +67,7 @@ static const struct KeywordEntry {
                 {U"typedef", KEFIR_KEYWORD_TYPEDEF, KEFIR_C17_STANDARD_VERSION},
                 {U"union", KEFIR_KEYWORD_UNION, KEFIR_C17_STANDARD_VERSION},
                 {U"unsigned", KEFIR_KEYWORD_UNSIGNED, KEFIR_C17_STANDARD_VERSION},
+                {U"__kefir_unsigned_override", KEFIR_KEYWORD_UNSIGNED_OVERRIDE, KEFIR_C17_STANDARD_VERSION},
                 {U"void", KEFIR_KEYWORD_VOID, KEFIR_C17_STANDARD_VERSION},
                 {U"volatile", KEFIR_KEYWORD_VOLATILE, KEFIR_C17_STANDARD_VERSION},
                 {U"__volatile__", KEFIR_KEYWORD_VOLATILE, KEFIR_C17_STANDARD_VERSION},

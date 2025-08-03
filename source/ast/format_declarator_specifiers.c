@@ -179,6 +179,10 @@ kefir_result_t kefir_ast_format_declarator_specifier(struct kefir_json_output *j
                     REQUIRE_OK(kefir_json_output_string(json, "unsigned"));
                     break;
 
+                case KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE:
+                    REQUIRE_OK(kefir_json_output_string(json, "unsigned_override"));
+                    break;
+
                 case KEFIR_AST_TYPE_SPECIFIER_BOOL:
                     REQUIRE_OK(kefir_json_output_string(json, "bool"));
                     break;

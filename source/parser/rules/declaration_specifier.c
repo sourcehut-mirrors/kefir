@@ -478,7 +478,7 @@ static kefir_result_t has_type_specifiers(struct kefir_ast_declarator_specifier_
          iter != NULL && res == KEFIR_OK && !*result;
          res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
 
-        if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER) {
+        if (specifier->klass == KEFIR_AST_TYPE_SPECIFIER && specifier->type_specifier.specifier != KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE) {
             *result = true;
         }
     }
@@ -521,6 +521,9 @@ static kefir_result_t scan_type_specifier(struct kefir_mem *mem, struct kefir_pa
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNSIGNED)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         specifier = kefir_ast_type_specifier_unsigned(mem);
+    } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_UNSIGNED_OVERRIDE)) {
+        REQUIRE_OK(PARSER_SHIFT(parser));
+        specifier = kefir_ast_type_specifier_unsigned_override(mem);
     } else if (PARSER_TOKEN_IS_KEYWORD(parser, 0, KEFIR_KEYWORD_BOOL)) {
         REQUIRE_OK(PARSER_SHIFT(parser));
         specifier = kefir_ast_type_specifier_boolean(mem);

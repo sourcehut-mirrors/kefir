@@ -154,6 +154,10 @@ static kefir_result_t format_keyword(struct kefir_json_output *json, kefir_keywo
             REQUIRE_OK(kefir_json_output_string(json, "unsigned"));
             break;
 
+        case KEFIR_KEYWORD_UNSIGNED_OVERRIDE:
+            REQUIRE_OK(kefir_json_output_string(json, "__kefir_unsigned_override"));
+            break;
+
         case KEFIR_KEYWORD_VOID:
             REQUIRE_OK(kefir_json_output_string(json, "void"));
             break;

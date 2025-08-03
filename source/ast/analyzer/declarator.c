@@ -899,6 +899,13 @@ static kefir_result_t resolve_type(struct kefir_mem *mem, const struct kefir_ast
             *seq_state = TYPE_SPECIFIER_SEQUENCE_SPECIFIERS;
             break;
 
+        case KEFIR_AST_TYPE_SPECIFIER_UNSIGNED_OVERRIDE:
+            REQUIRE(*real_class == REAL_SCALAR,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
+                                           "Unsigned type specifier cannot be combined with complex type specifier"));
+            *signedness = SIGNEDNESS_UNSIGNED;
+            break;
+
         case KEFIR_AST_TYPE_SPECIFIER_BOOL:
             REQUIRE(*seq_state != TYPE_SPECIFIER_SEQUENCE_TYPEDEF,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &decl_specifier->source_location,
@@ -1101,6 +1108,7 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
         } else {
             switch ((*base_type)->tag) {
                 case KEFIR_AST_TYPE_SCALAR_CHAR:
+                case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                     (*base_type) = kefir_ast_type_unsigned_char();
                     break;
 
@@ -1124,14 +1132,14 @@ static kefir_result_t apply_type_signedness(struct kefir_mem *mem, struct kefir_
                     (*base_type) = (*base_type)->bitprecise.flipped_sign_type;
                     break;
 
-                case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
                 case KEFIR_AST_TYPE_SCALAR_UNSIGNED_BIT_PRECISE:
-                    return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected AST type");
+                    // Intentionally left blank
+                    break;
 
                 case KEFIR_AST_TYPE_VOID:
                 case KEFIR_AST_TYPE_SCALAR_BOOL:
