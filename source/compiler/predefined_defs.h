@@ -594,6 +594,16 @@ extern int __kefir_builtin_flt_rounds(void);
 
 // stdc builtins as defined at https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
 #define __builtin_stdc_first_leading_one(_arg) (__builtin_clzg((_arg), -1) + 1U)
+#define __builtin_stdc_rotate_left(_arg1, _arg2)                                              \
+    ({                                                                                        \
+        typedef __typeof_unqual__(_arg1) __arg1_type_t;                                       \
+        typedef __typeof_unqual__(_arg2) __arg2_type_t;                                       \
+        const __arg1_type_t __arg1 = (_arg1);                                                 \
+        const __arg2_type_t __arg2 = (_arg2);                                                 \
+        (__arg1_type_t)((__arg1 << (__arg2 % __kefir_builtin_int_precision(__arg1_type_t))) | \
+                        (__arg1 >> ((-(__kefir_unsigned_override __arg2_type_t) __arg2) %     \
+                                    __kefir_builtin_int_precision(__arg1_type_t))));          \
+    })
 
 #define __builtin_huge_val() __builtin_inf()
 #define __builtin_huge_valf() __builtin_inff()

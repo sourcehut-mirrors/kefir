@@ -63,9 +63,9 @@ run gcc/testsuite/gcc.dg/torture/bitint-70.c
 # run gcc/testsuite/gcc.dg/torture/bitint-71.c
 run gcc/testsuite/gcc.dg/torture/bitint-72.c
 run gcc/testsuite/gcc.dg/torture/bitint-74.c
-# run gcc/testsuite/gcc.dg/torture/bitint-75.c
+run gcc/testsuite/gcc.dg/torture/bitint-75.c
 run gcc/testsuite/gcc.dg/torture/bitint-76.c
-# run gcc/testsuite/gcc.dg/torture/bitint-77.c
+run gcc/testsuite/gcc.dg/torture/bitint-77.c
 run gcc/testsuite/gcc.dg/torture/bitint-7.c
 run gcc/testsuite/gcc.dg/torture/bitint-8.c
 run gcc/testsuite/gcc.dg/torture/bitint-9.c
