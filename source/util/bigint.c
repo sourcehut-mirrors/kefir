@@ -1209,6 +1209,27 @@ kefir_result_t kefir_bigint_trailing_zeros(const struct kefir_bigint *bigint, ke
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_bigint_redundant_sign_bits(const struct kefir_bigint *bigint, kefir_size_t *count) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *count = __kefir_bigint_redundant_sign_bits(bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_nonzero_count(const struct kefir_bigint *bigint, kefir_size_t *count) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *count = __kefir_bigint_nonzero_count(bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_bigint_parity(const struct kefir_bigint *bigint, kefir_size_t *count) {
+    REQUIRE(bigint != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid big integer"));
+
+    *count = __kefir_bigint_parity(bigint->digits, bigint->bitwidth);
+    return KEFIR_OK;
+}
+
 static kefir_result_t bigint_pool_entry_free(struct kefir_mem *mem, struct kefir_list *list,
                                              struct kefir_list_entry *entry, void *payload) {
     UNUSED(list);

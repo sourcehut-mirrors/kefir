@@ -113,4 +113,62 @@ static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_trailing_zeros(const __KEFIR_BIGINT
     return default_value;
 }
 
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_redundant_sign_bits(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                                 __KEFIR_BIGINT_WIDTH_T width) {
+    if (width == 0) {
+        return 0;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    const __KEFIR_BIGINT_WIDTH_T msb_digit_index = total_digits - 1;
+    const __KEFIR_BIGINT_WIDTH_T msb_offset = width - 1 - msb_digit_index * __KEFIR_BIGINT_DIGIT_BIT;
+    const __KEFIR_BIGINT_UINT_T msb = (digits[msb_digit_index] >> msb_offset) & 1;
+
+    __KEFIR_BIGINT_WIDTH_T count = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_DIGIT_T digit = digits[total_digits - i - 1];
+        const __KEFIR_BIGINT_WIDTH_T digit_width = i > 0 ? __KEFIR_BIGINT_DIGIT_BIT : width % __KEFIR_BIGINT_DIGIT_BIT;
+
+        for (__KEFIR_BIGINT_WIDTH_T j = 0; j < digit_width; j++) {
+            const __KEFIR_BIGINT_UINT_T bit = (digit >> (digit_width - j - 1)) & 1;
+            if (bit == msb) {
+                count++;
+            } else {
+                return count - 1;
+            }
+        }
+    }
+
+    return count - 1;
+}
+
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_nonzero_count(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                           __KEFIR_BIGINT_WIDTH_T width) {
+    if (width == 0) {
+        return 0;
+    }
+
+    const __KEFIR_BIGINT_WIDTH_T total_digits = __KEFIR_BIGINT_BITS_TO_DIGITS(width);
+    __KEFIR_BIGINT_WIDTH_T count = 0;
+    for (__KEFIR_BIGINT_WIDTH_T i = 0; i < total_digits; i++) {
+        const __KEFIR_BIGINT_DIGIT_T digit = digits[i];
+        const __KEFIR_BIGINT_WIDTH_T digit_width =
+            i + 1 < total_digits ? __KEFIR_BIGINT_DIGIT_BIT : width % __KEFIR_BIGINT_DIGIT_BIT;
+
+        for (__KEFIR_BIGINT_WIDTH_T j = 0; j < digit_width; j++) {
+            const __KEFIR_BIGINT_UINT_T bit = (digit >> j) & 1;
+            if (bit == 1) {
+                count++;
+            }
+        }
+    }
+
+    return count;
+}
+
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_parity(const __KEFIR_BIGINT_DIGIT_T *digits,
+                                                    __KEFIR_BIGINT_WIDTH_T width) {
+    return __kefir_bigint_nonzero_count(digits, width) % 2;
+}
+
 #endif

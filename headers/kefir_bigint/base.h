@@ -213,5 +213,9 @@ static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_leading_zeros(const __KEFIR_BIGINT_
                                                            __KEFIR_BIGINT_WIDTH_T);
 static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_trailing_zeros(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T,
                                                             __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_redundant_sign_bits(const __KEFIR_BIGINT_DIGIT_T *,
+                                                                 __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_nonzero_count(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
+static __KEFIR_BIGINT_WIDTH_T __kefir_bigint_parity(const __KEFIR_BIGINT_DIGIT_T *, __KEFIR_BIGINT_WIDTH_T);
 
 #endif
