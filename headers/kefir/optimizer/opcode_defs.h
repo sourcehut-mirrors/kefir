@@ -342,7 +342,10 @@
     OPCODE(BITINT_INSERT, "bitint_insert", bitint_bitfield) SEPARATOR \
     OPCODE(BITINT_BUILTIN_FFS, "bitint_builtin_ffs", bitint_ref1) SEPARATOR \
     OPCODE(BITINT_BUILTIN_CLZ, "bitint_builtin_clz", bitint_ref1) SEPARATOR \
-    OPCODE(BITINT_BUILTIN_CTZ, "bitint_builtin_ctz", bitint_ref1)
+    OPCODE(BITINT_BUILTIN_CTZ, "bitint_builtin_ctz", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_BUILTIN_CLRSB, "bitint_builtin_clrsb", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_BUILTIN_POPCOUNT, "bitint_builtin_popcount", bitint_ref1) SEPARATOR \
+    OPCODE(BITINT_BUILTIN_PARITY, "bitint_builtin_parity", bitint_ref1)
 
 // clang-format on
 

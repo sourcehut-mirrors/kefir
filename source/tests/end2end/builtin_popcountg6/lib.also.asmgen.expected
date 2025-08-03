@@ -1,0 +1,232 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    shl $47, %rdi
+    shr $47, %rdi
+    mov %edi, %eax
+    shr $1, %eax
+    and $1431655765, %eax
+    sub %eax, %edi
+    mov %edi, %eax
+    and $858993459, %eax
+    shr $2, %edi
+    and $858993459, %edi
+    add %eax, %edi
+    mov %edi, %eax
+    shr $4, %eax
+    add %edi, %eax
+    and $252645135, %eax
+    imul $16843009, %eax, %eax
+    shr $24, %eax
+    ret
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    mov %edi, %eax
+    shr $1, %eax
+    and $1431655765, %eax
+    sub %eax, %edi
+    mov %edi, %eax
+    and $858993459, %eax
+    shr $2, %edi
+    and $858993459, %edi
+    add %eax, %edi
+    mov %edi, %eax
+    shr $4, %eax
+    add %edi, %eax
+    and $252645135, %eax
+    imul $16843009, %eax, %eax
+    shr $24, %eax
+    ret
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    shl $5, %rdi
+    shr $5, %rdi
+    mov %rdi, %rax
+    shr $1, %rax
+    movabs $6148914691236517205, %rcx
+    and %rax, %rcx
+    sub %rcx, %rdi
+    movabs $3689348814741910323, %rax
+    mov %rdi, %rcx
+    and %rax, %rcx
+    shr $2, %rdi
+    and %rdi, %rax
+    add %rcx, %rax
+    mov %rax, %rcx
+    shr $4, %rcx
+    add %rax, %rcx
+    movabs $1085102592571150095, %rdi
+    and %rcx, %rdi
+    movabs $72340172838076673, %rax
+    imul %rdi, %rax
+    shr $56, %rax
+    ret
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    mov %rdi, %rax
+    shr $1, %rax
+    movabs $6148914691236517205, %rcx
+    and %rax, %rcx
+    sub %rcx, %rdi
+    movabs $3689348814741910323, %rax
+    mov %rdi, %rcx
+    and %rax, %rcx
+    shr $2, %rdi
+    and %rdi, %rax
+    add %rcx, %rax
+    mov %rax, %rcx
+    shr $4, %rcx
+    add %rax, %rcx
+    movabs $1085102592571150095, %rdi
+    and %rcx, %rdi
+    movabs $72340172838076673, %rax
+    imul %rdi, %rax
+    shr $56, %rax
+    ret
+__kefir_text_func_test4_end:
+
+test5:
+__kefir_text_func_test5_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -16(%rbp)
+    movq %rsi, -8(%rbp)
+    leaq -16(%rbp), %rax
+    mov %rax, %rdi
+    mov $120, %rsi
+    call __kefir_bigint_nonzero_count
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test5_end:
+
+test6:
+__kefir_text_func_test6_begin:
+    push %rbp
+    mov %rsp, %rbp
+    lea 16(%rbp), %rdi
+    mov $315, %rsi
+    call __kefir_bigint_nonzero_count
+    pop %rbp
+    ret
+__kefir_text_func_test6_end:
+
+__kefir_text_section_end:
+
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+
+.section .text
+__kefir_bigint_nonzero_count:
+__kefir_text_func___kefir_bigint_nonzero_count_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    push %r14
+    push %r15
+    sub $8, %rsp
+    mov %rsi, %r15
+    movq %rdi, -48(%rbp)
+    cmp $0, %r15
+    je _kefir_func___kefir_bigint_nonzero_count_label7
+    mov %r15, %rsi
+    sub $-7, %rsi
+    mov %rsi, %rax
+    xor %edx, %edx
+    mov $8, %rcx
+    div %rcx
+    mov %rax, %r12
+    xor %r13d, %r13d
+    xor %r10d, %r10d
+_kefir_func___kefir_bigint_nonzero_count_label2:
+    cmp %r12, %r13
+    jb _kefir_func___kefir_bigint_nonzero_count_label4
+    mov %r10, %rax
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+_kefir_func___kefir_bigint_nonzero_count_label4:
+    movq -48(%rbp), %rdi
+    add %r13, %rdi
+    movzxb (%rdi), %r14
+    mov %r13, %rcx
+    add $1, %rcx
+    mov %r12, %rax
+    sub $1, %rax
+    imul $8, %rax, %rdx
+    mov %r15, %rsi
+    sub %rdx, %rsi
+    mov $8, %rdx
+    cmp %r12, %rcx
+    cmovae %rsi, %rdx
+    xor %r11d, %r11d
+    mov %r10, %rbx
+_kefir_func___kefir_bigint_nonzero_count_label5:
+    mov %r13, %r8
+    add $1, %r8
+    mov %r14, %r9
+    mov %r11, %rcx
+    sar %cl, %r9d
+    and $1, %r9d
+    cmp %rdx, %r11
+    jb _kefir_func___kefir_bigint_nonzero_count_label6
+    mov %r8, %r13
+    mov %rbx, %r10
+    jmp _kefir_func___kefir_bigint_nonzero_count_label2
+_kefir_func___kefir_bigint_nonzero_count_label6:
+    mov %r11, %rcx
+    add $1, %rcx
+    mov %rbx, %rax
+    add $1, %rax
+    mov %rbx, %r10
+    cmp $1, %r9d
+    cmove %rax, %r10
+    mov %r10, %rax
+    mov %rcx, %r11
+    mov %rax, %rbx
+    jmp _kefir_func___kefir_bigint_nonzero_count_label5
+_kefir_func___kefir_bigint_nonzero_count_label7:
+    xor %eax, %eax
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func___kefir_bigint_nonzero_count_end:
+
+

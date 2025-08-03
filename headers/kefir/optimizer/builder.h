@@ -284,6 +284,9 @@ BITINT_UNARY_OP(bitint_bool_not);
 BITINT_UNARY_OP(bitint_builtin_ffs);
 BITINT_UNARY_OP(bitint_builtin_clz);
 BITINT_UNARY_OP(bitint_builtin_ctz);
+BITINT_UNARY_OP(bitint_builtin_clrsb);
+BITINT_UNARY_OP(bitint_builtin_popcount);
+BITINT_UNARY_OP(bitint_builtin_parity);
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP

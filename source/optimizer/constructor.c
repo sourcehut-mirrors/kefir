@@ -853,6 +853,9 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             BITINT_UNARY_OP(bitint_builtin_ffs, KEFIR_IR_OPCODE_BITINT_BUILTIN_FFS)
             BITINT_UNARY_OP(bitint_builtin_clz, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLZ)
             BITINT_UNARY_OP(bitint_builtin_ctz, KEFIR_IR_OPCODE_BITINT_BUILTIN_CTZ)
+            BITINT_UNARY_OP(bitint_builtin_clrsb, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB)
+            BITINT_UNARY_OP(bitint_builtin_popcount, KEFIR_IR_OPCODE_BITINT_BUILTIN_POPCOUNT)
+            BITINT_UNARY_OP(bitint_builtin_parity, KEFIR_IR_OPCODE_BITINT_BUILTIN_PARITY)
 
 #undef BITINT_UNARY_OP
 #undef BITINT2_UNARY_OP
