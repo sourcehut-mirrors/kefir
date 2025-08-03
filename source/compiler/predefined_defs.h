@@ -592,6 +592,9 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_popcountll(_x) __kefir_builtin_popcountll((_x))
 #define __builtin_parityll(_x) __kefir_builtin_parityll((_x))
 
+// stdc builtins as defined at https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
+#define __builtin_stdc_first_leading_one(_arg) (__builtin_clzg((_arg), -1) + 1U)
+
 #define __builtin_huge_val() __builtin_inf()
 #define __builtin_huge_valf() __builtin_inff()
 #define __builtin_huge_vall() __builtin_infl()

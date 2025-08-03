@@ -4,6 +4,7 @@
 #define __builtin_memset(p, v, n) memset(p, v, n)
 #define __builtin_memcpy(d, s, n) memcpy(d, s, n)
 #define __builtin_memcmp(d, s, n) memcmp(d, s, n)
+#define __builtin_memmove(d, s, n) memmove(d, s, n)
 #define __builtin_strcpy(d, s) strcpy(d, s)
 #define __builtin_strncpy(d, s, n) strncpy(d, s, n)
 #define __builtin_strcmp(d, s) strcmp(d, s)
@@ -22,3 +23,4 @@
 void *malloc(__SIZE_TYPE__);
 void *memset(void *, int, __SIZE_TYPE__);
 void *memcpy(void *, const void *, __SIZE_TYPE__);
+void *memmove(void *, const void *, __SIZE_TYPE__);

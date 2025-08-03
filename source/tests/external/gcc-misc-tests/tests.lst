@@ -1,5 +1,5 @@
-# run gcc/testsuite/gcc.dg/bitint-106.c
-# run gcc/testsuite/gcc.dg/bitint-109.c
+run gcc/testsuite/gcc.dg/bitint-106.c
+run gcc/testsuite/gcc.dg/bitint-109.c
 run gcc/testsuite/gcc.dg/bitint-122.c
 run gcc/testsuite/gcc.dg/bitint-34.c
 run gcc/testsuite/gcc.dg/torture/bitint-10.c
@@ -31,8 +31,8 @@ run gcc/testsuite/gcc.dg/torture/bitint-3.c
 run gcc/testsuite/gcc.dg/torture/bitint-40.c
 # run gcc/testsuite/gcc.dg/torture/bitint-41.c
 run gcc/testsuite/gcc.dg/torture/bitint-42.c
-# run gcc/testsuite/gcc.dg/torture/bitint-43.c
-# run gcc/testsuite/gcc.dg/torture/bitint-44.c
+run gcc/testsuite/gcc.dg/torture/bitint-43.c
+run gcc/testsuite/gcc.dg/torture/bitint-44.c
 # run gcc/testsuite/gcc.dg/torture/bitint-45.c
 run gcc/testsuite/gcc.dg/torture/bitint-46.c
 run gcc/testsuite/gcc.dg/torture/bitint-48.c
@@ -61,7 +61,7 @@ run gcc/testsuite/gcc.dg/torture/bitint-69.c
 run gcc/testsuite/gcc.dg/torture/bitint-6.c
 run gcc/testsuite/gcc.dg/torture/bitint-70.c
 # run gcc/testsuite/gcc.dg/torture/bitint-71.c
-# run gcc/testsuite/gcc.dg/torture/bitint-72.c
+run gcc/testsuite/gcc.dg/torture/bitint-72.c
 run gcc/testsuite/gcc.dg/torture/bitint-74.c
 # run gcc/testsuite/gcc.dg/torture/bitint-75.c
 run gcc/testsuite/gcc.dg/torture/bitint-76.c
