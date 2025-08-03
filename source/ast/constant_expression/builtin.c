@@ -612,6 +612,39 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             }
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, unqualified_type, &classification));
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    value->integer = 8;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    value->integer = 16;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                    value->integer = 32;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+                    value->integer = 64;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    value->integer = unqualified_type->bitprecise.width;
+                    break;
+
+                default:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected integral type");
+            }
+        } break;
+
         case KEFIR_AST_BUILTIN_VA_START:
         case KEFIR_AST_BUILTIN_VA_END:
         case KEFIR_AST_BUILTIN_VA_ARG:

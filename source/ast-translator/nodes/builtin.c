@@ -1136,6 +1136,39 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             }
 #undef BUILTIN_POPCOUNTG_32BIT
         } break;
+
+
+        case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type, &classification));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 8));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 16));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 32));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 64));
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, unqualified_type->bitprecise.width));
+                    break;
+
+                default:
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected integral type");
+            }
+        } break;
     }
     return KEFIR_OK;
 }

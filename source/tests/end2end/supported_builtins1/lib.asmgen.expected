@@ -46,6 +46,7 @@ __builtin_infl
 __builtin_nanf
 __builtin_nanl
 __builtin_trap
+__builtin_stdc_first_leading_one
 __builtin_assume_aligned
 __builtin_huge_valf
 __builtin_huge_vall
@@ -96,6 +97,7 @@ __sync_lock_test_and_set
 __builtin_usubll_overflow
 __builtin_smulll_overflow
 __atomic_load_n
+__kefir_builtin_int_precision
 __builtin_expect_with_probability
 __builtin_usubl_overflow
 __sync_sub_and_fetch

@@ -450,6 +450,24 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             }
             base->properties.type = kefir_ast_type_signed_int();
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
+            REQUIRE(kefir_list_length(&node->arguments) == 1,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
+                                           "int precision builtin invocation should have exactly one parameter"));
+
+            const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, type1_node, iter->value);
+            REQUIRE_OK(kefir_ast_analyze_node(mem, context, type1_node));
+            REQUIRE(type1_node->properties.category == KEFIR_AST_NODE_CATEGORY_TYPE,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type1_node->source_location, "Expected a type name"));
+
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(type1_node->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type),
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &type1_node->source_location, "Expected integral type"));
+
+            base->properties.type = kefir_ast_type_signed_int();
+        } break;
     }
     return KEFIR_OK;
 }
