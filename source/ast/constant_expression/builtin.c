@@ -280,9 +280,19 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "ffsg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t index;
+                        REQUIRE_OK(kefir_bigint_least_significant_nonzero(node_value->bitprecise, &index));
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = index;
+                    } else {
+                        REQUIRE_OK(
+                            kefir_ast_evaluate_builtin_ffs_constant_expression_value(node_value->uinteger, 64, value));
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ffsg builtin argument type");
@@ -341,9 +351,25 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         &node->source_location));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "clzg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t count = 0;
+                        if (default_value != NULL) {
+                            REQUIRE_OK(kefir_bigint_leading_zeros(node_value->bitprecise, &count, *default_value));
+                        } else {
+                            REQUIRE_OK(kefir_bigint_leading_zeros(node_value->bitprecise, &count, ~0ull));
+                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                                           "Expected constant expression AST node"));
+                        }
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = count;
+                    } else {
+                        REQUIRE_OK(kefir_ast_evaluate_builtin_clz_constant_expression_value(
+                            node_value->uinteger, 64, default_value, value, &node->source_location));
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clzg builtin argument type");
@@ -402,12 +428,28 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         &node->source_location));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "ctzg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t count = 0;
+                        if (default_value != NULL) {
+                            REQUIRE_OK(kefir_bigint_trailing_zeros(node_value->bitprecise, &count, *default_value));
+                        } else {
+                            REQUIRE_OK(kefir_bigint_trailing_zeros(node_value->bitprecise, &count, ~0ull));
+                            REQUIRE(count != ~0ull, KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location,
+                                                                           "Expected constant expression AST node"));
+                        }
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = count;
+                    } else {
+                        REQUIRE_OK(kefir_ast_evaluate_builtin_ctz_constant_expression_value(
+                            node_value->uinteger, 64, default_value, value, &node->source_location));
+                    }
+                } break;
 
                 default:
-                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ctzg builtin argument type");
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clzg builtin argument type");
             }
         } break;
 
@@ -445,9 +487,19 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "clrsbg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t count;
+                        REQUIRE_OK(kefir_bigint_redundant_sign_bits(node_value->bitprecise, &count));
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = count;
+                    } else {
+                        REQUIRE_OK(kefir_ast_evaluate_builtin_clrsb_constant_expression_value(node_value->uinteger, 64,
+                                                                                              value));
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clrsbg builtin argument type");
@@ -488,9 +540,19 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "popcountg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t count;
+                        REQUIRE_OK(kefir_bigint_nonzero_count(node_value->bitprecise, &count));
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = count;
+                    } else {
+                        REQUIRE_OK(kefir_ast_evaluate_builtin_popcount_constant_expression_value(node_value->uinteger,
+                                                                                                 64, value));
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd popcountg builtin argument type");
@@ -531,9 +593,19 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                         KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node)->uinteger, 64, value));
                     break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "parityg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    const struct kefir_ast_constant_expression_value *node_value =
+                        KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node);
+                    if (node_value->bitprecise != NULL) {
+                        kefir_size_t count;
+                        REQUIRE_OK(kefir_bigint_parity(node_value->bitprecise, &count));
+                        value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+                        value->uinteger = count;
+                    } else {
+                        REQUIRE_OK(kefir_ast_evaluate_builtin_parity_constant_expression_value(node_value->uinteger, 64,
+                                                                                               value));
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd parityg builtin argument type");

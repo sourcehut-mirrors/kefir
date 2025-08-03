@@ -323,6 +323,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "ffsg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -416,6 +419,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "clzg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -601,6 +607,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "ctzg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -777,6 +786,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "clrsbg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -869,6 +881,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "popcountg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -957,6 +972,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
+            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
+                                           "parityg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 

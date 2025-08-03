@@ -1,0 +1,46 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global arr
+.type arr, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+arr:
+    .long 4
+    .long 499
+    .long 4
+    .long 499
+    .long 3
+    .long 498
+    .long 1
+    .long 198
+    .long 2
+    .long 149
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 4
+    .long 499
+    .long 4
+    .long 499
+    .long 3
+    .long 498
+    .long 1
+    .long 198
+    .long 2
+    .long 149
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+    .long 0
+

@@ -435,9 +435,6 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(arg1_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &arg1_node->source_location,
                                            "Expected an expression of integer type"));
-            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(arg1_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &arg1_node->source_location,
-                                           "ffsg/ctzg/clzg builtin is not implemented for bit-precise integers yet"));
 
             kefir_list_next(&iter);
             if ((node->builtin == KEFIR_AST_BUILTIN_CLZG || node->builtin == KEFIR_AST_BUILTIN_CTZG) && iter != NULL) {
