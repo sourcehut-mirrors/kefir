@@ -417,9 +417,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
-            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
-                                           "clzg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -461,6 +458,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -492,6 +492,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -524,6 +527,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -571,6 +577,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -584,9 +593,44 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     }
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "clzg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    kefir_size_t jmpIndex = 0;
+                    if (default_value_node != NULL) {
+                        struct kefir_bigint *bigint;
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint));
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, unqualified_type->bitprecise.width));
+                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
+
+                        kefir_id_t bigint_id;
+                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id));
+
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                                                                   unqualified_type->bitprecise.width));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
+                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0,
+                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
+                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLZ,
+                                                               unqualified_type->bitprecise.width));
+
+                    if (default_value_node != NULL) {
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 =
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd clzg builtin argument type");
@@ -605,9 +649,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (unqualified_type->tag == KEFIR_AST_TYPE_ENUMERATION) {
                 unqualified_type = unqualified_type->enumeration_type.underlying_type;
             }
-            REQUIRE(!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(unqualified_type),
-                    KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_IMPLEMENTED, &node->source_location,
-                                           "ctzg builtin is not implemented for bit-precise integers yet"));
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, node, builder, context));
 
@@ -649,6 +690,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -679,6 +723,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -708,6 +755,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -755,6 +805,9 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                                                                      KEFIR_IR_BRANCH_CONDITION_8BIT));
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
                         REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
                         jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
                         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
                         KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
@@ -768,9 +821,44 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     }
                 } break;
 
-                case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    return KEFIR_SET_ERROR(KEFIR_NOT_IMPLEMENTED,
-                                           "ctzg builtin for bit-precise integers is not implemented yet");
+                case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
+                    kefir_size_t jmpIndex = 0;
+                    if (default_value_node != NULL) {
+                        struct kefir_bigint *bigint;
+                        REQUIRE_OK(kefir_bigint_pool_alloc(mem, context->ast_context->bigint_pool, &bigint));
+                        REQUIRE_OK(kefir_bigint_resize_nocast(mem, bigint, unqualified_type->bitprecise.width));
+                        REQUIRE_OK(kefir_bigint_set_unsigned_value(bigint, 0));
+
+                        kefir_id_t bigint_id;
+                        REQUIRE_OK(kefir_ir_module_new_bigint(mem, context->module, bigint, &bigint_id));
+
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+                        REQUIRE_OK(
+                            KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SIGNED_CONST, bigint_id));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                                                                   unqualified_type->bitprecise.width));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
+                        kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0,
+                                                                     KEFIR_IR_BRANCH_CONDITION_8BIT));
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
+                        REQUIRE_OK(kefir_ast_translate_expression(mem, default_value_node, builder, context));
+                        REQUIRE_OK(kefir_ast_translate_typeconv(
+                            mem, context->module, builder, context->ast_context->type_traits,
+                            default_value_node->properties.type, kefir_ast_type_signed_int()));
+                        jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    }
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CTZ,
+                                                               unqualified_type->bitprecise.width));
+
+                    if (default_value_node != NULL) {
+                        KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 =
+                            KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    }
+                } break;
 
                 default:
                     return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpectd ctzg builtin argument type");

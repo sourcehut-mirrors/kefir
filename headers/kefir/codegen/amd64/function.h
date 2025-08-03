@@ -401,6 +401,8 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_INSERT) _separator \
     _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ) _separator \
+    _def(bitint_error_lowered, KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ) _separator \
     _def(inline_assembly, KEFIR_OPT_OPCODE_INLINE_ASSEMBLY)
 // clang-format on
 
@@ -546,9 +548,15 @@ kefir_result_t kefir_codegen_amd64_function_call_preserve_regs(struct kefir_mem 
 #define BIGINT_UNSIGNED_COMPARE_FN "__kefir_bigint_unsigned_compare"
 #define BIGINT_SIGNED_COMPARE_FN "__kefir_bigint_signed_compare"
 #define BIGINT_LEAST_SIGNIFICANT_NONZERO_FN "__kefir_bigint_least_significant_nonzero"
+#define BIGINT_LEADING_ZEROS_FN "__kefir_bigint_leading_zeros"
+#define BIGINT_TRAILING_ZEROS_FN "__kefir_bigint_trailing_zeros"
 
 #define BUILTIN_FFS_FN "__kefir_builtin_ffs"
 #define BUILTIN_FFSL_FN "__kefir_builtin_ffsl"
+#define BUILTIN_CLZ_FN "__kefir_builtin_clz"
+#define BUILTIN_CLZL_FN "__kefir_builtin_clzl"
+#define BUILTIN_CTZ_FN "__kefir_builtin_ctz"
+#define BUILTIN_CTZL_FN "__kefir_builtin_ctzl"
 
 #define LIBATOMIC_SEQ_CST 5
 
