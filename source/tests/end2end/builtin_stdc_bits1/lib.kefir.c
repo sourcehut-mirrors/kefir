@@ -126,6 +126,32 @@ _Static_assert(__builtin_stdc_trailing_zeros(~1u) == 1);
 _Static_assert(__builtin_stdc_trailing_zeros(~0ul) == 0);
 _Static_assert(__builtin_stdc_trailing_zeros(~1ul) == 1);
 
+_Static_assert(__builtin_stdc_bit_ceil(0) == 1);
+_Static_assert(__builtin_stdc_bit_ceil(1) == 1);
+_Static_assert(__builtin_stdc_bit_ceil(2) == 2);
+_Static_assert(__builtin_stdc_bit_ceil(3) == 4);
+_Static_assert(__builtin_stdc_bit_ceil(4) == 4);
+_Static_assert(__builtin_stdc_bit_ceil(5) == 8);
+_Static_assert(__builtin_stdc_bit_ceil(1024) == 1024);
+
+_Static_assert(__builtin_stdc_bit_floor(0) == 0);
+_Static_assert(__builtin_stdc_bit_floor(1) == 1);
+_Static_assert(__builtin_stdc_bit_floor(2) == 2);
+_Static_assert(__builtin_stdc_bit_floor(3) == 2);
+_Static_assert(__builtin_stdc_bit_floor(4) == 4);
+_Static_assert(__builtin_stdc_bit_floor(5) == 4);
+_Static_assert(__builtin_stdc_bit_floor(1024) == 1024);
+
+_Static_assert(__builtin_stdc_rotate_left(1ull, 1) == 2);
+_Static_assert(__builtin_stdc_rotate_left(1ull, 63) == (1ull << 63));
+_Static_assert(__builtin_stdc_rotate_left(1ull, 64) == 1);
+_Static_assert(__builtin_stdc_rotate_left(1023ull, 10) == 1023 << 10);
+
+_Static_assert(__builtin_stdc_rotate_right(1ull, 1) == 1ull << 63);
+_Static_assert(__builtin_stdc_rotate_right(1024ull, 3) == 128);
+_Static_assert(__builtin_stdc_rotate_right(1ull << 63, 30) == 1ull << 33);
+_Static_assert(__builtin_stdc_rotate_right(1ull << 30, 61) == 1ull << 33);
+
 int bit_ceil(long x) {
     return __builtin_stdc_bit_ceil(x);
 }
