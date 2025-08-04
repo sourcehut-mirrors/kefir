@@ -1,10 +1,12 @@
 
 __builtin_types_compatible_p
+__builtin_stdc_trailing_ones
 __builtin_saddll_overflow
 __builtin_sadd_overflow
 __builtin_ssubl_overflow
 __builtin_smul_overflow
 __builtin_ssub_overflow
+__builtin_stdc_bit_ceil
 __builtin_alloca
 __builtin_clrsbg
 __builtin_clrsbl
@@ -12,6 +14,8 @@ __builtin_expect
 __builtin_parity
 __builtin_va_arg
 __builtin_va_end
+__builtin_stdc_bit_floor
+__builtin_stdc_bit_width
 __atomic_exchange
 __atomic_fetch_or
 __builtin_uaddll_overflow
@@ -46,8 +50,10 @@ __builtin_infl
 __builtin_nanf
 __builtin_nanl
 __builtin_trap
+__builtin_stdc_count_ones
 __builtin_stdc_first_leading_one
 __builtin_assume_aligned
+__builtin_stdc_has_single_bit
 __builtin_huge_valf
 __builtin_huge_vall
 __builtin_popcountg
@@ -96,6 +102,7 @@ __builtin_popcountll
 __sync_lock_test_and_set
 __builtin_usubll_overflow
 __builtin_smulll_overflow
+__builtin_stdc_leading_zeros
 __atomic_load_n
 __kefir_builtin_int_precision
 __builtin_expect_with_probability
@@ -107,19 +114,26 @@ __builtin_ctzll
 __builtin_ffsll
 __atomic_store_n
 __builtin_umulll_overflow
+__builtin_stdc_count_zeros
 __builtin_stdc_rotate_left
 __atomic_is_lock_free
+__builtin_stdc_first_leading_zero
 __atomic_signal_fence
 __atomic_test_and_set
 __atomic_thread_fence
+__builtin_stdc_first_trailing_zero
 __builtin_smull_overflow
+__builtin_stdc_first_trailing_one
 __sync_bool_compare_and_swap
+__builtin_stdc_trailing_zeros
 __sync_synchronize
 __atomic_compare_exchange
 __builtin_uaddl_overflow
 __sync_xor_and_fetch
 __sync_add_and_fetch
+__builtin_stdc_leading_ones
 __sync_and_and_fetch
+__builtin_stdc_rotate_right
 __builtin_extract_return_addr
 __sync_fetch_and_nand
 __sync_val_compare_and_swap

@@ -1,0 +1,99 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global bit_ceil
+.type bit_ceil, @function
+.global bit_floor
+.type bit_floor, @function
+.global rotate_left
+.type rotate_left, @function
+.global rotate_right
+.type rotate_right, @function
+
+.section .text
+__kefir_text_section_begin:
+bit_ceil:
+__kefir_text_func_bit_ceil_begin:
+    cmp $1, %rdi
+    jg _kefir_func_bit_ceil_label2
+    mov $1, %rdx
+_kefir_func_bit_ceil_label1:
+    mov %rdx, %rax
+    ret
+_kefir_func_bit_ceil_label2:
+    sub $1, %rdi
+    bsr %rdi, %rax
+    xor $63, %eax
+    mov $63, %rcx
+    sub %eax, %ecx
+    movsx %ecx, %rcx
+    mov $2, %rax
+    shl %cl, %rax
+    mov %rax, %rdx
+    jmp _kefir_func_bit_ceil_label1
+__kefir_text_func_bit_ceil_end:
+
+bit_floor:
+__kefir_text_func_bit_floor_begin:
+    cmp $0, %rdi
+    jne _kefir_func_bit_floor_label2
+    xor %edx, %edx
+_kefir_func_bit_floor_label1:
+    mov %rdx, %rax
+    ret
+_kefir_func_bit_floor_label2:
+    bsr %rdi, %rax
+    xor $63, %eax
+    mov $63, %rcx
+    sub %eax, %ecx
+    movsx %ecx, %rcx
+    mov $1, %rax
+    shl %cl, %rax
+    mov %rax, %rdx
+    jmp _kefir_func_bit_floor_label1
+__kefir_text_func_bit_floor_end:
+
+rotate_left:
+__kefir_text_func_rotate_left_begin:
+    movzx %sil, %rax
+    cdq
+    mov $64, %rcx
+    idiv %ecx
+    movsx %edx, %rcx
+    mov %rdi, %r8
+    shl %cl, %r8
+    movzx %sil, %rax
+    neg %eax
+    cdq
+    mov $64, %rcx
+    idiv %ecx
+    movsx %edx, %rcx
+    shr %cl, %rdi
+    mov %r8, %rax
+    or %rdi, %rax
+    ret
+__kefir_text_func_rotate_left_end:
+
+rotate_right:
+__kefir_text_func_rotate_right_begin:
+    movzx %sil, %rax
+    cdq
+    mov $64, %rcx
+    idiv %ecx
+    movsx %edx, %rcx
+    mov %rdi, %r8
+    shr %cl, %r8
+    movzx %sil, %rax
+    neg %eax
+    cdq
+    mov $64, %rcx
+    idiv %ecx
+    movsx %edx, %rcx
+    shl %cl, %rdi
+    mov %r8, %rax
+    or %rdi, %rax
+    ret
+__kefir_text_func_rotate_right_end:
+
+__kefir_text_section_end:
+

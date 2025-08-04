@@ -593,7 +593,42 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_parityll(_x) __kefir_builtin_parityll((_x))
 
 // stdc builtins as defined at https://gcc.gnu.org/onlinedocs/gcc/Bit-Operation-Builtins.html
+#define __builtin_stdc_bit_width(_arg)                                          \
+    ((unsigned int) (__kefir_builtin_int_precision(__typeof_unqual__((_arg))) - \
+                     __builtin_clzg((_arg), __kefir_builtin_int_precision(__typeof_unqual__((_arg))))))
+#define __builtin_stdc_count_ones(_arg) ((unsigned int) __builtin_popcountg((_arg)))
+#define __builtin_stdc_count_zeros(_arg) ((unsigned int) __builtin_popcountg((__typeof_unqual__(_arg)) ~(_arg)))
 #define __builtin_stdc_first_leading_one(_arg) (__builtin_clzg((_arg), -1) + 1U)
+#define __builtin_stdc_first_leading_zero(_arg) (__builtin_clzg((__typeof_unqual__((_arg))) ~(_arg), -1) + 1U)
+#define __builtin_stdc_first_trailing_one(_arg) (__builtin_ctzg((_arg), -1) + 1U)
+#define __builtin_stdc_first_trailing_zero(_arg) (__builtin_ctzg((__typeof_unqual__((_arg))) ~(_arg), -1) + 1U)
+#define __builtin_stdc_has_single_bit(_arg) ((_Bool) (__builtin_popcountg((_arg)) == 1))
+#define __builtin_stdc_leading_ones(_arg)                               \
+    ((unsigned int) __builtin_clzg((__typeof_unqual__((_arg))) ~(_arg), \
+                                   __kefir_builtin_int_precision(__typeof_unqual__((_arg)))))
+#define __builtin_stdc_leading_zeros(_arg) \
+    ((unsigned int) __builtin_clzg((_arg), __kefir_builtin_int_precision(__typeof_unqual__((_arg)))))
+#define __builtin_stdc_trailing_ones(_arg)                              \
+    ((unsigned int) __builtin_ctzg((__typeof_unqual__((_arg))) ~(_arg), \
+                                   __kefir_builtin_int_precision(__typeof_unqual__((_arg)))))
+#define __builtin_stdc_trailing_zeros(_arg) \
+    ((unsigned int) __builtin_ctzg((_arg), __kefir_builtin_int_precision(__typeof_unqual__((_arg)))))
+
+#define __builtin_stdc_bit_ceil(_arg)                                                       \
+    ({                                                                                      \
+        typedef __typeof_unqual__(_arg) __arg_type_t;                                       \
+        const __arg_type_t __arg = (_arg);                                                  \
+        __arg <= 1 ? (__arg_type_t) 1                                                       \
+                   : (__arg_type_t) 2 << (__kefir_builtin_int_precision(__arg_type_t) - 1 - \
+                                          __builtin_clzg((__arg_type_t) (__arg - 1)));      \
+    })
+#define __builtin_stdc_bit_floor(_arg)                                                                              \
+    ({                                                                                                              \
+        typedef __typeof_unqual__(_arg) __arg_type_t;                                                               \
+        const __arg_type_t __arg = (_arg);                                                                          \
+        __arg == 0 ? (__arg_type_t) 0                                                                               \
+                   : (__arg_type_t) 1 << (__kefir_builtin_int_precision(__arg_type_t) - 1 - __builtin_clzg(__arg)); \
+    })
 #define __builtin_stdc_rotate_left(_arg1, _arg2)                                              \
     ({                                                                                        \
         typedef __typeof_unqual__(_arg1) __arg1_type_t;                                       \
@@ -602,6 +637,16 @@ extern int __kefir_builtin_flt_rounds(void);
         const __arg2_type_t __arg2 = (_arg2);                                                 \
         (__arg1_type_t)((__arg1 << (__arg2 % __kefir_builtin_int_precision(__arg1_type_t))) | \
                         (__arg1 >> ((-(__kefir_unsigned_override __arg2_type_t) __arg2) %     \
+                                    __kefir_builtin_int_precision(__arg1_type_t))));          \
+    })
+#define __builtin_stdc_rotate_right(_arg1, _arg2)                                             \
+    ({                                                                                        \
+        typedef __typeof_unqual__(_arg1) __arg1_type_t;                                       \
+        typedef __typeof_unqual__(_arg2) __arg2_type_t;                                       \
+        const __arg1_type_t __arg1 = (_arg1);                                                 \
+        const __arg2_type_t __arg2 = (_arg2);                                                 \
+        (__arg1_type_t)((__arg1 >> (__arg2 % __kefir_builtin_int_precision(__arg1_type_t))) | \
+                        (__arg1 << ((-(__kefir_unsigned_override __arg2_type_t) __arg2) %     \
                                     __kefir_builtin_int_precision(__arg1_type_t))));          \
     })
 
