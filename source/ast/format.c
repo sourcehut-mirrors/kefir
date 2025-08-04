@@ -469,6 +469,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_int_precision"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTANT:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_constant"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

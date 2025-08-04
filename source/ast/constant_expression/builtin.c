@@ -222,6 +222,17 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
             }
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTANT: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            if (!node->properties.expression_props.constant_expression) {
+                value->integer = 0;
+            } else {
+                value->integer = 1;
+            }
+        } break;
+
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
 

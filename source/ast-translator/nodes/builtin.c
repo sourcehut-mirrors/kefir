@@ -208,6 +208,17 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             }
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTANT: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node)) {
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0));
+            } else {
+                REQUIRE_OK(
+                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 1));
+            }
+        } break;
+
         case KEFIR_AST_BUILTIN_CLASSIFY_TYPE: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
 

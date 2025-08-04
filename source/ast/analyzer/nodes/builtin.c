@@ -255,7 +255,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             }
         } break;
 
-        case KEFIR_AST_BUILTIN_CONSTANT: {
+        case KEFIR_AST_BUILTIN_CONSTANT:
+        case KEFIR_AST_BUILTIN_KEFIR_CONSTANT: {
             REQUIRE(kefir_list_length(&node->arguments) == 1,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &base->source_location,
                                            "constant builtin invocation should have exactly one parameter"));

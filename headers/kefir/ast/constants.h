@@ -331,7 +331,8 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_CLRSBG,
     KEFIR_AST_BUILTIN_POPCOUNTG,
     KEFIR_AST_BUILTIN_PARITYG,
-    KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION
+    KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION,
+    KEFIR_AST_BUILTIN_KEFIR_CONSTANT
 } kefir_ast_builtin_operator_t;
 
 typedef enum kefir_ast_declarator_visibility_attr {

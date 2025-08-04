@@ -63,6 +63,7 @@ __builtin_assoc_barrier
 __builtin_alloca_with_align_and_max
 __builtin_classify_type
 __sync_nand_and_fetch
+__kefir_builtin_constant
 __builtin_umull_overflow
 __builtin_alloca_with_align
 __atomic_load

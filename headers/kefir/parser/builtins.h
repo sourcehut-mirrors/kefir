@@ -52,6 +52,7 @@
 #define KEFIR_PARSER_BUILTIN_POPCOUNTG "__builtin_popcountg"
 #define KEFIR_PARSER_BUILTIN_PARITYG "__builtin_parityg"
 #define KEFIR_PARSER_BUILTIN_KEFIR_INT_PRECISION "__kefir_builtin_int_precision"
+#define KEFIR_PARSER_BUILTIN_KEFIR_CONSTANT "__kefir_builtin_constant"
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *, kefir_ast_builtin_operator_t *);
 
