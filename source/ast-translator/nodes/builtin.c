@@ -21,7 +21,7 @@
 #include "kefir/ast-translator/translator_impl.h"
 #include "kefir/ast-translator/translator.h"
 #include "kefir/ast-translator/typeconv.h"
-#include "kefir/ast-translator/lvalue.h"
+#include "kefir/ast-translator/value.h"
 #include "kefir/ast-translator/layout.h"
 #include "kefir/ast-translator/type.h"
 #include "kefir/ast-translator/temporaries.h"
@@ -214,8 +214,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             if (!KEFIR_AST_NODE_IS_CONSTANT_EXPRESSION(node)) {
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0));
             } else {
-                REQUIRE_OK(
-                    KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 1));
             }
         } break;
 
@@ -274,6 +273,130 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
             const struct kefir_ast_type *ptr_type =
                 KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, ptr_node->properties.type);
             const struct kefir_ast_type *result_type = kefir_ast_unqualified_type(ptr_type->referenced_type);
+
+            if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(arg1_type) ||
+                KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(arg2_type) ||
+                KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(result_type)) {
+                const struct kefir_ast_type *common_type = kefir_ast_type_common_arithmetic(
+                    context->ast_context->type_traits, arg1_type, arg1_node->properties.expression_props.bitfield_props,
+                    arg2_type, arg2_node->properties.expression_props.bitfield_props);
+                REQUIRE(common_type != NULL,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                        "Failed to obtain common type for bit-precise overflow builtin operands"));
+
+                if (!KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(common_type)) {
+                    common_type = kefir_ast_type_signed_bitprecise(
+                        mem, context->ast_context->type_bundle,
+                        context->ast_context->type_traits->data_model->scalar_width.long_long_bits);
+                }
+
+                kefir_ast_type_data_model_classification_t result_classification;
+                REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, result_type,
+                                                              &result_classification));
+                kefir_size_t result_width = 0;
+                switch (result_classification) {
+                    case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                        result_width = 8;
+                        break;
+
+                    case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                        result_width = 16;
+                        break;
+
+                    case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                        result_width = 32;
+                        break;
+
+                    case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+                        result_width = 64;
+                        break;
+
+                    case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
+                        result_width = result_type->bitprecise.width;
+                        break;
+
+                    default:
+                        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow builtin result type");
+                }
+
+                const struct kefir_ast_type *computation_type = kefir_ast_type_signed_bitprecise(
+                    mem, context->ast_context->type_bundle, MAX(common_type->bitprecise.width, result_width) * 2 + 1);
+                REQUIRE(computation_type != NULL,
+                        KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
+                                        "Failed to allocate type for bit-precise overflow builtin computation"));
+
+                REQUIRE_OK(kefir_ast_translate_expression(mem, arg1_node, builder, context));
+                REQUIRE_OK(kefir_ast_translate_typeconv(
+                    mem, context->module, builder, context->ast_context->type_traits, arg1_type, computation_type));
+                REQUIRE_OK(kefir_ast_translate_expression(mem, arg2_node, builder, context));
+                REQUIRE_OK(kefir_ast_translate_typeconv(
+                    mem, context->module, builder, context->ast_context->type_traits, arg2_type, computation_type));
+
+                switch (node->builtin) {
+                    case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_ADD,
+                                                                   computation_type->bitprecise.width));
+                        break;
+
+                    case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_SUB,
+                                                                   computation_type->bitprecise.width));
+                        break;
+
+                    case KEFIR_AST_BUILTIN_MUL_OVERFLOW:
+                        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_IMUL,
+                                                                   computation_type->bitprecise.width));
+                        break;
+
+                    default:
+                        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow builtin");
+                }
+
+                kefir_bool_t result_signed;
+                REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, result_type, &result_signed));
+                if (result_signed) {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLRSB,
+                                                               computation_type->bitprecise.width));
+                } else {
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_FROM_UNSIGNED,
+                                                               computation_type->bitprecise.width));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_EQUAL,
+                                                               computation_type->bitprecise.width));
+                    const kefir_size_t branchIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0,
+                                                                 KEFIR_IR_BRANCH_CONDITION_8BIT));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_BITINT_BUILTIN_CLZ,
+                                                               computation_type->bitprecise.width));
+                    const kefir_size_t jumpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_JUMP, 0));
+                    KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, branchIndex)->arg.i64 =
+                        KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                               computation_type->bitprecise.width));
+                    KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jumpIndex)->arg.i64 =
+                        KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
+                }
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                           computation_type->bitprecise.width));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, result_width));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_SCALAR_COMPARE,
+                                                           KEFIR_IR_COMPARE_INT64_ABOVE));
+
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(kefir_ast_translate_typeconv(
+                    mem, context->module, builder, context->ast_context->type_traits, computation_type, result_type));
+                REQUIRE_OK(kefir_ast_translate_expression(mem, ptr_node, builder, context));
+                REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+                REQUIRE_OK(
+                    kefir_ast_translator_store_value(mem, result_type, context, builder, &node->base.source_location));
+                break;
+            }
 
             kefir_bool_t arg1_signed, arg2_signed, result_signed;
             REQUIRE_OK(kefir_ast_type_is_signed(context->ast_context->type_traits, arg1_type, &arg1_signed));
@@ -1148,13 +1271,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 #undef BUILTIN_POPCOUNTG_32BIT
         } break;
 
-
         case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION: {
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
 
             const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
             kefir_ast_type_data_model_classification_t classification;
-            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type, &classification));
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, unqualified_type,
+                                                          &classification));
             switch (classification) {
                 case KEFIR_AST_TYPE_DATA_MODEL_INT8:
                     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, 8));
@@ -1173,11 +1296,13 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                     break;
 
                 case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, unqualified_type->bitprecise.width));
+                    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST,
+                                                               unqualified_type->bitprecise.width));
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected integral type");
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                                                  "Expected integral type");
             }
         } break;
     }
