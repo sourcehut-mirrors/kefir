@@ -473,6 +473,14 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_CONSTANT:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_constant"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_is_unsigned"));
+            break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH:
+            REQUIRE_OK(kefir_json_output_string(json, "kefir_bitfield_width"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

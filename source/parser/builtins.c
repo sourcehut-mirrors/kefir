@@ -52,6 +52,8 @@ const char *KEFIR_PARSER_SUPPORTED_BUILTINS[] = {KEFIR_PARSER_BUILTIN_VA_START,
                                                  KEFIR_PARSER_BUILTIN_PARITYG,
                                                  KEFIR_PARSER_BUILTIN_KEFIR_INT_PRECISION,
                                                  KEFIR_PARSER_BUILTIN_KEFIR_CONSTANT,
+                                                 KEFIR_PARSER_BUILTIN_KEFIR_IS_UNSIGNED,
+                                                 KEFIR_PARSER_BUILTIN_KEFIR_BITFIELD_WIDTH,
                                                  NULL};
 
 static const struct {
@@ -85,7 +87,9 @@ static const struct {
                 {KEFIR_PARSER_BUILTIN_POPCOUNTG, KEFIR_AST_BUILTIN_POPCOUNTG},
                 {KEFIR_PARSER_BUILTIN_PARITYG, KEFIR_AST_BUILTIN_PARITYG},
                 {KEFIR_PARSER_BUILTIN_KEFIR_INT_PRECISION, KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION},
-                {KEFIR_PARSER_BUILTIN_KEFIR_CONSTANT, KEFIR_AST_BUILTIN_KEFIR_CONSTANT}};
+                {KEFIR_PARSER_BUILTIN_KEFIR_CONSTANT, KEFIR_AST_BUILTIN_KEFIR_CONSTANT},
+                {KEFIR_PARSER_BUILTIN_KEFIR_IS_UNSIGNED, KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED},
+                {KEFIR_PARSER_BUILTIN_KEFIR_BITFIELD_WIDTH, KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH}};
 static const kefir_size_t BUILTIN_COUNT = sizeof(BUILTINS) / sizeof(BUILTINS[0]);
 
 kefir_result_t kefir_parser_get_builtin_operation(const char *identifier, kefir_ast_builtin_operator_t *builtin_op) {

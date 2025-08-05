@@ -652,7 +652,29 @@ kefir_result_t kefir_ast_evaluate_builtin_node(struct kefir_mem *mem, const stru
                     break;
 
                 default:
-                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location, "Expected integral type");
+                    return KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->source_location,
+                                                  "Expected integral type");
+            }
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(node->properties.type);
+            kefir_bool_t is_signed;
+            REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_type, &is_signed));
+
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            value->integer = is_signed ? 0 : 1;
+        } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH: {
+            ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+            value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_INTEGER;
+            if (node->properties.expression_props.bitfield_props.bitfield) {
+                value->integer = node->properties.expression_props.bitfield_props.width;
+            } else {
+                value->integer = -1;
             }
         } break;
 

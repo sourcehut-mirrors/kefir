@@ -614,66 +614,66 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_stdc_trailing_zeros(_arg) \
     ((unsigned int) __builtin_ctzg((_arg), __kefir_builtin_int_precision(__typeof_unqual__((_arg)))))
 
-#define __kefir_builtin_stdc_bit_ceil_base(_arg)                                                                   \
+#define __kefir_builtin_stdc_bit_ceil_base(_arg)                                                                    \
     ((_arg) <= 1 ? (__typeof_unqual__((_arg))) 1                                                                    \
                  : (__typeof_unqual__((_arg))) 2 << (__kefir_builtin_int_precision(__typeof_unqual__((_arg))) - 1 - \
                                                      __builtin_clzg((__typeof_unqual__((_arg)))((_arg) - 1))))
-#define __kefir_builtin_stdc_bit_ceil_nonconst(_arg)                                        \
-    ({                                                                                      \
-        typedef __typeof_unqual__(_arg) __arg_type_t;                                       \
-        const __arg_type_t __arg = (_arg);                                                  \
-        __kefir_builtin_stdc_bit_ceil_base(__arg); \
+#define __kefir_builtin_stdc_bit_ceil_nonconst(_arg)  \
+    ({                                                \
+        typedef __typeof_unqual__(_arg) __arg_type_t; \
+        const __arg_type_t __arg = (_arg);            \
+        __kefir_builtin_stdc_bit_ceil_base(__arg);    \
     })
-#define __builtin_stdc_bit_ceil(_arg)                                                                     \
+#define __builtin_stdc_bit_ceil(_arg)                                                                    \
     (__builtin_choose_expr(__kefir_builtin_constant((_arg)), __kefir_builtin_stdc_bit_ceil_base((_arg)), \
                            __kefir_builtin_stdc_bit_ceil_nonconst((_arg))))
 
 #define __kefir_builtin_stdc_bit_floor_base(_arg) \
-    ((_arg) == 0 ? (__typeof_unqual__(_arg)) 0     \
-                 : (__typeof_unqual__(_arg)) 1     \
+    ((_arg) == 0 ? (__typeof_unqual__(_arg)) 0    \
+                 : (__typeof_unqual__(_arg)) 1    \
                        << (__kefir_builtin_int_precision(__typeof_unqual__((_arg))) - 1 - __builtin_clzg((_arg))))
-#define __kefir_builtin_stdc_bit_floor_nonconst(_arg)                                                               \
-    ({                                                                                                              \
-        typedef __typeof_unqual__(_arg) __arg_type_t;                                                               \
-        const __arg_type_t __arg = (_arg);                                                                          \
-        __kefir_builtin_stdc_bit_floor_base(__arg); \
+#define __kefir_builtin_stdc_bit_floor_nonconst(_arg) \
+    ({                                                \
+        typedef __typeof_unqual__(_arg) __arg_type_t; \
+        const __arg_type_t __arg = (_arg);            \
+        __kefir_builtin_stdc_bit_floor_base(__arg);   \
     })
-#define __builtin_stdc_bit_floor(_arg)                                                                     \
+#define __builtin_stdc_bit_floor(_arg)                                                                    \
     (__builtin_choose_expr(__kefir_builtin_constant((_arg)), __kefir_builtin_stdc_bit_floor_base((_arg)), \
                            __kefir_builtin_stdc_bit_floor_nonconst((_arg))))
 
-#define __kefir_builtin_stdc_rotate_left_base(_arg1, _arg2)                                                           \
+#define __kefir_builtin_stdc_rotate_left_base(_arg1, _arg2)                                                            \
     ((__typeof_unqual__((_arg1)))(((_arg1) << ((_arg2) % __kefir_builtin_int_precision(__typeof_unqual__((_arg1))))) | \
                                   ((_arg1) >> ((-(__kefir_unsigned_override __typeof_unqual__((_arg2)))(_arg2)) %      \
                                                __kefir_builtin_int_precision(__typeof_unqual__((_arg1)))))))
-#define __kefir_builtin_stdc_rotate_left_nonconst(_arg1, _arg2)                               \
-    ({                                                                                        \
-        typedef __typeof_unqual__(_arg1) __arg1_type_t;                                       \
-        typedef __typeof_unqual__(_arg2) __arg2_type_t;                                       \
-        const __arg1_type_t __arg1 = (_arg1);                                                 \
-        const __arg2_type_t __arg2 = (_arg2);                                                 \
-        __kefir_builtin_stdc_rotate_left_base(__arg1, __arg2); \
+#define __kefir_builtin_stdc_rotate_left_nonconst(_arg1, _arg2) \
+    ({                                                          \
+        typedef __typeof_unqual__(_arg1) __arg1_type_t;         \
+        typedef __typeof_unqual__(_arg2) __arg2_type_t;         \
+        const __arg1_type_t __arg1 = (_arg1);                   \
+        const __arg2_type_t __arg2 = (_arg2);                   \
+        __kefir_builtin_stdc_rotate_left_base(__arg1, __arg2);  \
     })
 #define __builtin_stdc_rotate_left(_arg1, _arg2)                                                   \
     (__builtin_choose_expr(__kefir_builtin_constant((_arg1)) && __kefir_builtin_constant((_arg2)), \
-                           __kefir_builtin_stdc_rotate_left_base((_arg1), (_arg2)),               \
+                           __kefir_builtin_stdc_rotate_left_base((_arg1), (_arg2)),                \
                            __kefir_builtin_stdc_rotate_left_nonconst((_arg1), (_arg2))))
 
-#define __kefir_builtin_stdc_rotate_right_base(_arg1, _arg2)                                                          \
+#define __kefir_builtin_stdc_rotate_right_base(_arg1, _arg2)                                                           \
     ((__typeof_unqual__((_arg1)))(((_arg1) >> ((_arg2) % __kefir_builtin_int_precision(__typeof_unqual__((_arg1))))) | \
                                   ((_arg1) << ((-(__kefir_unsigned_override __typeof_unqual__((_arg2)))(_arg2)) %      \
                                                __kefir_builtin_int_precision(__typeof_unqual__((_arg1)))))))
-#define __kefir_builtin_stdc_rotate_right_nonconst(_arg1, _arg2)                              \
-    ({                                                                                        \
-        typedef __typeof_unqual__(_arg1) __arg1_type_t;                                       \
-        typedef __typeof_unqual__(_arg2) __arg2_type_t;                                       \
-        const __arg1_type_t __arg1 = (_arg1);                                                 \
-        const __arg2_type_t __arg2 = (_arg2);                                                 \
-        __kefir_builtin_stdc_rotate_right_base(__arg1, __arg2); \
+#define __kefir_builtin_stdc_rotate_right_nonconst(_arg1, _arg2) \
+    ({                                                           \
+        typedef __typeof_unqual__(_arg1) __arg1_type_t;          \
+        typedef __typeof_unqual__(_arg2) __arg2_type_t;          \
+        const __arg1_type_t __arg1 = (_arg1);                    \
+        const __arg2_type_t __arg2 = (_arg2);                    \
+        __kefir_builtin_stdc_rotate_right_base(__arg1, __arg2);  \
     })
 #define __builtin_stdc_rotate_right(_arg1, _arg2)                                                  \
     (__builtin_choose_expr(__kefir_builtin_constant((_arg1)) && __kefir_builtin_constant((_arg2)), \
-                           __kefir_builtin_stdc_rotate_right_base((_arg1), (_arg2)),              \
+                           __kefir_builtin_stdc_rotate_right_base((_arg1), (_arg2)),               \
                            __kefir_builtin_stdc_rotate_right_nonconst((_arg1), (_arg2))))
 
 #define __builtin_huge_val() __builtin_inf()
@@ -726,5 +726,26 @@ extern int __kefir_builtin_flt_rounds(void);
 #define __builtin_umulll_overflow(_a, _b, _r)                                             \
     (__builtin_mul_overflow((unsigned long long int) (_a), (unsigned long long int) (_b), \
                             (unsigned long long int *) (_r)))
+
+#define __kefir_builtin_overflow_p_impl(_name, _arg1, _arg2, _res, _res_type)      \
+    ({                                                                             \
+        _res_type __res;                                                           \
+        _Bool __overflow = __builtin_##_name##_overflow((_arg1), (_arg2), &__res); \
+        (void) (_res);                                                             \
+        __overflow;                                                                \
+    })
+#define __kefir_builtin_overflow_p_base(_name, _arg1, _arg2, _res)                                     \
+    (__builtin_choose_expr(                                                                            \
+        __kefir_builtin_bitfield_width((_res)) < 0,                                                    \
+        __kefir_builtin_overflow_p_impl(_name, _arg1, _arg2, _res, __typeof_unqual__((_res))),         \
+        __builtin_choose_expr(                                                                         \
+            __kefir_builtin_is_unsigned(__typeof_unqual__((_res))),                                    \
+            __kefir_builtin_overflow_p_impl(_name, _arg1, _arg2, _res,                                 \
+                                            unsigned _BitInt(__kefir_builtin_bitfield_width((_res)))), \
+            __kefir_builtin_overflow_p_impl(_name, _arg1, _arg2, _res,                                 \
+                                            signed _BitInt(__kefir_builtin_bitfield_width((_res)))))))
+#define __builtin_add_overflow_p(_arg1, _arg2, _res) __kefir_builtin_overflow_p_base(add, (_arg1), (_arg2), (_res))
+#define __builtin_sub_overflow_p(_arg1, _arg2, _res) __kefir_builtin_overflow_p_base(sub, (_arg1), (_arg2), (_res))
+#define __builtin_mul_overflow_p(_arg1, _arg2, _res) __kefir_builtin_overflow_p_base(mul, (_arg1), (_arg2), (_res))
 
 #undef __KEFIR_PREDEFINED_AREA__

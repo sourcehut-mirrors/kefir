@@ -19,6 +19,7 @@ __builtin_stdc_bit_width
 __atomic_exchange
 __atomic_fetch_or
 __builtin_uaddll_overflow
+__builtin_sub_overflow_p
 __builtin_uadd_overflow
 __sync_fetch_and_add
 __sync_fetch_and_and
@@ -35,6 +36,7 @@ __builtin_clrsbll
 __builtin_parityg
 __builtin_parityl
 __builtin_va_copy
+__builtin_mul_overflow_p
 __atomic_clear
 __atomic_store
 __builtin_FILE
@@ -59,8 +61,10 @@ __builtin_huge_vall
 __builtin_popcountg
 __builtin_popcountl
 __builtin_saddl_overflow
+__kefir_builtin_is_unsigned
 __builtin_assoc_barrier
 __builtin_alloca_with_align_and_max
+__kefir_builtin_bitfield_width
 __builtin_classify_type
 __sync_nand_and_fetch
 __kefir_builtin_constant
@@ -89,6 +93,7 @@ __sync_or_and_fetch
 __builtin_frame_address
 __atomic_exchange_n
 __atomic_fetch_nand
+__builtin_add_overflow_p
 __builtin_ssubll_overflow
 __builtin_FUNCTION
 __builtin_huge_val

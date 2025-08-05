@@ -160,6 +160,8 @@ static kefir_result_t scan_builtin(struct kefir_mem *mem, struct kefir_parser_as
         case KEFIR_AST_BUILTIN_PARITYG:
         case KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION:
         case KEFIR_AST_BUILTIN_KEFIR_CONSTANT:
+        case KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED:
+        case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH:
         case KEFIR_AST_BUILTIN_NAN_FLOAT64:
         case KEFIR_AST_BUILTIN_NAN_FLOAT32:
         case KEFIR_AST_BUILTIN_NAN_LONG_DOUBLE:

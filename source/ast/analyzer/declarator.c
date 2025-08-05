@@ -48,7 +48,7 @@ const struct kefir_declarator_analyzer_std_attribute_descriptor KEFIR_DECLARATOR
     {"noreturn", KEFIR_C23_STANDARD_VERSION},         {"__noreturn__", KEFIR_C23_STANDARD_VERSION},
     {"_Noreturn", KEFIR_C23_STANDARD_VERSION},        {"reproducible", KEFIR_C23_STANDARD_VERSION},
     {"__reproducible__", KEFIR_C23_STANDARD_VERSION}, {"unsequenced", KEFIR_C23_STANDARD_VERSION},
-    {"__unsequenced__", KEFIR_C23_STANDARD_VERSION},  {NULL}};
+    {"__unsequenced__", KEFIR_C23_STANDARD_VERSION},  {NULL, 0}};
 
 enum signedness { SIGNEDNESS_DEFAULT, SIGNEDNESS_SIGNED, SIGNEDNESS_UNSIGNED };
 
