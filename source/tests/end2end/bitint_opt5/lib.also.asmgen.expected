@@ -22,7 +22,7 @@
 __kefir_text_section_begin:
 get1:
 __kefir_text_func_get1_begin:
-    movabs $4886718217, %rax
+    mov $9, %rax
     ret
 __kefir_text_func_get1_end:
 
@@ -44,7 +44,7 @@ __kefir_text_func_get2_end:
 
 get3:
 __kefir_text_func_get3_begin:
-    movabs $4886718265, %rax
+    mov $57, %rax
     ret
 __kefir_text_func_get3_end:
 
@@ -66,7 +66,7 @@ __kefir_text_func_get4_end:
 
 get5:
 __kefir_text_func_get5_begin:
-    movabs $4886718230, %rax
+    mov $22, %rax
     ret
 __kefir_text_func_get5_end:
 
@@ -88,7 +88,7 @@ __kefir_text_func_get6_end:
 
 get7:
 __kefir_text_func_get7_begin:
-    movabs $4886718260, %rax
+    mov $52, %rax
     ret
 __kefir_text_func_get7_end:
 

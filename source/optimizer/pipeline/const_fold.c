@@ -786,6 +786,7 @@ static kefir_result_t simplify_bitint_cast(struct kefir_mem *mem, const struct k
                           kefir_bigint_cast_unsigned(&bigint, bitint_cast_instr->operation.parameters.src_bitwidth,
                                                      bitint_cast_instr->operation.parameters.bitwidth));
         }
+        REQUIRE_CHAIN(&res, kefir_bigint_resize_nocast(mem, &bigint, bitint_cast_instr->operation.parameters.bitwidth));
     }
 
     if (ready) {

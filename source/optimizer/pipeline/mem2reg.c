@@ -582,6 +582,31 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                     default:
                                         return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected instruction opcode");
                                 }
+                                break;
+
+                            case KEFIR_IR_TYPE_BITINT:
+                                REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
+                                switch (instr->operation.opcode) {
+                                    case KEFIR_OPT_OPCODE_BITINT_LOAD:
+                                        if (instr->operation.parameters.memory_access.flags.load_extension ==
+                                            KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
+                                            REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(
+                                                state->mem, &state->func->code, block_id,
+                                                instr->operation.parameters.bitwidth, local_typeentry->param,
+                                                replacement_ref, &replacement_ref));
+                                        } else if (instr->operation.parameters.memory_access.flags.load_extension ==
+                                                   KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
+                                            REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(
+                                                state->mem, &state->func->code, block_id,
+                                                instr->operation.parameters.bitwidth, local_typeentry->param,
+                                                replacement_ref, &replacement_ref));
+                                        }
+                                        break;
+
+                                    default:
+                                        return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected instruction opcode");
+                                }
+                                break;
 
                             default:
                                 // Intentionally left blank
