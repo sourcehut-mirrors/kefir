@@ -28,7 +28,6 @@ typedef struct kefir_codegen_amd64_module {
     struct kefir_opt_module *module;
     struct kefir_opt_module_liveness *liveness;
     struct kefir_hashtree functions;
-    struct kefir_hashtreeset required_runtime_functions;
 
     struct {
         kefir_bool_t float32_to_uint;
@@ -56,7 +55,5 @@ kefir_result_t kefir_codegen_amd64_module_insert_function(struct kefir_mem *, st
 
 kefir_result_t kefir_codegen_amd64_module_function(const struct kefir_codegen_amd64_module *, const char *,
                                                    struct kefir_codegen_amd64_function **);
-kefir_result_t kefir_codegen_amd64_module_require_runtime(struct kefir_mem *, struct kefir_codegen_amd64_module *,
-                                                          const char *);
 
 #endif

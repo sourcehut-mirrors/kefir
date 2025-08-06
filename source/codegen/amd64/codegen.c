@@ -656,13 +656,13 @@ static kefir_result_t translate_impl(struct kefir_mem *mem, struct kefir_codegen
     }
 
     if (!codegen_module->codegen->config->runtime_function_generator_mode &&
-        !kefir_hashtreeset_empty(&codegen_module->required_runtime_functions)) {
+        !kefir_hashtreeset_empty(&codegen_module->module->runtime_functions)) {
         REQUIRE(codegen_module->codegen->runtime_hooks != NULL &&
                     codegen_module->codegen->runtime_hooks->generate_runtime_functions != NULL,
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to generate required runtime functions"));
         REQUIRE_OK(codegen_module->codegen->runtime_hooks->generate_runtime_functions(
             mem, kefir_asm_amd64_xasmgen_get_output(&codegen_module->codegen->xasmgen),
-            &codegen_module->required_runtime_functions, codegen_module->codegen->runtime_hooks->payload));
+            &codegen_module->module->runtime_functions, codegen_module->codegen->runtime_hooks->payload));
     }
 
     return KEFIR_OK;
@@ -679,7 +679,7 @@ static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *
     REQUIRE_OK(kefir_opt_module_liveness_init(&liveness));
     REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, &liveness));
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, kefir_codegen_amd64_lower_module(mem, &codegen_module, module));
+    REQUIRE_CHAIN(&res, kefir_codegen_amd64_lower_module(mem, module));
     REQUIRE_CHAIN(&res, translate_impl(mem, &codegen_module));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_liveness_free(mem, &liveness);

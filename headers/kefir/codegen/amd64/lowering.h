@@ -24,7 +24,6 @@
 #include "kefir/optimizer/module.h"
 #include "kefir/codegen/amd64/module.h"
 
-kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *, struct kefir_codegen_amd64_module *,
-                                                struct kefir_opt_module *);
+kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *, struct kefir_opt_module *);
 
 #endif

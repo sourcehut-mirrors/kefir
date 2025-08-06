@@ -101,37 +101,36 @@ struct lowering_param {
         }                                                                                                   \
     }
 
-#define DECL_BIGINT_RUNTIME_FN(_id, _name, _params, _returns, _init)                                               \
-    static kefir_result_t get_##_id##_function_decl_id(                                                            \
-        struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module, struct kefir_opt_module *module, \
-        struct lowering_param *param, kefir_id_t *func_decl_id) {                                                  \
-        if (param->runtime_fn._id != KEFIR_ID_NONE) {                                                              \
-            *func_decl_id = param->runtime_fn._id;                                                                 \
-            return KEFIR_OK;                                                                                       \
-        }                                                                                                          \
-                                                                                                                   \
-        kefir_id_t parameters_type_id, returns_type_id;                                                            \
-        struct kefir_ir_type *parameters_type =                                                                    \
-            kefir_ir_module_new_type(mem, module->ir_module, (_params), &parameters_type_id);                      \
-        struct kefir_ir_type *returns_type =                                                                       \
-            kefir_ir_module_new_type(mem, module->ir_module, (_returns), &returns_type_id);                        \
-        REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));   \
-        REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));      \
-        _init                                                                                                      \
-                                                                                                                   \
-            struct kefir_ir_function_decl *func_decl = kefir_ir_module_new_function_declaration(                   \
-                mem, module->ir_module, (_name), parameters_type_id, false, returns_type_id);                      \
-        REQUIRE(func_decl != NULL,                                                                                 \
-                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));            \
-                                                                                                                   \
-        REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,                     \
-                                                      &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));            \
-                                                                                                                   \
-        REQUIRE_OK(kefir_codegen_amd64_module_require_runtime(mem, codegen_module, func_decl->name));              \
-                                                                                                                   \
-        param->runtime_fn._id = func_decl->id;                                                                     \
-        *func_decl_id = func_decl->id;                                                                             \
-        return KEFIR_OK;                                                                                           \
+#define DECL_BIGINT_RUNTIME_FN(_id, _name, _params, _returns, _init)                                             \
+    static kefir_result_t get_##_id##_function_decl_id(struct kefir_mem *mem, struct kefir_opt_module *module,   \
+                                                       struct lowering_param *param, kefir_id_t *func_decl_id) { \
+        if (param->runtime_fn._id != KEFIR_ID_NONE) {                                                            \
+            *func_decl_id = param->runtime_fn._id;                                                               \
+            return KEFIR_OK;                                                                                     \
+        }                                                                                                        \
+                                                                                                                 \
+        kefir_id_t parameters_type_id, returns_type_id;                                                          \
+        struct kefir_ir_type *parameters_type =                                                                  \
+            kefir_ir_module_new_type(mem, module->ir_module, (_params), &parameters_type_id);                    \
+        struct kefir_ir_type *returns_type =                                                                     \
+            kefir_ir_module_new_type(mem, module->ir_module, (_returns), &returns_type_id);                      \
+        REQUIRE(parameters_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type")); \
+        REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));    \
+        _init                                                                                                    \
+                                                                                                                 \
+            struct kefir_ir_function_decl *func_decl = kefir_ir_module_new_function_declaration(                 \
+                mem, module->ir_module, (_name), parameters_type_id, false, returns_type_id);                    \
+        REQUIRE(func_decl != NULL,                                                                               \
+                KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR function declaration"));          \
+                                                                                                                 \
+        REQUIRE_OK(kefir_ir_module_declare_identifier(mem, module->ir_module, func_decl->name,                   \
+                                                      &BIGINT_RUNTIME_FN_IDENTIFIER(func_decl->name)));          \
+                                                                                                                 \
+        REQUIRE_OK(kefir_opt_module_require_runtime_function(mem, module, func_decl->name));                     \
+                                                                                                                 \
+        param->runtime_fn._id = func_decl->id;                                                                   \
+        *func_decl_id = func_decl->id;                                                                           \
+        return KEFIR_OK;                                                                                         \
     }
 
 #define DECL_BUILTIN_RUNTIME_FN(_id, _name, _params, _returns, _init)                                            \
@@ -448,16 +447,10 @@ static kefir_result_t new_bitint_low_level_type(struct kefir_mem *mem, struct ke
     return KEFIR_OK;
 }
 
-static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                        struct kefir_opt_module *module, struct kefir_opt_function *func,
-                                        struct lowering_param *param, const struct kefir_opt_instruction *instr,
+static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                        struct kefir_opt_function *func, struct lowering_param *param,
+                                        const struct kefir_opt_instruction *instr,
                                         kefir_opt_instruction_ref_t *replacement_ref) {
-    UNUSED(mem);
-    UNUSED(module);
-    UNUSED(func);
-    UNUSED(instr);
-    UNUSED(replacement_ref);
-
     const kefir_opt_block_id_t block_id = instr->block_id;
     switch (instr->operation.opcode) {
         case KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST: {
@@ -525,7 +518,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_set_signed_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_set_signed_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_instruction_ref_t call_node_id, call_ref, value_ref, bitwidth_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
@@ -552,7 +545,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_set_unsigned_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_set_unsigned_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_instruction_ref_t call_node_id, call_ref, value_ref, bitwidth_ref;
                 REQUIRE_OK(kefir_opt_code_builder_temporary_object(
@@ -603,13 +596,11 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 if (signed_cast) {
                     REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, block_id, arg_ref, 0,
                                                                           src_bitwidth, &casted_arg_ref));
-                    REQUIRE_OK(
-                        get_bigint_set_signed_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                    REQUIRE_OK(get_bigint_set_signed_function_decl_id(mem, module, param, &func_decl_id));
                 } else {
                     REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, block_id, arg_ref, 0,
                                                                             src_bitwidth, &casted_arg_ref));
-                    REQUIRE_OK(
-                        get_bigint_set_unsigned_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                    REQUIRE_OK(get_bigint_set_unsigned_function_decl_id(mem, module, param, &func_decl_id));
                 }
 
                 kefir_opt_instruction_ref_t call_node_id, call_ref, value_ref, bitwidth_ref;
@@ -628,11 +619,9 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             } else {
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
                 if (signed_cast) {
-                    REQUIRE_OK(
-                        get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                    REQUIRE_OK(get_bigint_cast_signed_function_decl_id(mem, module, param, &func_decl_id));
                 } else {
-                    REQUIRE_OK(
-                        get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                    REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, module, param, &func_decl_id));
                 }
 
                 kefir_id_t bitint_type_id;
@@ -741,33 +730,29 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
                 switch (instr->operation.opcode) {
                     case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_FLOAT:
-                        REQUIRE_OK(get_bigint_signed_to_float_function_decl_id(mem, codegen_module, module, param,
-                                                                               &func_decl_id));
+                        REQUIRE_OK(get_bigint_signed_to_float_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_FLOAT:
-                        REQUIRE_OK(get_bigint_unsigned_to_float_function_decl_id(mem, codegen_module, module, param,
-                                                                                 &func_decl_id));
+                        REQUIRE_OK(get_bigint_unsigned_to_float_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_DOUBLE:
-                        REQUIRE_OK(get_bigint_signed_to_double_function_decl_id(mem, codegen_module, module, param,
-                                                                                &func_decl_id));
+                        REQUIRE_OK(get_bigint_signed_to_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_DOUBLE:
-                        REQUIRE_OK(get_bigint_unsigned_to_double_function_decl_id(mem, codegen_module, module, param,
-                                                                                  &func_decl_id));
+                        REQUIRE_OK(get_bigint_unsigned_to_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_SIGNED_TO_LONG_DOUBLE:
-                        REQUIRE_OK(get_bigint_signed_to_long_double_function_decl_id(mem, codegen_module, module, param,
-                                                                                     &func_decl_id));
+                        REQUIRE_OK(
+                            get_bigint_signed_to_long_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_TO_LONG_DOUBLE:
-                        REQUIRE_OK(get_bigint_unsigned_to_long_double_function_decl_id(mem, codegen_module, module,
-                                                                                       param, &func_decl_id));
+                        REQUIRE_OK(
+                            get_bigint_unsigned_to_long_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     default:
@@ -839,33 +824,29 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
                 switch (instr->operation.opcode) {
                     case KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_SIGNED:
-                        REQUIRE_OK(get_bigint_signed_from_float_function_decl_id(mem, codegen_module, module, param,
-                                                                                 &func_decl_id));
+                        REQUIRE_OK(get_bigint_signed_from_float_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_FLOAT_TO_BITINT_UNSIGNED:
-                        REQUIRE_OK(get_bigint_unsigned_from_float_function_decl_id(mem, codegen_module, module, param,
-                                                                                   &func_decl_id));
+                        REQUIRE_OK(get_bigint_unsigned_from_float_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_SIGNED:
-                        REQUIRE_OK(get_bigint_signed_from_double_function_decl_id(mem, codegen_module, module, param,
-                                                                                  &func_decl_id));
+                        REQUIRE_OK(get_bigint_signed_from_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_DOUBLE_TO_BITINT_UNSIGNED:
-                        REQUIRE_OK(get_bigint_unsigned_from_double_function_decl_id(mem, codegen_module, module, param,
-                                                                                    &func_decl_id));
+                        REQUIRE_OK(get_bigint_unsigned_from_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_SIGNED:
-                        REQUIRE_OK(get_bigint_signed_from_long_double_function_decl_id(mem, codegen_module, module,
-                                                                                       param, &func_decl_id));
+                        REQUIRE_OK(
+                            get_bigint_signed_from_long_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     case KEFIR_OPT_OPCODE_LONG_DOUBLE_TO_BITINT_UNSIGNED:
-                        REQUIRE_OK(get_bigint_unsigned_from_long_double_function_decl_id(mem, codegen_module, module,
-                                                                                         param, &func_decl_id));
+                        REQUIRE_OK(
+                            get_bigint_unsigned_from_long_double_function_decl_id(mem, module, param, &func_decl_id));
                         break;
 
                     default:
@@ -909,7 +890,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                     kefir_opt_code_builder_int64_to_bool(mem, &func->code, block_id, value_ref, replacement_ref));
             } else {
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_is_zero_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_is_zero_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t call_ref, bitwidth_ref;
@@ -1460,7 +1441,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_negate_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_negate_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, KEFIR_ID_NONE,
@@ -1504,7 +1485,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_invert_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_invert_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, KEFIR_ID_NONE,
@@ -1544,7 +1525,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_is_zero_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_is_zero_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 REQUIRE_OK(kefir_opt_code_container_new_call(mem, &func->code, block_id, func_decl_id, 2, KEFIR_ID_NONE,
@@ -1578,7 +1559,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;                                      \
                                                                                                                        \
             kefir_id_t func_decl_id = KEFIR_ID_NONE;                                                                   \
-            REQUIRE_OK(_fn(mem, codegen_module, module, param, &func_decl_id));                                        \
+            REQUIRE_OK(_fn(mem, module, param, &func_decl_id));                                                        \
                                                                                                                        \
             kefir_id_t bitint_type_id;                                                                                 \
             REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));                                 \
@@ -1655,8 +1636,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_unsigned_multiply_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_unsigned_multiply_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -1711,8 +1691,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_signed_multiply_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_signed_multiply_function_decl_id(mem, module, param, &func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -1779,10 +1758,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t lhs_qwords = (2 * bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t copy_func_decl_id = KEFIR_ID_NONE, func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_unsigned_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
-                REQUIRE_OK(
-                    get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                REQUIRE_OK(get_bigint_unsigned_divide_function_decl_id(mem, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -1869,10 +1846,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t rhs_qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t copy_func_decl_id = KEFIR_ID_NONE, func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_signed_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
-                REQUIRE_OK(
-                    get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                REQUIRE_OK(get_bigint_signed_divide_function_decl_id(mem, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_cast_signed_function_decl_id(mem, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -1966,10 +1941,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t lhs_qwords = (2 * bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t copy_func_decl_id = KEFIR_ID_NONE, func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_unsigned_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
-                REQUIRE_OK(
-                    get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                REQUIRE_OK(get_bigint_unsigned_divide_function_decl_id(mem, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -2056,10 +2029,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t rhs_qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t copy_func_decl_id = KEFIR_ID_NONE, func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_signed_divide_function_decl_id(mem, codegen_module, module, param, &func_decl_id));
-                REQUIRE_OK(
-                    get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param, &copy_func_decl_id));
+                REQUIRE_OK(get_bigint_signed_divide_function_decl_id(mem, module, param, &func_decl_id));
+                REQUIRE_OK(get_bigint_cast_signed_function_decl_id(mem, module, param, &copy_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));
@@ -2166,7 +2137,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;                                      \
                                                                                                                        \
             kefir_id_t func_decl_id = KEFIR_ID_NONE;                                                                   \
-            REQUIRE_OK(_fn(mem, codegen_module, module, param, &func_decl_id));                                        \
+            REQUIRE_OK(_fn(mem, module, param, &func_decl_id));                                                        \
                                                                                                                        \
             kefir_id_t bitint_type_id;                                                                                 \
             REQUIRE_OK(new_bitint_type(mem, module, bitwidth, NULL, &bitint_type_id));                                 \
@@ -2242,7 +2213,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             }                                                                                                          \
         } else {                                                                                                       \
             kefir_id_t func_decl_id;                                                                                   \
-            REQUIRE_OK(_fn(mem, codegen_module, module, param, &func_decl_id));                                        \
+            REQUIRE_OK(_fn(mem, module, param, &func_decl_id));                                                        \
                                                                                                                        \
             kefir_opt_instruction_ref_t bitwidth_ref, call_ref, expected_ref;                                          \
             REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, bitwidth, &bitwidth_ref));     \
@@ -2308,13 +2279,11 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 const kefir_size_t qwords = (bitwidth + QWORD_BITS - 1) / QWORD_BITS;
 
                 kefir_id_t shr_func_decl_id = KEFIR_ID_NONE, cast_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_rshift_function_decl_id(mem, codegen_module, module, param, &shr_func_decl_id));
+                REQUIRE_OK(get_bigint_rshift_function_decl_id(mem, module, param, &shr_func_decl_id));
                 if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED) {
-                    REQUIRE_OK(get_bigint_cast_signed_function_decl_id(mem, codegen_module, module, param,
-                                                                       &cast_func_decl_id));
+                    REQUIRE_OK(get_bigint_cast_signed_function_decl_id(mem, module, param, &cast_func_decl_id));
                 } else {
-                    REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param,
-                                                                         &cast_func_decl_id));
+                    REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, module, param, &cast_func_decl_id));
                 }
 
                 kefir_id_t bitint_type_id;
@@ -2385,11 +2354,10 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
 
                 kefir_id_t shl_func_decl_id = KEFIR_ID_NONE, cast_func_decl_id = KEFIR_ID_NONE,
                            or_func_decl_id = KEFIR_ID_NONE, and_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_lshift_function_decl_id(mem, codegen_module, module, param, &shl_func_decl_id));
-                REQUIRE_OK(
-                    get_bigint_cast_unsigned_function_decl_id(mem, codegen_module, module, param, &cast_func_decl_id));
-                REQUIRE_OK(get_bigint_or_function_decl_id(mem, codegen_module, module, param, &or_func_decl_id));
-                REQUIRE_OK(get_bigint_and_function_decl_id(mem, codegen_module, module, param, &and_func_decl_id));
+                REQUIRE_OK(get_bigint_lshift_function_decl_id(mem, module, param, &shl_func_decl_id));
+                REQUIRE_OK(get_bigint_cast_unsigned_function_decl_id(mem, module, param, &cast_func_decl_id));
+                REQUIRE_OK(get_bigint_or_function_decl_id(mem, module, param, &or_func_decl_id));
+                REQUIRE_OK(get_bigint_and_function_decl_id(mem, module, param, &and_func_decl_id));
 
                 kefir_id_t bitint_type_id;
                 REQUIRE_OK(new_bitint_type(mem, module, length, NULL, &bitint_type_id));
@@ -2526,7 +2494,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
             } else {
                 kefir_id_t least_significant_nonzero_func_decl_id = KEFIR_ID_NONE;
                 REQUIRE_OK(get_bigint_least_significant_nonzero_function_decl_id(
-                    mem, codegen_module, module, param, &least_significant_nonzero_func_decl_id));
+                    mem, module, param, &least_significant_nonzero_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t bitwidth_ref;
@@ -2586,8 +2554,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 }
             } else {
                 kefir_id_t leading_zeros_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_leading_zeros_function_decl_id(mem, codegen_module, module, param,
-                                                                     &leading_zeros_func_decl_id));
+                REQUIRE_OK(get_bigint_leading_zeros_function_decl_id(mem, module, param, &leading_zeros_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t bitwidth_ref, zero_ref;
@@ -2632,8 +2599,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, extract_ref));
             } else {
                 kefir_id_t trailing_zeros_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_trailing_zeros_function_decl_id(mem, codegen_module, module, param,
-                                                                      &trailing_zeros_func_decl_id));
+                REQUIRE_OK(
+                    get_bigint_trailing_zeros_function_decl_id(mem, module, param, &trailing_zeros_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t bitwidth_ref, zero_ref;
@@ -2694,7 +2661,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 }
             } else {
                 kefir_id_t redundant_sign_bits_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_redundant_sign_bits_function_decl_id(mem, codegen_module, module, param,
+                REQUIRE_OK(get_bigint_redundant_sign_bits_function_decl_id(mem, module, param,
                                                                            &redundant_sign_bits_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
@@ -2739,8 +2706,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, extract_ref));
             } else {
                 kefir_id_t nonzero_count_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(get_bigint_nonzero_count_function_decl_id(mem, codegen_module, module, param,
-                                                                     &nonzero_count_func_decl_id));
+                REQUIRE_OK(get_bigint_nonzero_count_function_decl_id(mem, module, param, &nonzero_count_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t bitwidth_ref;
@@ -2783,8 +2749,7 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
                 REQUIRE_OK(kefir_opt_code_container_call_set_argument(mem, &func->code, call_node_id, 0, extract_ref));
             } else {
                 kefir_id_t parity_func_decl_id = KEFIR_ID_NONE;
-                REQUIRE_OK(
-                    get_bigint_parity_function_decl_id(mem, codegen_module, module, param, &parity_func_decl_id));
+                REQUIRE_OK(get_bigint_parity_function_decl_id(mem, module, param, &parity_func_decl_id));
 
                 kefir_opt_call_id_t call_node_id;
                 kefir_opt_instruction_ref_t bitwidth_ref;
@@ -2804,11 +2769,8 @@ static kefir_result_t lower_instruction(struct kefir_mem *mem, struct kefir_code
     return KEFIR_OK;
 }
 
-static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_codegen_amd64_module *codegen_module,
-                                     struct kefir_opt_module *module, struct kefir_opt_function *func,
-                                     struct lowering_param *param) {
-    UNUSED(module);
-
+static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                     struct kefir_opt_function *func, struct lowering_param *param) {
     struct kefir_opt_code_container_iterator iter;
     for (struct kefir_opt_code_block *block = kefir_opt_code_container_iter(&func->code, &iter); block != NULL;
          block = kefir_opt_code_container_next(&iter)) {
@@ -2821,7 +2783,7 @@ static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_codegen
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
 
             kefir_opt_instruction_ref_t replacement_ref = KEFIR_ID_NONE;
-            REQUIRE_OK(lower_instruction(mem, codegen_module, module, func, param, instr, &replacement_ref));
+            REQUIRE_OK(lower_instruction(mem, module, func, param, instr, &replacement_ref));
 
             if (replacement_ref != KEFIR_ID_NONE) {
                 REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_id, &instr));
@@ -2852,12 +2814,8 @@ static kefir_result_t lower_function(struct kefir_mem *mem, struct kefir_codegen
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
-                                                struct kefir_codegen_amd64_module *codegen_module,
-                                                struct kefir_opt_module *module) {
+kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem, struct kefir_opt_module *module) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid memory allocator"));
-    REQUIRE(codegen_module != NULL,
-            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid amd64 code generator module"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expectd valid optimizer module"));
 
     struct lowering_param param = {.runtime_fn = {.bigint_set_signed = KEFIR_ID_NONE,
@@ -2917,7 +2875,7 @@ kefir_result_t kefir_codegen_amd64_lower_module(struct kefir_mem *mem,
 
         struct kefir_opt_function *func;
         REQUIRE_OK(kefir_opt_module_get_function(module, ir_func->declaration->id, &func));
-        REQUIRE_OK(lower_function(mem, codegen_module, module, func, &param));
+        REQUIRE_OK(lower_function(mem, module, func, &param));
     }
     return KEFIR_OK;
 }

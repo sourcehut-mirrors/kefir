@@ -110,6 +110,8 @@ kefir_result_t kefir_opt_module_init(struct kefir_mem *mem, struct kefir_ir_modu
     REQUIRE_OK(kefir_hashtree_init(&module->functions, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&module->functions, free_function, NULL));
 
+    REQUIRE_OK(kefir_hashtreeset_init(&module->runtime_functions, &kefir_hashtree_str_ops));
+
     module->ir_module = ir_module;
     return KEFIR_OK;
 }
@@ -141,6 +143,7 @@ kefir_result_t kefir_opt_module_free(struct kefir_mem *mem, struct kefir_opt_mod
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer module"));
 
+    REQUIRE_OK(kefir_hashtreeset_free(mem, &module->runtime_functions));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->type_descriptors));
     REQUIRE_OK(kefir_hashtree_free(mem, &module->functions));
 
@@ -179,5 +182,18 @@ kefir_result_t kefir_opt_module_get_function(const struct kefir_opt_module *modu
     REQUIRE_OK(res);
 
     *function_ptr = (struct kefir_opt_function *) node->value;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_module_require_runtime_function(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                                         const char *function_name) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(function_name != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid runtime funciton name"));
+
+    function_name = kefir_string_pool_insert(mem, &module->ir_module->symbols, function_name, NULL);
+    REQUIRE(function_name != NULL,
+            KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert runtime function name into string pool"));
+    REQUIRE_OK(kefir_hashtreeset_add(mem, &module->runtime_functions, (kefir_hashtreeset_entry_t) function_name));
     return KEFIR_OK;
 }
