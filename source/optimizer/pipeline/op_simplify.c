@@ -3158,6 +3158,18 @@ static kefir_result_t simplify_copy_memory(struct kefir_mem *mem, const struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_bitint_cast(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                           const struct kefir_opt_instruction *instr,
+                                           kefir_opt_instruction_ref_t *replacement_ref) {
+    UNUSED(mem);
+    UNUSED(func);
+    UNUSED(instr);
+    if (instr->operation.parameters.bitwidth == instr->operation.parameters.src_bitwidth) {
+        *replacement_ref = instr->operation.parameters.refs[0];
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
                                              struct kefir_opt_function *func,
                                              struct kefir_opt_code_structure *structure) {
@@ -3315,6 +3327,11 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
 
                     case KEFIR_OPT_OPCODE_COPY_MEMORY:
                         REQUIRE_OK(simplify_copy_memory(mem, module, func, structure, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED:
+                    case KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED:
+                        REQUIRE_OK(simplify_bitint_cast(mem, func, instr, &replacement_ref));
                         break;
 
                     default:

@@ -588,13 +588,13 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                 REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_id, &instr));
                                 switch (instr->operation.opcode) {
                                     case KEFIR_OPT_OPCODE_BITINT_LOAD:
-                                        if (instr->operation.parameters.memory_access.flags.load_extension ==
+                                        if (instr->operation.parameters.bitint_memflags.load_extension ==
                                             KEFIR_OPT_MEMORY_LOAD_SIGN_EXTEND) {
                                             REQUIRE_OK(kefir_opt_code_builder_bitint_cast_signed(
                                                 state->mem, &state->func->code, block_id,
                                                 instr->operation.parameters.bitwidth, local_typeentry->param,
                                                 replacement_ref, &replacement_ref));
-                                        } else if (instr->operation.parameters.memory_access.flags.load_extension ==
+                                        } else if (instr->operation.parameters.bitint_memflags.load_extension ==
                                                    KEFIR_OPT_MEMORY_LOAD_ZERO_EXTEND) {
                                             REQUIRE_OK(kefir_opt_code_builder_bitint_cast_unsigned(
                                                 state->mem, &state->func->code, block_id,
