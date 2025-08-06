@@ -14,56 +14,50 @@ add1:
 __kefir_text_func_add1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %r9
     mov %rsi, %rax
     mov %rdi, %rcx
     shl $46, %rcx
     sar $46, %rcx
-    movq %r9, -40(%rbp)
-    movq %rax, -32(%rbp)
-    leaq -64(%rbp), %rdx
+    movq %r9, -32(%rbp)
+    movq %rax, -24(%rbp)
+    leaq -48(%rbp), %rdx
     mov %rdx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -40(%rbp), %r9
-    movq -32(%rbp), %rax
-    movq -64(%rbp), %rcx
-    movq %rcx, -40(%rbp)
-    movq -56(%rbp), %rcx
-    movq %rcx, -32(%rbp)
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
+    movq -32(%rbp), %r9
+    movq -24(%rbp), %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     shl $33, %rax
     sar $33, %rax
     movq %r9, -16(%rbp)
-    leaq -64(%rbp), %rcx
+    leaq -48(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -16(%rbp), %r9
     movq %r9, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_add
     movq -16(%rbp), %r9
-    movl $0, -64(%rbp)
-    movl $0, -60(%rbp)
-    movl $0, -56(%rbp)
-    movl $0, -52(%rbp)
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
     movq %r9, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r9
     xor %ecx, %ecx
@@ -71,11 +65,11 @@ __kefir_text_func_add1_begin:
     sete %cl
     test %cl, %cl
     jz _kefir_func_add1_label2
-    mov $129, %r8
+    mov $66, %r8
 _kefir_func_add1_label1:
-    movq -40(%rbp), %rcx
+    movq -32(%rbp), %rcx
     movq %rcx, (%r9)
-    mov $129, %rcx
+    mov $66, %rcx
     sub %r8, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -84,15 +78,15 @@ _kefir_func_add1_label1:
     pop %rbp
     ret
 _kefir_func_add1_label2:
-    movq %r9, -64(%rbp)
-    movq %r8, -56(%rbp)
-    leaq -40(%rbp), %rax
+    movq %r9, -48(%rbp)
+    movq %r8, -40(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -64(%rbp), %r9
-    movq -56(%rbp), %r8
+    movq -48(%rbp), %r9
+    movq -40(%rbp), %r8
     mov %rax, %r8
     jmp _kefir_func_add1_label1
 __kefir_text_func_add1_end:
@@ -101,56 +95,50 @@ add2:
 __kefir_text_func_add2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %r9
     mov %rsi, %rax
     mov %rdi, %rcx
     shl $14, %rcx
     sar $14, %rcx
-    movq %r9, -40(%rbp)
-    movq %rax, -32(%rbp)
-    leaq -64(%rbp), %rdx
+    movq %r9, -32(%rbp)
+    movq %rax, -24(%rbp)
+    leaq -48(%rbp), %rdx
     mov %rdx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -40(%rbp), %r9
-    movq -32(%rbp), %rax
-    movq -64(%rbp), %rcx
-    movq %rcx, -40(%rbp)
-    movq -56(%rbp), %rcx
-    movq %rcx, -32(%rbp)
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
+    movq -32(%rbp), %r9
+    movq -24(%rbp), %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     shl $3, %rax
     sar $3, %rax
     movq %r9, -16(%rbp)
-    leaq -64(%rbp), %rcx
+    leaq -48(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -16(%rbp), %r9
     movq %r9, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_add
     movq -16(%rbp), %r9
-    movl $0, -64(%rbp)
-    movl $0, -60(%rbp)
-    movl $0, -56(%rbp)
-    movl $0, -52(%rbp)
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
+    movl $0, -40(%rbp)
+    movl $0, -36(%rbp)
     movq %r9, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r9
     xor %ecx, %ecx
@@ -158,11 +146,11 @@ __kefir_text_func_add2_begin:
     sete %cl
     test %cl, %cl
     jz _kefir_func_add2_label2
-    mov $129, %r8
+    mov $66, %r8
 _kefir_func_add2_label1:
-    movq -40(%rbp), %rcx
+    movq -32(%rbp), %rcx
     movq %rcx, (%r9)
-    mov $129, %rcx
+    mov $66, %rcx
     sub %r8, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -171,15 +159,15 @@ _kefir_func_add2_label1:
     pop %rbp
     ret
 _kefir_func_add2_label2:
-    movq %r9, -64(%rbp)
-    movq %r8, -56(%rbp)
-    leaq -40(%rbp), %rax
+    movq %r9, -48(%rbp)
+    movq %r8, -40(%rbp)
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -64(%rbp), %r9
-    movq -56(%rbp), %r8
+    movq -48(%rbp), %r9
+    movq -40(%rbp), %r8
     mov %rax, %r8
     jmp _kefir_func_add2_label1
 __kefir_text_func_add2_end:
@@ -188,55 +176,49 @@ add3:
 __kefir_text_func_add3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     movq %rdx, -48(%rbp)
     movq %rcx, -40(%rbp)
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movq %r8, -72(%rbp)
-    leaq -96(%rbp), %rax
+    movdqu %xmm0, -80(%rbp)
+    movq %r8, -64(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $70, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_cast_signed
-    movq -72(%rbp), %r8
-    movq -96(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -56(%rbp)
+    movq -64(%rbp), %r8
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movq %r8, -16(%rbp)
-    leaq -96(%rbp), %rax
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $80, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_cast_signed
     movq -16(%rbp), %r8
     movq %r8, -16(%rbp)
-    leaq -72(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_add
     movq -16(%rbp), %r8
-    movl $0, -96(%rbp)
-    movl $0, -92(%rbp)
-    movl $0, -88(%rbp)
-    movl $0, -84(%rbp)
     movl $0, -80(%rbp)
     movl $0, -76(%rbp)
+    movl $0, -72(%rbp)
+    movl $0, -68(%rbp)
     movq %r8, -16(%rbp)
-    leaq -72(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r8
     xor %ecx, %ecx
@@ -244,11 +226,11 @@ __kefir_text_func_add3_begin:
     sete %cl
     test %cl, %cl
     jz _kefir_func_add3_label2
-    mov $161, %r9
+    mov $82, %r9
 _kefir_func_add3_label1:
-    movq -72(%rbp), %rcx
+    movq -64(%rbp), %rcx
     movq %rcx, (%r8)
-    mov $161, %rcx
+    mov $82, %rcx
     sub %r9, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -257,15 +239,15 @@ _kefir_func_add3_label1:
     pop %rbp
     ret
 _kefir_func_add3_label2:
-    movq %r8, -96(%rbp)
-    movq %r9, -88(%rbp)
-    leaq -72(%rbp), %rax
+    movq %r8, -80(%rbp)
+    movq %r9, -72(%rbp)
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    mov $161, %rsi
+    mov $82, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %r9
+    movq -80(%rbp), %r8
+    movq -72(%rbp), %r9
     mov %rax, %r9
     jmp _kefir_func_add3_label1
 __kefir_text_func_add3_end:

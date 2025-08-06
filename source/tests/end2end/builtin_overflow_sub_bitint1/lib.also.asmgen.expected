@@ -14,51 +14,47 @@ sub1:
 __kefir_text_func_sub1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %r8
     mov %rsi, %rax
     mov %rdi, %rcx
     shl $46, %rcx
     sar $46, %rcx
-    movq %r8, -40(%rbp)
-    movq %rax, -32(%rbp)
-    leaq -64(%rbp), %rdx
+    movq %r8, -32(%rbp)
+    movq %rax, -24(%rbp)
+    leaq -48(%rbp), %rdx
     mov %rdx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -40(%rbp), %r8
-    movq -32(%rbp), %rax
-    movq -64(%rbp), %rcx
-    movq %rcx, -40(%rbp)
-    movq -56(%rbp), %rcx
-    movq %rcx, -32(%rbp)
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
+    movq -32(%rbp), %r8
+    movq -24(%rbp), %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     shl $33, %rax
     sar $33, %rax
     movq %r8, -16(%rbp)
-    leaq -64(%rbp), %rcx
+    leaq -48(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -16(%rbp), %r8
     movq %r8, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_subtract
     movq -16(%rbp), %r8
-    movq -40(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, (%r8)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_redundant_sign_bits
-    mov $129, %rcx
+    mov $66, %rcx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -72,51 +68,47 @@ sub2:
 __kefir_text_func_sub2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $64, %rsp
+    sub $48, %rsp
     mov %rdx, %r8
     mov %rsi, %rax
     mov %rdi, %rcx
     shl $14, %rcx
     sar $14, %rcx
-    movq %r8, -40(%rbp)
-    movq %rax, -32(%rbp)
-    leaq -64(%rbp), %rdx
+    movq %r8, -32(%rbp)
+    movq %rax, -24(%rbp)
+    leaq -48(%rbp), %rdx
     mov %rdx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -40(%rbp), %r8
-    movq -32(%rbp), %rax
-    movq -64(%rbp), %rcx
-    movq %rcx, -40(%rbp)
-    movq -56(%rbp), %rcx
-    movq %rcx, -32(%rbp)
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
+    movq -32(%rbp), %r8
+    movq -24(%rbp), %rax
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, -32(%rbp)
     shl $3, %rax
     sar $3, %rax
     movq %r8, -16(%rbp)
-    leaq -64(%rbp), %rcx
+    leaq -48(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     mov %rax, %rdx
     call __kefir_bigint_set_signed_integer
     movq -16(%rbp), %r8
     movq %r8, -16(%rbp)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    leaq -64(%rbp), %rax
+    leaq -48(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_subtract
     movq -16(%rbp), %r8
-    movq -40(%rbp), %rax
+    movq -32(%rbp), %rax
     movq %rax, (%r8)
-    leaq -40(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_redundant_sign_bits
-    mov $129, %rcx
+    mov $66, %rcx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx
@@ -130,50 +122,46 @@ sub3:
 __kefir_text_func_sub3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
     movq %rdx, -48(%rbp)
     movq %rcx, -40(%rbp)
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movq %r8, -72(%rbp)
-    leaq -96(%rbp), %rax
+    movdqu %xmm0, -80(%rbp)
+    movq %r8, -64(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $70, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_cast_signed
-    movq -72(%rbp), %r8
-    movq -96(%rbp), %rax
-    movq %rax, -72(%rbp)
-    movq -88(%rbp), %rax
-    movq %rax, -64(%rbp)
-    movq -80(%rbp), %rax
-    movq %rax, -56(%rbp)
+    movq -64(%rbp), %r8
+    movdqu -80(%rbp), %xmm0
+    movdqu %xmm0, -64(%rbp)
     movdqu -48(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
+    movdqu %xmm0, -80(%rbp)
     movq %r8, -16(%rbp)
-    leaq -96(%rbp), %rax
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $80, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_cast_signed
     movq -16(%rbp), %r8
     movq %r8, -16(%rbp)
-    leaq -72(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    leaq -96(%rbp), %rax
+    leaq -80(%rbp), %rax
     mov %rax, %rsi
-    mov $161, %rdx
+    mov $82, %rdx
     call __kefir_bigint_subtract
     movq -16(%rbp), %r8
-    movq -72(%rbp), %rax
+    movq -64(%rbp), %rax
     movq %rax, (%r8)
-    leaq -72(%rbp), %rax
+    leaq -64(%rbp), %rax
     mov %rax, %rdi
-    mov $161, %rsi
+    mov $82, %rsi
     call __kefir_bigint_redundant_sign_bits
-    mov $161, %rcx
+    mov $82, %rcx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $64, %rcx

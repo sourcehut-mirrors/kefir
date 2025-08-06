@@ -319,8 +319,23 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow builtin result type");
                 }
 
-                const struct kefir_ast_type *computation_type = kefir_ast_type_signed_bitprecise(
-                    mem, context->ast_context->type_bundle, MAX(common_type->bitprecise.width, result_width) * 2 + 1);
+                kefir_size_t computation_type_width;
+                switch (node->builtin) {
+                    case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
+                    case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
+                        computation_type_width = MAX(common_type->bitprecise.width, result_width) + 2;
+                        break;
+
+                    case KEFIR_AST_BUILTIN_MUL_OVERFLOW:
+                        computation_type_width = MAX(common_type->bitprecise.width, result_width) * 2 + 1;
+                        break;
+
+                    default:
+                        return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected overflow builtin");
+                }
+
+                const struct kefir_ast_type *computation_type =
+                    kefir_ast_type_signed_bitprecise(mem, context->ast_context->type_bundle, computation_type_width);
                 REQUIRE(computation_type != NULL,
                         KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE,
                                         "Failed to allocate type for bit-precise overflow builtin computation"));

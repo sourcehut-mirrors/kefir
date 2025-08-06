@@ -64,37 +64,33 @@ test3:
 __kefir_text_func_test3_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     mov %rsi, %rax
     movsx %edi, %rdx
-    movq %rax, -24(%rbp)
-    leaq -48(%rbp), %rcx
+    movq %rax, -16(%rbp)
+    leaq -32(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -24(%rbp), %rax
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
-    movq -40(%rbp), %rcx
-    movq %rcx, -16(%rbp)
-    movq -32(%rbp), %rcx
-    movq %rcx, -8(%rbp)
+    movq -16(%rbp), %rax
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
     movsx %eax, %rdx
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    leaq -24(%rbp), %rax
+    leaq -16(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_add
-    leaq -24(%rbp), %rax
+    leaq -16(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_redundant_sign_bits
-    mov $129, %rcx
+    mov $66, %rcx
     sub %rax, %rcx
     xor %eax, %eax
     cmp $7, %rcx
@@ -108,52 +104,46 @@ test4:
 __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
     mov %rsi, %rax
     movsx %edi, %rdx
-    movq %rax, -24(%rbp)
-    leaq -48(%rbp), %rcx
+    movq %rax, -16(%rbp)
+    leaq -32(%rbp), %rcx
     mov %rcx, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -24(%rbp), %rax
-    movq -48(%rbp), %rcx
-    movq %rcx, -24(%rbp)
-    movq -40(%rbp), %rcx
-    movq %rcx, -16(%rbp)
-    movq -32(%rbp), %rcx
-    movq %rcx, -8(%rbp)
+    movq -16(%rbp), %rax
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
     movsx %eax, %rdx
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     call __kefir_bigint_set_signed_integer
-    leaq -24(%rbp), %rax
+    leaq -16(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_add
-    movl $0, -48(%rbp)
-    movl $0, -44(%rbp)
-    movl $0, -40(%rbp)
-    movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    leaq -24(%rbp), %rax
+    movl $0, -24(%rbp)
+    movl $0, -20(%rbp)
+    leaq -16(%rbp), %rax
     mov %rax, %rdi
-    leaq -48(%rbp), %rax
+    leaq -32(%rbp), %rax
     mov %rax, %rsi
-    mov $129, %rdx
+    mov $66, %rdx
     call __kefir_bigint_unsigned_compare
     xor %ecx, %ecx
     cmp $0, %al
     sete %cl
     test %cl, %cl
     jz _kefir_func_test4_label2
-    mov $129, %rcx
+    mov $66, %rcx
 _kefir_func_test4_label1:
-    mov $129, %rdx
+    mov $66, %rdx
     sub %rcx, %rdx
     xor %eax, %eax
     cmp $7, %rdx
@@ -162,13 +152,13 @@ _kefir_func_test4_label1:
     pop %rbp
     ret
 _kefir_func_test4_label2:
-    movq %rcx, -48(%rbp)
-    leaq -24(%rbp), %rax
+    movq %rcx, -32(%rbp)
+    leaq -16(%rbp), %rax
     mov %rax, %rdi
-    mov $129, %rsi
+    mov $66, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    movq -48(%rbp), %rcx
+    movq -32(%rbp), %rcx
     mov %rax, %rcx
     jmp _kefir_func_test4_label1
 __kefir_text_func_test4_end:
