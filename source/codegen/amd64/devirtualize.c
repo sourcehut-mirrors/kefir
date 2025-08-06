@@ -1188,17 +1188,26 @@ static kefir_result_t devirtualize_inline_asm(struct kefir_mem *mem, struct devi
 
 static kefir_result_t copy_spill_area(struct kefir_mem *mem, struct devirtualize_state *state, kefir_size_t instr_idx,
                                       kefir_size_t from, kefir_size_t to, kefir_size_t length) {
+    REQUIRE(from != to, KEFIR_OK);
+    kefir_bool_t forward_direction = true;
+    if (to >= from && to < from + length) {
+        forward_direction = false;
+    }
+
     kefir_asm_amd64_xasmgen_register_t tmp_reg;
     REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
     for (kefir_size_t i = 0; i < length; i++) {
+        const kefir_size_t index = forward_direction
+            ? i
+            : length - i - 1;
         kefir_size_t new_position;
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
             &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(from + i, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), &new_position));
+            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(from + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT), &new_position));
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
-            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(to + i, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
+            &KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(to + index, 0, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
             &KEFIR_ASMCMP_MAKE_PHREG(tmp_reg), NULL));
         REQUIRE_OK(kefir_asmcmp_context_move_labels(mem, &state->target->context, new_position, instr_idx));
     }
