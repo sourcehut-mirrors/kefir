@@ -679,7 +679,6 @@ static kefir_result_t translate_fn(struct kefir_mem *mem, struct kefir_codegen *
     REQUIRE_OK(kefir_opt_module_liveness_init(&liveness));
     REQUIRE_OK(kefir_codegen_amd64_module_init(&codegen_module, codegen, module, &liveness));
     kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(&res, kefir_codegen_amd64_lower_module(mem, module));
     REQUIRE_CHAIN(&res, translate_impl(mem, &codegen_module));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_opt_module_liveness_free(mem, &liveness);

@@ -209,7 +209,9 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         if (prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
             prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
             REQUIRE(prev_tail_instr_ref == tail_instr->operation.parameters.refs[0] ||
-                (tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE && kefir_ir_type_length(func->ir_func->declaration->result) == 0), KEFIR_OK);
+                        (tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE &&
+                         kefir_ir_type_length(func->ir_func->declaration->result) == 0),
+                    KEFIR_OK);
             call_instr_ref = prev_tail_instr_ref;
             call_instr = prev_tail_instr;
         } else {
@@ -224,7 +226,8 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         REQUIRE(sole_use_ref == tail_instr_ref, KEFIR_OK);
     } else {
         struct kefir_opt_instruction_use_iterator use_iter;
-        kefir_result_t res = kefir_opt_code_container_instruction_use_instr_iter(&func->code, call_instr_ref, &use_iter);
+        kefir_result_t res =
+            kefir_opt_code_container_instruction_use_instr_iter(&func->code, call_instr_ref, &use_iter);
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
@@ -279,7 +282,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
     return KEFIR_OK;
 }
 
-static kefir_result_t tail_call_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
+static kefir_result_t tail_call_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
                                       struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
                                       const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);

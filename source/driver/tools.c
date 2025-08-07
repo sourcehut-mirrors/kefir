@@ -165,6 +165,10 @@ static kefir_result_t output_compiler_config(FILE *output,
         fprintf(output, " --no-declare-atomic-support");
     }
 
+    if (configuration->optimizer.disable_lowering) {
+        fprintf(output, " --disable-lowering");
+    }
+
 #define FEATURE(_id, _name)                         \
     if (configuration->features._id) {              \
         fprintf(output, " --feature-%s", _name);    \

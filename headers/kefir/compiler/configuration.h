@@ -82,6 +82,7 @@ typedef struct kefir_compiler_runner_configuration {
     struct {
         kefir_size_t max_inline_depth;
         kefir_size_t max_inlines_per_function;
+        kefir_bool_t disable_lowering;
     } optimizer;
 
     struct {

@@ -71,11 +71,8 @@ __kefir_text_func_mul1_begin:
     mov $129, %rdx
     call __kefir_bigint_unsigned_compare
     movq -88(%rbp), %r10
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_mul1_label2
+    jne _kefir_func_mul1_label2
     mov $129, %r8
 _kefir_func_mul1_label1:
     movq -40(%rbp), %rcx
@@ -163,11 +160,8 @@ __kefir_text_func_mul2_begin:
     mov $129, %rdx
     call __kefir_bigint_unsigned_compare
     movq -88(%rbp), %r10
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_mul2_label2
+    jne _kefir_func_mul2_label2
     mov $129, %r8
 _kefir_func_mul2_label1:
     movq -40(%rbp), %rcx
@@ -200,11 +194,11 @@ __kefir_text_func_mul3_begin:
     mov %rsp, %rbp
     sub $144, %rsp
     mov %r8, %r10
-    movq %rdx, -32(%rbp)
-    movq %rcx, -24(%rbp)
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rdx, -48(%rbp)
+    movq %rcx, -40(%rbp)
+    movq %rdi, -32(%rbp)
+    movq %rsi, -24(%rbp)
+    movdqu -32(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
     movq %r10, -120(%rbp)
     leaq -144(%rbp), %rax
@@ -219,7 +213,7 @@ __kefir_text_func_mul3_begin:
     movq %rax, -88(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -80(%rbp)
-    movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
     movq %r10, -120(%rbp)
     leaq -144(%rbp), %rax
@@ -255,11 +249,8 @@ __kefir_text_func_mul3_begin:
     mov $161, %rdx
     call __kefir_bigint_unsigned_compare
     movq -120(%rbp), %r10
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_mul3_label2
+    jne _kefir_func_mul3_label2
     mov $161, %r9
 _kefir_func_mul3_label1:
     movq -72(%rbp), %rcx

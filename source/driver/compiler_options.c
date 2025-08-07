@@ -271,6 +271,9 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
     SIMPLE(0, "signed-char", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_PROFILE_CHAR_SIGNED,
            target_profile_config.char_signedness),
 
+    SIMPLE(0, "enable-lowering", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, false, optimizer.disable_lowering),
+    SIMPLE(0, "disable-lowering", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, optimizer.disable_lowering),
+
     CUSTOM('D', "define", true, define_hook),
     CUSTOM('U', "undefine", true, undefine_hook),
     CUSTOM('I', "include-dir", true, include_hook),

@@ -60,7 +60,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .print_details = NULL,
                     .pipeline_spec = NULL},
         .optimizer_pipeline_spec = NULL,
-        .optimizer = {.max_inline_depth = 5, .max_inlines_per_function = 10},
+        .optimizer = {.max_inline_depth = 5, .max_inlines_per_function = 10, .disable_lowering = false},
         .dependency_output = {.target_name = NULL,
                               .output_filename = NULL,
                               .output_system_deps = true,

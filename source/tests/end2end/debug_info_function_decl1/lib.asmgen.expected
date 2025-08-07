@@ -98,7 +98,6 @@ _kefir_func_temp_label14:
     mov $8, %r9
     mov $2, %rax
     call test6@PLT
-.loc 0 34 5
 _kefir_func_temp_label16:
     mov $100, %rdi
     ldmxcsr -16(%rbp)

@@ -24,11 +24,8 @@ __kefir_text_func_test1_begin:
     xor %ecx, %ecx
     shl $47, %rcx
     shr $47, %rcx
-    xor %edx, %edx
     cmp %ecx, %eax
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test1_label2
+    je _kefir_func_test1_label2
     jmp _kefir_func_test1_label1
 _kefir_func_test1_label1:
     shl $47, %rdi
@@ -49,11 +46,8 @@ __kefir_text_func_test2_begin:
     xor %ecx, %ecx
     shl $32, %rcx
     shr $32, %rcx
-    xor %edx, %edx
     cmp %ecx, %eax
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test2_label2
+    je _kefir_func_test2_label2
     jmp _kefir_func_test2_label1
 _kefir_func_test2_label1:
     xor %eax, %eax
@@ -72,11 +66,8 @@ __kefir_text_func_test3_begin:
     xor %ecx, %ecx
     shl $5, %rcx
     shr $5, %rcx
-    xor %edx, %edx
     cmp %rcx, %rax
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test3_label2
+    je _kefir_func_test3_label2
     jmp _kefir_func_test3_label1
 _kefir_func_test3_label1:
     shl $5, %rdi
@@ -97,11 +88,8 @@ __kefir_text_func_test4_begin:
     xor %ecx, %ecx
     shl $0, %rcx
     shr $0, %rcx
-    xor %edx, %edx
     cmp %rcx, %rax
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test4_label2
+    je _kefir_func_test4_label2
     jmp _kefir_func_test4_label1
 _kefir_func_test4_label1:
     xor %eax, %eax
@@ -132,11 +120,8 @@ __kefir_text_func_test5_begin:
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %rcx
-    xor %edx, %edx
     cmp $0, %al
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test5_label2
+    je _kefir_func_test5_label2
     jmp _kefir_func_test5_label1
 _kefir_func_test5_label1:
     movq %rcx, -48(%rbp)
@@ -180,11 +165,8 @@ __kefir_text_func_test6_begin:
     call __kefir_bigint_unsigned_compare
     movq -24(%rbp), %rcx
     movq -16(%rbp), %r8
-    xor %edx, %edx
     cmp $0, %al
-    sete %dl
-    test %dl, %dl
-    jnz _kefir_func_test6_label2
+    je _kefir_func_test6_label2
     jmp _kefir_func_test6_label1
 _kefir_func_test6_label1:
     movq %rcx, -64(%rbp)

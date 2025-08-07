@@ -8,6 +8,7 @@ typedef struct kefir_optimizer_configuration {
 
     kefir_size_t max_inline_depth;
     kefir_size_t max_inlines_per_function;
+    const struct kefir_optimizer_target_lowering *target_lowering;
 } kefir_optimizer_configuration_t;
 
 kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configuration *);

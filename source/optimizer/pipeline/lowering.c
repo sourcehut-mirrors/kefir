@@ -19,20 +19,22 @@
 */
 
 #include "kefir/optimizer/pipeline.h"
+#include "kefir/optimizer/configuration.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 
-static kefir_result_t noop_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
-                                 struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
-                                 const struct kefir_optimizer_configuration *config) {
+static kefir_result_t lowering_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                     struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
+                                     const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);
-    UNUSED(config);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
     REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+    REQUIRE(config != NULL && config->target_lowering != NULL, KEFIR_OK);
 
-    // No-op optimizer pass
+    REQUIRE_OK(config->target_lowering->lower(mem, module, func, config->target_lowering->payload));
     return KEFIR_OK;
 }
 
-const struct kefir_optimizer_pass KefirOptimizerPassNoop = {.name = "noop", .apply = noop_apply, .payload = NULL};
+const struct kefir_optimizer_pass KefirOptimizerPassLowering = {
+    .name = "lowering", .apply = lowering_apply, .payload = NULL};

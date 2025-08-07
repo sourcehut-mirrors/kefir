@@ -60,11 +60,8 @@ __kefir_text_func_sub1_begin:
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r9
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_sub1_label2
+    jne _kefir_func_sub1_label2
     mov $66, %r8
 _kefir_func_sub1_label1:
     movq -32(%rbp), %rcx
@@ -141,11 +138,8 @@ __kefir_text_func_sub2_begin:
     mov $66, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r9
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_sub2_label2
+    jne _kefir_func_sub2_label2
     mov $66, %r8
 _kefir_func_sub2_label1:
     movq -32(%rbp), %rcx
@@ -221,11 +215,8 @@ __kefir_text_func_sub3_begin:
     mov $82, %rdx
     call __kefir_bigint_unsigned_compare
     movq -16(%rbp), %r8
-    xor %ecx, %ecx
     cmp $0, %al
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_sub3_label2
+    jne _kefir_func_sub3_label2
     mov $82, %r9
 _kefir_func_sub3_label1:
     movq -64(%rbp), %rcx

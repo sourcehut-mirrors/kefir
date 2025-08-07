@@ -257,6 +257,9 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
 
     compiler.optimizer_configuration.max_inline_depth = options->optimizer.max_inline_depth;
     compiler.optimizer_configuration.max_inlines_per_function = options->optimizer.max_inlines_per_function;
+    if (!options->optimizer.disable_lowering) {
+        compiler.optimizer_configuration.target_lowering = profile.lowering;
+    }
     if (options->optimizer_pipeline_spec != NULL) {
         char buf[256];
         const char *spec = options->optimizer_pipeline_spec;

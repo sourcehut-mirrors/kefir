@@ -23,6 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/target/abi/amd64/platform.h"
 #include "kefir/codegen/amd64/codegen.h"
+#include "kefir/codegen/amd64/lowering.h"
 #include <float.h>
 
 static kefir_result_t amd64_sysv_free_codegen(struct kefir_mem *mem, struct kefir_codegen *codegen) {
@@ -55,6 +56,19 @@ static kefir_result_t amd64_new_codegen(struct kefir_mem *mem, FILE *output,
     return KEFIR_OK;
 }
 
+static kefir_result_t amd64_lowering(struct kefir_mem *mem, struct kefir_opt_module *module,
+                                     struct kefir_opt_function *func, void *payload) {
+    UNUSED(payload);
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
+    REQUIRE(func != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer function"));
+
+    REQUIRE_OK(kefir_codegen_amd64_lower_function(mem, module, func));
+    return KEFIR_OK;
+}
+
+static const struct kefir_optimizer_target_lowering AMD64_LOWERING = {.lower = amd64_lowering, .payload = NULL};
+
 static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *profile,
                                               const struct kefir_compiler_profile_configuration *config) {
     REQUIRE(profile != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid compiler profile"));
@@ -84,7 +98,8 @@ static kefir_result_t init_amd64_sysv_profile(struct kefir_compiler_profile *pro
                                              .free_codegen = amd64_sysv_free_codegen,
                                              .ir_target_platform = profile->ir_target_platform,
                                              .runtime_include_dirname = NULL,
-                                             .runtime_hooks_enabled = true},
+                                             .runtime_hooks_enabled = true,
+                                             .lowering = &AMD64_LOWERING},
            sizeof(struct kefir_compiler_profile));
 
     REQUIRE_OK(kefir_lexer_context_default(&profile->lexer_context));

@@ -27,6 +27,8 @@
 #include "kefir/ast/type.h"
 #include "kefir/codegen/codegen.h"
 #include "kefir/ir/platform.h"
+#include "kefir/optimizer/module.h"
+#include "kefir/optimizer/pipeline.h"
 
 typedef struct kefir_compiler_profile {
     struct kefir_lexer_context lexer_context;
@@ -35,6 +37,7 @@ typedef struct kefir_compiler_profile {
     kefir_bool_t optimizer_enabled;
     const char *runtime_include_dirname;
     kefir_bool_t runtime_hooks_enabled;
+    const struct kefir_optimizer_target_lowering *lowering;
 
     kefir_result_t (*new_codegen)(struct kefir_mem *, FILE *, const struct kefir_codegen_configuration *,
                                   const struct kefir_codegen_runtime_hooks *, struct kefir_codegen **);

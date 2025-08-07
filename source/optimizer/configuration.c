@@ -9,6 +9,7 @@ kefir_result_t kefir_optimizer_configuration_init(struct kefir_optimizer_configu
     REQUIRE_OK(kefir_optimizer_pipeline_init(&conf->pipeline));
     conf->max_inline_depth = KEFIR_SIZE_MAX;
     conf->max_inlines_per_function = KEFIR_SIZE_MAX;
+    conf->target_lowering = NULL;
     return KEFIR_OK;
 }
 

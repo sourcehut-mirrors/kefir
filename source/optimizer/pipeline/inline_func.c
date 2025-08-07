@@ -30,7 +30,8 @@
 #include <string.h>
 
 static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir_opt_module *module,
-                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure, const struct kefir_optimizer_configuration *config,
+                                       struct kefir_opt_function *func, struct kefir_opt_code_structure *structure,
+                                       const struct kefir_optimizer_configuration *config,
                                        kefir_bool_t *fixpoint_reached) {
     kefir_size_t num_of_blocks;
     REQUIRE_OK(kefir_opt_code_container_block_count(&func->code, &num_of_blocks));
@@ -53,10 +54,12 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
             REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr_ref, &instr));
             kefir_bool_t inlined = false;
             if (instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE) {
-                REQUIRE_OK(kefir_opt_try_inline_function_call(mem, module, func, structure, &(struct kefir_opt_try_inline_function_call_parameters) {
-                    .max_inline_depth = config->max_inline_depth,
-                    .max_inlines_per_function = config->max_inlines_per_function
-                }, instr_ref, &inlined));
+                REQUIRE_OK(kefir_opt_try_inline_function_call(
+                    mem, module, func, structure,
+                    &(struct kefir_opt_try_inline_function_call_parameters) {
+                        .max_inline_depth = config->max_inline_depth,
+                        .max_inlines_per_function = config->max_inlines_per_function},
+                    instr_ref, &inlined));
             }
             if (inlined) {
                 REQUIRE_OK(kefir_opt_code_container_block(&func->code, block_id, &block));
@@ -70,7 +73,7 @@ static kefir_result_t inline_func_impl(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
-static kefir_result_t inline_func_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
+static kefir_result_t inline_func_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
                                         struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
                                         const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);

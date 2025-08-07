@@ -70,6 +70,12 @@ Maximum depth of function inlining (5 by default).
 .It Fl \-optimizer-max-inlines-per-func Ar inlines
 Maximum number of inlined functions (10 by default).
 .\"
+.It Fl \-enable-lowering
+Perform target-specific SSA lowering (mandatory for bit-precise integer support) [default]
+.\"
+.It Fl \-disable-lowering
+Skip target-specific SSA lowering.
+.\"
 .It Fl \-preprocessor-assembly-mode
 Enable assembly preprocessing mode (default for .S files). In this mode,
 leading '$' characters are not treated as identifier part.
@@ -306,6 +312,18 @@ Eliminating dead code, blocks and phi links.
 .\"
 .It Ar block-merge
 Remove unnecessary jump instructions and merge respective blocks.
+.\"
+.It Ar dead-alloc
+Remove dead local variable allocations.
+.\"
+.It Ar inline-func
+Perform function inlining.
+.\"
+.It Ar tail-calls
+Perform tail call optimization.
+.\"
+.It Ar lowering
+Perform target-specific lowering of the SSA representation. Mandatory for bit-precise integer support.
 .El
 .\"
 .Ss TARGET

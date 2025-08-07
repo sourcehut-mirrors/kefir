@@ -73,11 +73,7 @@ __kefir_text_func_is2_end:
 
 or1:
 __kefir_text_func_or1_begin:
-    xor %eax, %eax
-    test $0, %rax
-    setne %al
-    movzx %al, %rax
-    or %al, %dil
+    or $0, %dil
     setne %dil
     movzx %dil, %rdi
     test %edi, %edi
@@ -112,17 +108,14 @@ __kefir_text_func_or3_end:
 
 and1:
 __kefir_text_func_and1_begin:
-    xor %eax, %eax
-    test $0, %rax
-    setne %al
-    movzx %al, %rax
     test %dil, %dil
-    setne %cl
-    test %al, %al
     setne %al
-    and %cl, %al
-    movzx %al, %rcx
-    test %ecx, %ecx
+    xor %ecx, %ecx
+    test $0, %cl
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    test %eax, %eax
     setne %al
     movzx %al, %rax
     ret

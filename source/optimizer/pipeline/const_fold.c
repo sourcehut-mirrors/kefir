@@ -1378,7 +1378,7 @@ static kefir_result_t simplify_bitint_relational(struct kefir_mem *mem, const st
     return KEFIR_OK;
 }
 
-static kefir_result_t const_fold_apply(struct kefir_mem *mem, const struct kefir_opt_module *module,
+static kefir_result_t const_fold_apply(struct kefir_mem *mem, struct kefir_opt_module *module,
                                        struct kefir_opt_function *func, const struct kefir_optimizer_pass *pass,
                                        const struct kefir_optimizer_configuration *config) {
     UNUSED(pass);
