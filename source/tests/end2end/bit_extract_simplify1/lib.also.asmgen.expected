@@ -1,0 +1,28 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    shl $60, %rdi
+    shr $60, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    shl $59, %rdi
+    shr $59, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+

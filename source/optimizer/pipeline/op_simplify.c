@@ -2630,6 +2630,60 @@ static kefir_result_t simplify_int_extend(struct kefir_mem *mem, struct kefir_op
     return KEFIR_OK;
 }
 
+static kefir_result_t simplify_bits_extract(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                            const struct kefir_opt_instruction *instr,
+                                            kefir_opt_instruction_ref_t *replacement_ref) {
+    const struct kefir_opt_instruction *arg1;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED &&
+        arg1->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED &&
+        instr->operation.parameters.bitfield.offset < arg1->operation.parameters.bitfield.length) {
+        const kefir_size_t new_offset =
+            arg1->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.offset;
+        const kefir_size_t new_length =
+            MIN(instr->operation.parameters.bitfield.length,
+                arg1->operation.parameters.bitfield.length - instr->operation.parameters.bitfield.offset);
+        REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, instr->block_id,
+                                                                arg1->operation.parameters.refs[0], new_offset,
+                                                                new_length, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED &&
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED &&
+               instr->operation.parameters.bitfield.offset < arg1->operation.parameters.bitfield.length) {
+        const kefir_size_t new_offset =
+            arg1->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.offset;
+        const kefir_size_t new_length =
+            MIN(instr->operation.parameters.bitfield.length,
+                arg1->operation.parameters.bitfield.length - instr->operation.parameters.bitfield.offset);
+        REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, instr->block_id,
+                                                              arg1->operation.parameters.refs[0], new_offset,
+                                                              new_length, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED &&
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED &&
+               instr->operation.parameters.bitfield.offset < arg1->operation.parameters.bitfield.length &&
+               instr->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.length <=
+                   arg1->operation.parameters.bitfield.length) {
+        const kefir_size_t new_offset =
+            arg1->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.offset;
+        const kefir_size_t new_length = instr->operation.parameters.bitfield.length;
+        REQUIRE_OK(kefir_opt_code_builder_bits_extract_unsigned(mem, &func->code, instr->block_id,
+                                                                arg1->operation.parameters.refs[0], new_offset,
+                                                                new_length, replacement_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED &&
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED &&
+               instr->operation.parameters.bitfield.offset < arg1->operation.parameters.bitfield.length &&
+               instr->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.length <=
+                   arg1->operation.parameters.bitfield.length) {
+        const kefir_size_t new_offset =
+            arg1->operation.parameters.bitfield.offset + instr->operation.parameters.bitfield.offset;
+        const kefir_size_t new_length = instr->operation.parameters.bitfield.length;
+        REQUIRE_OK(kefir_opt_code_builder_bits_extract_signed(mem, &func->code, instr->block_id,
+                                                              arg1->operation.parameters.refs[0], new_offset,
+                                                              new_length, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t simplify_int_store(struct kefir_opt_function *func, const struct kefir_opt_instruction *instr,
                                          kefir_opt_instruction_ref_t *replacement_ref) {
     const struct kefir_opt_instruction *arg1;
@@ -3291,6 +3345,11 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_16BITS:
                     case KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_32BITS:
                         REQUIRE_OK(simplify_int_extend(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+                    case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+                        REQUIRE_OK(simplify_bits_extract(mem, func, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_STORE:
