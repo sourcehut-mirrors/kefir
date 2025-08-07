@@ -21,10 +21,7 @@ __kefir_text_func_test1_begin:
     mov %rdi, %rax
     shl $47, %rax
     shr $47, %rax
-    xor %ecx, %ecx
-    shl $47, %rcx
-    shr $47, %rcx
-    cmp %ecx, %eax
+    cmp $0, %eax
     je _kefir_func_test1_label2
     jmp _kefir_func_test1_label1
 _kefir_func_test1_label1:
@@ -43,10 +40,7 @@ __kefir_text_func_test2_begin:
     mov %rdi, %rax
     shl $32, %rax
     shr $32, %rax
-    xor %ecx, %ecx
-    shl $32, %rcx
-    shr $32, %rcx
-    cmp %ecx, %eax
+    cmp $0, %eax
     je _kefir_func_test2_label2
     jmp _kefir_func_test2_label1
 _kefir_func_test2_label1:
@@ -63,10 +57,7 @@ __kefir_text_func_test3_begin:
     mov %rdi, %rax
     shl $5, %rax
     shr $5, %rax
-    xor %ecx, %ecx
-    shl $5, %rcx
-    shr $5, %rcx
-    cmp %rcx, %rax
+    cmp $0, %rax
     je _kefir_func_test3_label2
     jmp _kefir_func_test3_label1
 _kefir_func_test3_label1:
@@ -85,10 +76,7 @@ __kefir_text_func_test4_begin:
     mov %rdi, %rax
     shl $0, %rax
     shr $0, %rax
-    xor %ecx, %ecx
-    shl $0, %rcx
-    shr $0, %rcx
-    cmp %rcx, %rax
+    cmp $0, %rax
     je _kefir_func_test4_label2
     jmp _kefir_func_test4_label1
 _kefir_func_test4_label1:

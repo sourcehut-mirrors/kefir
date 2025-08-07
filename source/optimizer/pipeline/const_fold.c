@@ -143,6 +143,37 @@ static kefir_result_t int_unary_const_fold(struct kefir_mem *mem, struct kefir_o
     return KEFIR_OK;
 }
 
+static kefir_result_t int_extract_bits_const_fold(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                                  const struct kefir_opt_instruction *instr,
+                                                  kefir_opt_instruction_ref_t *replacement_ref) {
+    const kefir_opt_block_id_t block_id = instr->block_id;
+
+    const struct kefir_opt_instruction *arg1;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+
+    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) {
+        kefir_uint64_t value = arg1->operation.parameters.imm.uinteger;
+        value >>= instr->operation.parameters.bitfield.offset;
+
+        kefir_bool_t sign_extend = false;
+        if (instr->operation.opcode == KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED &&
+            instr->operation.parameters.bitfield.length > 0) {
+            sign_extend = (value >> (instr->operation.parameters.bitfield.length - 1)) & 1;
+        }
+
+        if (instr->operation.parameters.bitfield.length < CHAR_BIT * sizeof(kefir_uint64_t)) {
+            if (sign_extend) {
+                value |= ~((1ull << instr->operation.parameters.bitfield.length) - 1);
+            } else {
+                value &= (1ull << instr->operation.parameters.bitfield.length) - 1;
+            }
+        }
+
+        REQUIRE_OK(kefir_opt_code_builder_uint_constant(mem, &func->code, block_id, value, replacement_ref));
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t int_binary_const_fold(struct kefir_mem *mem, struct kefir_opt_function *func,
                                             const struct kefir_opt_instruction *instr,
                                             kefir_opt_instruction_ref_t *replacement_ref) {
@@ -1484,6 +1515,11 @@ static kefir_result_t const_fold_apply(struct kefir_mem *mem, struct kefir_opt_m
                 case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
                 case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
                     REQUIRE_OK(int_unary_const_fold(mem, func, instr, &replacement_ref));
+                    break;
+
+                case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+                case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+                    REQUIRE_OK(int_extract_bits_const_fold(mem, func, instr, &replacement_ref));
                     break;
 
                 case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:

@@ -16,47 +16,35 @@
 __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
-    mov %rdi, %rsi
-    mov %rsi, %rdi
-    shl $58, %rdi
-    shr $58, %rdi
-    mov $48, %rax
+    mov %rdi, %rax
     shl $58, %rax
     shr $58, %rax
     xor %ecx, %ecx
-    cmp %al, %dil
+    cmp $48, %al
     seta %cl
-    mov $48, %rax
+    mov %rdi, %rax
     shl $58, %rax
     shr $58, %rax
-    mov %rsi, %rdi
-    shl $58, %rdi
-    shr $58, %rdi
     xor %edx, %edx
-    cmp %dil, %al
+    mov $48, %rsi
+    cmp %al, %sil
     sete %dl
     or %dl, %cl
     setne %cl
     movzx %cl, %rcx
-    mov %rsi, %rdi
-    shl $58, %rdi
-    shr $58, %rdi
-    mov $63, %rax
+    mov %rdi, %rax
     shl $58, %rax
     shr $58, %rax
     xor %edx, %edx
-    cmp %al, %dil
+    cmp $63, %al
     setb %dl
-    mov $63, %rax
-    shl $58, %rax
-    shr $58, %rax
-    mov %rsi, %rdi
     shl $58, %rdi
     shr $58, %rdi
-    xor %esi, %esi
-    cmp %dil, %al
-    sete %sil
-    or %sil, %dl
+    xor %eax, %eax
+    mov $63, %rsi
+    cmp %dil, %sil
+    sete %al
+    or %al, %dl
     setne %dl
     movzx %dl, %rdx
     test %cl, %cl
@@ -76,47 +64,35 @@ __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    mov %rdi, %rsi
-    mov %rsi, %rdi
-    shl $50, %rdi
-    shr $50, %rdi
-    mov $16128, %rax
+    mov %rdi, %rax
     shl $50, %rax
     shr $50, %rax
     xor %ecx, %ecx
-    cmp %ax, %di
+    cmp $16128, %ax
     seta %cl
-    mov $16128, %rax
+    mov %rdi, %rax
     shl $50, %rax
     shr $50, %rax
-    mov %rsi, %rdi
-    shl $50, %rdi
-    shr $50, %rdi
     xor %edx, %edx
-    cmp %di, %ax
+    mov $16128, %rsi
+    cmp %ax, %si
     sete %dl
     or %dl, %cl
     setne %cl
     movzx %cl, %rcx
-    mov %rsi, %rdi
-    shl $50, %rdi
-    shr $50, %rdi
-    mov $16383, %rax
+    mov %rdi, %rax
     shl $50, %rax
     shr $50, %rax
     xor %edx, %edx
-    cmp %ax, %di
+    cmp $16383, %ax
     setb %dl
-    mov $16383, %rax
-    shl $50, %rax
-    shr $50, %rax
-    mov %rsi, %rdi
     shl $50, %rdi
     shr $50, %rdi
-    xor %esi, %esi
-    cmp %di, %ax
-    sete %sil
-    or %sil, %dl
+    xor %eax, %eax
+    mov $16383, %rsi
+    cmp %di, %si
+    sete %al
+    or %al, %dl
     setne %dl
     movzx %dl, %rdx
     test %cl, %cl
@@ -136,47 +112,35 @@ __kefir_text_func_test2_end:
 
 test3:
 __kefir_text_func_test3_begin:
-    mov %rdi, %rsi
-    mov %rsi, %rdi
-    shl $35, %rdi
-    shr $35, %rdi
-    mov $536870656, %rax
+    mov %rdi, %rax
     shl $35, %rax
     shr $35, %rax
     xor %ecx, %ecx
-    cmp %eax, %edi
+    cmp $536870656, %eax
     seta %cl
-    mov $536870656, %rax
+    mov %rdi, %rax
     shl $35, %rax
     shr $35, %rax
-    mov %rsi, %rdi
-    shl $35, %rdi
-    shr $35, %rdi
     xor %edx, %edx
-    cmp %edi, %eax
+    mov $536870656, %rsi
+    cmp %eax, %esi
     sete %dl
     or %dl, %cl
     setne %cl
     movzx %cl, %rcx
-    mov %rsi, %rdi
-    shl $35, %rdi
-    shr $35, %rdi
-    mov $536870911, %rax
+    mov %rdi, %rax
     shl $35, %rax
     shr $35, %rax
     xor %edx, %edx
-    cmp %eax, %edi
+    cmp $536870911, %eax
     setb %dl
-    mov $536870911, %rax
-    shl $35, %rax
-    shr $35, %rax
-    mov %rsi, %rdi
     shl $35, %rdi
     shr $35, %rdi
-    xor %esi, %esi
-    cmp %edi, %eax
-    sete %sil
-    or %sil, %dl
+    xor %eax, %eax
+    mov $536870911, %rsi
+    cmp %edi, %esi
+    sete %al
+    or %al, %dl
     setne %dl
     movzx %dl, %rdx
     test %cl, %cl
@@ -196,41 +160,31 @@ __kefir_text_func_test3_end:
 
 test4:
 __kefir_text_func_test4_begin:
-    mov %rdi, %r8
-    mov %r8, %rdi
-    shl $4, %rdi
-    shr $4, %rdi
-    movabs $1152921504606846720, %rax
-    mov %rax, %rcx
-    shl $4, %rcx
-    shr $4, %rcx
-    xor %edx, %edx
-    cmp %rcx, %rdi
-    seta %dl
+    mov %rdi, %rax
     shl $4, %rax
     shr $4, %rax
-    mov %r8, %rdi
-    shl $4, %rdi
-    shr $4, %rdi
-    xor %ecx, %ecx
-    cmp %rdi, %rax
-    sete %cl
-    or %cl, %dl
-    setne %dl
-    movzx %dl, %rdx
-    mov %r8, %rdi
-    shl $4, %rdi
-    shr $4, %rdi
-    movabs $1152921504606846975, %rax
-    mov %rax, %rcx
+    movabs $1152921504606846720, %rcx
+    xor %edx, %edx
+    cmp %rcx, %rax
+    seta %dl
+    movabs $1152921504606846720, %rax
+    mov %rdi, %rcx
     shl $4, %rcx
     shr $4, %rcx
     xor %esi, %esi
-    cmp %rcx, %rdi
-    setb %sil
+    cmp %rcx, %rax
+    sete %sil
+    or %sil, %dl
+    setne %dl
+    movzx %dl, %rdx
+    mov %rdi, %rax
     shl $4, %rax
     shr $4, %rax
-    mov %r8, %rdi
+    movabs $1152921504606846975, %rcx
+    xor %esi, %esi
+    cmp %rcx, %rax
+    setb %sil
+    movabs $1152921504606846975, %rax
     shl $4, %rdi
     shr $4, %rdi
     xor %ecx, %ecx
