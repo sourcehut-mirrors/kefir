@@ -33,6 +33,28 @@ static kefir_result_t simplify_bool_not(struct kefir_mem *mem, struct kefir_opt_
     const struct kefir_opt_instruction *arg0, *arg;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg0));
 
+#define IS_BOOL_ARG(_opcode) \
+    ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)
+    if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
+        IS_BOOL_ARG(arg0->operation.opcode)) {
+        REQUIRE_OK(
+            kefir_opt_code_builder_int8_bool_not(mem, &func->code, instr->block_id, arg0->id, replacement_ref));
+        return KEFIR_OK;
+    }
+#undef IS_BOOL_ARG
+
     kefir_opt_comparison_operation_t inverse_comparison;
     if (arg0->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         switch (arg0->operation.parameters.comparison) {
@@ -278,6 +300,29 @@ static kefir_result_t simplify_bool_or(struct kefir_mem *mem, struct kefir_opt_f
     const struct kefir_opt_instruction *arg1, *arg2;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
+
+#define IS_BOOL_ARG(_opcode) \
+    ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)
+    if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
+        IS_BOOL_ARG(arg1->operation.opcode) && IS_BOOL_ARG(arg2->operation.opcode)) {
+        REQUIRE_OK(
+            kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id, arg1->id, arg2->id, replacement_ref));
+        return KEFIR_OK;
+    }
+#undef IS_BOOL_ARG
+
     REQUIRE(arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE &&
                 arg2->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE,
             KEFIR_OK);
@@ -366,6 +411,28 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
     const struct kefir_opt_instruction *arg1, *arg2;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
+
+#define IS_BOOL_ARG(_opcode) \
+    ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)
+    if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
+        IS_BOOL_ARG(arg1->operation.opcode) && IS_BOOL_ARG(arg2->operation.opcode)) {
+        REQUIRE_OK(
+            kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id, arg1->id, arg2->id, replacement_ref));
+        return KEFIR_OK;
+    }
+#undef IS_BOOL_ARG
 
     REQUIRE(arg1->block_id != instr->block_id, KEFIR_OK);
 

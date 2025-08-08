@@ -23,7 +23,7 @@ _kefir_func_dnot_label0:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz _kefir_func_dnot_label2
 _kefir_func_dnot_label1:
     mov $0, %rax

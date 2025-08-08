@@ -169,13 +169,12 @@ _kefir_func_test5_label1:
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
+    test %al, %al
+    sete %al
     mov $0, %rcx
     test %al, %al
     sete %cl
-    mov $0, %rax
     test %cl, %cl
-    sete %al
-    test %al, %al
     jz _kefir_func_test5_label3
 _kefir_func_test5_label2:
     mov $1, %rax
@@ -214,13 +213,12 @@ _kefir_func_test6_label1:
     mov %rax, %rdi
     mov $360, %rsi
     call __kefir_bigint_is_zero
+    test %al, %al
+    sete %al
     mov $0, %rcx
     test %al, %al
     sete %cl
-    mov $0, %rax
     test %cl, %cl
-    sete %al
-    test %al, %al
     jz _kefir_func_test6_label3
 _kefir_func_test6_label2:
     mov $1, %rax

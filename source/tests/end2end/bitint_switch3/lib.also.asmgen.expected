@@ -48,7 +48,6 @@ _kefir_func_test1_label0:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $58, %rcx
     sar $58, %rcx
@@ -72,9 +71,7 @@ _kefir_func_test1_label0:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -104,7 +101,6 @@ _kefir_func_test1_label1:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $58, %rcx
     sar $58, %rcx
@@ -126,9 +122,7 @@ _kefir_func_test1_label1:
     mov %rsi, %rcx
     or %dil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -156,7 +150,6 @@ _kefir_func_test1_label2:
     mov %rdx, %rax
     or %sil, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $58, %rcx
     sar $58, %rcx
@@ -178,9 +171,7 @@ _kefir_func_test1_label2:
     mov %rsi, %rcx
     or %dil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -246,7 +237,6 @@ _kefir_func_test2_label0:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $50, %rcx
     sar $50, %rcx
@@ -270,9 +260,7 @@ _kefir_func_test2_label0:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -302,7 +290,6 @@ _kefir_func_test2_label1:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $50, %rcx
     sar $50, %rcx
@@ -326,9 +313,7 @@ _kefir_func_test2_label1:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -358,7 +343,6 @@ _kefir_func_test2_label2:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $50, %rcx
     sar $50, %rcx
@@ -382,9 +366,7 @@ _kefir_func_test2_label2:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -450,7 +432,6 @@ _kefir_func_test3_label0:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $35, %rcx
     sar $35, %rcx
@@ -474,9 +455,7 @@ _kefir_func_test3_label0:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -506,7 +485,6 @@ _kefir_func_test3_label1:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $35, %rcx
     sar $35, %rcx
@@ -530,9 +508,7 @@ _kefir_func_test3_label1:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -562,7 +538,6 @@ _kefir_func_test3_label2:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $35, %rcx
     sar $35, %rcx
@@ -586,9 +561,7 @@ _kefir_func_test3_label2:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -654,7 +627,6 @@ _kefir_func_test4_label0:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $4, %rcx
     sar $4, %rcx
@@ -678,9 +650,7 @@ _kefir_func_test4_label0:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -710,7 +680,6 @@ _kefir_func_test4_label1:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $4, %rcx
     sar $4, %rcx
@@ -734,9 +703,7 @@ _kefir_func_test4_label1:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -766,7 +733,6 @@ _kefir_func_test4_label2:
     mov %rsi, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     shl $4, %rcx
     sar $4, %rcx
@@ -790,9 +756,7 @@ _kefir_func_test4_label2:
     mov %rdi, %rcx
     or %sil, %cl
     setne %cl
-    movzx %cl, %rcx
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     mov $0, %rcx
     test %al, %al
     sete %cl
@@ -866,7 +830,6 @@ _kefir_func_test5_label0:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     movabs $2459547112355201022, %rdx
     shl $1, %rdx
     sar $1, %rdx
@@ -903,10 +866,8 @@ _kefir_func_test5_label0:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
+    and %al, %cl
     mov $0, %rax
     test %cl, %cl
     sete %al
@@ -943,7 +904,6 @@ _kefir_func_test5_label1:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     movl $1145372670, -80(%rbp)
     movl $572657937, -76(%rbp)
     movl $43690, -72(%rbp)
@@ -984,10 +944,8 @@ _kefir_func_test5_label1:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
+    and %al, %cl
     mov $0, %rax
     test %cl, %cl
     sete %al
@@ -1028,7 +986,6 @@ _kefir_func_test5_label2:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     movl $1145372671, -80(%rbp)
     movl $572657937, -76(%rbp)
     movl $65535, -72(%rbp)
@@ -1069,10 +1026,8 @@ _kefir_func_test5_label2:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
+    and %al, %cl
     mov $0, %rax
     test %cl, %cl
     sete %al

@@ -1444,7 +1444,7 @@ __kefir_text_func___kefir_bigint_signed_multiply_begin:
     xor %r10d, %r10d
     cmp $0, %r15
     sete %r10b
-    or %r10d, %eax
+    or %r10b, %al
     setne %al
     movzx %al, %rax
     test %eax, %eax

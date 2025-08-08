@@ -58,7 +58,6 @@ _kefir_func_test1_label0:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     mov $1, %rdx
     neg %dl
     shl $62, %rdx
@@ -96,10 +95,8 @@ _kefir_func_test1_label0:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
+    and %al, %cl
     mov $0, %rax
     test %cl, %cl
     sete %al
@@ -136,7 +133,6 @@ _kefir_func_test1_label1:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     movl $0, -80(%rbp)
     movl $0, -76(%rbp)
     movl $4096, -72(%rbp)
@@ -177,10 +173,8 @@ _kefir_func_test1_label1:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
+    and %al, %cl
     mov $0, %rax
     test %cl, %cl
     sete %al

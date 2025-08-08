@@ -32,7 +32,6 @@ __kefir_text_func_test1_begin:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %rdi, %rcx
     shl $58, %rcx
     shr $58, %rcx
@@ -47,7 +46,6 @@ __kefir_text_func_test1_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    movzx %dl, %rdx
     and %al, %dl
     movzx %dl, %rax
     test %al, %al
@@ -77,7 +75,6 @@ __kefir_text_func_test2_begin:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %rdi, %rcx
     shl $50, %rcx
     shr $50, %rcx
@@ -92,7 +89,6 @@ __kefir_text_func_test2_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    movzx %dl, %rdx
     and %al, %dl
     movzx %dl, %rax
     test %al, %al
@@ -122,7 +118,6 @@ __kefir_text_func_test3_begin:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %rdi, %rcx
     shl $35, %rcx
     shr $35, %rcx
@@ -137,7 +132,6 @@ __kefir_text_func_test3_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    movzx %dl, %rdx
     and %al, %dl
     movzx %dl, %rax
     test %al, %al
@@ -168,7 +162,6 @@ __kefir_text_func_test4_begin:
     mov %rdx, %rax
     or %sil, %al
     setne %al
-    movzx %al, %rax
     mov %rdi, %rcx
     shl $4, %rcx
     shr $4, %rcx
@@ -185,7 +178,6 @@ __kefir_text_func_test4_begin:
     mov %rsi, %rcx
     or %dl, %cl
     setne %cl
-    movzx %cl, %rcx
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
@@ -231,7 +223,6 @@ __kefir_text_func_test5_begin:
     mov %rcx, %r8
     or %dl, %r8b
     setne %r8b
-    movzx %r8b, %r8
     movl $4294967295, -64(%rbp)
     movl $4294967295, -60(%rbp)
     movl $0, -56(%rbp)
@@ -263,7 +254,6 @@ __kefir_text_func_test5_begin:
     mov %rcx, %rax
     or %dl, %al
     setne %al
-    movzx %al, %rax
     mov %r8, %rcx
     and %cl, %al
     movzx %al, %rcx

@@ -260,7 +260,6 @@ _kefir_func_and5_label2:
     call __kefir_bigint_is_zero
     movq -48(%rbp), %rdx
     movq -40(%rbp), %r8
-    mov $0, %rcx
     test %al, %al
     sete %cl
     test %dl, %dl
@@ -349,7 +348,6 @@ _kefir_func_and6_label2:
     call __kefir_bigint_is_zero
     movq -104(%rbp), %rdx
     movq -96(%rbp), %r8
-    mov $0, %rcx
     test %al, %al
     sete %cl
     test %dl, %dl

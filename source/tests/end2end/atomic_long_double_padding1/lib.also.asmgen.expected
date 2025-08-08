@@ -45,9 +45,6 @@ _kefir_func_add_ld1_label1:
     mov $2, %r9
     call __atomic_compare_exchange@PLT
     test %al, %al
-    setne %al
-    movzx %al, %rax
-    test %al, %al
     jz _kefir_func_add_ld1_label1
     fldcw -8(%rbp)
     lea (%rbp), %rsp
@@ -107,9 +104,6 @@ _kefir_func_add_cld1_label1:
     mov $2, %r9
     call __atomic_compare_exchange@PLT
     movq -112(%rbp), %r10
-    test %al, %al
-    setne %al
-    movzx %al, %rax
     test %al, %al
     jz _kefir_func_add_cld1_label1
     fldcw -8(%rbp)

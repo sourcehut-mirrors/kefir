@@ -14,15 +14,18 @@ __kefir_text_func_test_begin:
     xor %edi, %edi
     cmp $1, %esi
     setge %dil
-    and %dil, %al
+    or %dil, %al
+    setne %al
     xor %esi, %esi
     cmp $0, %edx
     setne %sil
-    and %sil, %al
+    or %sil, %al
+    setne %al
     test %ecx, %ecx
     sete %cl
-    and %al, %cl
-    movzx %cl, %rax
+    or %cl, %al
+    setne %al
+    movzx %al, %rax
     ret
 __kefir_text_func_test_end:
 
