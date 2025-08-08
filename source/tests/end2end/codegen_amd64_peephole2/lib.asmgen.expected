@@ -25,11 +25,8 @@ __kefir_text_section_begin:
 test1:
 __kefir_text_func_test1_begin:
 _kefir_func_test1_label1:
-    xor %eax, %eax
     test %rdi, %rdi
-    sete %al
-    test %al, %al
-    jz _kefir_func_test1_label1
+    jnz _kefir_func_test1_label1
     ret
 __kefir_text_func_test1_end:
 

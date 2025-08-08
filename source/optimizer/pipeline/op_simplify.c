@@ -2728,7 +2728,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                                   target_block, alternative_block, replacement_ref));
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
@@ -2737,7 +2740,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
@@ -2746,7 +2752,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
@@ -2755,7 +2764,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id,
@@ -2764,7 +2776,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_8BIT,
@@ -2773,7 +2788,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_16BIT,
@@ -2782,7 +2800,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_32BIT,
@@ -2791,7 +2812,10 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_NOT &&
-               instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT) {
+               (instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_16BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_32BIT ||
+                instr->operation.parameters.branch.condition_variant == KEFIR_OPT_BRANCH_CONDITION_NEGATED_64BIT)) {
         const kefir_opt_instruction_ref_t condition_ref = arg1->operation.parameters.refs[0];
         REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
         REQUIRE_OK(kefir_opt_code_builder_finalize_branch(mem, &func->code, block_id, KEFIR_OPT_BRANCH_CONDITION_64BIT,

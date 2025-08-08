@@ -413,21 +413,15 @@
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 50
+                                "control_next": 257
                             },
                             {
-                                "id": 49,
-                                "opcode": "int32_bool_not",
-                                "arg": 48,
-                                "control_next": null
-                            },
-                            {
-                                "id": 50,
+                                "id": 257,
                                 "opcode": "branch",
                                 "target_block": 1,
                                 "alternative_block": 2,
-                                "condition": 49,
-                                "condition_variant": "8bit",
+                                "condition": 48,
+                                "condition_variant": "inverted_32bit",
                                 "control_next": null
                             }
                         ],
@@ -474,13 +468,12 @@
                                 46,
                                 47,
                                 48,
-                                49,
-                                50,
                                 252,
                                 253,
                                 254,
                                 255,
-                                256
+                                256,
+                                257
                             ]
                         }
                     },
@@ -489,7 +482,7 @@
                         "control_flow": 62,
                         "code": [
                             {
-                                "id": 257,
+                                "id": 258,
                                 "opcode": "ref_local",
                                 "ref": 6,
                                 "offset": 0,
@@ -498,15 +491,15 @@
                             {
                                 "id": 62,
                                 "opcode": "int8_load",
-                                "location": 257,
+                                "location": 258,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": true
                                 },
-                                "control_next": 258
+                                "control_next": 259
                             },
                             {
-                                "id": 258,
+                                "id": 259,
                                 "opcode": "branch",
                                 "target_block": 3,
                                 "alternative_block": 4,
@@ -535,8 +528,8 @@
                                 8,
                                 44,
                                 62,
-                                257,
-                                258
+                                258,
+                                259
                             ]
                         }
                     },
@@ -583,7 +576,7 @@
                         "control_flow": 74,
                         "code": [
                             {
-                                "id": 259,
+                                "id": 260,
                                 "opcode": "ref_local",
                                 "ref": 8,
                                 "offset": 0,
@@ -592,12 +585,12 @@
                             {
                                 "id": 74,
                                 "opcode": "int64_load",
-                                "location": 259,
+                                "location": 260,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
                                 },
-                                "control_next": 260
+                                "control_next": 261
                             },
                             {
                                 "id": 234,
@@ -615,7 +608,7 @@
                                 "control_next": null
                             },
                             {
-                                "id": 260,
+                                "id": 261,
                                 "opcode": "int16_load",
                                 "location": 79,
                                 "flags": {
@@ -639,7 +632,7 @@
                                 "opcode": "int32_add",
                                 "args": [
                                     82,
-                                    260
+                                    261
                                 ],
                                 "control_next": null
                             },
@@ -654,7 +647,7 @@
                                 "control_next": 87
                             },
                             {
-                                "id": 261,
+                                "id": 262,
                                 "opcode": "ref_local",
                                 "ref": 8,
                                 "offset": 0,
@@ -663,7 +656,7 @@
                             {
                                 "id": 87,
                                 "opcode": "int64_load",
-                                "location": 261,
+                                "location": 262,
                                 "flags": {
                                     "load_extension": "noextend",
                                     "volatile": false
@@ -733,9 +726,9 @@
                                 94,
                                 234,
                                 236,
-                                259,
                                 260,
-                                261
+                                261,
+                                262
                             ]
                         }
                     },
@@ -902,10 +895,10 @@
                                 ],
                                 "return_space": null,
                                 "indirect_ref": null,
-                                "control_next": 277
+                                "control_next": 278
                             },
                             {
-                                "id": 277,
+                                "id": 278,
                                 "opcode": "jump",
                                 "target_block": 7,
                                 "control_next": null
@@ -925,7 +918,7 @@
                                 0,
                                 116,
                                 117,
-                                277
+                                278
                             ]
                         }
                     },

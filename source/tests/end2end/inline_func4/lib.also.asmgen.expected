@@ -28,11 +28,8 @@ _kefir_func_addx_label1:
     movq %rax, -16(%rbp)
 _kefir_func_addx_label3:
     sete %al
-    xor %ecx, %ecx
     test %al, %al
-    sete %cl
-    test %ecx, %ecx
-    jnz _kefir_func_addx_label1
+    jz _kefir_func_addx_label1
 _kefir_func_addx_label2:
     movq -8(%rbp), %rax
     lea (%rbp), %rsp

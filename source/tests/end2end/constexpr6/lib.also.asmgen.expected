@@ -14,11 +14,8 @@ __kefir_text_func_test1_begin:
     lea __kefir_function_test1_static___kefir_local_temporary_0_3(%rip), %rax
     movl (%rax), %ecx
     movl %ecx, -4(%rbp)
-    xor %eax, %eax
     test %edi, %edi
-    sete %al
-    test %al, %al
-    jz _kefir_func_test1_label2
+    jnz _kefir_func_test1_label2
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp

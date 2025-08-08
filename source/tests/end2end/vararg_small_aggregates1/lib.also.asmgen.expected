@@ -38,11 +38,8 @@ _kefir_func_sum_label6:
 _kefir_func_sum_label1:
     mov %rdi, %r9
     add $-1, %r9d
-    xor %ecx, %ecx
     test %edi, %edi
-    sete %cl
-    test %cl, %cl
-    jz _kefir_func_sum_label3
+    jnz _kefir_func_sum_label3
     mov %r8, %rax
     lea (%rbp), %rsp
     pop %rbp
