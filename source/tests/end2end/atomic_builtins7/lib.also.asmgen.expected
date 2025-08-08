@@ -185,8 +185,6 @@ _kefir_func_test_is_lock_free_label12:
     sete %al
     test %r9d, %r9d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rdx
@@ -223,8 +221,6 @@ _kefir_func_test_is_lock_free_label15:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rsi
@@ -261,8 +257,6 @@ _kefir_func_test_is_lock_free_label18:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rdi
@@ -299,8 +293,6 @@ _kefir_func_test_is_lock_free_label21:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rsi
@@ -337,8 +329,6 @@ _kefir_func_test_is_lock_free_label24:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rdi
@@ -375,8 +365,6 @@ _kefir_func_test_is_lock_free_label27:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rsi
@@ -413,8 +401,6 @@ _kefir_func_test_is_lock_free_label30:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rdi
@@ -451,8 +437,6 @@ _kefir_func_test_is_lock_free_label33:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rsi
@@ -490,8 +474,6 @@ _kefir_func_test_is_lock_free_label36:
     sete %al
     test %r8d, %r8d
     setne %cl
-    test %eax, %eax
-    setne %al
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %rdi

@@ -968,15 +968,15 @@ __kefir_text_func___kefir_bigint_signed_multiply_begin:
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r13
+    mov %rax, %r14
     mov %r15, %r9
     sub $1, %r9
-    imul $8, %r13, %r10
+    imul $8, %r14, %r10
     sub %r10, %r9
-    xor %r14d, %r14d
+    xor %r13d, %r13d
     xor %r12d, %r12d
 _kefir_func___kefir_bigint_signed_multiply_label2:
-    cmp %r15, %r14
+    cmp %r15, %r13
     jb _kefir_func___kefir_bigint_signed_multiply_label4
     movq %r8, -112(%rbp)
     movq -88(%rbp), %rdi
@@ -1021,8 +1021,6 @@ _kefir_func___kefir_bigint_signed_multiply_label4:
     sete %r10b
     test %ebx, %ebx
     setne %r11b
-    test %r10d, %r10d
-    setne %r10b
     and %r11b, %r10b
     movzx %r10b, %r11
     test %r11d, %r11d
@@ -1030,8 +1028,6 @@ _kefir_func___kefir_bigint_signed_multiply_label4:
     xor %r10d, %r10d
     test %ebx, %ebx
     sete %r10b
-    test %r10d, %r10d
-    setne %r10b
     test %r12d, %r12d
     setne %r11b
     and %r10b, %r11b
@@ -1062,16 +1058,16 @@ _kefir_func___kefir_bigint_signed_multiply_label6:
     movq -72(%rbp), %r9
     movq -64(%rbp), %r10
     movq -104(%rbp), %rdx
-    add %r13, %rdx
+    add %r14, %rdx
     movzxb (%rdx), %r11
     and $1, %r10d
     mov %r9, %rcx
     shl %cl, %r10d
     or %r10d, %r11d
     movb %r11b, (%rdx)
-    mov %r14, %r10
+    mov %r13, %r10
     add $1, %r10
-    mov %r10, %r14
+    mov %r10, %r13
     mov %rbx, %r12
     jmp _kefir_func___kefir_bigint_signed_multiply_label2
 _kefir_func___kefir_bigint_signed_multiply_label7:

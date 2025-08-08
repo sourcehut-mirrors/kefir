@@ -10266,8 +10266,6 @@ _kefir_func___kefir_bigint_signed_multiply_label13:
     sete %cl
     test %edx, %edx
     setne %al
-    test %ecx, %ecx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     mov %rax, %rsi

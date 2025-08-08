@@ -265,8 +265,6 @@ _kefir_func_and5_label2:
     sete %cl
     test %dl, %dl
     setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     mov %rax, %r8
@@ -356,8 +354,6 @@ _kefir_func_and6_label2:
     sete %cl
     test %dl, %dl
     setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     mov %rax, %r8

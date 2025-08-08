@@ -974,6 +974,29 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_bool_and)(struct kefir_m
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
 
+    kefir_bool_t full_test1 = true, full_test2 = true;
+
+    const struct kefir_opt_instruction *arg1_instr, *arg2_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0],
+                                              &arg1_instr));
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[1],
+                                              &arg2_instr));
+#define SKIP_FULL_TEST(_opcode)                                                                      \
+    ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||  \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)
+    if (SKIP_FULL_TEST(arg1_instr->operation.opcode)) {
+        full_test1 = false;
+    }
+    if (SKIP_FULL_TEST(arg2_instr->operation.opcode)) {
+        full_test2 = false;
+    }
+#undef SKIP_FULL_TEST
+
     struct kefir_asmcmp_value arg1, arg2;
     switch (instruction->operation.opcode) {
         case KEFIR_OPT_OPCODE_INT8_BOOL_AND:
@@ -1000,17 +1023,30 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_bool_and)(struct kefir_m
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instruction opcode");
     }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &arg1, &arg1, NULL));
+    if (full_test1) {
+        REQUIRE_OK(kefir_asmcmp_amd64_test(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), &arg1, &arg1, NULL));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code,
+                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             result_vreg, arg1_vreg, NULL));
+    }
 
-    REQUIRE_OK(kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                       &arg2, &arg2, NULL));
+    if (full_test2) {
+        REQUIRE_OK(kefir_asmcmp_amd64_test(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), &arg2, &arg2, NULL));
 
-    REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code,
+                                            kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), NULL));
+    } else {
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
+            mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), tmp_vreg, arg2_vreg, NULL));
+    }
 
     REQUIRE_OK(kefir_asmcmp_amd64_and(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                                       &KEFIR_ASMCMP_MAKE_VREG8(tmp_vreg), &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));

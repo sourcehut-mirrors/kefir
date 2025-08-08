@@ -21,13 +21,9 @@ __kefir_text_func_test1_begin:
     xor %edx, %edx
     cmp $255, %eax
     setle %dl
+    and %cl, %dl
+    movzx %dl, %rcx
     test %cl, %cl
-    setne %al
-    test %dl, %dl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
     jnz _kefir_func_test1_label2
     mov $2, %rax
     ret
@@ -45,13 +41,9 @@ __kefir_text_func_test2_begin:
     xor %edx, %edx
     cmp $65535, %eax
     setle %dl
+    and %cl, %dl
+    movzx %dl, %rcx
     test %cl, %cl
-    setne %al
-    test %dl, %dl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
     jnz _kefir_func_test2_label2
     mov $2, %rax
     ret
@@ -70,13 +62,9 @@ __kefir_text_func_test3_begin:
     xor %edx, %edx
     cmp %eax, %edi
     setbe %dl
+    and %cl, %dl
+    movzx %dl, %rcx
     test %cl, %cl
-    setne %al
-    test %dl, %dl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
     jnz _kefir_func_test3_label2
     mov $2, %rax
     ret
@@ -93,10 +81,6 @@ __kefir_text_func_test4_begin:
     xor %ecx, %ecx
     cmp $-1, %rdi
     setbe %cl
-    test %al, %al
-    setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al

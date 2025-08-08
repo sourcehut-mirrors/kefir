@@ -1,0 +1,33 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    xor %eax, %eax
+    cmp $0, %edi
+    setg %al
+    xor %edi, %edi
+    cmp $1, %esi
+    setge %dil
+    and %al, %dil
+    movzx %dil, %rax
+    xor %esi, %esi
+    cmp $0, %edx
+    setne %sil
+    and %al, %sil
+    movzx %sil, %rax
+    xor %edx, %edx
+    test %ecx, %ecx
+    sete %dl
+    and %al, %dl
+    movzx %dl, %rax
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

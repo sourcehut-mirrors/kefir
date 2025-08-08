@@ -33,10 +33,6 @@ __kefir_text_func_test2_begin:
     xor %ecx, %ecx
     cmp $9, %edi
     setle %cl
-    test %al, %al
-    setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al
@@ -61,10 +57,6 @@ __kefir_text_func_test3_begin:
     xor %ecx, %ecx
     cmp $9, %edi
     setle %cl
-    test %al, %al
-    setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     test %al, %al

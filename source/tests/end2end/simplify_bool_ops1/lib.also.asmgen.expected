@@ -120,8 +120,6 @@ __kefir_text_func_int_and3_begin:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
-    test %eax, %eax
-    setne %al
     test %edx, %edx
     setne %cl
     and %al, %cl
@@ -176,8 +174,6 @@ __kefir_text_func_char_and3_begin:
     test %dl, %dl
     setne %cl
     movzx %cl, %rcx
-    test %eax, %eax
-    setne %al
     test %ecx, %ecx
     setne %cl
     and %al, %cl
@@ -196,8 +192,6 @@ __kefir_text_func_long_and3_begin:
     test %rdx, %rdx
     setne %cl
     movzx %cl, %rcx
-    test %eax, %eax
-    setne %al
     test %ecx, %ecx
     setne %cl
     and %al, %cl
@@ -243,8 +237,6 @@ __kefir_text_func_short_and3_begin:
     test %dx, %dx
     setne %cl
     movzx %cl, %rcx
-    test %eax, %eax
-    setne %al
     test %ecx, %ecx
     setne %cl
     and %al, %cl
