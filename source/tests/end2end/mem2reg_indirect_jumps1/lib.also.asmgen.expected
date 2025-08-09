@@ -1,0 +1,58 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movl %edx, -12(%rbp)
+    movl %esi, -16(%rbp)
+    movl %edi, -20(%rbp)
+_kefir_func_test_label1:
+_kefir_local_public_label_test_label3:
+    movl -20(%rbp), %eax
+    movl %eax, -8(%rbp)
+    movl $0, -20(%rbp)
+    lea __kefir_function_test_static_arr_4(%rip), %rcx
+    movsx %eax, %rax
+    imul $8, %rax, %rax
+    add %rax, %rcx
+    movq (%rcx), %rax
+    jmp *%rax
+_kefir_func_test_label2:
+_kefir_local_public_label_test_label2:
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    imul %ecx, %eax
+    movl %eax, -4(%rbp)
+    mov %rax, %rcx
+_kefir_func_test_label3:
+    mov %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_test_label4:
+_kefir_local_public_label_test_label1:
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %edx
+    add %edx, %eax
+    movl %eax, -4(%rbp)
+    mov %rax, %rcx
+    jmp _kefir_func_test_label3
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 16
+__kefir_function_test_static_arr_4:
+    .quad _kefir_local_public_label_test_label1
+    .quad _kefir_local_public_label_test_label2
+    .quad _kefir_local_public_label_test_label3
+
