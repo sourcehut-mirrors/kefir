@@ -22,4 +22,4 @@ set -o pipefail
 
 torture_log="$1"
 
-grep -v "Interrupted system call" "$torture_log" | grep -i "fatal\|abort\|timeout\|segm" && exit 1 || true
+grep -v "Interrupted system call" "$torture_log" | grep -i "fatal\|abort\|timeout\|segm\|caught signal" && exit 1 || true
