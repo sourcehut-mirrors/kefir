@@ -276,7 +276,6 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label2:
     or %rsi, %rdx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -293,7 +292,6 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label4:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -306,7 +304,6 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label5:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -361,7 +358,6 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label11:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -403,7 +399,6 @@ _kefir_func___kefir_bigint_right_shift_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -470,7 +465,6 @@ _kefir_func___kefir_bigint_right_shift_label1:
     mov $0, %rdx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -482,7 +476,6 @@ _kefir_func___kefir_bigint_right_shift_label2:
     mov $0, %rdx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -505,7 +498,6 @@ _kefir_func___kefir_bigint_right_shift_label5:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

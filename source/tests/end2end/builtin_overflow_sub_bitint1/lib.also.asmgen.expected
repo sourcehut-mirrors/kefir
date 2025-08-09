@@ -298,7 +298,6 @@ _kefir_func___kefir_bigint_cast_signed_label16:
     mov %rdx, %rcx
     sar %cl, %esi
     and $1, %esi
-    test %esi, %esi
     jnz _kefir_func___kefir_bigint_cast_signed_label19
     mov %r12, %rdi
     add %rbx, %rdi

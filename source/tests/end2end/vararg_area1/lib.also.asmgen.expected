@@ -42,7 +42,6 @@ _kefir_func_process_label0:
     mov $0, %rcx
     cmp $0, %eax
     setg %cl
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
     test %al, %al
@@ -87,7 +86,6 @@ _kefir_func_process_label3:
     mov $0, %rdx
     cmp %ecx, %eax
     setl %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

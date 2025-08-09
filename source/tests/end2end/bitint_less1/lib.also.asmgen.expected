@@ -283,7 +283,6 @@ _kefir_func___kefir_bigint_signed_compare_label0:
     test %eax, %eax
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %dl, %dl
     sete %al
     test %al, %al
@@ -293,7 +292,6 @@ _kefir_func___kefir_bigint_signed_compare_label0:
 _kefir_func___kefir_bigint_signed_compare_label9:
     jmp _kefir_func___kefir_bigint_signed_compare_label8
 _kefir_func___kefir_bigint_signed_compare_label1:
-    mov $0, %rax
     test %esi, %esi
     sete %al
     test %al, %al
@@ -306,7 +304,6 @@ _kefir_func___kefir_bigint_signed_compare_label2:
     test %ecx, %ecx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %dl, %dl
     sete %al
     test %al, %al
@@ -316,7 +313,6 @@ _kefir_func___kefir_bigint_signed_compare_label2:
 _kefir_func___kefir_bigint_signed_compare_label10:
     jmp _kefir_func___kefir_bigint_signed_compare_label6
 _kefir_func___kefir_bigint_signed_compare_label3:
-    mov $0, %rax
     test %esi, %esi
     sete %al
     test %al, %al
@@ -397,7 +393,6 @@ _kefir_func___kefir_bigint_unsigned_compare_label1:
     mov $0, %rdx
     cmp %rcx, %rax
     seta %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -433,7 +428,6 @@ _kefir_func___kefir_bigint_unsigned_compare_label3:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -444,7 +438,6 @@ _kefir_func___kefir_bigint_unsigned_compare_label4:
     mov $0, %rdx
     cmp %ecx, %eax
     seta %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -455,7 +448,6 @@ _kefir_func___kefir_bigint_unsigned_compare_label5:
     mov $0, %rdx
     cmp %ecx, %eax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

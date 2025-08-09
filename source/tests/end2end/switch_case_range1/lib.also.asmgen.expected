@@ -20,9 +20,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $-30, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label18
     xor %eax, %eax
     cmp $-29, %edi
@@ -30,9 +28,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $-20, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label17
     xor %eax, %eax
     cmp $-19, %edi
@@ -40,9 +36,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $-10, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label16
     xor %eax, %eax
     cmp $-9, %edi
@@ -50,9 +44,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $-1, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label15
     xor %eax, %eax
     cmp $1, %edi
@@ -60,9 +52,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $9, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label14
     xor %eax, %eax
     cmp $10, %edi
@@ -70,9 +60,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $19, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label13
     xor %eax, %eax
     cmp $20, %edi
@@ -80,9 +68,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $29, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label12
     xor %eax, %eax
     cmp $30, %edi
@@ -90,9 +76,7 @@ __kefir_text_func_clamp_int_begin:
     xor %ecx, %ecx
     cmp $39, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_int_label11
     cmp $0, %edi
     je _kefir_func_clamp_int_label10
@@ -136,9 +120,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $-30, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label18
     xor %eax, %eax
     cmp $-29, %edx
@@ -146,9 +128,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $-20, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label17
     xor %eax, %eax
     cmp $-19, %edx
@@ -156,9 +136,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $-10, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label16
     xor %eax, %eax
     cmp $-9, %edx
@@ -166,9 +144,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $-1, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label15
     xor %eax, %eax
     cmp $1, %edx
@@ -176,9 +152,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $9, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label14
     xor %eax, %eax
     cmp $10, %edx
@@ -186,9 +160,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $19, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label13
     xor %eax, %eax
     cmp $20, %edx
@@ -196,9 +168,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $29, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label12
     xor %eax, %eax
     cmp $30, %edx
@@ -206,9 +176,7 @@ __kefir_text_func_clamp_char_begin:
     xor %ecx, %ecx
     cmp $39, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_char_label11
     cmp $0, %edx
     je _kefir_func_clamp_char_label10
@@ -251,9 +219,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $-30, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label18
     xor %eax, %eax
     cmp $-29, %rdi
@@ -261,9 +227,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $-20, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label17
     xor %eax, %eax
     cmp $-19, %rdi
@@ -271,9 +235,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $-10, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label16
     xor %eax, %eax
     cmp $-9, %rdi
@@ -281,9 +243,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $-1, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label15
     xor %eax, %eax
     cmp $1, %rdi
@@ -291,9 +251,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $9, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label14
     xor %eax, %eax
     cmp $10, %rdi
@@ -301,9 +259,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $19, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label13
     xor %eax, %eax
     cmp $20, %rdi
@@ -311,9 +267,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $29, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label12
     xor %eax, %eax
     cmp $30, %rdi
@@ -321,9 +275,7 @@ __kefir_text_func_clamp_long_begin:
     xor %ecx, %ecx
     cmp $39, %rdi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_long_label11
     cmp $0, %rdi
     je _kefir_func_clamp_long_label10
@@ -367,9 +319,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $-30, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label18
     xor %eax, %eax
     cmp $-29, %edx
@@ -377,9 +327,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $-20, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label17
     xor %eax, %eax
     cmp $-19, %edx
@@ -387,9 +335,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $-10, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label16
     xor %eax, %eax
     cmp $-9, %edx
@@ -397,9 +343,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $-1, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label15
     xor %eax, %eax
     cmp $1, %edx
@@ -407,9 +351,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $9, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label14
     xor %eax, %eax
     cmp $10, %edx
@@ -417,9 +359,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $19, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label13
     xor %eax, %eax
     cmp $20, %edx
@@ -427,9 +367,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $29, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label12
     xor %eax, %eax
     cmp $30, %edx
@@ -437,9 +375,7 @@ __kefir_text_func_clamp_short_begin:
     xor %ecx, %ecx
     cmp $39, %edx
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_clamp_short_label11
     cmp $0, %edx
     je _kefir_func_clamp_short_label10

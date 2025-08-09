@@ -253,7 +253,6 @@ _kefir_func___kefir_bigint_xor_label1:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

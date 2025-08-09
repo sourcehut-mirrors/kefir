@@ -26,10 +26,9 @@ _kefir_func_test1_label0:
     movl $0, -4(%rbp)
 _kefir_func_test1_label1:
     movl -4(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test1_label4
 _kefir_func_test1_label2:
     movl $1, -4(%rbp)
@@ -67,10 +66,9 @@ _kefir_func_test2_label0:
     movl $0, -4(%rbp)
 _kefir_func_test2_label1:
     movl -4(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test2_label4
 _kefir_func_test2_label2:
     movl $1, -4(%rbp)
@@ -108,10 +106,9 @@ _kefir_func_test3_label0:
     movl $0, -4(%rbp)
 _kefir_func_test3_label1:
     movl -4(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test3_label4
 _kefir_func_test3_label2:
     movl $1, -4(%rbp)
@@ -149,10 +146,9 @@ _kefir_func_test4_label0:
     movl $0, -8(%rbp)
 _kefir_func_test4_label1:
     movl -8(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test4_label4
 _kefir_func_test4_label2:
     movl $1, -8(%rbp)
@@ -193,10 +189,9 @@ _kefir_func_test5_label0:
     movl $0, -8(%rbp)
 _kefir_func_test5_label1:
     movl -8(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test5_label4
 _kefir_func_test5_label2:
     movl $1, -8(%rbp)
@@ -206,10 +201,9 @@ _kefir_func_test5_label2:
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test5_label3
     jmp _kefir_func_test5_label1
 _kefir_func_test5_label3:
@@ -241,10 +235,9 @@ _kefir_func_test6_label0:
     movl $0, -8(%rbp)
 _kefir_func_test6_label1:
     movl -8(%rbp), %eax
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test6_label4
 _kefir_func_test6_label2:
     movl $1, -8(%rbp)
@@ -258,10 +251,9 @@ _kefir_func_test6_label2:
     mov %rax, %rdi
     mov $360, %rsi
     call __kefir_bigint_is_zero
-    mov $0, %rcx
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test6_label3
     jmp _kefir_func_test6_label1
 _kefir_func_test6_label3:
@@ -298,7 +290,6 @@ _kefir_func___kefir_bigint_is_zero_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -329,7 +320,6 @@ _kefir_func___kefir_bigint_is_zero_label2:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -354,17 +344,15 @@ _kefir_func___kefir_bigint_is_zero_label4:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_is_zero_label8
 _kefir_func___kefir_bigint_is_zero_label5:
     movb -24(%rbp), %al
-    mov $0, %rcx
     test %al, %al
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func___kefir_bigint_is_zero_label7
 _kefir_func___kefir_bigint_is_zero_label6:
     movq -32(%rbp), %rax

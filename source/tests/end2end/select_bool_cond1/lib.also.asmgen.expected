@@ -1,0 +1,39 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+.global get2
+.type get2, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    test %edi, %edi
+    setne %al
+    test %esi, %esi
+    setne %cl
+    and %cl, %al
+    cmovz %rsi, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_get_end:
+
+get2:
+__kefir_text_func_get2_begin:
+    test %edi, %edi
+    setne %al
+    test %esi, %esi
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov %rax, %rcx
+    test %al, %al
+    cmovz %rsi, %rcx
+    mov %rcx, %rax
+    ret
+__kefir_text_func_get2_end:
+
+__kefir_text_section_end:
+

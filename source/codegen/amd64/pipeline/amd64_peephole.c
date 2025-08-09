@@ -262,6 +262,27 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                 }
                 break;
 
+            case KEFIR_ASMCMP_AMD64_OPCODE(and):
+            case KEFIR_ASMCMP_AMD64_OPCODE(or):
+                if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                    next_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
+                    kefir_asmcmp_context_instr_label_head(context, instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
+                    struct kefir_asmcmp_instruction *next_instr = NULL;
+                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
+                    if (next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(test) &&
+                        next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                        instr->args[0].phreg == next_instr->args[0].phreg &&
+                        next_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                        instr->args[0].phreg == next_instr->args[1].phreg &&
+                        kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
+                        kefir_asmcmp_instruction_index_t following_instr_index =
+                            kefir_asmcmp_context_instr_next(context, next_instr_index);
+                        REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next_instr_index));
+                        next_instr_index = following_instr_index;
+                    }
+                }
+                break;
+
             default:
                 break;
         }

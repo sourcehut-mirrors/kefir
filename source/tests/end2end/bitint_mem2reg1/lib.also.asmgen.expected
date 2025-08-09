@@ -296,7 +296,6 @@ _kefir_func___kefir_bigint_cast_signed_label16:
     mov %rdx, %rcx
     sar %cl, %esi
     and $1, %esi
-    test %esi, %esi
     jnz _kefir_func___kefir_bigint_cast_signed_label19
     mov %r12, %rdi
     add %rbx, %rdi
@@ -954,8 +953,7 @@ __kefir_text_func___kefir_bigint_signed_multiply_begin:
     sete %r10b
     or %r10b, %al
     setne %al
-    movzx %al, %rax
-    test %eax, %eax
+    test %al, %al
     jnz _kefir_func___kefir_bigint_signed_multiply_label9
     movq %r8, -80(%rbp)
     movq -96(%rbp), %rdi
@@ -1021,18 +1019,14 @@ _kefir_func___kefir_bigint_signed_multiply_label4:
     sete %r10b
     test %ebx, %ebx
     setne %r11b
-    and %r11b, %r10b
-    movzx %r10b, %r11
-    test %r11d, %r11d
+    and %r10b, %r11b
     jnz _kefir_func___kefir_bigint_signed_multiply_label8
     xor %r10d, %r10d
     test %ebx, %ebx
     sete %r10b
     test %r12d, %r12d
     setne %r11b
-    and %r10b, %r11b
-    movzx %r11b, %r10
-    test %r10d, %r10d
+    and %r11b, %r10b
     jnz _kefir_func___kefir_bigint_signed_multiply_label7
 _kefir_func___kefir_bigint_signed_multiply_label6:
     movq -96(%rbp), %rax

@@ -46,9 +46,7 @@ __kefir_text_func_test1_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    and %al, %dl
-    movzx %dl, %rax
-    test %al, %al
+    and %dl, %al
     jnz _kefir_func_test1_label2
     mov $2, %rax
     ret
@@ -89,9 +87,7 @@ __kefir_text_func_test2_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    and %al, %dl
-    movzx %dl, %rax
-    test %al, %al
+    and %dl, %al
     jnz _kefir_func_test2_label2
     mov $2, %rax
     ret
@@ -132,9 +128,7 @@ __kefir_text_func_test3_begin:
     sete %cl
     or %cl, %dl
     setne %dl
-    and %al, %dl
-    movzx %dl, %rax
-    test %al, %al
+    and %dl, %al
     jnz _kefir_func_test3_label2
     mov $2, %rax
     ret
@@ -178,9 +172,7 @@ __kefir_text_func_test4_begin:
     mov %rsi, %rcx
     or %dl, %cl
     setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_test4_label2
     mov $2, %rax
     ret
@@ -255,9 +247,7 @@ __kefir_text_func_test5_begin:
     or %dl, %al
     setne %al
     mov %r8, %rcx
-    and %cl, %al
-    movzx %al, %rcx
-    test %cl, %cl
+    and %al, %cl
     jnz _kefir_func_test5_label2
     mov $2, %rax
     lea (%rbp), %rsp

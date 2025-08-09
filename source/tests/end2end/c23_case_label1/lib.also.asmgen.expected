@@ -33,9 +33,7 @@ __kefir_text_func_test2_begin:
     xor %ecx, %ecx
     cmp $9, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_test2_label3
     cmp $10, %edi
     je _kefir_func_test2_label3
@@ -57,9 +55,7 @@ __kefir_text_func_test3_begin:
     xor %ecx, %ecx
     cmp $9, %edi
     setle %cl
-    and %al, %cl
-    movzx %cl, %rax
-    test %al, %al
+    and %cl, %al
     jnz _kefir_func_test3_label3
 _kefir_func_test3_label2:
     mov %rdi, %rax

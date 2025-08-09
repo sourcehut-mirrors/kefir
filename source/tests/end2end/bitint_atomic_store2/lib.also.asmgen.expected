@@ -195,7 +195,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label0:
     or %rsi, %rdx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -207,7 +206,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label1:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -243,7 +241,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label2:
     mov $0, %rcx
     cmp %rdx, %rax
     setb %cl
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
     test %al, %al
@@ -266,7 +263,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label4:
     or %rsi, %rdx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -320,7 +316,6 @@ _kefir_func___kefir_bigint_cast_unsigned_label9:
     or %rsi, %rdx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

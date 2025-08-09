@@ -61,17 +61,15 @@ _kefir_func_test_label1:
     mov $0, %rax
     test %dl, %dl
     sete %al
-    mov $0, %rcx
     test %eax, %eax
-    sete %cl
-    test %cl, %cl
+    sete %al
+    test %al, %al
     jz _kefir_func_test_label5
 _kefir_func_test_label2:
     movl -32(%rbp), %eax
     mov $0, %rcx
     cmp $1, %eax
     setg %cl
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
     test %al, %al

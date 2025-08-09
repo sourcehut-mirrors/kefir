@@ -262,7 +262,6 @@ _kefir_func___kefir_bigint_zero_label1:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -314,7 +313,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label0:
 _kefir_func___kefir_bigint_unsigned_multiply_label19:
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label18
 _kefir_func___kefir_bigint_unsigned_multiply_label1:
-    mov $0, %rax
     test %edi, %edi
     sete %al
     test %al, %al
@@ -387,7 +385,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label3:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -413,7 +410,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label5:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -428,7 +424,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label7:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -443,7 +438,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label8:
     mov $0, %rdx
     cmp %rcx, %rax
     setb %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -477,7 +471,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label11:
     or %rsi, %rdx
     setne %dl
     movzx %dl, %rdx
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al
@@ -497,7 +490,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label12:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov $0, %rax
     test %edx, %edx
     sete %al
     test %al, %al

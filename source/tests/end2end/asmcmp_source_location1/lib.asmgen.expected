@@ -167,28 +167,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 7,
-#                        "variant": "64bit"
-#                    },
-#                    {
-#                        "type": "integer",
-#                        "value": 0
-#                    }
-#                ],
-#                "labels": [
-#                    12
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 22,
-#                    "column": 5
-#                }
-#            },
-#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -202,7 +180,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [],
+#                "labels": [
+#                    12
+#                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 22,
@@ -530,28 +510,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 13,
-#                        "variant": "64bit"
-#                    },
-#                    {
-#                        "type": "integer",
-#                        "value": 0
-#                    }
-#                ],
-#                "labels": [
-#                    18
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 24,
-#                    "column": 5
-#                }
-#            },
-#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -565,7 +523,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [],
+#                "labels": [
+#                    18
+#                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 24,
@@ -822,28 +782,6 @@ factorial:
 #                }
 #            },
 #            {
-#                "opcode": "mov",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 18,
-#                        "variant": "64bit"
-#                    },
-#                    {
-#                        "type": "integer",
-#                        "value": 0
-#                    }
-#                ],
-#                "labels": [
-#                    24
-#                ],
-#                "source_location": {
-#                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
-#                    "line": 28,
-#                    "column": 5
-#                }
-#            },
-#            {
 #                "opcode": "test",
 #                "args": [
 #                    {
@@ -857,7 +795,9 @@ factorial:
 #                        "variant": "32bit"
 #                    }
 #                ],
-#                "labels": [],
+#                "labels": [
+#                    24
+#                ],
 #                "source_location": {
 #                    "source_id": "source\/tests\/end2end\/asmcmp_source_location1\/lib.kefir.asmgen.c",
 #                    "line": 28,
@@ -1528,7 +1468,6 @@ _kefir_func_factorial_label11:
     setl %cl
 .loc 0 22 5
 _kefir_func_factorial_label12:
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
 .loc 0 22 5
@@ -1558,7 +1497,6 @@ _kefir_func_factorial_label17:
     movzx %cl, %rcx
 .loc 0 24 5
 _kefir_func_factorial_label18:
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
 .loc 0 24 5
@@ -1581,7 +1519,6 @@ _kefir_func_factorial_label23:
     setg %cl
 .loc 0 28 5
 _kefir_func_factorial_label24:
-    mov $0, %rax
     test %ecx, %ecx
     sete %al
 .loc 0 28 5
