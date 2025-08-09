@@ -48,6 +48,8 @@ struct mem2reg_state {
     struct kefir_hashtreeset visited_blocks;
     struct kefir_hashtree block_final_stores;
     struct kefir_hashtreeset indirect_jump_targets;
+    struct kefir_hashtreeset required_stores;
+    struct kefir_hashtreeset drop_candidate_stores;
     kefir_bool_t has_indirect_jumps;
 
     struct kefir_ir_type *new_locals;
@@ -529,6 +531,7 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                                       (kefir_hashtreeset_entry_t) block_id) &&
                                 state->has_indirect_jumps) {
                                 replacement_ref = instr_id;
+                                REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->required_stores, (kefir_hashtreeset_entry_t) addr_instr_ref));
                             } else if (block_id != state->func->code.entry_point) {
                                 kefir_opt_phi_id_t phi_ref;
                                 REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code, block_id,
@@ -711,6 +714,8 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                             REQUIRE_OK(kefir_opt_code_container_drop_control(&state->func->code, prev_instr_id));
                             REQUIRE_OK(
                                 kefir_opt_code_container_drop_instr(state->mem, &state->func->code, prev_instr_id));
+                        } else {
+                            REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->drop_candidate_stores, (kefir_hashtreeset_entry_t) BLOCK_FINAL_STORE_KEY(addr_instr->id, prev_instr_id)));
                         }
 
                         REQUIRE_OK(kefir_opt_code_debug_info_add_local_variable_ref(
@@ -825,6 +830,7 @@ static kefir_result_t mem2reg_link_blocks(struct mem2reg_state *state, kefir_opt
         if (kefir_hashtreeset_has(&state->indirect_jump_targets, (kefir_hashtreeset_entry_t) source_block_ref) &&
             state->has_indirect_jumps) {
             REQUIRE_OK(mem2reg_load_local_variable(state, instr_ref, source_block_ref, &source_instr_ref));
+            REQUIRE_OK(kefir_hashtreeset_add(state->mem, &state->required_stores, (kefir_hashtreeset_entry_t) instr_ref));
         } else if (source_block_ref != state->func->code.entry_point) {
             kefir_opt_phi_id_t source_phi_ref;
             REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code, source_block_ref,
@@ -926,6 +932,31 @@ static kefir_result_t mem2reg_propagate(struct mem2reg_state *state) {
     return KEFIR_OK;
 }
 
+static kefir_result_t mem2reg_cleanup_stores(struct mem2reg_state *state) {
+    REQUIRE(state->has_indirect_jumps, KEFIR_OK);
+
+    kefir_result_t res;
+    struct kefir_hashtreeset_iterator iter;
+    for (res = kefir_hashtreeset_iter(&state->drop_candidate_stores, &iter); res == KEFIR_OK;
+         res = kefir_hashtreeset_next(&iter)) {
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, addr_instr_ref, ((kefir_uint64_t) iter.entry) >> 32);
+        ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, store_instr_ref, (kefir_uint32_t) iter.entry);
+
+        if (!kefir_hashtreeset_has(&state->required_stores, (kefir_hashtreeset_entry_t) addr_instr_ref)) {
+            res = kefir_opt_code_container_drop_control(&state->func->code, store_instr_ref);
+            REQUIRE_CHAIN(&res,
+                kefir_opt_code_container_drop_instr(state->mem, &state->func->code, store_instr_ref));
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+            }
+        }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_mem2reg_reg_state(struct kefir_mem *mem, struct kefir_hashtree *tree,
                                              kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);
@@ -978,10 +1009,39 @@ static kefir_result_t mem2reg_apply(struct kefir_mem *mem, struct kefir_opt_modu
     REQUIRE_OK(kefir_hashtreeset_init(&state.visited_blocks, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.block_final_stores, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state.indirect_jump_targets, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&state.required_stores, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtreeset_init(&state.drop_candidate_stores, &kefir_hashtree_uint_ops));
 
     kefir_result_t res = mem2reg_scan(&state);
     REQUIRE_CHAIN(&res, mem2reg_pull(&state));
     REQUIRE_CHAIN(&res, mem2reg_propagate(&state));
+    REQUIRE_CHAIN(&res, mem2reg_cleanup_stores(&state));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &state.drop_candidate_stores);
+        kefir_hashtreeset_free(mem, &state.required_stores);
+        kefir_hashtreeset_free(mem, &state.indirect_jump_targets);
+        kefir_hashtree_free(mem, &state.block_final_stores);
+        kefir_hashtreeset_free(mem, &state.visited_blocks);
+        kefir_list_free(mem, &state.block_queue);
+        kefir_hashtree_free(mem, &state.local_regs);
+        kefir_hashtreeset_free(mem, &state.addressed_locals);
+        kefir_hashtreeset_free(mem, &state.scalar_local_candidates);
+        return res;
+    });
+
+    res = kefir_hashtreeset_free(mem, &state.drop_candidate_stores);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_hashtreeset_free(mem, &state.required_stores);
+        kefir_hashtreeset_free(mem, &state.indirect_jump_targets);
+        kefir_hashtree_free(mem, &state.block_final_stores);
+        kefir_hashtreeset_free(mem, &state.visited_blocks);
+        kefir_list_free(mem, &state.block_queue);
+        kefir_hashtree_free(mem, &state.local_regs);
+        kefir_hashtreeset_free(mem, &state.addressed_locals);
+        kefir_hashtreeset_free(mem, &state.scalar_local_candidates);
+        return res;
+    });
+    res = kefir_hashtreeset_free(mem, &state.required_stores);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_hashtreeset_free(mem, &state.indirect_jump_targets);
         kefir_hashtree_free(mem, &state.block_final_stores);
