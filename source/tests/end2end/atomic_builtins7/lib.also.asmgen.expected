@@ -58,16 +58,15 @@ __kefir_text_func_test_is_lock_free_begin:
     jz _kefir_func_test_is_lock_free_label38
     mov %rax, %rcx
 _kefir_func_test_is_lock_free_label1:
-    xor %r9d, %r9d
+    xor %r8d, %r8d
     cmp $2, %ecx
-    sete %r9b
-    mov %r9, %rax
-    test %al, %al
-    jnz _kefir_func_test_is_lock_free_label35
-    mov %rax, %r8
+    sete %r8b
+    cmp $2, %ecx
+    je _kefir_func_test_is_lock_free_label35
+    mov %r8, %r10
     jmp _kefir_func_test_is_lock_free_label2
 _kefir_func_test_is_lock_free_label2:
-    test %r8d, %r8d
+    test %r10d, %r10d
     setne %al
     movzx %al, %rax
     xor %edx, %edx
@@ -414,19 +413,19 @@ _kefir_func_test_is_lock_free_label33:
     xor %eax, %eax
     cmp $2, %edx
     sete %al
-    test %r8d, %r8d
+    test %r10d, %r10d
     setne %cl
     and %cl, %al
     movzx %al, %rcx
     mov %rcx, %r9
     jmp _kefir_func_test_is_lock_free_label3
 _kefir_func_test_is_lock_free_label34:
-    movq %r8, -16(%rbp)
+    movq %r10, -16(%rbp)
     movq %rdx, -8(%rbp)
     mov $2, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r8
+    movq -16(%rbp), %r10
     movq -8(%rbp), %rdx
     test %al, %al
     setne %al
@@ -434,36 +433,37 @@ _kefir_func_test_is_lock_free_label34:
     mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label33
 _kefir_func_test_is_lock_free_label35:
-    mov $1, %rcx
-    or $0, %ecx
-    setne %cl
-    movzx %cl, %rcx
-    or $0, %ecx
-    setne %cl
-    movzx %cl, %rcx
-    test %cl, %cl
+    mov $1, %rax
+    or $0, %eax
+    setne %al
+    movzx %al, %rax
+    or $0, %eax
+    setne %al
+    movzx %al, %rax
+    test %al, %al
     jz _kefir_func_test_is_lock_free_label37
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label36:
-    xor %edx, %edx
+    xor %eax, %eax
     cmp $2, %ecx
-    sete %dl
-    mov %r9, %rsi
-    and %sil, %dl
-    movzx %dl, %rsi
-    mov %rsi, %r8
+    sete %al
+    mov %r8, %rdx
+    and %dl, %al
+    movzx %al, %rdx
+    mov %rdx, %r10
     jmp _kefir_func_test_is_lock_free_label2
 _kefir_func_test_is_lock_free_label37:
-    movq %r9, -16(%rbp)
+    movq %r8, -16(%rbp)
     movq %rcx, -8(%rbp)
     mov $1, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r9
+    movq -16(%rbp), %r8
     movq -8(%rbp), %rcx
     test %al, %al
-    setne %dl
-    movzx %dl, %rdx
-    mov %rdx, %rcx
+    setne %al
+    movzx %al, %rax
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label36
 _kefir_func_test_is_lock_free_label38:
     movq %rcx, -16(%rbp)

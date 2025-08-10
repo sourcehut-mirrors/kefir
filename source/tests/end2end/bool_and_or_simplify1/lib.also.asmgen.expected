@@ -31,12 +31,6 @@ __kefir_text_func_and_begin:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
-    mov %rax, %rcx
-    test %esi, %esi
-    setne %dl
-    and %dl, %cl
-    and %al, %cl
-    movzx %cl, %rax
     ret
 __kefir_text_func_and_end:
 
