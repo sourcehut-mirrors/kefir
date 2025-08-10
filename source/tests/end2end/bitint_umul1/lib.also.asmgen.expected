@@ -303,9 +303,7 @@ _kefir_func___kefir_bigint_unsigned_multiply_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    test %edx, %edx
-    setne %sil
-    movzx %sil, %rsi
+    mov %rdx, %rsi
     test %sil, %sil
     jz _kefir_func___kefir_bigint_unsigned_multiply_label19
     mov %rsi, %rdi

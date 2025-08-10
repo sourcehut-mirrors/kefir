@@ -1,0 +1,44 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or
+.type or, @function
+.global and
+.type and, @function
+
+.section .text
+__kefir_text_section_begin:
+or:
+__kefir_text_func_or_begin:
+    or %esi, %edi
+    setne %dil
+    movzx %dil, %rdi
+    or %esi, %edi
+    setne %dil
+    movzx %dil, %rdi
+    or %esi, %edi
+    setne %dil
+    movzx %dil, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_or_end:
+
+and:
+__kefir_text_func_and_begin:
+    test %edi, %edi
+    setne %al
+    test %esi, %esi
+    setne %cl
+    and %al, %cl
+    movzx %cl, %rax
+    mov %rax, %rcx
+    test %esi, %esi
+    setne %dl
+    and %dl, %cl
+    and %al, %cl
+    movzx %cl, %rax
+    ret
+__kefir_text_func_and_end:
+
+__kefir_text_section_end:
+

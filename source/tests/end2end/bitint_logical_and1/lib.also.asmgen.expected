@@ -36,31 +36,29 @@ _kefir_func_and1_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_and1_label3
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_and1_label1
 _kefir_func_and1_label3:
     jmp _kefir_func_and1_label2
 _kefir_func_and1_label1:
-    mov %rdx, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_and1_label2:
-    movb -1(%rbp), %cl
-    shl $58, %rcx
-    sar $58, %rcx
-    shl $58, %rcx
-    shr $58, %rcx
-    test %cl, %cl
-    setne %cl
-    movzx %cl, %rcx
+    movb -1(%rbp), %dl
+    shl $58, %rdx
+    sar $58, %rdx
+    shl $58, %rdx
+    shr $58, %rdx
+    test %dl, %dl
+    setne %dl
+    movzx %dl, %rdx
     test %al, %al
     setne %al
-    test %cl, %cl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rdx
+    and %al, %dl
+    movzx %dl, %rax
+    mov %rax, %rcx
     jmp _kefir_func_and1_label1
 __kefir_text_func_and1_end:
 
@@ -84,31 +82,29 @@ _kefir_func_and2_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_and2_label3
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_and2_label1
 _kefir_func_and2_label3:
     jmp _kefir_func_and2_label2
 _kefir_func_and2_label1:
-    mov %rdx, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_and2_label2:
-    movw -2(%rbp), %cx
-    shl $50, %rcx
-    sar $50, %rcx
-    shl $50, %rcx
-    shr $50, %rcx
-    test %cx, %cx
-    setne %cl
-    movzx %cl, %rcx
+    movw -2(%rbp), %dx
+    shl $50, %rdx
+    sar $50, %rdx
+    shl $50, %rdx
+    shr $50, %rdx
+    test %dx, %dx
+    setne %dl
+    movzx %dl, %rdx
     test %al, %al
     setne %al
-    test %cl, %cl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rdx
+    and %al, %dl
+    movzx %dl, %rax
+    mov %rax, %rcx
     jmp _kefir_func_and2_label1
 __kefir_text_func_and2_end:
 
@@ -132,31 +128,29 @@ _kefir_func_and3_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_and3_label3
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_and3_label1
 _kefir_func_and3_label3:
     jmp _kefir_func_and3_label2
 _kefir_func_and3_label1:
-    mov %rdx, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_and3_label2:
-    movl -4(%rbp), %ecx
-    shl $35, %rcx
-    sar $35, %rcx
-    shl $35, %rcx
-    shr $35, %rcx
-    test %ecx, %ecx
-    setne %cl
-    movzx %cl, %rcx
+    movl -4(%rbp), %edx
+    shl $35, %rdx
+    sar $35, %rdx
+    shl $35, %rdx
+    shr $35, %rdx
+    test %edx, %edx
+    setne %dl
+    movzx %dl, %rdx
     test %al, %al
     setne %al
-    test %cl, %cl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rdx
+    and %al, %dl
+    movzx %dl, %rax
+    mov %rax, %rcx
     jmp _kefir_func_and3_label1
 __kefir_text_func_and3_end:
 
@@ -180,31 +174,29 @@ _kefir_func_and4_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_and4_label3
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_and4_label1
 _kefir_func_and4_label3:
     jmp _kefir_func_and4_label2
 _kefir_func_and4_label1:
-    mov %rdx, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_and4_label2:
-    movq -8(%rbp), %rcx
-    shl $6, %rcx
-    sar $6, %rcx
-    shl $6, %rcx
-    shr $6, %rcx
-    test %rcx, %rcx
-    setne %cl
-    movzx %cl, %rcx
+    movq -8(%rbp), %rdx
+    shl $6, %rdx
+    sar $6, %rdx
+    shl $6, %rdx
+    shr $6, %rdx
+    test %rdx, %rdx
+    setne %dl
+    movzx %dl, %rdx
     test %al, %al
     setne %al
-    test %cl, %cl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rdx
+    and %al, %dl
+    movzx %dl, %rax
+    mov %rax, %rcx
     jmp _kefir_func_and4_label1
 __kefir_text_func_and4_end:
 

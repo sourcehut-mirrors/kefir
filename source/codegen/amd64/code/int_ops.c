@@ -451,6 +451,16 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_sign_extend32)(
     return KEFIR_OK;
 }
 
+#define IS_BOOL_OPCODE(_opcode)                                                                      \
+    ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||  \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||   \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT || (_opcode) == KEFIR_OPT_OPCODE_INT8_TO_BOOL || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_TO_BOOL ||  (_opcode) == KEFIR_OPT_OPCODE_INT32_TO_BOOL || \
+    (_opcode) == KEFIR_OPT_OPCODE_INT64_TO_BOOL)
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_bool)(struct kefir_mem *mem,
                                                                  struct kefir_codegen_amd64_function *function,
                                                                  const struct kefir_opt_instruction *instruction) {
@@ -462,39 +472,48 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_to_bool)(struct kefir_me
     REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
     REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                  KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &result_vreg));
-    switch (instruction->operation.opcode) {
-        case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
-            REQUIRE_OK(
-                kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), NULL));
-            break;
 
-        case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
-            REQUIRE_OK(kefir_asmcmp_amd64_test(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), NULL));
-            break;
+    const struct kefir_opt_instruction *arg_instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, instruction->operation.parameters.refs[0], &arg_instr));
+    if (IS_BOOL_OPCODE(arg_instr->operation.opcode)) {
+        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                             result_vreg, arg_vreg, NULL));
+    } else {
+        switch (instruction->operation.opcode) {
+            case KEFIR_OPT_OPCODE_INT8_TO_BOOL:
+                REQUIRE_OK(
+                    kefir_asmcmp_amd64_test(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG8(arg_vreg), NULL));
+                break;
 
-        case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
-            REQUIRE_OK(kefir_asmcmp_amd64_test(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), NULL));
-            break;
+            case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
+                REQUIRE_OK(kefir_asmcmp_amd64_test(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG16(arg_vreg), NULL));
+                break;
 
-        case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
-            REQUIRE_OK(kefir_asmcmp_amd64_test(
-                mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), NULL));
-            break;
+            case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
+                REQUIRE_OK(kefir_asmcmp_amd64_test(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG32(arg_vreg), NULL));
+                break;
 
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instuction opcode");
+            case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
+                REQUIRE_OK(kefir_asmcmp_amd64_test(
+                    mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                    &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), &KEFIR_ASMCMP_MAKE_VREG64(arg_vreg), NULL));
+                break;
+
+            default:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected optimizer instuction opcode");
+        }
+        REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
+        REQUIRE_OK(kefir_asmcmp_amd64_movzx(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
+                                            &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(result_vreg),
+                                            NULL));
     }
-    REQUIRE_OK(kefir_asmcmp_amd64_setne(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG8(result_vreg), NULL));
-    REQUIRE_OK(kefir_asmcmp_amd64_movzx(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
-                                        &KEFIR_ASMCMP_MAKE_VREG64(result_vreg), &KEFIR_ASMCMP_MAKE_VREG8(result_vreg),
-                                        NULL));
 
     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, result_vreg));
     return KEFIR_OK;
@@ -1022,21 +1041,23 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(int_bool_and)(struct kefir_m
     if (use_instr_ref != KEFIR_ID_NONE) {
         REQUIRE_OK(kefir_opt_code_container_instr(&function->function->code, use_instr_ref, &use_instr));
     }
-#define SKIP_FULL_TEST(_opcode)                                                                      \
+#define IS_BOOL_OPCODE(_opcode)                                                                      \
     ((_opcode) == KEFIR_OPT_OPCODE_SCALAR_COMPARE || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||  \
      (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_AND || \
      (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_AND || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||   \
      (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_OR ||   \
      (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_OR || (_opcode) == KEFIR_OPT_OPCODE_INT8_BOOL_NOT ||   \
      (_opcode) == KEFIR_OPT_OPCODE_INT16_BOOL_NOT || (_opcode) == KEFIR_OPT_OPCODE_INT32_BOOL_NOT || \
-     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT)
-    if (SKIP_FULL_TEST(arg1_instr->operation.opcode)) {
+     (_opcode) == KEFIR_OPT_OPCODE_INT64_BOOL_NOT || (_opcode) == KEFIR_OPT_OPCODE_INT8_TO_BOOL || \
+     (_opcode) == KEFIR_OPT_OPCODE_INT16_TO_BOOL ||  (_opcode) == KEFIR_OPT_OPCODE_INT32_TO_BOOL || \
+    (_opcode) == KEFIR_OPT_OPCODE_INT64_TO_BOOL)
+    if (IS_BOOL_OPCODE(arg1_instr->operation.opcode)) {
         full_test1 = false;
     }
-    if (SKIP_FULL_TEST(arg2_instr->operation.opcode)) {
+    if (IS_BOOL_OPCODE(arg2_instr->operation.opcode)) {
         full_test2 = false;
     }
-#undef SKIP_FULL_TEST
+#undef IS_BOOL_OPCODE
 
     struct kefir_asmcmp_value arg1, arg2;
     switch (instruction->operation.opcode) {

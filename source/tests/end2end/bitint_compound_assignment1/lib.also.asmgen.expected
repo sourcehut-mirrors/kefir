@@ -3260,9 +3260,7 @@ _kefir_func___kefir_bigint_unsigned_multiply_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    test %edx, %edx
-    setne %sil
-    movzx %sil, %rsi
+    mov %rdx, %rsi
     test %sil, %sil
     jz _kefir_func___kefir_bigint_unsigned_multiply_label19
     mov %rsi, %rdi
@@ -4116,9 +4114,7 @@ _kefir_func___kefir_bigint_signed_multiply_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    test %edx, %edx
-    setne %sil
-    movzx %sil, %rsi
+    mov %rdx, %rsi
     test %sil, %sil
     jz _kefir_func___kefir_bigint_signed_multiply_label16
     mov %rsi, %rdi
@@ -4227,9 +4223,7 @@ _kefir_func___kefir_bigint_signed_multiply_label7:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %ecx, %ecx
-    setne %dl
-    movzx %dl, %rdx
+    mov %rcx, %rdx
     test %dl, %dl
     sete %al
     test %al, %al

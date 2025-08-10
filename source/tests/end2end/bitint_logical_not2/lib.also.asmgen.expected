@@ -31,9 +31,7 @@ _kefir_func_bnot1_label0:
     mov $0, %rcx
     test %al, %al
     sete %cl
-    test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -54,9 +52,7 @@ _kefir_func_bnot2_label0:
     mov $0, %rcx
     test %ax, %ax
     sete %cl
-    test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -77,9 +73,7 @@ _kefir_func_bnot3_label0:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -100,9 +94,7 @@ _kefir_func_bnot4_label0:
     mov $0, %rcx
     test %rax, %rax
     sete %cl
-    test %ecx, %ecx
-    setne %al
-    movzx %al, %rax
+    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret

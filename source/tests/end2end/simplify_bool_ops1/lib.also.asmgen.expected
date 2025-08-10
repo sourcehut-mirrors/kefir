@@ -101,11 +101,7 @@ char_or3:
 __kefir_text_func_char_or3_begin:
     or %sil, %dil
     setne %dil
-    movzx %dil, %rdi
-    test %dl, %dl
-    setne %al
-    movzx %al, %rax
-    or %eax, %edi
+    or %dl, %dil
     setne %dil
     movzx %dil, %rdi
     mov %rdi, %rax
@@ -120,8 +116,10 @@ __kefir_text_func_int_and3_begin:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
+    mov %rax, %rcx
     test %edx, %edx
-    setne %cl
+    setne %dl
+    and %dl, %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -144,10 +142,7 @@ __kefir_text_func_long_or3_begin:
     or %rsi, %rdi
     setne %dil
     movzx %dil, %rdi
-    test %rdx, %rdx
-    setne %al
-    movzx %al, %rax
-    or %eax, %edi
+    or %rdx, %rdi
     setne %dil
     movzx %dil, %rdi
     movsx %edi, %rax
@@ -169,12 +164,8 @@ __kefir_text_func_char_and3_begin:
     setne %al
     test %sil, %sil
     setne %cl
-    and %al, %cl
-    movzx %cl, %rax
+    and %cl, %al
     test %dl, %dl
-    setne %cl
-    movzx %cl, %rcx
-    test %ecx, %ecx
     setne %cl
     and %al, %cl
     movzx %cl, %rax
@@ -190,9 +181,6 @@ __kefir_text_func_long_and3_begin:
     and %al, %cl
     movzx %cl, %rax
     test %rdx, %rdx
-    setne %cl
-    movzx %cl, %rcx
-    test %ecx, %ecx
     setne %cl
     and %al, %cl
     movzx %cl, %rax
@@ -216,10 +204,7 @@ __kefir_text_func_short_or3_begin:
     or %si, %di
     setne %dil
     movzx %dil, %rdi
-    test %dx, %dx
-    setne %al
-    movzx %al, %rax
-    or %eax, %edi
+    or %dx, %di
     setne %dil
     movzx %dil, %rdi
     mov %rdi, %rax
@@ -235,9 +220,6 @@ __kefir_text_func_short_and3_begin:
     and %al, %cl
     movzx %cl, %rax
     test %dx, %dx
-    setne %cl
-    movzx %cl, %rcx
-    test %ecx, %ecx
     setne %cl
     and %al, %cl
     movzx %cl, %rax

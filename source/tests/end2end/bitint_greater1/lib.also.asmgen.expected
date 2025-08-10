@@ -301,9 +301,7 @@ _kefir_func___kefir_bigint_signed_compare_label2:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %ecx, %ecx
-    setne %dl
-    movzx %dl, %rdx
+    mov %rcx, %rdx
     test %dl, %dl
     sete %al
     test %al, %al

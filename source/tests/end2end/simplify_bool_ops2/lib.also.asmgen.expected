@@ -107,8 +107,6 @@ __kefir_text_func_long_char_and_begin:
     movzx %cl, %rcx
     test %rdi, %rdi
     setne %al
-    test %rcx, %rcx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -133,8 +131,6 @@ __kefir_text_func_short_char_and_begin:
     movzx %cl, %rcx
     test %di, %di
     setne %al
-    test %cx, %cx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -147,8 +143,6 @@ __kefir_text_func_short_long_and_begin:
     movzx %cl, %rcx
     test %di, %di
     setne %al
-    test %cx, %cx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -161,8 +155,6 @@ __kefir_text_func_long_short_and_begin:
     movzx %cl, %rcx
     test %rdi, %rdi
     setne %al
-    test %rcx, %rcx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -187,8 +179,6 @@ __kefir_text_func_short_int_and_begin:
     movzx %cl, %rcx
     test %di, %di
     setne %al
-    test %cx, %cx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -213,8 +203,6 @@ __kefir_text_func_char_int_and_begin:
     movzx %cl, %rcx
     test %dil, %dil
     setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -239,8 +227,6 @@ __kefir_text_func_int_char_and_begin:
     movzx %cl, %rcx
     test %edi, %edi
     setne %al
-    test %ecx, %ecx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -253,8 +239,6 @@ __kefir_text_func_int_long_and_begin:
     movzx %cl, %rcx
     test %edi, %edi
     setne %al
-    test %ecx, %ecx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -291,8 +275,6 @@ __kefir_text_func_long_int_and_begin:
     movzx %cl, %rcx
     test %rdi, %rdi
     setne %al
-    test %rcx, %rcx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -317,8 +299,6 @@ __kefir_text_func_char_long_and_begin:
     movzx %cl, %rcx
     test %dil, %dil
     setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -343,8 +323,6 @@ __kefir_text_func_char_short_and_begin:
     movzx %cl, %rcx
     test %dil, %dil
     setne %al
-    test %cl, %cl
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret
@@ -357,8 +335,6 @@ __kefir_text_func_int_short_and_begin:
     movzx %cl, %rcx
     test %edi, %edi
     setne %al
-    test %ecx, %ecx
-    setne %cl
     and %al, %cl
     movzx %cl, %rax
     ret

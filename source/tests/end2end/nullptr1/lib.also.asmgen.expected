@@ -53,9 +53,6 @@ __kefir_text_func_is_begin:
     xor %eax, %eax
     cmp $0, %rdi
     sete %al
-    test %eax, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_is_end:
 
@@ -76,9 +73,7 @@ __kefir_text_func_or1_begin:
     or $0, %dil
     setne %dil
     movzx %dil, %rdi
-    test %edi, %edi
-    setne %al
-    movzx %al, %rax
+    mov %rdi, %rax
     ret
 __kefir_text_func_or1_end:
 
@@ -88,9 +83,6 @@ __kefir_text_func_or2_begin:
     or %dil, %al
     setne %al
     movzx %al, %rax
-    test %eax, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_or2_end:
 
@@ -98,9 +90,6 @@ or3:
 __kefir_text_func_or3_begin:
     xor %eax, %eax
     or $0, %rax
-    setne %al
-    movzx %al, %rax
-    test %eax, %eax
     setne %al
     movzx %al, %rax
     ret
@@ -115,9 +104,6 @@ __kefir_text_func_and1_begin:
     setne %cl
     and %al, %cl
     movzx %cl, %rax
-    test %eax, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_and1_end:
 
