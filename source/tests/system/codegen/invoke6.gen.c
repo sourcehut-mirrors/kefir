@@ -53,7 +53,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_STRUCT, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));

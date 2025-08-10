@@ -20,7 +20,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -28,7 +28,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         }

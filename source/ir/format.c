@@ -681,26 +681,8 @@ static const char *typecode_to_string(kefir_ir_typecode_t typecode) {
         case KEFIR_IR_TYPE_FLOAT64:
             return "double";
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             return "long_double";
-
-        case KEFIR_IR_TYPE_BOOL:
-            return "bool";
-
-        case KEFIR_IR_TYPE_CHAR:
-            return "char";
-
-        case KEFIR_IR_TYPE_SHORT:
-            return "short";
-
-        case KEFIR_IR_TYPE_INT:
-            return "int";
-
-        case KEFIR_IR_TYPE_LONG:
-            return "long";
-
-        case KEFIR_IR_TYPE_WORD:
-            return "word";
 
         case KEFIR_IR_TYPE_BITINT:
             return "bitint";
@@ -744,18 +726,13 @@ static kefir_result_t format_type_default(const struct kefir_ir_type *type, kefi
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_INT64:
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_SHORT:
-        case KEFIR_IR_TYPE_INT:
-        case KEFIR_IR_TYPE_LONG:
         case KEFIR_IR_TYPE_FLOAT32:
         case KEFIR_IR_TYPE_FLOAT64:
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
-        case KEFIR_IR_TYPE_WORD:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
+            // Intentionally left blank
             break;
 
         case KEFIR_IR_TYPE_BITINT:

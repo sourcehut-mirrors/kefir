@@ -261,7 +261,7 @@
                     "type": "array",
                     "length": 6,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -277,7 +277,7 @@
                     "type": "array",
                     "length": 5,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -286,7 +286,7 @@
             "identifier": 81,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         }

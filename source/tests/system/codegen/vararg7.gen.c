@@ -51,10 +51,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "getint", func_params, false, func_returns);
     REQUIRE(getint_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getint_decl_result, KEFIR_IR_TYPE_INT32, 0, 0));
     struct kefir_ir_function *getint = kefir_ir_module_new_function_with_args(mem, &module, getint_decl, 1024);
     REQUIRE(getint != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_local(mem, &module, getint->name, KEFIR_IR_IDENTIFIER_FUNCTION));
@@ -90,7 +90,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(getarg != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, getarg_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(generate_va_list_type(mem, getarg_locals));
     kefir_irbuilder_block_appendi64(mem, &getarg->body, KEFIR_IR_OPCODE_NOP, 0);  // 0: [C, L*]
     kefir_irbuilder_block_appendu32_4(mem, &getarg->body, KEFIR_IR_OPCODE_GET_LOCAL, locals_id, 0, locals_id,

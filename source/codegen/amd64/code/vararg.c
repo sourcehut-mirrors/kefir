@@ -1151,7 +1151,7 @@ static kefir_result_t vararg_get_impl(struct kefir_mem *mem, struct kefir_codege
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_UNION] = vararg_visit_aggregate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = vararg_visit_aggregate;
-    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = vararg_visit_long_double;
+    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = vararg_visit_long_double;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = vararg_visit_complex_float32;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = vararg_visit_complex_float64;
 

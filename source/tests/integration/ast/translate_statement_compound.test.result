@@ -13,7 +13,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -33,10 +33,10 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "long"
+                    "type": "int64"
                 },
                 {
                     "type": "float"
@@ -55,7 +55,7 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -63,7 +63,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },

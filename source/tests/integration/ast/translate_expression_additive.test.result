@@ -33,7 +33,7 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -52,7 +52,7 @@
                     "type": "array",
                     "length": 4,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -61,7 +61,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -101,7 +101,7 @@
             "identifier": 19,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -109,7 +109,7 @@
             "identifier": 20,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },

@@ -49,13 +49,13 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_STRUCT, 0, 1));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_ARRAY, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, aggtype, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_STRUCT, 0, 1));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_ARRAY, 0, 4));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_LONG, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, getarg_decl_result, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(generate_va_list_type(mem, getarg_locals));
     REQUIRE_OK(kefir_irbuilder_type_append_from(mem, getarg_locals, aggtype, 0));
     struct kefir_ir_function *getarg = kefir_ir_module_new_function_with_args(mem, &module, getarg_decl, 1024);

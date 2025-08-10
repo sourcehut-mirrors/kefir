@@ -57,7 +57,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function_decl *fill_decl =
         kefir_ir_module_new_function_declaration(mem, &module, "fill", func_params, false, func_returns);
     REQUIRE(fill_decl != NULL, KEFIR_INTERNAL_ERROR);
-    kefir_irbuilder_type_append(mem, fill_decl->params, KEFIR_IR_TYPE_LONG, 0, 0);
+    kefir_irbuilder_type_append(mem, fill_decl->params, KEFIR_IR_TYPE_INT64, 0, 0);
     struct kefir_ir_function *fill = kefir_ir_module_new_function_with_args(mem, &module, fill_decl, 1024);
     REQUIRE(fill != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, fill_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));

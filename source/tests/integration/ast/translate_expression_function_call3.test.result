@@ -30,7 +30,7 @@
                     "type": "array",
                     "length": 2,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -43,7 +43,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -55,7 +55,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -67,7 +67,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -83,13 +83,13 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
                     "type": "double"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -97,7 +97,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -113,7 +113,7 @@
             "identifier": 13,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
                     "type": "double"
@@ -124,7 +124,7 @@
             "identifier": 14,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -140,13 +140,13 @@
             "identifier": 17,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -154,7 +154,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -174,7 +174,7 @@
             "identifier": 22,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -190,16 +190,16 @@
             "identifier": 25,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
                     "type": "double"
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -207,7 +207,7 @@
             "identifier": 26,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -218,7 +218,7 @@
                     "type": "array",
                     "length": 2,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]

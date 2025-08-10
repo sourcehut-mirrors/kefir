@@ -70,8 +70,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumseq_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumseq_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumseq_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumseq_decl_result, KEFIR_IR_TYPE_INT32, 0, 0));
     struct kefir_ir_function *sumseq = kefir_ir_module_new_function_with_args(mem, &module, sumseq_decl, 1024);
     REQUIRE(sumseq != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sumseq_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
@@ -114,17 +114,17 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     kefir_irbuilder_block_appendu64(mem, &fdbl->body, KEFIR_IR_OPCODE_INVOKE, fsum_decl->id);
     kefir_irbuilder_block_appendu64(mem, &fdbl->body, KEFIR_IR_OPCODE_RETURN, 0);
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_result, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sum10_decl_result, KEFIR_IR_TYPE_INT32, 0, 0));
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, fsum_decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, fsum_decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));

@@ -11,28 +11,28 @@
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "short"
+                                "type": "int16"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -57,28 +57,28 @@
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "short"
+                                "type": "int16"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         },
                         {
                             "type": "array",
                             "length": 24,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -92,7 +92,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -104,7 +104,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "short"
+                        "type": "int16"
                     }
                 }
             ]
@@ -116,7 +116,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "int"
+                        "type": "int32"
                     }
                 }
             ]
@@ -128,7 +128,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "int"
+                        "type": "int32"
                     }
                 }
             ]

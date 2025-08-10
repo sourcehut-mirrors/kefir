@@ -367,7 +367,7 @@
             "identifier": 77,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -375,7 +375,7 @@
             "identifier": 81,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -383,7 +383,7 @@
             "identifier": 85,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -391,7 +391,7 @@
             "identifier": 89,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -402,7 +402,7 @@
                     "type": "array",
                     "length": 5,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -411,18 +411,10 @@
             "identifier": 108,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 },
                 {
-                    "type": "int"
-                }
-            ]
-        },
-        {
-            "identifier": 121,
-            "type": [
-                {
-                    "type": "word"
+                    "type": "int32"
                 }
             ]
         },
@@ -433,20 +425,20 @@
                     "type": "array",
                     "length": 1,
                     "element_type": {
-                        "type": "word"
+                        "type": "int64"
                     }
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
@@ -459,7 +451,7 @@
                     "type": "array",
                     "length": 9,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -1086,7 +1078,7 @@
         {
             "identifier": 45,
             "name": "sumS",
-            "parameters": 121,
+            "parameters": 89,
             "vararg": false,
             "returns": 89,
             "returns_twice": false
@@ -2232,7 +2224,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2245,7 +2237,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2261,7 +2253,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2303,7 +2295,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2348,7 +2340,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2438,7 +2430,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2525,7 +2517,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2556,7 +2548,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2568,7 +2560,7 @@
                 {
                     "opcode": "get_local",
                     "id": 528280977408,
-                    "type": 121,
+                    "type": 89,
                     "type_index": 0
                 },
                 {

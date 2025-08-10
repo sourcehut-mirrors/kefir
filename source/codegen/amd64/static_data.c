@@ -112,7 +112,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
             break;
 
         case KEFIR_IR_DATA_VALUE_POINTER: {
-            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_LONG || typeentry->typecode == KEFIR_IR_TYPE_INT64,
+            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_INT64,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to store pointer in requested location"));
 
             const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
@@ -135,7 +135,7 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
         }
 
         case KEFIR_IR_DATA_VALUE_STRING_POINTER: {
-            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_LONG || typeentry->typecode == KEFIR_IR_TYPE_INT64,
+            REQUIRE(typeentry->typecode == KEFIR_IR_TYPE_INT64,
                     KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to store pointer in requested location"));
 
             const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
@@ -170,8 +170,6 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
         REQUIRE_OK(align_offset(layout, param));
     }
     switch (typeentry->typecode) {
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
         case KEFIR_IR_TYPE_INT8:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_BYTE, 1,
@@ -179,7 +177,6 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                                              &param->codegen->xasmgen_helpers.operands[0], (kefir_uint8_t) value)));
             break;
 
-        case KEFIR_IR_TYPE_SHORT:
         case KEFIR_IR_TYPE_INT16:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_WORD, 1,
@@ -187,7 +184,6 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                                              &param->codegen->xasmgen_helpers.operands[0], (kefir_uint16_t) value)));
             break;
 
-        case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_INT32:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_DOUBLE, 1,
@@ -195,7 +191,6 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
                                              &param->codegen->xasmgen_helpers.operands[0], (kefir_uint32_t) value)));
             break;
 
-        case KEFIR_IR_TYPE_LONG:
         case KEFIR_IR_TYPE_INT64:
             REQUIRE_OK(
                 KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
@@ -225,66 +220,6 @@ static kefir_result_t integral_static_data(const struct kefir_ir_type *type, kef
         default:
             return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpectedly encountered non-integral type");
     }
-    param->offset += layout->size;
-    return KEFIR_OK;
-}
-
-static kefir_result_t word_static_data(const struct kefir_ir_type *type, kefir_size_t index,
-                                       const struct kefir_ir_typeentry *typeentry, void *payload) {
-    UNUSED(type);
-    REQUIRE(typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid IR type entry"));
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Expected valid payload"));
-
-    ASSIGN_DECL_CAST(struct static_data_param *, param, payload);
-    const struct kefir_ir_data_value *entry;
-    REQUIRE_OK(kefir_ir_data_value_at(param->data, param->slot++, &entry));
-
-    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
-    REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
-    REQUIRE_OK(align_offset(layout, param));
-    switch (entry->type) {
-        case KEFIR_IR_DATA_VALUE_UNDEFINED:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_asm_amd64_xasmgen_operand_imm(&param->codegen->xasmgen_helpers.operands[0], 0)));
-            break;
-
-        case KEFIR_IR_DATA_VALUE_INTEGER:
-            REQUIRE_OK(
-                KEFIR_AMD64_XASMGEN_DATA(&param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                                         kefir_asm_amd64_xasmgen_operand_imm(
-                                             &param->codegen->xasmgen_helpers.operands[0], entry->value.integer)));
-            break;
-
-        case KEFIR_IR_DATA_VALUE_POINTER: {
-            const struct kefir_ir_identifier *ir_identifier;
-            REQUIRE_OK(kefir_ir_module_get_identifier(param->module, entry->value.pointer.reference, &ir_identifier));
-
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_asm_amd64_xasmgen_operand_offset(
-                    &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_asm_amd64_xasmgen_operand_label(&param->codegen->xasmgen_helpers.operands[1],
-                                                          KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE, ir_identifier->symbol),
-                    entry->value.pointer.offset)));
-        } break;
-
-        case KEFIR_IR_DATA_VALUE_STRING_POINTER:
-            REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
-                &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 1,
-                kefir_asm_amd64_xasmgen_operand_offset(
-                    &param->codegen->xasmgen_helpers.operands[0],
-                    kefir_asm_amd64_xasmgen_operand_label(
-                        &param->codegen->xasmgen_helpers.operands[1], KEFIR_AMD64_XASMGEN_SYMBOL_ABSOLUTE,
-                        kefir_asm_amd64_xasmgen_helpers_format(&param->codegen->xasmgen_helpers,
-                                                               KEFIR_AMD64_STRING_LITERAL, entry->value.string_ptr.id)),
-                    entry->value.pointer.offset)));
-            break;
-
-        default:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected value of word type field");
-    }
-
     param->offset += layout->size;
     return KEFIR_OK;
 }
@@ -405,7 +340,7 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (typeentry->typecode) {
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
                 kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
@@ -692,10 +627,9 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     struct kefir_ir_type_visitor visitor;
     REQUIRE_OK(kefir_ir_type_visitor_init(&visitor, visitor_not_supported));
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, integral_static_data);
-    visitor.visit[KEFIR_IR_TYPE_WORD] = word_static_data;
     visitor.visit[KEFIR_IR_TYPE_FLOAT32] = float32_static_data;
     visitor.visit[KEFIR_IR_TYPE_FLOAT64] = float64_static_data;
-    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_static_data;
+    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = long_double_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = complex_float32_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = complex_float64_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_static_data;

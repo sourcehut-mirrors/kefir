@@ -127,7 +127,7 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test2, "AMD64 System V ABI - parameter all
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
-    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT, 0, 0));
+    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT16, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT64, 0, 0));
@@ -177,12 +177,12 @@ DEFINE_CASE(amd64_sysv_abi_allocation_test3, "AMD64 System V ABI - parameter all
     struct kefir_abi_amd64_type_layout layout;
     struct kefir_abi_amd64_function_parameters parameters;
     ASSERT_OK(kefir_ir_type_alloc(&kft_mem, 6, &type));
-    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT, 0, 0));
+    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_STRUCT, 0, 4));
-    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT, 0, 0));
+    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_ARRAY, 0, 8));
-    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_CHAR, 0, 0));
+    ASSERT_OK(kefir_irbuilder_type_append(&kft_mem, &type, KEFIR_IR_TYPE_INT8, 0, 0));
     ASSERT_OK(kefir_abi_amd64_type_layout(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V,
                                           KEFIR_ABI_AMD64_TYPE_LAYOUT_CONTEXT_GENERIC, &type, &layout));
     ASSERT_OK(kefir_abi_amd64_function_parameters_classify(&kft_mem, KEFIR_ABI_AMD64_VARIANT_SYSTEM_V, &type, &layout,

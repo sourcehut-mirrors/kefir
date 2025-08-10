@@ -51,27 +51,21 @@ static kefir_result_t amd64_sysv_bitfield_reset(struct kefir_ir_bitfield_allocat
 static kefir_result_t amd64_sysv_bitfield_props(kefir_ir_typecode_t typecode, kefir_int64_t typeparam,
                                                 kefir_size_t *size, kefir_size_t *alignment) {
     switch (typecode) {
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_BOOL:
         case KEFIR_IR_TYPE_INT8:
             ASSIGN_PTR(size, 8);
             ASSIGN_PTR(alignment, 8);
             break;
 
-        case KEFIR_IR_TYPE_SHORT:
         case KEFIR_IR_TYPE_INT16:
             ASSIGN_PTR(size, 16);
             ASSIGN_PTR(alignment, 16);
             break;
 
-        case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_INT32:
             ASSIGN_PTR(size, 32);
             ASSIGN_PTR(alignment, 32);
             break;
 
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_INT64:
             ASSIGN_PTR(size, 64);
             ASSIGN_PTR(alignment, 64);

@@ -236,7 +236,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
-                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                case KEFIR_IR_TYPE_INT64_DOUBLE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                         mem, &function->code.context,
                         kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),
@@ -298,12 +298,6 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                 case KEFIR_IR_TYPE_INT16:
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
-                case KEFIR_IR_TYPE_BOOL:
-                case KEFIR_IR_TYPE_CHAR:
-                case KEFIR_IR_TYPE_SHORT:
-                case KEFIR_IR_TYPE_INT:
-                case KEFIR_IR_TYPE_LONG:
-                case KEFIR_IR_TYPE_WORD:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                         mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &vreg2));
                     REQUIRE_OK(kefir_asmcmp_amd64_mov(

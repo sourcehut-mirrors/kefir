@@ -13,7 +13,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },

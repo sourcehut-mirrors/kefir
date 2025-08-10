@@ -224,12 +224,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
                 case KEFIR_IR_TYPE_BITINT:
-                case KEFIR_IR_TYPE_BOOL:
-                case KEFIR_IR_TYPE_CHAR:
-                case KEFIR_IR_TYPE_SHORT:
-                case KEFIR_IR_TYPE_INT:
-                case KEFIR_IR_TYPE_LONG:
-                case KEFIR_IR_TYPE_WORD:
                 case KEFIR_IR_TYPE_BITFIELD:
                     if (value.bitprecise != NULL) {
                         kefir_size_t bitwidth = value.bitprecise->bitwidth;
@@ -267,7 +261,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                         kefir_ir_data_set_float64(param->mem, param->data, slot, (kefir_float64_t) value.integer));
                     break;
 
-                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                case KEFIR_IR_TYPE_INT64_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot,
                                                              (kefir_long_double_t) value.integer));
                     break;
@@ -283,12 +277,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT16:
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
-                case KEFIR_IR_TYPE_BOOL:
-                case KEFIR_IR_TYPE_CHAR:
-                case KEFIR_IR_TYPE_SHORT:
-                case KEFIR_IR_TYPE_INT:
-                case KEFIR_IR_TYPE_LONG:
-                case KEFIR_IR_TYPE_WORD:
                     REQUIRE_OK(
                         kefir_ir_data_set_integer(param->mem, param->data, slot, (kefir_int64_t) value.floating_point));
                     break;
@@ -301,7 +289,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                     REQUIRE_OK(kefir_ir_data_set_float64(param->mem, param->data, slot, value.floating_point));
                     break;
 
-                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                case KEFIR_IR_TYPE_INT64_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot, value.floating_point));
                     break;
 
@@ -331,12 +319,6 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                 case KEFIR_IR_TYPE_INT16:
                 case KEFIR_IR_TYPE_INT32:
                 case KEFIR_IR_TYPE_INT64:
-                case KEFIR_IR_TYPE_BOOL:
-                case KEFIR_IR_TYPE_CHAR:
-                case KEFIR_IR_TYPE_SHORT:
-                case KEFIR_IR_TYPE_INT:
-                case KEFIR_IR_TYPE_LONG:
-                case KEFIR_IR_TYPE_WORD:
                     REQUIRE_OK(kefir_ir_data_set_integer(param->mem, param->data, slot,
                                                          (kefir_int64_t) value.complex_floating_point.real));
                     break;
@@ -351,7 +333,7 @@ static kefir_result_t visit_value(const struct kefir_ast_designator *designator,
                         kefir_ir_data_set_float64(param->mem, param->data, slot, value.complex_floating_point.real));
                     break;
 
-                case KEFIR_IR_TYPE_LONG_DOUBLE:
+                case KEFIR_IR_TYPE_INT64_DOUBLE:
                     REQUIRE_OK(kefir_ir_data_set_long_double(param->mem, param->data, slot,
                                                              value.complex_floating_point.real));
                     break;

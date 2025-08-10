@@ -48,8 +48,8 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     REQUIRE_OK(kefir_test_codegen_init(mem, &codegen, stdout, NULL));
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumint_decl_result, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, inttype, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumint_decl_result, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(generate_va_list_type(mem, sumint_locals));
     struct kefir_ir_function *sumint = kefir_ir_module_new_function_with_args(mem, &module, sumint_decl, 1024);
     REQUIRE(sumint != NULL, KEFIR_INTERNAL_ERROR);

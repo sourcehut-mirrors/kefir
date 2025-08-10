@@ -55,7 +55,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -63,7 +63,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -71,7 +71,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -79,7 +79,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -87,7 +87,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },

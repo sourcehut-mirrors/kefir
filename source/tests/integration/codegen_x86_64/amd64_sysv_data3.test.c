@@ -134,7 +134,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_ARRAY, 0, 3));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_STRUCT, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_ARRAY, 0, 2));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_CHAR, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_INT8, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_ARRAY, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, array1_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     struct kefir_ir_data *array1_data =
@@ -157,7 +157,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_irbuilder_type_append(mem, union1_type, KEFIR_IR_TYPE_FLOAT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, union1_type, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, union1_type, KEFIR_IR_TYPE_ARRAY, 0, 8));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, union1_type, KEFIR_IR_TYPE_CHAR, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, union1_type, KEFIR_IR_TYPE_INT8, 0, 0));
     struct kefir_ir_data *union1_data =
         kefir_ir_module_new_named_data(mem, &module, "union1_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, union1_type_id);
     REQUIRE_OK(kefir_ir_data_set_float32(mem, union1_data, 2, 3.14));
@@ -167,7 +167,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t pointer1_type_id;
     struct kefir_ir_type *pointer1_type = kefir_ir_module_new_type(mem, &module, 1, &pointer1_type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, pointer1_type, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, pointer1_type, KEFIR_IR_TYPE_INT64, 0, 0));
     struct kefir_ir_data *pointer1_data = kefir_ir_module_new_named_data(
         mem, &module, "pointer1_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, pointer1_type_id);
     REQUIRE_OK(kefir_ir_data_set_pointer(mem, pointer1_data, 0, "union1_1", 2));

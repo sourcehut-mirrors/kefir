@@ -44,16 +44,16 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
 
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_STRUCT, 0, 7));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_CHAR, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_SHORT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT8, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT8, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT16, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_UNION, 0, 3));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT32, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT64, 0, 0));
 
     struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 0);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);

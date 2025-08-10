@@ -23,7 +23,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bool"
+                            "type": "int8"
                         },
                         {
                             "type": "double"
@@ -32,11 +32,11 @@
                             "type": "array",
                             "length": 5,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 },
@@ -44,16 +44,16 @@
                     "type": "union",
                     "fields": [
                         {
-                            "type": "long"
+                            "type": "int64"
                         },
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
                             "length": 4,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -67,16 +67,16 @@
                     "type": "union",
                     "fields": [
                         {
-                            "type": "long"
+                            "type": "int64"
                         },
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
                             "length": 4,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -90,7 +90,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bool"
+                            "type": "int8"
                         },
                         {
                             "type": "double"
@@ -99,11 +99,11 @@
                             "type": "array",
                             "length": 5,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
@@ -124,7 +124,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bool"
+                            "type": "int8"
                         },
                         {
                             "type": "double"
@@ -133,11 +133,11 @@
                             "type": "array",
                             "length": 5,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
@@ -150,7 +150,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bool"
+                            "type": "int8"
                         },
                         {
                             "type": "double"
@@ -159,11 +159,11 @@
                             "type": "array",
                             "length": 5,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
@@ -184,16 +184,16 @@
                     "type": "union",
                     "fields": [
                         {
-                            "type": "long"
+                            "type": "int64"
                         },
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
                             "length": 4,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -207,16 +207,16 @@
                     "type": "union",
                     "fields": [
                         {
-                            "type": "long"
+                            "type": "int64"
                         },
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
                             "length": 4,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]

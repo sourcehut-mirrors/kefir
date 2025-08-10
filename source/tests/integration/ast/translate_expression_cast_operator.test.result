@@ -24,7 +24,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -35,7 +35,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         }
                     ]
                 }

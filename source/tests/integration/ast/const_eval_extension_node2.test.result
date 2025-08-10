@@ -20,7 +20,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -28,7 +28,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         }

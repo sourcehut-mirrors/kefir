@@ -52,7 +52,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -60,7 +60,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -68,7 +68,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -92,7 +92,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -148,7 +148,7 @@
             "identifier": 19,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },

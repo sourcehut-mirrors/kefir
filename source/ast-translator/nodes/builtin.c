@@ -488,7 +488,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_ffs",       \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -531,7 +531,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
@@ -582,7 +582,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_clz",       \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -704,7 +704,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
@@ -814,7 +814,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_ctz",       \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -932,7 +932,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
@@ -1037,7 +1037,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_clrsb",     \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -1084,7 +1084,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
@@ -1130,7 +1130,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_popcount",  \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -1173,7 +1173,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64
@@ -1219,7 +1219,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
         REQUIRE(returns_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));     \
                                                                                                                   \
         REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT32, 0, 0));                             \
-        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));                                  \
+        REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));                                \
         *(_ir_decl) = kefir_ir_module_new_function_declaration(mem, context->module, "__kefir_builtin_parity",    \
                                                                parameters_type_id, false, returns_type_id);       \
         REQUIRE(*(_ir_decl) != NULL,                                                                              \
@@ -1262,7 +1262,7 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                             KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate IR type"));
 
                     REQUIRE_OK(kefir_ir_type_append(parameters_type, KEFIR_IR_TYPE_INT64, 0, 0));
-                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT, 0, 0));
+                    REQUIRE_OK(kefir_ir_type_append(returns_type, KEFIR_IR_TYPE_INT32, 0, 0));
                     const struct kefir_ir_function_decl *ir_decl = kefir_ir_module_new_function_declaration(
                         mem, context->module,
                         context->ast_context->type_traits->data_model->scalar_width.long_bits >= 64

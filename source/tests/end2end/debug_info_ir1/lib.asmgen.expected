@@ -526,15 +526,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "bool"
-                }
-            ]
-        },
-        {
-            "identifier": 1,
-            "type": [
-                {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -542,7 +534,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -550,7 +542,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -558,15 +550,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "long"
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -577,7 +561,7 @@
                     "type": "array",
                     "length": 100,
                     "element_type": {
-                        "type": "int"
+                        "type": "int32"
                     }
                 }
             ]
@@ -589,7 +573,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "int"
+                            "type": "int32"
                         },
                         {
                             "type": "bitfield",
@@ -603,10 +587,10 @@
                                     "type": "struct",
                                     "fields": [
                                         {
-                                            "type": "int"
+                                            "type": "int32"
                                         },
                                         {
-                                            "type": "long"
+                                            "type": "int64"
                                         }
                                     ]
                                 },
@@ -625,20 +609,20 @@
                             ]
                         },
                         {
-                            "type": "char",
+                            "type": "int8",
                             "alignment": 16
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
                             "type": "array",
                             "length": 0,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
@@ -655,16 +639,16 @@
                         "type": "struct",
                         "fields": [
                             {
-                                "type": "int"
+                                "type": "int32"
                             },
                             {
-                                "type": "int"
+                                "type": "int32"
                             },
                             {
-                                "type": "word"
+                                "type": "int64"
                             },
                             {
-                                "type": "word"
+                                "type": "int64"
                             }
                         ]
                     }
@@ -715,13 +699,13 @@
             "identifier": 78,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 },
                 {
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "int"
+                            "type": "int32"
                         },
                         {
                             "type": "bitfield",
@@ -735,10 +719,10 @@
                                     "type": "struct",
                                     "fields": [
                                         {
-                                            "type": "int"
+                                            "type": "int32"
                                         },
                                         {
-                                            "type": "long"
+                                            "type": "int64"
                                         }
                                     ]
                                 },
@@ -757,26 +741,26 @@
                             ]
                         },
                         {
-                            "type": "char",
+                            "type": "int8",
                             "alignment": 16
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
                             "type": "array",
                             "length": 0,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -795,17 +779,17 @@
                     "type": "array",
                     "length": 1,
                     "element_type": {
-                        "type": "word"
+                        "type": "int64"
                     }
                 },
                 {
-                    "type": "long"
+                    "type": "int64"
                 },
                 {
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "int"
+                            "type": "int32"
                         },
                         {
                             "type": "bitfield",
@@ -819,10 +803,10 @@
                                     "type": "struct",
                                     "fields": [
                                         {
-                                            "type": "int"
+                                            "type": "int32"
                                         },
                                         {
-                                            "type": "long"
+                                            "type": "int64"
                                         }
                                     ]
                                 },
@@ -841,35 +825,35 @@
                             ]
                         },
                         {
-                            "type": "char",
+                            "type": "int8",
                             "alignment": 16
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
                             "type": "array",
                             "length": 0,
                             "element_type": {
-                                "type": "int"
+                                "type": "int32"
                             }
                         }
                     ]
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 },
                 {
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
@@ -882,7 +866,7 @@
                     "type": "array",
                     "length": 3,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -902,7 +886,7 @@
         {
             "identifier": "a2",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined"
@@ -912,7 +896,7 @@
         {
             "identifier": "a3",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined"
@@ -922,7 +906,7 @@
         {
             "identifier": "a4",
             "storage": "global",
-            "type": 1,
+            "type": 0,
             "value": [
                 {
                     "class": "undefined"
@@ -982,7 +966,7 @@
         {
             "identifier": "b1",
             "storage": "global",
-            "type": 9,
+            "type": 8,
             "value": [
                 {
                     "class": "undefined"
@@ -992,7 +976,7 @@
         {
             "identifier": "b2",
             "storage": "global",
-            "type": 9,
+            "type": 8,
             "value": [
                 {
                     "class": "undefined"

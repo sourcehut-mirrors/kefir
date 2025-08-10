@@ -5,19 +5,19 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 },
                 {
                     "type": "float"
                 },
                 {
-                    "type": "short"
+                    "type": "int16"
                 },
                 {
                     "type": "double"
@@ -100,7 +100,7 @@
             "identifier": 19,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },
@@ -119,7 +119,7 @@
                     "type": "array",
                     "length": 4,
                     "element_type": {
-                        "type": "long"
+                        "type": "int64"
                     }
                 }
             ]
@@ -136,7 +136,7 @@
             "identifier": 25,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },
@@ -155,7 +155,7 @@
                     "type": "array",
                     "length": 4,
                     "element_type": {
-                        "type": "long"
+                        "type": "int64"
                     }
                 }
             ]

@@ -5,7 +5,7 @@
             "identifier": "global_var1",
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -14,7 +14,7 @@
             "identifier": "global_var2",
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -23,7 +23,7 @@
             "identifier": "global_var100",
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         }
@@ -46,7 +46,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -59,7 +59,7 @@
                     "type": "array",
                     "length": 100,
                     "element_type": {
-                        "type": "word"
+                        "type": "int64"
                     },
                     "alignment": 32
                 }
@@ -122,7 +122,7 @@
                         "type": "array",
                         "length": 32,
                         "element_type": {
-                            "type": "char"
+                            "type": "int8"
                         }
                     }
                 ]
@@ -134,7 +134,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "int"
+                        "type": "int32"
                     }
                 }
             }

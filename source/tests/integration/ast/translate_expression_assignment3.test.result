@@ -38,7 +38,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -62,7 +62,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },

@@ -722,12 +722,6 @@ static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_INT64:
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_SHORT:
-        case KEFIR_IR_TYPE_INT:
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
             REQUIRE_OK(kefir_opt_code_builder_int_constant(param->mem, param->dst_code, block_id, 0, instr_ref_ptr));
             break;
 
@@ -741,7 +735,7 @@ static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_
                 kefir_opt_code_builder_float64_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
             break;
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(param->mem, param->dst_code, block_id, 0.0L,
                                                                    instr_ref_ptr));
             break;

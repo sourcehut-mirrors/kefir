@@ -24,7 +24,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -32,7 +32,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -40,7 +40,7 @@
             "identifier": 3,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -48,10 +48,10 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -62,7 +62,7 @@
                     "type": "array",
                     "length": 10,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -71,7 +71,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         }

@@ -48,7 +48,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func1 = kefir_ir_module_new_function_with_args(mem, &module, decl1, 1024);
     REQUIRE(func1 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl1->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, func1->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func1->declaration->result, KEFIR_IR_TYPE_INT64, 0, 0);
 
     const kefir_char16_t literal[] = u"Hello, world!";
     REQUIRE_OK(kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_UNICODE16, true, literal,
@@ -66,7 +66,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func2 = kefir_ir_module_new_function_with_args(mem, &module, decl2, 1024);
     REQUIRE(func2 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl2->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, func2->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func2->declaration->result, KEFIR_IR_TYPE_INT64, 0, 0);
 
     const kefir_char16_t literal2[] = u"\n\n\t\tHey there\'\"!\v\n";
     REQUIRE_OK(kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_UNICODE16, true, literal2,
@@ -84,7 +84,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func3 = kefir_ir_module_new_function_with_args(mem, &module, decl3, 1024);
     REQUIRE(func3 != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl3->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    kefir_irbuilder_type_append(mem, func3->declaration->result, KEFIR_IR_TYPE_WORD, 0, 0);
+    kefir_irbuilder_type_append(mem, func3->declaration->result, KEFIR_IR_TYPE_INT64, 0, 0);
 
     const kefir_char16_t literal3[] = u"\0\0\0\0";
     REQUIRE_OK(kefir_ir_module_string_literal(mem, &module, KEFIR_IR_STRING_LITERAL_UNICODE16, true, literal3,

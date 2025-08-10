@@ -276,7 +276,7 @@
             "identifier": 52,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -284,13 +284,13 @@
             "identifier": 54,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "int"
+                    "type": "int32"
                 },
                 {
-                    "type": "long"
+                    "type": "int64"
                 },
                 {
                     "type": "float"
@@ -302,10 +302,10 @@
                     "type": "complex_float32"
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 },
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -316,7 +316,7 @@
                     "type": "array",
                     "length": 6,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]

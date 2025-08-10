@@ -53,7 +53,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "addstruct", func_params, false, func_returns);
     REQUIRE(addstruct_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_WORD, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_STRUCT, 0, 2));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_INT64, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, proxyadd_decl_params, KEFIR_IR_TYPE_FLOAT64, 0, 0));

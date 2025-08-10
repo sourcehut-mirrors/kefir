@@ -1,46 +1,46 @@
 [
     {
-        "type": "bool",
+        "type": "int8",
         "alignment": 1
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 1
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 1
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 1
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 1
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 1
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 1
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 1
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 1
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 1
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 1
     },
     {
@@ -56,47 +56,47 @@
         "alignment": 1
     },
     {
-        "type": "bool",
+        "type": "int8",
         "alignment": 2
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 2
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 2
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 2
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 2
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 2
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 2
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 2
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 2
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 2
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 2
     },
     {
@@ -112,47 +112,47 @@
         "alignment": 2
     },
     {
-        "type": "bool",
+        "type": "int8",
         "alignment": 4
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 4
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 4
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 4
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 4
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 4
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 4
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 4
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 4
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 4
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 4
     },
     {
@@ -168,47 +168,47 @@
         "alignment": 4
     },
     {
-        "type": "bool",
+        "type": "int8",
         "alignment": 8
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 8
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 8
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 8
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 8
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 8
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 8
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 8
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 8
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 8
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 8
     },
     {
@@ -224,47 +224,47 @@
         "alignment": 8
     },
     {
-        "type": "bool",
+        "type": "int8",
         "alignment": 16
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 16
     },
     {
-        "type": "char",
+        "type": "int8",
         "alignment": 16
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 16
     },
     {
-        "type": "short",
+        "type": "int16",
         "alignment": 16
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 16
     },
     {
-        "type": "int",
+        "type": "int32",
         "alignment": 16
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 16
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 16
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 16
     },
     {
-        "type": "long",
+        "type": "int64",
         "alignment": 16
     },
     {

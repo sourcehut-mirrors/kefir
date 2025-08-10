@@ -164,7 +164,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -172,7 +172,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -204,7 +204,7 @@
                     "type": "array",
                     "length": 2,
                     "element_type": {
-                        "type": "int"
+                        "type": "int32"
                     }
                 }
             ]
@@ -238,7 +238,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },
@@ -246,7 +246,7 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -254,7 +254,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -265,7 +265,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "bool"
+                            "type": "int8"
                         }
                     ]
                 }
@@ -275,7 +275,7 @@
             "identifier": 12,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -283,7 +283,7 @@
             "identifier": 13,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -291,7 +291,7 @@
             "identifier": 14,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -299,7 +299,7 @@
             "identifier": 15,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -307,7 +307,7 @@
             "identifier": 16,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -315,7 +315,7 @@
             "identifier": 17,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -323,7 +323,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -331,7 +331,7 @@
             "identifier": 19,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -339,7 +339,7 @@
             "identifier": 20,
             "type": [
                 {
-                    "type": "short"
+                    "type": "int16"
                 }
             ]
         },
@@ -347,7 +347,7 @@
             "identifier": 21,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },

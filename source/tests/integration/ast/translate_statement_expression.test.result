@@ -13,7 +13,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -60,7 +60,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         }
                     ]
                 }
@@ -81,7 +81,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         }
                     ]
                 }

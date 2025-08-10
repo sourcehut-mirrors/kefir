@@ -17,14 +17,14 @@
                                             "type": "array",
                                             "length": 10,
                                             "element_type": {
-                                                "type": "char"
+                                                "type": "int8"
                                             }
                                         },
                                         {
-                                            "type": "word"
+                                            "type": "int64"
                                         },
                                         {
-                                            "type": "long"
+                                            "type": "int64"
                                         }
                                     ]
                                 },
@@ -32,7 +32,7 @@
                                     "type": "array",
                                     "length": 3,
                                     "element_type": {
-                                        "type": "int"
+                                        "type": "int32"
                                     }
                                 }
                             ]
@@ -47,14 +47,14 @@
                                     "type": "array",
                                     "length": 10,
                                     "element_type": {
-                                        "type": "char"
+                                        "type": "int8"
                                     }
                                 },
                                 {
-                                    "type": "word"
+                                    "type": "int64"
                                 },
                                 {
-                                    "type": "long"
+                                    "type": "int64"
                                 }
                             ]
                         }
@@ -86,14 +86,14 @@
                                             "type": "array",
                                             "length": 10,
                                             "element_type": {
-                                                "type": "char"
+                                                "type": "int8"
                                             }
                                         },
                                         {
-                                            "type": "word"
+                                            "type": "int64"
                                         },
                                         {
-                                            "type": "long"
+                                            "type": "int64"
                                         }
                                     ]
                                 },
@@ -101,7 +101,7 @@
                                     "type": "array",
                                     "length": 3,
                                     "element_type": {
-                                        "type": "int"
+                                        "type": "int32"
                                     }
                                 }
                             ]
@@ -116,14 +116,14 @@
                                     "type": "array",
                                     "length": 10,
                                     "element_type": {
-                                        "type": "char"
+                                        "type": "int8"
                                     }
                                 },
                                 {
-                                    "type": "word"
+                                    "type": "int64"
                                 },
                                 {
-                                    "type": "long"
+                                    "type": "int64"
                                 }
                             ]
                         }
@@ -138,7 +138,7 @@
                     "type": "array",
                     "length": 5,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -150,7 +150,7 @@
                     "type": "array",
                     "length": 10,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]

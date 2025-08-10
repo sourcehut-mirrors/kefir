@@ -90,7 +90,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -98,7 +98,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -106,7 +106,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -126,7 +126,7 @@
             "identifier": 6,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -134,7 +134,7 @@
             "identifier": 7,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -146,7 +146,7 @@
             "identifier": 9,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -154,7 +154,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -166,7 +166,7 @@
             "identifier": 12,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -174,7 +174,7 @@
             "identifier": 13,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -186,7 +186,7 @@
             "identifier": 15,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -197,7 +197,7 @@
                     "type": "array",
                     "length": 10,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -210,7 +210,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -225,7 +225,7 @@
                     "type": "array",
                     "length": 10,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -249,7 +249,7 @@
                     "type": "array",
                     "length": 10,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -262,7 +262,7 @@
             "identifier": 26,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -277,7 +277,7 @@
                     "type": "array",
                     "length": 16,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -286,7 +286,7 @@
             "identifier": 29,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         },
@@ -294,7 +294,7 @@
             "identifier": 30,
             "type": [
                 {
-                    "type": "long"
+                    "type": "int64"
                 }
             ]
         }

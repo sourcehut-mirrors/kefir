@@ -13,7 +13,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -49,7 +49,7 @@
             "identifier": 8,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -65,7 +65,7 @@
             "identifier": 11,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -81,7 +81,7 @@
             "identifier": 14,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -101,7 +101,7 @@
             "identifier": 18,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },
@@ -113,7 +113,7 @@
             "identifier": 20,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },

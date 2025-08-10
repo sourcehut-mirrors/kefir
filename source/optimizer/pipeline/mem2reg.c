@@ -126,19 +126,13 @@ static kefir_result_t mark_scalar_candidate(struct mem2reg_state *state, kefir_o
     REQUIRE(local_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
     switch (local_typeentry->typecode) {
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_SHORT:
-        case KEFIR_IR_TYPE_INT:
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_INT64:
         case KEFIR_IR_TYPE_FLOAT32:
         case KEFIR_IR_TYPE_FLOAT64:
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT32:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
@@ -363,12 +357,6 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
                                          kefir_opt_block_id_t source_block_ref,
                                          kefir_opt_instruction_ref_t *instr_ref) {
     switch (local_typeentry->typecode) {
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_SHORT:
-        case KEFIR_IR_TYPE_INT:
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_INT8:
         case KEFIR_IR_TYPE_INT16:
         case KEFIR_IR_TYPE_INT32:
@@ -387,7 +375,7 @@ static kefir_result_t assign_empty_value(struct mem2reg_state *state, const stru
                                                                instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(state->mem, &state->func->code, source_block_ref,
                                                                    0.0L, instr_ref));
             break;
@@ -547,12 +535,6 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
 
                         if (replacement_ref != instr_id) {
                             switch (local_typeentry->typecode) {
-                                case KEFIR_IR_TYPE_BOOL:
-                                case KEFIR_IR_TYPE_CHAR:
-                                case KEFIR_IR_TYPE_SHORT:
-                                case KEFIR_IR_TYPE_INT:
-                                case KEFIR_IR_TYPE_LONG:
-                                case KEFIR_IR_TYPE_WORD:
                                 case KEFIR_IR_TYPE_INT8:
                                 case KEFIR_IR_TYPE_INT16:
                                 case KEFIR_IR_TYPE_INT32:
@@ -726,22 +708,18 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
     REQUIRE(local_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to fetch local variable type"));
 
     switch (local_typeentry->typecode) {
-        case KEFIR_IR_TYPE_BOOL:
-        case KEFIR_IR_TYPE_CHAR:
         case KEFIR_IR_TYPE_INT8:
             REQUIRE_OK(
                 kefir_opt_code_builder_int8_load(state->mem, &state->func->code, source_block_ref, addr_instr_ref,
                                                  &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_SHORT:
         case KEFIR_IR_TYPE_INT16:
             REQUIRE_OK(
                 kefir_opt_code_builder_int16_load(state->mem, &state->func->code, source_block_ref, addr_instr_ref,
                                                   &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(
@@ -749,8 +727,6 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
                                                   &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_INT64:
         case KEFIR_IR_TYPE_FLOAT64:
             REQUIRE_OK(
@@ -764,7 +740,7 @@ static kefir_result_t mem2reg_load_local_variable(struct mem2reg_state *state,
                 &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_load(
                 state->mem, &state->func->code, source_block_ref, addr_instr_ref,
                 &(const struct kefir_opt_memory_access_flags) {0}, source_instr_ref));
@@ -855,22 +831,18 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
 
     kefir_opt_instruction_ref_t block_control_tail_ref, block_control_tail_prev_ref, store_instr_ref;
     switch (local_typeentry->typecode) {
-        case KEFIR_IR_TYPE_CHAR:
-        case KEFIR_IR_TYPE_BOOL:
         case KEFIR_IR_TYPE_INT8:
             REQUIRE_OK(kefir_opt_code_builder_int8_store(state->mem, &state->func->code, block_id, instr_ref,
                                                          output_ref, &(const struct kefir_opt_memory_access_flags) {0},
                                                          &store_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_SHORT:
         case KEFIR_IR_TYPE_INT16:
             REQUIRE_OK(kefir_opt_code_builder_int16_store(state->mem, &state->func->code, block_id, instr_ref,
                                                           output_ref, &(const struct kefir_opt_memory_access_flags) {0},
                                                           &store_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_INT:
         case KEFIR_IR_TYPE_INT32:
         case KEFIR_IR_TYPE_FLOAT32:
             REQUIRE_OK(kefir_opt_code_builder_int32_store(state->mem, &state->func->code, block_id, instr_ref,
@@ -878,8 +850,6 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
                                                           &store_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG:
-        case KEFIR_IR_TYPE_WORD:
         case KEFIR_IR_TYPE_INT64:
         case KEFIR_IR_TYPE_FLOAT64:
             REQUIRE_OK(kefir_opt_code_builder_int64_store(state->mem, &state->func->code, block_id, instr_ref,
@@ -893,7 +863,7 @@ static kefir_result_t mem2reg_generate_store(struct mem2reg_state *state, kefir_
                 &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));
             break;
 
-        case KEFIR_IR_TYPE_LONG_DOUBLE:
+        case KEFIR_IR_TYPE_INT64_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_store(
                 state->mem, &state->func->code, block_id, instr_ref, output_ref,
                 &(const struct kefir_opt_memory_access_flags) {0}, &store_instr_ref));

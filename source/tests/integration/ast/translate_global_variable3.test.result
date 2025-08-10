@@ -37,7 +37,7 @@
                     "type": "array",
                     "length": 8,
                     "element_type": {
-                        "type": "long"
+                        "type": "int64"
                     }
                 }
             ]
@@ -58,7 +58,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -69,23 +69,23 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "int"
+                            "type": "int32"
                         },
                         {
                             "type": "float"
                         },
                         {
-                            "type": "word"
+                            "type": "int64"
                         },
                         {
                             "type": "array",
                             "length": 7,
                             "element_type": {
-                                "type": "char"
+                                "type": "int8"
                             }
                         },
                         {
-                            "type": "long"
+                            "type": "int64"
                         }
                     ]
                 }

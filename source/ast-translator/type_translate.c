@@ -25,8 +25,8 @@
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
 
-static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_size_t alignment,
-                                       struct kefir_ir_typeentry *typeentry) {
+static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, const struct kefir_ast_type *type,
+                                       kefir_size_t alignment, struct kefir_ir_typeentry *typeentry) {
     typeentry->alignment = alignment;
     typeentry->param = 0;
     switch (type->tag) {
@@ -34,31 +34,45 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_BOOL:
-            typeentry->typecode = KEFIR_IR_TYPE_BOOL;
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_CHAR:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_CHAR:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_CHAR:
-            typeentry->typecode = KEFIR_IR_TYPE_CHAR;
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_SHORT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_SHORT:
-            typeentry->typecode = KEFIR_IR_TYPE_SHORT;
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_INT:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_INT:
-        case KEFIR_AST_TYPE_ENUMERATION:
-            typeentry->typecode = KEFIR_IR_TYPE_INT;
-            break;
-
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG:
         case KEFIR_AST_TYPE_SCALAR_UNSIGNED_LONG_LONG:
         case KEFIR_AST_TYPE_SCALAR_SIGNED_LONG_LONG:
-            typeentry->typecode = KEFIR_IR_TYPE_LONG;
+        case KEFIR_AST_TYPE_SCALAR_POINTER:
+        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER: {
+            kefir_ast_type_data_model_classification_t classification;
+            REQUIRE_OK(kefir_ast_type_data_model_classify(context->type_traits, type, &classification));
+            switch (classification) {
+                case KEFIR_AST_TYPE_DATA_MODEL_INT8:
+                    typeentry->typecode = KEFIR_IR_TYPE_INT8;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT16:
+                    typeentry->typecode = KEFIR_IR_TYPE_INT16;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT32:
+                    typeentry->typecode = KEFIR_IR_TYPE_INT32;
+                    break;
+
+                case KEFIR_AST_TYPE_DATA_MODEL_INT64:
+                    typeentry->typecode = KEFIR_IR_TYPE_INT64;
+                    break;
+
+                default:
+                    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected IR type classification");
+            }
+        } break;
+
+        case KEFIR_AST_TYPE_ENUMERATION:
+            REQUIRE_OK(scalar_typeentry(context, type->enumeration_type.underlying_type, alignment, typeentry));
             break;
 
         case KEFIR_AST_TYPE_SCALAR_FLOAT:
@@ -70,12 +84,7 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            typeentry->typecode = KEFIR_IR_TYPE_LONG_DOUBLE;
-            break;
-
-        case KEFIR_AST_TYPE_SCALAR_POINTER:
-        case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
-            typeentry->typecode = KEFIR_IR_TYPE_WORD;
+            typeentry->typecode = KEFIR_IR_TYPE_INT64_DOUBLE;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:
@@ -90,14 +99,15 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_type *type, kefir_
     return KEFIR_OK;
 }
 
-static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct kefir_ast_type *type,
-                                            kefir_size_t alignment, struct kefir_irbuilder_type *builder,
+static kefir_result_t translate_scalar_type(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                            const struct kefir_ast_type *type, kefir_size_t alignment,
+                                            struct kefir_irbuilder_type *builder,
                                             struct kefir_ast_type_layout **layout_ptr) {
     kefir_size_t type_index = kefir_ir_type_length(builder->type);
 
     if (type->tag != KEFIR_AST_TYPE_VOID) {
         struct kefir_ir_typeentry typeentry = {0};
-        REQUIRE_OK(scalar_typeentry(type, alignment, &typeentry));
+        REQUIRE_OK(scalar_typeentry(context, type, alignment, &typeentry));
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND_ENTRY(builder, &typeentry));
     }
 
@@ -178,8 +188,8 @@ static kefir_result_t translate_array_type(struct kefir_mem *mem, const struct k
         case KEFIR_AST_ARRAY_VLA:
         case KEFIR_AST_ARRAY_VLA_STATIC:
             REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_STRUCT, 0, 2));
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
-            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_WORD, 0, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_INT64, 0, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_INT64, 0, 0));
             if (layout_ptr != NULL) {
                 *layout_ptr = kefir_ast_new_type_layout(mem, type, 0, type_index);
                 REQUIRE(*layout_ptr != NULL,
@@ -244,7 +254,8 @@ struct bitfield_manager {
     kefir_size_t last_bitfield_storage;
 };
 
-static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+static kefir_result_t translate_bitfield(struct kefir_mem *mem, const struct kefir_ast_context *context,
+                                         struct kefir_ast_type_bundle *type_bundle,
                                          struct kefir_ast_struct_field *field, struct kefir_ast_type_layout *layout,
                                          struct kefir_irbuilder_type *builder, kefir_size_t type_index,
                                          struct bitfield_manager *bitfield_mgr) {
@@ -264,7 +275,7 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast
     struct kefir_ast_type_layout *element_layout = NULL;
     if (KEFIR_IR_BITFIELD_ALLOCATOR_HAS_BITFIELD_RUN(&bitfield_mgr->allocator)) {
         struct kefir_ir_typeentry colocated_typeentry = {0};
-        REQUIRE_OK(scalar_typeentry(unqualified_field_type, field->alignment->value, &colocated_typeentry));
+        REQUIRE_OK(scalar_typeentry(context, unqualified_field_type, field->alignment->value, &colocated_typeentry));
         kefir_result_t res = KEFIR_IR_BITFIELD_ALLOCATOR_NEXT_COLOCATED(
             mem, &bitfield_mgr->allocator, field->identifier != NULL, colocated_typeentry.typecode,
             colocated_typeentry.param, field->bitwidth,
@@ -283,7 +294,7 @@ static kefir_result_t translate_bitfield(struct kefir_mem *mem, struct kefir_ast
 
     if (!allocated) {
         struct kefir_ir_typeentry typeentry = {0};
-        REQUIRE_OK(scalar_typeentry(unqualified_field_type, field->alignment->value, &typeentry));
+        REQUIRE_OK(scalar_typeentry(context, unqualified_field_type, field->alignment->value, &typeentry));
         REQUIRE_OK(KEFIR_IR_BITFIELD_ALLOCATOR_NEXT(mem, &bitfield_mgr->allocator, type_index,
                                                     field->identifier != NULL, typeentry.typecode, typeentry.param,
                                                     field->bitwidth, &typeentry, &ir_bitfield));
@@ -366,8 +377,8 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
                 bitfield_mgr.last_bitfield_layout = NULL;
                 bitfield_mgr.last_bitfield_storage = 0;
             }
-            REQUIRE_CHAIN(
-                &res, translate_bitfield(mem, context->type_bundle, field, layout, builder, type_index, &bitfield_mgr));
+            REQUIRE_CHAIN(&res, translate_bitfield(mem, context, context->type_bundle, field, layout, builder,
+                                                   type_index, &bitfield_mgr));
         } else {
             REQUIRE_CHAIN(&res, KEFIR_IR_BITFIELD_ALLOCATOR_RESET(&bitfield_mgr.allocator));
             bitfield_mgr.last_bitfield_layout = NULL;
@@ -378,7 +389,7 @@ static kefir_result_t translate_struct_type(struct kefir_mem *mem, const struct 
     }
 
     if (res == KEFIR_OK && kefir_list_length(&type->structure_type.fields) == 0 && env->configuration->empty_structs) {
-        res = KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_CHAR, 0, 0);
+        res = KEFIR_IRBUILDER_TYPE_APPEND(builder, KEFIR_IR_TYPE_INT8, 0, 0);
         kefir_ir_type_at(builder->type, type_index)->param++;
     }
 
@@ -435,7 +446,7 @@ kefir_result_t kefir_ast_translate_object_type(struct kefir_mem *mem, const stru
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
         case KEFIR_AST_TYPE_SCALAR_POINTER:
         case KEFIR_AST_TYPE_SCALAR_NULL_POINTER:
-            REQUIRE_OK(translate_scalar_type(mem, type, alignment, builder, layout_ptr));
+            REQUIRE_OK(translate_scalar_type(mem, context, type, alignment, builder, layout_ptr));
             break;
 
         case KEFIR_AST_TYPE_COMPLEX_FLOAT:

@@ -3,7 +3,7 @@
         "type": "array",
         "length": 10,
         "element_type": {
-            "type": "word"
+            "type": "int64"
         }
     },
     {
@@ -19,16 +19,16 @@
                         "type": "array",
                         "length": 256,
                         "element_type": {
-                            "type": "char"
+                            "type": "int8"
                         }
                     },
                     {
-                        "type": "long"
+                        "type": "int64"
                     }
                 ]
             },
             {
-                "type": "word"
+                "type": "int64"
             },
             {
                 "type": "bitfield",

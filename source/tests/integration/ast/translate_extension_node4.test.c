@@ -108,7 +108,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 0);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_result, KEFIR_IR_TYPE_INT, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, decl_result, KEFIR_IR_TYPE_INT32, 0, 0));
 
     struct kefir_ast_context_extensions analysis_ext = {.analyze_extension_node = analyze_extension_node};
     struct kefir_ast_translator_context_extensions translator_ext = {

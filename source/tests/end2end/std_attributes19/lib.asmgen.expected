@@ -227,7 +227,7 @@
             "identifier": 57,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -238,7 +238,7 @@
                     "type": "array",
                     "length": 4,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]
@@ -250,7 +250,7 @@
                     "type": "array",
                     "length": 5,
                     "element_type": {
-                        "type": "char"
+                        "type": "int8"
                     }
                 }
             ]

@@ -34,7 +34,7 @@
             "identifier": 0,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -42,7 +42,7 @@
             "identifier": 1,
             "type": [
                 {
-                    "type": "int"
+                    "type": "int32"
                 }
             ]
         },
@@ -50,7 +50,7 @@
             "identifier": 2,
             "type": [
                 {
-                    "type": "char"
+                    "type": "int8"
                 }
             ]
         },
@@ -61,7 +61,7 @@
                     "type": "array",
                     "length": 3,
                     "element_type": {
-                        "type": "bool"
+                        "type": "int8"
                     }
                 }
             ]
@@ -70,7 +70,7 @@
             "identifier": 4,
             "type": [
                 {
-                    "type": "word"
+                    "type": "int64"
                 }
             ]
         },
@@ -81,7 +81,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
@@ -114,7 +114,7 @@
             "identifier": 10,
             "type": [
                 {
-                    "type": "bool"
+                    "type": "int8"
                 }
             ]
         },
@@ -141,7 +141,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
@@ -161,7 +161,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
@@ -189,7 +189,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "char"
+                            "type": "int8"
                         },
                         {
                             "type": "array",
@@ -209,7 +209,7 @@
                     "type": "struct",
                     "fields": [
                         {
-                            "type": "word"
+                            "type": "int64"
                         }
                     ]
                 }
