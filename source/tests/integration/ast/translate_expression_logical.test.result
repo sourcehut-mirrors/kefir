@@ -224,15 +224,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 6,
+                    "arg": 7,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "int8_bool_or"
+                    "opcode": "int8_to_bool"
                 }
             ],
             "public_labels": []
@@ -262,15 +265,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8,
+                    "arg": 9,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 55
                 },
                 {
-                    "opcode": "int32_bool_or"
+                    "opcode": "int32_to_bool"
                 }
             ],
             "public_labels": []
@@ -292,8 +298,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7,
+                    "arg": 8,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
@@ -303,7 +312,7 @@
                     "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "int64_bool_or"
+                    "opcode": "int64_to_bool"
                 }
             ],
             "public_labels": []
@@ -332,15 +341,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8,
+                    "arg": 9,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 200
                 },
                 {
-                    "opcode": "int32_bool_or"
+                    "opcode": "int32_to_bool"
                 }
             ],
             "public_labels": []
@@ -373,6 +385,9 @@
                     "condition": "8bit"
                 },
                 {
+                    "opcode": "vstack_pop"
+                },
+                {
                     "opcode": "long_double_const",
                     "arg": 0.000000
                 },
@@ -385,9 +400,6 @@
                 },
                 {
                     "opcode": "int8_bool_not"
-                },
-                {
-                    "opcode": "int64_bool_or"
                 }
             ],
             "public_labels": []
@@ -412,15 +424,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 7,
+                    "arg": 8,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "uint_const",
                     "arg": 0
                 },
                 {
-                    "opcode": "int8_bool_and"
+                    "opcode": "int8_to_bool"
                 }
             ],
             "public_labels": []
@@ -453,15 +468,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9,
+                    "arg": 10,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 67
                 },
                 {
-                    "opcode": "int32_bool_and"
+                    "opcode": "int32_to_bool"
                 }
             ],
             "public_labels": []
@@ -486,8 +504,11 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 8,
+                    "arg": 9,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
@@ -497,7 +518,7 @@
                     "opcode": "int64_sign_extend_32bits"
                 },
                 {
-                    "opcode": "int64_bool_and"
+                    "opcode": "int64_to_bool"
                 }
             ],
             "public_labels": []
@@ -529,15 +550,18 @@
                 },
                 {
                     "opcode": "branch",
-                    "arg": 9,
+                    "arg": 10,
                     "condition": "8bit"
+                },
+                {
+                    "opcode": "vstack_pop"
                 },
                 {
                     "opcode": "int_const",
                     "arg": 100
                 },
                 {
-                    "opcode": "int32_bool_and"
+                    "opcode": "int32_to_bool"
                 }
             ],
             "public_labels": []
@@ -573,6 +597,9 @@
                     "condition": "8bit"
                 },
                 {
+                    "opcode": "vstack_pop"
+                },
+                {
                     "opcode": "long_double_const",
                     "arg": 3.000000
                 },
@@ -585,9 +612,6 @@
                 },
                 {
                     "opcode": "int8_bool_not"
-                },
-                {
-                    "opcode": "int8_bool_and"
                 }
             ],
             "public_labels": []

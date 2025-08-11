@@ -79,8 +79,7 @@ __kefir_text_func_or1_end:
 
 or2:
 __kefir_text_func_or2_begin:
-    xor %eax, %eax
-    or %dil, %al
+    test %dil, %dil
     setne %al
     movzx %al, %rax
     ret
@@ -89,7 +88,7 @@ __kefir_text_func_or2_end:
 or3:
 __kefir_text_func_or3_begin:
     xor %eax, %eax
-    or $0, %rax
+    test $0, %eax
     setne %al
     movzx %al, %rax
     ret

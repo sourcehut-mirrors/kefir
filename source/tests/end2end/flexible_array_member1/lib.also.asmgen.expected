@@ -22,14 +22,14 @@ __kefir_text_func_t3_end:
 
 get_T2:
 __kefir_text_func_get_T2_begin:
-    xor %edx, %edx
+    xor %eax, %eax
     cmp $0, %edi
-    setge %dl
+    setge %al
     cmp $0, %edi
     jge _kefir_func_get_T2_label4
-    mov %rdx, %rsi
+    mov %rax, %rdx
 _kefir_func_get_T2_label1:
-    test %esi, %esi
+    test %edx, %edx
     jnz _kefir_func_get_T2_label3
     xor %eax, %eax
     ret
@@ -46,10 +46,7 @@ _kefir_func_get_T2_label4:
     xor %ecx, %ecx
     cmp %eax, %edi
     setl %cl
-    mov %rdx, %rax
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rsi
+    mov %rcx, %rdx
     jmp _kefir_func_get_T2_label1
 __kefir_text_func_get_T2_end:
 

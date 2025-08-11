@@ -1105,18 +1105,15 @@ _kefir_func___kefir_bigint_signed_compare_label0:
     movl %eax, -36(%rbp)
     movl -40(%rbp), %eax
     test %eax, %eax
-    setne %dl
-    movzx %dl, %rdx
-    test %dl, %dl
-    sete %al
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    jz _kefir_func___kefir_bigint_signed_compare_label9
-    mov %rdx, %rsi
-    jmp _kefir_func___kefir_bigint_signed_compare_label1
-_kefir_func___kefir_bigint_signed_compare_label9:
-    jmp _kefir_func___kefir_bigint_signed_compare_label8
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func___kefir_bigint_signed_compare_label8
+    mov %rax, %rdx
 _kefir_func___kefir_bigint_signed_compare_label1:
-    test %esi, %esi
+    test %edx, %edx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_compare_label7
@@ -1125,17 +1122,14 @@ _kefir_func___kefir_bigint_signed_compare_label2:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    mov %rcx, %rdx
-    test %dl, %dl
-    sete %al
+    mov %rcx, %rax
     test %al, %al
-    jz _kefir_func___kefir_bigint_signed_compare_label10
-    mov %rdx, %rsi
-    jmp _kefir_func___kefir_bigint_signed_compare_label3
-_kefir_func___kefir_bigint_signed_compare_label10:
-    jmp _kefir_func___kefir_bigint_signed_compare_label6
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func___kefir_bigint_signed_compare_label6
+    mov %rax, %rcx
 _kefir_func___kefir_bigint_signed_compare_label3:
-    test %esi, %esi
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_compare_label5
@@ -1154,13 +1148,10 @@ _kefir_func___kefir_bigint_signed_compare_label5:
     ret
 _kefir_func___kefir_bigint_signed_compare_label6:
     movl -36(%rbp), %eax
-    test %edx, %edx
-    setne %cl
     test %eax, %eax
     setne %al
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %rsi
+    movzx %al, %rax
+    mov %rax, %rcx
     jmp _kefir_func___kefir_bigint_signed_compare_label3
 _kefir_func___kefir_bigint_signed_compare_label7:
     mov $1, %rax
@@ -1173,11 +1164,8 @@ _kefir_func___kefir_bigint_signed_compare_label8:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %edx, %edx
-    setne %al
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rsi
+    mov %rcx, %rax
+    mov %rax, %rdx
     jmp _kefir_func___kefir_bigint_signed_compare_label1
 __kefir_text_func___kefir_bigint_signed_compare_end:
 

@@ -1077,40 +1077,10 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_NOT, 0));
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-
-    kefir_ast_type_data_model_classification_t normalized_type2_classification;
-    REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type2,
-                                                  &normalized_type2_classification));
-    switch (normalized_type2_classification) {
-        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_BOOL_AND, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_BOOL_AND, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_AND, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_TO_BOOL,
-                                                       normalized_type2->bitprecise.width));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
-            break;
-
-        default:
-            REQUIRE_OK(
-                kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_AND, 0));
-            break;
-    }
+    REQUIRE_OK(
+        kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = jmpTarget;
     return KEFIR_OK;
@@ -1127,39 +1097,10 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
     kefir_size_t jmpIndex = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-    kefir_ast_type_data_model_classification_t normalized_type2_classification;
-    REQUIRE_OK(kefir_ast_type_data_model_classify(context->ast_context->type_traits, normalized_type2,
-                                                  &normalized_type2_classification));
-    switch (normalized_type2_classification) {
-        case KEFIR_AST_TYPE_DATA_MODEL_INT8:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT16:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT16_BOOL_OR, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT32:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT32_BOOL_OR, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_INT64:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
-            break;
-
-        case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_BITINT_TO_BOOL,
-                                                       normalized_type2->bitprecise.width));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT8_BOOL_OR, 0));
-            break;
-
-        default:
-            REQUIRE_OK(
-                kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
-            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_BOOL_OR, 0));
-            break;
-    }
+    REQUIRE_OK(
+        kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = jmpTarget;
     return KEFIR_OK;

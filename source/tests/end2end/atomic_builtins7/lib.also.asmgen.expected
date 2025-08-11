@@ -50,106 +50,73 @@ __kefir_text_func_test_is_lock_free_begin:
     mov $1, %rax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label38
     mov %rax, %rcx
 _kefir_func_test_is_lock_free_label1:
-    xor %r8d, %r8d
+    xor %eax, %eax
     cmp $2, %ecx
-    sete %r8b
+    sete %al
     cmp $2, %ecx
     je _kefir_func_test_is_lock_free_label35
-    mov %r8, %r10
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label2
 _kefir_func_test_is_lock_free_label2:
-    test %r10d, %r10d
+    test %edx, %edx
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $1, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label32
-    mov %rax, %r9
+    mov %rax, %rsi
 _kefir_func_test_is_lock_free_label3:
-    test %r9d, %r9d
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $0, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label29
-    mov %rax, %r8
+    mov %rax, %rdx
 _kefir_func_test_is_lock_free_label4:
-    test %r8d, %r8d
+    test %edx, %edx
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $0, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label26
-    mov %rax, %r9
+    mov %rax, %rsi
 _kefir_func_test_is_lock_free_label5:
-    test %r9d, %r9d
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $1, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label23
-    mov %rax, %r8
+    mov %rax, %rdx
 _kefir_func_test_is_lock_free_label6:
-    test %r8d, %r8d
+    test %edx, %edx
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $0, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label20
-    mov %rax, %r9
+    mov %rax, %rsi
 _kefir_func_test_is_lock_free_label7:
-    test %r9d, %r9d
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $0, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label17
-    mov %rax, %r8
+    mov %rax, %rdx
 _kefir_func_test_is_lock_free_label8:
-    test %r8d, %r8d
+    test %edx, %edx
     setne %al
     movzx %al, %rax
-    xor %edx, %edx
-    or $0, %edx
-    setne %dl
-    movzx %dl, %rdx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label14
-    mov %rax, %r9
+    mov %rax, %rsi
 _kefir_func_test_is_lock_free_label9:
-    test %r9d, %r9d
+    test %esi, %esi
     setne %al
     movzx %al, %rax
-    xor %ecx, %ecx
-    or $0, %ecx
-    setne %cl
-    movzx %cl, %rcx
     test %al, %al
     jnz _kefir_func_test_is_lock_free_label11
     mov %rax, %rdx
@@ -161,283 +128,226 @@ _kefir_func_test_is_lock_free_label10:
     pop %rbp
     ret
 _kefir_func_test_is_lock_free_label11:
-    mov %rcx, %rax
+    xor %eax, %eax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $1, %eax
+    or $1, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label13
-    mov %rax, %r8
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label12:
     xor %eax, %eax
-    cmp $2, %r8d
+    cmp $2, %ecx
     sete %al
-    test %r9d, %r9d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %rdx
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label10
 _kefir_func_test_is_lock_free_label13:
-    movq %r9, -16(%rbp)
-    movq %r8, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $8, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %r8
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %r8
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label12
 _kefir_func_test_is_lock_free_label14:
-    mov %rdx, %rax
+    xor %eax, %eax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $1, %eax
+    or $1, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label16
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label15:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r8d, %r8d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r9
+    mov %rax, %rsi
     jmp _kefir_func_test_is_lock_free_label9
 _kefir_func_test_is_lock_free_label16:
-    movq %r8, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $8, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r8
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label15
 _kefir_func_test_is_lock_free_label17:
-    mov %rdx, %rax
+    xor %eax, %eax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $1, %eax
+    or $1, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label19
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label18:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r9d, %r9d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r8
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label8
 _kefir_func_test_is_lock_free_label19:
-    movq %r9, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $8, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label18
 _kefir_func_test_is_lock_free_label20:
-    mov %rdx, %rax
+    xor %eax, %eax
     or $1, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label22
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label21:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r8d, %r8d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r9
+    mov %rax, %rsi
     jmp _kefir_func_test_is_lock_free_label7
 _kefir_func_test_is_lock_free_label22:
-    movq %r8, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $4, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r8
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label21
 _kefir_func_test_is_lock_free_label23:
-    mov %rdx, %rax
+    mov $1, %rax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label25
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label24:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r9d, %r9d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r8
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label6
 _kefir_func_test_is_lock_free_label25:
-    movq %r9, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $2, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label24
 _kefir_func_test_is_lock_free_label26:
-    mov %rdx, %rax
+    xor %eax, %eax
     or $1, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label28
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label27:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r8d, %r8d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r9
+    mov %rax, %rsi
     jmp _kefir_func_test_is_lock_free_label5
 _kefir_func_test_is_lock_free_label28:
-    movq %r8, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $4, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r8
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label27
 _kefir_func_test_is_lock_free_label29:
-    mov %rdx, %rax
+    xor %eax, %eax
     or $1, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label31
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label30:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r9d, %r9d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r8
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label4
 _kefir_func_test_is_lock_free_label31:
-    movq %r9, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $4, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r9
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label30
 _kefir_func_test_is_lock_free_label32:
-    mov %rdx, %rax
+    mov $1, %rax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_test_is_lock_free_label34
-    mov %rax, %rdx
+    mov %rax, %rcx
 _kefir_func_test_is_lock_free_label33:
     xor %eax, %eax
-    cmp $2, %edx
+    cmp $2, %ecx
     sete %al
-    test %r10d, %r10d
-    setne %cl
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %r9
+    mov %rax, %rsi
     jmp _kefir_func_test_is_lock_free_label3
 _kefir_func_test_is_lock_free_label34:
-    movq %r10, -16(%rbp)
-    movq %rdx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $2, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r10
-    movq -8(%rbp), %rdx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_test_is_lock_free_label33
 _kefir_func_test_is_lock_free_label35:
     mov $1, %rax
     or $0, %eax
     setne %al
-    movzx %al, %rax
-    or $0, %eax
+    or $0, %al
     setne %al
     movzx %al, %rax
     test %al, %al
@@ -447,19 +357,14 @@ _kefir_func_test_is_lock_free_label36:
     xor %eax, %eax
     cmp $2, %ecx
     sete %al
-    mov %r8, %rdx
-    and %dl, %al
-    movzx %al, %rdx
-    mov %rdx, %r10
+    mov %rax, %rdx
     jmp _kefir_func_test_is_lock_free_label2
 _kefir_func_test_is_lock_free_label37:
-    movq %r8, -16(%rbp)
-    movq %rcx, -8(%rbp)
+    movq %rcx, -16(%rbp)
     mov $1, %rdi
     xor %esi, %esi
     call __atomic_is_lock_free@PLT
-    movq -16(%rbp), %r8
-    movq -8(%rbp), %rcx
+    movq -16(%rbp), %rcx
     test %al, %al
     setne %al
     movzx %al, %rax

@@ -1798,15 +1798,12 @@ _kefir_func___kefir_bigint_signed_multiply_label0:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov %rdx, %rsi
-    test %sil, %sil
-    jz _kefir_func___kefir_bigint_signed_multiply_label16
-    mov %rsi, %rdi
-    jmp _kefir_func___kefir_bigint_signed_multiply_label1
-_kefir_func___kefir_bigint_signed_multiply_label16:
-    jmp _kefir_func___kefir_bigint_signed_multiply_label15
+    mov %rdx, %rax
+    test %al, %al
+    jz _kefir_func___kefir_bigint_signed_multiply_label15
+    mov %rax, %rsi
 _kefir_func___kefir_bigint_signed_multiply_label1:
-    test %edi, %edi
+    test %esi, %esi
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_multiply_label14
@@ -1887,18 +1884,15 @@ _kefir_func___kefir_bigint_signed_multiply_label5:
     movl %eax, -8(%rbp)
     movl -8(%rbp), %eax
     test %eax, %eax
-    setne %dl
-    movzx %dl, %rdx
-    test %dl, %dl
-    sete %al
+    setne %al
+    movzx %al, %rax
     test %al, %al
-    jz _kefir_func___kefir_bigint_signed_multiply_label17
-    mov %rdx, %rsi
-    jmp _kefir_func___kefir_bigint_signed_multiply_label6
-_kefir_func___kefir_bigint_signed_multiply_label17:
-    jmp _kefir_func___kefir_bigint_signed_multiply_label13
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func___kefir_bigint_signed_multiply_label13
+    mov %rax, %rdx
 _kefir_func___kefir_bigint_signed_multiply_label6:
-    test %esi, %esi
+    test %edx, %edx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_multiply_label12
@@ -1907,17 +1901,14 @@ _kefir_func___kefir_bigint_signed_multiply_label7:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    mov %rcx, %rdx
-    test %dl, %dl
-    sete %al
+    mov %rcx, %rax
     test %al, %al
-    jz _kefir_func___kefir_bigint_signed_multiply_label18
-    mov %rdx, %rsi
-    jmp _kefir_func___kefir_bigint_signed_multiply_label8
-_kefir_func___kefir_bigint_signed_multiply_label18:
-    jmp _kefir_func___kefir_bigint_signed_multiply_label11
+    sete %cl
+    test %cl, %cl
+    jz _kefir_func___kefir_bigint_signed_multiply_label11
+    mov %rax, %rcx
 _kefir_func___kefir_bigint_signed_multiply_label8:
-    test %esi, %esi
+    test %ecx, %ecx
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_multiply_label10
@@ -1966,13 +1957,10 @@ _kefir_func___kefir_bigint_signed_multiply_label10:
     jmp _kefir_func___kefir_bigint_signed_multiply_label9
 _kefir_func___kefir_bigint_signed_multiply_label11:
     movl -48(%rbp), %eax
-    test %edx, %edx
-    setne %cl
     test %eax, %eax
     setne %al
-    and %cl, %al
-    movzx %al, %rcx
-    mov %rcx, %rsi
+    movzx %al, %rax
+    mov %rax, %rcx
     jmp _kefir_func___kefir_bigint_signed_multiply_label8
 _kefir_func___kefir_bigint_signed_multiply_label12:
     movq -32(%rbp), %rdi
@@ -1985,11 +1973,8 @@ _kefir_func___kefir_bigint_signed_multiply_label13:
     mov $0, %rcx
     test %eax, %eax
     sete %cl
-    test %edx, %edx
-    setne %al
-    and %al, %cl
-    movzx %cl, %rax
-    mov %rax, %rsi
+    mov %rcx, %rax
+    mov %rax, %rdx
     jmp _kefir_func___kefir_bigint_signed_multiply_label6
 _kefir_func___kefir_bigint_signed_multiply_label14:
     mov $0, %rax
@@ -2003,11 +1988,8 @@ _kefir_func___kefir_bigint_signed_multiply_label15:
     mov $0, %rdx
     cmp %rcx, %rax
     sete %dl
-    mov %rsi, %rax
-    or %edx, %eax
-    setne %al
-    movzx %al, %rax
-    mov %rax, %rdi
+    mov %rdx, %rax
+    mov %rax, %rsi
     jmp _kefir_func___kefir_bigint_signed_multiply_label1
 __kefir_text_func___kefir_bigint_signed_multiply_end:
 
