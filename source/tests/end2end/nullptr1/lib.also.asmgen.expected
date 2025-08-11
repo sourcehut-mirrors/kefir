@@ -70,10 +70,9 @@ __kefir_text_func_is2_end:
 
 or1:
 __kefir_text_func_or1_begin:
-    or $0, %dil
-    setne %dil
-    movzx %dil, %rdi
-    mov %rdi, %rax
+    test %dil, %dil
+    setne %al
+    movzx %al, %rax
     ret
 __kefir_text_func_or1_end:
 
@@ -96,13 +95,7 @@ __kefir_text_func_or3_end:
 
 and1:
 __kefir_text_func_and1_begin:
-    test %dil, %dil
-    setne %al
-    xor %ecx, %ecx
-    test $0, %cl
-    setne %cl
-    and %al, %cl
-    movzx %cl, %rax
+    xor %eax, %eax
     ret
 __kefir_text_func_and1_end:
 

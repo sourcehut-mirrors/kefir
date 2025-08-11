@@ -296,92 +296,90 @@ static kefir_result_t simplify_bool_or(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
+#define SIMPLIFY_CONST_BOOL_OR(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_OR && \
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) { \
+        if (((kefir_uint##_width##_t) arg1->operation.parameters.imm.integer) == 0) { \
+            REQUIRE_OK(kefir_opt_code_builder_int##_width##_to_bool(mem, &func->code, instr->block_id, arg2->id, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } else { \
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, instr->block_id, 1, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } \
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_OR && \
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) { \
+        if (((kefir_uint##_width##_t) arg2->operation.parameters.imm.integer) == 0) { \
+            REQUIRE_OK(kefir_opt_code_builder_int##_width##_to_bool(mem, &func->code, instr->block_id, arg1->id, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } else { \
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, instr->block_id, 1, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } \
+    }
+    SIMPLIFY_CONST_BOOL_OR(8)
+    else SIMPLIFY_CONST_BOOL_OR(16)
+    else SIMPLIFY_CONST_BOOL_OR(32)
+    else SIMPLIFY_CONST_BOOL_OR(64)
+#undef SIMPLIFY_CONST_BOOL_OR
+    else if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
         IS_BOOL_INSTR(arg2)) {
         REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id, arg1->id, arg2->id,
                                                        replacement_ref));
         return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id,
-                                                       arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                       arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id,
-                                                       arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_OR &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                       arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_OR &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_OR &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_OR &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_or(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||
+    }
+#define SIMPLIFY_HALF_BOOL_OR(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && \
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL && IS_BOOL_INSTR(arg2)) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_or(mem, &func->code, instr->block_id, \
+                                                       arg1->operation.parameters.refs[0], arg2->id, replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_OR(8)
+    else SIMPLIFY_HALF_BOOL_OR(16)
+    else SIMPLIFY_HALF_BOOL_OR(32)
+    else SIMPLIFY_HALF_BOOL_OR(64)
+#undef SIMPLIFY_HALF_BOOL_OR
+#define SIMPLIFY_HALF_BOOL_OR(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR && \
+               IS_BOOL_INSTR(arg1) && arg2->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_or(mem, &func->code, instr->block_id, \
+                                                       arg1->id, arg2->operation.parameters.refs[0], replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_OR(8)
+    else SIMPLIFY_HALF_BOOL_OR(16)
+    else SIMPLIFY_HALF_BOOL_OR(32)
+    else SIMPLIFY_HALF_BOOL_OR(64)
+#undef SIMPLIFY_HALF_BOOL_OR
+#define SIMPLIFY_HALF_BOOL_OR2(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_OR && \
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_or(mem, &func->code, instr->block_id, \
+                                                       arg1->operation.parameters.refs[0], arg2->id, replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_OR2(8)
+    else SIMPLIFY_HALF_BOOL_OR2(16)
+    else SIMPLIFY_HALF_BOOL_OR2(32)
+    else SIMPLIFY_HALF_BOOL_OR2(64)
+#undef SIMPLIFY_HALF_BOOL_OR2
+#define SIMPLIFY_HALF_BOOL_OR2(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_OR && \
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_or(mem, &func->code, instr->block_id, \
+                                                       arg1->id, arg2->operation.parameters.refs[0], replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_OR2(8)
+    else SIMPLIFY_HALF_BOOL_OR2(16)
+    else SIMPLIFY_HALF_BOOL_OR2(32)
+    else SIMPLIFY_HALF_BOOL_OR2(64)
+#undef SIMPLIFY_HALF_BOOL_OR2
+    else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_OR ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_OR ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_OR ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_OR) &&
@@ -502,92 +500,90 @@ static kefir_result_t simplify_bool_and(struct kefir_mem *mem, struct kefir_opt_
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
+#define SIMPLIFY_CONST_BOOL_AND(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_AND && \
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) { \
+        if (((kefir_uint##_width##_t) arg1->operation.parameters.imm.integer) != 0) { \
+            REQUIRE_OK(kefir_opt_code_builder_int##_width##_to_bool(mem, &func->code, instr->block_id, arg2->id, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } else { \
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, instr->block_id, 0, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } \
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_AND && \
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST || arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) { \
+        if (((kefir_uint##_width##_t) arg2->operation.parameters.imm.integer) != 0) { \
+            REQUIRE_OK(kefir_opt_code_builder_int##_width##_to_bool(mem, &func->code, instr->block_id, arg1->id, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } else { \
+            REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, instr->block_id, 0, \
+                                                        replacement_ref)); \
+            return KEFIR_OK; \
+        } \
+    }
+    SIMPLIFY_CONST_BOOL_AND(8)
+    else SIMPLIFY_CONST_BOOL_AND(16)
+    else SIMPLIFY_CONST_BOOL_AND(32)
+    else SIMPLIFY_CONST_BOOL_AND(64)
+#undef SIMPLIFY_CONST_BOOL_AND
+    else if (instr->operation.opcode != KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
         IS_BOOL_INSTR(arg2)) {
         REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id, arg1->id, arg2->id,
                                                         replacement_ref));
         return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL && IS_BOOL_INSTR(arg2)) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id,
-                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_AND &&
-               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(
-            mem, &func->code, instr->block_id, arg1->operation.parameters.refs[0], arg2->id, replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT8_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int8_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                        arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_AND &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT16_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int16_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_AND &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT32_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int32_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_AND &&
-               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT64_TO_BOOL) {
-        REQUIRE_OK(kefir_opt_code_builder_int64_bool_and(mem, &func->code, instr->block_id, arg1->id,
-                                                         arg2->operation.parameters.refs[0], replacement_ref));
-        return KEFIR_OK;
-    } else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||
+    }
+#define SIMPLIFY_HALF_BOOL_AND(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && \
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL && IS_BOOL_INSTR(arg2)) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_and(mem, &func->code, instr->block_id, \
+                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_AND(8)
+    else SIMPLIFY_HALF_BOOL_AND(16)
+    else SIMPLIFY_HALF_BOOL_AND(32)
+    else SIMPLIFY_HALF_BOOL_AND(64)
+#undef SIMPLIFY_HALF_BOOL_AND
+#define SIMPLIFY_HALF_BOOL_AND(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND && IS_BOOL_INSTR(arg1) && \
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_and(mem, &func->code, instr->block_id, arg1->id, \
+                                                        arg2->operation.parameters.refs[0], replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_AND(8)
+    else SIMPLIFY_HALF_BOOL_AND(16)
+    else SIMPLIFY_HALF_BOOL_AND(32)
+    else SIMPLIFY_HALF_BOOL_AND(64)
+#undef SIMPLIFY_HALF_BOOL_AND
+#define SIMPLIFY_HALF_BOOL_AND2(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_AND && \
+               arg1->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_and(mem, &func->code, instr->block_id, \
+                                                        arg1->operation.parameters.refs[0], arg2->id, replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_AND2(8)
+    else SIMPLIFY_HALF_BOOL_AND2(16)
+    else SIMPLIFY_HALF_BOOL_AND2(32)
+    else SIMPLIFY_HALF_BOOL_AND2(64)
+#undef SIMPLIFY_HALF_BOOL_AND2
+#define SIMPLIFY_HALF_BOOL_AND2(_width) \
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_BOOL_AND && \
+               arg2->operation.opcode == KEFIR_OPT_OPCODE_INT##_width##_TO_BOOL) { \
+        REQUIRE_OK(kefir_opt_code_builder_int##_width##_bool_and(mem, &func->code, instr->block_id, arg1->id, \
+                                                        arg2->operation.parameters.refs[0], replacement_ref)); \
+        return KEFIR_OK; \
+    }
+    else SIMPLIFY_HALF_BOOL_AND2(8)
+    else SIMPLIFY_HALF_BOOL_AND2(16)
+    else SIMPLIFY_HALF_BOOL_AND2(32)
+    else SIMPLIFY_HALF_BOOL_AND2(64)
+#undef SIMPLIFY_HALF_BOOL_AND2
+    else if ((instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_BOOL_AND ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT16_BOOL_AND ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT32_BOOL_AND ||
                 instr->operation.opcode == KEFIR_OPT_OPCODE_INT64_BOOL_AND) &&

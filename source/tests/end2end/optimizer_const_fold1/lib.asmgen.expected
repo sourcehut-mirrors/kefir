@@ -436,9 +436,6 @@ __kefir_text_func_int_less_or_equals2_begin:
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals2_label0:
     mov $0, %rax
-    or $0, %al
-    setne %al
-    movzx %al, %rax
     pop %rbp
     ret
 __kefir_text_func_int_less_or_equals2_end:
@@ -449,9 +446,6 @@ __kefir_text_func_int_greater_or_equals2_begin:
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals2_label0:
     mov $0, %rax
-    or $0, %al
-    setne %al
-    movzx %al, %rax
     pop %rbp
     ret
 __kefir_text_func_int_greater_or_equals2_end:
@@ -511,10 +505,7 @@ __kefir_text_func_int_below_or_equals_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals_label0:
-    mov $0, %rax
-    or $1, %al
-    setne %al
-    movzx %al, %rax
+    mov $1, %rax
     pop %rbp
     ret
 __kefir_text_func_int_below_or_equals_end:
@@ -524,10 +515,7 @@ __kefir_text_func_int_less_or_equals_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_less_or_equals_label0:
-    mov $0, %rax
-    or $1, %al
-    setne %al
-    movzx %al, %rax
+    mov $1, %rax
     pop %rbp
     ret
 __kefir_text_func_int_less_or_equals_end:
@@ -537,10 +525,7 @@ __kefir_text_func_int_greater_or_equals_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_greater_or_equals_label0:
-    mov $0, %rax
-    or $1, %al
-    setne %al
-    movzx %al, %rax
+    mov $1, %rax
     pop %rbp
     ret
 __kefir_text_func_int_greater_or_equals_end:
@@ -570,10 +555,7 @@ __kefir_text_func_int_above_or_equals_begin:
     push %rbp
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals_label0:
-    mov $0, %rax
-    or $1, %al
-    setne %al
-    movzx %al, %rax
+    mov $1, %rax
     pop %rbp
     ret
 __kefir_text_func_int_above_or_equals_end:
@@ -584,9 +566,6 @@ __kefir_text_func_int_below_or_equals2_begin:
     mov %rsp, %rbp
 _kefir_func_int_below_or_equals2_label0:
     mov $0, %rax
-    or $0, %al
-    setne %al
-    movzx %al, %rax
     pop %rbp
     ret
 __kefir_text_func_int_below_or_equals2_end:
@@ -597,9 +576,6 @@ __kefir_text_func_int_above_or_equals2_begin:
     mov %rsp, %rbp
 _kefir_func_int_above_or_equals2_label0:
     mov $0, %rax
-    or $0, %al
-    setne %al
-    movzx %al, %rax
     pop %rbp
     ret
 __kefir_text_func_int_above_or_equals2_end:
