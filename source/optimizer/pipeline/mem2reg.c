@@ -511,9 +511,19 @@ static kefir_result_t mem2reg_pull(struct mem2reg_state *state) {
                                 kefir_hashtreeset_has(&state->indirect_jump_targets,
                                                       (kefir_hashtreeset_entry_t) block_id)) {
                                 replacement_ref = instr_id;
-                                REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
-                                                                 (kefir_hashtree_key_t) block_id,
-                                                                 (kefir_hashtree_value_t) KEFIR_ID_NONE));
+                                kefir_bool_t insert_input = true;
+                                res = kefir_hashtree_at(&reg_state->block_inputs, (kefir_hashtree_key_t) block_id, &node);
+                                if (res != KEFIR_NOT_FOUND) {
+                                    REQUIRE_OK(res);
+                                    REQUIRE(node->value == (kefir_hashtree_value_t) KEFIR_ID_NONE,
+                                            KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected block input"));
+                                    insert_input = false;
+                                }
+                                if (insert_input) {
+                                    REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
+                                                                    (kefir_hashtree_key_t) block_id,
+                                                                    (kefir_hashtree_value_t) KEFIR_ID_NONE));
+                                }
                             } else if (block_id != state->func->code.entry_point) {
                                 kefir_opt_phi_id_t phi_ref;
                                 REQUIRE_OK(kefir_opt_code_container_new_phi(state->mem, &state->func->code, block_id,
@@ -917,9 +927,19 @@ static kefir_result_t mem2reg_link_blocks(struct mem2reg_state *state, kefir_opt
         if (state->has_indirect_jumps &&
             kefir_hashtreeset_has(&state->indirect_jump_targets, (kefir_hashtreeset_entry_t) source_block_ref)) {
             REQUIRE_OK(mem2reg_load_local_variable(state, instr_ref, source_block_ref, &source_instr_ref));
-            REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
-                                             (kefir_hashtree_key_t) source_block_ref,
-                                             (kefir_hashtree_value_t) KEFIR_ID_NONE));
+            kefir_bool_t insert_input = true;
+            res = kefir_hashtree_at(&reg_state->block_inputs, (kefir_hashtree_key_t) source_block_ref, &node);
+            if (res != KEFIR_NOT_FOUND) {
+                REQUIRE_OK(res);
+                REQUIRE(node->value == (kefir_hashtree_value_t) KEFIR_ID_NONE,
+                        KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected block input"));
+                insert_input = false;
+            }
+            if (insert_input) {
+                REQUIRE_OK(kefir_hashtree_insert(state->mem, &reg_state->block_inputs,
+                                                (kefir_hashtree_key_t) source_block_ref,
+                                                (kefir_hashtree_value_t) KEFIR_ID_NONE));
+            }
             REQUIRE_OK(kefir_list_insert_after(state->mem, &state->block_queue, kefir_list_tail(&state->block_queue),
                                                (void *) (kefir_uptr_t) source_block_ref));
         } else if (source_block_ref != state->func->code.entry_point) {
