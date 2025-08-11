@@ -87,9 +87,6 @@ __kefir_text_func_or2_end:
 or3:
 __kefir_text_func_or3_begin:
     xor %eax, %eax
-    test $0, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_or3_end:
 
@@ -102,18 +99,12 @@ __kefir_text_func_and1_end:
 and2:
 __kefir_text_func_and2_begin:
     xor %eax, %eax
-    test $0, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_and2_end:
 
 and3:
 __kefir_text_func_and3_begin:
     xor %eax, %eax
-    test $0, %eax
-    setne %al
-    movzx %al, %rax
     ret
 __kefir_text_func_and3_end:
 

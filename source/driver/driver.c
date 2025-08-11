@@ -47,6 +47,7 @@
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \
+    "phi-propagate," \
     "op-simplify," \
     "constant-fold," \
     "block-merge," \
