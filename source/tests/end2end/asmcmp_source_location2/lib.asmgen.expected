@@ -272,6 +272,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    1
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -287,7 +313,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    1,
 #                    14
 #                ],
 #                "source_location": {
@@ -609,6 +634,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    2
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -624,7 +675,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    2,
 #                    20
 #                ],
 #                "source_location": {
@@ -677,6 +727,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    3
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -692,7 +768,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    3,
 #                    22
 #                ],
 #                "source_location": {
@@ -870,6 +945,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    4
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -885,7 +986,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    4,
 #                    26
 #                ],
 #                "source_location": {
@@ -969,6 +1069,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    5
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -984,7 +1110,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    5,
 #                    28
 #                ],
 #                "source_location": {
@@ -1228,6 +1353,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    6
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "mov",
 #                "args": [
 #                    {
@@ -1243,7 +1394,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    6,
 #                    36
 #                ],
 #                "source_location": {
@@ -1327,6 +1477,32 @@ factorial:
 #                "source_location": null
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 2,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    7
+#                ],
+#                "source_location": null
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 4,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [],
+#                "source_location": null
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -1339,7 +1515,6 @@ factorial:
 #                    }
 #                ],
 #                "labels": [
-#                    7,
 #                    38
 #                ],
 #                "source_location": {
@@ -1423,8 +1598,8 @@ _kefir_func_factorial_label12:
 _kefir_func_factorial_label13:
     test %al, %al
     jz _kefir_func_factorial_label7
-.loc 0 24 9
 _kefir_func_factorial_label1:
+.loc 0 24 9
 _kefir_func_factorial_label14:
     movl -8(%rbp), %eax
 .loc 0 24 9
@@ -1452,13 +1627,13 @@ _kefir_func_factorial_label18:
 _kefir_func_factorial_label19:
     test %al, %al
     jz _kefir_func_factorial_label6
-.loc 0 27 5
 _kefir_func_factorial_label2:
+.loc 0 27 5
 _kefir_func_factorial_label20:
     movl $1, -4(%rbp)
 _kefir_func_factorial_label21:
-.loc 0 28 12
 _kefir_func_factorial_label3:
+.loc 0 28 12
 _kefir_func_factorial_label22:
     movl -8(%rbp), %eax
 .loc 0 28 12
@@ -1474,8 +1649,8 @@ _kefir_func_factorial_label24:
 _kefir_func_factorial_label25:
     test %al, %al
     jz _kefir_func_factorial_label5
-.loc 0 31 12
 _kefir_func_factorial_label4:
+.loc 0 31 12
 _kefir_func_factorial_label26:
     movl -4(%rbp), %eax
 .loc 0 31 5
@@ -1483,8 +1658,8 @@ _kefir_func_factorial_label27:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.loc 0 29 19
 _kefir_func_factorial_label5:
+.loc 0 29 19
 _kefir_func_factorial_label28:
     movl -8(%rbp), %eax
 .loc 0 29 9
@@ -1508,8 +1683,8 @@ _kefir_func_factorial_label34:
 .loc 0 28 5
 _kefir_func_factorial_label35:
     jmp _kefir_func_factorial_label3
-.loc 0 25 16
 _kefir_func_factorial_label6:
+.loc 0 25 16
 _kefir_func_factorial_label36:
     movl -8(%rbp), %eax
 .loc 0 25 9
@@ -1517,8 +1692,8 @@ _kefir_func_factorial_label37:
     lea (%rbp), %rsp
     pop %rbp
     ret
-.loc 0 23 9
 _kefir_func_factorial_label7:
+.loc 0 23 9
 _kefir_func_factorial_label38:
     mov $0, %rax
     lea (%rbp), %rsp

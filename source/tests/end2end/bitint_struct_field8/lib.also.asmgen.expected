@@ -259,10 +259,9 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label1:
     mov $0, %rax
     and $255, %rax
     not %eax
-    mov %rax, %rdi
-    leaq -44(%rbp), %r8
+    leaq -44(%rbp), %rcx
 _kefir_func___kefir_bigint_right_shift_whole_digits_label2:
-    movb %dil, (%r8)
+    movb %al, (%rcx)
     movq -40(%rbp), %rax
     movq -16(%rbp), %rcx
     mov $0, %rdx
@@ -378,8 +377,7 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label13:
 _kefir_func___kefir_bigint_right_shift_whole_digits_label14:
     mov $0, %rax
     and $255, %rax
-    mov %rax, %rdi
-    leaq -44(%rbp), %r8
+    leaq -44(%rbp), %rcx
     jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label2
 __kefir_text_func___kefir_bigint_right_shift_whole_digits_end:
 

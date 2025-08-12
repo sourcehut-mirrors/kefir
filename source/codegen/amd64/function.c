@@ -369,6 +369,30 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         ASSIGN_DECL_CAST(kefir_asmcmp_label_index_t, asmlabel, asmlabel_node->value);
         REQUIRE_OK(kefir_asmcmp_context_bind_label_after_tail(mem, &func->code.context, asmlabel));
 
+        struct kefir_bucketset_iterator alive_instr_iter;
+        kefir_bucketset_entry_t alive_instr_entry;
+        for (res = kefir_bucketset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr,
+                                        &alive_instr_iter, &alive_instr_entry);
+             res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+            kefir_asmcmp_virtual_register_index_t vreg = 0;
+            res = kefir_codegen_amd64_function_vreg_of(func, (kefir_opt_instruction_ref_t) alive_instr_entry, &vreg);
+            if (res == KEFIR_NOT_FOUND) {
+                res = KEFIR_OK;
+                continue;
+            }
+            REQUIRE_OK(res);
+
+            const struct kefir_opt_instruction *instr;
+            REQUIRE_OK(kefir_opt_code_container_instr(&func->function->code,
+                                                      (kefir_opt_instruction_ref_t) alive_instr_entry, &instr));
+            if (instr->block_id == block_id && instr->operation.opcode != KEFIR_OPT_OPCODE_PHI) {
+                continue;
+            }
+
+            REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+                mem, &func->code, kefir_asmcmp_context_instr_tail(&func->code.context), vreg, NULL));
+        }
+
         struct kefir_opt_code_block_schedule_iterator iter;
         kefir_result_t res;
         for (res = kefir_opt_code_block_schedule_iter(&func->schedule, block_id, &iter); res == KEFIR_OK;
@@ -389,8 +413,6 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
             block_begin_idx = kefir_asmcmp_context_instr_tail(&func->code.context);
         }
 
-        struct kefir_bucketset_iterator alive_instr_iter;
-        kefir_bucketset_entry_t alive_instr_entry;
         for (res = kefir_bucketset_iter(&func->function_analysis.liveness.blocks[block_id].alive_instr,
                                         &alive_instr_iter, &alive_instr_entry);
              res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {

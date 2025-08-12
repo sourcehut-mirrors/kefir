@@ -40,6 +40,8 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(phi)(struct kefir_mem *mem,
     } else {
         REQUIRE_OK(res);
     }
+    REQUIRE_OK(kefir_asmcmp_amd64_touch_virtual_register(
+        mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg, NULL));
 
     return KEFIR_OK;
 }

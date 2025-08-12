@@ -10,7 +10,7 @@ get:
 __kefir_text_func_get_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $256, %rsp
+    sub $240, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
     test %al, %al
@@ -34,11 +34,7 @@ _kefir_func_get_label7:
     jg _kefir_func_get_label3
     fldt _kefir_func_get_label6(%rip)
     fchs
-    fstpt -256(%rbp)
-    movq -256(%rbp), %rax
-    movq %rax, -240(%rbp)
-    movq -248(%rbp), %rax
-    movq %rax, -232(%rbp)
+    fstpt -240(%rbp)
 _kefir_func_get_label2:
     fldt -240(%rbp)
     ldmxcsr -16(%rbp)
@@ -61,26 +57,16 @@ _kefir_func_get_label3:
     cdq
     mov $2, %rdi
     idiv %edi
-    fstpt -256(%rbp)
+    fstpt -240(%rbp)
     cmp $0, %edx
-    je _kefir_func_get_label5
-_kefir_func_get_label4:
-    movq -256(%rbp), %rax
-    movq %rax, -240(%rbp)
-    movq -248(%rbp), %rax
-    movq %rax, -232(%rbp)
-    jmp _kefir_func_get_label2
+    jne _kefir_func_get_label2
 _kefir_func_get_label5:
     mov -40(%rbp), %rax
     lea 16(%rax), %rax
     mov %rax, -40(%rbp)
     fldt -16(%rax)
     fstpt -240(%rbp)
-    movq -240(%rbp), %rax
-    movq %rax, -256(%rbp)
-    movq -232(%rbp), %rax
-    movq %rax, -248(%rbp)
-    jmp _kefir_func_get_label4
+    jmp _kefir_func_get_label2
 __kefir_text_func_get_end:
 .section .rodata
     .align 8

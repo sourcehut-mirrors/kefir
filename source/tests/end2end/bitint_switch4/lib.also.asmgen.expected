@@ -266,9 +266,8 @@ _kefir_func___kefir_bigint_signed_compare_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func___kefir_bigint_signed_compare_label8
-    mov %rax, %rdx
 _kefir_func___kefir_bigint_signed_compare_label1:
-    test %edx, %edx
+    test %eax, %eax
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_compare_label7
@@ -282,9 +281,8 @@ _kefir_func___kefir_bigint_signed_compare_label2:
     sete %cl
     test %cl, %cl
     jz _kefir_func___kefir_bigint_signed_compare_label6
-    mov %rax, %rcx
 _kefir_func___kefir_bigint_signed_compare_label3:
-    test %ecx, %ecx
+    test %eax, %eax
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_signed_compare_label5
@@ -306,7 +304,6 @@ _kefir_func___kefir_bigint_signed_compare_label6:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    mov %rax, %rcx
     jmp _kefir_func___kefir_bigint_signed_compare_label3
 _kefir_func___kefir_bigint_signed_compare_label7:
     mov $1, %rax
@@ -320,7 +317,6 @@ _kefir_func___kefir_bigint_signed_compare_label8:
     test %eax, %eax
     sete %cl
     mov %rcx, %rax
-    mov %rax, %rdx
     jmp _kefir_func___kefir_bigint_signed_compare_label1
 __kefir_text_func___kefir_bigint_signed_compare_end:
 
@@ -923,10 +919,9 @@ _kefir_func___kefir_bigint_util_add_digit_zero_extended_label7:
 _kefir_func___kefir_bigint_util_add_digit_zero_extended_label4:
     movb -52(%rbp), %al
     and $255, %rax
-    mov %rax, %rsi
-    leaq -28(%rbp), %rdi
+    leaq -28(%rbp), %rcx
 _kefir_func___kefir_bigint_util_add_digit_zero_extended_label5:
-    movl %esi, (%rdi)
+    movl %eax, (%rcx)
     movl -56(%rbp), %eax
     movl -4(%rbp), %ecx
     movl -28(%rbp), %edx
@@ -952,8 +947,7 @@ _kefir_func___kefir_bigint_util_add_digit_zero_extended_label5:
     jmp _kefir_func___kefir_bigint_util_add_digit_zero_extended_label1
 _kefir_func___kefir_bigint_util_add_digit_zero_extended_label6:
     movl -32(%rbp), %eax
-    mov %rax, %rsi
-    leaq -28(%rbp), %rdi
+    leaq -28(%rbp), %rcx
     jmp _kefir_func___kefir_bigint_util_add_digit_zero_extended_label5
 __kefir_text_func___kefir_bigint_util_add_digit_zero_extended_end:
 

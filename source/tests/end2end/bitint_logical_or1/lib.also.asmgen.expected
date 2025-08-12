@@ -34,9 +34,7 @@ _kefir_func_or1_label0:
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_or1_label2
-    mov %rax, %rcx
 _kefir_func_or1_label1:
-    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -49,7 +47,6 @@ _kefir_func_or1_label2:
     test %al, %al
     setne %al
     movzx %al, %rax
-    mov %rax, %rcx
     jmp _kefir_func_or1_label1
 __kefir_text_func_or1_end:
 
@@ -71,9 +68,7 @@ _kefir_func_or2_label0:
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_or2_label2
-    mov %rax, %rcx
 _kefir_func_or2_label1:
-    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -86,7 +81,6 @@ _kefir_func_or2_label2:
     test %ax, %ax
     setne %al
     movzx %al, %rax
-    mov %rax, %rcx
     jmp _kefir_func_or2_label1
 __kefir_text_func_or2_end:
 
@@ -108,9 +102,7 @@ _kefir_func_or3_label0:
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_or3_label2
-    mov %rax, %rcx
 _kefir_func_or3_label1:
-    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -123,7 +115,6 @@ _kefir_func_or3_label2:
     test %eax, %eax
     setne %al
     movzx %al, %rax
-    mov %rax, %rcx
     jmp _kefir_func_or3_label1
 __kefir_text_func_or3_end:
 
@@ -145,9 +136,7 @@ _kefir_func_or4_label0:
     movzx %al, %rax
     test %al, %al
     jz _kefir_func_or4_label2
-    mov %rax, %rcx
 _kefir_func_or4_label1:
-    mov %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -160,7 +149,6 @@ _kefir_func_or4_label2:
     test %rax, %rax
     setne %al
     movzx %al, %rax
-    mov %rax, %rcx
     jmp _kefir_func_or4_label1
 __kefir_text_func_or4_end:
 
@@ -168,19 +156,19 @@ or5:
 __kefir_text_func_or5_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $80, %rsp
 _kefir_func_or5_label0:
-    movq %rdx, -80(%rbp)
-    movq %rcx, -72(%rbp)
-    movq %rdi, -64(%rbp)
-    movq %rsi, -56(%rbp)
-    movdqu -80(%rbp), %xmm0
-    movdqu %xmm0, -16(%rbp)
+    movq %rdx, -64(%rbp)
+    movq %rcx, -56(%rbp)
+    movq %rdi, -48(%rbp)
+    movq %rsi, -40(%rbp)
     movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, -16(%rbp)
+    movdqu -48(%rbp), %xmm0
     movdqu %xmm0, -32(%rbp)
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    leaq -96(%rbp), %rax
+    movdqu %xmm0, -80(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
@@ -189,24 +177,22 @@ _kefir_func_or5_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_or5_label2
-_kefir_func_or5_label1:
     mov %rcx, %rax
+_kefir_func_or5_label1:
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_or5_label2:
     movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -96(%rbp)
-    movq %rcx, -48(%rbp)
-    leaq -96(%rbp), %rax
+    movdqu %xmm0, -80(%rbp)
+    leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_is_zero
-    movq -48(%rbp), %rcx
-    mov $0, %rdx
+    mov $0, %rcx
     test %al, %al
-    sete %dl
-    mov %rdx, %rcx
+    sete %cl
+    mov %rcx, %rax
     jmp _kefir_func_or5_label1
 __kefir_text_func_or5_end:
 
@@ -257,33 +243,30 @@ _kefir_func_or6_label0:
     sete %cl
     test %cl, %cl
     jz _kefir_func_or6_label2
-    mov %rcx, %rdx
+    mov %rcx, %rax
 _kefir_func_or6_label1:
-    mov %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_or6_label2:
-    movq -40(%rbp), %rcx
-    movq %rcx, -128(%rbp)
-    movq -32(%rbp), %rcx
-    movq %rcx, -120(%rbp)
-    movq -24(%rbp), %rcx
-    movq %rcx, -112(%rbp)
-    movq -16(%rbp), %rcx
-    movq %rcx, -104(%rbp)
-    movq -8(%rbp), %rcx
-    movq %rcx, -96(%rbp)
-    movq %rdx, -88(%rbp)
+    movq -40(%rbp), %rax
+    movq %rax, -128(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -120(%rbp)
+    movq -24(%rbp), %rax
+    movq %rax, -112(%rbp)
+    movq -16(%rbp), %rax
+    movq %rax, -104(%rbp)
+    movq -8(%rbp), %rax
+    movq %rax, -96(%rbp)
     leaq -128(%rbp), %rax
     mov %rax, %rdi
     mov $310, %rsi
     call __kefir_bigint_is_zero
-    movq -88(%rbp), %rdx
     mov $0, %rcx
     test %al, %al
     sete %cl
-    mov %rcx, %rdx
+    mov %rcx, %rax
     jmp _kefir_func_or6_label1
 __kefir_text_func_or6_end:
 

@@ -306,9 +306,8 @@ _kefir_func___kefir_bigint_unsigned_multiply_label0:
     mov %rdx, %rax
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_multiply_label18
-    mov %rax, %rsi
 _kefir_func___kefir_bigint_unsigned_multiply_label1:
-    test %esi, %esi
+    test %eax, %eax
     sete %al
     test %al, %al
     jz _kefir_func___kefir_bigint_unsigned_multiply_label17
@@ -556,7 +555,6 @@ _kefir_func___kefir_bigint_unsigned_multiply_label18:
     cmp %rcx, %rax
     sete %dl
     mov %rdx, %rax
-    mov %rax, %rsi
     jmp _kefir_func___kefir_bigint_unsigned_multiply_label1
 __kefir_text_func___kefir_bigint_unsigned_multiply_end:
 

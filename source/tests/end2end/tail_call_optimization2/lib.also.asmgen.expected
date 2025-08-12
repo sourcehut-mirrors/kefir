@@ -10,7 +10,7 @@ factorial:
 __kefir_text_func_factorial_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
     stmxcsr -8(%rbp)
     mov $1, %rax
     cvtsi2sd %rax, %xmm1
@@ -30,14 +30,12 @@ _kefir_func_factorial_label1:
 _kefir_func_factorial_label2:
     mulsd %xmm0, %xmm1
     mov $1, %rax
-    cvtsi2sd %rax, %xmm3
-    movaps %xmm0, %xmm4
-    subsd %xmm3, %xmm4
-    movdqu %xmm2, -32(%rbp)
+    cvtsi2sd %rax, %xmm2
+    movaps %xmm0, %xmm3
+    subsd %xmm2, %xmm3
     movaps %xmm1, %xmm0
-    movaps %xmm4, %xmm1
+    movaps %xmm3, %xmm1
     call factorial_helper
-    movdqu -32(%rbp), %xmm2
     movaps %xmm0, %xmm2
     jmp _kefir_func_factorial_label1
 __kefir_text_func_factorial_end:
@@ -48,20 +46,17 @@ __kefir_text_func_factorial_helper_begin:
     mov %rsp, %rbp
     sub $16, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm2
     mov $1, %rax
-    cvtsi2sd %rax, %xmm0
-    ucomisd %xmm0, %xmm1
+    cvtsi2sd %rax, %xmm2
+    ucomisd %xmm2, %xmm1
     jp _kefir_func_factorial_helper_label3
     ja _kefir_func_factorial_helper_label2
 _kefir_func_factorial_helper_label3:
-    movaps %xmm2, %xmm0
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_factorial_helper_label2:
-    movaps %xmm2, %xmm0
     mulsd %xmm1, %xmm0
     mov $1, %rax
     cvtsi2sd %rax, %xmm2

@@ -803,6 +803,52 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    1
+#                ]
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "cmp",
 #                "args": [
 #                    {
@@ -816,9 +862,7 @@ __kefir_bigint_invert:
 #                        "variant": "64bit"
 #                    }
 #                ],
-#                "labels": [
-#                    1
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "jb",
@@ -933,6 +977,41 @@ __kefir_bigint_invert:
 #                "labels": []
 #            },
 #            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 3,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": [
+#                    3
+#                ]
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 10,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
+#                "opcode": "touch_virtual_register",
+#                "args": [
+#                    {
+#                        "type": "virtual_register",
+#                        "index": 12,
+#                        "variant": "default"
+#                    }
+#                ],
+#                "labels": []
+#            },
+#            {
 #                "opcode": "virtual_register_link",
 #                "args": [
 #                    {
@@ -946,9 +1025,7 @@ __kefir_bigint_invert:
 #                        "variant": "default"
 #                    }
 #                ],
-#                "labels": [
-#                    3
-#                ]
+#                "labels": []
 #            },
 #            {
 #                "opcode": "add",
@@ -1172,23 +1249,23 @@ __kefir_text_func___kefir_bigint_invert_begin:
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    xor %ecx, %ecx
+    xor %edx, %edx
 _kefir_func___kefir_bigint_invert_label1:
-    cmp %rax, %rcx
+    cmp %rax, %rdx
     jb _kefir_func___kefir_bigint_invert_label3
     xor %eax, %eax
     ret
 _kefir_func___kefir_bigint_invert_label3:
     mov %r8, %rdi
-    add %rcx, %rdi
-    movzxb (%rdi), %rdx
+    add %rdx, %rdi
+    movzxb (%rdi), %rcx
     mov %r8, %rdi
-    add %rcx, %rdi
-    not %edx
-    movb %dl, (%rdi)
-    mov %rcx, %rdx
-    add $1, %rdx
+    add %rdx, %rdi
+    not %ecx
+    movb %cl, (%rdi)
     mov %rdx, %rcx
+    add $1, %rcx
+    mov %rcx, %rdx
     jmp _kefir_func___kefir_bigint_invert_label1
 __kefir_text_func___kefir_bigint_invert_end:
 

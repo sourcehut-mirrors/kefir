@@ -84,16 +84,16 @@ _kefir_func_get1_label1:
     and %rdx, %rcx
     xor %rcx, %rax
     movq %rax, (%rdi)
-    leaq -136(%rbp), %rcx
+    leaq -136(%rbp), %rdi
 _kefir_func_get1_label2:
     mov %r8, %rax
-    movdqu (%rcx), %xmm0
+    movdqu (%rdi), %xmm0
     movdqu %xmm0, (%rax)
-    movdqu 16(%rcx), %xmm0
+    movdqu 16(%rdi), %xmm0
     movdqu %xmm0, 16(%rax)
-    movdqu 32(%rcx), %xmm0
+    movdqu 32(%rdi), %xmm0
     movdqu %xmm0, 32(%rax)
-    movdqu 48(%rcx), %xmm0
+    movdqu 48(%rdi), %xmm0
     movdqu %xmm0, 48(%rax)
     lea -8(%rbp), %rsp
     pop %rbx
@@ -102,12 +102,10 @@ _kefir_func_get1_label2:
 _kefir_func_get1_label3:
     leaq -72(%rbp), %rbx
     movq %r8, -160(%rbp)
-    movq %rcx, -152(%rbp)
     mov %rbx, %rdi
     call empty1@PLT
     movq -160(%rbp), %r8
-    movq -152(%rbp), %rcx
-    mov %rbx, %rcx
+    mov %rbx, %rdi
     jmp _kefir_func_get1_label2
 __kefir_text_func_get1_end:
 

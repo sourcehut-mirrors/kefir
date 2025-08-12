@@ -128,7 +128,7 @@ _kefir_func___kefir_bigint_leading_zeros_label4:
     sub $1, %rax
     movq -64(%rbp), %rdi
     add %rax, %rdi
-    movzxb (%rdi), %r14
+    movzxb (%rdi), %rbx
     mov %rdx, %rax
     sub $1, %rax
     imul $8, %rax, %rcx
@@ -137,35 +137,35 @@ _kefir_func___kefir_bigint_leading_zeros_label4:
     mov $8, %rcx
     cmpq $0, -56(%rbp)
     cmovbe %rsi, %rcx
-    mov %rcx, %rbx
-    xor %r12d, %r12d
-    mov %r11, %r13
+    mov %rcx, %r12
+    xor %r13d, %r13d
+    mov %r11, %r14
 _kefir_func___kefir_bigint_leading_zeros_label5:
     movq -56(%rbp), %r8
     add $1, %r8
-    cmp %rbx, %r12
+    cmp %r12, %r13
     jb _kefir_func___kefir_bigint_leading_zeros_label6
     movq %r8, -56(%rbp)
-    mov %r13, %r11
+    mov %r14, %r11
     jmp _kefir_func___kefir_bigint_leading_zeros_label2
 _kefir_func___kefir_bigint_leading_zeros_label6:
-    mov %r12, %r9
+    mov %r13, %r9
     add $1, %r9
-    mov %r13, %rax
+    mov %r14, %rax
     add $1, %rax
-    mov %rbx, %rcx
-    sub %r12, %rcx
+    mov %r12, %rcx
+    sub %r13, %rcx
     sub $1, %rcx
-    mov %r14, %r10
+    mov %rbx, %r10
     sar %cl, %r10d
     and $1, %r10d
     cmp $1, %r10d
     je _kefir_func___kefir_bigint_leading_zeros_label7
-    mov %r9, %r12
-    mov %rax, %r13
+    mov %r9, %r13
+    mov %rax, %r14
     jmp _kefir_func___kefir_bigint_leading_zeros_label5
 _kefir_func___kefir_bigint_leading_zeros_label7:
-    mov %r13, %rax
+    mov %r14, %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

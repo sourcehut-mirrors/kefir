@@ -16,8 +16,8 @@ __kefir_text_func_test1_begin:
     je _kefir_func_test1_label3
     cmp $1, %edi
     je _kefir_func_test1_label3
+    neg %edi
     mov %rdi, %rax
-    neg %eax
     ret
 _kefir_func_test1_label3:
     not %edi
@@ -58,8 +58,8 @@ __kefir_text_func_test3_begin:
     and %cl, %al
     jnz _kefir_func_test3_label3
 _kefir_func_test3_label2:
+    neg %edi
     mov %rdi, %rax
-    neg %eax
     ret
 _kefir_func_test3_label3:
     mov %rdi, %rax

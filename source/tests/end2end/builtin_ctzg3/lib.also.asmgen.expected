@@ -19,9 +19,8 @@ __kefir_text_func_test1_begin:
     je _kefir_func_test1_label2
     jmp _kefir_func_test1_label1
 _kefir_func_test1_label1:
-    xor %ecx, %ecx
-    rep bsf %eax, %ecx
-    mov %rcx, %rsi
+    xor %esi, %esi
+    rep bsf %eax, %esi
 _kefir_func_test1_label2:
     mov %rsi, %rax
     ret
@@ -34,9 +33,8 @@ __kefir_text_func_test2_begin:
     je _kefir_func_test2_label2
     jmp _kefir_func_test2_label1
 _kefir_func_test2_label1:
-    xor %ecx, %ecx
-    rep bsf %eax, %ecx
-    mov %rcx, %rsi
+    xor %esi, %esi
+    rep bsf %eax, %esi
 _kefir_func_test2_label2:
     mov %rsi, %rax
     ret
@@ -48,9 +46,8 @@ __kefir_text_func_test3_begin:
     je _kefir_func_test3_label2
     jmp _kefir_func_test3_label1
 _kefir_func_test3_label1:
-    xor %eax, %eax
-    rep bsf %edi, %eax
-    mov %rax, %rsi
+    xor %esi, %esi
+    rep bsf %edi, %esi
 _kefir_func_test3_label2:
     mov %rsi, %rax
     ret
@@ -62,9 +59,8 @@ __kefir_text_func_test4_begin:
     je _kefir_func_test4_label2
     jmp _kefir_func_test4_label1
 _kefir_func_test4_label1:
-    xor %eax, %eax
-    rep bsf %rdi, %rax
-    mov %rax, %rsi
+    xor %esi, %esi
+    rep bsf %rdi, %rsi
 _kefir_func_test4_label2:
     mov %rsi, %rax
     ret

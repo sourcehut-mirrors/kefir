@@ -15,19 +15,17 @@ __kefir_text_func_factorial2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    mov %rdi, %rdx
-    mov %rsi, %r8
 _kefir_func_factorial2_label1:
     lea __kefir_function_factorial2_static_branches_7(%rip), %rax
     xor %ecx, %ecx
-    cmp $1, %rdx
+    cmp $1, %rdi
     setg %cl
     movsx %ecx, %rcx
     imul $8, %rcx, %rcx
     add %rcx, %rax
     movq (%rax), %rax
-    movq %rdx, -16(%rbp)
-    movq %r8, -8(%rbp)
+    movq %rdi, -16(%rbp)
+    movq %rsi, -8(%rbp)
     jmp *%rax
 _kefir_func_factorial2_label2:
 _kefir_local_public_label_factorial2_terminate:
@@ -42,8 +40,7 @@ _kefir_local_public_label_factorial2_round:
     mov %rdi, %rax
     add $-1, %rax
     imul %rdi, %rsi
-    mov %rax, %rdx
-    mov %rsi, %r8
+    mov %rax, %rdi
     jmp _kefir_func_factorial2_label1
 __kefir_text_func_factorial2_end:
 

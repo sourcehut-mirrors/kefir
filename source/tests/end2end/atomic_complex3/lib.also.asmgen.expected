@@ -26,33 +26,33 @@ __kefir_text_func_add_f32_begin:
     mov %rsp, %rbp
     sub $176, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm5
-    shufps $1, %xmm5, %xmm5
     movaps %xmm0, %xmm4
+    shufps $1, %xmm4, %xmm4
+    movaps %xmm0, %xmm5
     mov %rdi, %r10
     fnstenv -152(%rbp)
     stmxcsr -124(%rbp)
     fnclex
 _kefir_func_add_f32_label1:
-    movdqu %xmm4, -120(%rbp)
-    movdqu %xmm5, -104(%rbp)
+    movdqu %xmm5, -120(%rbp)
+    movdqu %xmm4, -104(%rbp)
     movq %r10, -88(%rbp)
     mov %r10, %rsi
     lea -176(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -120(%rbp), %xmm4
-    movdqu -104(%rbp), %xmm5
+    movdqu -120(%rbp), %xmm5
+    movdqu -104(%rbp), %xmm4
     movq -88(%rbp), %r10
     movd -176(%rbp), %xmm0
     movd -172(%rbp), %xmm1
     movaps %xmm0, %xmm2
     movaps %xmm1, %xmm3
-    addss %xmm4, %xmm2
-    addss %xmm5, %xmm3
-    movdqu %xmm4, -80(%rbp)
-    movdqu %xmm5, -64(%rbp)
+    addss %xmm5, %xmm2
+    addss %xmm4, %xmm3
+    movdqu %xmm5, -80(%rbp)
+    movdqu %xmm4, -64(%rbp)
     movq %r10, -48(%rbp)
     movdqu %xmm2, -40(%rbp)
     movdqu %xmm3, -24(%rbp)
@@ -68,8 +68,8 @@ _kefir_func_add_f32_label1:
     leaq -168(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movdqu -80(%rbp), %xmm4
-    movdqu -64(%rbp), %xmm5
+    movdqu -80(%rbp), %xmm5
+    movdqu -64(%rbp), %xmm4
     movq -48(%rbp), %r10
     movdqu -40(%rbp), %xmm2
     movdqu -24(%rbp), %xmm3
@@ -177,31 +177,31 @@ __kefir_text_func_divide_f32_begin:
     mov %rsp, %rbp
     sub $176, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm7
-    shufps $1, %xmm7, %xmm7
     movaps %xmm0, %xmm8
+    shufps $1, %xmm8, %xmm8
+    movaps %xmm0, %xmm7
     mov %rdi, %r10
-    fnstenv -160(%rbp)
-    stmxcsr -132(%rbp)
+    fnstenv -152(%rbp)
+    stmxcsr -124(%rbp)
     fnclex
 _kefir_func_divide_f32_label1:
-    movdqu %xmm8, -120(%rbp)
-    movdqu %xmm7, -104(%rbp)
+    movdqu %xmm7, -120(%rbp)
+    movdqu %xmm8, -104(%rbp)
     movq %r10, -88(%rbp)
     mov %r10, %rsi
     lea -176(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -120(%rbp), %xmm8
-    movdqu -104(%rbp), %xmm7
+    movdqu -120(%rbp), %xmm7
+    movdqu -104(%rbp), %xmm8
     movq -88(%rbp), %r10
     movd -176(%rbp), %xmm1
     movd -172(%rbp), %xmm2
     movaps %xmm1, %xmm3
     insertps $16, %xmm2, %xmm3
-    movaps %xmm8, %xmm0
-    insertps $16, %xmm7, %xmm0
+    movaps %xmm7, %xmm0
+    insertps $16, %xmm8, %xmm0
     cvtps2pd %xmm0, %xmm4
     cvtps2pd %xmm3, %xmm3
     movaps %xmm4, %xmm5
@@ -221,8 +221,8 @@ _kefir_func_divide_f32_label1:
     cvtpd2ps %xmm5, %xmm0
     movaps %xmm0, %xmm3
     shufps $1, %xmm3, %xmm3
-    movdqu %xmm8, -80(%rbp)
-    movdqu %xmm7, -64(%rbp)
+    movdqu %xmm7, -80(%rbp)
+    movdqu %xmm8, -64(%rbp)
     movq %r10, -48(%rbp)
     movdqu %xmm0, -40(%rbp)
     movdqu %xmm3, -24(%rbp)
@@ -238,8 +238,8 @@ _kefir_func_divide_f32_label1:
     leaq -168(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movdqu -80(%rbp), %xmm8
-    movdqu -64(%rbp), %xmm7
+    movdqu -80(%rbp), %xmm7
+    movdqu -64(%rbp), %xmm8
     movq -48(%rbp), %r10
     movdqu -40(%rbp), %xmm0
     movdqu -24(%rbp), %xmm3
@@ -250,8 +250,8 @@ _kefir_func_divide_f32_label1:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -160(%rbp)
-    ldmxcsr -132(%rbp)
+    fldenv -152(%rbp)
+    ldmxcsr -124(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
@@ -380,8 +380,8 @@ __kefir_text_func_multiply_f32_begin:
     shufps $1, %xmm5, %xmm5
     movaps %xmm0, %xmm6
     mov %rdi, %r10
-    fnstenv -152(%rbp)
-    stmxcsr -124(%rbp)
+    fnstenv -160(%rbp)
+    stmxcsr -132(%rbp)
     fnclex
 _kefir_func_multiply_f32_label1:
     movdqu %xmm6, -120(%rbp)
@@ -440,8 +440,8 @@ _kefir_func_multiply_f32_label1:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -152(%rbp)
-    ldmxcsr -124(%rbp)
+    fldenv -160(%rbp)
+    ldmxcsr -132(%rbp)
     stmxcsr -176(%rbp)
     orl %eax, -176(%rbp)
     ldmxcsr -176(%rbp)
@@ -465,8 +465,8 @@ __kefir_text_func_multiply_f64_begin:
     movaps %xmm0, %xmm6
     movaps %xmm1, %xmm7
     mov %rdi, %r10
-    fnstenv -160(%rbp)
-    stmxcsr -132(%rbp)
+    fnstenv -176(%rbp)
+    stmxcsr -148(%rbp)
     fnclex
 _kefir_func_multiply_f64_label1:
     movdqu %xmm6, -128(%rbp)
@@ -527,8 +527,8 @@ _kefir_func_multiply_f64_label1:
     fnstsw %ax
     or %ecx, %eax
     and $63, %eax
-    fldenv -160(%rbp)
-    ldmxcsr -132(%rbp)
+    fldenv -176(%rbp)
+    ldmxcsr -148(%rbp)
     stmxcsr -208(%rbp)
     orl %eax, -208(%rbp)
     ldmxcsr -208(%rbp)
@@ -548,33 +548,33 @@ __kefir_text_func_subtract_f32_begin:
     mov %rsp, %rbp
     sub $176, %rsp
     stmxcsr -8(%rbp)
-    movaps %xmm0, %xmm5
-    shufps $1, %xmm5, %xmm5
     movaps %xmm0, %xmm4
+    shufps $1, %xmm4, %xmm4
+    movaps %xmm0, %xmm5
     mov %rdi, %r10
     fnstenv -152(%rbp)
     stmxcsr -124(%rbp)
     fnclex
 _kefir_func_subtract_f32_label1:
-    movdqu %xmm4, -120(%rbp)
-    movdqu %xmm5, -104(%rbp)
+    movdqu %xmm5, -120(%rbp)
+    movdqu %xmm4, -104(%rbp)
     movq %r10, -88(%rbp)
     mov %r10, %rsi
     lea -176(%rbp), %rdx
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -120(%rbp), %xmm4
-    movdqu -104(%rbp), %xmm5
+    movdqu -120(%rbp), %xmm5
+    movdqu -104(%rbp), %xmm4
     movq -88(%rbp), %r10
     movd -176(%rbp), %xmm0
     movd -172(%rbp), %xmm1
     movaps %xmm0, %xmm2
     movaps %xmm1, %xmm3
-    subss %xmm4, %xmm2
-    subss %xmm5, %xmm3
-    movdqu %xmm4, -80(%rbp)
-    movdqu %xmm5, -64(%rbp)
+    subss %xmm5, %xmm2
+    subss %xmm4, %xmm3
+    movdqu %xmm5, -80(%rbp)
+    movdqu %xmm4, -64(%rbp)
     movq %r10, -48(%rbp)
     movdqu %xmm2, -40(%rbp)
     movdqu %xmm3, -24(%rbp)
@@ -590,8 +590,8 @@ _kefir_func_subtract_f32_label1:
     leaq -168(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movdqu -80(%rbp), %xmm4
-    movdqu -64(%rbp), %xmm5
+    movdqu -80(%rbp), %xmm5
+    movdqu -64(%rbp), %xmm4
     movq -48(%rbp), %r10
     movdqu -40(%rbp), %xmm2
     movdqu -24(%rbp), %xmm3
