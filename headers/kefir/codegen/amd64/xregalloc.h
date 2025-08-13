@@ -58,7 +58,7 @@ typedef struct kefir_codegen_amd64_xregalloc_virtual_register {
     struct {
         kefir_size_t begin;
         kefir_size_t end;
-    } lifetime;
+    } global_lifetime;
     struct kefir_bucketset interference;
     struct kefir_hashtree virtual_blocks;
 } kefir_codegen_amd64_xregalloc_virtual_register_t;
@@ -97,8 +97,9 @@ kefir_result_t kefir_codegen_amd64_xregalloc_linear_position_of(const struct kef
                                                                 kefir_asmcmp_instruction_index_t, kefir_size_t *);
 
 kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(const struct kefir_codegen_amd64_xregalloc *,
-                                                         kefir_asmcmp_virtual_register_index_t, kefir_codegen_amd64_xregalloc_virtual_block_id_t, kefir_size_t *,
-                                                         kefir_size_t *);
+                                                         kefir_asmcmp_virtual_register_index_t,
+                                                         kefir_codegen_amd64_xregalloc_virtual_block_id_t,
+                                                         kefir_size_t *, kefir_size_t *);
 
 kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(const struct kefir_codegen_amd64_xregalloc *,
                                                              kefir_asmcmp_virtual_register_index_t,
