@@ -1,0 +1,910 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global negint
+.type negint, @function
+.global notint
+.type notint, @function
+.global bnotint
+.type bnotint, @function
+.global boolint
+.type boolint, @function
+.global negchar
+.type negchar, @function
+.global neglong
+.type neglong, @function
+.global notchar
+.type notchar, @function
+.global notlong
+.type notlong, @function
+.global bnotchar
+.type bnotchar, @function
+.global bnotlong
+.type bnotlong, @function
+.global boolchar
+.type boolchar, @function
+.global boollong
+.type boollong, @function
+.global conv8int
+.type conv8int, @function
+.global negshort
+.type negshort, @function
+.global notshort
+.type notshort, @function
+.global bnotshort
+.type bnotshort, @function
+.global boolshort
+.type boolshort, @function
+.global conv16int
+.type conv16int, @function
+.global conv32int
+.type conv32int, @function
+.global conv8char
+.type conv8char, @function
+.global conv8long
+.type conv8long, @function
+.global uconv8int
+.type uconv8int, @function
+.global conv16char
+.type conv16char, @function
+.global conv16long
+.type conv16long, @function
+.global conv32char
+.type conv32char, @function
+.global conv32long
+.type conv32long, @function
+.global conv8short
+.type conv8short, @function
+.global uconv16int
+.type uconv16int, @function
+.global uconv32int
+.type uconv32int, @function
+.global uconv8char
+.type uconv8char, @function
+.global uconv8long
+.type uconv8long, @function
+.global conv16short
+.type conv16short, @function
+.global conv32short
+.type conv32short, @function
+.global uconv16char
+.type uconv16char, @function
+.global uconv16long
+.type uconv16long, @function
+.global uconv32char
+.type uconv32char, @function
+.global uconv32long
+.type uconv32long, @function
+.global uconv8short
+.type uconv8short, @function
+.global uconv16short
+.type uconv16short, @function
+.global uconv32short
+.type uconv32short, @function
+
+.section .text
+__kefir_text_section_begin:
+negint:
+__kefir_text_func_negint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    mov %rdx, %rdi
+    neg %edi
+    movl %edi, -16(%rbp)
+    movl %edi, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_negint_end:
+
+notint:
+__kefir_text_func_notint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    mov %rdx, %rdi
+    not %edi
+    movl %edi, -16(%rbp)
+    movl %edi, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_notint_end:
+
+bnotint:
+__kefir_text_func_bnotint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    xor %eax, %eax
+    test %edx, %edx
+    sete %al
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_bnotint_end:
+
+boolint:
+__kefir_text_func_boolint_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    test %edx, %edx
+    setne %al
+    movzx %al, %rax
+    movzx %al, %rax
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_boolint_end:
+
+negchar:
+__kefir_text_func_negchar_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    neg %eax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_negchar_end:
+
+neglong:
+__kefir_text_func_neglong_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    mov %rdx, %rdi
+    neg %rdi
+    movq %rdi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_neglong_end:
+
+notchar:
+__kefir_text_func_notchar_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    not %eax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_notchar_end:
+
+notlong:
+__kefir_text_func_notlong_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    mov %rdx, %rdi
+    not %rdi
+    movq %rdi, -16(%rbp)
+    movq %rdi, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_notlong_end:
+
+bnotchar:
+__kefir_text_func_bnotchar_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    xor %eax, %eax
+    test %dl, %dl
+    sete %al
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_bnotchar_end:
+
+bnotlong:
+__kefir_text_func_bnotlong_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    xor %eax, %eax
+    test %rdx, %rdx
+    sete %al
+    movsx %eax, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_bnotlong_end:
+
+boolchar:
+__kefir_text_func_boolchar_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    test %dl, %dl
+    setne %al
+    movzx %al, %rax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_boolchar_end:
+
+boollong:
+__kefir_text_func_boollong_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    test %rdx, %rdx
+    setne %al
+    movzx %al, %rax
+    movzx %al, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_boollong_end:
+
+conv8int:
+__kefir_text_func_conv8int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv8int_end:
+
+negshort:
+__kefir_text_func_negshort_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    neg %eax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_negshort_end:
+
+notshort:
+__kefir_text_func_notshort_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    not %eax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_notshort_end:
+
+bnotshort:
+__kefir_text_func_bnotshort_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    xor %eax, %eax
+    test %dx, %dx
+    sete %al
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_bnotshort_end:
+
+boolshort:
+__kefir_text_func_boolshort_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    test %dx, %dx
+    setne %al
+    movzx %al, %rax
+    movzx %al, %rax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_boolshort_end:
+
+conv16int:
+__kefir_text_func_conv16int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv16int_end:
+
+conv32int:
+__kefir_text_func_conv32int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movl %edx, -16(%rbp)
+    movl %edx, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv32int_end:
+
+conv8char:
+__kefir_text_func_conv8char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movb %dl, -16(%rbp)
+    movb %dl, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv8char_end:
+
+conv8long:
+__kefir_text_func_conv8long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv8long_end:
+
+uconv8int:
+__kefir_text_func_uconv8int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movzx %dl, %rax
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv8int_end:
+
+conv16char:
+__kefir_text_func_conv16char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv16char_end:
+
+conv16long:
+__kefir_text_func_conv16long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv16long_end:
+
+conv32char:
+__kefir_text_func_conv32char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv32char_end:
+
+conv32long:
+__kefir_text_func_conv32long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %edx, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv32long_end:
+
+conv8short:
+__kefir_text_func_conv8short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv8short_end:
+
+uconv16int:
+__kefir_text_func_uconv16int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movzx %dx, %rax
+    movl %eax, -16(%rbp)
+    movl %eax, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv16int_end:
+
+uconv32int:
+__kefir_text_func_uconv32int_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movl %edx, -16(%rbp)
+    movl %edx, -12(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv32int_end:
+
+uconv8char:
+__kefir_text_func_uconv8char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movb %dl, -16(%rbp)
+    movb %dl, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv8char_end:
+
+uconv8long:
+__kefir_text_func_uconv8long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movzx %dl, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv8long_end:
+
+conv16short:
+__kefir_text_func_conv16short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movw %dx, -16(%rbp)
+    movw %dx, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv16short_end:
+
+conv32short:
+__kefir_text_func_conv32short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_conv32short_end:
+
+uconv16char:
+__kefir_text_func_uconv16char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv16char_end:
+
+uconv16long:
+__kefir_text_func_uconv16long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movzx %dx, %rax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv16long_end:
+
+uconv32char:
+__kefir_text_func_uconv32char_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dl, %rax
+    movb %al, -16(%rbp)
+    movb %al, -15(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv32char_end:
+
+uconv32long:
+__kefir_text_func_uconv32long_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    mov %edx, %eax
+    movq %rax, -16(%rbp)
+    movq %rax, -8(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv32long_end:
+
+uconv8short:
+__kefir_text_func_uconv8short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movzx %dl, %rax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv8short_end:
+
+uconv16short:
+__kefir_text_func_uconv16short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movw %dx, -16(%rbp)
+    movw %dx, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv16short_end:
+
+uconv32short:
+__kefir_text_func_uconv32short_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $16, %rcx
+    rep stosb
+    movsx %dx, %rax
+    movw %ax, -16(%rbp)
+    movw %ax, -14(%rbp)
+    movq -16(%rbp), %rax
+    movq -8(%rbp), %rdx
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_uconv32short_end:
+
+__kefir_text_section_end:
+

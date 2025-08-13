@@ -51,14 +51,15 @@ __kefir_text_func_bit_floor_end:
 
 rotate_left:
 __kefir_text_func_rotate_left_begin:
-    movzx %sil, %rax
+    movzx %sil, %rsi
+    mov %rsi, %rax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
     mov %rdi, %r8
     shl %cl, %r8
-    movzx %sil, %rax
+    mov %rsi, %rax
     neg %eax
     cdq
     mov $64, %rcx
@@ -72,14 +73,15 @@ __kefir_text_func_rotate_left_end:
 
 rotate_right:
 __kefir_text_func_rotate_right_begin:
-    movzx %sil, %rax
+    movzx %sil, %rsi
+    mov %rsi, %rax
     cdq
     mov $64, %rcx
     idiv %ecx
     movsx %edx, %rcx
     mov %rdi, %r8
     shr %cl, %r8
-    movzx %sil, %rax
+    mov %rsi, %rax
     neg %eax
     cdq
     mov $64, %rcx

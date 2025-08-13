@@ -1071,38 +1071,6 @@ __kefir_bigint_invert:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 3,
-#                        "variant": "default"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "add",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 17,
-#                        "variant": "64bit"
-#                    },
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 12,
-#                        "variant": "64bit"
-#                    }
-#                ],
-#                "labels": []
-#            },
-#            {
-#                "opcode": "virtual_register_link",
-#                "args": [
-#                    {
-#                        "type": "virtual_register",
-#                        "index": 18,
-#                        "variant": "default"
-#                    },
-#                    {
-#                        "type": "virtual_register",
 #                        "index": 16,
 #                        "variant": "default"
 #                    }
@@ -1114,7 +1082,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 17,
 #                        "variant": "32bit"
 #                    }
 #                ],
@@ -1126,13 +1094,13 @@ __kefir_bigint_invert:
 #                    {
 #                        "type": "indirect",
 #                        "basis": "virtual_register",
-#                        "index": 17,
+#                        "index": 15,
 #                        "offset": 0,
 #                        "variant": "8bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 18,
+#                        "index": 17,
 #                        "variant": "8bit"
 #                    }
 #                ],
@@ -1143,7 +1111,7 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 20,
+#                        "index": 19,
 #                        "variant": "default"
 #                    },
 #                    {
@@ -1159,12 +1127,12 @@ __kefir_bigint_invert:
 #                "args": [
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 20,
+#                        "index": 19,
 #                        "variant": "64bit"
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 19,
+#                        "index": 18,
 #                        "variant": "64bit"
 #                    }
 #                ],
@@ -1180,7 +1148,7 @@ __kefir_bigint_invert:
 #                    },
 #                    {
 #                        "type": "virtual_register",
-#                        "index": 20,
+#                        "index": 19,
 #                        "variant": "default"
 #                    }
 #                ],
@@ -1259,8 +1227,6 @@ _kefir_func___kefir_bigint_invert_label3:
     mov %r8, %rdi
     add %rdx, %rdi
     movzxb (%rdi), %rcx
-    mov %r8, %rdi
-    add %rdx, %rdi
     not %ecx
     movb %cl, (%rdi)
     mov %rdx, %rcx

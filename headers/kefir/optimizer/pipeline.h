@@ -69,6 +69,7 @@ DECLARE_PASS(InlineFunc);
 DECLARE_PASS(TailCalls);
 DECLARE_PASS(DeadAlloc);
 DECLARE_PASS(Lowering);
+DECLARE_PASS(GlobalValueNumbering);
 #undef DECLARE_PASS
 #endif
 

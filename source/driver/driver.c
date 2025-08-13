@@ -44,6 +44,7 @@
     "phi-propagate," \
     "constant-fold," \
     "op-simplify," \
+    "gvn," \
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \

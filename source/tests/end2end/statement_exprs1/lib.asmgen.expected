@@ -21,33 +21,32 @@ __kefir_text_func_eval2_begin:
     push %rbp
     mov %rsp, %rbp
     sub $32, %rsp
-    xor %edx, %edx
-    mov %rdx, %rax
+    xor %esi, %esi
+    mov %rsi, %rax
     sub $16, %rsp
-    movq %rdx, (%rsp)
-    mov %rsp, %rdx
+    movq %rsi, (%rsp)
+    mov %rsp, %rsi
     movq %rax, -24(%rbp)
     movsx %edi, %rax
-    imul $8, %rax, %rax
-    movq %rax, -8(%rbp)
-    sub %rax, %rsp
-    mov $16, %rax
-    cmp $8, %rax
-    mov $8, %rcx
-    cmovl %rcx, %rax
-    neg %rax
-    and %rax, %rsp
-    mov %rsp, %rax
-    movq %rax, -16(%rbp)
+    imul $8, %rax, %rcx
+    movq %rcx, -8(%rbp)
+    sub %rcx, %rsp
+    mov $16, %rcx
+    cmp $8, %rcx
+    mov $8, %rdx
+    cmovl %rdx, %rcx
+    neg %rcx
+    and %rcx, %rsp
+    mov %rsp, %rcx
+    movq %rcx, -16(%rbp)
     movq -8(%rbp), %rcx
-    movq -24(%rbp), %rax
-    cmp $0, %rdx
+    movq -24(%rbp), %rdx
+    cmp $0, %rsi
     jz _kefir_func_eval2_label1
-    mov %rdx, %rsp
-    movq (%rsp), %rdx
+    mov %rsi, %rsp
+    movq (%rsp), %rsi
     add $16, %rsp
 _kefir_func_eval2_label1:
-    movsx %edi, %rax
     add %rcx, %rax
     lea (%rbp), %rsp
     pop %rbp
