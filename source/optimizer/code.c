@@ -275,6 +275,199 @@ kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_opera
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_operation_t original_comparison,
+                                                      kefir_opt_comparison_operation_t *comparison_ptr) {
+    kefir_opt_comparison_operation_t comparison;
+    switch (original_comparison) {
+        case KEFIR_OPT_COMPARISON_INT8_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_NOT_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER:
+            comparison = KEFIR_OPT_COMPARISON_INT8_LESSER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER:
+            comparison = KEFIR_OPT_COMPARISON_INT16_LESSER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER:
+            comparison = KEFIR_OPT_COMPARISON_INT32_LESSER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER:
+            comparison = KEFIR_OPT_COMPARISON_INT64_LESSER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER:
+            comparison = KEFIR_OPT_COMPARISON_INT8_GREATER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER:
+            comparison = KEFIR_OPT_COMPARISON_INT16_GREATER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER:
+            comparison = KEFIR_OPT_COMPARISON_INT32_GREATER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER:
+            comparison = KEFIR_OPT_COMPARISON_INT64_GREATER;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_LESSER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_GREATER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_LESSER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_GREATER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_LESSER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_GREATER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_LESSER_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_GREATER_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE:
+            comparison = KEFIR_OPT_COMPARISON_INT8_BELOW;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE:
+            comparison = KEFIR_OPT_COMPARISON_INT16_BELOW;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE:
+            comparison = KEFIR_OPT_COMPARISON_INT32_BELOW;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE:
+            comparison = KEFIR_OPT_COMPARISON_INT64_BELOW;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW:
+            comparison = KEFIR_OPT_COMPARISON_INT8_ABOVE;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW:
+            comparison = KEFIR_OPT_COMPARISON_INT16_ABOVE;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW:
+            comparison = KEFIR_OPT_COMPARISON_INT32_ABOVE;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW:
+            comparison = KEFIR_OPT_COMPARISON_INT64_ABOVE;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT8_BELOW_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT8_ABOVE_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT16_BELOW_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT16_ABOVE_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS:
+            comparison = KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS;
+            break;
+
+        case KEFIR_OPT_COMPARISON_FLOAT32_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT32_GREATER:
+        case KEFIR_OPT_COMPARISON_FLOAT32_GREATER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT32_LESSER:
+        case KEFIR_OPT_COMPARISON_FLOAT32_LESSER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER:
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_GREATER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER:
+        case KEFIR_OPT_COMPARISON_FLOAT32_NOT_LESSER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_GREATER:
+        case KEFIR_OPT_COMPARISON_FLOAT64_GREATER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_LESSER:
+        case KEFIR_OPT_COMPARISON_FLOAT64_LESSER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER:
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL:
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER:
+        case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Comparison operator reciprocal can only be computer for integral comparisons");
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison operator");
+    }
+    *comparison_ptr = comparison;
+    return KEFIR_OK;
+}
+
 static kefir_result_t free_block(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
                                  kefir_hashtree_value_t value, void *payload) {
     UNUSED(tree);

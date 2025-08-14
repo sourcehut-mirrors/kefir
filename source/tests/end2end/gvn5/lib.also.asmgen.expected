@@ -1,0 +1,992 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global less_sint
+.type less_sint, @function
+.global less_uint
+.type less_uint, @function
+.global test_sint
+.type test_sint, @function
+.global test_uint
+.type test_uint, @function
+.global equal_sint
+.type equal_sint, @function
+.global equal_uint
+.type equal_uint, @function
+.global less_schar
+.type less_schar, @function
+.global less_slong
+.type less_slong, @function
+.global less_uchar
+.type less_uchar, @function
+.global less_ulong
+.type less_ulong, @function
+.global test_schar
+.type test_schar, @function
+.global test_slong
+.type test_slong, @function
+.global test_uchar
+.type test_uchar, @function
+.global test_ulong
+.type test_ulong, @function
+.global equal_schar
+.type equal_schar, @function
+.global equal_slong
+.type equal_slong, @function
+.global equal_uchar
+.type equal_uchar, @function
+.global equal_ulong
+.type equal_ulong, @function
+.global less_sshort
+.type less_sshort, @function
+.global less_ushort
+.type less_ushort, @function
+.global test_sshort
+.type test_sshort, @function
+.global test_ushort
+.type test_ushort, @function
+.global less_or_equal_sint
+.type less_or_equal_sint, @function
+.global less_or_equal_uint
+.type less_or_equal_uint, @function
+.global not_equal_schar
+.type not_equal_schar, @function
+.global not_equal_slong
+.type not_equal_slong, @function
+.global not_equal_uchar
+.type not_equal_uchar, @function
+.global not_equal_ulong
+.type not_equal_ulong, @function
+.global less_or_equal_sshort
+.type less_or_equal_sshort, @function
+.global less_or_equal_ushort
+.type less_or_equal_ushort, @function
+.global not_equal_sshort
+.type not_equal_sshort, @function
+.global not_equal_ushort
+.type not_equal_ushort, @function
+.global greater_or_equal_sint
+.type greater_or_equal_sint, @function
+.global greater_or_equal_uint
+.type greater_or_equal_uint, @function
+.global equal_sshort
+.type equal_sshort, @function
+.global equal_ushort
+.type equal_ushort, @function
+.global greater_sint
+.type greater_sint, @function
+.global greater_uint
+.type greater_uint, @function
+.global greater_or_equal_sshort
+.type greater_or_equal_sshort, @function
+.global greater_or_equal_ushort
+.type greater_or_equal_ushort, @function
+.global greater_sshort
+.type greater_sshort, @function
+.global greater_ushort
+.type greater_ushort, @function
+.global not_equal_sint
+.type not_equal_sint, @function
+.global not_equal_uint
+.type not_equal_uint, @function
+.global less_or_equal_schar
+.type less_or_equal_schar, @function
+.global less_or_equal_slong
+.type less_or_equal_slong, @function
+.global less_or_equal_uchar
+.type less_or_equal_uchar, @function
+.global less_or_equal_ulong
+.type less_or_equal_ulong, @function
+.global greater_or_equal_schar
+.type greater_or_equal_schar, @function
+.global greater_or_equal_slong
+.type greater_or_equal_slong, @function
+.global greater_or_equal_uchar
+.type greater_or_equal_uchar, @function
+.global greater_or_equal_ulong
+.type greater_or_equal_ulong, @function
+.global greater_schar
+.type greater_schar, @function
+.global greater_slong
+.type greater_slong, @function
+.global greater_uchar
+.type greater_uchar, @function
+.global greater_ulong
+.type greater_ulong, @function
+
+.section .text
+__kefir_text_section_begin:
+less_sint:
+__kefir_text_func_less_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setg %al
+    ret
+__kefir_text_func_less_sint_end:
+
+less_uint:
+__kefir_text_func_less_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    seta %al
+    ret
+__kefir_text_func_less_uint_end:
+
+test_sint:
+__kefir_text_func_test_sint_begin:
+    cmp $0, %edi
+    je _kefir_func_test_sint_label12
+    cmp $1, %edi
+    je _kefir_func_test_sint_label11
+    cmp $2, %edi
+    je _kefir_func_test_sint_label10
+    cmp $3, %edi
+    je _kefir_func_test_sint_label9
+    cmp $4, %edi
+    je _kefir_func_test_sint_label8
+    cmp $5, %edi
+    je _kefir_func_test_sint_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_sint_label7:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setle %al
+    ret
+_kefir_func_test_sint_label8:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setl %al
+    ret
+_kefir_func_test_sint_label9:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setge %al
+    ret
+_kefir_func_test_sint_label10:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setg %al
+    ret
+_kefir_func_test_sint_label11:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setne %al
+    ret
+_kefir_func_test_sint_label12:
+    xor %eax, %eax
+    cmp %edx, %esi
+    sete %al
+    ret
+__kefir_text_func_test_sint_end:
+
+test_uint:
+__kefir_text_func_test_uint_begin:
+    cmp $0, %edi
+    je _kefir_func_test_uint_label12
+    cmp $1, %edi
+    je _kefir_func_test_uint_label11
+    cmp $2, %edi
+    je _kefir_func_test_uint_label10
+    cmp $3, %edi
+    je _kefir_func_test_uint_label9
+    cmp $4, %edi
+    je _kefir_func_test_uint_label8
+    cmp $5, %edi
+    je _kefir_func_test_uint_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_uint_label7:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setbe %al
+    ret
+_kefir_func_test_uint_label8:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setb %al
+    ret
+_kefir_func_test_uint_label9:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setae %al
+    ret
+_kefir_func_test_uint_label10:
+    xor %eax, %eax
+    cmp %edx, %esi
+    seta %al
+    ret
+_kefir_func_test_uint_label11:
+    xor %eax, %eax
+    cmp %edx, %esi
+    setne %al
+    ret
+_kefir_func_test_uint_label12:
+    xor %eax, %eax
+    cmp %edx, %esi
+    sete %al
+    ret
+__kefir_text_func_test_uint_end:
+
+equal_sint:
+__kefir_text_func_equal_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    sete %al
+    ret
+__kefir_text_func_equal_sint_end:
+
+equal_uint:
+__kefir_text_func_equal_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    sete %al
+    ret
+__kefir_text_func_equal_uint_end:
+
+less_schar:
+__kefir_text_func_less_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+__kefir_text_func_less_schar_end:
+
+less_slong:
+__kefir_text_func_less_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setg %al
+    ret
+__kefir_text_func_less_slong_end:
+
+less_uchar:
+__kefir_text_func_less_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+__kefir_text_func_less_uchar_end:
+
+less_ulong:
+__kefir_text_func_less_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    seta %al
+    ret
+__kefir_text_func_less_ulong_end:
+
+test_schar:
+__kefir_text_func_test_schar_begin:
+    cmp $0, %edi
+    je _kefir_func_test_schar_label12
+    cmp $1, %edi
+    je _kefir_func_test_schar_label11
+    cmp $2, %edi
+    je _kefir_func_test_schar_label10
+    cmp $3, %edi
+    je _kefir_func_test_schar_label9
+    cmp $4, %edi
+    je _kefir_func_test_schar_label8
+    cmp $5, %edi
+    je _kefir_func_test_schar_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_schar_label7:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+_kefir_func_test_schar_label8:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+_kefir_func_test_schar_label9:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+_kefir_func_test_schar_label10:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+_kefir_func_test_schar_label11:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+_kefir_func_test_schar_label12:
+    movsx %sil, %rcx
+    movsx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_test_schar_end:
+
+test_slong:
+__kefir_text_func_test_slong_begin:
+    cmp $0, %edi
+    je _kefir_func_test_slong_label12
+    cmp $1, %edi
+    je _kefir_func_test_slong_label11
+    cmp $2, %edi
+    je _kefir_func_test_slong_label10
+    cmp $3, %edi
+    je _kefir_func_test_slong_label9
+    cmp $4, %edi
+    je _kefir_func_test_slong_label8
+    cmp $5, %edi
+    je _kefir_func_test_slong_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_slong_label7:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setle %al
+    ret
+_kefir_func_test_slong_label8:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setl %al
+    ret
+_kefir_func_test_slong_label9:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setge %al
+    ret
+_kefir_func_test_slong_label10:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setg %al
+    ret
+_kefir_func_test_slong_label11:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setne %al
+    ret
+_kefir_func_test_slong_label12:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    sete %al
+    ret
+__kefir_text_func_test_slong_end:
+
+test_uchar:
+__kefir_text_func_test_uchar_begin:
+    cmp $0, %edi
+    je _kefir_func_test_uchar_label12
+    cmp $1, %edi
+    je _kefir_func_test_uchar_label11
+    cmp $2, %edi
+    je _kefir_func_test_uchar_label10
+    cmp $3, %edi
+    je _kefir_func_test_uchar_label9
+    cmp $4, %edi
+    je _kefir_func_test_uchar_label8
+    cmp $5, %edi
+    je _kefir_func_test_uchar_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_uchar_label7:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+_kefir_func_test_uchar_label8:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+_kefir_func_test_uchar_label9:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+_kefir_func_test_uchar_label10:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+_kefir_func_test_uchar_label11:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+_kefir_func_test_uchar_label12:
+    movzx %sil, %rcx
+    movzx %dl, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_test_uchar_end:
+
+test_ulong:
+__kefir_text_func_test_ulong_begin:
+    cmp $0, %edi
+    je _kefir_func_test_ulong_label12
+    cmp $1, %edi
+    je _kefir_func_test_ulong_label11
+    cmp $2, %edi
+    je _kefir_func_test_ulong_label10
+    cmp $3, %edi
+    je _kefir_func_test_ulong_label9
+    cmp $4, %edi
+    je _kefir_func_test_ulong_label8
+    cmp $5, %edi
+    je _kefir_func_test_ulong_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_ulong_label7:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setbe %al
+    ret
+_kefir_func_test_ulong_label8:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setb %al
+    ret
+_kefir_func_test_ulong_label9:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setae %al
+    ret
+_kefir_func_test_ulong_label10:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    seta %al
+    ret
+_kefir_func_test_ulong_label11:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    setne %al
+    ret
+_kefir_func_test_ulong_label12:
+    xor %eax, %eax
+    cmp %rdx, %rsi
+    sete %al
+    ret
+__kefir_text_func_test_ulong_end:
+
+equal_schar:
+__kefir_text_func_equal_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_equal_schar_end:
+
+equal_slong:
+__kefir_text_func_equal_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    sete %al
+    ret
+__kefir_text_func_equal_slong_end:
+
+equal_uchar:
+__kefir_text_func_equal_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_equal_uchar_end:
+
+equal_ulong:
+__kefir_text_func_equal_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    sete %al
+    ret
+__kefir_text_func_equal_ulong_end:
+
+less_sshort:
+__kefir_text_func_less_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+__kefir_text_func_less_sshort_end:
+
+less_ushort:
+__kefir_text_func_less_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+__kefir_text_func_less_ushort_end:
+
+test_sshort:
+__kefir_text_func_test_sshort_begin:
+    cmp $0, %edi
+    je _kefir_func_test_sshort_label12
+    cmp $1, %edi
+    je _kefir_func_test_sshort_label11
+    cmp $2, %edi
+    je _kefir_func_test_sshort_label10
+    cmp $3, %edi
+    je _kefir_func_test_sshort_label9
+    cmp $4, %edi
+    je _kefir_func_test_sshort_label8
+    cmp $5, %edi
+    je _kefir_func_test_sshort_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_sshort_label7:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+_kefir_func_test_sshort_label8:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+_kefir_func_test_sshort_label9:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+_kefir_func_test_sshort_label10:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+_kefir_func_test_sshort_label11:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+_kefir_func_test_sshort_label12:
+    movsx %si, %rcx
+    movsx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_test_sshort_end:
+
+test_ushort:
+__kefir_text_func_test_ushort_begin:
+    cmp $0, %edi
+    je _kefir_func_test_ushort_label12
+    cmp $1, %edi
+    je _kefir_func_test_ushort_label11
+    cmp $2, %edi
+    je _kefir_func_test_ushort_label10
+    cmp $3, %edi
+    je _kefir_func_test_ushort_label9
+    cmp $4, %edi
+    je _kefir_func_test_ushort_label8
+    cmp $5, %edi
+    je _kefir_func_test_ushort_label7
+    ud2
+    xor %rax, %rax
+    ret
+_kefir_func_test_ushort_label7:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+_kefir_func_test_ushort_label8:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+_kefir_func_test_ushort_label9:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+_kefir_func_test_ushort_label10:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setg %al
+    ret
+_kefir_func_test_ushort_label11:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+_kefir_func_test_ushort_label12:
+    movzx %si, %rcx
+    movzx %dx, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_test_ushort_end:
+
+less_or_equal_sint:
+__kefir_text_func_less_or_equal_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_sint_end:
+
+less_or_equal_uint:
+__kefir_text_func_less_or_equal_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setae %al
+    ret
+__kefir_text_func_less_or_equal_uint_end:
+
+not_equal_schar:
+__kefir_text_func_not_equal_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+__kefir_text_func_not_equal_schar_end:
+
+not_equal_slong:
+__kefir_text_func_not_equal_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setne %al
+    ret
+__kefir_text_func_not_equal_slong_end:
+
+not_equal_uchar:
+__kefir_text_func_not_equal_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+__kefir_text_func_not_equal_uchar_end:
+
+not_equal_ulong:
+__kefir_text_func_not_equal_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setne %al
+    ret
+__kefir_text_func_not_equal_ulong_end:
+
+less_or_equal_sshort:
+__kefir_text_func_less_or_equal_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_sshort_end:
+
+less_or_equal_ushort:
+__kefir_text_func_less_or_equal_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_ushort_end:
+
+not_equal_sshort:
+__kefir_text_func_not_equal_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+__kefir_text_func_not_equal_sshort_end:
+
+not_equal_ushort:
+__kefir_text_func_not_equal_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setne %al
+    ret
+__kefir_text_func_not_equal_ushort_end:
+
+greater_or_equal_sint:
+__kefir_text_func_greater_or_equal_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_sint_end:
+
+greater_or_equal_uint:
+__kefir_text_func_greater_or_equal_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setbe %al
+    ret
+__kefir_text_func_greater_or_equal_uint_end:
+
+equal_sshort:
+__kefir_text_func_equal_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_equal_sshort_end:
+
+equal_ushort:
+__kefir_text_func_equal_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    sete %al
+    ret
+__kefir_text_func_equal_ushort_end:
+
+greater_sint:
+__kefir_text_func_greater_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setl %al
+    ret
+__kefir_text_func_greater_sint_end:
+
+greater_uint:
+__kefir_text_func_greater_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setb %al
+    ret
+__kefir_text_func_greater_uint_end:
+
+greater_or_equal_sshort:
+__kefir_text_func_greater_or_equal_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_sshort_end:
+
+greater_or_equal_ushort:
+__kefir_text_func_greater_or_equal_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_ushort_end:
+
+greater_sshort:
+__kefir_text_func_greater_sshort_begin:
+    movsx %dx, %rcx
+    movsx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+__kefir_text_func_greater_sshort_end:
+
+greater_ushort:
+__kefir_text_func_greater_ushort_begin:
+    movzx %dx, %rcx
+    movzx %si, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+__kefir_text_func_greater_ushort_end:
+
+not_equal_sint:
+__kefir_text_func_not_equal_sint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setne %al
+    ret
+__kefir_text_func_not_equal_sint_end:
+
+not_equal_uint:
+__kefir_text_func_not_equal_uint_begin:
+    xor %eax, %eax
+    cmp %esi, %edx
+    setne %al
+    ret
+__kefir_text_func_not_equal_uint_end:
+
+less_or_equal_schar:
+__kefir_text_func_less_or_equal_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_schar_end:
+
+less_or_equal_slong:
+__kefir_text_func_less_or_equal_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_slong_end:
+
+less_or_equal_uchar:
+__kefir_text_func_less_or_equal_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setge %al
+    ret
+__kefir_text_func_less_or_equal_uchar_end:
+
+less_or_equal_ulong:
+__kefir_text_func_less_or_equal_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setae %al
+    ret
+__kefir_text_func_less_or_equal_ulong_end:
+
+greater_or_equal_schar:
+__kefir_text_func_greater_or_equal_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_schar_end:
+
+greater_or_equal_slong:
+__kefir_text_func_greater_or_equal_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_slong_end:
+
+greater_or_equal_uchar:
+__kefir_text_func_greater_or_equal_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setle %al
+    ret
+__kefir_text_func_greater_or_equal_uchar_end:
+
+greater_or_equal_ulong:
+__kefir_text_func_greater_or_equal_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setbe %al
+    ret
+__kefir_text_func_greater_or_equal_ulong_end:
+
+greater_schar:
+__kefir_text_func_greater_schar_begin:
+    movsx %dl, %rcx
+    movsx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+__kefir_text_func_greater_schar_end:
+
+greater_slong:
+__kefir_text_func_greater_slong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setl %al
+    ret
+__kefir_text_func_greater_slong_end:
+
+greater_uchar:
+__kefir_text_func_greater_uchar_begin:
+    movzx %dl, %rcx
+    movzx %sil, %rdx
+    xor %eax, %eax
+    cmp %edx, %ecx
+    setl %al
+    ret
+__kefir_text_func_greater_uchar_end:
+
+greater_ulong:
+__kefir_text_func_greater_ulong_begin:
+    xor %eax, %eax
+    cmp %rsi, %rdx
+    setb %al
+    ret
+__kefir_text_func_greater_ulong_end:
+
+__kefir_text_section_end:
+

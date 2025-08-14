@@ -118,6 +118,7 @@ typedef enum kefir_opt_comparison_operation {
 
 kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t,
                                                       kefir_opt_comparison_operation_t *);
+kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_operation_t, kefir_opt_comparison_operation_t *);
 
 #define KEFIR_OPT_COMPARISON_IS_INTEGRAL(_comparison)                                                                \
     ((_comparison) == KEFIR_OPT_COMPARISON_INT8_EQUALS || (_comparison) == KEFIR_OPT_COMPARISON_INT16_EQUALS ||      \
