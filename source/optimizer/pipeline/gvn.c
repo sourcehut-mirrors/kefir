@@ -203,6 +203,20 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
             }
             break;
 
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+            hash += splitmix64(instr->operation.opcode);
+            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
+            hash ^= splitmix64(((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) + MAGIC2);
+            break;
+
+        case KEFIR_OPT_OPCODE_BITS_INSERT:
+            hash += splitmix64(instr->operation.opcode);
+            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
+            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
+            hash ^= splitmix64(((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) + MAGIC3);
+            break;
+
         default:
             hash += splitmix64(instr->id);
             break;
@@ -377,6 +391,18 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
             }
             break;
 
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+            return instr1->operation.parameters.bitfield.offset == instr2->operation.parameters.bitfield.offset &&
+                instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
+                instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
+
+        case KEFIR_OPT_OPCODE_BITS_INSERT:
+            return  instr1->operation.parameters.bitfield.offset == instr2->operation.parameters.bitfield.offset &&
+                instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
+                instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
+
         default:
             // Intentionally left blank
             break;
@@ -477,6 +503,9 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_INT16_TO_BOOL:
         case KEFIR_OPT_OPCODE_INT32_TO_BOOL:
         case KEFIR_OPT_OPCODE_INT64_TO_BOOL:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITS_INSERT:
             *policy = GVN_REPLACEMENT_GLOBAL;
             break;
 

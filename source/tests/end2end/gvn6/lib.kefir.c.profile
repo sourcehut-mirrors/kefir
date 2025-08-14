@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -Woptimizer-pipeline=mem2reg,phi-propagate,op-simplify,lowering,gvn,op-simplify,block-merge"
