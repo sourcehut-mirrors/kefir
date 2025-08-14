@@ -688,6 +688,8 @@ kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_
     REQUIRE(result_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_SELECT:
+        case KEFIR_OPT_OPCODE_SELECT_COMPARE:
         case KEFIR_OPT_OPCODE_INT_CONST:
         case KEFIR_OPT_OPCODE_UINT_CONST:
         case KEFIR_OPT_OPCODE_FLOAT32_CONST:
@@ -769,6 +771,45 @@ kefir_result_t kefir_opt_instruction_is_side_effect_free(const struct kefir_opt_
         case KEFIR_OPT_OPCODE_INT16_NEG:
         case KEFIR_OPT_OPCODE_INT32_NEG:
         case KEFIR_OPT_OPCODE_INT64_NEG:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITS_INSERT:
+        case KEFIR_OPT_OPCODE_BITINT_UNSIGNED_CONST:
+        case KEFIR_OPT_OPCODE_BITINT_SIGNED_CONST:
+        case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_CAST_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_CAST_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_TO_BOOL:
+        case KEFIR_OPT_OPCODE_BITINT_NEGATE:
+        case KEFIR_OPT_OPCODE_BITINT_INVERT:
+        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_BITINT_ADD:
+        case KEFIR_OPT_OPCODE_BITINT_SUB:
+        case KEFIR_OPT_OPCODE_BITINT_IMUL:
+        case KEFIR_OPT_OPCODE_BITINT_UMUL:
+        case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_AND:
+        case KEFIR_OPT_OPCODE_BITINT_OR:
+        case KEFIR_OPT_OPCODE_BITINT_XOR:
+        case KEFIR_OPT_OPCODE_BITINT_EQUAL:
+        case KEFIR_OPT_OPCODE_BITINT_GREATER:
+        case KEFIR_OPT_OPCODE_BITINT_LESS:
+        case KEFIR_OPT_OPCODE_BITINT_ABOVE:
+        case KEFIR_OPT_OPCODE_BITINT_BELOW:
+        case KEFIR_OPT_OPCODE_BITINT_EXTRACT_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_EXTRACT_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_INSERT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
             *result_ptr = true;
             break;
 
@@ -822,7 +863,7 @@ static kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
-struct move_instrs_param {
+struct hoist_instrs_param {
     struct kefir_mem *mem;
     struct kefir_opt_code_container *code;
     struct kefir_opt_code_debug_info *debug;
@@ -832,8 +873,8 @@ struct move_instrs_param {
     kefir_opt_instruction_ref_t moved_instr_ref;
 };
 
-static kefir_result_t do_move_scan_deps(kefir_opt_instruction_ref_t instr_ref, void *payload) {
-    ASSIGN_DECL_CAST(struct move_instrs_param *, param, payload);
+static kefir_result_t do_hoist_scan_deps(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct hoist_instrs_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
 
     const struct kefir_opt_instruction *instr;
@@ -844,7 +885,7 @@ static kefir_result_t do_move_scan_deps(kefir_opt_instruction_ref_t instr_ref, v
     return KEFIR_OK;
 }
 
-static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
+static kefir_result_t do_hoist_with_deps(struct hoist_instrs_param *param) {
     for (struct kefir_list_entry *iter = kefir_list_head(&param->move_queue); iter != NULL;
          iter = kefir_list_head(&param->move_queue)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, (kefir_uptr_t) iter->value);
@@ -857,7 +898,7 @@ static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
         }
         REQUIRE_OK(res);
 
-        REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, do_move_scan_deps, param));
+        REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->code, instr, true, do_hoist_scan_deps, param));
 
         if (instr->block_id == param->source_block_id) {
             kefir_opt_instruction_ref_t moved_instr_ref = KEFIR_ID_NONE;
@@ -871,7 +912,7 @@ static kefir_result_t do_move_with_deps(struct move_instrs_param *param) {
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_mem *mem,
+kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_mem *mem,
                                                                   struct kefir_opt_code_container *code,
                                                                   struct kefir_opt_code_debug_info *debug,
                                                                   kefir_opt_instruction_ref_t instr_ref,
@@ -884,7 +925,7 @@ kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_m
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
 
-    struct move_instrs_param param = {.mem = mem,
+    struct hoist_instrs_param param = {.mem = mem,
                                       .code = code,
                                       .debug = debug,
                                       .source_block_id = instr->block_id,
@@ -894,7 +935,7 @@ kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_m
 
     kefir_result_t res = kefir_list_insert_after(mem, &param.move_queue, kefir_list_tail(&param.move_queue),
                                                  (void *) (kefir_uptr_t) instr_ref);
-    REQUIRE_CHAIN(&res, do_move_with_deps(&param));
+    REQUIRE_CHAIN(&res, do_hoist_with_deps(&param));
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_list_free(mem, &param.move_queue);
         return res;
@@ -905,20 +946,17 @@ kefir_result_t kefir_opt_move_instruction_with_local_dependencies(struct kefir_m
     return KEFIR_OK;
 }
 
-static kefir_result_t can_move_isolated_instruction(const struct kefir_opt_code_structure *structure,
+kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_code_structure *structure,
                                                     kefir_opt_instruction_ref_t instr_ref,
                                                     kefir_opt_block_id_t target_block_id,
-                                                    const struct kefir_hashtreeset *moved_instr,
-                                                    const struct kefir_opt_can_move_instruction_ignore_use *ignore_use,
-                                                    kefir_bool_t *can_move_ptr) {
+                                                    kefir_bool_t *can_hoist_ptr) {
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
-    REQUIRE(can_move_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    *can_move_ptr = false;
+    *can_hoist_ptr = false;
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
-    REQUIRE(instr->block_id != target_block_id, KEFIR_OK);
 
     kefir_bool_t is_control_flow;
     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(structure->code, instr_ref, &is_control_flow));
@@ -928,24 +966,18 @@ static kefir_result_t can_move_isolated_instruction(const struct kefir_opt_code_
     REQUIRE_OK(kefir_opt_instruction_is_side_effect_free(instr, &is_side_effect_free));
     REQUIRE(is_side_effect_free, KEFIR_OK);
 
+    if (instr->block_id == target_block_id) {
+        *can_hoist_ptr = true;
+        return KEFIR_OK;
+    }
+
     struct kefir_opt_instruction_use_iterator use_iter;
     kefir_result_t res;
     for (res = kefir_opt_code_container_instruction_use_instr_iter(structure->code, instr_ref, &use_iter);
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
-        if (kefir_hashtreeset_has(moved_instr, (kefir_hashtreeset_entry_t) use_iter.use_instr_ref)) {
-            continue;
-        }
-        if (ignore_use != NULL && ignore_use->callback != NULL) {
-            kefir_bool_t ignore_use_flag = false;
-            REQUIRE_OK(ignore_use->callback(instr_ref, use_iter.use_instr_ref, &ignore_use_flag, ignore_use->payload));
-            if (ignore_use_flag) {
-                continue;
-            }
-        }
         const struct kefir_opt_instruction *use_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(structure->code, use_iter.use_instr_ref, &use_instr));
-        REQUIRE(use_instr->block_id != target_block_id || use_instr->operation.opcode != KEFIR_OPT_OPCODE_PHI,
-                KEFIR_OK);
+
         kefir_bool_t is_dominator;
         REQUIRE_OK(
             kefir_opt_code_structure_is_dominator(structure, use_instr->block_id, target_block_id, &is_dominator));
@@ -955,24 +987,21 @@ static kefir_result_t can_move_isolated_instruction(const struct kefir_opt_code_
         REQUIRE_OK(res);
     }
 
-    *can_move_ptr = true;
+    *can_hoist_ptr = true;
     return KEFIR_OK;
 }
 
-struct can_move_param {
-    struct kefir_mem *mem;
+struct can_hoist_param {
     const struct kefir_opt_code_structure *structure;
     kefir_opt_block_id_t source_block_id;
     kefir_opt_block_id_t target_block_id;
-    struct kefir_hashtreeset moved_instr;
-    const struct kefir_opt_can_move_instruction_ignore_use *ignore_use;
-    kefir_bool_t can_move;
+    kefir_bool_t can_hoist;
 };
 
-static kefir_result_t can_move_instr(kefir_opt_instruction_ref_t instr_ref, void *payload) {
-    ASSIGN_DECL_CAST(struct can_move_param *, param, payload);
+static kefir_result_t can_hoist_instr(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct can_hoist_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
-    REQUIRE(param->can_move, KEFIR_OK);
+    REQUIRE(param->can_hoist, KEFIR_OK);
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
@@ -981,50 +1010,39 @@ static kefir_result_t can_move_instr(kefir_opt_instruction_ref_t instr_ref, void
         REQUIRE_OK(kefir_opt_code_structure_is_dominator(param->structure, param->target_block_id, instr->block_id,
                                                          &is_dominator));
         if (!is_dominator) {
-            param->can_move = false;
+            param->can_hoist = false;
         }
         return KEFIR_OK;
     }
 
-    kefir_bool_t can_move_isolated = false;
-    REQUIRE_OK(can_move_isolated_instruction(param->structure, instr_ref, param->target_block_id, &param->moved_instr,
-                                             param->ignore_use, &can_move_isolated));
-    if (!can_move_isolated) {
-        param->can_move = false;
+    kefir_bool_t can_hoist_isolated = false;
+    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(param->structure, instr_ref, param->target_block_id,
+                                             &can_hoist_isolated));
+    if (!can_hoist_isolated) {
+        param->can_hoist = false;
         return KEFIR_OK;
     }
 
-    REQUIRE_OK(kefir_hashtreeset_add(param->mem, &param->moved_instr, (kefir_hashtreeset_entry_t) instr_ref));
-    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, can_move_instr, payload));
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, can_hoist_instr, payload));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_can_move_instruction_with_local_dependencies(
-    struct kefir_mem *mem, const struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref,
-    kefir_opt_block_id_t target_block_id, const struct kefir_opt_can_move_instruction_ignore_use *ignore_use,
-    kefir_bool_t *can_move_ptr) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(
+    const struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_block_id_t target_block_id,
+    kefir_bool_t *can_hoist_ptr) {
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
-    REQUIRE(can_move_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+    REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
 
-    struct can_move_param param = {.mem = mem,
-                                   .structure = structure,
+    struct can_hoist_param param = {.structure = structure,
                                    .source_block_id = instr->block_id,
                                    .target_block_id = target_block_id,
-                                   .ignore_use = ignore_use,
-                                   .can_move = true};
-    REQUIRE_OK(kefir_hashtreeset_init(&param.moved_instr, &kefir_hashtree_uint_ops));
-    kefir_result_t res = can_move_instr(instr_ref, &param);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &param.moved_instr);
-        return KEFIR_OK;
-    });
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &param.moved_instr));
-
-    *can_move_ptr = param.can_move;
+                                   .can_hoist = true};
+    REQUIRE_OK(can_hoist_instr(instr_ref, &param));
+    *can_hoist_ptr = param.can_hoist;
 
     return KEFIR_OK;
 }

@@ -3271,18 +3271,6 @@ static kefir_result_t simplify_load(struct kefir_mem *mem, struct kefir_opt_func
     return KEFIR_OK;
 }
 
-static kefir_result_t ignore_use_callback(kefir_opt_instruction_ref_t instr_ref,
-                                          kefir_opt_instruction_ref_t user_instr_ref, kefir_bool_t *ignore_use,
-                                          void *payload) {
-    UNUSED(instr_ref);
-    REQUIRE(ignore_use != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
-    ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t *, ignore_instr_ref, payload);
-    REQUIRE(ignore_use != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
-
-    *ignore_use = *ignore_instr_ref == user_instr_ref;
-    return KEFIR_OK;
-}
-
 static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_function *func,
                                    struct kefir_opt_code_structure *structure,
                                    const struct kefir_opt_instruction *phi_instr,
@@ -3368,10 +3356,8 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
                                                                                                                    \
         if (link_instr->block_id == (_dominator_branch)) {                                                         \
             kefir_bool_t can_move_instr;                                                                           \
-            REQUIRE_OK(kefir_opt_can_move_instruction_with_local_dependencies(                                     \
-                mem, structure, *(_link_ref), phi_instr->block_id,                                                 \
-                &(struct kefir_opt_can_move_instruction_ignore_use) {.callback = ignore_use_callback,              \
-                                                                     .payload = (void *) &phi_instr_ref},          \
+            REQUIRE_OK(kefir_opt_can_hoist_instruction_with_local_dependencies(                                     \
+                structure, *(_link_ref), immediate_dominator_block_id,                                                 \
                 &can_move_instr));                                                                                 \
             REQUIRE(can_move_instr, KEFIR_OK);                                                                     \
             *(_move_link) = true;                                                                                  \
@@ -3388,12 +3374,12 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
     }
 
     if (move_link1) {
-        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref1,
-                                                                      phi_instr_block_id, &link_ref1));
+        REQUIRE_OK(kefir_opt_hoist_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref1,
+                                                                      immediate_dominator_block_id, &link_ref1));
     }
     if (move_link2) {
-        REQUIRE_OK(kefir_opt_move_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref2,
-                                                                      phi_instr_block_id, &link_ref2));
+        REQUIRE_OK(kefir_opt_hoist_instruction_with_local_dependencies(mem, &func->code, &func->debug_info, link_ref2,
+                                                                      immediate_dominator_block_id, &link_ref2));
     }
 
     if (!comparison) {

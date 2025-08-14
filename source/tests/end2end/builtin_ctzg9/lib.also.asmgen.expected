@@ -21,16 +21,15 @@ __kefir_text_func_test1_begin:
     mov %rdi, %rax
     shl $47, %rax
     shr $47, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    je _kefir_func_test1_label2
-    jmp _kefir_func_test1_label1
-_kefir_func_test1_label1:
+    sete %cl
     shl $47, %rdi
     shr $47, %rdi
-    xor %esi, %esi
-    rep bsf %edi, %esi
-_kefir_func_test1_label2:
-    mov %rsi, %rax
+    xor %eax, %eax
+    rep bsf %edi, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test1_end:
 
@@ -39,14 +38,13 @@ __kefir_text_func_test2_begin:
     mov %rdi, %rax
     shl $32, %rax
     shr $32, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    je _kefir_func_test2_label2
-    jmp _kefir_func_test2_label1
-_kefir_func_test2_label1:
-    xor %esi, %esi
-    rep bsf %edi, %esi
-_kefir_func_test2_label2:
-    mov %rsi, %rax
+    sete %cl
+    xor %eax, %eax
+    rep bsf %edi, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test2_end:
 
@@ -55,16 +53,15 @@ __kefir_text_func_test3_begin:
     mov %rdi, %rax
     shl $5, %rax
     shr $5, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    je _kefir_func_test3_label2
-    jmp _kefir_func_test3_label1
-_kefir_func_test3_label1:
+    sete %cl
     shl $5, %rdi
     shr $5, %rdi
-    xor %esi, %esi
-    rep bsf %rdi, %rsi
-_kefir_func_test3_label2:
-    mov %rsi, %rax
+    xor %eax, %eax
+    rep bsf %rdi, %rax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test3_end:
 
@@ -73,14 +70,13 @@ __kefir_text_func_test4_begin:
     mov %rdi, %rax
     shl $0, %rax
     shr $0, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    je _kefir_func_test4_label2
-    jmp _kefir_func_test4_label1
-_kefir_func_test4_label1:
-    xor %esi, %esi
-    rep bsf %rdi, %rsi
-_kefir_func_test4_label2:
-    mov %rsi, %rax
+    sete %cl
+    xor %eax, %eax
+    rep bsf %rdi, %rax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test4_end:
 
@@ -89,35 +85,36 @@ __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdx, %rcx
+    mov %rdx, %r8
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
     movl $0, -36(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %r8, -16(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -16(%rbp), %rcx
+    movq -16(%rbp), %r8
+    xor %ecx, %ecx
     cmp $0, %al
-    jne _kefir_func_test5_label1
-_kefir_func_test5_label3:
-    mov %rcx, %rdx
-    jmp _kefir_func_test5_label2
-_kefir_func_test5_label1:
+    sete %cl
+    movq %r8, -48(%rbp)
+    movq %rcx, -40(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
-    mov %rax, %rdx
-_kefir_func_test5_label2:
-    mov %rdx, %rax
+    movq -48(%rbp), %r8
+    movq -40(%rbp), %rcx
+    mov %r8, %rdx
+    test %cl, %cl
+    cmovnz %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -128,8 +125,8 @@ __kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdi, %rcx
-    lea 16(%rbp), %r8
+    mov %rdi, %r9
+    lea 16(%rbp), %rcx
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
@@ -140,28 +137,29 @@ __kefir_text_func_test6_begin:
     movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    movq %rcx, -24(%rbp)
-    movq %r8, -16(%rbp)
-    mov %r8, %rdi
+    movq %r9, -24(%rbp)
+    movq %rcx, -16(%rbp)
+    mov %rcx, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %rcx
-    movq -16(%rbp), %r8
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %rcx
+    xor %r8d, %r8d
     cmp $0, %al
-    jne _kefir_func_test6_label1
-_kefir_func_test6_label3:
+    sete %r8b
+    movq %r9, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
-    jmp _kefir_func_test6_label2
-_kefir_func_test6_label1:
-    mov %r8, %rdi
     mov $315, %rsi
     xor %edx, %edx
     call __kefir_bigint_trailing_zeros
-    mov %rax, %rdi
-_kefir_func_test6_label2:
-    mov %rdi, %rax
+    movq -64(%rbp), %r9
+    movq -56(%rbp), %r8
+    mov %r9, %rdi
+    test %r8b, %r8b
+    cmovnz %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -272,24 +270,24 @@ __kefir_text_func___kefir_bigint_trailing_zeros_begin:
     push %r14
     push %r15
     sub $24, %rsp
-    movq %rdx, -56(%rbp)
-    mov %rsi, %r14
-    mov %rdi, %r15
-    cmp $0, %r14
-    je _kefir_func___kefir_bigint_trailing_zeros_label10
-    mov %r14, %rsi
+    movq %rdx, -64(%rbp)
+    movq %rsi, -56(%rbp)
+    movq %rdi, -48(%rbp)
+    cmpq $0, -56(%rbp)
+    je _kefir_func___kefir_bigint_trailing_zeros_label9
+    movq -56(%rbp), %rsi
     sub $-7, %rsi
     mov %rsi, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %rdx
-    movq $0, -64(%rbp)
-    xor %r11d, %r11d
+    mov %rax, %r14
+    xor %r15d, %r15d
+    xor %r10d, %r10d
 _kefir_func___kefir_bigint_trailing_zeros_label2:
-    cmpq %rdx, -64(%rbp)
+    cmp %r14, %r15
     jb _kefir_func___kefir_bigint_trailing_zeros_label4
-    movq -56(%rbp), %rax
+    movq -64(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -299,56 +297,53 @@ _kefir_func___kefir_bigint_trailing_zeros_label2:
     pop %rbp
     ret
 _kefir_func___kefir_bigint_trailing_zeros_label4:
-    mov %r15, %rdi
-    addq -64(%rbp), %rdi
-    movb (%rdi), %r13b
-    movq -64(%rbp), %r9
-    add $1, %r9
-    mov %r11, %rcx
-    add $8, %rcx
-    movzx %r13b, %r8
-    cmp $0, %r8d
-    jne _kefir_func___kefir_bigint_trailing_zeros_label5
-_kefir_func___kefir_bigint_trailing_zeros_label11:
-    mov %rcx, %r10
-    jmp _kefir_func___kefir_bigint_trailing_zeros_label7
-_kefir_func___kefir_bigint_trailing_zeros_label5:
-    mov %rdx, %rax
+    movq -48(%rbp), %rdi
+    add %r15, %rdi
+    movb (%rdi), %r12b
+    mov %r15, %rcx
+    add $1, %rcx
+    mov %r14, %rax
     sub $1, %rax
     imul $8, %rax, %r8
-    mov %r14, %rsi
+    movq -56(%rbp), %rsi
     sub %r8, %rsi
     mov $8, %r8
-    cmp %rdx, %r9
+    cmp %r14, %rcx
     cmovae %rsi, %r8
+    mov %r10, %r9
+    add $8, %r9
+    movzx %r12b, %rcx
+    cmp $0, %ecx
+    je _kefir_func___kefir_bigint_trailing_zeros_label6
     xor %ebx, %ebx
-    mov %r11, %r12
-_kefir_func___kefir_bigint_trailing_zeros_label6:
+    mov %r10, %r13
+    jmp _kefir_func___kefir_bigint_trailing_zeros_label5
+_kefir_func___kefir_bigint_trailing_zeros_label5:
     cmp %r8, %rbx
-    jb _kefir_func___kefir_bigint_trailing_zeros_label8
-    mov %r12, %r10
-_kefir_func___kefir_bigint_trailing_zeros_label7:
-    movq -64(%rbp), %rcx
+    jb _kefir_func___kefir_bigint_trailing_zeros_label7
+    mov %r13, %r9
+_kefir_func___kefir_bigint_trailing_zeros_label6:
+    mov %r15, %rcx
     add $1, %rcx
-    movq %rcx, -64(%rbp)
-    mov %r10, %r11
+    mov %rcx, %r15
+    mov %r9, %r10
     jmp _kefir_func___kefir_bigint_trailing_zeros_label2
-_kefir_func___kefir_bigint_trailing_zeros_label8:
+_kefir_func___kefir_bigint_trailing_zeros_label7:
     mov %rbx, %r9
     add $1, %r9
-    mov %r12, %r10
+    mov %r13, %r10
     add $1, %r10
-    movzx %r13b, %r11
+    movzx %r12b, %r11
     mov %rbx, %rcx
     sar %cl, %r11d
     and $1, %r11d
     cmp $1, %r11d
-    je _kefir_func___kefir_bigint_trailing_zeros_label9
+    je _kefir_func___kefir_bigint_trailing_zeros_label8
     mov %r9, %rbx
-    mov %r10, %r12
-    jmp _kefir_func___kefir_bigint_trailing_zeros_label6
-_kefir_func___kefir_bigint_trailing_zeros_label9:
-    mov %r12, %rax
+    mov %r10, %r13
+    jmp _kefir_func___kefir_bigint_trailing_zeros_label5
+_kefir_func___kefir_bigint_trailing_zeros_label8:
+    mov %r13, %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14
@@ -357,8 +352,8 @@ _kefir_func___kefir_bigint_trailing_zeros_label9:
     pop %rbx
     pop %rbp
     ret
-_kefir_func___kefir_bigint_trailing_zeros_label10:
-    movq -56(%rbp), %rax
+_kefir_func___kefir_bigint_trailing_zeros_label9:
+    movq -64(%rbp), %rax
     lea -40(%rbp), %rsp
     pop %r15
     pop %r14

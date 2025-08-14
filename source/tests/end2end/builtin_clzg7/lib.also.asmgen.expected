@@ -21,17 +21,16 @@ __kefir_text_func_test1_begin:
     mov %rdi, %rax
     shl $47, %rax
     shr $47, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    je _kefir_func_test1_label2
-    jmp _kefir_func_test1_label1
-_kefir_func_test1_label1:
+    sete %cl
     shl $47, %rdi
     shr $47, %rdi
-    bsr %edi, %esi
-    xor $31, %esi
-    sub $15, %esi
-_kefir_func_test1_label2:
-    mov %rsi, %rax
+    bsr %edi, %eax
+    xor $31, %eax
+    sub $15, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test1_end:
 
@@ -40,14 +39,13 @@ __kefir_text_func_test2_begin:
     mov %rdi, %rax
     shl $32, %rax
     shr $32, %rax
+    xor %ecx, %ecx
     cmp $0, %eax
-    je _kefir_func_test2_label2
-    jmp _kefir_func_test2_label1
-_kefir_func_test2_label1:
-    bsr %edi, %esi
-    xor $31, %esi
-_kefir_func_test2_label2:
-    mov %rsi, %rax
+    sete %cl
+    bsr %edi, %eax
+    xor $31, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test2_end:
 
@@ -56,17 +54,16 @@ __kefir_text_func_test3_begin:
     mov %rdi, %rax
     shl $5, %rax
     shr $5, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    je _kefir_func_test3_label2
-    jmp _kefir_func_test3_label1
-_kefir_func_test3_label1:
+    sete %cl
     shl $5, %rdi
     shr $5, %rdi
-    bsr %rdi, %rsi
-    xor $63, %esi
-    sub $5, %esi
-_kefir_func_test3_label2:
-    mov %rsi, %rax
+    bsr %rdi, %rax
+    xor $63, %eax
+    sub $5, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test3_end:
 
@@ -75,14 +72,13 @@ __kefir_text_func_test4_begin:
     mov %rdi, %rax
     shl $0, %rax
     shr $0, %rax
+    xor %ecx, %ecx
     cmp $0, %rax
-    je _kefir_func_test4_label2
-    jmp _kefir_func_test4_label1
-_kefir_func_test4_label1:
-    bsr %rdi, %rsi
-    xor $63, %esi
-_kefir_func_test4_label2:
-    mov %rsi, %rax
+    sete %cl
+    bsr %rdi, %rax
+    xor $63, %eax
+    test %cl, %cl
+    cmovnz %rsi, %rax
     ret
 __kefir_text_func_test4_end:
 
@@ -91,35 +87,36 @@ __kefir_text_func_test5_begin:
     push %rbp
     mov %rsp, %rbp
     sub $48, %rsp
-    mov %rdx, %rcx
+    mov %rdx, %r8
     movq %rdi, -32(%rbp)
     movq %rsi, -24(%rbp)
     movl $0, -48(%rbp)
     movl $0, -44(%rbp)
     movl $0, -40(%rbp)
     movl $0, -36(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %r8, -16(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -16(%rbp), %rcx
+    movq -16(%rbp), %r8
+    xor %ecx, %ecx
     cmp $0, %al
-    jne _kefir_func_test5_label1
-_kefir_func_test5_label3:
-    mov %rcx, %rdx
-    jmp _kefir_func_test5_label2
-_kefir_func_test5_label1:
+    sete %cl
+    movq %r8, -48(%rbp)
+    movq %rcx, -40(%rbp)
     leaq -32(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    mov %rax, %rdx
-_kefir_func_test5_label2:
-    mov %rdx, %rax
+    movq -48(%rbp), %r8
+    movq -40(%rbp), %rcx
+    mov %r8, %rdx
+    test %cl, %cl
+    cmovnz %rdx, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
@@ -130,8 +127,8 @@ __kefir_text_func_test6_begin:
     push %rbp
     mov %rsp, %rbp
     sub $64, %rsp
-    mov %rdi, %rcx
-    lea 16(%rbp), %r8
+    mov %rdi, %r9
+    lea 16(%rbp), %rcx
     movl $0, -64(%rbp)
     movl $0, -60(%rbp)
     movl $0, -56(%rbp)
@@ -142,28 +139,29 @@ __kefir_text_func_test6_begin:
     movl $0, -36(%rbp)
     movl $0, -32(%rbp)
     movl $0, -28(%rbp)
-    movq %rcx, -24(%rbp)
-    movq %r8, -16(%rbp)
-    mov %r8, %rdi
+    movq %r9, -24(%rbp)
+    movq %rcx, -16(%rbp)
+    mov %rcx, %rdi
     leaq -64(%rbp), %rax
     mov %rax, %rsi
     mov $315, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %rcx
-    movq -16(%rbp), %r8
+    movq -24(%rbp), %r9
+    movq -16(%rbp), %rcx
+    xor %r8d, %r8d
     cmp $0, %al
-    jne _kefir_func_test6_label1
-_kefir_func_test6_label3:
+    sete %r8b
+    movq %r9, -64(%rbp)
+    movq %r8, -56(%rbp)
     mov %rcx, %rdi
-    jmp _kefir_func_test6_label2
-_kefir_func_test6_label1:
-    mov %r8, %rdi
     mov $315, %rsi
     xor %edx, %edx
     call __kefir_bigint_leading_zeros
-    mov %rax, %rdi
-_kefir_func_test6_label2:
-    mov %rdi, %rax
+    movq -64(%rbp), %r9
+    movq -56(%rbp), %r8
+    mov %r9, %rdi
+    test %r8b, %r8b
+    cmovnz %rdi, %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
