@@ -92,6 +92,18 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
             hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC2);
             break;
 
+        case KEFIR_OPT_OPCODE_BITINT_ADD:
+        case KEFIR_OPT_OPCODE_BITINT_IMUL:
+        case KEFIR_OPT_OPCODE_BITINT_UMUL:
+        case KEFIR_OPT_OPCODE_BITINT_AND:
+        case KEFIR_OPT_OPCODE_BITINT_OR:
+        case KEFIR_OPT_OPCODE_BITINT_XOR:
+            hash += splitmix64(instr->operation.opcode);
+            hash ^= splitmix64(instr->operation.parameters.bitwidth + MAGIC1);
+            hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC2);
+            hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC3);
+            break;
+
         case KEFIR_OPT_OPCODE_INT8_SUB:
         case KEFIR_OPT_OPCODE_INT16_SUB:
         case KEFIR_OPT_OPCODE_INT32_SUB:
@@ -129,6 +141,16 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
             hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
             break;
 
+        case KEFIR_OPT_OPCODE_BITINT_SUB:
+        case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
+            hash += splitmix64(instr->operation.opcode);
+            hash ^= splitmix64(instr->operation.parameters.bitwidth);
+            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
+            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC3);
+            break;
+
         case KEFIR_OPT_OPCODE_INT8_NOT:
         case KEFIR_OPT_OPCODE_INT16_NOT:
         case KEFIR_OPT_OPCODE_INT32_NOT:
@@ -155,6 +177,13 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
             hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
             break;
 
+        case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+            hash += splitmix64(instr->operation.opcode);
+            hash ^= splitmix64(instr->operation.parameters.bitwidth + MAGIC1);
+            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
+            break;
+
         case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
             hash += splitmix64(instr->operation.opcode);
             switch (instr->operation.parameters.comparison) {
@@ -168,8 +197,10 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
                 case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
                     hash += splitmix64(instr->operation.opcode);
                     hash ^= splitmix64(instr->operation.parameters.comparison + MAGIC1);
-                    hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC2);
-                    hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC3);
+                    hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                       MAGIC2);
+                    hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                       MAGIC3);
                     break;
 
                 case KEFIR_OPT_COMPARISON_INT8_GREATER:
@@ -189,12 +220,13 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
                 case KEFIR_OPT_COMPARISON_INT32_ABOVE_OR_EQUALS:
                 case KEFIR_OPT_COMPARISON_INT64_ABOVE_OR_EQUALS: {
                     kefir_opt_comparison_operation_t reciprocal;
-                    REQUIRE_OK(kefir_opt_comparison_operation_reciprocal(instr->operation.parameters.comparison, &reciprocal));
+                    REQUIRE_OK(
+                        kefir_opt_comparison_operation_reciprocal(instr->operation.parameters.comparison, &reciprocal));
                     hash ^= splitmix64(reciprocal + MAGIC1);
                     hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
                     hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC3);
                 } break;
-                
+
                 default:
                     hash ^= splitmix64(instr->operation.parameters.comparison + MAGIC1);
                     hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
@@ -207,14 +239,18 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
             hash += splitmix64(instr->operation.opcode);
             hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
-            hash ^= splitmix64(((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) + MAGIC2);
+            hash ^= splitmix64(
+                ((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) +
+                MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_BITS_INSERT:
             hash += splitmix64(instr->operation.opcode);
             hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
             hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
-            hash ^= splitmix64(((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) + MAGIC3);
+            hash ^= splitmix64(
+                ((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) +
+                MAGIC3);
             break;
 
         default:
@@ -273,6 +309,18 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
                    MAX(instr1->operation.parameters.refs[0], instr1->operation.parameters.refs[1]) ==
                        MAX(instr2->operation.parameters.refs[0], instr2->operation.parameters.refs[1]);
 
+        case KEFIR_OPT_OPCODE_BITINT_ADD:
+        case KEFIR_OPT_OPCODE_BITINT_IMUL:
+        case KEFIR_OPT_OPCODE_BITINT_UMUL:
+        case KEFIR_OPT_OPCODE_BITINT_AND:
+        case KEFIR_OPT_OPCODE_BITINT_OR:
+        case KEFIR_OPT_OPCODE_BITINT_XOR:
+            return instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                   MIN(instr1->operation.parameters.refs[0], instr1->operation.parameters.refs[1]) ==
+                       MIN(instr2->operation.parameters.refs[0], instr2->operation.parameters.refs[1]) &&
+                   MAX(instr1->operation.parameters.refs[0], instr1->operation.parameters.refs[1]) ==
+                       MAX(instr2->operation.parameters.refs[0], instr2->operation.parameters.refs[1]);
+
         case KEFIR_OPT_OPCODE_INT8_SUB:
         case KEFIR_OPT_OPCODE_INT16_SUB:
         case KEFIR_OPT_OPCODE_INT32_SUB:
@@ -308,6 +356,14 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
             return instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
                    instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
 
+        case KEFIR_OPT_OPCODE_BITINT_SUB:
+        case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
+            return instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
+
         case KEFIR_OPT_OPCODE_INT8_NOT:
         case KEFIR_OPT_OPCODE_INT16_NOT:
         case KEFIR_OPT_OPCODE_INT32_NOT:
@@ -331,6 +387,11 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
             return instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
+
+        case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+            return instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
+                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
 
         case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
             switch (instr1->operation.parameters.comparison) {
@@ -375,33 +436,34 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
                 case KEFIR_OPT_COMPARISON_INT32_BELOW_OR_EQUALS:
                 case KEFIR_OPT_COMPARISON_INT64_BELOW_OR_EQUALS: {
                     kefir_opt_comparison_operation_t reciprocal;
-                    REQUIRE_OK(kefir_opt_comparison_operation_reciprocal(instr1->operation.parameters.comparison, &reciprocal));
+                    REQUIRE_OK(kefir_opt_comparison_operation_reciprocal(instr1->operation.parameters.comparison,
+                                                                         &reciprocal));
                     return (instr1->operation.parameters.comparison == instr2->operation.parameters.comparison &&
                             instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
                             instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1]) ||
-                            (instr2->operation.parameters.comparison == reciprocal &&
+                           (instr2->operation.parameters.comparison == reciprocal &&
                             instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[1] &&
                             instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[0]);
                 } break;
 
                 default:
                     return instr1->operation.parameters.comparison == instr2->operation.parameters.comparison &&
-                        instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                        instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
+                           instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                           instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
             }
             break;
 
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
             return instr1->operation.parameters.bitfield.offset == instr2->operation.parameters.bitfield.offset &&
-                instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
-                instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
+                   instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
+                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
 
         case KEFIR_OPT_OPCODE_BITS_INSERT:
-            return  instr1->operation.parameters.bitfield.offset == instr2->operation.parameters.bitfield.offset &&
-                instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
-                instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
-                instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
+            return instr1->operation.parameters.bitfield.offset == instr2->operation.parameters.bitfield.offset &&
+                   instr1->operation.parameters.bitfield.length == instr2->operation.parameters.bitfield.length &&
+                   instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0] &&
+                   instr1->operation.parameters.refs[1] == instr2->operation.parameters.refs[1];
 
         default:
             // Intentionally left blank
@@ -506,6 +568,18 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
         case KEFIR_OPT_OPCODE_BITS_INSERT:
+        case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_ADD:
+        case KEFIR_OPT_OPCODE_BITINT_IMUL:
+        case KEFIR_OPT_OPCODE_BITINT_UMUL:
+        case KEFIR_OPT_OPCODE_BITINT_AND:
+        case KEFIR_OPT_OPCODE_BITINT_OR:
+        case KEFIR_OPT_OPCODE_BITINT_XOR:
+        case KEFIR_OPT_OPCODE_BITINT_SUB:
+        case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
             *policy = GVN_REPLACEMENT_GLOBAL;
             break;
 

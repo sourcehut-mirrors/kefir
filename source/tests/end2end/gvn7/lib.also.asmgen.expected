@@ -1,0 +1,205 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or
+.type or, @function
+.global add
+.type add, @function
+.global and
+.type and, @function
+.global mul
+.type mul, @function
+.global shl
+.type shl, @function
+.global shr
+.type shr, @function
+.global sub
+.type sub, @function
+.global uor
+.type uor, @function
+.global xor
+.type xor, @function
+.global test
+.type test, @function
+.global uadd
+.type uadd, @function
+.global uand
+.type uand, @function
+.global umul
+.type umul, @function
+.global ushl
+.type ushl, @function
+.global ushr
+.type ushr, @function
+.global usub
+.type usub, @function
+.global uxor
+.type uxor, @function
+.global test2
+.type test2, @function
+
+.section .text
+__kefir_text_section_begin:
+or:
+__kefir_text_func_or_begin:
+    or %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_or_end:
+
+add:
+__kefir_text_func_add_begin:
+    add %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_add_end:
+
+and:
+__kefir_text_func_and_begin:
+    and %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_and_end:
+
+mul:
+__kefir_text_func_mul_begin:
+    shl $45, %rsi
+    sar $45, %rsi
+    shl $45, %rdx
+    sar $45, %rdx
+    imul %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_mul_end:
+
+shl:
+__kefir_text_func_shl_begin:
+    shl $45, %rdx
+    sar $45, %rdx
+    mov %rdx, %rcx
+    shl %cl, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_shl_end:
+
+shr:
+__kefir_text_func_shr_begin:
+    shl $45, %rdx
+    sar $45, %rdx
+    mov %rdx, %rcx
+    sar %cl, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_shr_end:
+
+sub:
+__kefir_text_func_sub_begin:
+    sub %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_sub_end:
+
+uor:
+__kefir_text_func_uor_begin:
+    or %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_uor_end:
+
+xor:
+__kefir_text_func_xor_begin:
+    xor %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_xor_end:
+
+test:
+__kefir_text_func_test_begin:
+    mov %rsi, %rax
+    shl $57, %rax
+    sar $57, %rax
+    mov %rdx, %rcx
+    shl $57, %rcx
+    sar $57, %rcx
+    add %cl, %al
+    shl $57, %rax
+    sar $57, %rax
+    add %edx, %esi
+    test %dil, %dil
+    cmovnz %rsi, %rax
+    ret
+__kefir_text_func_test_end:
+
+uadd:
+__kefir_text_func_uadd_begin:
+    add %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_uadd_end:
+
+uand:
+__kefir_text_func_uand_begin:
+    and %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_uand_end:
+
+umul:
+__kefir_text_func_umul_begin:
+    shl $45, %rsi
+    shr $45, %rsi
+    shl $45, %rdx
+    shr $45, %rdx
+    imul %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_umul_end:
+
+ushl:
+__kefir_text_func_ushl_begin:
+    shl $45, %rdx
+    shr $45, %rdx
+    mov %rdx, %rcx
+    shl %cl, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_ushl_end:
+
+ushr:
+__kefir_text_func_ushr_begin:
+    shl $45, %rdx
+    shr $45, %rdx
+    mov %rdx, %rcx
+    shr %cl, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_ushr_end:
+
+usub:
+__kefir_text_func_usub_begin:
+    sub %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_usub_end:
+
+uxor:
+__kefir_text_func_uxor_begin:
+    xor %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_uxor_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    mov %rsi, %rax
+    shl $60, %rax
+    sar $60, %rax
+    shl $45, %rsi
+    sar $45, %rsi
+    test %dil, %dil
+    cmovnz %rsi, %rax
+    ret
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+
