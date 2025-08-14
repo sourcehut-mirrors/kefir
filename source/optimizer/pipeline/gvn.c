@@ -492,6 +492,10 @@ static kefir_result_t try_replace_instr(struct gvn_state *state, kefir_opt_instr
     return KEFIR_OK;
 }
 
+#define IS_BLOCK_REACHABLE(_structure, _block_id)      \
+    ((_block_id) == (_structure)->code->entry_point || \
+     (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
+
 static kefir_result_t gvn_impl(struct gvn_state *state) {
     REQUIRE_OK(kefir_opt_code_structure_build(state->mem, &state->structure, &state->func->code));
     REQUIRE_OK(gvn_scan_control_flow(state));
@@ -504,12 +508,15 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
 
         const struct kefir_opt_instruction *instr;
         REQUIRE_OK(kefir_opt_code_container_instr(&state->func->code, instr_ref, &instr));
+        if (!IS_BLOCK_REACHABLE(&state->structure, instr->block_id)) {
+            continue;
+        }
         enum gvn_replacement_policy replacement_policy = GVN_REPLACEMENT_SKIP;
         REQUIRE_OK(instr_replacement_policy(state, instr, &replacement_policy));
 
         state->all_inputs_processed = true;
         REQUIRE_OK(
-            kefir_opt_instruction_extract_inputs(&state->func->code, instr, true, ensure_instruction_inputs, state));
+            kefir_opt_instruction_extract_inputs(&state->func->code, instr, false, ensure_instruction_inputs, state));
         if (replacement_policy == GVN_REPLACEMENT_SKIP) {
             REQUIRE_OK(
                 kefir_hashtreeset_add(state->mem, &state->processed_instr, (kefir_hashtreeset_entry_t) instr_ref));
@@ -552,6 +559,31 @@ static kefir_result_t gvn_impl(struct gvn_state *state) {
                                                  replacement_policy == GVN_REPLACEMENT_LOCAL, &replaced));
                     if (replaced) {
                         candidate_iter->value = (void *) (kefir_uptr_t) instr_ref;
+                    }
+                }
+
+                if (!replaced && replacement_policy == GVN_REPLACEMENT_GLOBAL) {
+                    const struct kefir_opt_instruction *candidate_instr;
+                    REQUIRE_OK(
+                        kefir_opt_code_container_instr(&state->func->code, candidate_instr_ref, &candidate_instr));
+
+                    kefir_opt_block_id_t closest_common_dominator_block_id;
+                    REQUIRE_OK(kefir_opt_find_closest_common_dominator(&state->structure, instr->block_id,
+                                                                       candidate_instr->block_id,
+                                                                       &closest_common_dominator_block_id));
+
+                    kefir_bool_t can_hoist;
+                    REQUIRE_OK(kefir_opt_can_hoist_instruction(&state->structure, instr_ref,
+                                                               closest_common_dominator_block_id, &can_hoist));
+
+                    if (can_hoist) {
+                        REQUIRE_OK(kefir_opt_move_instruction(state->mem, &state->func->code, &state->func->debug_info,
+                                                              instr_ref, closest_common_dominator_block_id,
+                                                              &instr_ref));
+                        REQUIRE_OK(kefir_opt_code_container_replace_references(state->mem, &state->func->code,
+                                                                               instr_ref, candidate_instr_ref));
+                        candidate_iter->value = (void *) (kefir_uptr_t) instr_ref;
+                        replaced = true;
                     }
                 }
             }

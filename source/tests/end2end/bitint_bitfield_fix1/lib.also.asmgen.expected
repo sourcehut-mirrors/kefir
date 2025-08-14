@@ -424,10 +424,10 @@ _kefir_func___kefir_bigint_cast_signed_label4:
     pop %rbp
     ret
 _kefir_func___kefir_bigint_cast_signed_label6:
-    test %edx, %edx
-    jnz _kefir_func___kefir_bigint_cast_signed_label9
     mov %r11, %rdi
     add %rcx, %rdi
+    test %edx, %edx
+    jnz _kefir_func___kefir_bigint_cast_signed_label9
     movb $0, (%rdi)
 _kefir_func___kefir_bigint_cast_signed_label8:
     mov %rcx, %rax
@@ -435,8 +435,6 @@ _kefir_func___kefir_bigint_cast_signed_label8:
     mov %rax, %rcx
     jmp _kefir_func___kefir_bigint_cast_signed_label4
 _kefir_func___kefir_bigint_cast_signed_label9:
-    mov %r11, %rdi
-    add %rcx, %rdi
     movb $-1, (%rdi)
     jmp _kefir_func___kefir_bigint_cast_signed_label8
 _kefir_func___kefir_bigint_cast_signed_label10:

@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    add %edx, %esi
+    mov %rsi, %rax
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

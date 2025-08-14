@@ -843,11 +843,15 @@ kefir_result_t kefir_opt_instruction_get_sole_use(const struct kefir_opt_code_co
     return KEFIR_OK;
 }
 
-static kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
-                                                 struct kefir_opt_code_debug_info *debug_info,
-                                                 kefir_opt_instruction_ref_t instr_ref,
-                                                 kefir_opt_block_id_t target_block_id,
-                                                 kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
+kefir_result_t kefir_opt_move_instruction(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                          struct kefir_opt_code_debug_info *debug_info,
+                                          kefir_opt_instruction_ref_t instr_ref, kefir_opt_block_id_t target_block_id,
+                                          kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+    REQUIRE(debug_info != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code debug information"));
+
     kefir_bool_t is_control_flow;
     REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(code, instr_ref, &is_control_flow));
     REQUIRE(!is_control_flow,
@@ -913,11 +917,11 @@ static kefir_result_t do_hoist_with_deps(struct hoist_instrs_param *param) {
 }
 
 kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_mem *mem,
-                                                                  struct kefir_opt_code_container *code,
-                                                                  struct kefir_opt_code_debug_info *debug,
-                                                                  kefir_opt_instruction_ref_t instr_ref,
-                                                                  kefir_opt_block_id_t target_block_id,
-                                                                  kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
+                                                                   struct kefir_opt_code_container *code,
+                                                                   struct kefir_opt_code_debug_info *debug,
+                                                                   kefir_opt_instruction_ref_t instr_ref,
+                                                                   kefir_opt_block_id_t target_block_id,
+                                                                   kefir_opt_instruction_ref_t *moved_instr_ref_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
     REQUIRE(debug != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code debug information"));
@@ -926,11 +930,11 @@ kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
 
     struct hoist_instrs_param param = {.mem = mem,
-                                      .code = code,
-                                      .debug = debug,
-                                      .source_block_id = instr->block_id,
-                                      .target_block_id = target_block_id,
-                                      .moved_instr_ref = KEFIR_ID_NONE};
+                                       .code = code,
+                                       .debug = debug,
+                                       .source_block_id = instr->block_id,
+                                       .target_block_id = target_block_id,
+                                       .moved_instr_ref = KEFIR_ID_NONE};
     REQUIRE_OK(kefir_list_init(&param.move_queue));
 
     kefir_result_t res = kefir_list_insert_after(mem, &param.move_queue, kefir_list_tail(&param.move_queue),
@@ -947,9 +951,9 @@ kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_
 }
 
 kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_code_structure *structure,
-                                                    kefir_opt_instruction_ref_t instr_ref,
-                                                    kefir_opt_block_id_t target_block_id,
-                                                    kefir_bool_t *can_hoist_ptr) {
+                                                       kefir_opt_instruction_ref_t instr_ref,
+                                                       kefir_opt_block_id_t target_block_id,
+                                                       kefir_bool_t *can_hoist_ptr) {
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
     REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
@@ -1017,7 +1021,7 @@ static kefir_result_t can_hoist_instr(kefir_opt_instruction_ref_t instr_ref, voi
 
     kefir_bool_t can_hoist_isolated = false;
     REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(param->structure, instr_ref, param->target_block_id,
-                                             &can_hoist_isolated));
+                                                       &can_hoist_isolated));
     if (!can_hoist_isolated) {
         param->can_hoist = false;
         return KEFIR_OK;
@@ -1027,10 +1031,58 @@ static kefir_result_t can_hoist_instr(kefir_opt_instruction_ref_t instr_ref, voi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(
-    const struct kefir_opt_code_structure *structure, kefir_opt_instruction_ref_t instr_ref,
-    kefir_opt_block_id_t target_block_id,
-    kefir_bool_t *can_hoist_ptr) {
+struct can_hoist_single_param {
+    const struct kefir_opt_code_structure *structure;
+    kefir_opt_block_id_t target_block_id;
+    kefir_bool_t can_hoist;
+};
+
+static kefir_result_t can_hoist_single_instr(kefir_opt_instruction_ref_t instr_ref, void *payload) {
+    ASSIGN_DECL_CAST(struct can_hoist_single_param *, param, payload);
+    REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid instruction move parameter"));
+    REQUIRE(param->can_hoist, KEFIR_OK);
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
+
+    if (instr->block_id == param->target_block_id) {
+        kefir_bool_t is_control_flow;
+        REQUIRE_OK(kefir_opt_code_instruction_is_control_flow(param->structure->code, instr->id, &is_control_flow));
+        param->can_hoist = !is_control_flow;
+    } else {
+        kefir_bool_t is_dominator;
+        REQUIRE_OK(kefir_opt_code_structure_is_dominator(param->structure, param->target_block_id, instr->block_id,
+                                                         &is_dominator));
+        param->can_hoist = is_dominator;
+    }
+
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_can_hoist_instruction(const struct kefir_opt_code_structure *structure,
+                                               kefir_opt_instruction_ref_t instr_ref,
+                                               kefir_opt_block_id_t target_block_id, kefir_bool_t *can_hoist_ptr) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
+
+    *can_hoist_ptr = false;
+    struct can_hoist_single_param param = {
+        .structure = structure, .target_block_id = target_block_id, .can_hoist = true};
+    REQUIRE_OK(kefr_opt_can_hoist_isolated_instruction(structure, instr_ref, target_block_id, &param.can_hoist));
+    REQUIRE(param.can_hoist, KEFIR_OK);
+
+    const struct kefir_opt_instruction *instr;
+    REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
+
+    REQUIRE_OK(kefir_opt_instruction_extract_inputs(structure->code, instr, true, can_hoist_single_instr, &param));
+    *can_hoist_ptr = param.can_hoist;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(const struct kefir_opt_code_structure *structure,
+                                                                       kefir_opt_instruction_ref_t instr_ref,
+                                                                       kefir_opt_block_id_t target_block_id,
+                                                                       kefir_bool_t *can_hoist_ptr) {
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
     REQUIRE(can_hoist_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
@@ -1038,11 +1090,46 @@ kefir_result_t kefir_opt_can_hoist_instruction_with_local_dependencies(
     REQUIRE_OK(kefir_opt_code_container_instr(structure->code, instr_ref, &instr));
 
     struct can_hoist_param param = {.structure = structure,
-                                   .source_block_id = instr->block_id,
-                                   .target_block_id = target_block_id,
-                                   .can_hoist = true};
+                                    .source_block_id = instr->block_id,
+                                    .target_block_id = target_block_id,
+                                    .can_hoist = true};
     REQUIRE_OK(can_hoist_instr(instr_ref, &param));
     *can_hoist_ptr = param.can_hoist;
 
     return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_find_closest_common_dominator(const struct kefir_opt_code_structure *structure,
+                                                       kefir_opt_block_id_t block_id,
+                                                       kefir_opt_block_id_t other_block_id,
+                                                       kefir_opt_block_id_t *common_dominator_block_id) {
+    REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
+    REQUIRE(common_dominator_block_id != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to block id"));
+
+    if (block_id == KEFIR_ID_NONE) {
+        *common_dominator_block_id = other_block_id;
+        return KEFIR_OK;
+    }
+    if (other_block_id == KEFIR_ID_NONE) {
+        *common_dominator_block_id = block_id;
+        return KEFIR_OK;
+    }
+
+    kefir_bool_t is_dominator;
+    kefir_opt_block_id_t dominator_block_id = other_block_id;
+    do {
+        if (dominator_block_id == KEFIR_ID_NONE) {
+            break;
+        }
+        REQUIRE_OK(kefir_opt_code_structure_is_dominator(structure, block_id, dominator_block_id, &is_dominator));
+        if (is_dominator) {
+            *common_dominator_block_id = dominator_block_id;
+            return KEFIR_OK;
+        } else {
+            dominator_block_id = structure->blocks[dominator_block_id].immediate_dominator;
+        }
+    } while (!is_dominator);
+
+    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find common dominator block");
 }

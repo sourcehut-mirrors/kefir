@@ -36,32 +36,6 @@ struct trace_instruction_payload {
     ((_block_id) == (_structure)->code->entry_point || \
      (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
 
-static kefir_result_t find_common_dominator(struct kefir_opt_code_structure *structure, kefir_opt_block_id_t block_id,
-                                            kefir_opt_block_id_t *common_dominator_block_id) {
-    REQUIRE(IS_BLOCK_REACHABLE(structure, block_id), KEFIR_OK);
-    if (*common_dominator_block_id == KEFIR_ID_NONE) {
-        *common_dominator_block_id = block_id;
-        return KEFIR_OK;
-    }
-
-    kefir_bool_t is_dominator;
-    kefir_opt_block_id_t dominator_block_id = *common_dominator_block_id;
-    do {
-        if (dominator_block_id == KEFIR_ID_NONE) {
-            break;
-        }
-        REQUIRE_OK(kefir_opt_code_structure_is_dominator(structure, block_id, dominator_block_id, &is_dominator));
-        if (is_dominator) {
-            *common_dominator_block_id = dominator_block_id;
-            return KEFIR_OK;
-        } else {
-            dominator_block_id = structure->blocks[dominator_block_id].immediate_dominator;
-        }
-    } while (!is_dominator);
-
-    return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find common dominator block");
-}
-
 static kefir_result_t trace_instruction_impl(kefir_opt_instruction_ref_t instr_ref, void *payload) {
     ASSIGN_DECL_CAST(struct trace_instruction_payload *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid local allocation sink parameter"));
@@ -89,12 +63,14 @@ static kefir_result_t trace_instruction_impl(kefir_opt_instruction_ref_t instr_r
                  node = kefir_hashtree_next(&iter)) {
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, src_block_id, node->key);
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, src_instr_ref, node->value);
-                if (src_instr_ref == instr_ref) {
-                    REQUIRE_OK(find_common_dominator(param->structure, src_block_id, &closest_dominator));
+                if (src_instr_ref == instr_ref && IS_BLOCK_REACHABLE(param->structure, src_block_id)) {
+                    REQUIRE_OK(kefir_opt_find_closest_common_dominator(param->structure, src_block_id,
+                                                                       closest_dominator, &closest_dominator));
                 }
             }
-        } else {
-            REQUIRE_OK(find_common_dominator(param->structure, use_instr->block_id, &closest_dominator));
+        } else if (IS_BLOCK_REACHABLE(param->structure, use_instr->block_id)) {
+            REQUIRE_OK(kefir_opt_find_closest_common_dominator(param->structure, use_instr->block_id, closest_dominator,
+                                                               &closest_dominator));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
