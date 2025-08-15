@@ -1617,6 +1617,14 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
             mem, &func->code, block_id, arg2->operation.parameters.variable.global_ref,
             arg2->operation.parameters.variable.offset + (kefir_int64_t) arg1->operation.parameters.imm.uinteger,
             replacement_ref));
+    } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 0) ||
+               (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                arg1->operation.parameters.imm.uinteger == 0)) {
+        *replacement_ref = arg2->id;
+    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                arg2->operation.parameters.imm.uinteger == 0)) {
+        *replacement_ref = arg1->id;
     } else if (arg1->operation.opcode == instr->operation.opcode &&
                (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
                 arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
@@ -1767,14 +1775,6 @@ static kefir_result_t simplify_int_add(struct kefir_mem *mem, struct kefir_opt_f
                                            counterpart_opcode));
             }
         }
-    } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 0) ||
-               (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg1->operation.parameters.imm.uinteger == 0)) {
-        *replacement_ref = arg2->id;
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg2->operation.parameters.imm.uinteger == 0)) {
-        *replacement_ref = arg1->id;
     } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
                 arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) &&
                arg2->operation.opcode != KEFIR_OPT_OPCODE_INT_CONST &&
@@ -1877,8 +1877,12 @@ static kefir_result_t simplify_int_sub(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == counterpart_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                                                         arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.uinteger == 0)) {
+        *replacement_ref = arg1->id;
+    } else if (arg1->operation.opcode == counterpart_opcode &&
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
 
         const struct kefir_opt_instruction *add_arg1;
         const struct kefir_opt_instruction *add_arg2;
@@ -2024,10 +2028,6 @@ static kefir_result_t simplify_int_sub(struct kefir_mem *mem, struct kefir_opt_f
                                                             replacement_ref));
             }
         }
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg2->operation.parameters.imm.uinteger == 0)) {
-        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_SUB &&
                (arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS ||
                 arg1->operation.opcode == KEFIR_OPT_OPCODE_INT64_ZERO_EXTEND_8BITS ||
@@ -2167,8 +2167,22 @@ static kefir_result_t simplify_int_mul(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                                                      arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+    if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 1) ||
+        (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg1->operation.parameters.imm.uinteger == 1)) {
+        *replacement_ref = arg2->id;
+    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 1) ||
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                arg2->operation.parameters.imm.uinteger == 1)) {
+        *replacement_ref = arg1->id;
+    } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 0) ||
+               (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                arg1->operation.parameters.imm.uinteger == 0) ||
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
+                arg2->operation.parameters.imm.uinteger == 0)) {
+        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id, 0, replacement_ref));
+    } else if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                                                             arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
 
         const struct kefir_opt_instruction *mul_arg1;
         const struct kefir_opt_instruction *mul_arg2;
@@ -2235,21 +2249,6 @@ static kefir_result_t simplify_int_mul(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_mul(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
-    } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 1) ||
-               (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg1->operation.parameters.imm.uinteger == 1)) {
-        *replacement_ref = arg2->id;
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 1) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg2->operation.parameters.imm.uinteger == 1)) {
-        *replacement_ref = arg1->id;
-    } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg1->operation.parameters.imm.integer == 0) ||
-               (arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg1->operation.parameters.imm.uinteger == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
-                arg2->operation.parameters.imm.uinteger == 0)) {
-        REQUIRE_OK(kefir_opt_code_builder_int_constant(mem, &func->code, block_id, 0, replacement_ref));
     } else if ((arg1->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
                 arg1->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST) &&
                arg2->operation.opcode != KEFIR_OPT_OPCODE_INT_CONST &&
@@ -2339,6 +2338,22 @@ static kefir_result_t simplify_int_mul(struct kefir_mem *mem, struct kefir_opt_f
     }
     return KEFIR_OK;
 }
+static kefir_result_t simplify_int_div(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                       const struct kefir_opt_instruction *instr,
+                                       kefir_opt_instruction_ref_t *replacement_ref) {
+    UNUSED(mem);
+    const struct kefir_opt_instruction *arg1;
+    const struct kefir_opt_instruction *arg2;
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
+    REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
+
+    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 1) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.uinteger == 1)) {
+        *replacement_ref = arg1->id;
+    }
+
+    return KEFIR_OK;
+}
 
 static kefir_result_t builder_int_shl(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                       kefir_opt_block_id_t block_id, kefir_opt_instruction_ref_t ref1,
@@ -2378,8 +2393,11 @@ static kefir_result_t simplify_int_shl(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                                                      arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
+    } else if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                                                             arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
 
         const struct kefir_opt_instruction *shl_arg1;
         const struct kefir_opt_instruction *shl_arg2;
@@ -2406,9 +2424,6 @@ static kefir_result_t simplify_int_shl(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_shl(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
-        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_LSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
@@ -2522,8 +2537,11 @@ static kefir_result_t simplify_int_shr(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                                                      arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
+    } else if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                                                             arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
 
         const struct kefir_opt_instruction *shr_arg1;
         const struct kefir_opt_instruction *shr_arg2;
@@ -2550,9 +2568,6 @@ static kefir_result_t simplify_int_shr(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_shr(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
-        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_RSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
@@ -2666,8 +2681,11 @@ static kefir_result_t simplify_int_sar(struct kefir_mem *mem, struct kefir_opt_f
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[0], &arg1));
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.refs[1], &arg2));
 
-    if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
-                                                      arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
+    if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
+        (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
+        *replacement_ref = arg1->id;
+    } else if (arg1->operation.opcode == original_opcode && (arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST ||
+                                                             arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST)) {
 
         const struct kefir_opt_instruction *sar_arg1;
         const struct kefir_opt_instruction *sar_arg2;
@@ -2720,9 +2738,6 @@ static kefir_result_t simplify_int_sar(struct kefir_mem *mem, struct kefir_opt_f
             REQUIRE_OK(
                 builder_int_sar(mem, &func->code, block_id, operand_ref, imm_op_ref, replacement_ref, original_opcode));
         }
-    } else if ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer == 0) ||
-               (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST && arg2->operation.parameters.imm.integer == 0)) {
-        *replacement_ref = arg1->id;
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_INT8_ARSHIFT &&
                ((arg2->operation.opcode == KEFIR_OPT_OPCODE_INT_CONST && arg2->operation.parameters.imm.integer >= 8) ||
                 (arg2->operation.opcode == KEFIR_OPT_OPCODE_UINT_CONST &&
@@ -3565,6 +3580,17 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
                     case KEFIR_OPT_OPCODE_UINT32_MUL:
                     case KEFIR_OPT_OPCODE_UINT64_MUL:
                         REQUIRE_OK(simplify_int_mul(mem, func, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_INT8_DIV:
+                    case KEFIR_OPT_OPCODE_INT16_DIV:
+                    case KEFIR_OPT_OPCODE_INT32_DIV:
+                    case KEFIR_OPT_OPCODE_INT64_DIV:
+                    case KEFIR_OPT_OPCODE_UINT8_DIV:
+                    case KEFIR_OPT_OPCODE_UINT16_DIV:
+                    case KEFIR_OPT_OPCODE_UINT32_DIV:
+                    case KEFIR_OPT_OPCODE_UINT64_DIV:
+                        REQUIRE_OK(simplify_int_div(mem, func, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_INT8_LSHIFT:
