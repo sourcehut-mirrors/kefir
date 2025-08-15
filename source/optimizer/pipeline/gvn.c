@@ -179,6 +179,18 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
 
         case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
         case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_TO_BOOL:
+        case KEFIR_OPT_OPCODE_BITINT_NEGATE:
+        case KEFIR_OPT_OPCODE_BITINT_INVERT:
+        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
             hash += splitmix64(instr->operation.opcode);
             hash ^= splitmix64(instr->operation.parameters.bitwidth + MAGIC1);
             hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
@@ -390,6 +402,18 @@ static kefir_bool_t compare_instructions_impl(const struct kefir_opt_instruction
 
         case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
         case KEFIR_OPT_OPCODE_BITINT_GET_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_TO_BOOL:
+        case KEFIR_OPT_OPCODE_BITINT_NEGATE:
+        case KEFIR_OPT_OPCODE_BITINT_INVERT:
+        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
             return instr1->operation.parameters.bitwidth == instr2->operation.parameters.bitwidth &&
                    instr1->operation.parameters.refs[0] == instr2->operation.parameters.refs[0];
 
@@ -580,6 +604,18 @@ static kefir_result_t instr_replacement_policy(struct gvn_state *state, const st
         case KEFIR_OPT_OPCODE_BITINT_LSHIFT:
         case KEFIR_OPT_OPCODE_BITINT_RSHIFT:
         case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_UNSIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_FROM_SIGNED:
+        case KEFIR_OPT_OPCODE_BITINT_TO_BOOL:
+        case KEFIR_OPT_OPCODE_BITINT_NEGATE:
+        case KEFIR_OPT_OPCODE_BITINT_INVERT:
+        case KEFIR_OPT_OPCODE_BITINT_BOOL_NOT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_FFS:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CTZ:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
+        case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
             *policy = GVN_REPLACEMENT_GLOBAL;
             break;
 
