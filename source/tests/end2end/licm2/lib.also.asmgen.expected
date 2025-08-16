@@ -1,0 +1,162 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    sub $8, %rsp
+    mov %rdi, %r10
+    mov %rcx, %r11
+    or %esi, %r11d
+    xor %ebx, %ebx
+_kefir_func_test1_label1:
+    mov %rbx, %r12
+    mov %rdx, %rcx
+    shl %cl, %r12d
+    movsx %ebx, %rax
+    imul $40, %rax, %rax
+    mov %r10, %r13
+    add %rax, %r13
+    cmp %esi, %ebx
+    jge _kefir_func_test1_label2
+_kefir_func_test1_label5:
+    xor %r9d, %r9d
+    jmp _kefir_func_test1_label3
+_kefir_func_test1_label2:
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+_kefir_func_test1_label3:
+    mov %rbx, %rax
+    add $1, %eax
+    cmp %edx, %r9d
+    jl _kefir_func_test1_label4
+    mov %rax, %rbx
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label4:
+    movsx %r9d, %r8
+    imul $4, %r8, %r8
+    mov %r13, %rdi
+    add %r8, %rdi
+    mov %r11, %rcx
+    sub %r9d, %ecx
+    add %r12d, %ecx
+    movl %ecx, (%rdi)
+    mov %r9, %r8
+    add $1, %r8d
+    mov %r8, %r9
+    jmp _kefir_func_test1_label3
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    push %r14
+    push %r15
+    sub $8, %rsp
+    mov %rcx, %r12
+    mov %rdi, %r13
+    mov %r12, %r10
+    or %esi, %r10d
+    xor %r11d, %r11d
+_kefir_func_test2_label1:
+    mov %r11, %r14
+    mov %rdx, %rcx
+    shl %cl, %r14d
+    movsx %r11d, %rax
+    imul $40, %rax, %rax
+    mov %r13, %r15
+    add %rax, %r15
+    cmp %esi, %r11d
+    jl _kefir_func_test2_label8
+    xor %ebx, %ebx
+    jmp _kefir_func_test2_label2
+_kefir_func_test2_label8:
+    xor %r9d, %r9d
+    jmp _kefir_func_test2_label6
+_kefir_func_test2_label2:
+    mov %r12, %r9
+    mov %rbx, %rcx
+    shl %cl, %r9d
+    movsx %ebx, %rax
+    imul $40, %rax, %rax
+    mov %r13, %r10
+    add %rax, %r10
+    cmp %esi, %ebx
+    jge _kefir_func_test2_label3
+_kefir_func_test2_label9:
+    xor %r11d, %r11d
+    jmp _kefir_func_test2_label4
+_kefir_func_test2_label3:
+    lea -40(%rbp), %rsp
+    pop %r15
+    pop %r14
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+_kefir_func_test2_label4:
+    mov %rbx, %rcx
+    add $1, %ecx
+    cmp %edx, %r11d
+    jl _kefir_func_test2_label5
+    mov %rcx, %rbx
+    jmp _kefir_func_test2_label2
+_kefir_func_test2_label5:
+    movsx %r11d, %rax
+    imul $4, %rax, %rax
+    mov %r10, %rdi
+    add %rax, %rdi
+    movl (%rdi), %eax
+    mov %r9, %r8
+    mov %r11, %rcx
+    sar %cl, %r8d
+    xor %r8d, %eax
+    movl %eax, (%rdi)
+    mov %r11, %rcx
+    add $1, %ecx
+    mov %rcx, %r11
+    jmp _kefir_func_test2_label4
+_kefir_func_test2_label6:
+    mov %r11, %rax
+    add $1, %eax
+    cmp %edx, %r9d
+    jl _kefir_func_test2_label7
+    mov %rax, %r11
+    jmp _kefir_func_test2_label1
+_kefir_func_test2_label7:
+    movsx %r9d, %r8
+    imul $4, %r8, %r8
+    mov %r15, %rdi
+    add %r8, %rdi
+    mov %r10, %rcx
+    sub %r9d, %ecx
+    add %r14d, %ecx
+    movl %ecx, (%rdi)
+    mov %r9, %r8
+    add $1, %r8d
+    mov %r8, %r9
+    jmp _kefir_func_test2_label6
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+

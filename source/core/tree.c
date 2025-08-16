@@ -98,6 +98,43 @@ kefir_result_t kefir_tree_insert_child(struct kefir_mem *mem, struct kefir_tree_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_tree_insert_parent(struct kefir_mem *mem, struct kefir_tree_node *node, void *value,
+                                        struct kefir_tree_node **subnode) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid tree node"));
+
+    struct kefir_tree_node *child = KEFIR_MALLOC(mem, sizeof(struct kefir_tree_node));
+    REQUIRE(child != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate tree node"));
+    child->value = node->value;
+    child->parent = node;
+    child->prev_sibling = NULL;
+    child->next_sibling = NULL;
+    child->removal_callback = node->removal_callback;
+    child->removal_payload = node->removal_payload;
+    kefir_result_t res = kefir_list_init(&child->children);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, child);
+        return res;
+    });
+    res = kefir_list_on_remove(&child->children, child_node_remove, NULL);
+    REQUIRE_CHAIN(&res, kefir_list_move_all(&child->children, &node->children));
+    REQUIRE_CHAIN(&res, kefir_list_insert_after(mem, &node->children, NULL, child));
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_list_free(mem, &child->children);
+        KEFIR_FREE(mem, child);
+        return res;
+    });
+
+    node->value = value;
+    for (struct kefir_tree_node *subchild = kefir_tree_first_child(child); subchild != NULL;
+         subchild = kefir_tree_next_sibling(subchild)) {
+        subchild->parent = child;
+    }
+
+    ASSIGN_PTR(subnode, child);
+    return KEFIR_OK;
+}
+
 struct kefir_tree_node *kefir_tree_first_child(const struct kefir_tree_node *node) {
     REQUIRE(node != NULL, NULL);
     struct kefir_list_entry *head = kefir_list_head(&node->children);

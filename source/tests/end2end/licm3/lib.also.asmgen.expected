@@ -1,0 +1,63 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    push %r12
+    push %r13
+    sub $8, %rsp
+    mov %rdi, %r10
+    mov %rcx, %r11
+    or %esi, %r11d
+    xor %ebx, %ebx
+_kefir_func_test1_label1:
+    mov %rbx, %r12
+    mov %rdx, %rcx
+    shl %cl, %r12d
+    movsx %ebx, %rax
+    imul $40, %rax, %rax
+    mov %r10, %r13
+    add %rax, %r13
+    cmp %esi, %ebx
+    je _kefir_func_test1_label4
+    xor %r9d, %r9d
+_kefir_func_test1_label2:
+    mov %rbx, %rax
+    add $1, %eax
+    cmp %edx, %r9d
+    jne _kefir_func_test1_label3
+_kefir_func_test1_label5:
+    mov %rax, %rbx
+    jmp _kefir_func_test1_label1
+_kefir_func_test1_label3:
+    movsx %r9d, %r8
+    imul $4, %r8, %r8
+    mov %r13, %rdi
+    add %r8, %rdi
+    mov %r11, %rcx
+    sub %r9d, %ecx
+    add %r12d, %ecx
+    movl %ecx, (%rdi)
+    mov %r9, %r8
+    add $1, %r8d
+    mov %r8, %r9
+    jmp _kefir_func_test1_label2
+_kefir_func_test1_label4:
+    lea -24(%rbp), %rsp
+    pop %r13
+    pop %r12
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+
