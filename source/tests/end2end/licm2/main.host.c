@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <limits.h>
+#include <string.h>
 #include "./definitions.h"
 
 int main(void) {
@@ -35,6 +36,7 @@ int main(void) {
                 }
             }
 
+            memset(buf, 0, sizeof(buf));
             test2(buf, i, j, i * j);
             for (int k = 0; k < i; k++) {
                 for (int m = 0; m < j; m++) {

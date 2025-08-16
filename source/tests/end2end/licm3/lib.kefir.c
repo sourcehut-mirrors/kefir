@@ -36,3 +36,23 @@ inner:
     j++;
     goto inner;
 }
+
+void test2(int (*ptr)[10], int ilen, int jlen, int base) {
+    static void *ptrs[] = {&&outer};
+    int i, j;
+    i = 0;
+outer:
+    if (i == ilen)
+        return;
+
+    j = 0;
+inner:
+    if (j == jlen) {
+        i++;
+        goto outer;
+    }
+
+    ptr[i][j] = (base | ilen) - j + (i << jlen);
+    j++;
+    goto inner;
+}

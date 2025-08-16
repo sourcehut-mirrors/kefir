@@ -22,5 +22,6 @@
 #define DEFINITIONS_H_
 
 void test1(int (*)[10], int, int, int);
+void test2(int (*)[10], int, int, int);
 
 #endif
