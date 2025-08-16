@@ -70,6 +70,7 @@ DECLARE_PASS(TailCalls);
 DECLARE_PASS(DeadAlloc);
 DECLARE_PASS(Lowering);
 DECLARE_PASS(GlobalValueNumbering);
+DECLARE_PASS(LoopInvariantCodeMotion);
 #undef DECLARE_PASS
 #endif
 

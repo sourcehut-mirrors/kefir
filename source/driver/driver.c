@@ -45,6 +45,7 @@
     "constant-fold," \
     "op-simplify," \
     "gvn," \
+    "licm," \
     "lowering," \
     "dead-code-elimination," \
     "dead-alloc," \

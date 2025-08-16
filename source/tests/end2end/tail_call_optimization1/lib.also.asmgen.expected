@@ -245,13 +245,13 @@ __kefir_text_func_op_loop_begin_begin:
     add $8, %rdi
     add %rax, %rdi
     movzxb (%rdi), %rax
+    mov %r8, %rdi
+    add $5128, %rdi
     cmp $0, %eax
     jne _kefir_func_op_loop_begin_label6
     xor %esi, %esi
 _kefir_func_op_loop_begin_label1:
     movq (%r8), %rax
-    mov %r8, %rdi
-    add $5128, %rdi
     movl (%rdi), %ecx
     mov %rcx, %rdx
     add $1, %edx
@@ -263,19 +263,17 @@ _kefir_func_op_loop_begin_label1:
     add $1, %ecx
     movsx %al, %rdx
     cmp $91, %edx
-    jne _kefir_func_op_loop_begin_label2
-_kefir_func_op_loop_begin_label7:
-    mov %rcx, %rdx
-    jmp _kefir_func_op_loop_begin_label3
+    je _kefir_func_op_loop_begin_label3
+    jmp _kefir_func_op_loop_begin_label2
 _kefir_func_op_loop_begin_label2:
     movsx %al, %rax
     cmp $93, %eax
     je _kefir_func_op_loop_begin_label5
-    mov %rsi, %rdx
+    mov %rsi, %rcx
 _kefir_func_op_loop_begin_label3:
-    cmp $0, %edx
+    cmp $0, %ecx
     jbe _kefir_func_op_loop_begin_label4
-    mov %rdx, %rsi
+    mov %rcx, %rsi
     jmp _kefir_func_op_loop_begin_label1
 _kefir_func_op_loop_begin_label4:
     movq (%r8), %rax
@@ -297,7 +295,7 @@ _kefir_func_op_loop_begin_label4:
 _kefir_func_op_loop_begin_label5:
     mov %rsi, %rax
     add $-1, %eax
-    mov %rax, %rdx
+    mov %rax, %rcx
     jmp _kefir_func_op_loop_begin_label3
 _kefir_func_op_loop_begin_label6:
     mov %r8, %rdi

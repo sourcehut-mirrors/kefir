@@ -278,6 +278,8 @@ __kefir_text_func___kefir_bigint_right_shift_whole_digits_begin:
     xor %ecx, %ecx
     test %r8d, %r8d
     cmovz %rcx, %r11
+    mov %r10, %rax
+    sub %rsi, %rax
     cmp %r10, %rsi
     jae _kefir_func___kefir_bigint_right_shift_whole_digits_label8
     xor %r8d, %r8d
@@ -287,8 +289,6 @@ _kefir_func___kefir_bigint_right_shift_whole_digits_label8:
     jmp _kefir_func___kefir_bigint_right_shift_whole_digits_label6
 _kefir_func___kefir_bigint_right_shift_whole_digits_label1:
     mov %r8d, %ecx
-    mov %r10, %rax
-    sub %rsi, %rax
     cmp %rax, %rcx
     jb _kefir_func___kefir_bigint_right_shift_whole_digits_label5
     mov %r8, %rdx
@@ -515,22 +515,23 @@ __kefir_text_func___kefir_bigint_right_shift_begin:
     mov %rsp, %rbp
     push %rbx
     push %r12
-    sub $32, %rsp
+    push %r13
+    sub $24, %rsp
     mov %rdx, %r11
-    mov %rdi, %rbx
+    mov %rdi, %r12
     mov %r11, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r12
-    mov %r12, %rax
+    mov %rax, %r13
+    mov %r13, %rax
     sub $1, %rax
-    mov %rbx, %rdi
+    mov %r12, %rdi
     add %rax, %rdi
     movzxb (%rdi), %r8
-    mov %r12, %rax
+    mov %r13, %rax
     sub $1, %rax
     imul $8, %rax, %rcx
     mov %r11, %rdx
@@ -555,33 +556,36 @@ __kefir_text_func___kefir_bigint_right_shift_begin:
     ja _kefir_func___kefir_bigint_right_shift_label6
     mov %r8, %rsi
 _kefir_func___kefir_bigint_right_shift_label1:
+    mov %r13, %rax
+    sub $1, %rax
+    mov $8, %rbx
+    sub %rsi, %rbx
     cmp $0, %rsi
     jbe _kefir_func___kefir_bigint_right_shift_label2
 _kefir_func___kefir_bigint_right_shift_label7:
-    xor %r10d, %r10d
+    xor %r11d, %r11d
     jmp _kefir_func___kefir_bigint_right_shift_label3
 _kefir_func___kefir_bigint_right_shift_label2:
     xor %eax, %eax
-    lea -16(%rbp), %rsp
+    lea -24(%rbp), %rsp
+    pop %r13
     pop %r12
     pop %rbx
     pop %rbp
     ret
 _kefir_func___kefir_bigint_right_shift_label3:
-    mov %r12, %rax
-    sub $1, %rax
-    cmp %rax, %r10
+    cmp %rax, %r11
     jb _kefir_func___kefir_bigint_right_shift_label5
-    mov %r12, %rax
+    mov %r13, %rax
     sub $1, %rax
-    mov %rbx, %rdi
+    mov %r12, %rdi
     add %rax, %rdi
     movzxb (%rdi), %rcx
     and %r9d, %ecx
     movb %cl, (%rdi)
-    mov %r12, %rax
+    mov %r13, %rax
     sub $1, %rax
-    mov %rbx, %rdi
+    mov %r12, %rdi
     add %rax, %rdi
     movb (%rdi), %al
     mov %rsi, %rcx
@@ -589,31 +593,29 @@ _kefir_func___kefir_bigint_right_shift_label3:
     movb %al, (%rdi)
     jmp _kefir_func___kefir_bigint_right_shift_label2
 _kefir_func___kefir_bigint_right_shift_label5:
-    mov %rbx, %rdi
-    add %r10, %rdi
-    movzxb (%rdi), %rcx
-    mov %r10, %rdx
-    add $1, %rdx
-    mov %rbx, %r8
-    add %rdx, %r8
-    movzxb (%r8), %rdx
-    mov %rcx, %r8
+    mov %r12, %rdi
+    add %r11, %rdi
+    movzxb (%rdi), %rdx
+    mov %r11, %r8
+    add $1, %r8
+    mov %r12, %r10
+    add %r8, %r10
+    movzxb (%r10), %r8
     mov %rsi, %rcx
-    sar %cl, %r8d
-    mov $8, %rcx
-    sub %rsi, %rcx
-    shl %cl, %edx
-    or %edx, %r8d
-    movb %r8b, (%rdi)
-    mov %r10, %rcx
-    add $1, %rcx
-    mov %rcx, %r10
+    sar %cl, %edx
+    mov %rbx, %rcx
+    shl %cl, %r8d
+    or %r8d, %edx
+    movb %dl, (%rdi)
+    mov %r11, %rdx
+    add $1, %rdx
+    mov %rdx, %r11
     jmp _kefir_func___kefir_bigint_right_shift_label3
 _kefir_func___kefir_bigint_right_shift_label6:
     movq %r9, -48(%rbp)
     movq %r8, -40(%rbp)
     movq %r10, -32(%rbp)
-    mov %rbx, %rdi
+    mov %r12, %rdi
     mov %r10, %rsi
     xor %edx, %edx
     mov %r11, %rcx
@@ -657,6 +659,8 @@ __kefir_text_func___kefir_bigint_left_shift_begin:
 _kefir_func___kefir_bigint_left_shift_label1:
     mov %r9, %rax
     sub $1, %rax
+    mov $8, %r10
+    sub %rsi, %r10
     cmp $0, %rsi
     jbe _kefir_func___kefir_bigint_left_shift_label2
 _kefir_func___kefir_bigint_left_shift_label7:
@@ -678,20 +682,18 @@ _kefir_func___kefir_bigint_left_shift_label3:
 _kefir_func___kefir_bigint_left_shift_label5:
     mov %r11, %rdi
     add %r9, %rdi
-    movzxb (%rdi), %rcx
+    movzxb (%rdi), %rdx
     mov %r9, %rax
     sub $1, %rax
-    mov %r11, %rdx
-    add %rax, %rdx
-    movzxb (%rdx), %rdx
-    mov %rcx, %r8
+    mov %r11, %r8
+    add %rax, %r8
+    movzxb (%r8), %r8
     mov %rsi, %rcx
-    shl %cl, %r8d
-    mov $8, %rcx
-    sub %rsi, %rcx
-    sar %cl, %edx
-    or %edx, %r8d
-    movb %r8b, (%rdi)
+    shl %cl, %edx
+    mov %r10, %rcx
+    sar %cl, %r8d
+    or %r8d, %edx
+    movb %dl, (%rdi)
     mov %r9, %rax
     add $-1, %rax
     mov %rax, %r9

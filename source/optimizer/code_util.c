@@ -950,6 +950,10 @@ kefir_result_t kefir_opt_hoist_instruction_with_local_dependencies(struct kefir_
     return KEFIR_OK;
 }
 
+#define IS_BLOCK_REACHABLE(_structure, _block_id)      \
+    ((_block_id) == (_structure)->code->entry_point || \
+     (_structure)->blocks[(_block_id)].immediate_dominator != KEFIR_ID_NONE)
+
 kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_code_structure *structure,
                                                        kefir_opt_instruction_ref_t instr_ref,
                                                        kefir_opt_block_id_t target_block_id,
@@ -981,6 +985,9 @@ kefir_result_t kefr_opt_can_hoist_isolated_instruction(const struct kefir_opt_co
          res == KEFIR_OK; res = kefir_opt_code_container_instruction_use_next(&use_iter)) {
         const struct kefir_opt_instruction *use_instr;
         REQUIRE_OK(kefir_opt_code_container_instr(structure->code, use_iter.use_instr_ref, &use_instr));
+        if (!IS_BLOCK_REACHABLE(structure, use_instr->block_id)) {
+            continue;
+        }
 
         kefir_bool_t is_dominator;
         REQUIRE_OK(

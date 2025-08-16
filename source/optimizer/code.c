@@ -276,7 +276,7 @@ kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_opera
 }
 
 kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_operation_t original_comparison,
-                                                      kefir_opt_comparison_operation_t *comparison_ptr) {
+                                                         kefir_opt_comparison_operation_t *comparison_ptr) {
     kefir_opt_comparison_operation_t comparison;
     switch (original_comparison) {
         case KEFIR_OPT_COMPARISON_INT8_EQUALS:
@@ -459,7 +459,8 @@ kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_op
         case KEFIR_OPT_COMPARISON_FLOAT64_NOT_GREATER_OR_EQUAL:
         case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER:
         case KEFIR_OPT_COMPARISON_FLOAT64_NOT_LESSER_OR_EQUAL:
-            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Comparison operator reciprocal can only be computer for integral comparisons");
+            return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
+                                   "Comparison operator reciprocal can only be computer for integral comparisons");
 
         default:
             return KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Unexpected comparison operator");
@@ -2509,6 +2510,64 @@ kefir_result_t kefir_opt_code_container_instruction_use_next(struct kefir_opt_in
     kefir_result_t res = kefir_hashtreeset_next(&iter->iter);
     REQUIRE_OK(res);
     iter->use_instr_ref = (kefir_opt_instruction_ref_t) iter->iter.entry;
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_container_instruction_replace_control_flow_target(
+    struct kefir_opt_code_container *code, kefir_opt_instruction_ref_t instr_ref,
+    kefir_opt_block_id_t current_target_block_id, kefir_opt_block_id_t desired_target_block_id) {
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
+
+    struct kefir_opt_instruction *instr = NULL;
+    REQUIRE_OK(code_container_instr_mutable(code, instr_ref, &instr));
+
+    switch (instr->operation.opcode) {
+        case KEFIR_OPT_OPCODE_BRANCH:
+        case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
+            if (instr->operation.parameters.branch.alternative_block == current_target_block_id) {
+                instr->operation.parameters.branch.alternative_block = desired_target_block_id;
+            }
+            // Fallthrough
+
+        case KEFIR_OPT_OPCODE_JUMP:
+            if (instr->operation.parameters.branch.target_block == current_target_block_id) {
+                instr->operation.parameters.branch.target_block = desired_target_block_id;
+            }
+            break;
+
+        case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
+            struct kefir_opt_inline_assembly_node *inline_asm;
+            REQUIRE_OK(
+                code_container_inline_assembly_mutable(code, instr->operation.parameters.inline_asm_ref, &inline_asm));
+
+            if (inline_asm->default_jump_target == current_target_block_id) {
+                inline_asm->default_jump_target = desired_target_block_id;
+            }
+
+            struct kefir_hashtree_node_iterator iter;
+            for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&inline_asm->jump_targets, &iter); node != NULL;
+                 node = kefir_hashtree_next(&iter)) {
+                if (current_target_block_id == (kefir_opt_block_id_t) node->value) {
+                    node->value = (kefir_hashtree_value_t) desired_target_block_id;
+                }
+            }
+        } break;
+
+        case KEFIR_OPT_OPCODE_BLOCK_LABEL:
+            if (instr->operation.parameters.imm.block_ref == current_target_block_id) {
+                instr->operation.parameters.imm.block_ref = desired_target_block_id;
+            }
+            break;
+
+        case KEFIR_OPT_OPCODE_PHI:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
+                                   "Unable to safely replace control flow references in phi node");
+
+        default:
+            return KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST,
+                                   "Specified instruction does not have control flow references");
+    }
+
     return KEFIR_OK;
 }
 

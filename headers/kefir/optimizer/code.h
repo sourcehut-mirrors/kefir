@@ -118,7 +118,8 @@ typedef enum kefir_opt_comparison_operation {
 
 kefir_result_t kefir_opt_comparison_operation_inverse(kefir_opt_comparison_operation_t,
                                                       kefir_opt_comparison_operation_t *);
-kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_operation_t, kefir_opt_comparison_operation_t *);
+kefir_result_t kefir_opt_comparison_operation_reciprocal(kefir_opt_comparison_operation_t,
+                                                         kefir_opt_comparison_operation_t *);
 
 #define KEFIR_OPT_COMPARISON_IS_INTEGRAL(_comparison)                                                                \
     ((_comparison) == KEFIR_OPT_COMPARISON_INT8_EQUALS || (_comparison) == KEFIR_OPT_COMPARISON_INT16_EQUALS ||      \
@@ -583,5 +584,10 @@ kefir_result_t kefir_opt_code_container_instruction_use_instr_iter(const struct 
                                                                    kefir_opt_instruction_ref_t,
                                                                    struct kefir_opt_instruction_use_iterator *);
 kefir_result_t kefir_opt_code_container_instruction_use_next(struct kefir_opt_instruction_use_iterator *);
+
+kefir_result_t kefir_opt_code_container_instruction_replace_control_flow_target(struct kefir_opt_code_container *,
+                                                                                kefir_opt_instruction_ref_t,
+                                                                                kefir_opt_block_id_t,
+                                                                                kefir_opt_block_id_t);
 
 #endif
