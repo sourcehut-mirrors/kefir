@@ -1278,15 +1278,17 @@ static kefir_result_t amd64_yasm_string_literal(void (*print)(void *, const char
 }
 
 static kefir_result_t amd64_symbol_arg(void (*print)(void *, const char *, ...), void *printarg,
-                                       kefir_asm_amd64_xasmgen_symbol_relocation_t type, const char *symbol) {
-    const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
-                                    "mod"};
+                                       kefir_asm_amd64_xasmgen_symbol_relocation_t type, const char *symbol, kefir_bool_t do_escape) {
     kefir_bool_t printed = false;
-    for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
-        if (strcasecmp(symbol, EscapedSymbols[i]) == 0) {
-            print(printarg, "$%s", symbol);
-            printed = true;
-            break;
+    if (do_escape) {
+        const char *EscapedSymbols[] = {// TODO Expand number of escaped symbols
+                                        "mod"};
+        for (kefir_size_t i = 0; i < sizeof(EscapedSymbols) / sizeof(EscapedSymbols[0]); i++) {
+            if (strcasecmp(symbol, EscapedSymbols[i]) == 0) {
+                print(printarg, "$%s", symbol);
+                printed = true;
+                break;
+            }
         }
     }
 
@@ -1457,7 +1459,7 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol, true));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -1499,7 +1501,7 @@ static kefir_result_t amd64_format_operand_intel(void (*print)(void *, const cha
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol, true));
             if (prefix) {
                 print(printarg, "[%%rip]");
             } else {
@@ -1625,7 +1627,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_LABEL:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol, false));
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_INDIRECTION:
@@ -1660,7 +1662,7 @@ static kefir_result_t amd64_format_operand_att(void (*print)(void *, const char 
             break;
 
         case KEFIR_AMD64_XASMGEN_OPERAND_RIP_INDIRECTION:
-            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol));
+            REQUIRE_OK(amd64_symbol_arg(print, printarg, op->label.type, op->label.symbol, false));
             print(printarg, "(%%rip)");
             break;
 
