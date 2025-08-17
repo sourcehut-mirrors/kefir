@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.extern callback
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    mov $32, %rdi
+    jmp callback@PLT
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+

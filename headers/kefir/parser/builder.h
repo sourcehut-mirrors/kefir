@@ -35,6 +35,8 @@ kefir_result_t kefir_parser_ast_builder_push(struct kefir_mem *, struct kefir_pa
                                              struct kefir_ast_node_base *);
 kefir_result_t kefir_parser_ast_builder_pop(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                             struct kefir_ast_node_base **);
+kefir_result_t kefir_parser_ast_builder_peek(struct kefir_parser_ast_builder *,
+                                            struct kefir_ast_node_base **);
 kefir_result_t kefir_parser_ast_builder_scan(struct kefir_mem *, struct kefir_parser_ast_builder *,
                                              kefir_parser_rule_fn_t, void *);
 

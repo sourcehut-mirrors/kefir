@@ -86,6 +86,18 @@ kefir_result_t kefir_parser_ast_builder_pop(struct kefir_mem *mem, struct kefir_
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_parser_ast_builder_peek(struct kefir_parser_ast_builder *builder,
+                                            struct kefir_ast_node_base **node_ptr) {
+    REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST builder"));
+
+    struct kefir_list_entry *iter = kefir_list_tail(&builder->stack);
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_OUT_OF_BOUNDS, "Cannot pop empty AST node stack"));
+    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, node, iter->value);
+
+    ASSIGN_PTR(node_ptr, node);
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_parser_ast_builder_scan(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder,
                                              kefir_parser_rule_fn_t rule, void *payload) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));

@@ -25,6 +25,37 @@
 #include "kefir/core/source_error.h"
 #include "kefir/ast/downcast.h"
 
+static kefir_result_t kefir_parser_update_scope_with_declarator(struct kefir_mem *mem, struct kefir_parser *parser,
+                                                          const struct kefir_ast_declaration *declaration, struct kefir_ast_declarator *declarator) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
+    REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
+
+    kefir_bool_t is_typedef = false;
+    struct kefir_ast_declarator_specifier *specifier = NULL;
+    kefir_result_t res = KEFIR_OK;
+    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(&declaration->specifiers, &specifier);
+         !is_typedef && iter != NULL && res == KEFIR_OK;
+         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
+        if (specifier->klass == KEFIR_AST_STORAGE_CLASS_SPECIFIER &&
+            specifier->storage_class == KEFIR_AST_STORAGE_SPECIFIER_TYPEDEF) {
+            is_typedef = true;
+        }
+    }
+    REQUIRE_OK(res);
+
+    struct kefir_ast_declarator_identifier *identifier;
+    REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declarator, &identifier));
+    if (identifier != NULL && identifier->identifier) {
+        if (is_typedef) {
+            REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, parser->scope, identifier->identifier));
+        } else {
+            REQUIRE_OK(kefir_parser_scope_declare_variable(mem, parser->scope, identifier->identifier));
+        }
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t scan_specifiers(struct kefir_mem *mem, struct kefir_parser_ast_builder *builder) {
     struct kefir_ast_declarator_specifier_list list;
     REQUIRE_OK(kefir_ast_declarator_specifier_list_init(&list));
@@ -48,9 +79,19 @@ static kefir_result_t scan_init_declaration(struct kefir_mem *mem, struct kefir_
     struct kefir_ast_initializer *initializer = NULL;
     kefir_result_t res = KEFIR_OK;
 
+    struct kefir_ast_node_base *declaration_node;
+    REQUIRE_OK(kefir_parser_ast_builder_peek(builder, &declaration_node));
+    REQUIRE(declaration_node->klass->type == KEFIR_AST_DECLARATION, KEFIR_SET_ERROR(KEFIR_INVALID_CHANGE, "Expected node of AST declaration list type"));
+    ASSIGN_DECL_CAST(struct kefir_ast_declaration *, decl_list, declaration_node->self);
+
     struct kefir_source_location source_location =
         kefir_parser_token_cursor_at(builder->parser->cursor, 0)->source_location;
     REQUIRE_OK(builder->parser->ruleset.declarator(mem, builder->parser, &declarator));
+    res = kefir_parser_update_scope_with_declarator(mem, builder->parser, decl_list, declarator);
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_ast_declarator_free(mem, declarator);
+        return res;
+    });
     if (PARSER_TOKEN_IS_PUNCTUATOR(builder->parser, 0, KEFIR_PUNCTUATOR_ASSIGN)) {
         REQUIRE_CHAIN(&res, PARSER_SHIFT(builder->parser));
         REQUIRE_CHAIN(&res, builder->parser->ruleset.initializer(mem, builder->parser, &initializer));
@@ -141,31 +182,10 @@ kefir_result_t kefir_parser_update_scope_with_declaration(struct kefir_mem *mem,
     REQUIRE(parser != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid parser"));
     REQUIRE(declaration != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declaration"));
 
-    kefir_bool_t is_typedef = false;
-    struct kefir_ast_declarator_specifier *specifier = NULL;
-    kefir_result_t res = KEFIR_OK;
-    for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(&declaration->specifiers, &specifier);
-         !is_typedef && iter != NULL && res == KEFIR_OK;
-         res = kefir_ast_declarator_specifier_list_next(&iter, &specifier)) {
-        if (specifier->klass == KEFIR_AST_STORAGE_CLASS_SPECIFIER &&
-            specifier->storage_class == KEFIR_AST_STORAGE_SPECIFIER_TYPEDEF) {
-            is_typedef = true;
-        }
-    }
-    REQUIRE_OK(res);
-
     for (const struct kefir_list_entry *iter = kefir_list_head(&declaration->init_declarators); iter != NULL;
          kefir_list_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, declaration, iter->value);
-        struct kefir_ast_declarator_identifier *identifier;
-        REQUIRE_OK(kefir_ast_declarator_unpack_identifier(declaration->declarator, &identifier));
-        if (identifier != NULL && identifier->identifier) {
-            if (is_typedef) {
-                REQUIRE_OK(kefir_parser_scope_declare_typedef(mem, parser->scope, identifier->identifier));
-            } else {
-                REQUIRE_OK(kefir_parser_scope_declare_variable(mem, parser->scope, identifier->identifier));
-            }
-        }
+        ASSIGN_DECL_CAST(struct kefir_ast_init_declarator *, init_declarator, iter->value);
+        REQUIRE_OK(kefir_parser_update_scope_with_declarator(mem, parser, declaration, init_declarator->declarator));
     }
     return KEFIR_OK;
 }
@@ -181,9 +201,7 @@ kefir_result_t KEFIR_PARSER_RULE_FN_PREFIX(declaration)(struct kefir_mem *mem, s
 
     struct kefir_ast_declaration *decl_list = NULL;
     res = kefir_ast_downcast_declaration(*result, &decl_list, false);
-    if (res == KEFIR_OK) {
-        res = kefir_parser_update_scope_with_declaration(mem, parser, decl_list);
-    } else if (res == KEFIR_NO_MATCH) {
+    if (res == KEFIR_NO_MATCH) {
         if ((*result)->klass->type == KEFIR_AST_STATIC_ASSERTION) {
             res = KEFIR_OK;
         } else {
