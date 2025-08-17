@@ -1,0 +1,11 @@
+--- src/redismodule.h   2025-08-04 14:05:03.000000000 +0300
++++ src/redismodule.h   2025-08-17 21:19:27.688034934 +0300
+@@ -880,7 +880,7 @@
+ #    if defined(__GNUC__) && !(defined(__clang__) && defined(__cplusplus))
+ #        define REDISMODULE_ATTR_COMMON __attribute__((__common__))
+ #    else
+-#        define REDISMODULE_ATTR_COMMON
++#        define REDISMODULE_ATTR_COMMON __attribute__((weak))
+ #    endif
+ #endif
+ 
