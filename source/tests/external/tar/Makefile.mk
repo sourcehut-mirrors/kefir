@@ -1,0 +1,54 @@
+
+KEFIR_EXTERNAL_TEST_TAR_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/tar
+
+KEFIR_EXTERNAL_TEST_TAR_VERSION := 1.35
+KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_FILENAME := tar-$(KEFIR_EXTERNAL_TEST_TAR_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_TAR_ARCHIVE := $(KEFIR_EXTERNAL_TEST_TAR_DIR)/tar-$(KEFIR_EXTERNAL_TEST_TAR_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_TAR_DIR)/tar-$(KEFIR_EXTERNAL_TEST_TAR_VERSION)
+KEFIR_EXTERNAL_TEST_TAR_URL := https://gnuftp.uib.no/tar/$(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_SHA256 := 14d55e32063ea9526e057fbf35fcabd53378e769787eff7919c3755b02d2b57e
+
+$(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_TAR_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TAR_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TAR_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_TAR_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/.extracted
+	@echo "Configuring tar $(KEFIR_EXTERNAL_TEST_TAR_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/src/tar: $(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/Makefile
+	@echo "Building tar $(KEFIR_EXTERNAL_TEST_TAR_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/src/tar
+	@echo "Testing tar $(KEFIR_EXTERNAL_TEST_TAR_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/tar.test.done: $(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/tar/validate.sh "$(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log"
+	@touch "$@"
+	@echo "tar $(KEFIR_EXTERNAL_TEST_TAR_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/tar.test.done

@@ -1,0 +1,54 @@
+
+KEFIR_EXTERNAL_TEST_SED_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/sed
+
+KEFIR_EXTERNAL_TEST_SED_VERSION := 4.9
+KEFIR_EXTERNAL_TEST_SED_ARCHIVE_FILENAME := sed-$(KEFIR_EXTERNAL_TEST_SED_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_SED_ARCHIVE := $(KEFIR_EXTERNAL_TEST_SED_DIR)/sed-$(KEFIR_EXTERNAL_TEST_SED_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_SED_DIR)/sed-$(KEFIR_EXTERNAL_TEST_SED_VERSION)
+KEFIR_EXTERNAL_TEST_SED_URL := https://gnuftp.uib.no/sed/$(KEFIR_EXTERNAL_TEST_SED_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_SED_ARCHIVE_SHA256 := d1478a18f033a73ac16822901f6533d30b6be561bcbce46ffd7abce93602282e
+
+$(KEFIR_EXTERNAL_TEST_SED_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_SED_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SED_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_SED_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_SED_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_SED_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SED_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_SED_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/.extracted
+	@echo "Configuring sed $(KEFIR_EXTERNAL_TEST_SED_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/sed/sed: $(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/Makefile
+	@echo "Building sed $(KEFIR_EXTERNAL_TEST_SED_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_SED_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)/sed/sed
+	@echo "Testing sed $(KEFIR_EXTERNAL_TEST_SED_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_SED_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/sed.test.done: $(KEFIR_EXTERNAL_TEST_SED_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/sed/validate.sh "$(KEFIR_EXTERNAL_TEST_SED_DIR)/tests.log"
+	@touch "$@"
+	@echo "sed $(KEFIR_EXTERNAL_TEST_SED_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/sed.test.done
