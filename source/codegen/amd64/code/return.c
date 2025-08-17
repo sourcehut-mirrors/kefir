@@ -238,16 +238,43 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                                                                               KEFIR_AMD64_XASMGEN_REGISTER_RAX));
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), vreg,
-                    function->return_address_vreg, NULL));
+                    function->stack_frame.return_space_vreg, NULL));
 
                 if (return_vreg != KEFIR_ID_NONE) {
-                    const struct kefir_abi_amd64_type_layout *return_layout;
-                    const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
-                    REQUIRE_OK(kefir_abi_amd64_function_decl_returns_layout(&function->abi_function_declaration,
-                                                                            &return_layout));
-                    REQUIRE_OK(kefir_abi_amd64_type_layout_at(return_layout, 0, &layout));
+                    kefir_bool_t copy_return = true;
+                    if (result_instr_ref != KEFIR_ID_NONE) {
+                        const struct kefir_opt_instruction *alloc_instr;
+                        REQUIRE_OK(
+                            kefir_opt_code_container_instr(&function->function->code, result_instr_ref, &alloc_instr));
+                        if (alloc_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+                            const struct kefir_ir_type *alloc_ir_type = kefir_ir_module_get_named_type(
+                                function->module->ir_module, alloc_instr->operation.parameters.type.type_id);
+                            REQUIRE(alloc_ir_type != NULL,
+                                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to find IR type"));
+                            kefir_bool_t same_type;
+                            REQUIRE_OK(
+                                kefir_ir_type_same(function->function->ir_func->declaration->result, 0, alloc_ir_type,
+                                                   alloc_instr->operation.parameters.type.type_index, &same_type));
+                            if (same_type) {
+                                kefir_result_t res = kefir_codegen_local_variable_allocator_mark_return_space(
+                                    &function->variable_allocator, alloc_instr->id);
+                                if (res != KEFIR_ALREADY_EXISTS) {
+                                    REQUIRE_OK(res);
+                                    copy_return = false;
+                                }
+                            }
+                        }
+                    }
 
-                    REQUIRE_OK(kefir_codegen_amd64_copy_memory(mem, function, vreg, return_vreg, layout->size));
+                    if (copy_return) {
+                        const struct kefir_abi_amd64_type_layout *return_layout;
+                        const struct kefir_abi_amd64_typeentry_layout *layout = NULL;
+                        REQUIRE_OK(kefir_abi_amd64_function_decl_returns_layout(&function->abi_function_declaration,
+                                                                                &return_layout));
+                        REQUIRE_OK(kefir_abi_amd64_type_layout_at(return_layout, 0, &layout));
+
+                        REQUIRE_OK(kefir_codegen_amd64_copy_memory(mem, function, vreg, return_vreg, layout->size));
+                    }
                 }
                 break;
 

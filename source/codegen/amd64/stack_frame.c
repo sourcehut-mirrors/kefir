@@ -27,12 +27,15 @@
 #include "kefir/core/util.h"
 #include <string.h>
 
-kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *frame, const struct kefir_codegen_local_variable_allocator *local_variables) {
+kefir_result_t kefir_codegen_amd64_stack_frame_init(
+    struct kefir_codegen_amd64_stack_frame *frame,
+    const struct kefir_codegen_local_variable_allocator *local_variables) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to amd64 stack frame"));
 
     memset(frame, 0, sizeof(struct kefir_codegen_amd64_stack_frame));
     REQUIRE_OK(kefir_hashtreeset_init(&frame->requirements.used_registers, &kefir_hashtree_uint_ops));
     frame->local_variables = local_variables;
+    frame->return_space_vreg = KEFIR_ASMCMP_INDEX_NONE;
     frame->next_local_id = 0;
     return KEFIR_OK;
 }
@@ -97,10 +100,13 @@ kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefi
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t variable_id, kefir_int64_t *offset_ptr) {
+kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(
+    const struct kefir_codegen_amd64_stack_frame *frame, kefir_id_t variable_id,
+    kefir_codegen_local_variable_allocation_type_t *allocation_ptr, kefir_int64_t *offset_ptr) {
     REQUIRE(frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    REQUIRE_OK(kefir_codegen_local_variable_allocation_of(frame->local_variables, (kefir_opt_instruction_ref_t) variable_id, offset_ptr));
+    REQUIRE_OK(kefir_codegen_local_variable_allocation_of(
+        frame->local_variables, (kefir_opt_instruction_ref_t) variable_id, allocation_ptr, offset_ptr));
     return KEFIR_OK;
 }
 

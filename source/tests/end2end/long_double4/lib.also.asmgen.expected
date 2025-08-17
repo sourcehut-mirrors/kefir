@@ -14,29 +14,29 @@ __kefir_text_func_init_s_begin:
     fstcw -8(%rbp)
     mov %rdi, %rdx
     fldt 16(%rbp)
-    leaq -128(%rbp), %rdi
+    leaq (%rdx), %rdi
     xor %eax, %eax
     mov $112, %rcx
     rep stosb
-    movq $0, -120(%rbp)
+    movq $0, 8(%rdx)
     fld %st(0)
     fstpt -144(%rbp)
-    fstpt -128(%rbp)
+    fstpt (%rdx)
     fldt _kefir_func_init_s_label1(%rip)
     fldt -144(%rbp)
     fld %st(0)
     fstpt -144(%rbp)
     faddp
-    movq $0, -56(%rbp)
-    fstpt -64(%rbp)
+    movq $0, 72(%rdx)
+    fstpt 64(%rdx)
     fldt _kefir_func_init_s_label2(%rip)
     fldt -144(%rbp)
     fld %st(0)
     fstpt -144(%rbp)
     fsubp
-    movq $0, -40(%rbp)
-    fstpt -48(%rbp)
-    leaq -112(%rbp), %rax
+    movq $0, 88(%rdx)
+    fstpt 80(%rdx)
+    leaq 16(%rdx), %rax
     add $16, %rax
     fldt _kefir_func_init_s_label3(%rip)
     fldt -144(%rbp)
@@ -45,7 +45,7 @@ __kefir_text_func_init_s_begin:
     fdivp
     movq $0, 8(%rax)
     fstpt (%rax)
-    leaq -112(%rbp), %rax
+    leaq 16(%rdx), %rax
     add $32, %rax
     fldt _kefir_func_init_s_label4(%rip)
     fldt -144(%rbp)
@@ -58,21 +58,16 @@ __kefir_text_func_init_s_begin:
     fld %st(0)
     fstpt -144(%rbp)
     fchs
-    movq $0, -104(%rbp)
-    fstpt -112(%rbp)
+    movq $0, 24(%rdx)
+    fstpt 16(%rdx)
     fldt -144(%rbp)
     fld %st(0)
     fstpt -144(%rbp)
     fld %st(0)
     fmulp
-    movq $0, -24(%rbp)
-    fstpt -32(%rbp)
+    movq $0, 104(%rdx)
+    fstpt 96(%rdx)
     mov %rdx, %rax
-    mov %rax, %rdi
-    leaq -128(%rbp), %rsi
-    cld
-    mov $14, %rcx
-    rep movsq
     fldcw -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

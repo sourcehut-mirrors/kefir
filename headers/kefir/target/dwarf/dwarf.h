@@ -114,8 +114,10 @@ typedef enum kefir_dwarf_encoding {
 
 typedef enum kefir_dwarf_operation {
     KEFIR_DWARF(DW_OP_addr) = 0x03,
+    KEFIR_DWARF(DW_OP_deref) = 0x06,
     KEFIR_DWARF(DW_OP_const8u) = 0x0e,
     KEFIR_DWARF(DW_OP_const8s) = 0x0f,
+    KEFIR_DWARF(DW_OP_consts) = 0x11,
     KEFIR_DWARF(DW_OP_plus) = 0x22,
     KEFIR_DWARF(DW_OP_reg6) = 0x56,
     KEFIR_DWARF(DW_OP_breg6) = 0x76,

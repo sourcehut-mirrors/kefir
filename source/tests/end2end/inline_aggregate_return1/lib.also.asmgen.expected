@@ -50,27 +50,19 @@ __kefir_text_func_gets1_begin:
     movdqu -144(%rbp), %xmm0
     movdqu %xmm0, -208(%rbp)
     movdqu -256(%rbp), %xmm0
-    movdqu %xmm0, -320(%rbp)
+    movdqu %xmm0, (%r8)
     movdqu -240(%rbp), %xmm0
-    movdqu %xmm0, -304(%rbp)
+    movdqu %xmm0, 16(%r8)
     movdqu -224(%rbp), %xmm0
-    movdqu %xmm0, -288(%rbp)
+    movdqu %xmm0, 32(%r8)
     movdqu -208(%rbp), %xmm0
-    movdqu %xmm0, -272(%rbp)
+    movdqu %xmm0, 48(%r8)
     movsx %edx, %rax
     imul $4, %rax, %rax
-    leaq -320(%rbp), %rcx
+    leaq (%r8), %rcx
     add %rax, %rcx
     movl %edx, (%rcx)
     mov %r8, %rax
-    movdqu -320(%rbp), %xmm0
-    movdqu %xmm0, (%rax)
-    movdqu -304(%rbp), %xmm0
-    movdqu %xmm0, 16(%rax)
-    movdqu -288(%rbp), %xmm0
-    movdqu %xmm0, 32(%rax)
-    movdqu -272(%rbp), %xmm0
-    movdqu %xmm0, 48(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret

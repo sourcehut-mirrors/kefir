@@ -13,46 +13,46 @@ __kefir_text_func_get_begin:
     sub $848, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rdx
-    leaq -848(%rbp), %rdi
+    leaq (%rdx), %rdi
     xor %eax, %eax
     mov $568, %rcx
     rep stosb
-    movw $10, -848(%rbp)
-    movl $11, -840(%rbp)
-    leaq -840(%rbp), %rax
+    movw $10, (%rdx)
+    movl $11, 8(%rdx)
+    leaq 8(%rdx), %rax
     add $8, %rax
     movq $12, (%rax)
-    leaq -840(%rbp), %rax
+    leaq 8(%rdx), %rax
     add $16, %rax
     mov $13, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
     mov $14, %rax
     cvtsi2sd %rax, %xmm0
-    movq %xmm0, -816(%rbp)
-    movl $15, -808(%rbp)
-    leaq -808(%rbp), %rax
+    movq %xmm0, 32(%rdx)
+    movl $15, 40(%rdx)
+    leaq 40(%rdx), %rax
     add $8, %rax
     movq $16, (%rax)
-    leaq -808(%rbp), %rax
+    leaq 40(%rdx), %rax
     add $16, %rax
     mov $17, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    movl $18, -736(%rbp)
-    leaq -736(%rbp), %rax
+    movl $18, 112(%rdx)
+    leaq 112(%rdx), %rax
     add $8, %rax
     movq $19, (%rax)
-    leaq -736(%rbp), %rax
+    leaq 112(%rdx), %rax
     add $16, %rax
     mov $20, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    movl $21, -712(%rbp)
-    leaq -712(%rbp), %rax
+    movl $21, 136(%rdx)
+    leaq 136(%rdx), %rax
     add $8, %rax
     movq $22, (%rax)
-    leaq -712(%rbp), %rax
+    leaq 136(%rdx), %rax
     add $16, %rax
     mov $23, %rcx
     cvtsi2ss %rcx, %xmm0
@@ -67,42 +67,37 @@ __kefir_text_func_get_begin:
     cld
     mov $17, %rcx
     rep movsq
-    leaq -688(%rbp), %rdi
+    leaq 160(%rdx), %rdi
     leaq -280(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    leaq -552(%rbp), %rdi
+    leaq 296(%rdx), %rdi
     leaq -144(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    movw $24, -416(%rbp)
-    leaq -416(%rbp), %rax
+    movw $24, 432(%rdx)
+    leaq 432(%rdx), %rax
     add $8, %rax
     movl $25, (%rax)
-    movq $26, -400(%rbp)
+    movq $26, 448(%rdx)
     mov $27, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, -392(%rbp)
-    leaq -416(%rbp), %rax
+    movd %xmm0, 456(%rdx)
+    leaq 432(%rdx), %rax
     add $32, %rax
     mov $28, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, (%rax)
-    leaq -416(%rbp), %rax
+    leaq 432(%rdx), %rax
     add $112, %rax
     movl $29, (%rax)
-    movq $30, -296(%rbp)
+    movq $30, 552(%rdx)
     mov $31, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, -288(%rbp)
+    movd %xmm0, 560(%rdx)
     mov %rdx, %rax
-    mov %rax, %rdi
-    leaq -848(%rbp), %rsi
-    cld
-    mov $71, %rcx
-    rep movsq
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

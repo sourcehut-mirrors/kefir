@@ -13,22 +13,22 @@ __kefir_text_func_get_begin:
     sub $128, %rsp
     fstcw -8(%rbp)
     stmxcsr -16(%rbp)
-    mov %rdi, %r10
-    mov %rsi, %r9
-    leaq -128(%rbp), %rdi
+    mov %rdi, %r9
+    mov %rsi, %r10
+    leaq (%r9), %rdi
     xor %eax, %eax
     mov $112, %rcx
     rep stosb
-    movl %r9d, -128(%rbp)
-    leaq -124(%rbp), %rax
+    movl %r10d, (%r9)
+    leaq 4(%r9), %rax
     add $2, %rax
     movzxb (%rax), %rax
-    movzxw -124(%rbp), %rcx
-    leaq -124(%rbp), %rdx
+    movzxw 4(%r9), %rcx
+    leaq 4(%r9), %rdx
     add $2, %rdx
     shl $16, %rax
     or %rcx, %rax
-    mov %r9, %rsi
+    mov %r10, %rsi
     add $1, %esi
     movsx %esi, %rcx
     movabs $18446744073701163008, %r8
@@ -39,34 +39,29 @@ __kefir_text_func_get_begin:
     mov %rcx, %rax
     shr $16, %rax
     movb %al, (%rdx)
-    movw %cx, -124(%rbp)
-    mov %r9, %rsi
+    movw %cx, 4(%r9)
+    mov %r10, %rsi
     add $2, %esi
     movsx %esi, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, -120(%rbp)
-    mov %r9, %rsi
+    movd %xmm0, 8(%r9)
+    mov %r10, %rsi
     add $3, %esi
     movsx %esi, %rax
     push %rax
     fildq (%rsp)
     add $8, %rsp
-    movq $0, -104(%rbp)
-    fstpt -112(%rbp)
-    mov %r9, %rsi
+    movq $0, 24(%r9)
+    fstpt 16(%r9)
+    mov %r10, %rsi
     add $4, %esi
-    movb %sil, -32(%rbp)
-    mov %r9, %rsi
+    movb %sil, 96(%r9)
+    mov %r10, %rsi
     add $5, %esi
     movsx %esi, %rax
     cvtsi2sd %rax, %xmm0
-    movq %xmm0, -24(%rbp)
-    mov %r10, %rax
-    mov %rax, %rdi
-    leaq -128(%rbp), %rsi
-    cld
-    mov $14, %rcx
-    rep movsq
+    movq %xmm0, 104(%r9)
+    mov %r9, %rax
     ldmxcsr -16(%rbp)
     fldcw -8(%rbp)
     lea (%rbp), %rsp

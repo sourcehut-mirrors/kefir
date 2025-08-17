@@ -65,7 +65,8 @@ static kefir_result_t mark_alive_virtual_reg(struct kefir_mem *mem, struct devir
         REQUIRE_OK(
             mark_alive_virtual_reg(mem, state, asmcmp_vreg->parameters.pair.virtual_registers[1], linear_position));
     }
-    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state), &lifetime_begin, &lifetime_end));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+                                                         &lifetime_begin, &lifetime_end));
     if (linear_position >= lifetime_begin && linear_position <= lifetime_end) {
         REQUIRE_OK(kefir_hashtreeset_add(mem, &state->alive.virtual_regs, (kefir_hashtreeset_entry_t) vreg_idx));
     }
@@ -99,7 +100,8 @@ static kefir_result_t update_live_virtual_reg(struct kefir_mem *mem, struct devi
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg_idx, &reg_alloc));
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_exists_in_block(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                              &exists_in_block));
-    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state), &lifetime_begin, &lifetime_end));
+    REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+                                                         &lifetime_begin, &lifetime_end));
     if (exists_in_block && lifetime_begin != KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED &&
         lifetime_begin <= linear_position && lifetime_end >= linear_position) {
         switch (reg_alloc->type) {
@@ -159,10 +161,27 @@ static kefir_result_t update_live_virtual_regs(struct kefir_mem *mem, struct dev
                     REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position, value->indirect.base.vreg));
                     break;
 
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
+                    kefir_codegen_local_variable_allocation_type_t allocation_type;
+                    kefir_int64_t offset;
+                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
+                        state->stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
+
+                    switch (allocation_type) {
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
+                            REQUIRE_OK(update_live_virtual_reg(mem, state, linear_position,
+                                                               state->stack_frame->return_space_vreg));
+                            break;
+
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
+                            // Intentionally left blank
+                            break;
+                    }
+                } break;
+
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
                     break;
@@ -483,19 +502,19 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                     REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg, TEMPORARY_REGISTER_GP));
                     const kefir_int64_t offset = vreg->parameters.local_variable.offset;
                     if (offset >= KEFIR_INT16_MIN && offset <= KEFIR_INT16_MAX) {
+                        struct kefir_asmcmp_value arg = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(
+                            vreg->parameters.local_variable.identifier, offset, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                        REQUIRE_OK(devirtualize_value(mem, state, position, &arg));
                         REQUIRE_OK(kefir_asmcmp_amd64_lea(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                            &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, offset,
-                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            &new_position));
+                            &KEFIR_ASMCMP_MAKE_PHREG(phreg), &arg, &new_position));
                     } else if (offset >= KEFIR_INT32_MIN && offset <= KEFIR_INT32_MAX) {
+                        struct kefir_asmcmp_value arg = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(
+                            vreg->parameters.local_variable.identifier, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                        REQUIRE_OK(devirtualize_value(mem, state, position, &arg));
                         REQUIRE_OK(kefir_asmcmp_amd64_lea(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                            &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, 0,
-                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            &new_position));
+                            &KEFIR_ASMCMP_MAKE_PHREG(phreg), &arg, &new_position));
                         REQUIRE_OK(kefir_asmcmp_amd64_add(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
                             &KEFIR_ASMCMP_MAKE_PHREG(phreg), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
@@ -503,12 +522,12 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                         kefir_asm_amd64_xasmgen_register_t phreg2;
                         REQUIRE_OK(obtain_temporary_register(mem, state, position, &phreg2, TEMPORARY_REGISTER_GP));
 
+                        struct kefir_asmcmp_value arg = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(
+                            vreg->parameters.local_variable.identifier, 0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                        REQUIRE_OK(devirtualize_value(mem, state, position, &arg));
                         REQUIRE_OK(kefir_asmcmp_amd64_lea(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                            &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, 0,
-                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                            &new_position));
+                            &KEFIR_ASMCMP_MAKE_PHREG(phreg), &arg, &new_position));
                         REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, position),
                             &KEFIR_ASMCMP_MAKE_PHREG(phreg2), &KEFIR_ASMCMP_MAKE_INT(offset), NULL));
@@ -568,10 +587,29 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                 case KEFIR_ASMCMP_INDIRECT_PHYSICAL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_INTERNAL_LABEL_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_EXTERNAL_LABEL_BASIS:
-                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS:
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
                     // Intentionally left blank
                     break;
+
+                case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
+                    kefir_codegen_local_variable_allocation_type_t allocation_type;
+                    kefir_int64_t offset;
+                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
+                        state->stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
+
+                    switch (allocation_type) {
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
+                            *value = KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(state->stack_frame->return_space_vreg,
+                                                                        offset + value->indirect.offset,
+                                                                        value->indirect.variant);
+                            REQUIRE_OK(devirtualize_value(mem, state, position, value));
+                            break;
+
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
+                            // Intentionally left blank
+                            break;
+                    }
+                } break;
 
                 case KEFIR_ASMCMP_INDIRECT_VIRTUAL_BASIS:
                     REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, value->indirect.base.vreg,
@@ -632,16 +670,18 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                             if (offset >= KEFIR_INT16_MIN && offset <= KEFIR_INT16_MAX) {
                                 *value = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(
                                     vreg->parameters.local_variable.identifier, offset, value->indirect.variant);
+                                REQUIRE_OK(devirtualize_value(mem, state, position, value));
                             } else if (offset >= KEFIR_INT32_MIN && offset <= KEFIR_INT32_MAX) {
                                 REQUIRE_OK(
                                     obtain_temporary_register(mem, state, position, &phreg, TEMPORARY_REGISTER_GP));
+                                struct kefir_asmcmp_value arg =
+                                    KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, 0,
+                                                                          KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                                REQUIRE_OK(devirtualize_value(mem, state, position, &arg));
                                 REQUIRE_OK(kefir_asmcmp_amd64_lea(
                                     mem, state->target,
                                     kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                    &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier,
-                                                                           0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                    &new_position));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg), &arg, &new_position));
                                 REQUIRE_OK(kefir_asmcmp_amd64_add(
                                     mem, state->target,
                                     kefir_asmcmp_context_instr_prev(&state->target->context, position),
@@ -656,13 +696,14 @@ static kefir_result_t devirtualize_value(struct kefir_mem *mem, struct devirtual
                                 REQUIRE_OK(
                                     obtain_temporary_register(mem, state, position, &phreg2, TEMPORARY_REGISTER_GP));
 
+                                struct kefir_asmcmp_value arg =
+                                    KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, 0,
+                                                                          KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                                REQUIRE_OK(devirtualize_value(mem, state, position, &arg));
                                 REQUIRE_OK(kefir_asmcmp_amd64_lea(
                                     mem, state->target,
                                     kefir_asmcmp_context_instr_prev(&state->target->context, position),
-                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg),
-                                    &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier,
-                                                                           0, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT),
-                                    &new_position));
+                                    &KEFIR_ASMCMP_MAKE_PHREG(phreg), &arg, &new_position));
                                 REQUIRE_OK(kefir_asmcmp_amd64_movabs(
                                     mem, state->target,
                                     kefir_asmcmp_context_instr_prev(&state->target->context, position),
@@ -1065,8 +1106,8 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
         kefir_size_t liveness_begin, liveness_end;
         REQUIRE_OK(kefir_codegen_amd64_xregalloc_exists_in_block(state->xregalloc, vreg_idx,
                                                                  CURRENT_VIRTUAL_BLOCK(state), &exists_in_block));
-        REQUIRE_OK(
-            kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state), &liveness_begin, &liveness_end));
+        REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
+                                                             &liveness_begin, &liveness_end));
         if (((liveness_instr_idx != KEFIR_ASMCMP_INDEX_NONE &&
               !(exists_in_block && liveness_begin != KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED &&
                 liveness_begin <= liveness_idx && liveness_end > liveness_idx))) ||
@@ -1197,9 +1238,7 @@ static kefir_result_t copy_spill_area(struct kefir_mem *mem, struct devirtualize
     kefir_asm_amd64_xasmgen_register_t tmp_reg;
     REQUIRE_OK(obtain_temporary_register(mem, state, instr_idx, &tmp_reg, TEMPORARY_REGISTER_GP));
     for (kefir_size_t i = 0; i < length; i++) {
-        const kefir_size_t index = forward_direction
-            ? i
-            : length - i - 1;
+        const kefir_size_t index = forward_direction ? i : length - i - 1;
         kefir_size_t new_position;
         REQUIRE_OK(kefir_asmcmp_amd64_mov(
             mem, state->target, kefir_asmcmp_context_instr_prev(&state->target->context, instr_idx),
@@ -1289,11 +1328,12 @@ static kefir_result_t link_virtual_registers(struct kefir_mem *mem, struct devir
                         kefir_asmcmp_virtual_register_get(&state->target->context, instr->args[1].vreg.index, &vreg));
                     const kefir_int64_t offset = vreg->parameters.local_variable.offset;
                     if (offset >= KEFIR_INT16_MIN && offset <= KEFIR_INT16_MAX) {
-                        REQUIRE_OK(kefir_asmcmp_amd64_lea(
-                            mem, state->target, *tail_idx, &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg),
-                            &KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(vreg->parameters.local_variable.identifier, offset,
-                                                                   KEFIR_ASMCMP_OPERAND_VARIANT_64BIT),
-                            tail_idx));
+                        struct kefir_asmcmp_value arg = KEFIR_ASMCMP_MAKE_INDIRECT_LOCAL_AREA(
+                            vreg->parameters.local_variable.identifier, offset, KEFIR_ASMCMP_OPERAND_VARIANT_64BIT);
+                        REQUIRE_OK(devirtualize_value(mem, state, instr_idx, &arg));
+                        REQUIRE_OK(kefir_asmcmp_amd64_lea(mem, state->target, *tail_idx,
+                                                          &KEFIR_ASMCMP_MAKE_PHREG(reg_alloc1->direct_reg), &arg,
+                                                          tail_idx));
                         do_link = false;
                     }
                 } break;

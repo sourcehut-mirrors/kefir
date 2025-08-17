@@ -13,6 +13,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_init(struct kefir_codegen_
     allocator->total_size = 0;
     allocator->total_alignment = 0;
     allocator->all_global = false;
+    allocator->return_space_variable_ref = KEFIR_ID_NONE;
     return KEFIR_OK;
 }
 
@@ -169,6 +170,18 @@ kefir_result_t kefir_codegen_local_variable_allocator_mark_all_global(
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_codegen_local_variable_allocator_mark_return_space(
+    struct kefir_codegen_local_variable_allocator *allocator, kefir_opt_instruction_ref_t instr_ref) {
+    REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
+    REQUIRE(instr_ref != KEFIR_ID_NONE,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction reference"));
+
+    REQUIRE(allocator->return_space_variable_ref == KEFIR_ID_NONE || allocator->return_space_variable_ref == instr_ref,
+            KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Local variable representing return space already exists"));
+    allocator->return_space_variable_ref = instr_ref;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_codegen_local_variable_allocator_run(
     struct kefir_mem *mem, struct kefir_codegen_local_variable_allocator *allocator,
     const struct kefir_opt_code_container *code, const struct kefir_codegen_local_variable_allocator_hooks *hooks,
@@ -197,18 +210,26 @@ kefir_result_t kefir_codegen_local_variable_allocator_run(
 
 kefir_result_t kefir_codegen_local_variable_allocation_of(
     const struct kefir_codegen_local_variable_allocator *allocator, kefir_opt_instruction_ref_t instr_ref,
-    kefir_int64_t *offset) {
+    kefir_codegen_local_variable_allocation_type_t *allocation_type, kefir_int64_t *offset) {
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
+    REQUIRE(offset != NULL,
+            KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable allocation type"));
     REQUIRE(offset != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to local variable offset"));
 
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&allocator->variable_locations, (kefir_hashtree_key_t) instr_ref, &node);
-    if (res == KEFIR_NOT_FOUND) {
-        res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested local variable allocation");
-    }
-    REQUIRE_OK(res);
+    if (instr_ref == allocator->return_space_variable_ref) {
+        *allocation_type = KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE;
+        *offset = 0;
+    } else {
+        struct kefir_hashtree_node *node;
+        kefir_result_t res = kefir_hashtree_at(&allocator->variable_locations, (kefir_hashtree_key_t) instr_ref, &node);
+        if (res == KEFIR_NOT_FOUND) {
+            res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find requested local variable allocation");
+        }
+        REQUIRE_OK(res);
 
-    *offset = (kefir_int64_t) GET_OFFSET(node->value);
+        *allocation_type = KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION;
+        *offset = (kefir_int64_t) GET_OFFSET(node->value);
+    }
     return KEFIR_OK;
 }

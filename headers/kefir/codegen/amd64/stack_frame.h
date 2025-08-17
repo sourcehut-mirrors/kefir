@@ -57,11 +57,16 @@ typedef struct kefir_codegen_amd64_stack_frame {
     } requirements;
 
     const struct kefir_codegen_local_variable_allocator *local_variables;
+    struct {
+        kefir_asmcmp_virtual_register_index_t return_space_vreg;
+        kefir_asm_amd64_xasmgen_register_t return_space_phreg;
+    };
 
     kefir_id_t next_local_id;
 } kefir_codegen_amd64_stack_frame_t;
 
-kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *, const struct kefir_codegen_local_variable_allocator *);
+kefir_result_t kefir_codegen_amd64_stack_frame_init(struct kefir_codegen_amd64_stack_frame *,
+                                                    const struct kefir_codegen_local_variable_allocator *);
 kefir_result_t kefir_codegen_amd64_stack_frame_free(struct kefir_mem *, struct kefir_codegen_amd64_stack_frame *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_ensure_spill_area(struct kefir_codegen_amd64_stack_frame *,
@@ -74,7 +79,10 @@ kefir_result_t kefir_codegen_amd64_stack_frame_preserve_x87_control_word(struct 
 kefir_result_t kefir_codegen_amd64_stack_frame_preserve_mxcsr(struct kefir_codegen_amd64_stack_frame *);
 kefir_result_t kefir_codegen_amd64_stack_frame_require_frame_pointer(struct kefir_codegen_amd64_stack_frame *);
 
-kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *, kefir_id_t, kefir_int64_t *);
+kefir_result_t kefir_codegen_amd64_stack_frame_local_variable_offset(const struct kefir_codegen_amd64_stack_frame *,
+                                                                     kefir_id_t,
+                                                                     kefir_codegen_local_variable_allocation_type_t *,
+                                                                     kefir_int64_t *);
 
 kefir_result_t kefir_codegen_amd64_stack_frame_calculate(kefir_abi_amd64_variant_t,
                                                          struct kefir_codegen_amd64_stack_frame *);

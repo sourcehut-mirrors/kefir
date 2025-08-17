@@ -26,7 +26,7 @@ __kefir_text_func_get1_begin:
     mov %rdi, %r8
 _kefir_func_get1_label0:
     movl %esi, -80(%rbp)
-    leaq -72(%rbp), %rdi
+    leaq (%r8), %rdi
     mov $0, %rax
     mov $72, %rcx
     rep stosb
@@ -34,9 +34,9 @@ _kefir_func_get1_label0:
     movsx %eax, %rax
     shl $58, %rax
     sar $58, %rax
-    movb %al, -72(%rbp)
+    movb %al, (%r8)
     movl -80(%rbp), %eax
-    leaq -72(%rbp), %rdi
+    leaq (%r8), %rdi
     add $8, %rdi
     add $1, %eax
     movsx %eax, %rax
@@ -44,7 +44,7 @@ _kefir_func_get1_label0:
     sar $14, %rax
     movq %rax, (%rdi)
     movl -80(%rbp), %eax
-    leaq -72(%rbp), %rdi
+    leaq (%r8), %rdi
     add $16, %rdi
     add $2, %eax
     movsx %eax, %rax
@@ -52,7 +52,7 @@ _kefir_func_get1_label0:
     sar $50, %rax
     movw %ax, (%rdi)
     movl -80(%rbp), %eax
-    leaq -72(%rbp), %rcx
+    leaq (%r8), %rcx
     add $24, %rcx
     add $3, %eax
     movsx %eax, %rdx
@@ -71,7 +71,7 @@ _kefir_func_get1_label0:
     movq -112(%rbp), %rax
     movq %rax, 16(%rcx)
     movl -80(%rbp), %eax
-    leaq -72(%rbp), %rdi
+    leaq (%r8), %rdi
     add $48, %rdi
     add $4, %eax
     movsx %eax, %rax
@@ -79,7 +79,7 @@ _kefir_func_get1_label0:
     sar $35, %rax
     movl %eax, (%rdi)
     movl -80(%rbp), %eax
-    leaq -72(%rbp), %rcx
+    leaq (%r8), %rcx
     add $56, %rcx
     add $5, %eax
     movsx %eax, %rdx
@@ -94,11 +94,6 @@ _kefir_func_get1_label0:
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, (%rcx)
     mov %r8, %rax
-    mov %rax, %rdi
-    leaq -72(%rbp), %rsi
-    cld
-    mov $9, %rcx
-    rep movsq
     lea (%rbp), %rsp
     pop %rbp
     ret

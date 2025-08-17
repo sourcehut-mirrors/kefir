@@ -30,23 +30,17 @@ __kefir_text_func_test2_begin:
     mov %rsp, %rbp
     sub $32, %rsp
     mov %rdi, %rdx
-    leaq -24(%rbp), %rdi
+    leaq (%rdx), %rdi
     xor %eax, %eax
     mov $24, %rcx
     rep stosb
-    movl $-100, -24(%rbp)
-    movl $3, -20(%rbp)
-    movl $5, -16(%rbp)
-    movl $0, -12(%rbp)
-    movl $6, -8(%rbp)
-    movl $-5, -4(%rbp)
+    movl $-100, (%rdx)
+    movl $3, 4(%rdx)
+    movl $5, 8(%rdx)
+    movl $0, 12(%rdx)
+    movl $6, 16(%rdx)
+    movl $-5, 20(%rdx)
     mov %rdx, %rax
-    movq -24(%rbp), %rcx
-    movq %rcx, (%rax)
-    movq -16(%rbp), %rcx
-    movq %rcx, 8(%rax)
-    movq -8(%rbp), %rcx
-    movq %rcx, 16(%rax)
     lea (%rbp), %rsp
     pop %rbp
     ret

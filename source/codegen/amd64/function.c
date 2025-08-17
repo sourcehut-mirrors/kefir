@@ -353,9 +353,9 @@ static kefir_result_t translate_code(struct kefir_mem *mem, struct kefir_codegen
         REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &func->code,
                                                              kefir_asmcmp_context_instr_tail(&func->code.context),
                                                              implicit_param_vreg, implicit_param_placement_vreg, NULL));
-        func->return_address_vreg = implicit_param_vreg;
-        REQUIRE_OK(
-            kefir_hashtreeset_add(mem, &func->preserve_vregs, (kefir_hashtreeset_entry_t) func->return_address_vreg));
+        func->stack_frame.return_space_vreg = implicit_param_vreg;
+        REQUIRE_OK(kefir_hashtreeset_add(mem, &func->preserve_vregs,
+                                         (kefir_hashtreeset_entry_t) func->stack_frame.return_space_vreg));
     }
 
     // Translate blocks
@@ -860,7 +860,6 @@ kefir_result_t kefir_codegen_amd64_function_init(struct kefir_mem *mem, struct k
                                                    .function = function,
                                                    .argument_touch_instr = KEFIR_ASMCMP_INDEX_NONE,
                                                    .prologue_tail = KEFIR_ASMCMP_INDEX_NONE,
-                                                   .return_address_vreg = KEFIR_ASMCMP_INDEX_NONE,
                                                    .dynamic_scope_vreg = KEFIR_ASMCMP_INDEX_NONE,
                                                    .vararg_area = KEFIR_ASMCMP_INDEX_NONE};
 

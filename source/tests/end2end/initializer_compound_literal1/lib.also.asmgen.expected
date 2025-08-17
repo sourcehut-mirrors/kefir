@@ -12,78 +12,78 @@ __kefir_text_func_get_begin:
     mov %rsp, %rbp
     sub $848, %rsp
     stmxcsr -8(%rbp)
-    mov %rdi, %r8
-    mov %rsi, %rdx
-    leaq -848(%rbp), %rdi
+    mov %rdi, %rdx
+    mov %rsi, %r8
+    leaq (%rdx), %rdi
     xor %eax, %eax
     mov $568, %rcx
     rep stosb
-    movw %dx, -848(%rbp)
-    mov %rdx, %rsi
+    movw %r8w, (%rdx)
+    mov %r8, %rsi
     add $1, %esi
-    movl %esi, -840(%rbp)
-    leaq -840(%rbp), %rax
+    movl %esi, 8(%rdx)
+    leaq 8(%rdx), %rax
     add $8, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $2, %esi
     movsx %esi, %rcx
     movq %rcx, (%rax)
-    leaq -840(%rbp), %rax
+    leaq 8(%rdx), %rax
     add $16, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $3, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $4, %esi
     movsx %esi, %rax
     cvtsi2sd %rax, %xmm0
-    movq %xmm0, -816(%rbp)
-    mov %rdx, %rsi
+    movq %xmm0, 32(%rdx)
+    mov %r8, %rsi
     add $5, %esi
-    movl %esi, -808(%rbp)
-    leaq -808(%rbp), %rax
+    movl %esi, 40(%rdx)
+    leaq 40(%rdx), %rax
     add $8, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $6, %esi
     movsx %esi, %rcx
     movq %rcx, (%rax)
-    leaq -808(%rbp), %rax
+    leaq 40(%rdx), %rax
     add $16, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $7, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $8, %esi
-    movl %esi, -736(%rbp)
-    leaq -736(%rbp), %rax
+    movl %esi, 112(%rdx)
+    leaq 112(%rdx), %rax
     add $8, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $9, %esi
     movsx %esi, %rcx
     movq %rcx, (%rax)
-    leaq -736(%rbp), %rax
+    leaq 112(%rdx), %rax
     add $16, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $10, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
     movd %xmm0, (%rax)
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $11, %esi
-    movl %esi, -712(%rbp)
-    leaq -712(%rbp), %rax
+    movl %esi, 136(%rdx)
+    leaq 136(%rdx), %rax
     add $8, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $12, %esi
     movsx %esi, %rcx
     movq %rcx, (%rax)
-    leaq -712(%rbp), %rax
+    leaq 136(%rdx), %rax
     add $16, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $13, %esi
     movsx %esi, %rcx
     cvtsi2ss %rcx, %xmm0
@@ -98,60 +98,55 @@ __kefir_text_func_get_begin:
     cld
     mov $17, %rcx
     rep movsq
-    leaq -688(%rbp), %rdi
+    leaq 160(%rdx), %rdi
     leaq -280(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    leaq -552(%rbp), %rdi
+    leaq 296(%rdx), %rdi
     leaq -144(%rbp), %rsi
     cld
     mov $17, %rcx
     rep movsq
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $14, %esi
-    movw %si, -416(%rbp)
-    leaq -416(%rbp), %rax
+    movw %si, 432(%rdx)
+    leaq 432(%rdx), %rax
     add $8, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $15, %esi
     movl %esi, (%rax)
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $16, %esi
     movsx %esi, %rax
-    movq %rax, -400(%rbp)
-    mov %rdx, %rsi
+    movq %rax, 448(%rdx)
+    mov %r8, %rsi
     add $17, %esi
     movsx %esi, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, -392(%rbp)
-    leaq -416(%rbp), %rax
+    movd %xmm0, 456(%rdx)
+    leaq 432(%rdx), %rax
     add $32, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $18, %esi
     movsx %esi, %rcx
     cvtsi2sd %rcx, %xmm0
     movq %xmm0, (%rax)
-    leaq -416(%rbp), %rax
+    leaq 432(%rdx), %rax
     add $112, %rax
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $19, %esi
     movl %esi, (%rax)
-    mov %rdx, %rsi
+    mov %r8, %rsi
     add $20, %esi
     movsx %esi, %rax
-    movq %rax, -296(%rbp)
-    mov %rdx, %rsi
+    movq %rax, 552(%rdx)
+    mov %r8, %rsi
     add $21, %esi
     movsx %esi, %rax
     cvtsi2ss %rax, %xmm0
-    movd %xmm0, -288(%rbp)
-    mov %r8, %rax
-    mov %rax, %rdi
-    leaq -848(%rbp), %rsi
-    cld
-    mov $71, %rcx
-    rep movsq
+    movd %xmm0, 560(%rdx)
+    mov %rdx, %rax
     ldmxcsr -8(%rbp)
     lea (%rbp), %rsp
     pop %rbp

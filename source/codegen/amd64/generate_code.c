@@ -140,12 +140,21 @@ static kefir_result_t build_operand(const struct kefir_asmcmp_amd64 *target,
                     break;
 
                 case KEFIR_ASMCMP_INDIRECT_LOCAL_AREA_BASIS: {
+                    kefir_codegen_local_variable_allocation_type_t allocation_type;
                     kefir_int64_t offset;
-                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(stack_frame, value->indirect.base.local_variable_id, &offset));
-                    base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
-                        &arg_state->base_operands[0],
-                        kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
-                        stack_frame->offsets.local_area + offset + value->indirect.offset);
+                    REQUIRE_OK(kefir_codegen_amd64_stack_frame_local_variable_offset(
+                        stack_frame, value->indirect.base.local_variable_id, &allocation_type, &offset));
+                    switch (allocation_type) {
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_RETURN_SPACE:
+                            return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unexpected local variable allocation type");
+
+                        case KEFIR_CODEGEN_LOCAL_VARIABLE_STACK_ALLOCATION:
+                            base_ptr = kefir_asm_amd64_xasmgen_operand_indirect(
+                                &arg_state->base_operands[0],
+                                kefir_asm_amd64_xasmgen_operand_reg(KEFIR_AMD64_XASMGEN_REGISTER_RBP),
+                                stack_frame->offsets.local_area + offset + value->indirect.offset);
+                            break;
+                    }
                 } break;
 
                 case KEFIR_ASMCMP_INDIRECT_SPILL_AREA_BASIS:
@@ -456,7 +465,7 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             build_operand(target, stack_frame, &instr->args[0], &arg_state[0], KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
         REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand));                                             \
         break;
-#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                                   \
+#define DEF_OPCODE2_(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                                  \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
         REQUIRE_OK(                                                                                                    \
             build_operand(target, stack_frame, &instr->args[0], &arg_state[0], KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
@@ -464,15 +473,16 @@ static kefir_result_t generate_instr(struct kefir_mem *mem, struct kefir_amd64_x
             build_operand(target, stack_frame, &instr->args[1], &arg_state[1], KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
         REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand));                       \
         break;
-#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                                   \
+#define DEF_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flag, _op1, _op2)                                        \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
         REQUIRE_OK(                                                                                                    \
             build_operand(target, stack_frame, &instr->args[0], &arg_state[0], KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
         REQUIRE_OK(                                                                                                    \
             build_operand(target, stack_frame, &instr->args[1], &arg_state[1], KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT)); \
-        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, true));                       \
+        REQUIRE_OK(xasmgen->instr._opcode(xasmgen, arg_state[0].operand, arg_state[1].operand, true));                 \
         break;
-#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flag, _op1, _op2) DEF_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flag, _op1, _op2)
+#define DEF_OPCODE2(_opcode, _mnemonic, _variant, _flag, _op1, _op2) \
+    DEF_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flag, _op1, _op2)
 #define DEF_OPCODE3(_opcode, _mnemonic, _variant, _flag, _op1, _op2, _op3)                                             \
     case KEFIR_ASMCMP_AMD64_OPCODE(_opcode):                                                                           \
         REQUIRE_OK(                                                                                                    \

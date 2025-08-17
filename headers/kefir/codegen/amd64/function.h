@@ -56,7 +56,6 @@ typedef struct kefir_codegen_amd64_function {
 
     kefir_asmcmp_instruction_index_t argument_touch_instr;
     kefir_asmcmp_instruction_index_t prologue_tail;
-    kefir_asmcmp_virtual_register_index_t return_address_vreg;
     kefir_asmcmp_virtual_register_index_t dynamic_scope_vreg;
     kefir_asmcmp_virtual_register_index_t vararg_area;
 
