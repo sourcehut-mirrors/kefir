@@ -570,3 +570,34 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
 
     return KEFIR_OK;
 }
+
+kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle, kefir_c_language_standard_version_t standard_version, const struct kefir_ast_type *original_type, const struct kefir_ast_type_qualification *qualifications, const struct kefir_ast_type **type_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
+    REQUIRE(original_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
+    REQUIRE(type_ptr != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to AST type"));
+
+    if (qualifications == NULL) {
+        *type_ptr = original_type;
+        return KEFIR_OK;
+    }
+
+
+    const struct kefir_ast_type *unqualified_original_type = kefir_ast_unqualified_type(original_type);
+    struct kefir_ast_type_qualification original_type_qualifications = {0}, merged_type_qualifications = {0};
+    REQUIRE_OK(kefir_ast_type_retrieve_qualifications(&original_type_qualifications, original_type));
+    REQUIRE_OK(kefir_ast_type_merge_qualifications(&merged_type_qualifications, &original_type_qualifications, qualifications));
+    if (unqualified_original_type->tag == KEFIR_AST_TYPE_ARRAY) {
+        original_type = kefir_ast_type_array_with_element_type(mem, type_bundle, &unqualified_original_type->array_type,
+            kefir_ast_type_qualified(mem, type_bundle, original_type->array_type.element_type, merged_type_qualifications));
+        REQUIRE(original_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate array type"));
+        if (KEFIR_STANDARD_VERSION_AT_LEAST_C23(standard_version)) {
+            original_type = kefir_ast_type_qualified(mem, type_bundle, original_type, merged_type_qualifications);
+        }
+    } else {
+        original_type = kefir_ast_type_qualified(mem, type_bundle, original_type, merged_type_qualifications);
+    }
+
+    *type_ptr = original_type;
+    return KEFIR_OK;
+}

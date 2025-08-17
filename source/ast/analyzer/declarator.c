@@ -1909,13 +1909,14 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     REQUIRE_OK(apply_type_signedness(mem, context->type_bundle, signedness,
                                      kefir_ast_declarator_specifier_list_source_location(specifiers), &base_type));
     if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {
+        const struct kefir_ast_type *unqualified_base_type = kefir_ast_unqualified_type(base_type);
         if (qualification.atomic_type) {
-            REQUIRE(base_type->tag != KEFIR_AST_TYPE_FUNCTION && base_type->tag != KEFIR_AST_TYPE_ARRAY,
+            REQUIRE(unqualified_base_type->tag != KEFIR_AST_TYPE_FUNCTION && unqualified_base_type->tag != KEFIR_AST_TYPE_ARRAY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Function and array types cannot be atomic"));
         }
 
-        base_type = kefir_ast_type_qualified(mem, context->type_bundle, base_type, qualification);
+        REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->type_bundle, context->configuration->standard_version, base_type, &qualification, &base_type));
     }
 
     ASSIGN_PTR(type, base_type);

@@ -235,3 +235,19 @@ kefir_size_t kefir_ast_type_array_const_length(const struct kefir_ast_array_type
     REQUIRE(array->boundary == KEFIR_AST_ARRAY_BOUNDED || array->boundary == KEFIR_AST_ARRAY_BOUNDED_STATIC, 0);
     return (kefir_size_t) array->const_length;
 }
+
+const struct kefir_ast_type *kefir_ast_type_array_with_element_type(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+                                                              const struct kefir_ast_array_type *original_array_type,
+                                                              const struct kefir_ast_type *element_type) {
+    REQUIRE(mem != NULL, 0);
+    REQUIRE(type_bundle != NULL, 0);
+    REQUIRE(element_type != NULL, 0);
+
+    struct kefir_ast_array_type *array_type = NULL;
+    struct kefir_ast_type *type = kefir_ast_type_array_impl(mem, type_bundle, element_type, &original_array_type->qualifications, &array_type);
+    REQUIRE(type != NULL, NULL);
+
+    memcpy(array_type, original_array_type, sizeof(struct kefir_ast_array_type));
+    array_type->element_type = element_type;
+    return type;
+}

@@ -258,16 +258,16 @@ const struct kefir_ast_type *kefir_ast_type_conv_adjust_function_parameter(struc
 
         case KEFIR_AST_TYPE_ARRAY:
             adjusted = kefir_ast_type_pointer(mem, type_bundle, unqualified->array_type.element_type);
-            if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&type->array_type.qualifications)) {
+            if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&unqualified->array_type.qualifications)) {
                 adjusted = kefir_ast_type_qualified(mem, type_bundle, adjusted, unqualified->array_type.qualifications);
             }
             break;
 
         default:
+            if (type->tag == KEFIR_AST_TYPE_QUALIFIED && adjusted->tag != KEFIR_AST_TYPE_QUALIFIED) {
+                adjusted = kefir_ast_type_qualified(mem, type_bundle, adjusted, type->qualified_type.qualification);
+            }
             break;
-    }
-    if (type->tag == KEFIR_AST_TYPE_QUALIFIED && adjusted->tag != KEFIR_AST_TYPE_QUALIFIED) {
-        adjusted = kefir_ast_type_qualified(mem, type_bundle, adjusted, type->qualified_type.qualification);
     }
 
     return adjusted;

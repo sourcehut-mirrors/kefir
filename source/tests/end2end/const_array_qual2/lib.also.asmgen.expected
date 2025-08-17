@@ -1,0 +1,17 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get
+.type get, @function
+
+.section .text
+__kefir_text_section_begin:
+get:
+__kefir_text_func_get_begin:
+    add $4, %rdi
+    mov %rdi, %rax
+    ret
+__kefir_text_func_get_end:
+
+__kefir_text_section_end:
+

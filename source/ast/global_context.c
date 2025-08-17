@@ -197,7 +197,7 @@ static kefir_result_t global_context_define_constexpr(struct kefir_mem *mem, str
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
 
-    struct kefir_ast_type_qualification qualifications;
+    struct kefir_ast_type_qualification qualifications = {0};
     REQUIRE_OK(kefir_ast_type_retrieve_qualifications(&qualifications, type));
     qualifications.constant = true;
     struct kefir_ast_initializer_properties props;
@@ -206,7 +206,7 @@ static kefir_result_t global_context_define_constexpr(struct kefir_mem *mem, str
     REQUIRE(props.constant, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                    "Initializers of constexpr identifier shall be constant"));
 
-    type = kefir_ast_type_qualified(mem, &context->type_bundle, type, qualifications);
+    REQUIRE_OK(kefir_ast_type_apply_qualification(mem, &context->type_bundle, context->configuration.standard_version, type, &qualifications, &type));
     ordinary_id->type = type;
     ordinary_id->object.initializer = initializer;
 
