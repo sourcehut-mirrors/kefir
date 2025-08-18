@@ -1,0 +1,13 @@
+
+a()
+prefix_a(y)
+a()
+a_postfix(y)
+()
+prefix_postfix(y)
+()
+prefix_middle_postfix(y)
+()
+prefix_middle_another_postfix(y)
+a()
+prefix_middle_a_another_postfix(y)
