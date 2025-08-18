@@ -1,0 +1,7 @@
+source/tests/end2end/preprocessor_warning1/lib.kefir.asmgen.c@21:1 warning:  HELLO ``38u84n  o329wo owlrld 0``1891i3 mn2 
+source/tests/end2end/preprocessor_warning1/lib.kefir.asmgen.c@34:1 warning:  ```u38422u 
+source/tests/end2end/preprocessor_warning1/lib.kefir.asmgen.c@37:1 warning:  TEST3412  1```` 
+{
+    "class": "translation_unit",
+    "external_declarations": []
+}

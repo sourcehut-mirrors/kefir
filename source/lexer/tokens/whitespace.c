@@ -60,6 +60,15 @@ static kefir_result_t skip_multiline_comment(struct kefir_lexer_source_cursor *c
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_lexer_skip_multiline_comment(struct kefir_lexer_source_cursor *cursor, kefir_bool_t *matched) {
+    REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source cursor"));
+
+    enum whitespace_match match = WHITESPACE_NO_MATCH;
+    REQUIRE_OK(skip_multiline_comment(cursor, &match));
+    ASSIGN_PTR(matched, match != WHITESPACE_NO_MATCH);
+    return KEFIR_OK;
+}
+
 static kefir_result_t skip_oneline_comment(const struct kefir_lexer_context *context,
                                            struct kefir_lexer_source_cursor *cursor, enum whitespace_match *match) {
     if (kefir_lexer_source_cursor_at(cursor, 0) == U'/' && kefir_lexer_source_cursor_at(cursor, 1) == U'/') {
@@ -76,6 +85,16 @@ static kefir_result_t skip_oneline_comment(const struct kefir_lexer_context *con
             REQUIRE_OK(kefir_lexer_source_cursor_next(cursor, 1));
         }
     }
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_lexer_skip_oneline_comment(const struct kefir_lexer_context *context, struct kefir_lexer_source_cursor *cursor, kefir_bool_t *matched) {
+    REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer context"));
+    REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source cursor"));
+
+    enum whitespace_match match = WHITESPACE_NO_MATCH;
+    REQUIRE_OK(skip_oneline_comment(context, cursor, &match));
+    ASSIGN_PTR(matched, match != WHITESPACE_NO_MATCH);
     return KEFIR_OK;
 }
 

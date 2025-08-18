@@ -24,6 +24,7 @@
 #include "kefir/core/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/source_error.h"
+#include "kefir/core/string_buffer.h"
 #include "kefir/util/char32.h"
 #include <string.h>
 
@@ -73,9 +74,22 @@ kefir_result_t kefir_preprocessor_directive_scanner_skip_line(
     struct kefir_token next_token;
     kefir_result_t scan_tokens = true;
     while (scan_tokens) {
-        REQUIRE_OK(kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer,
-                                                    &directive_scanner->tokenizer_context, &next_token));
+        kefir_result_t res = kefir_preprocessor_tokenize_next(mem, directive_scanner->lexer,
+                                                    &directive_scanner->tokenizer_context, &next_token);
+        if (res == KEFIR_LEXER_ERROR) {
+            const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+            if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
+                break;
+            }
 
+            REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+            if (chr == U'\n') {
+                scan_tokens = false;
+            }
+            continue;
+        }
+
+        REQUIRE_OK(res);
         if (next_token.klass == KEFIR_TOKEN_SENTINEL ||
             (next_token.klass == KEFIR_TOKEN_PP_WHITESPACE && next_token.pp_whitespace.newline)) {
             scan_tokens = false;
@@ -148,7 +162,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
 
     REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
     kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
-    if (chr == U'\0') {
+    if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
         *directive_type = KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL;
         directive_scanner->newline_flag = true;
         return KEFIR_OK;
@@ -531,19 +545,64 @@ static kefir_result_t next_undef(struct kefir_mem *mem, struct kefir_preprocesso
 }
 
 static kefir_result_t next_error(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
-                                 struct kefir_token_allocator *token_allocator,
                                  struct kefir_preprocessor_directive *directive,
                                  kefir_preprocessor_directive_type_t type) {
-    directive->type = type;
-    REQUIRE_OK(kefir_token_buffer_init(&directive->pp_tokens));
+    REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
 
-    kefir_result_t res =
-        skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline);
-    REQUIRE_CHAIN(&res, scan_pp_tokens(mem, directive_scanner, token_allocator, &directive->pp_tokens));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_token_buffer_free(mem, &directive->pp_tokens);
-        return res;
+    struct kefir_string_buffer str;
+    REQUIRE_OK(kefir_string_buffer_init(mem, &str, KEFIR_STRING_BUFFER_MULTIBYTE));
+
+    for (;;) {
+        kefir_bool_t comment = false;
+        REQUIRE_OK(kefir_lexer_skip_multiline_comment(directive_scanner->lexer->cursor, &comment));
+        if (comment) {
+            continue;
+        }
+        
+        REQUIRE_OK(kefir_lexer_skip_oneline_comment(directive_scanner->lexer->context, directive_scanner->lexer->cursor, &comment));
+        if (comment) {
+            break;
+        }
+
+        const kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+        if (chr == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
+            break;
+        }
+        
+        kefir_result_t res = kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1);
+        if (chr != directive_scanner->lexer->context->newline) {
+            REQUIRE_CHAIN(&res, kefir_string_buffer_append(mem, &str, chr));
+        }
+        REQUIRE_ELSE(res == KEFIR_OK, {
+            kefir_string_buffer_free(mem, &str);
+            return res;
+        });
+
+        if (chr == directive_scanner->lexer->context->newline) {
+            break;
+        }
+    }
+
+    kefir_size_t message_length;
+    const char *message = kefir_string_buffer_value(&str, &message_length);
+    REQUIRE_ELSE(message != NULL, {
+        kefir_string_buffer_free(mem, &str);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to retrieve error preprocessor directive message");
     });
+
+    char *message_copy = KEFIR_MALLOC(mem, sizeof(char) * (message_length + 1));
+    REQUIRE_ELSE(message_copy != NULL, {
+        kefir_string_buffer_free(mem, &str);
+        return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate error preprocessor directive message");
+    });
+    strncpy(message_copy, message, message_length);
+
+    directive->type = type;
+    directive->error_message.content = message_copy;
+    directive->error_message.length = message_length;
+    REQUIRE_OK(kefir_string_buffer_free(mem, &str));
+
+    directive_scanner->newline_flag = true;
     return KEFIR_OK;
 }
 
@@ -583,7 +642,7 @@ static kefir_result_t next_non_directive(struct kefir_preprocessor_directive_sca
                                          struct kefir_preprocessor_directive *directive) {
     directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_NON;
     for (kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
-         chr != U'\0' && chr != directive_scanner->lexer->context->newline;) {
+         chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != directive_scanner->lexer->context->newline;) {
         REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
         chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
     }
@@ -689,12 +748,12 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
             REQUIRE_OK(
-                next_error(mem, directive_scanner, token_allocator, directive, KEFIR_PREPROCESSOR_DIRECTIVE_ERROR));
+                next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_ERROR));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
             REQUIRE_OK(
-                next_error(mem, directive_scanner, token_allocator, directive, KEFIR_PREPROCESSOR_DIRECTIVE_WARNING));
+                next_error(mem, directive_scanner, directive, KEFIR_PREPROCESSOR_DIRECTIVE_WARNING));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
@@ -741,8 +800,6 @@ kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *mem,
         case KEFIR_PREPROCESSOR_DIRECTIVE_INCLUDE_NEXT:
         case KEFIR_PREPROCESSOR_DIRECTIVE_EMBED:
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
-        case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
-        case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
         case KEFIR_PREPROCESSOR_DIRECTIVE_PRAGMA:
         case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
             REQUIRE_OK(kefir_token_buffer_free(mem, &directive->pp_tokens));
@@ -757,6 +814,11 @@ kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *mem,
                 REQUIRE_OK(kefir_list_free(mem, &directive->define_directive.parameters));
             }
             REQUIRE_OK(kefir_token_buffer_free(mem, &directive->define_directive.replacement));
+            break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
+        case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
+            KEFIR_FREE(mem, (char *) directive->error_message.content);
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_UNDEF:

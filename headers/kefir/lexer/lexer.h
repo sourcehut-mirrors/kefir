@@ -103,6 +103,9 @@ kefir_result_t kefir_lexer_match_constant(struct kefir_mem *, struct kefir_lexer
 kefir_result_t kefir_lexer_match_pp_number(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 kefir_result_t kefir_lexer_match_pp_header_name(struct kefir_mem *, struct kefir_lexer *, struct kefir_token *);
 
+kefir_result_t kefir_lexer_skip_multiline_comment(struct kefir_lexer_source_cursor *, kefir_bool_t *);
+kefir_result_t kefir_lexer_skip_oneline_comment(const struct kefir_lexer_context *, struct kefir_lexer_source_cursor *, kefir_bool_t *);
+
 kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *, struct kefir_token_allocator *,
                                            struct kefir_token_buffer *, struct kefir_lexer *);
 

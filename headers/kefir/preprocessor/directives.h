@@ -84,6 +84,10 @@ typedef struct kefir_preprocessor_directive {
         struct kefir_preprocessor_undef_directive undef_directive;
         struct kefir_token_buffer pp_tokens;
         struct kefir_token pp_token;
+        struct {
+            const char *content;
+            kefir_size_t length;
+        } error_message;
     };
     struct kefir_source_location source_location;
 } kefir_preprocessor_directive_t;

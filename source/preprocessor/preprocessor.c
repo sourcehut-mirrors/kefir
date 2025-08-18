@@ -905,31 +905,19 @@ static kefir_result_t process_elif(struct kefir_mem *mem, struct kefir_preproces
     return KEFIR_OK;
 }
 
-static kefir_result_t process_error(struct kefir_mem *mem, struct kefir_preprocessor_directive *directive) {
-    char *error_message;
-    kefir_size_t error_length;
-    REQUIRE_OK(kefir_preprocessor_format_string(mem, &error_message, &error_length, &directive->pp_tokens,
-                                                KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
-    kefir_result_t res =
-        KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%s", error_message);
-    KEFIR_FREE(mem, error_message);
-    return res;
+static kefir_result_t process_error(struct kefir_preprocessor_directive *directive) {
+    return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s", directive->error_message.length, directive->error_message.content);
 }
 
-static kefir_result_t process_warning(struct kefir_mem *mem, struct kefir_preprocessor_directive *directive,
+static kefir_result_t process_warning(struct kefir_preprocessor_directive *directive,
                                       FILE *warning_output) {
-    char *error_message;
-    kefir_size_t error_length;
-    REQUIRE_OK(kefir_preprocessor_format_string(mem, &error_message, &error_length, &directive->pp_tokens,
-                                                KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_SINGLE_SPACE));
     if (directive->source_location.source != NULL) {
-        fprintf(warning_output, "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %s\n",
+        fprintf(warning_output, "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %*s\n",
                 directive->source_location.source, directive->source_location.line, directive->source_location.column,
-                error_message);
+                (int) directive->error_message.length, directive->error_message.content);
     } else {
-        fprintf(warning_output, "warning: %s\n", error_message);
+        fprintf(warning_output, "warning: %*s\n", (int) directive->error_message.length, directive->error_message.content);
     }
-    KEFIR_FREE(mem, error_message);
     return KEFIR_OK;
 }
 
@@ -1116,12 +1104,12 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_ERROR:
-            REQUIRE_OK(process_error(mem, directive));
+            REQUIRE_OK(process_error(directive));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_WARNING:
             if (preprocessor->context->warning_output != NULL) {
-                REQUIRE_OK(process_warning(mem, directive, preprocessor->context->warning_output));
+                REQUIRE_OK(process_warning(directive, preprocessor->context->warning_output));
             }
             break;
 
@@ -1187,12 +1175,6 @@ static kefir_result_t next_buffer_for_token_seq(struct kefir_mem *mem, struct ke
         REQUIRE_OK(kefir_token_buffer_init(&buffer));
         REQUIRE_CHAIN(&res, run_directive(mem, params->preprocessor, params->token_allocator, &buffer, &directive,
                                           &params->condition_stack, &token_destination));
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_token_buffer_free(mem, &buffer);
-            kefir_preprocessor_directive_free(mem, &directive);
-            return res;
-        });
-        res = kefir_preprocessor_directive_free(mem, &directive);
         REQUIRE_ELSE(res == KEFIR_OK, {
             kefir_token_buffer_free(mem, &buffer);
             kefir_preprocessor_directive_free(mem, &directive);
