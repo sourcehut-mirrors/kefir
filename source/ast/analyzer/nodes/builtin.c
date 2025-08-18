@@ -121,8 +121,11 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, size));
-            REQUIRE(size->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(size->properties.type),
+            REQUIRE(size->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &size->source_location,
+                                           "Expected an integral expression"));
+            const struct kefir_ast_type *unqualified_type = kefir_ast_unqualified_type(size->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &size->source_location,
                                            "Expected an integral expression"));
             base->properties.type = kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void());
@@ -135,15 +138,21 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             const struct kefir_list_entry *iter = kefir_list_head(&node->arguments);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, size, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, size));
-            REQUIRE(size->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(size->properties.type),
+            REQUIRE(size->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &size->source_location,
+                                           "Expected an integral expression"));
+            const struct kefir_ast_type *unqualified_size_type = kefir_ast_unqualified_type(size->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_size_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &size->source_location,
                                            "Expected an integral expression"));
             kefir_list_next(&iter);
             ASSIGN_DECL_CAST(struct kefir_ast_node_base *, alignment, iter->value);
             REQUIRE_OK(kefir_ast_analyze_node(mem, context, alignment));
-            REQUIRE(alignment->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION &&
-                        KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(alignment->properties.type),
+            REQUIRE(alignment->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
+                    KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &alignment->source_location,
+                                           "Expected an integral expression"));
+            const struct kefir_ast_type *unqualified_alignment_type = kefir_ast_unqualified_type(alignment->properties.type);
+            REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_alignment_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &alignment->source_location,
                                            "Expected an integral expression"));
             base->properties.type = kefir_ast_type_pointer(mem, context->type_bundle, kefir_ast_type_void());
