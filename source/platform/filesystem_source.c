@@ -105,7 +105,7 @@ static kefir_result_t try_open_file(struct kefir_mem *mem, const char *root, con
     }
     char *resolved_path = realpath(path, NULL);
     KEFIR_FREE(mem, path);
-    if (resolved_path == NULL && errno == ENOENT) {
+    if (resolved_path == NULL && (errno == ENOENT || errno == ENOTDIR)) {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Cannot find requested file");
     } else if (resolved_path == NULL) {
         return KEFIR_SET_OS_ERROR("Failed to determine real path");
@@ -290,7 +290,7 @@ static kefir_result_t try_open_embed(struct kefir_mem *mem, const char *root, co
     }
     char *resolved_path = realpath(path, NULL);
     KEFIR_FREE(mem, path);
-    if (resolved_path == NULL && errno == ENOENT) {
+    if (resolved_path == NULL && (errno == ENOENT || errno == ENOTDIR)) {
         return KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Cannot find requested file");
     } else if (resolved_path == NULL) {
         return KEFIR_SET_OS_ERROR("Failed to determine real path");
