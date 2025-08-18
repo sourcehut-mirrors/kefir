@@ -1,0 +1,65 @@
+
+KEFIR_EXTERNAL_TEST_LIBXML2_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/libxml2
+
+KEFIR_EXTERNAL_TEST_LIBXML2_VERSION := 2.14.5
+KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_FILENAME := v$(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE := $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/$(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/libxml2-$(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)
+KEFIR_EXTERNAL_TEST_LIBXML2_URL := https://github.com/GNOME/libxml2/archive/refs/tags/$(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_SHA256 := f52638e4d67135c49f676d1c8fcc4f9f35afb7ec9bfb4aee743e2e86d56e006b
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_LIBXML2_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LIBXML2_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_LIBXML2_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/autogen.sh: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Configuring libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		libtoolize
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/autogen.sh
+	@echo "Configuring libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
+		sh autogen.sh
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/Makefile
+	@echo "Building libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)/libxml2.la
+	@echo "Testing libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_LIBXML2_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/libxml2/include" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/libxml2.test.done: $(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/libxml2/validate.sh "$(KEFIR_EXTERNAL_TEST_LIBXML2_DIR)/tests.log"
+	@touch "$@"
+	@echo "libxml2 $(KEFIR_EXTERNAL_TEST_LIBXML2_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/libxml2.test.done
