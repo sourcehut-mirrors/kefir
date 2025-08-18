@@ -1,0 +1,64 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global get4
+.type get4, @function
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+get4:
+__kefir_text_func_get4_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $32, %rsp
+    movq %rdi, -32(%rbp)
+    movq -32(%rbp), %rax
+    movq %rax, -16(%rbp)
+    leaq -8(%rbp), %rdi
+    xor %eax, %eax
+    mov $8, %rcx
+    rep stosb
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    add %ecx, %eax
+    movl %eax, -8(%rbp)
+    movl -16(%rbp), %eax
+    movl -12(%rbp), %ecx
+    sub %ecx, %eax
+    movl %eax, -4(%rbp)
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_get4_end:
+
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rdx
+    leaq -16(%rbp), %rdi
+    xor %eax, %eax
+    mov $8, %rcx
+    rep stosb
+    movl %edx, -16(%rbp)
+    movl %esi, -12(%rbp)
+    leaq -24(%rbp), %rbx
+    movq -16(%rbp), %rdi
+    call get4
+    movq %rax, (%rbx)
+    movl -24(%rbp), %eax
+    movl -20(%rbp), %ecx
+    xor %ecx, %eax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

@@ -68,7 +68,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
         case KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY:
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, identifier,
+                context->ast_context->type_traits, context->module, identifier, true,
                 function->base.properties.function_definition.scoped_id->type, NULL, &args->function_declaration,
                 &function->base.source_location));
             break;
@@ -128,7 +128,7 @@ static kefir_result_t init_function_declaration(struct kefir_mem *mem, struct ke
 
             res = kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, identifier, function->base.properties.type,
+                context->ast_context->type_traits, context->module, identifier, true, function->base.properties.type,
                 &declaration_list, &args->function_declaration, &function->base.source_location);
             REQUIRE_ELSE(res == KEFIR_OK, {
                 kefir_list_free(mem, &declaration_list);

@@ -595,7 +595,7 @@ static kefir_result_t translate_global_scoped_identifier_function(
     const struct kefir_ast_type *function_type = NULL;
     REQUIRE_OK(kefir_ast_type_completion(mem, context, &function_type, scoped_identifier->function.type));
     REQUIRE_OK(kefir_ast_translator_function_declaration_init(
-        mem, context, env, type_bundle, type_traits, module, identifier, function_type, NULL,
+        mem, context, env, type_bundle, type_traits, module, identifier, false, function_type, NULL,
         &scoped_identifier_func->declaration, &scoped_identifier->source_location));
 
     switch (scoped_identifier->function.storage) {

@@ -106,7 +106,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                context->ast_context->type_traits, context->module, function_name, true, function_type, &node->arguments,
                 &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
@@ -126,7 +126,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                context->ast_context->type_traits, context->module, function_name, true, function_type, &node->arguments,
                 &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
@@ -146,7 +146,7 @@ kefir_result_t kefir_ast_translate_function_call_node(struct kefir_mem *mem,
             struct kefir_ast_translator_function_declaration *func_decl = NULL;
             REQUIRE_OK(kefir_ast_translator_function_declaration_init(
                 mem, context->ast_context, context->environment, context->ast_context->type_bundle,
-                context->ast_context->type_traits, context->module, function_name, function_type, &node->arguments,
+                context->ast_context->type_traits, context->module, function_name, true, function_type, &node->arguments,
                 &func_decl, &node->base.source_location));
             ir_decl = func_decl->ir_function_decl;
             if (ir_decl->name == NULL) {
