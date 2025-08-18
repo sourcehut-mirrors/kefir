@@ -111,6 +111,15 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __FLT_MAX__ 3.40282346638528859812e+38F
 #define __DBL_MAX__ 1.79769313486231570815e+308
 #define __LDBL_MAX__ 1.1897314953572317650e+4932L
+#define __FLT_EVAL_METHOD__ 0
+#define __FLT_EVAL_METHOD_TS_18661_3__ 0
+#define __DECIMAL_DIG__ 21
+#define __FLT_HAS_DENORM__ 1
+#define __DBL_HAS_DENORM__ 1
+#define __LDBL_HAS_DENORM__ 1
+#define __FLT_DENORM_MIN__ 1.40129846432481707092372958328991613e-45F
+#define __DBL_DENORM_MIN__ ((double)4.94065645841246544176568792868221372e-324L)
+#define __LDBL_DENORM_MIN__ 3.64519953188247460252840593361941982e-4951L
 
 // Type width
 #ifdef __LP64__
