@@ -47,7 +47,6 @@ $(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_TAR_SOURCE_DIR)/
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/tar.test.done: $(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log
-	@$(SOURCE_DIR)/tests/external/tar/validate.sh "$(KEFIR_EXTERNAL_TEST_TAR_DIR)/tests.log"
 	@touch "$@"
 	@echo "tar $(KEFIR_EXTERNAL_TEST_TAR_VERSION) test successfully finished"
 

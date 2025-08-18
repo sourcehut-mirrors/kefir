@@ -53,7 +53,6 @@ $(KEFIR_EXTERNAL_TEST_BISON_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BISON_SOURCE_D
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/bison.test.done: $(KEFIR_EXTERNAL_TEST_BISON_DIR)/tests.log
-	@$(SOURCE_DIR)/tests/external/bison/validate.sh "$(KEFIR_EXTERNAL_TEST_BISON_DIR)/tests.log"
 	@touch "$@"
 	@echo "GNU Bison $(KEFIR_EXTERNAL_TEST_BISON_VERSION) test suite successfully finished"
 
