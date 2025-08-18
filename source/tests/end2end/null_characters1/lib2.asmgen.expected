@@ -1,0 +1,4 @@
+
+
+char line[] = "abc";
+char chr = '\0';

@@ -45,8 +45,8 @@ static kefir_result_t kefir_lexer_next_string_literal_impl(struct kefir_mem *mem
 
         struct kefir_source_location char_location = lexer->cursor->location;
 
-        REQUIRE(chr != U'\0',
-                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location, "Unexpected null character"));
+        REQUIRE(chr != KEFIR_LEXER_SOURCE_CURSOR_EOF,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location, "Unexpected end of input"));
         REQUIRE(chr != U'\n',
                 KEFIR_SET_SOURCE_ERROR(KEFIR_LEXER_ERROR, &lexer->cursor->location, "Unexpected newline character"));
         if (chr == U'\\') {

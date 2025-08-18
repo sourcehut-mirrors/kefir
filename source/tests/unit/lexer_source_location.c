@@ -40,7 +40,7 @@ DEFINE_CASE(lexer_source_location1, "Lexer - source location #1") {
     const char CONTENT[] = "abc A B   C\n"
                            "test\n\n\n"
                            "\tH\t\tello";
-    kefir_size_t LENGTH = sizeof(CONTENT);
+    kefir_size_t LENGTH = sizeof(CONTENT) - 1;
 
     struct kefir_lexer_source_cursor cursor;
     ASSERT_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, LENGTH, "file.c"));
@@ -76,10 +76,10 @@ DEFINE_CASE(lexer_source_location1, "Lexer - source location #1") {
     ASSERT_NEXT(&cursor, U'l', "file.c", 5, 6);
     ASSERT_NEXT(&cursor, U'l', "file.c", 5, 7);
     ASSERT_NEXT(&cursor, U'o', "file.c", 5, 8);
-    ASSERT_NEXT(&cursor, U'\0', "file.c", 5, 9);
-    ASSERT_NEXT(&cursor, U'\0', "file.c", 5, 9);
-    ASSERT_NEXT(&cursor, U'\0', "file.c", 5, 9);
-    ASSERT_NEXT(&cursor, U'\0', "file.c", 5, 9);
+    ASSERT_NEXT(&cursor, KEFIR_LEXER_SOURCE_CURSOR_EOF, "file.c", 5, 9);
+    ASSERT_NEXT(&cursor, KEFIR_LEXER_SOURCE_CURSOR_EOF, "file.c", 5, 9);
+    ASSERT_NEXT(&cursor, KEFIR_LEXER_SOURCE_CURSOR_EOF, "file.c", 5, 9);
+    ASSERT_NEXT(&cursor, KEFIR_LEXER_SOURCE_CURSOR_EOF, "file.c", 5, 9);
 
     ASSERT_OK(kefir_lexer_source_cursor_restore(&cursor, &state));
     ASSERT_NEXT(&cursor, U'C', "file.c", 1, 11);

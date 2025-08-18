@@ -87,7 +87,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     strptime(DATETIME, FMT, &time);
 
     context.environment.timestamp = mktime(&time);
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), "fileName"));
+    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT) - 1, "fileName"));
     REQUIRE_OK(kefir_preprocessor_init(mem, &preprocessor, &symbols, &cursor, &parser_context, &context, NULL, NULL));
     REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &token_allocator, &tokens));
 

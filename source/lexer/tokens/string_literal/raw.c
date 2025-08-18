@@ -11,13 +11,13 @@ struct params {
 static kefir_result_t scan_string(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                   struct kefir_string_buffer *strbuf) {
     kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-    for (; chr != U'\0' && chr != U'\"';) {
+    for (; chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != U'\"';) {
 
         if (chr == U'\\') {
             REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
             REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
             chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
-            if (chr != U'\0') {
+            if (chr != KEFIR_LEXER_SOURCE_CURSOR_EOF) {
                 REQUIRE_OK(kefir_string_buffer_append(mem, strbuf, chr));
                 REQUIRE_OK(kefir_lexer_source_cursor_next(lexer->cursor, 1));
                 chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);

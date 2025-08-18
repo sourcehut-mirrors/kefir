@@ -23,7 +23,7 @@
 
 DEFINE_CASE(lexer_source_cursor1, "Lexer - source cursor #1") {
     const char CONTENT[] = "123 {{(Hello\nworld\t,,,x!";
-    kefir_size_t LENGTH = sizeof(CONTENT);
+    kefir_size_t LENGTH = sizeof(CONTENT) - 1;
 
     struct kefir_lexer_source_cursor cursor;
     ASSERT_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, LENGTH, ""));
@@ -78,9 +78,9 @@ DEFINE_CASE(lexer_source_cursor1, "Lexer - source cursor #1") {
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 1) == U',');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 2) == U'x');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 3) == U'!');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 4) == U'\0');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 5) == U'\0');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 6) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 4) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 5) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 6) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
 
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 1));
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U',');
@@ -89,11 +89,11 @@ DEFINE_CASE(lexer_source_cursor1, "Lexer - source cursor #1") {
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 1));
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'!');
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 1));
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 1));
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 10));
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
 
     ASSERT_OK(kefir_lexer_source_cursor_restore(&cursor, &state2));
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 3));
@@ -115,7 +115,7 @@ END_CASE
 
 DEFINE_CASE(lexer_source_cursor_newlines, "Lexer - source cursor newlines") {
     const char CONTENT[] = "abc\\\ndef\\\n\\\n\\\n\\\nghi\njk\\\\l\n\n\n\\";
-    kefir_size_t LENGTH = sizeof(CONTENT);
+    kefir_size_t LENGTH = sizeof(CONTENT) - 1;
 
     struct kefir_lexer_source_cursor cursor;
     ASSERT_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, LENGTH, ""));
@@ -205,15 +205,15 @@ DEFINE_CASE(lexer_source_cursor_newlines, "Lexer - source cursor newlines") {
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 1) == U'\n');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 2) == U'\n');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 3) == U'\\');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 4) == U'\0');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 5) == U'\0');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 6) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 4) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 5) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 6) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
     ASSERT(cursor.location.line == 7);
     ASSERT(cursor.location.column == 6);
 
     ASSERT_OK(kefir_lexer_source_cursor_next(&cursor, 5));
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'\0');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 1) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 1) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
 
     ASSERT_OK(kefir_lexer_source_cursor_restore(&cursor, &state));
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 0) == U'c');
@@ -233,7 +233,7 @@ DEFINE_CASE(lexer_source_cursor_newlines, "Lexer - source cursor newlines") {
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 14) == U'\n');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 15) == U'\n');
     ASSERT(kefir_lexer_source_cursor_at(&cursor, 16) == U'\\');
-    ASSERT(kefir_lexer_source_cursor_at(&cursor, 17) == U'\0');
+    ASSERT(kefir_lexer_source_cursor_at(&cursor, 17) == KEFIR_LEXER_SOURCE_CURSOR_EOF);
     ASSERT(cursor.location.line == 1);
     ASSERT(cursor.location.column == 3);
 }

@@ -38,24 +38,27 @@ kefir_result_t kefir_lexer_source_cursor_init(struct kefir_lexer_source_cursor *
 }
 
 static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
-    kefir_char32_t character = U'\0';
+    kefir_char32_t character = KEFIR_LEXER_SOURCE_CURSOR_EOF;
     kefir_size_t index = cursor->index;
     mbstate_t mbstate = cursor->mbstate;
     do {
+        if (index == cursor->length) {
+            character = KEFIR_LEXER_SOURCE_CURSOR_EOF;
+            break;
+        }
+
         size_t rc = mbrtoc32(&character, cursor->content + index, cursor->length - index, &mbstate);
         switch (rc) {
             case (size_t) -1:
             case (size_t) -2:
             case (size_t) -3:
-                if (cursor->length > index) {
-                    character = (kefir_int32_t) * (cursor->content + index);
-                    break;
-                }
-                // Fallthrough
+                REQUIRE(index < cursor->length, KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unexpected source cursor index"));
+                character = (kefir_int32_t) (*(cursor->content + index));
+                break;
 
             case 0:
                 character = U'\0';
-                count = 0;
+                index++;
                 break;
 
             default:
@@ -86,7 +89,7 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
 }
 
 kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_cursor *cursor, kefir_size_t count) {
-    REQUIRE(cursor != NULL, U'\0');
+    REQUIRE(cursor != NULL, KEFIR_LEXER_SOURCE_CURSOR_EOF);
     return at_impl(cursor, count);
 }
 
@@ -105,12 +108,16 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                     chr = (kefir_char32_t) * (cursor->content + cursor->index);
                     cursor->index++;
                     cursor->mbstate = (mbstate_t){0};
-                    break;
+                } else {
+                    chr = U'\0';
                 }
-                // Fallthrough
+                break;
 
             case 0:
-                return KEFIR_OK;
+                chr = U'\0';
+                cursor->index++;
+                cursor->mbstate = (mbstate_t){0};
+                break;
 
             default:
                 cursor->index += rc;

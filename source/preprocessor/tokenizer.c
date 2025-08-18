@@ -58,7 +58,7 @@ static kefir_result_t preprocessor_next_impl(struct kefir_mem *mem, struct kefir
     if (res == KEFIR_NO_MATCH && tokenizer_context->state == KEFIR_PREPROCESSOR_TOKENIZER_HAS_INCLUDE2) {
         res = kefir_lexer_match_pp_header_name(mem, lexer, token);
     }
-    if (res == KEFIR_NO_MATCH && kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'\0') {
+    if (res == KEFIR_NO_MATCH && kefir_lexer_source_cursor_at(lexer->cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
         res = kefir_token_new_sentinel(token);
     }
     if (res == KEFIR_NO_MATCH) {

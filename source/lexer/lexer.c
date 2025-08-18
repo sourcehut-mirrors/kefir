@@ -105,7 +105,7 @@ static kefir_result_t lexer_next_impl(struct kefir_mem *mem, struct kefir_lexer 
 
     REQUIRE_OK(kefir_lexer_cursor_match_whitespace(mem, lexer, NULL));
     struct kefir_source_location source_location = lexer->cursor->location;
-    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == U'\0') {
+    if (kefir_lexer_source_cursor_at(lexer->cursor, 0) == KEFIR_LEXER_SOURCE_CURSOR_EOF) {
         REQUIRE_OK(kefir_token_new_sentinel(token));
     } else {
         res = kefir_lexer_match_constant(mem, lexer, token);

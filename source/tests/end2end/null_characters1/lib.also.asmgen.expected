@@ -1,0 +1,19 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global chr
+.type chr, @object
+.global line
+.type line, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .data
+chr:
+    .byte 0
+
+line:
+    .byte 0x61, 0x62, 0x00, 0x63, 0x00
+

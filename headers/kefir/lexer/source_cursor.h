@@ -40,6 +40,8 @@ typedef struct kefir_lexer_source_cursor_state {
     struct kefir_source_location location;
 } kefir_lexer_source_cursor_state_t;
 
+#define KEFIR_LEXER_SOURCE_CURSOR_EOF ((kefir_char32_t) ~0ull)
+
 kefir_result_t kefir_lexer_source_cursor_init(struct kefir_lexer_source_cursor *, const char *, kefir_size_t,
                                               const char *);
 kefir_char32_t kefir_lexer_source_cursor_at(const struct kefir_lexer_source_cursor *, kefir_size_t);

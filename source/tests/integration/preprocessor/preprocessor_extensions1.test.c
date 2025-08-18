@@ -247,7 +247,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     REQUIRE_OK(kefir_preprocessor_context_init(mem, &context, &virtual_source.locator, &ast_context.context,
                                                &context_extensions));
 
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
+    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT) - 1, ""));
     REQUIRE_OK(
         kefir_preprocessor_init(mem, &preprocessor, &symbols, &cursor, &parser_context, &context, NULL, &extensions));
     REQUIRE_OK(kefir_preprocessor_run(mem, &preprocessor, &token_allocator, &tokens));

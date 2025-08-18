@@ -40,7 +40,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_token_buffer tokens;
     struct kefir_token_allocator token_allocator;
     REQUIRE_OK(kefir_string_pool_init(&symbols));
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, SOURCE_CODE, sizeof(SOURCE_CODE), "<stdin>"));
+    REQUIRE_OK(kefir_lexer_source_cursor_init(&source_cursor, SOURCE_CODE, sizeof(SOURCE_CODE) - 1, "<stdin>"));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_lexer_init(mem, &lexer, KEFIR_LEXER_C_MODE, KEFIR_DEFAULT_STANDARD_VERSION, &symbols,
                                 &source_cursor, &parser_context, NULL));

@@ -35,7 +35,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
     struct kefir_lexer_context parser_context;
     struct kefir_lexer lexer;
     REQUIRE_OK(kefir_string_pool_init(&symbols));
-    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT), ""));
+    REQUIRE_OK(kefir_lexer_source_cursor_init(&cursor, CONTENT, sizeof(CONTENT) - 1, ""));
     REQUIRE_OK(kefir_lexer_context_default(&parser_context));
     REQUIRE_OK(kefir_lexer_init(mem, &lexer, KEFIR_LEXER_C_MODE, KEFIR_DEFAULT_STANDARD_VERSION, &symbols, &cursor,
                                 &parser_context, NULL));
