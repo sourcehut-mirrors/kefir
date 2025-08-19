@@ -21,12 +21,9 @@ __kefir_text_func_test1_begin:
     sub $16, %rsp
 _kefir_func_test1_label0:
     movb %dil, -1(%rbp)
-    movb -1(%rbp), %al
-    shl $58, %rax
-    sar $58, %rax
     leaq -2(%rbp), %rcx
-    mov %rax, -16(%rbp)
-mov -16(%rbp), %al
+    leaq -1(%rbp), %rdx
+mov (%rdx), %al
 mov %al, (%rcx)
 addb $1, (%rcx)
     movb -2(%rbp), %al
@@ -44,12 +41,9 @@ __kefir_text_func_test2_begin:
     sub $16, %rsp
 _kefir_func_test2_label0:
     movw %di, -2(%rbp)
-    movw -2(%rbp), %ax
-    shl $50, %rax
-    sar $50, %rax
     leaq -4(%rbp), %rcx
-    mov %rax, -16(%rbp)
-mov -16(%rbp), %ax
+    leaq -2(%rbp), %rdx
+mov (%rdx), %ax
 mov %ax, (%rcx)
 addw $1, (%rcx)
     movw -4(%rbp), %ax
@@ -67,12 +61,9 @@ __kefir_text_func_test3_begin:
     sub $16, %rsp
 _kefir_func_test3_label0:
     movl %edi, -4(%rbp)
-    movl -4(%rbp), %eax
-    shl $35, %rax
-    sar $35, %rax
     leaq -8(%rbp), %rcx
-    mov %rax, -16(%rbp)
-mov -16(%rbp), %eax
+    leaq -4(%rbp), %rdx
+mov (%rdx), %eax
 mov %eax, (%rcx)
 addl $1, (%rcx)
     movl -8(%rbp), %eax
@@ -87,15 +78,12 @@ test4:
 __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_test4_label0:
     movq %rdi, -8(%rbp)
-    movq -8(%rbp), %rax
-    shl $4, %rax
-    sar $4, %rax
     leaq -16(%rbp), %rcx
-    mov %rax, -32(%rbp)
-mov -32(%rbp), %rax
+    leaq -8(%rbp), %rdx
+mov (%rdx), %rax
 mov %rax, (%rcx)
 addq $1, (%rcx)
     movq -16(%rbp), %rax
@@ -112,15 +100,12 @@ __kefir_text_func_test5_begin:
     mov %rsp, %rbp
     sub $64, %rsp
 _kefir_func_test5_label0:
-    movq %rdi, -48(%rbp)
-    movq %rsi, -40(%rbp)
-    movdqu -48(%rbp), %xmm0
+    movq %rdi, -64(%rbp)
+    movq %rsi, -56(%rbp)
+    movdqu -64(%rbp), %xmm0
     movdqu %xmm0, -16(%rbp)
-    movdqu -16(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
     leaq -32(%rbp), %rcx
-    leaq -64(%rbp), %rax
-    mov %rax, %rdx
+    leaq -16(%rbp), %rdx
 mov (%rdx), %rax
 mov %rax, (%rcx)
 mov 8(%rdx), %rax
@@ -129,9 +114,9 @@ addq $1, (%rcx)
 adcq $0, 8(%rcx)
 
     movdqu -32(%rbp), %xmm0
-    movdqu %xmm0, -64(%rbp)
-    movq -64(%rbp), %rax
-    movq -56(%rbp), %rdx
+    movdqu %xmm0, -48(%rbp)
+    movq -48(%rbp), %rax
+    movq -40(%rbp), %rdx
     lea (%rbp), %rsp
     pop %rbp
     ret

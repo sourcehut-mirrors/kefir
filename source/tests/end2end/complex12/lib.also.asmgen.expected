@@ -14,13 +14,11 @@ __kefir_text_func_test32_begin:
     stmxcsr -8(%rbp)
     movaps %xmm0, %xmm1
     shufps $1, %xmm1, %xmm1
+    movd %xmm0, -24(%rbp)
+    movd %xmm1, -20(%rbp)
     leaq -16(%rbp), %rax
-    movd %xmm0, %ecx
-    movd %xmm1, %edx
-    shl $32, %rdx
-    or %rcx, %rdx
-    mov %rdx, -24(%rbp)
-movq -24(%rbp), %xmm0
+    leaq -24(%rbp), %rcx
+movq (%rcx), %xmm0
 shufps $1, %xmm0, %xmm0
 movq %xmm0, (%rax)
     movd -16(%rbp), %xmm0

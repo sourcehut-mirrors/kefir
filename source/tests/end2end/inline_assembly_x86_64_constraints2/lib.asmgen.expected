@@ -15,29 +15,25 @@ __kefir_text_func_test1_begin:
     push %r13
     push %r14
     push %r15
-    sub $56, %rsp
+    sub $40, %rsp
     stmxcsr -48(%rbp)
 _kefir_func_test1_label0:
     movq %xmm0, -64(%rbp)
     movq %rdi, -56(%rbp)
-    movq -56(%rbp), %rsi
-    movq -64(%rbp), %rdi
     movq -56(%rbp), %r8
     movq -64(%rbp), %r9
     movq -56(%rbp), %rax
     movq -64(%rbp), %rcx
     movq -56(%rbp), %rdx
+    movq -64(%rbp), %rsi
+    movq -56(%rbp), %rdi
     movq -64(%rbp), %r11
     movq -56(%rbp), %rbx
-    movq -64(%rbp), %r13
-    movq -56(%rbp), %r15
     movq -64(%rbp), %r12
-    movq -56(%rbp), %r14
-    movq -64(%rbp), %r10
-    movq %r10, -96(%rbp)
-    movq -56(%rbp), %r10
-    movq %r10, -88(%rbp)
-    movq -88(%rbp), %r10
+    movq -56(%rbp), %r13
+    movq -64(%rbp), %r14
+    movq -56(%rbp), %r15
+    mov %r15, %r10
     add $1, %r10
     movq %r10, -56(%rbp)
     movq -64(%rbp), %r10
@@ -63,25 +59,28 @@ _kefir_func_test1_label0:
     addsd %xmm1, %xmm0
     cvtsi2sd %rdx, %xmm1
     movaps %xmm1, %xmm6
-    movq %r11, %xmm1
+    movq %rsi, %xmm1
     mulsd %xmm1, %xmm6
-    cvtsi2sd %rbx, %xmm1
+    cvtsi2sd %rdi, %xmm1
     movaps %xmm1, %xmm7
-    movq %r13, %xmm1
+    movq %r11, %xmm1
     divsd %xmm1, %xmm7
-    neg %r15
-    cvtsi2sd %r15, %xmm1
+    neg %rbx
+    cvtsi2sd %rbx, %xmm1
     movq %r12, %xmm2
     subsd %xmm2, %xmm1
-    mov %r14, %rax
+    mov %r13, %rax
     neg %rax
     cvtsi2sd %rax, %xmm2
-    divsd -96(%rbp), %xmm2
+    movq %r14, %xmm4
+    divsd %xmm4, %xmm2
+    mov -56(%rbp), %rsi
+    mov -64(%rbp), %rdi
     movq %xmm3, %r9
     movq %xmm0, %r10
     movq %xmm6, %r12
     movq %xmm7, %r14
-    movq -88(%rbp), %xmm4
+    movq %r15, %xmm4
     movq -80(%rbp), %xmm5
 # %rsi, %rdi, %r8, %r9, %r10, %r12, %r14, %xmm1, %xmm2, %xmm4, %xmm5
     ldmxcsr -48(%rbp)

@@ -310,6 +310,10 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
                                               "Unexpected immediate inline assembly parameter type");
             }
             klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_IMMEDIATE;
+        } else if (constraints.memory_location && param->parameter->properties.expression_props.lvalue) {
+            param_value = --(*stack_slot_counter);
+            REQUIRE_OK(kefir_ast_translate_lvalue(mem, context, builder, param->parameter));
+            klass = KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD;
         }
 
         if (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ && !constraints.general_purpose_register &&
@@ -339,7 +343,7 @@ static kefir_result_t translate_inputs(struct kefir_mem *mem, const struct kefir
         });
         REQUIRE_OK(KEFIR_IRBUILDER_TYPE_FREE(&ir_type_builder));
 
-        if (ir_inline_asm_param == NULL && klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ) {
+        if (ir_inline_asm_param == NULL && (klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_READ || klass == KEFIR_IR_INLINE_ASSEMBLY_PARAMETER_LOAD)) {
             REQUIRE_OK(kefir_ir_inline_assembly_add_parameter(mem, context->ast_context->symbols, ir_inline_asm, name,
                                                               klass, &constraints, ir_type, ir_type_id, 0, param_value,
                                                               &ir_inline_asm_param));

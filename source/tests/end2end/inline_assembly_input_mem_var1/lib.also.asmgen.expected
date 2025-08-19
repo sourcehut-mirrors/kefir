@@ -1,0 +1,58 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global add
+.type add, @function
+.global add2
+.type add2, @function
+
+.section .text
+__kefir_text_section_begin:
+add:
+__kefir_text_func_add_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rsi, -8(%rbp)
+    pushfq
+    sub $8, %rsp
+    lea -8(%rbp), %rax
+    mov %rax, -16(%rbp)
+    mov -8(%rbp), %rax
+    mov %rdi, %rcx
+addq  %rax, (%rcx)
+    mov -16(%rbp), %rcx
+    mov %rax, (%rcx)
+    add $8, %rsp
+    popfq
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add_end:
+
+add2:
+__kefir_text_func_add2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rsi, -8(%rbp)
+    pushfq
+    sub $8, %rsp
+    lea -8(%rbp), %rax
+    mov %rax, -16(%rbp)
+    mov -8(%rbp), %rax
+    mov %rdi, %rcx
+addq  %rax, (%rcx)
+    mov -16(%rbp), %rcx
+    mov %rax, (%rcx)
+    add $8, %rsp
+    popfq
+    movq -8(%rbp), %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_add2_end:
+
+__kefir_text_section_end:
+

@@ -169,12 +169,6 @@
                     }
                 },
                 {
-                    "opcode": "int32_load",
-                    "memory_flags": {
-                        "volatile": false
-                    }
-                },
-                {
                     "opcode": "long_double_const",
                     "arg": 4.150000
                 },
@@ -296,7 +290,7 @@
                     "names": [
                         "2"
                     ],
-                    "class": "read",
+                    "class": "load",
                     "type": 6,
                     "type_index": 0,
                     "from": 1,
