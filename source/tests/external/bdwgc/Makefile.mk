@@ -1,0 +1,56 @@
+
+KEFIR_EXTERNAL_TEST_BDWGC_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/bdwgc
+
+KEFIR_EXTERNAL_TEST_BDWGC_VERSION := 8.2.8
+KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_FILENAME := gc-$(KEFIR_EXTERNAL_TEST_BDWGC_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE := $(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/$(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/gc-$(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)
+KEFIR_EXTERNAL_TEST_BDWGC_URL := https://github.com/bdwgc/bdwgc/releases/download/v$(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)/$(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_SHA256 := 7649020621cb26325e1fb5c8742590d92fb48ce5c259b502faf7d9fb5dabb160
+
+$(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_BDWGC_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BDWGC_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_DIR)" && tar xvf "$(KEFIR_EXTERNAL_TEST_BDWGC_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Build bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+ 		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/Makefile
+	@echo "Build bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+ 		CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/bdwgc/include.h" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)/libgc.la
+	@echo "Testing bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_BDWGC_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/bdwgc.test.done: $(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/bdwgc/validate.sh "$(KEFIR_EXTERNAL_TEST_BDWGC_DIR)/tests.log"
+	@touch "$@"
+	@echo "bdwgc $(KEFIR_EXTERNAL_TEST_BDWGC_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/bdwgc.test.done

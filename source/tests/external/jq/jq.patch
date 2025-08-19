@@ -1,0 +1,15 @@
+--- configure  2025-07-01 14:39:43.000000000 +0300
++++ configure       2025-08-19 14:40:59.578758544 +0300
+@@ -10757,9 +10757,9 @@
+ 
+ 
+ 
+-  lt_prog_compiler_wl=
+-lt_prog_compiler_pic=
+-lt_prog_compiler_static=
++  lt_prog_compiler_wl=-Wl,
++lt_prog_compiler_pic=-fPIC
++lt_prog_compiler_static=-static
+ 
+ 
+   if test yes = "$GCC"; then

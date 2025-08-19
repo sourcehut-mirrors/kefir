@@ -1,0 +1,69 @@
+
+KEFIR_EXTERNAL_TEST_FILE_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/file
+
+KEFIR_EXTERNAL_TEST_FILE_VERSION := 5_46
+KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_FILENAME := FILE$(KEFIR_EXTERNAL_TEST_FILE_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_FILE_ARCHIVE := $(KEFIR_EXTERNAL_TEST_FILE_DIR)/$(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_FILE_DIR)/file-FILE$(KEFIR_EXTERNAL_TEST_FILE_VERSION)
+KEFIR_EXTERNAL_TEST_FILE_URL := https://github.com/file/file/archive/refs/tags/$(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_SHA256 := 73c5f11a8edf0fded2fe3471b23a7fccb3f3369a13ea612529b869c8dc96aa2b
+
+$(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_FILE_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_FILE_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_FILE_ARCHIVE_FILENAME)"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/ltmain.sh: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Libtoolize file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		libtoolize
+
+$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/ltmain.sh
+	@echo "Autoconf file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		autoreconf -if
+
+$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/configure
+	@echo "Configuring file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/src/file: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/Makefile
+	@echo "Building file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_FILE_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)/src/file
+	@echo "Testing file $(KEFIR_EXTERNAL_TEST_FILE_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_FILE_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/file.test.done: $(KEFIR_EXTERNAL_TEST_FILE_DIR)/tests.log
+	@touch "$@"
+	@echo "file $(KEFIR_EXTERNAL_TEST_FILE_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/file.test.done

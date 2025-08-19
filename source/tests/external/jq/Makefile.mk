@@ -1,0 +1,56 @@
+
+KEFIR_EXTERNAL_TEST_JQ_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/jq
+
+KEFIR_EXTERNAL_TEST_JQ_VERSION := 1.8.1
+KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME := jq-$(KEFIR_EXTERNAL_TEST_JQ_VERSION).tar.gz
+KEFIR_EXTERNAL_TEST_JQ_ARCHIVE := $(KEFIR_EXTERNAL_TEST_JQ_DIR)/$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME)
+KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_JQ_DIR)/jq-$(KEFIR_EXTERNAL_TEST_JQ_VERSION)
+KEFIR_EXTERNAL_TEST_JQ_URL := https://github.com/jqlang/jq/releases/download/jq-$(KEFIR_EXTERNAL_TEST_JQ_VERSION)/$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME)
+
+KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_SHA256 := 2be64e7129cecb11d5906290eba10af694fb9e3e7f9fc208a311dc33ca837eb0
+
+$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE):
+	@mkdir -p $(dir $@)
+	@echo "Downloading $(KEFIR_EXTERNAL_TEST_JQ_URL)"
+	@wget -O "$@.tmp" "$(KEFIR_EXTERNAL_TEST_JQ_URL)"
+	@$(SCRIPTS_DIR)/checksum_sha256.sh "$@.tmp" "$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_SHA256)"
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE)
+	@echo "Extracting $(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_JQ_DIR)" && tar xvf "$(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME)"
+	@echo "Patching $(KEFIR_EXTERNAL_TEST_JQ_ARCHIVE_FILENAME)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && patch -p0 < "$(realpath $(SOURCE_DIR))/tests/external/jq/jq.patch"
+	@touch "$@"
+
+$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/.extracted $(KEFIR_EXE)
+	@echo "Building jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		./configure
+
+$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/jq: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/Makefile
+	@echo "Building jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		$(MAKE)
+
+$(KEFIR_EXTERNAL_TEST_JQ_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)/jq
+	@echo "Testing jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION)..."
+	@cd "$(KEFIR_EXTERNAL_TEST_JQ_SOURCE_DIR)" && \
+		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
+		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
+		CC="$(realpath $(KEFIR_EXE))" \
+		bash -c 'set -o pipefail; $(MAKE) check 2>&1 | tee "$(shell realpath "$@.tmp")"'
+	@mv "$@.tmp" "$@"
+
+$(KEFIR_EXTERNAL_TESTS_DIR)/jq.test.done: $(KEFIR_EXTERNAL_TEST_JQ_DIR)/tests.log
+	@$(SOURCE_DIR)/tests/external/jq/validate.sh "$(KEFIR_EXTERNAL_TEST_JQ_DIR)/tests.log"
+	@touch "$@"
+	@echo "jq $(KEFIR_EXTERNAL_TEST_JQ_VERSION) test successfully finished"
+
+EXTERNAL_TESTS_FAST_SUITE += $(KEFIR_EXTERNAL_TESTS_DIR)/jq.test.done

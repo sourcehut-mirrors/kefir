@@ -1,0 +1,11 @@
+--- library/aesni.h     2025-06-30 09:24:52.000000000 +0300
++++ library/aesni.h 2025-08-19 14:05:10.002082916 +0300
+@@ -52,7 +52,7 @@
+ #if defined(MBEDTLS_AESNI_HAVE_INTRINSICS)
+ #define MBEDTLS_AESNI_HAVE_CODE 2 // via intrinsics
+ #elif defined(MBEDTLS_HAVE_ASM) && \
+-    (defined(__GNUC__) || defined(__clang__)) && defined(MBEDTLS_ARCH_IS_X64)
++    (defined(__GNUC__) || defined(__clang__) || defined(__KEFIRCC__)) && defined(MBEDTLS_ARCH_IS_X64)
+ /* Can we do AESNI with inline assembly?
+  * (Only implemented with gas syntax, only for 64-bit.)
+  */
