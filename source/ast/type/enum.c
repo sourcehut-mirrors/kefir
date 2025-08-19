@@ -47,7 +47,7 @@ static kefir_bool_t same_enumeration_type(const struct kefir_ast_type *type1, co
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE(type1->enumeration_type.complete == type2->enumeration_type.complete, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
-                strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0,
+                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL && strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
             false);
     REQUIRE(type1->enumeration_type.flags.no_discard == type2->enumeration_type.flags.no_discard, false);
     REQUIRE(type1->enumeration_type.flags.deprecated == type2->enumeration_type.flags.deprecated, false);
@@ -86,7 +86,7 @@ static kefir_bool_t compatible_enumeration_types(const struct kefir_ast_type_tra
     }
     REQUIRE(type1->tag == KEFIR_AST_TYPE_ENUMERATION && type2->tag == KEFIR_AST_TYPE_ENUMERATION, false);
     REQUIRE((type1->enumeration_type.identifier == NULL && type2->enumeration_type.identifier == NULL) ||
-                strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0,
+                (type1->enumeration_type.identifier != NULL && type2->enumeration_type.identifier != NULL && strcmp(type1->enumeration_type.identifier, type2->enumeration_type.identifier) == 0),
             false);
     if (type1->enumeration_type.complete && type2->enumeration_type.complete) {
         REQUIRE(kefir_list_length(&type1->enumeration_type.enumerators) ==
