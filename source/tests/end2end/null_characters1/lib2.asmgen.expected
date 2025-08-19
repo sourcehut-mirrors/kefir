@@ -1,4 +1,4 @@
 
 
-char line[] = "abc";
+char line[] = "aÿbc";
 char chr = '\0';

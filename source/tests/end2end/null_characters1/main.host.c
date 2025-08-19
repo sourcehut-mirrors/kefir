@@ -27,9 +27,10 @@
 int main(void) {
     assert(chr == '\0');
     assert(line[0] == 'a');
-    assert(line[1] == 'b');
-    assert(line[2] == '\0');
-    assert(line[3] == 'c');
-    assert(line[4] == '\0');
+    assert(line[1] == (char) 0xff);
+    assert(line[2] == 'b');
+    assert(line[3] == '\0');
+    assert(line[4] == 'c');
+    assert(line[5] == '\0');
     return EXIT_SUCCESS;
 }
