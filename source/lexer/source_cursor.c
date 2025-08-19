@@ -32,6 +32,7 @@ kefir_result_t kefir_lexer_source_cursor_init(struct kefir_lexer_source_cursor *
     *cursor = (struct kefir_lexer_source_cursor){0};
     cursor->content = content;
     cursor->length = length;
+    cursor->carriage_return_char = U'\r';
     cursor->newline_char = U'\n';
     REQUIRE_OK(kefir_source_location_init(&cursor->location, source_id, 1, 1));
     return KEFIR_OK;
@@ -78,6 +79,23 @@ static kefir_char32_t at_impl(const struct kefir_lexer_source_cursor *cursor, ke
                             if (character2 == cursor->newline_char) {  // Skip line break
                                 index += rc;
                                 count++;
+                            } else if (character2 == cursor->carriage_return_char && cursor->index + rc < cursor->length) {
+                                mbstate_t mbstate2 = {0};
+                                kefir_size_t rc2 = mbrtoc32(&character2, cursor->content + index + rc, cursor->length - index - rc, &mbstate2);
+                                switch (rc2) {
+                                    case (size_t) -1:
+                                    case (size_t) -2:
+                                    case (size_t) -3:
+                                    case 0:
+                                        break;
+
+                                    default:
+                                        if (character2 == cursor->newline_char) {  // Skip line break
+                                            index += rc + rc2;
+                                            count++;
+                                        }
+                                        break;
+                                }
                             }
                             break;
                     }
@@ -145,6 +163,26 @@ static kefir_result_t next_impl(struct kefir_lexer_source_cursor *cursor, kefir_
                                     skip_line_break = true;
                                     cursor->location.column = 1;
                                     cursor->location.line++;
+                                } else if (character2 == cursor->carriage_return_char && cursor->index + rc < cursor->length) {
+                                    mbstate_t mbstate2 = {0};
+                                    kefir_size_t rc2 = mbrtoc32(&character2, cursor->content + cursor->index + rc, cursor->length - cursor->index, &mbstate2);
+                                    switch (rc2) {
+                                        case (size_t) -1:
+                                        case (size_t) -2:
+                                        case (size_t) -3:
+                                        case 0:
+                                            break;
+
+                                        default:
+                                            if (character2 == cursor->newline_char) {  // Skip line break
+                                                cursor->index += rc + rc2;
+                                                count++;
+                                                skip_line_break = true;
+                                                cursor->location.column = 1;
+                                                cursor->location.line++;
+                                            }
+                                            break;
+                                    }
                                 }
                                 break;
                         }

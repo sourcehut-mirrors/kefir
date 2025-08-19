@@ -31,6 +31,7 @@ typedef struct kefir_lexer_source_cursor {
     kefir_size_t length;
     mbstate_t mbstate;
     struct kefir_source_location location;
+    kefir_char32_t carriage_return_char;
     kefir_char32_t newline_char;
 } kefir_lexer_source_cursor_t;
 
