@@ -207,10 +207,6 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
     memset(value, 0, sizeof(struct kefir_ast_constant_expression_value));
     const struct kefir_ast_type *unqualified_destination_type = kefir_ast_unqualified_type(destination_type);
     const struct kefir_ast_type *unqualified_source_type = kefir_ast_unqualified_type(source_type);
-    if (KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified_destination_type, unqualified_source_type)) {
-        *value = *source;
-        return KEFIR_OK;
-    }
     if (unqualified_destination_type->tag == KEFIR_AST_TYPE_VOID) {
         value->klass = KEFIR_AST_CONSTANT_EXPRESSION_CLASS_NONE;
     } else if (KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_destination_type)) {
@@ -387,6 +383,8 @@ kefir_result_t kefir_ast_constant_expression_value_cast(struct kefir_mem *mem, c
         value->pointer.base.integral = 0;
         value->pointer.offset = 0;
         value->pointer.pointer_node = node;
+    } else if (KEFIR_AST_TYPE_COMPATIBLE(context->type_traits, unqualified_destination_type, unqualified_source_type)) {
+        *value = *source;
     } else {
         return KEFIR_SET_SOURCE_ERROR(KEFIR_NOT_CONSTANT, &node->source_location, "Expected constant expression");
     }
