@@ -85,7 +85,12 @@ Preprocess C-language source files, print results to standard output
 Preprocess C-language source files, print results to standard output
 .\"
 .It Fl std= Ar standard
-Determine language standard [work in progress].
+Determine language standard. For C23, supported values are: c23, c2x, gnu23, gnu2x, iso9899:2024.
+For C17 [default], any other value not listed for C23.
+.\"
+.It Fl x language
+Specify processing for the next input files. Supported values: none [default],
+c, c-header, cpp-output, assembler, assembler-with-cpp.
 .\"
 .It Fl preprocess\-save
 Preprocess C-language source files, save results

@@ -102,7 +102,7 @@ static kefir_result_t driver_handle_linker_argument(struct kefir_mem *mem, const
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
-        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
             assert(false);
@@ -375,7 +375,7 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY:
-        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+        case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT:
         case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_LIBRARY:
             if (strcmp(argument->value, "-") == 0) {
@@ -388,7 +388,7 @@ static kefir_result_t driver_update_compiler_config(struct kefir_compiler_runner
                 compiler_config->source_id = argument->value;
             }
 
-            if (argument->type == KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY) {
+            if (argument->type == KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING) {
                 compiler_config->preprocessor_assembly_mode = true;
             }
             break;
@@ -658,7 +658,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_st
                     REQUIRE_OK(kefir_driver_linker_configuration_add_argument(mem, linker_config, output_filename));
                     break;
 
-                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
                     REQUIRE_OK(generate_object_name(mem, externals, &output_filename));
                     REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config,
                                                               argument, output_filename));
@@ -707,7 +707,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_st
                     REQUIRE_OK(driver_assemble(mem, externals, assembler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
                     REQUIRE_OK(driver_preprocess_and_assemble(mem, externals, assembler_config, compiler_config,
                                                               argument, output_filename));
                     break;
@@ -748,7 +748,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_st
                     REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
                     REQUIRE_OK(driver_preprocess(compiler_config, argument, output_filename));
                     break;
 
@@ -804,7 +804,7 @@ static kefir_result_t driver_run_argument(struct kefir_mem *mem, struct kefir_st
                     REQUIRE_OK(driver_compile(compiler_config, argument, output_filename));
                     break;
 
-                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY:
+                case KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING:
                     REQUIRE_OK(driver_preprocess(compiler_config, argument, output_filename));
                     break;
 

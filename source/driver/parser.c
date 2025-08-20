@@ -91,7 +91,7 @@ static kefir_driver_argument_type_t detect_file_type(const struct kefir_driver_e
     } else if (check_suffixes(extension, externals->extensions.assembly_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY;
     } else if (check_suffixes(extension, externals->extensions.preprocessed_assembly_file)) {
-        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED_ASSEMBLY;
+        return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING;
     } else if (check_suffixes(extension, externals->extensions.object_file) ||
                check_suffixes(extension, externals->extensions.library_object_file)) {
         return KEFIR_DRIVER_ARGUMENT_INPUT_FILE_OBJECT;
@@ -115,6 +115,8 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
     REQUIRE(externals != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid driver external resources"));
     REQUIRE(command != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to driver command"));
 
+    kefir_bool_t override_file_type = false;
+    kefir_driver_argument_type_t overriden_arg_type = KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
     *command = KEFIR_DRIVER_COMMAND_RUN;
     for (kefir_size_t index = 0; index < argc; index++) {
         const char *arg = argv[index];
@@ -274,6 +276,32 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->compiler.char_signedness = KEFIR_DRIVER_CHAR_UNSIGNED;
         } else if (STRNCMP("-fsigned-char", arg) == 0) {
             config->compiler.char_signedness = KEFIR_DRIVER_CHAR_SIGNED;
+        } else if (STRNCMP("-x", arg) == 0) {
+            const char *language = NULL;
+            if (strlen(arg) == 2) {
+                EXPECT_ARG;
+                language = argv[++index];
+            } else {
+                language = &arg[2];
+            }
+
+            if (strcmp(language, "none") == 0) {
+                override_file_type = false;
+            } else if (strcmp(language, "c") == 0 || strcmp(language, "c-header") == 0) {
+                override_file_type = true;
+                overriden_arg_type = KEFIR_DRIVER_ARGUMENT_INPUT_FILE_CODE;
+            } else if (strcmp(language, "cpp-output") == 0) {
+                override_file_type = true;
+                overriden_arg_type = KEFIR_DRIVER_ARGUMENT_INPUT_FILE_PREPROCESSED;
+            } else if (strcmp(language, "assembler") == 0) {
+                override_file_type = true;
+                overriden_arg_type = KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY;
+            } else if (strcmp(language, "assembler-with-cpp") == 0) {
+                override_file_type = true;
+                overriden_arg_type = KEFIR_DRIVER_ARGUMENT_INPUT_FILE_ASSEMBLY_WITH_PREPROCESSING;
+            } else if (warning_output != NULL) {
+                fprintf(warning_output, "Warning: Unsupported language '%s'\n", language);
+            }
         }
 
         // Preprocessor flags
@@ -712,19 +740,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         }
 
         // Ignored unsupported flags
-        else if (STRNCMP("-x", arg) == 0) {
-            // Language: ignored
-            if (warning_output != NULL) {
-                fprintf(warning_output, "Warning: Unsupported command line option '%s'\n", arg);
-            }
-            if (strlen(arg) == 2) {
-                EXPECT_ARG;
-                ++index;
-            }
-        } else if (strcmp("-", arg) == 0) {
+        else if (strcmp("-", arg) == 0) {
             // Positional argument
             REQUIRE_OK(
-                kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(externals, arg)));
+                kefir_driver_configuration_add_argument(mem, symbols, config, arg, !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
         } else if (STRNCMP("-", arg) == 0 || STRNCMP("--", arg) == 0) {
             // All other non-positional arguments: ignored
             if (warning_output != NULL) {
@@ -735,7 +754,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         // Positional argument
         else {
             REQUIRE_OK(
-                kefir_driver_configuration_add_argument(mem, symbols, config, arg, detect_file_type(externals, arg)));
+                kefir_driver_configuration_add_argument(mem, symbols, config, arg, !override_file_type ? detect_file_type(externals, arg) : overriden_arg_type));
         }
 
 #undef EXPECT_ARG
