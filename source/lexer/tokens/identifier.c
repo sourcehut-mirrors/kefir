@@ -66,8 +66,13 @@ kefir_result_t kefir_lexer_scan_identifier_or_keyword(struct kefir_mem *mem, str
     REQUIRE_OK(scan_identifier_nondigit(cursor, &identifier[0]));
 
     kefir_size_t length = 1;
-    kefir_bool_t scan_identifier = mode != KEFIR_LEXER_ASSEMBLY_MODE || identifier[0] != U'$';
+    kefir_bool_t scan_identifier =
+        mode != KEFIR_LEXER_ASSEMBLY_MODE || (identifier[0] != U'$' && identifier[0] != U'@');
     for (; scan_identifier;) {
+        if (kefir_lexer_source_cursor_at(cursor, 0) == U'@' && mode == KEFIR_LEXER_ASSEMBLY_MODE) {
+            break;
+        }
+
         kefir_char32_t chr;
         kefir_result_t res = scan_identifier_digit(cursor, &chr);
         if (res == KEFIR_NO_MATCH) {
