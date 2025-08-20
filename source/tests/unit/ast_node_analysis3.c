@@ -227,10 +227,14 @@ DEFINE_CASE(ast_node_analysis_conditional_operator2, "AST node analysis - condit
             kefir_ast_new_type_name(&kft_mem, kefir_ast_declarator_identifier(&kft_mem, NULL, NULL));
         ASSERT_OK(kefir_ast_declarator_specifier_list_append(&kft_mem, &type_name1->type_decl.specifiers,
                                                              kefir_ast_type_specifier_void(&kft_mem)));
-        ASSERT_CONDITIONAL_NOK(&kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
+        ASSERT_CONDITIONAL(&kft_mem, context, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_bool(&kft_mem, true)),
                                KEFIR_AST_NODE_BASE(kefir_ast_new_cast_operator(
                                    &kft_mem, type_name1, KEFIR_AST_NODE_BASE(kefir_ast_new_constant_int(&kft_mem, 0)))),
-                               KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])));
+                               KEFIR_AST_NODE_BASE(make_constant(&kft_mem, TYPES[i])), true, {
+                ASSERT(KEFIR_AST_TYPE_SAME(
+                    oper->base.properties.type,
+                    kefir_ast_type_void()));
+        });
     }
 
     struct kefir_ast_type_name *type_name1 =

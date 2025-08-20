@@ -78,7 +78,7 @@ kefir_result_t kefir_ast_analyze_conditional_operator_node(struct kefir_mem *mem
                (type2->tag == KEFIR_AST_TYPE_STRUCTURE || type2->tag == KEFIR_AST_TYPE_UNION) &&
                KEFIR_AST_TYPE_SAME(type1, type2)) {
         base->properties.type = type1;
-    } else if (type1->tag == KEFIR_AST_TYPE_VOID && type2->tag == KEFIR_AST_TYPE_VOID) {
+    } else if (type1->tag == KEFIR_AST_TYPE_VOID || type2->tag == KEFIR_AST_TYPE_VOID) {
         base->properties.type = kefir_ast_type_void();
     } else {
         kefir_bool_t is_null1, is_null2;
