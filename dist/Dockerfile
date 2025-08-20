@@ -6,7 +6,7 @@ RUN apt install -y build-essential gcc-14 clang-16 groff m4
 # For musl builds
 RUN apt install -y musl-dev musl-tools
 # Test dependencies
-RUN apt install -y valgrind wget cmake git yasm nasm yacc libncurses-dev zlib1g-dev gettext file openssl libssl-dev unzip libpcre3 libpcre3-dev tcl8.6 tcl8.6-dev gcc-multilib man-db unminimize autoconf autopoint bison gperf texinfo libgmp-dev inotify-tools strace libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev
+RUN apt install -y valgrind wget cmake git yasm nasm yacc libncurses-dev zlib1g-dev gettext file openssl libssl-dev unzip libpcre3 libpcre3-dev tcl8.6 tcl8.6-dev gcc-multilib man-db unminimize autoconf autopoint bison gperf texinfo libgmp-dev inotify-tools strace libinotifytools0-dev libtool pkg-config libsqlite3-dev flex libreadline-dev libfont-ttf-perl libsort-versions-perl fonts-liberation libtool-bin libunistring-dev libgc-dev libglib2.0-dev-bin dejagnu locales rake python3-dev libyaml-dev libgtest-dev libevent-dev
 
 # Prepare the system
 RUN yes | unminimize
