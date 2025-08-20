@@ -1,13 +1,13 @@
 
 KEFIR_EXTERNAL_TEST_OPENSSH_DIR := $(KEFIR_EXTERNAL_TESTS_DIR)/openssh
 
-KEFIR_EXTERNAL_TEST_OPENSSH_VERSION := 9.9p1
+KEFIR_EXTERNAL_TEST_OPENSSH_VERSION := 10.0p1
 KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_FILENAME := openssh-$(KEFIR_EXTERNAL_TEST_OPENSSH_VERSION).tar.gz
 KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE := $(KEFIR_EXTERNAL_TEST_OPENSSH_DIR)/$(KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_FILENAME)
 KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR := $(KEFIR_EXTERNAL_TEST_OPENSSH_DIR)/openssh-$(KEFIR_EXTERNAL_TEST_OPENSSH_VERSION)
-KEFIR_EXTERNAL_TEST_OPENSSH_URL := https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/openssh-9.9p1.tar.gz
+KEFIR_EXTERNAL_TEST_OPENSSH_URL := https://cdn.openbsd.org/pub/OpenBSD/OpenSSH/portable/$(KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_FILENAME)
 
-KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_SHA256 := b343fbcdbff87f15b1986e6e15d6d4fc9a7d36066be6b7fb507087ba8f966c02
+KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_SHA256 := 021a2e709a0edf4250b1256bd5a9e500411a90dddabea830ed59cef90eb9d85c
 
 $(KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE):
 	@mkdir -p $(dir $@)
@@ -20,9 +20,11 @@ $(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_OPEN
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_OPENSSH_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_OPENSSH_ARCHIVE_FILENAME)"
 	@echo "Patching OpenSSH $(KEFIR_EXTERNAL_TEST_OPENSSH_VERSION) test suite..."
-# These tests fail when CWD is long for some reason
+# These tests fail when CWD is long: "path ... too long for Unix domain socket"
 	@patch -l "$(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/regress/channel-timeout.sh" < "$(SOURCE_DIR)/tests/external/openssh/channel-timeout.patch"
 	@patch -l "$(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/regress/penalty-expire.sh" < "$(SOURCE_DIR)/tests/external/openssh/penalty-expire.patch"
+	@patch -l "$(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/regress/forward-control.sh" < "$(SOURCE_DIR)/tests/external/openssh/forward-control.patch"
+	@patch -l "$(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/regress/connection-timeout.sh" < "$(SOURCE_DIR)/tests/external/openssh/connection-timeout.patch"
 	@touch "$@"
 
 $(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_OPENSSH_SOURCE_DIR)/.extracted $(KEFIR_EXE)

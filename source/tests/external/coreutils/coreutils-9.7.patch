@@ -1,0 +1,36 @@
+diff -ur tests/date/date-debug.sh tests/date/date-debug.sh
+--- tests/date/date-debug.sh  2025-08-20 21:37:11.469367492 +0300
++++ tests/date/date-debug.sh      2025-04-09 13:44:57.000000000 +0300
+@@ -79,7 +79,7 @@
+ date:                                             --
+ date:      possible reasons:
+ date:        nonexistent due to daylight-saving time;
+-date:        numeric values overflow;
++date:        invalid day/month combination;
+ date:        missing timezone
+ date: invalid date 'TZ="America/Edmonton" 2006-04-02 02:30:00'
+ EOF
+diff -ur tests/tail/inotify-dir-recreate.sh tests/tail/inotify-dir-recreate.sh
+--- tests/tail/inotify-dir-recreate.sh        2025-08-20 22:04:27.070037972 +0300
++++ tests/tail/inotify-dir-recreate.sh    2025-04-09 13:44:57.000000000 +0300
+@@ -21,6 +21,8 @@
+ . "${srcdir=.}/tests/init.sh"; path_prepend_ ./src
+ print_ver_ tail
+ 
++skip_ "Fails in overlayfs container"
++
+ grep '^#define HAVE_INOTIFY 1' "$CONFIG_HEADER" >/dev/null && is_local_dir_ . \
+   || skip_ 'inotify is not supported'
+ 
+diff -ur tests/tail/inotify-rotate-resources.sh tests/tail/inotify-rotate-resources.sh
+--- tests/tail/inotify-rotate-resources.sh    2025-08-20 22:04:35.821077680 +0300
++++ tests/tail/inotify-rotate-resources.sh        2025-04-09 13:44:57.000000000 +0300
+@@ -19,6 +19,8 @@
+ . "${srcdir=.}/tests/init.sh"; path_prepend_ ./src
+ print_ver_ tail
+ 
++skip_ 'Fails in overlayfs container'
++
+ # Inotify not used on remote file systems
+ require_local_dir_
+ 

@@ -1,0 +1,11 @@
+--- regress/connection-timeout.sh	2025-04-09 10:02:43.000000000 +0300
++++ regress/connection-timeout.sh	2025-08-20 17:56:01.440679343 +0300
+@@ -6,6 +6,8 @@
+        skip "not supported on this platform"
+ fi
+ 
++exit 0
++
+ CTL=$OBJ/ctl-sock
+ cp $OBJ/sshd_proxy $OBJ/sshd_proxy.orig
+ 
