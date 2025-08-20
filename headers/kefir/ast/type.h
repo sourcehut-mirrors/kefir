@@ -153,6 +153,17 @@ typedef enum kefir_ast_type_data_model_classification {
 kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_traits *, const struct kefir_ast_type *,
                                                   kefir_ast_type_data_model_classification_t *);
 
-kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *, struct kefir_ast_type_bundle *, kefir_c_language_standard_version_t, const struct kefir_ast_type *, const struct kefir_ast_type_qualification *, const struct kefir_ast_type **);
+kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *, struct kefir_ast_type_bundle *,
+                                                  kefir_c_language_standard_version_t, const struct kefir_ast_type *,
+                                                  const struct kefir_ast_type_qualification *,
+                                                  const struct kefir_ast_type **);
+const struct kefir_ast_type *kefir_ast_type_traits_quarter_integer_type(const struct kefir_ast_type_traits *,
+                                                                        kefir_bool_t);
+const struct kefir_ast_type *kefir_ast_type_traits_half_integer_type(const struct kefir_ast_type_traits *,
+                                                                     kefir_bool_t);
+const struct kefir_ast_type *kefir_ast_type_traits_single_integer_type(const struct kefir_ast_type_traits *,
+                                                                       kefir_bool_t);
+const struct kefir_ast_type *kefir_ast_type_traits_double_integer_type(const struct kefir_ast_type_traits *,
+                                                                       kefir_bool_t);
 
 #endif

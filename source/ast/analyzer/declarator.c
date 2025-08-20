@@ -34,11 +34,11 @@
 #include "kefir/core/source_error.h"
 
 const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[] = {
-    "aligned",           "__aligned__",       "gnu_inline",     "__gnu_inline__", "always_inline",
-    "__always_inline__", "noinline",          "__noinline__",   "noipa",          "__noipa__",
-    "returns_twice",     "__returns_twice__", "weak",           "__weak__",       "alias",
-    "__alias__",         "visibility",        "__visibility__", "constructor",    "__constructor__",
-    "destructor",        "__destructor__",    "packed",         "__packed__",     NULL};
+    "aligned",     "__aligned__",     "gnu_inline", "__gnu_inline__", "always_inline", "__always_inline__",
+    "noinline",    "__noinline__",    "noipa",      "__noipa__",      "returns_twice", "__returns_twice__",
+    "weak",        "__weak__",        "alias",      "__alias__",      "visibility",    "__visibility__",
+    "constructor", "__constructor__", "destructor", "__destructor__", "packed",        "__packed__",
+    "mode",        "__mode__",        NULL};
 
 const struct kefir_declarator_analyzer_std_attribute_descriptor KEFIR_DECLARATOR_ANALYZER_SUPPORTED_STD_ATTRIBUTES[] = {
     {"deprecated", KEFIR_C23_STANDARD_VERSION},       {"__deprecated__", KEFIR_C23_STANDARD_VERSION},
@@ -1705,6 +1705,104 @@ static kefir_result_t analyze_declaration_declarator_attributes(
                     // Intentionally left blank
                 } else if (strcmp(attribute->name, "weak") == 0 || strcmp(attribute->name, "__weak__") == 0) {
                     attributes->weak = true;
+                } else if (strcmp(attribute->name, "mode") == 0 || strcmp(attribute->name, "__mode__") == 0) {
+                    const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
+                    REQUIRE(parameter != NULL && parameter->value,
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected mode attribute to have identifier parameter"));
+                    ASSIGN_DECL_CAST(struct kefir_ast_node_base *, parameter_node, parameter->value);
+                    struct kefir_ast_identifier *mode_identifier_node;
+                    REQUIRE_OK(kefir_ast_downcast_identifier(parameter_node, &mode_identifier_node, false));
+                    const char *mode_identifier = mode_identifier_node->identifier;
+
+                    const struct kefir_ast_type *unqualified_base_type = kefir_ast_unqualified_type(*base_type);
+                    const struct kefir_ast_type *new_base_type = NULL;
+                    if (strcmp(mode_identifier, "QI") == 0 || strcmp(mode_identifier, "byte") == 0 ||
+                        strcmp(mode_identifier, "__byte__") == 0) {
+                        REQUIRE(
+                            KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_base_type),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected QI mode attribute to be applied to an integral variable"));
+                        kefir_bool_t signed_type;
+                        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_base_type, &signed_type));
+                        new_base_type = kefir_ast_type_traits_quarter_integer_type(context->type_traits, signed_type);
+                        REQUIRE(new_base_type != NULL,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve quarter-integer type"));
+                    } else if (strcmp(mode_identifier, "HI") == 0) {
+                        REQUIRE(
+                            KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_base_type),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected HI mode attribute to be applied to an integral variable"));
+                        kefir_bool_t signed_type;
+                        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_base_type, &signed_type));
+                        new_base_type = kefir_ast_type_traits_half_integer_type(context->type_traits, signed_type);
+                        REQUIRE(new_base_type != NULL,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve half-integer type"));
+                    } else if (strcmp(mode_identifier, "SI") == 0) {
+                        REQUIRE(
+                            KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_base_type),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected SI mode attribute to be applied to an integral variable"));
+                        kefir_bool_t signed_type;
+                        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_base_type, &signed_type));
+                        new_base_type = kefir_ast_type_traits_single_integer_type(context->type_traits, signed_type);
+                        REQUIRE(new_base_type != NULL,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve single-integer type"));
+                    } else if (strcmp(mode_identifier, "DI") == 0) {
+                        REQUIRE(
+                            KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_base_type),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected DI mode attribute to be applied to an integral variable"));
+                        kefir_bool_t signed_type;
+                        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_base_type, &signed_type));
+                        new_base_type = kefir_ast_type_traits_double_integer_type(context->type_traits, signed_type);
+                        REQUIRE(new_base_type != NULL,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve double-integer type"));
+                    } else if (strcmp(mode_identifier, "word") == 0 || strcmp(mode_identifier, "__word__") == 0 ||
+                               strcmp(mode_identifier, "pointer") == 0 || strcmp(mode_identifier, "__pointer__") == 0) {
+                        REQUIRE(
+                            KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_base_type),
+                            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                                   "Expected DI mode attribute to be applied to an integral variable"));
+                        kefir_bool_t signed_type;
+                        REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, unqualified_base_type, &signed_type));
+                        new_base_type = context->type_traits->uintptr_type;
+                        if (signed_type) {
+                            new_base_type = kefir_ast_type_flip_integer_singedness(context->type_traits, new_base_type);
+                        }
+                        REQUIRE(new_base_type != NULL,
+                                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve double-integer type"));
+                    } else if (strcmp(mode_identifier, "SF") == 0) {
+                        REQUIRE(KEFIR_AST_TYPE_IS_FLOATING_POINT(unqualified_base_type),
+                                KEFIR_SET_SOURCE_ERROR(
+                                    KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                    "Expected SF mode attribute to be applied to a scalar floating-point variable"));
+                        new_base_type = kefir_ast_type_float();
+                    } else if (strcmp(mode_identifier, "DF") == 0) {
+                        REQUIRE(KEFIR_AST_TYPE_IS_FLOATING_POINT(unqualified_base_type),
+                                KEFIR_SET_SOURCE_ERROR(
+                                    KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                    "Expected DF mode attribute to be applied to a scalar floating-point variable"));
+                        new_base_type = kefir_ast_type_double();
+                    } else if (strcmp(mode_identifier, "XF") == 0) {
+                        REQUIRE(KEFIR_AST_TYPE_IS_FLOATING_POINT(unqualified_base_type),
+                                KEFIR_SET_SOURCE_ERROR(
+                                    KEFIR_ANALYSIS_ERROR, &declarator->source_location,
+                                    "Expected XF mode attribute to be applied to a scalar floating-point variable"));
+                        new_base_type = kefir_ast_type_long_double();
+                    }
+
+                    if (new_base_type != NULL) {
+                        struct kefir_ast_type_qualification qualifiations;
+                        REQUIRE_OK(kefir_ast_type_retrieve_qualifications(&qualifiations, *base_type));
+                        if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualifiations)) {
+                            new_base_type =
+                                kefir_ast_type_qualified(mem, context->type_bundle, new_base_type, qualifiations);
+                        }
+
+                        *base_type = new_base_type;
+                    }
+
                 } else if (strcmp(attribute->name, "alias") == 0 || strcmp(attribute->name, "__alias__") == 0) {
                     const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
                     REQUIRE(
@@ -1911,12 +2009,15 @@ static kefir_result_t analyze_declaration_specifiers_impl(
     if (!KEFIR_AST_TYPE_IS_ZERO_QUALIFICATION(&qualification)) {
         const struct kefir_ast_type *unqualified_base_type = kefir_ast_unqualified_type(base_type);
         if (qualification.atomic_type) {
-            REQUIRE(unqualified_base_type->tag != KEFIR_AST_TYPE_FUNCTION && unqualified_base_type->tag != KEFIR_AST_TYPE_ARRAY,
+            REQUIRE(unqualified_base_type->tag != KEFIR_AST_TYPE_FUNCTION &&
+                        unqualified_base_type->tag != KEFIR_AST_TYPE_ARRAY,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, source_location,
                                            "Function and array types cannot be atomic"));
         }
 
-        REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->type_bundle, context->configuration->standard_version, base_type, &qualification, &base_type));
+        REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->type_bundle,
+                                                      context->configuration->standard_version, base_type,
+                                                      &qualification, &base_type));
     }
 
     ASSIGN_PTR(type, base_type);

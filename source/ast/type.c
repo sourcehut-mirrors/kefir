@@ -571,7 +571,11 @@ kefir_result_t kefir_ast_type_data_model_classify(const struct kefir_ast_type_tr
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle, kefir_c_language_standard_version_t standard_version, const struct kefir_ast_type *original_type, const struct kefir_ast_type_qualification *qualifications, const struct kefir_ast_type **type_ptr) {
+kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *mem, struct kefir_ast_type_bundle *type_bundle,
+                                                  kefir_c_language_standard_version_t standard_version,
+                                                  const struct kefir_ast_type *original_type,
+                                                  const struct kefir_ast_type_qualification *qualifications,
+                                                  const struct kefir_ast_type **type_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(type_bundle != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type bundle"));
     REQUIRE(original_type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
@@ -582,14 +586,16 @@ kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *mem, struct 
         return KEFIR_OK;
     }
 
-
     const struct kefir_ast_type *unqualified_original_type = kefir_ast_unqualified_type(original_type);
     struct kefir_ast_type_qualification original_type_qualifications = {0}, merged_type_qualifications = {0};
     REQUIRE_OK(kefir_ast_type_retrieve_qualifications(&original_type_qualifications, original_type));
-    REQUIRE_OK(kefir_ast_type_merge_qualifications(&merged_type_qualifications, &original_type_qualifications, qualifications));
+    REQUIRE_OK(kefir_ast_type_merge_qualifications(&merged_type_qualifications, &original_type_qualifications,
+                                                   qualifications));
     if (unqualified_original_type->tag == KEFIR_AST_TYPE_ARRAY) {
-        original_type = kefir_ast_type_array_with_element_type(mem, type_bundle, &unqualified_original_type->array_type,
-            kefir_ast_type_qualified(mem, type_bundle, original_type->array_type.element_type, merged_type_qualifications));
+        original_type = kefir_ast_type_array_with_element_type(
+            mem, type_bundle, &unqualified_original_type->array_type,
+            kefir_ast_type_qualified(mem, type_bundle, original_type->array_type.element_type,
+                                     merged_type_qualifications));
         REQUIRE(original_type != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate array type"));
         if (KEFIR_STANDARD_VERSION_AT_LEAST_C23(standard_version)) {
             original_type = kefir_ast_type_qualified(mem, type_bundle, original_type, merged_type_qualifications);
@@ -600,4 +606,72 @@ kefir_result_t kefir_ast_type_apply_qualification(struct kefir_mem *mem, struct 
 
     *type_ptr = original_type;
     return KEFIR_OK;
+}
+
+const struct kefir_ast_type *kefir_ast_type_traits_quarter_integer_type(const struct kefir_ast_type_traits *type_traits,
+                                                                        kefir_bool_t signed_type) {
+    REQUIRE(type_traits != NULL, NULL);
+
+#define MATCH_WIDTH(_width)                                                            \
+    do {                                                                               \
+        if (type_traits->data_model->scalar_width.char_bits == (_width)) {             \
+            if (signed_type) {                                                         \
+                return kefir_ast_type_signed_char();                                   \
+            } else {                                                                   \
+                return kefir_ast_type_unsigned_char();                                 \
+            }                                                                          \
+        } else if (type_traits->data_model->scalar_width.short_bits == (_width)) {     \
+            if (signed_type) {                                                         \
+                return kefir_ast_type_signed_short();                                  \
+            } else {                                                                   \
+                return kefir_ast_type_unsigned_short();                                \
+            }                                                                          \
+        } else if (type_traits->data_model->scalar_width.int_bits == (_width)) {       \
+            if (signed_type) {                                                         \
+                return kefir_ast_type_signed_int();                                    \
+            } else {                                                                   \
+                return kefir_ast_type_unsigned_int();                                  \
+            }                                                                          \
+        } else if (type_traits->data_model->scalar_width.long_bits == (_width)) {      \
+            if (signed_type) {                                                         \
+                return kefir_ast_type_signed_long();                                   \
+            } else {                                                                   \
+                return kefir_ast_type_unsigned_long();                                 \
+            }                                                                          \
+        } else if (type_traits->data_model->scalar_width.long_long_bits == (_width)) { \
+            if (signed_type) {                                                         \
+                return kefir_ast_type_signed_long_long();                              \
+            } else {                                                                   \
+                return kefir_ast_type_unsigned_long_long();                            \
+            }                                                                          \
+        }                                                                              \
+    } while (false)
+
+    MATCH_WIDTH(8);
+    return NULL;
+}
+
+const struct kefir_ast_type *kefir_ast_type_traits_half_integer_type(const struct kefir_ast_type_traits *type_traits,
+                                                                     kefir_bool_t signed_type) {
+    REQUIRE(type_traits != NULL, NULL);
+
+    MATCH_WIDTH(16);
+    return NULL;
+}
+
+const struct kefir_ast_type *kefir_ast_type_traits_single_integer_type(const struct kefir_ast_type_traits *type_traits,
+                                                                       kefir_bool_t signed_type) {
+    REQUIRE(type_traits != NULL, NULL);
+
+    MATCH_WIDTH(32);
+    return NULL;
+}
+
+const struct kefir_ast_type *kefir_ast_type_traits_double_integer_type(const struct kefir_ast_type_traits *type_traits,
+                                                                       kefir_bool_t signed_type) {
+    REQUIRE(type_traits != NULL, NULL);
+
+    MATCH_WIDTH(64);
+#undef MATCH_WIDTH
+    return NULL;
 }

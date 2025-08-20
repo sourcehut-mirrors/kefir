@@ -1,0 +1,147 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global i8_1
+.type i8_1, @object
+.global i8_2
+.type i8_2, @object
+.global i8_3
+.type i8_3, @object
+.global u8_1
+.type u8_1, @object
+.global u8_2
+.type u8_2, @object
+.global u8_3
+.type u8_3, @object
+.global f32_1
+.type f32_1, @object
+.global f64_1
+.type f64_1, @object
+.global f80_1
+.type f80_1, @object
+.global i16_1
+.type i16_1, @object
+.global i32_1
+.type i32_1, @object
+.global i64_1
+.type i64_1, @object
+.global ptr_1
+.type ptr_1, @object
+.global ptr_2
+.type ptr_2, @object
+.global u16_1
+.type u16_1, @object
+.global u32_1
+.type u32_1, @object
+.global u64_1
+.type u64_1, @object
+.global test1
+.type test1, @object
+.global uptr_1
+.type uptr_1, @object
+.global uptr_2
+.type uptr_2, @object
+.global word_1
+.type word_1, @object
+.global word_2
+.type word_2, @object
+.global uword_1
+.type uword_1, @object
+.global uword_2
+.type uword_2, @object
+
+.section .text
+__kefir_text_section_begin:
+__kefir_text_section_end:
+
+.section .bss
+i8_1:
+    .skip 1
+
+i8_2:
+    .skip 1
+
+i8_3:
+    .skip 1
+
+u8_1:
+    .skip 1
+
+u8_2:
+    .skip 1
+
+u8_3:
+    .skip 1
+
+    .align 4
+f32_1:
+    .skip 4
+
+    .align 8
+f64_1:
+    .skip 8
+
+    .align 16
+f80_1:
+    .skip 16
+
+    .align 2
+i16_1:
+    .skip 2
+
+    .align 4
+i32_1:
+    .skip 4
+
+    .align 8
+i64_1:
+    .skip 8
+
+    .align 8
+ptr_1:
+    .skip 8
+
+    .align 8
+ptr_2:
+    .skip 8
+
+    .align 2
+u16_1:
+    .skip 2
+
+    .align 4
+u32_1:
+    .skip 4
+
+    .align 8
+u64_1:
+    .skip 8
+
+    .align 8
+test1:
+    .skip 8
+
+    .align 8
+uptr_1:
+    .skip 8
+
+    .align 8
+uptr_2:
+    .skip 8
+
+    .align 8
+word_1:
+    .skip 8
+
+    .align 8
+word_2:
+    .skip 8
+
+    .align 8
+uword_1:
+    .skip 8
+
+    .align 8
+uword_2:
+    .skip 8
+

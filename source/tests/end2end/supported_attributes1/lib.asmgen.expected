@@ -1,9 +1,11 @@
 
+mode
 weak
 alias
 noipa
 packed
 aligned
+__mode__
 __weak__
 noinline
 __alias__
