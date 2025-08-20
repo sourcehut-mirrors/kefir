@@ -70,6 +70,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
                                                        struct kefir_ast_function_declaration_context *context,
                                                        const char *identifier, const struct kefir_ast_type *type,
                                                        kefir_ast_scoped_identifier_storage_t storage_class,
+                                                       struct kefir_ast_alignment *alignment,
                                                        const struct kefir_ast_declarator_attributes *attributes,
                                                        const struct kefir_source_location *location,
                                                        const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
@@ -80,7 +81,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
 
     if (context->function_definition_context) {
         REQUIRE_OK(context->parent->define_identifier(mem, context->parent, true, identifier, type, storage_class,
-                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, NULL, NULL, attributes, location,
+                                                      KEFIR_AST_FUNCTION_SPECIFIER_NONE, alignment, NULL, attributes, location,
                                                       scoped_id_ptr));
     } else {
         struct kefir_ast_scoped_identifier *scoped_id = NULL;
@@ -91,7 +92,7 @@ static kefir_result_t scoped_context_define_identifier(struct kefir_mem *mem,
         } else {
             REQUIRE(res == KEFIR_NOT_FOUND, res);
             scoped_id = kefir_ast_context_allocate_scoped_object_identifier(
-                mem, type, &context->ordinary_scope, storage_class, NULL, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
+                mem, type, &context->ordinary_scope, storage_class, alignment, KEFIR_AST_SCOPED_IDENTIFIER_NONE_LINKAGE,
                 false, NULL, NULL, location);
             REQUIRE(scoped_id != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocted AST scoped identifier"));
@@ -327,12 +328,10 @@ static kefir_result_t context_define_identifier(
     struct kefir_ast_initializer *initializer, const struct kefir_ast_declarator_attributes *attributes,
     const struct kefir_source_location *location, const struct kefir_ast_scoped_identifier **scoped_id) {
     UNUSED(attributes);
+    UNUSED(alignment);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
     REQUIRE(type != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST type"));
-    REQUIRE(alignment == NULL,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
-                                   "Alignment specifier is not permitted in the declaration of function"));
     REQUIRE(declaration && initializer == NULL,
             KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                    "Initializer is not permitted in the declaration of function"));
@@ -355,7 +354,7 @@ static kefir_result_t context_define_identifier(
 
         case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_REGISTER:
             if (identifier != NULL) {
-                REQUIRE_OK(scoped_context_define_identifier(mem, fn_ctx, identifier, adjusted_type, storage_class, attributes,
+                REQUIRE_OK(scoped_context_define_identifier(mem, fn_ctx, identifier, adjusted_type, storage_class, alignment, attributes,
                                                             location, scoped_id));
             }
             break;
