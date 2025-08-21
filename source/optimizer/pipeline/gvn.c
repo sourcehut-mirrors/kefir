@@ -23,6 +23,7 @@
 #include "kefir/optimizer/code_util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/core/hash.h"
 #include <string.h>
 
 struct gvn_state {
@@ -40,16 +41,6 @@ struct gvn_state {
 struct gvn_instr_list {
     struct kefir_list instr_refs;
 };
-
-#define MAGIC1 0x9e3779b97f4a7c15ull
-#define MAGIC2 0xbf58476d1ce4e5b9ull
-#define MAGIC3 0x94d049bb133111ebull
-static kefir_uint64_t splitmix64(kefir_uint64_t value) {
-    value += MAGIC1;
-    value = (value ^ (value >> 30)) * MAGIC2;
-    value = (value ^ (value >> 27)) * MAGIC3;
-    return value ^ (value >> 31);
-}
 
 static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *instr) {
     kefir_uint64_t hash = 0;
@@ -87,9 +78,9 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_INT16_BOOL_AND:
         case KEFIR_OPT_OPCODE_INT32_BOOL_AND:
         case KEFIR_OPT_OPCODE_INT64_BOOL_AND:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC1);
-            hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC2);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_ADD:
@@ -99,10 +90,10 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_BITINT_OR:
         case KEFIR_OPT_OPCODE_BITINT_XOR:
         case KEFIR_OPT_OPCODE_BITINT_EQUAL:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.bitwidth + MAGIC1);
-            hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC2);
-            hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + MAGIC3);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) + KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_SUB:
@@ -137,9 +128,9 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_INT16_ARSHIFT:
         case KEFIR_OPT_OPCODE_INT32_ARSHIFT:
         case KEFIR_OPT_OPCODE_INT64_ARSHIFT:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
-            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_SUB:
@@ -148,24 +139,24 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_BITINT_ARSHIFT:
         case KEFIR_OPT_OPCODE_BITINT_LESS:
         case KEFIR_OPT_OPCODE_BITINT_BELOW:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.bitwidth);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
-            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC3);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_GREATER:
-            hash += splitmix64(KEFIR_OPT_OPCODE_BITINT_LESS);
-            hash ^= splitmix64(instr->operation.parameters.bitwidth);
-            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC3);
+            hash += kefir_splitmix64(KEFIR_OPT_OPCODE_BITINT_LESS);
+            hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_ABOVE:
-            hash += splitmix64(KEFIR_OPT_OPCODE_BITINT_BELOW);
-            hash ^= splitmix64(instr->operation.parameters.bitwidth);
-            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC3);
+            hash += kefir_splitmix64(KEFIR_OPT_OPCODE_BITINT_BELOW);
+            hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         case KEFIR_OPT_OPCODE_INT8_NOT:
@@ -190,8 +181,8 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_8BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_16BITS:
         case KEFIR_OPT_OPCODE_INT64_SIGN_EXTEND_32BITS:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC1);
             break;
 
         case KEFIR_OPT_OPCODE_BITINT_GET_UNSIGNED:
@@ -208,13 +199,13 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_CLRSB:
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_POPCOUNT:
         case KEFIR_OPT_OPCODE_BITINT_BUILTIN_PARITY:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.bitwidth + MAGIC1);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.bitwidth + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_SCALAR_COMPARE:
-            hash += splitmix64(instr->operation.opcode);
+            hash += kefir_splitmix64(instr->operation.opcode);
             switch (instr->operation.parameters.comparison) {
                 case KEFIR_OPT_COMPARISON_INT8_EQUALS:
                 case KEFIR_OPT_COMPARISON_INT16_EQUALS:
@@ -224,12 +215,12 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
                 case KEFIR_OPT_COMPARISON_INT16_NOT_EQUALS:
                 case KEFIR_OPT_COMPARISON_INT32_NOT_EQUALS:
                 case KEFIR_OPT_COMPARISON_INT64_NOT_EQUALS:
-                    hash += splitmix64(instr->operation.opcode);
-                    hash ^= splitmix64(instr->operation.parameters.comparison + MAGIC1);
-                    hash ^= splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
-                                       MAGIC2);
-                    hash ^= splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
-                                       MAGIC3);
+                    hash += kefir_splitmix64(instr->operation.opcode);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.comparison + KEFIR_SPLITMIX64_MAGIC1);
+                    hash ^= kefir_splitmix64(MIN(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                       KEFIR_SPLITMIX64_MAGIC2);
+                    hash ^= kefir_splitmix64(MAX(instr->operation.parameters.refs[0], instr->operation.parameters.refs[1]) +
+                                       KEFIR_SPLITMIX64_MAGIC3);
                     break;
 
                 case KEFIR_OPT_COMPARISON_INT8_GREATER:
@@ -251,39 +242,39 @@ static kefir_uint64_t hash_instruction_impl(const struct kefir_opt_instruction *
                     kefir_opt_comparison_operation_t reciprocal;
                     REQUIRE_OK(
                         kefir_opt_comparison_operation_reciprocal(instr->operation.parameters.comparison, &reciprocal));
-                    hash ^= splitmix64(reciprocal + MAGIC1);
-                    hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
-                    hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC3);
+                    hash ^= kefir_splitmix64(reciprocal + KEFIR_SPLITMIX64_MAGIC1);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC2);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC3);
                 } break;
 
                 default:
-                    hash ^= splitmix64(instr->operation.parameters.comparison + MAGIC1);
-                    hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC2);
-                    hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC3);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.comparison + KEFIR_SPLITMIX64_MAGIC1);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC2);
+                    hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC3);
                     break;
             }
             break;
 
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_SIGNED:
         case KEFIR_OPT_OPCODE_BITS_EXTRACT_UNSIGNED:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
-            hash ^= splitmix64(
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(
                 ((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) +
-                MAGIC2);
+                KEFIR_SPLITMIX64_MAGIC2);
             break;
 
         case KEFIR_OPT_OPCODE_BITS_INSERT:
-            hash += splitmix64(instr->operation.opcode);
-            hash ^= splitmix64(instr->operation.parameters.refs[0] + MAGIC1);
-            hash ^= splitmix64(instr->operation.parameters.refs[1] + MAGIC2);
-            hash ^= splitmix64(
+            hash += kefir_splitmix64(instr->operation.opcode);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[0] + KEFIR_SPLITMIX64_MAGIC1);
+            hash ^= kefir_splitmix64(instr->operation.parameters.refs[1] + KEFIR_SPLITMIX64_MAGIC2);
+            hash ^= kefir_splitmix64(
                 ((instr->operation.parameters.bitfield.offset << 32) | instr->operation.parameters.bitfield.length) +
-                MAGIC3);
+                KEFIR_SPLITMIX64_MAGIC3);
             break;
 
         default:
-            hash += splitmix64(instr->id);
+            hash += kefir_splitmix64(instr->id);
             break;
     }
 

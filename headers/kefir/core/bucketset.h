@@ -45,7 +45,7 @@ typedef struct kefir_bucketset_bucket {
 typedef struct kefir_bucketset {
     kefir_size_t num_of_buckets;
     kefir_size_t max_bucket_length;
-    struct kefir_hashtree buckets;
+    struct kefir_bucketset_bucket **bucket_arr;
     const struct kefir_bucketset_ops *ops;
 } kefir_bucketset_t;
 
@@ -63,7 +63,7 @@ kefir_result_t kefir_bucketset_intersect(struct kefir_mem *, struct kefir_bucket
 
 typedef struct kefir_bucketset_iterator {
     const struct kefir_bucketset *bucketset;
-    struct kefir_hashtree_node *node;
+    kefir_size_t bucket_index;
     kefir_size_t index;
 } kefir_bucketset_iterator_t;
 

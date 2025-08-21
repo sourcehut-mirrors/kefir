@@ -21,6 +21,7 @@
 #include "kefir/core/bucketset.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include "kefir/core/hash.h"
 #include <string.h>
 
 #define BUCKET_SIZEOF(_capacity) (sizeof(struct kefir_bucketset_bucket) + (_capacity) * sizeof(kefir_bucketset_entry_t))
@@ -28,27 +29,12 @@
 #define BUCKET_MAX_LENGTH 1024
 #define BUCKET_NEW_CAPACITY(_capacity) ((_capacity) + 16)
 
-static kefir_result_t free_bucket(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                  kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
-    UNUSED(key);
-    UNUSED(payload);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, value);
-    REQUIRE(bucket != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set bucket"));
-
-    memset(bucket, 0, BUCKET_SIZEOF(bucket->capacity));
-    KEFIR_FREE(mem, bucket);
-    return KEFIR_OK;
-}
-
 kefir_result_t kefir_bucketset_init(struct kefir_bucketset *bucketset, const struct kefir_bucketset_ops *ops) {
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bucket set"));
     REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtree ops"));
 
-    REQUIRE_OK(kefir_hashtree_init(&bucketset->buckets, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&bucketset->buckets, free_bucket, NULL));
-    bucketset->num_of_buckets = 1;
+    bucketset->bucket_arr = NULL;
+    bucketset->num_of_buckets = 0;
     bucketset->max_bucket_length = 0;
     bucketset->ops = ops;
     return KEFIR_OK;
@@ -58,24 +44,28 @@ kefir_result_t kefir_bucketset_free(struct kefir_mem *mem, struct kefir_bucketse
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
 
-    REQUIRE_OK(kefir_hashtree_free(mem, &bucketset->buckets));
+    for (kefir_size_t i = 0; i < bucketset->num_of_buckets; i++) {
+        if (bucketset->bucket_arr[i] != NULL) {
+            KEFIR_FREE(mem, bucketset->bucket_arr[i]);
+        }
+    }
+    KEFIR_FREE(mem, bucketset->bucket_arr);
     memset(bucketset, 0, sizeof(struct kefir_bucketset));
     return KEFIR_OK;
 }
 
 static kefir_result_t get_bucket(struct kefir_mem *mem, struct kefir_bucketset *bucketset, kefir_size_t index,
                                  struct kefir_bucketset_bucket **bucket_ptr) {
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&bucketset->buckets, (kefir_bucketset_entry_t) index, &node);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
+    REQUIRE(index < bucketset->num_of_buckets, KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Requested bucket is outside of bucketset range"));
+    
+    struct kefir_bucketset_bucket *bucket = bucketset->bucket_arr[index];
+    if (bucket != NULL) {
         if (bucket->length == bucket->capacity) {
             const kefir_size_t bucket_new_capacity = BUCKET_NEW_CAPACITY(bucket->capacity);
             bucket = KEFIR_REALLOC(mem, bucket, BUCKET_SIZEOF(bucket_new_capacity));
             REQUIRE(bucket != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to reallocate bucket set bucket"));
             bucket->capacity = bucket_new_capacity;
-            node->value = (kefir_hashtree_value_t) bucket;
+            bucketset->bucket_arr[index] = bucket;
         }
         *bucket_ptr = bucket;
     } else {
@@ -85,12 +75,7 @@ static kefir_result_t get_bucket(struct kefir_mem *mem, struct kefir_bucketset *
         bucket->capacity = init_capacity;
         bucket->length = 0;
 
-        kefir_result_t res = kefir_hashtree_insert(mem, &bucketset->buckets, (kefir_hashtree_key_t) index,
-                                                   (kefir_hashtree_value_t) bucket);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_FREE(mem, bucket);
-            return res;
-        });
+        bucketset->bucket_arr[index] = bucket;
         *bucket_ptr = bucket;
     }
     return KEFIR_OK;
@@ -121,13 +106,13 @@ static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_bucketset
 }
 
 static kefir_result_t fill_bucketset(struct kefir_mem *mem, struct kefir_bucketset *bucketset,
-                                     struct kefir_hashtree *old_buckets) {
-    struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(old_buckets, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
-        for (kefir_size_t i = 0; i < bucket->length; i++) {
-            REQUIRE_OK(insert_entry(mem, bucketset, bucket->entries[i]));
+                                     struct kefir_bucketset_bucket **old_buckets, kefir_size_t old_num_of_buckets) {
+    for (kefir_size_t i = 0; i < old_num_of_buckets; i++) {
+        struct kefir_bucketset_bucket *bucket = old_buckets[i];
+        if (bucket != NULL) {
+            for (kefir_size_t i = 0; i < bucket->length; i++) {
+                REQUIRE_OK(insert_entry(mem, bucketset, bucket->entries[i]));
+            }
         }
     }
     return KEFIR_OK;
@@ -139,25 +124,25 @@ kefir_result_t kefir_bucketset_add(struct kefir_mem *mem, struct kefir_bucketset
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
     REQUIRE(!kefir_bucketset_has(bucketset, entry), KEFIR_OK);
 
-    if (bucketset->max_bucket_length > BUCKET_MAX_LENGTH) {
-        struct kefir_hashtree old_buckets = bucketset->buckets;
+    if (bucketset->max_bucket_length > BUCKET_MAX_LENGTH || bucketset->num_of_buckets == 0) {
+        struct kefir_bucketset_bucket **old_buckets = bucketset->bucket_arr;
         const kefir_size_t old_num_of_buckets = bucketset->num_of_buckets;
         const kefir_size_t old_max_bucket_length = bucketset->max_bucket_length;
 
         bucketset->max_bucket_length = 0;
         bucketset->num_of_buckets++;
-        kefir_result_t res = kefir_hashtree_init(&bucketset->buckets, &kefir_hashtree_uint_ops);
-        REQUIRE_CHAIN(&res, kefir_hashtree_on_removal(&bucketset->buckets, free_bucket, NULL));
-        REQUIRE_CHAIN(&res, fill_bucketset(mem, bucketset, &old_buckets));
+        bucketset->bucket_arr = KEFIR_MALLOC(mem, sizeof(struct kefir_bucketset_bucket *) * bucketset->num_of_buckets);
+        memset(bucketset->bucket_arr, 0, sizeof(struct kefir_bucketset_bucket *) * bucketset->num_of_buckets);
+        kefir_result_t res = fill_bucketset(mem, bucketset, old_buckets, old_num_of_buckets);
         REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_hashtree_free(mem, &bucketset->buckets);
-            bucketset->buckets = old_buckets;
+            KEFIR_FREE(mem, bucketset->bucket_arr);
+            bucketset->bucket_arr = old_buckets;
             bucketset->max_bucket_length = old_max_bucket_length;
             bucketset->num_of_buckets = old_num_of_buckets;
             return res;
         });
 
-        REQUIRE_OK(kefir_hashtree_free(mem, &old_buckets));
+        KEFIR_FREE(mem, old_buckets);
     }
 
     REQUIRE_OK(insert_entry(mem, bucketset, entry));
@@ -166,31 +151,28 @@ kefir_result_t kefir_bucketset_add(struct kefir_mem *mem, struct kefir_bucketset
 
 kefir_bool_t kefir_bucketset_has(const struct kefir_bucketset *bucketset, kefir_bucketset_entry_t entry) {
     REQUIRE(bucketset != NULL, false);
+    REQUIRE(bucketset->num_of_buckets > 0, false);
 
     const kefir_hashtree_hash_t hash = bucketset->ops->hash(entry, bucketset->ops->payload);
     const kefir_size_t index = hash % bucketset->num_of_buckets;
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&bucketset->buckets, (kefir_bucketset_entry_t) index, &node);
-    REQUIRE(res == KEFIR_OK, false);
-    ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
+    struct kefir_bucketset_bucket *bucket = bucketset->bucket_arr[index];
 
-    return bucketset->ops->contains(bucket->entries, bucket->length, entry, bucketset->ops->payload);
+    return bucket != NULL && bucketset->ops->contains(bucket->entries, bucket->length, entry, bucketset->ops->payload);
 }
 
 kefir_result_t kefir_bucketset_delete(struct kefir_mem *mem, struct kefir_bucketset *bucketset,
                                       kefir_bucketset_entry_t entry) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
+    REQUIRE(bucketset->num_of_buckets > 0, KEFIR_OK);
 
     const kefir_hashtree_hash_t hash = bucketset->ops->hash(entry, bucketset->ops->payload);
     const kefir_size_t index = hash % bucketset->num_of_buckets;
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&bucketset->buckets, (kefir_bucketset_entry_t) index, &node);
-    REQUIRE(res == KEFIR_OK, false);
-    ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
+    struct kefir_bucketset_bucket *bucket = bucketset->bucket_arr[index];
+    REQUIRE(bucket != NULL, KEFIR_OK);
 
     kefir_size_t delete_offset = 0;
-    res = bucketset->ops->find(bucket->entries, bucket->length, entry, &delete_offset, bucketset->ops->payload);
+    kefir_result_t res = bucketset->ops->find(bucket->entries, bucket->length, entry, &delete_offset, bucketset->ops->payload);
     REQUIRE(res != KEFIR_NOT_FOUND, KEFIR_OK);
     REQUIRE_OK(res);
 
@@ -201,7 +183,8 @@ kefir_result_t kefir_bucketset_delete(struct kefir_mem *mem, struct kefir_bucket
     bucket->length--;
 
     if (bucket->length == 0) {
-        REQUIRE_OK(kefir_hashtree_delete(mem, &bucketset->buckets, (kefir_hashtree_key_t) index));
+        KEFIR_FREE(mem, bucketset->bucket_arr[index]);
+        bucketset->bucket_arr[index] = NULL;
     }
     return KEFIR_OK;
 }
@@ -210,7 +193,13 @@ kefir_result_t kefir_bucketset_clean(struct kefir_mem *mem, struct kefir_buckets
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
 
-    REQUIRE_OK(kefir_hashtree_clean(mem, &bucketset->buckets));
+    for (kefir_size_t i = 0; i < bucketset->num_of_buckets; i++) {
+        KEFIR_FREE(mem, bucketset->bucket_arr[i]);
+    }
+    KEFIR_FREE(mem, bucketset->bucket_arr);
+    bucketset->num_of_buckets = 0;
+    bucketset->max_bucket_length = 0;
+    bucketset->bucket_arr = NULL;
     return KEFIR_OK;
 }
 
@@ -218,12 +207,13 @@ kefir_result_t kefir_bucketset_clean_nofree(struct kefir_mem *mem, struct kefir_
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&bucketset->buckets, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
-        bucket->length = 0;
+    for (kefir_size_t i = 0; i < bucketset->num_of_buckets; i++) {
+        struct kefir_bucketset_bucket *bucket = bucketset->bucket_arr[i];
+        if (bucket != NULL) {
+            bucket->length = 0;
+        }
     }
+    bucketset->max_bucket_length = 0;
     return KEFIR_OK;
 }
 
@@ -233,12 +223,12 @@ kefir_result_t kefir_bucketset_merge(struct kefir_mem *mem, struct kefir_buckets
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target bucket set"));
     REQUIRE(source != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source bucket set"));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (const struct kefir_hashtree_node *node = kefir_hashtree_iter(&source->buckets, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(const struct kefir_bucketset_bucket *, bucket, node->value);
-        for (kefir_size_t i = 0; i < bucket->length; i++) {
-            REQUIRE_OK(kefir_bucketset_add(mem, target, bucket->entries[i]));
+    for (kefir_size_t i = 0; i < source->num_of_buckets; i++) {
+        struct kefir_bucketset_bucket *bucket = source->bucket_arr[i];
+        if (bucket != NULL) {
+            for (kefir_size_t i = 0; i < bucket->length; i++) {
+                REQUIRE_OK(kefir_bucketset_add(mem, target, bucket->entries[i]));
+            }
         }
     }
     return KEFIR_OK;
@@ -250,10 +240,12 @@ kefir_result_t kefir_bucketset_intersect(struct kefir_mem *mem, struct kefir_buc
     REQUIRE(target != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target bucket set"));
     REQUIRE(source != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source bucket set"));
 
-    struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&target->buckets, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(struct kefir_bucketset_bucket *, bucket, node->value);
+    for (kefir_size_t i = 0; i < target->num_of_buckets; i++) {
+        struct kefir_bucketset_bucket *bucket = target->bucket_arr[i];
+        if (bucket == NULL) {
+            continue;
+        }
+
         struct kefir_bucketset_bucket *new_bucket = KEFIR_MALLOC(mem, BUCKET_SIZEOF(bucket->capacity));
         REQUIRE(new_bucket != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate new bucketset bucket"));
         new_bucket->capacity = bucket->capacity;
@@ -265,7 +257,7 @@ kefir_result_t kefir_bucketset_intersect(struct kefir_mem *mem, struct kefir_buc
             }
         }
         KEFIR_FREE(mem, bucket);
-        node->value = (kefir_hashtree_value_t) new_bucket;
+        target->bucket_arr[i] = new_bucket;
     }
     return KEFIR_OK;
 }
@@ -275,50 +267,34 @@ kefir_result_t kefir_bucketset_iter(const struct kefir_bucketset *bucketset, str
     REQUIRE(bucketset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid bucket set"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bucket set iterator"));
 
-    REQUIRE_OK(kefir_hashtree_min(&bucketset->buckets, &iter->node));
-    const struct kefir_bucketset_bucket *bucket = NULL;
-    for (; iter->node != NULL;) {
-        bucket = (const struct kefir_bucketset_bucket *) iter->node->value;
-        if (bucket->length > 0) {
-            break;
-        } else {
-            iter->node = kefir_hashtree_next_node(&bucketset->buckets, iter->node);
-        }
-    }
-    REQUIRE(iter->node != NULL, KEFIR_ITERATOR_END);
+    iter->bucket_index = 0;
+    for (; iter->bucket_index < bucketset->num_of_buckets && bucketset->bucket_arr[iter->bucket_index] == NULL; iter->bucket_index++) {}
+    REQUIRE(iter->bucket_index < bucketset->num_of_buckets, KEFIR_ITERATOR_END);
     iter->bucketset = bucketset;
     iter->index = 0;
-    ASSIGN_PTR(entry_ptr, bucket->entries[iter->index]);
+    ASSIGN_PTR(entry_ptr, bucketset->bucket_arr[iter->bucket_index]->entries[iter->index]);
     return KEFIR_OK;
 }
 
 kefir_result_t kefir_bucketset_next(struct kefir_bucketset_iterator *iter, kefir_bucketset_entry_t *entry_ptr) {
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to bucket set iterator"));
-    REQUIRE(iter->node != NULL, KEFIR_ITERATOR_END);
+    REQUIRE(iter->bucket_index < iter->bucketset->num_of_buckets, KEFIR_ITERATOR_END);
 
-    ASSIGN_DECL_CAST(const struct kefir_bucketset_bucket *, bucket, iter->node->value);
-    if (iter->index + 1 == bucket->length) {
-        iter->node = kefir_hashtree_next_node(&iter->bucketset->buckets, iter->node);
-        for (; iter->node != NULL;) {
-            bucket = (const struct kefir_bucketset_bucket *) iter->node->value;
-            if (bucket->length > 0) {
-                break;
-            } else {
-                iter->node = kefir_hashtree_next_node(&iter->bucketset->buckets, iter->node);
-            }
-        }
-        REQUIRE(iter->node != NULL, KEFIR_ITERATOR_END);
+    if (iter->index + 1 == iter->bucketset->bucket_arr[iter->bucket_index]->length) {
+        iter->bucket_index++;
+        for (; iter->bucket_index < iter->bucketset->num_of_buckets && iter->bucketset->bucket_arr[iter->bucket_index] == NULL; iter->bucket_index++) {}
+        REQUIRE(iter->bucket_index < iter->bucketset->num_of_buckets, KEFIR_ITERATOR_END);
         iter->index = 0;
     } else {
         iter->index++;
     }
-    ASSIGN_PTR(entry_ptr, bucket->entries[iter->index]);
+    ASSIGN_PTR(entry_ptr, iter->bucketset->bucket_arr[iter->bucket_index]->entries[iter->index]);
     return KEFIR_OK;
 }
 
 static kefir_bucketset_hash_t uint_hash(kefir_bucketset_entry_t entry, void *payload) {
     UNUSED(payload);
-    return (kefir_hashtree_hash_t) entry;
+    return (kefir_hashtree_hash_t) kefir_splitmix64((kefir_uint64_t) entry);
 }
 
 static const kefir_bucketset_entry_t *uint_binary_search(const kefir_bucketset_entry_t *entries, kefir_size_t length,
