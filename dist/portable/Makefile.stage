@@ -12,11 +12,11 @@ MUSL_ARCHIVE_FILENAME := musl-$(MUSL_VERSION).tar.gz
 MUSL_ARCHIVE := $(WORK_DIR)/$(MUSL_ARCHIVE_FILENAME)
 MUSL_ARCHIVE_SHA256 := a9a118bbe84d8764da0ea0d28b3ab3fae8477fc7e4085d90102b8596fc7c75e4
 
-BINUTILS_VERSION := 2.43
-BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.xz
+BINUTILS_VERSION := 2.45
+BINUTILS_ARCHIVE_FILENAME := binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_ARCHIVE := $(WORK_DIR)/$(BINUTILS_ARCHIVE_FILENAME)
-BINUTILS_URL := https://ftp.gnu.org/gnu/binutils/binutils-$(BINUTILS_VERSION).tar.xz
-BINUTILS_ARCHIVE_SHA256 := b53606f443ac8f01d1d5fc9c39497f2af322d99e14cea5c0b4b124d630379365
+BINUTILS_URL := https://sourceware.org/pub/binutils/releases/binutils-$(BINUTILS_VERSION).tar.gz
+BINUTILS_ARCHIVE_SHA256 := 8a3eb4b10e7053312790f21ee1a38f7e2bbd6f4096abb590d3429e5119592d96
 
 $(TARGET_DIR)/bin/kefir:
 	@mkdir -p "$(TARGET_DIR)"
@@ -56,8 +56,7 @@ $(TARGET_DIR)/lib/libc.a: $(MUSL_ARCHIVE) $(TARGET_DIR)/bin/kefir
 	@cat "$(ROOT_DIR)/dist/portable/kefir.local.step1" > "$(TARGET_DIR)/etc/kefir.local"
 
 $(TARGET_DIR)/bin/ld: $(BINUTILS_ARCHIVE) $(TARGET_DIR)/lib/libc.a
-	@cd "$(WORK_DIR)" && xz -d < "$(BINUTILS_ARCHIVE_FILENAME)" > "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
-	@cd "$(WORK_DIR)" && tar xvf "$(basename $(BINUTILS_ARCHIVE_FILENAME))"
+	@cd "$(WORK_DIR)" && tar xvfz "$(BINUTILS_ARCHIVE_FILENAME)"
 	@find "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" -name "*.c" -exec sed -i "s/__attribute__/__attribute/g" {} \;
 	@cd "$(WORK_DIR)/binutils-$(BINUTILS_VERSION)" && \
 		CC="$(realpath $(TARGET_DIR)/bin/kefir)" \
