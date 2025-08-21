@@ -1,0 +1,14 @@
+--- posix/gawkmisc.c	2025-03-09 13:13:49.000000000 +0200
++++ posix/gawkmisc.c	2025-08-21 11:21:57.308056298 +0300
+@@ -331,9 +331,9 @@
+ 			fullpath[n] = '\0';
+ 			putenv("GAWK_PMA_REINCARNATION=true");
+ 			if (personality(PER_LINUX | ADDR_NO_RANDOMIZE) < 0) {
+-				fprintf(stderr, _("warning: personality: %s\n"),
++				/*fprintf(stderr, _("warning: personality: %s\n"),
+ 							strerror(errno));
+-				fflush(stderr);
++				fflush(stderr);*/
+ 				// do the exec anyway...
+ 			}
+ 			execv(fullpath, argv);
