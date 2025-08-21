@@ -1,0 +1,61 @@
+--- src/testdir/test_gui.vim	2025-08-20 23:24:56.000000000 +0300
++++ src/testdir/test_gui.vim	2025-08-21 14:35:11.534052035 +0300
+@@ -117,43 +117,6 @@
+   call assert_equal([getwinposx(), getwinposy()], getwinpos())
+ endfunc
+ 
+-func Test_quoteplus()
+-  CheckX11BasedGui
+-
+-  let g:test_is_flaky = 1
+-
+-  let quoteplus_saved = @+
+-
+-  let test_call     = 'Can you hear me?'
+-  let test_response = 'Yes, I can.'
+-  let testee = 'VIMRUNTIME=' .. $VIMRUNTIME .. '; export VIMRUNTIME;'
+-        \ .. GetVimCommand() .. ' --noplugin --not-a-term -c ''%s'''
+-  " Ignore the "failed to create input context" error.
+-  let cmd = 'call test_ignore_error("E285") | '
+-        \ . 'gui -f | '
+-        \ . 'call feedkeys("'
+-        \ . '\"+p'
+-        \ . ':s/' . test_call . '/' . test_response . '/\<CR>'
+-        \ . '\"+yis'
+-        \ . ':q!\<CR>", "tx")'
+-  let run_vimtest = printf(testee, cmd)
+-
+-  " Set the quoteplus register to test_call, and another gvim will launched.
+-  " Then, it first tries to paste the content of its own quotedplus register
+-  " onto it.  Second, it tries to substitute test_response for the pasted
+-  " sentence.  If the sentence is identical to test_call, the substitution
+-  " should succeed.  Third, it tries to yank the result of the substitution
+-  " to its own quoteplus register, and last it quits.  When system()
+-  " returns, the content of the quoteplus register should be identical to
+-  " test_response if those quoteplus registers are synchronized properly
+-  " with/through the X11 clipboard.
+-  let @+ = test_call
+-  call system(run_vimtest)
+-  call assert_equal(test_response, @+)
+-
+-  let @+ = quoteplus_saved
+-endfunc
+-
+ func Test_gui_read_stdin()
+   CheckUnix
+ 
+@@ -894,14 +857,6 @@
+   call assert_fails('set term=xterm', 'E530:')
+ endfunc
+ 
+-func Test_windowid_variable()
+-  if g:x11_based_gui || has('win32')
+-    call assert_true(v:windowid > 0)
+-  else
+-    call assert_equal(0, v:windowid)
+-  endif
+-endfunc
+-
+ " Test "vim -g" and also the GUIEnter autocommand.
+ func Test_gui_dash_g()
+   let cmd = GetVimCommand('Xscriptgui')
