@@ -51,7 +51,7 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, struct kefir_
     kefir_size_t instruction_location;
     REQUIRE_OK(kefir_opt_code_debug_info_instruction_location(&function->function->debug_info, instruction->id,
                                                               &instruction_location));
-    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE) {
+    if (instruction_location != KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE && function->codegen->config->debug_info) {
         const struct kefir_ir_debug_source_location *source_location;
         kefir_result_t res = kefir_ir_debug_function_source_map_find(
             &function->function->ir_func->debug_info.source_map, instruction_location, &source_location);
