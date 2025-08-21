@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <dlfcn.h>
+#include <ctype.h>
 #include "kefir/platform/input.h"
 #include "kefir/platform/filesystem_source.h"
 #include "kefir/core/util.h"
@@ -314,6 +315,74 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     return KEFIR_OK;
 }
 
+static kefir_result_t new_function_macro(struct kefir_mem *mem, struct kefir_compiler_context *compiler, const char *definition, struct kefir_preprocessor_user_macro **macro) {
+    const char *lparen_ptr = strchr(definition, '(');
+    REQUIRE(lparen_ptr != NULL, KEFIR_OK);
+
+    char identifier_buf[256];
+    const kefir_size_t macro_name_length = lparen_ptr - definition;
+    REQUIRE(macro_name_length > 0 && macro_name_length < sizeof(identifier_buf) - 1,
+        KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Function macro name '%*s' exceeds maximum length", macro_name_length, definition));
+    strncpy(identifier_buf, definition, macro_name_length);
+    identifier_buf[macro_name_length] = '\0';
+    const char *macro_name = kefir_string_pool_insert(mem, &compiler->ast_global_context.symbols, identifier_buf, NULL);
+    REQUIRE(macro_name != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert function macro name into string pool"));
+
+    *macro = kefir_preprocessor_user_macro_new_function(mem, &compiler->ast_global_context.symbols, macro_name);
+    REQUIRE(*macro != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate preprocessor macro"));
+    const char *param_begin = NULL;
+#define ADD_PARAM \
+    do { \
+        const kefir_size_t param_name_length = iter - param_begin; \
+        REQUIRE(param_name_length > 0 && param_name_length < sizeof(identifier_buf) - 1, \
+            KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Function macro '%s' parameter '%*s' exceeds maximum length", macro_name, param_name_length, param_begin)); \
+        strncpy(identifier_buf, param_begin, param_name_length); \
+        identifier_buf[param_name_length] = '\0'; \
+        if (param_name_length > 3 && strcmp(identifier_buf + param_name_length - 3, "...") == 0) { \
+            identifier_buf[param_name_length - 3] = '\0'; \
+            const char *parameter_name = kefir_string_pool_insert(mem, &compiler->ast_global_context.symbols, identifier_buf, NULL); \
+            REQUIRE(parameter_name != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert function macro parameter into string pool")); \
+            (*macro)->vararg = true; \
+            (*macro)->vararg_parameter = parameter_name; \
+        } else if (strcmp(identifier_buf, "...") == 0) { \
+            (*macro)->vararg = true; \
+            (*macro)->vararg_parameter = NULL; \
+        } else { \
+            const char *parameter_name = kefir_string_pool_insert(mem, &compiler->ast_global_context.symbols, identifier_buf, NULL); \
+            REQUIRE(parameter_name != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert function macro parameter into string pool")); \
+            REQUIRE_OK(kefir_list_insert_after(mem, &(*macro)->parameters, kefir_list_tail(&(*macro)->parameters), (void *) parameter_name)); \
+        } \
+ \
+    } while (0)
+    for (const char *iter = lparen_ptr + 1;;) {
+        if (*iter == ')') {
+            REQUIRE(iter[1] == '\0',
+                KEFIR_SET_ERRORF(KEFIR_LEXER_ERROR, "Expected function macro '%s' name to be terminated by the right parenthese", macro_name));
+            if (param_begin != NULL) {
+                ADD_PARAM;
+            }
+            break;
+        }
+
+        if (isspace(*iter)) {
+            ++iter;
+            continue;
+        }
+
+        if (*iter == ',') {
+            REQUIRE(param_begin != NULL,
+                KEFIR_SET_ERRORF(KEFIR_LEXER_ERROR, "Expected function macro '%s' has invalid parameter list", macro_name));
+            ADD_PARAM;
+            param_begin = NULL;
+        } else if (param_begin == NULL) {
+            param_begin = iter;
+        }
+        iter++; 
+    }
+#undef ADD_PARAM
+    return KEFIR_OK;
+}
+
 static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
                                               const struct kefir_compiler_runner_configuration *options,
                                               struct kefir_compiler_context *compiler) {
@@ -342,8 +411,11 @@ static kefir_result_t build_predefined_macros(struct kefir_mem *mem,
         ASSIGN_DECL_CAST(const char *, identifier, macro_node->key);
         ASSIGN_DECL_CAST(const char *, raw_value, macro_node->value);
 
-        struct kefir_preprocessor_user_macro *macro =
-            kefir_preprocessor_user_macro_new_object(mem, &compiler->ast_global_context.symbols, identifier);
+        struct kefir_preprocessor_user_macro *macro = NULL;
+        REQUIRE_OK(new_function_macro(mem, compiler, identifier, &macro));
+        if (macro == NULL) {
+            macro = kefir_preprocessor_user_macro_new_object(mem, &compiler->ast_global_context.symbols, identifier);
+        }
         REQUIRE(macro != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to allocate preprocessor macro"));
         kefir_result_t res = KEFIR_OK;
 

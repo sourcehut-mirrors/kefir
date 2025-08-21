@@ -1,0 +1,1 @@
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E '-DFN1()=0' '-DFN2(x, y, z)=x + y / z' '-DFN3(param1, ...)=fn1(param1 __VA_OPT__(,) __VA_ARGS__)' '-DFN4(param1, args...)=fn1(param1 __VA_OPT__(,) args)'"

@@ -1,14 +1,3 @@
-diff -ur ./coroutine/amd64/Context.S ./coroutine/amd64/Context.S
---- ./coroutine/amd64/Context.S	2025-07-15 19:27:14.000000000 +0300
-+++ ./coroutine/amd64/Context.S	2025-08-18 14:30:27.043442752 +0300
-@@ -9,6 +9,7 @@
-  * cause an incorrect .note.gnu.property section to be emitted. We have
-  * one at the bottom of this file */
- 
-+#define PREFIXED_SYMBOL(name) name
- #define TOKEN_PASTE(x,y) x##y
- 
- .text
 diff -ur ./spec/syntax_suggest/integration/syntax_suggest_spec.rb ./spec/syntax_suggest/integration/syntax_suggest_spec.rb
 --- ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-07-15 19:27:14.000000000 +0300
 +++ ./spec/syntax_suggest/integration/syntax_suggest_spec.rb	2025-08-18 15:11:38.990120245 +0300
