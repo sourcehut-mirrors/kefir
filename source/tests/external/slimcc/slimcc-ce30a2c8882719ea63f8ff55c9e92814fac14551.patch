@@ -1,0 +1,21 @@
+--- test/function2.c	2025-08-21 04:51:37.000000000 +0300
++++ test/function2.c	2025-08-21 16:59:13.142861763 +0300
+@@ -244,7 +244,8 @@
+ 
+   BigStruct s = {.c[123] = 123, .c[456] = 78 };
+ 
+-  ASSERT(304, struct_test131(
++// Kefir does not support -Wno-psabi
++/*  ASSERT(304, struct_test131(
+     g[0], g[1], g[2], g[3], g[4],
+     f[0], f[1], f[2], f[3], f[4], f[5],
+     (int) 11,
+@@ -257,7 +258,7 @@
+     (double) 6.7,
+     (double) 7.8,
+     s,
+-    (long double) 11.1));
++    (long double) 11.1));*/
+ 
+   ASSERT(304, struct_test130(
+     g[0], g[1], g[2], g[3], g[4],
