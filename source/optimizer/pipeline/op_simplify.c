@@ -2981,7 +2981,12 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
 
     const struct kefir_opt_instruction *arg1;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, instr->operation.parameters.branch.condition_ref, &arg1));
-    if (arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
+    if (target_block == alternative_block) {
+        REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id,
+                                                                  target_block, replacement_ref));
+        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+    } else if (arg1->operation.opcode == KEFIR_OPT_OPCODE_SCALAR_COMPARE) {
         kefir_opt_comparison_operation_t comparison = arg1->operation.parameters.comparison;
         const kefir_opt_instruction_ref_t ref1 = arg1->operation.parameters.refs[0],
                                           ref2 = arg1->operation.parameters.refs[1];
@@ -3125,6 +3130,23 @@ static kefir_result_t simplify_branch(struct kefir_mem *mem, struct kefir_opt_fu
                                                           KEFIR_OPT_BRANCH_CONDITION_NEGATED_8BIT, arg1->id,
                                                           target_block, alternative_block, replacement_ref));
 
+        REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
+    }
+    return KEFIR_OK;
+}
+
+static kefir_result_t simplify_branch_compare(struct kefir_mem *mem, struct kefir_opt_function *func,
+                                      struct kefir_opt_code_structure *structure,
+                                      const struct kefir_opt_instruction *instr,
+                                      kefir_opt_instruction_ref_t *replacement_ref) {
+    const kefir_opt_block_id_t block_id = instr->block_id,
+                               target_block = instr->operation.parameters.branch.target_block,
+                               alternative_block = instr->operation.parameters.branch.alternative_block;
+
+    if (target_block == alternative_block) {
+        REQUIRE_OK(kefir_opt_code_container_drop_control(&func->code, instr->id));
+        REQUIRE_OK(kefir_opt_code_builder_finalize_jump(mem, &func->code, block_id,
+                                                                  target_block, replacement_ref));
         REQUIRE_OK(kefir_opt_code_structure_drop_sequencing_cache(mem, structure));
     }
     return KEFIR_OK;
@@ -3345,6 +3367,7 @@ static kefir_result_t simplify_phi(struct kefir_mem *mem, struct kefir_opt_funct
         immediate_dominator_tail->operation.parameters.branch.target_block;
     const kefir_opt_block_id_t immediate_dominator_alternative =
         immediate_dominator_tail->operation.parameters.branch.alternative_block;
+    REQUIRE(immediate_dominator_target != immediate_dominator_alternative, KEFIR_OK);
 
     kefir_opt_instruction_ref_t link_ref1, link_ref2;
     kefir_bool_t move_link1 = false;
@@ -3644,6 +3667,10 @@ static kefir_result_t op_simplify_apply_impl(struct kefir_mem *mem, const struct
 
                     case KEFIR_OPT_OPCODE_BRANCH:
                         REQUIRE_OK(simplify_branch(mem, func, structure, instr, &replacement_ref));
+                        break;
+
+                    case KEFIR_OPT_OPCODE_BRANCH_COMPARE:
+                        REQUIRE_OK(simplify_branch_compare(mem, func, structure, instr, &replacement_ref));
                         break;
 
                     case KEFIR_OPT_OPCODE_SELECT:
