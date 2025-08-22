@@ -42,15 +42,10 @@ static kefir_result_t calculate_member_offset(struct kefir_mem *mem, const struc
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, structure_type, &opaque_type,
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(mem, context->cache, structure_type, &opaque_type,
                                                      &node->base.source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, &designator, &object_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+    REQUIRE_OK(
+        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, &designator, &object_info));
 
     *offset = object_info.relative_offset;
     return KEFIR_OK;

@@ -246,15 +246,10 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
 
         kefir_ast_target_environment_opaque_type_t opaque_type;
         struct kefir_ast_target_environment_object_info type_info;
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env,
-                                                         referenced_type, &opaque_type, &node->base.source_location));
-        kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env,
-                                                                      opaque_type, NULL, &type_info);
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type);
-            return res;
-        });
-        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type));
+        REQUIRE_OK(kefir_ast_context_type_cache_get_type(mem, context->ast_context->cache, referenced_type,
+                                                         &opaque_type, &node->base.source_location));
+        REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL,
+                                                            &type_info));
 
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
         REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, type_info.size));
@@ -1079,8 +1074,7 @@ static kefir_result_t translate_logical_and(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
+    REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = jmpTarget;
     return KEFIR_OK;
@@ -1099,8 +1093,7 @@ static kefir_result_t translate_logical_or(struct kefir_mem *mem, struct kefir_a
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_BRANCH, 0, KEFIR_IR_BRANCH_CONDITION_8BIT));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_VSTACK_POP, 0));
     REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
-    REQUIRE_OK(
-        kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
+    REQUIRE_OK(kefir_ast_translate_typeconv_to_bool(context->ast_context->type_traits, builder, normalized_type2));
     kefir_size_t jmpTarget = KEFIR_IRBUILDER_BLOCK_CURRENT_INDEX(builder);
     KEFIR_IRBUILDER_BLOCK_INSTR_AT(builder, jmpIndex)->arg.i64 = jmpTarget;
     return KEFIR_OK;

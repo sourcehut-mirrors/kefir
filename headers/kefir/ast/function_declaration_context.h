@@ -36,6 +36,7 @@ typedef struct kefir_ast_function_declaration_context {
 
     const struct kefir_ast_context *parent;
     kefir_bool_t function_definition_context;
+    struct kefir_ast_context_type_cache cache;
     struct kefir_ast_identifier_flat_scope ordinary_scope;
     struct kefir_ast_identifier_flat_scope tag_scope;
 } kefir_ast_function_declaration_context_t;

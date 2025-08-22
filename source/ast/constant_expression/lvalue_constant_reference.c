@@ -107,16 +107,11 @@ static kefir_result_t visit_structure_member(const struct kefir_ast_visitor *vis
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(param->mem, param->context->cache,
                                                      node->structure->properties.type, &opaque_type,
                                                      &node->base.source_location));
-    kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
-                                                                  &designator, &object_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
+                                                        &designator, &object_info));
 
     *param->pointer = base_pointer;
     param->pointer->offset += object_info.relative_offset;
@@ -169,15 +164,10 @@ static kefir_result_t visit_array_subscript(const struct kefir_ast_visitor *visi
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env, array_type,
-                                                     &opaque_type, &node->base.source_location));
-    kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
-                                                                  &designator, &object_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type));
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(param->mem, param->context->cache, array_type, &opaque_type,
+                                                     &node->base.source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
+                                                        &designator, &object_info));
 
     *param->pointer = base_pointer;
     param->pointer->offset += object_info.relative_offset;
@@ -210,16 +200,11 @@ static kefir_result_t visit_struct_indirect_member(const struct kefir_ast_visito
 
     struct kefir_ast_target_environment_object_info object_info;
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(param->mem, param->context, param->context->target_env,
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(param->mem, param->context->cache,
                                                      pointer_to_structure_type->referenced_type, &opaque_type,
                                                      &node->base.source_location));
-    kefir_result_t res = KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
-                                                                  &designator, &object_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(param->mem, param->context->target_env, opaque_type));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(param->mem, param->context->target_env, opaque_type,
+                                                        &designator, &object_info));
 
     *param->pointer = KEFIR_AST_NODE_CONSTANT_EXPRESSION_VALUE(node->structure)->pointer;
     param->pointer->offset += object_info.relative_offset;

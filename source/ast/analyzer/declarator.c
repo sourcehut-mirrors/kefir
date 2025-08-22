@@ -1324,15 +1324,8 @@ static kefir_result_t type_alignment(struct kefir_mem *mem, const struct kefir_a
 
     kefir_ast_target_environment_opaque_type_t target_type;
     struct kefir_ast_target_environment_object_info object_info;
-    REQUIRE_OK(
-        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &target_type, source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, target_type, NULL, &object_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, target_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, target_type));
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(mem, context->cache, type, &target_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, target_type, NULL, &object_info));
     ASSIGN_PTR(alignment, object_info.alignment);
     ASSIGN_PTR(max_alignment, object_info.max_alignment);
     return KEFIR_OK;

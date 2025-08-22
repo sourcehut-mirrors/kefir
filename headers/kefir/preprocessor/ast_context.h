@@ -6,6 +6,7 @@
 typedef struct kefir_preprocessor_ast_context {
     struct kefir_ast_context context;
     struct kefir_ast_type_bundle type_bundle;
+    struct kefir_ast_context_type_cache cache;
     struct kefir_bigint_pool bigint_pool;
     struct kefir_ast_context_configuration configuration;
 } kefir_preprocessor_ast_context_t;

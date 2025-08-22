@@ -46,15 +46,9 @@ static kefir_result_t calculate_index_offset(struct kefir_mem *mem, const struct
     }
 
     kefir_ast_target_environment_opaque_type_t opaque_type;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, referenced_type, &opaque_type,
-                                                     source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET(mem, context->target_env, opaque_type, index, offset);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+    REQUIRE_OK(
+        kefir_ast_context_type_cache_get_type(mem, context->cache, referenced_type, &opaque_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_OFFSET(mem, context->target_env, opaque_type, index, offset));
     return KEFIR_OK;
 }
 

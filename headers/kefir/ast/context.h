@@ -32,6 +32,7 @@
 #include "kefir/ast/initializer.h"
 #include "kefir/ast/constants.h"
 #include "kefir/ast/declarator.h"
+#include "kefir/ast/cache.h"
 #include "kefir/util/bigint.h"
 #include <stdio.h>
 
@@ -85,8 +86,7 @@ typedef struct kefir_ast_context {
                                                struct kefir_ast_temporary_identifier *);
 
     kefir_result_t (*define_tag)(struct kefir_mem *, const struct kefir_ast_context *, const struct kefir_ast_type *,
-        const struct kefir_ast_declarator_attributes *,
-                                 const struct kefir_source_location *);
+                                 const struct kefir_ast_declarator_attributes *, const struct kefir_source_location *);
     kefir_result_t (*define_constant)(struct kefir_mem *, const struct kefir_ast_context *, const char *,
                                       const struct kefir_ast_constant_expression_value *, const struct kefir_ast_type *,
                                       const struct kefir_ast_declarator_attributes *,
@@ -122,6 +122,7 @@ typedef struct kefir_ast_context {
     struct kefir_ast_type_bundle *type_bundle;
     struct kefir_bigint_pool *bigint_pool;
     const struct kefir_ast_target_environment *target_env;
+    struct kefir_ast_context_type_cache *cache;
     kefir_ast_type_analysis_context_t type_analysis_context;
     struct kefir_ast_flow_control_tree *flow_control_tree;
     struct kefir_ast_global_context *global_context;

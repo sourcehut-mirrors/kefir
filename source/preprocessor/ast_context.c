@@ -45,7 +45,8 @@ static kefir_result_t pp_allocate_temporary_value(struct kefir_mem *mem, const s
 }
 
 static kefir_result_t pp_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                    const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                    const struct kefir_ast_type *type,
+                                    const struct kefir_ast_declarator_attributes *attributes,
                                     const struct kefir_source_location *source_location) {
     UNUSED(mem);
     UNUSED(context);
@@ -58,7 +59,8 @@ static kefir_result_t pp_define_tag(struct kefir_mem *mem, const struct kefir_as
 static kefir_result_t pp_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                          const char *identifier,
                                          const struct kefir_ast_constant_expression_value *cexpr,
-                                         const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                         const struct kefir_ast_type *type,
+                                         const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *source_location) {
     UNUSED(mem);
     UNUSED(context);
@@ -205,7 +207,9 @@ kefir_result_t kefir_preprocessor_ast_context_init(struct kefir_mem *mem,
     REQUIRE_OK(kefir_ast_type_bundle_init(&context->type_bundle, symbols));
     REQUIRE_OK(kefir_bigint_pool_init(&context->bigint_pool));
     REQUIRE_OK(kefir_ast_context_configuration_defaults(&context->configuration));
+    REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
     context->context.type_bundle = &context->type_bundle;
+    context->context.cache = &context->cache;
     context->context.bigint_pool = &context->bigint_pool;
     context->context.target_env = target_env;
     context->context.type_analysis_context = KEFIR_AST_TYPE_ANALYSIS_DEFAULT;
@@ -236,6 +240,7 @@ kefir_result_t kefir_preprocessor_ast_context_free(struct kefir_mem *mem,
     context->context.extensions = NULL;
     context->context.extensions_payload = NULL;
 
+    REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_bigint_pool_free(mem, &context->bigint_pool));
     REQUIRE_OK(kefir_ast_type_bundle_free(mem, &context->type_bundle));
     *context = (struct kefir_preprocessor_ast_context) {0};

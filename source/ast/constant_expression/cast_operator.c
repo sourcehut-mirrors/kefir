@@ -32,15 +32,9 @@ static kefir_result_t cast_integral_type(struct kefir_mem *mem, const struct kef
                                          const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, destination_type, &opaque_type,
-                                                     source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+    REQUIRE_OK(
+        kefir_ast_context_type_cache_get_type(mem, context->cache, destination_type, &opaque_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info));
 
     kefir_bool_t signed_destination_integer = false, signed_source_integer = false;
     REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, destination_type, &signed_destination_integer));
@@ -119,15 +113,8 @@ static kefir_result_t cast_integral_type_from_float(struct kefir_mem *mem, const
                                                     const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
-    REQUIRE_OK(
-        KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, type, &opaque_type, source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type);
-        return res;
-    });
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, opaque_type));
+    REQUIRE_OK(kefir_ast_context_type_cache_get_type(mem, context->cache, type, &opaque_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, opaque_type, NULL, &type_info));
 
     kefir_bool_t signed_integer = false;
     REQUIRE_OK(kefir_ast_type_is_signed(context->type_traits, type, &signed_integer));

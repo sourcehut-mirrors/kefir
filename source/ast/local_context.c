@@ -104,7 +104,8 @@ static kefir_result_t context_allocate_temporary_value(struct kefir_mem *mem, co
 }
 
 static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kefir_ast_context *context,
-                                         const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                         const struct kefir_ast_type *type,
+                                         const struct kefir_ast_declarator_attributes *attributes,
                                          const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST context"));
@@ -118,7 +119,8 @@ static kefir_result_t context_define_tag(struct kefir_mem *mem, const struct kef
 static kefir_result_t context_define_constant(struct kefir_mem *mem, const struct kefir_ast_context *context,
                                               const char *identifier,
                                               const struct kefir_ast_constant_expression_value *value,
-                                              const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                              const struct kefir_ast_type *type,
+                                              const struct kefir_ast_declarator_attributes *attributes,
                                               const struct kefir_source_location *location) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST translatation context"));
@@ -126,7 +128,8 @@ static kefir_result_t context_define_constant(struct kefir_mem *mem, const struc
     REQUIRE(value != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST constant expression"));
 
     ASSIGN_DECL_CAST(struct kefir_ast_local_context *, local_ctx, context->payload);
-    REQUIRE_OK(kefir_ast_local_context_define_constant(mem, local_ctx, identifier, value, type, attributes, location, NULL));
+    REQUIRE_OK(
+        kefir_ast_local_context_define_constant(mem, local_ctx, identifier, value, type, attributes, location, NULL));
     return KEFIR_OK;
 }
 
@@ -210,7 +213,9 @@ static kefir_result_t local_context_define_constexpr(struct kefir_mem *mem, stru
     REQUIRE(props.constant, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                    "Initializers of constexpr identifier shall be constant"));
 
-    REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->context.type_bundle, context->context.configuration->standard_version, type, &qualifications, &type));
+    REQUIRE_OK(kefir_ast_type_apply_qualification(mem, context->context.type_bundle,
+                                                  context->context.configuration->standard_version, type,
+                                                  &qualifications, &type));
     ordinary_id->type = type;
     ordinary_id->object.initializer = initializer;
 
@@ -270,8 +275,8 @@ static kefir_result_t context_define_identifier(
                 REQUIRE(declaration,
                         KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location,
                                                "Typedef specifier cannot be used for function definition"));
-                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, unqualified_type, NULL, attributes,
-                                                               location, scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, unqualified_type, NULL,
+                                                               attributes, location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
@@ -303,8 +308,8 @@ static kefir_result_t context_define_identifier(
                                        "Initializer must be provided to for identifier definition"));
         switch (storage_class) {
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_TYPEDEF:
-                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, type, alignment, attributes, location,
-                                                               scoped_id));
+                REQUIRE_OK(kefir_ast_local_context_define_type(mem, local_ctx, identifier, type, alignment, attributes,
+                                                               location, scoped_id));
                 break;
 
             case KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_EXTERN:
@@ -587,6 +592,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
                                                           kefir_ast_context_free_scoped_identifier, NULL));
     REQUIRE_OK(kefir_ast_flow_control_tree_init(&context->flow_control_tree));
     REQUIRE_OK(kefir_list_init(&context->flow_control_points));
+    REQUIRE_OK(kefir_ast_context_type_cache_init(&context->cache, &context->context));
 
     context->context.resolve_ordinary_identifier = context_resolve_ordinary_identifier;
     context->context.resolve_tag_identifier = context_resolve_tag_identifier;
@@ -605,6 +611,7 @@ kefir_result_t kefir_ast_local_context_init(struct kefir_mem *mem, struct kefir_
     context->context.current_flow_control_point = context_current_flow_control_point;
     context->context.symbols = &context->global->symbols;
     context->context.type_bundle = &context->global->type_bundle;
+    context->context.cache = &context->cache;
     context->context.bigint_pool = &context->global->bigint_pool;
     context->context.type_traits = context->global->type_traits;
     context->context.target_env = context->global->target_env;
@@ -639,6 +646,7 @@ kefir_result_t kefir_ast_local_context_free(struct kefir_mem *mem, struct kefir_
     REQUIRE_OK(kefir_ast_identifier_flat_scope_free(mem, &context->label_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->tag_scope));
     REQUIRE_OK(kefir_ast_identifier_block_scope_free(mem, &context->ordinary_scope));
+    REQUIRE_OK(kefir_ast_context_type_cache_free(mem, &context->cache));
     REQUIRE_OK(kefir_list_free(mem, &context->identifiers));
     REQUIRE_OK(kefir_list_free(mem, &context->flow_control_points));
     return KEFIR_OK;
@@ -1237,7 +1245,8 @@ kefir_result_t kefir_ast_local_context_define_register(struct kefir_mem *mem, st
 kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, struct kefir_ast_local_context *context,
                                                        const char *identifier,
                                                        const struct kefir_ast_constant_expression_value *value,
-                                                       const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                                       const struct kefir_ast_type *type,
+                                                       const struct kefir_ast_declarator_attributes *attributes,
                                                        const struct kefir_source_location *location,
                                                        const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
     UNUSED(attributes);
@@ -1258,7 +1267,7 @@ kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, st
         REQUIRE(equal_values, KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, location, "Cannot redefine constant"));
         scoped_id->enum_constant.type = type;
         KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->enum_constant.flags.deprecated,
-                                            &scoped_id->enum_constant.flags.deprecated_message, attributes);
+                                           &scoped_id->enum_constant.flags.deprecated_message, attributes);
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
         scoped_id = kefir_ast_context_allocate_scoped_constant(mem, value, type, location);
@@ -1269,7 +1278,8 @@ kefir_result_t kefir_ast_local_context_define_constant(struct kefir_mem *mem, st
             return res;
         });
         scoped_id->enum_constant.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
-        scoped_id->enum_constant.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
+        scoped_id->enum_constant.flags.deprecated_message =
+            KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         const char *id = kefir_string_pool_insert(mem, &context->global->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, id, scoped_id));
@@ -1302,7 +1312,8 @@ static kefir_result_t kefir_ast_local_context_refine_constant_type(
 }
 
 kefir_result_t kefir_ast_local_context_define_tag(struct kefir_mem *mem, struct kefir_ast_local_context *context,
-                                                  const struct kefir_ast_type *type, const struct kefir_ast_declarator_attributes *attributes,
+                                                  const struct kefir_ast_type *type,
+                                                  const struct kefir_ast_declarator_attributes *attributes,
                                                   const struct kefir_source_location *location,
                                                   const struct kefir_ast_scoped_identifier **scoped_id_ptr) {
     UNUSED(attributes);
@@ -1364,7 +1375,7 @@ kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct
             scoped_id->type = type;
         }
         KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&scoped_id->type_definition.flags.deprecated,
-                                            &scoped_id->type_definition.flags.deprecated_message, attributes);
+                                           &scoped_id->type_definition.flags.deprecated_message, attributes);
         REQUIRE_OK(kefir_ast_context_allocate_scoped_type_definition_update_alignment(mem, scoped_id, alignment));
     } else {
         REQUIRE(res == KEFIR_NOT_FOUND, res);
@@ -1376,7 +1387,8 @@ kefir_result_t kefir_ast_local_context_define_type(struct kefir_mem *mem, struct
             return res;
         });
         scoped_id->type_definition.flags.deprecated = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated, false);
-        scoped_id->type_definition.flags.deprecated_message = KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
+        scoped_id->type_definition.flags.deprecated_message =
+            KEFIR_AST_CONTEXT_GET_ATTR(attributes, deprecated_message, NULL);
         const char *id = kefir_string_pool_insert(mem, &context->global->symbols, identifier, NULL);
         REQUIRE(id != NULL, KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert identifier into symbol table"));
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, id, scoped_id));

@@ -111,17 +111,11 @@ kefir_result_t kefir_ast_alignment_evaluate(struct kefir_mem *mem, const struct 
 
         case KEFIR_AST_ALIGNMENT_AS_TYPE: {
             kefir_ast_target_environment_opaque_type_t target_type;
+            REQUIRE_OK(kefir_ast_context_type_cache_get_type(mem, context->cache, alignment->type, &target_type, NULL));
             struct kefir_ast_target_environment_object_info type_info;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context, context->target_env, alignment->type,
-                                                             &target_type, NULL));
-            kefir_result_t res =
-                KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, target_type, NULL, &type_info);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, target_type);
-                return res;
-            });
+            REQUIRE_OK(
+                KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, context->target_env, target_type, NULL, &type_info));
             alignment->value = type_info.alignment;
-            REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, context->target_env, target_type));
         } break;
 
         case KEFIR_AST_ALIGNMENT_AS_CONST_EXPR:

@@ -32,17 +32,12 @@ static kefir_result_t sizeof_nonvla_type(struct kefir_mem *mem, struct kefir_ast
                                          const struct kefir_source_location *source_location) {
     kefir_ast_target_environment_opaque_type_t opaque_type;
     struct kefir_ast_target_environment_object_info type_info;
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env, type,
-                                                     &opaque_type, source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL, &type_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type);
-        return res;
-    });
+    REQUIRE_OK(
+        kefir_ast_context_type_cache_get_type(mem, context->ast_context->cache, type, &opaque_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL,
+                                                        &type_info));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, type_info.size));
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type));
     return KEFIR_OK;
 }
 
@@ -101,17 +96,12 @@ kefir_result_t kefir_ast_translate_alignof(struct kefir_mem *mem, struct kefir_a
     struct kefir_ast_target_environment_object_info type_info;
     const struct kefir_ast_type *type = NULL;
     REQUIRE_OK(unwrap_vla_type(mem, context->ast_context, base_type, &type));
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_GET_TYPE(mem, context->ast_context, &context->environment->target_env, type,
-                                                     &opaque_type, source_location));
-    kefir_result_t res =
-        KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL, &type_info);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type);
-        return res;
-    });
+    REQUIRE_OK(
+        kefir_ast_context_type_cache_get_type(mem, context->ast_context->cache, type, &opaque_type, source_location));
+    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_OBJECT_INFO(mem, &context->environment->target_env, opaque_type, NULL,
+                                                        &type_info));
 
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST, type_info.alignment));
-    REQUIRE_OK(KEFIR_AST_TARGET_ENVIRONMENT_FREE_TYPE(mem, &context->environment->target_env, opaque_type));
     return KEFIR_OK;
 }
 

@@ -34,6 +34,7 @@ typedef struct kefir_ast_global_context {
     struct kefir_string_pool symbols;
     const struct kefir_ast_type_traits *type_traits;
     struct kefir_ast_type_bundle type_bundle;
+    struct kefir_ast_context_type_cache cache;
     struct kefir_bigint_pool bigint_pool;
     const struct kefir_ast_target_environment *target_env;
     struct kefir_list function_decl_contexts;
@@ -107,7 +108,9 @@ kefir_result_t kefir_ast_global_context_define_constant(struct kefir_mem *, stru
                                                         const struct kefir_source_location *,
                                                         const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_global_context_define_tag(struct kefir_mem *, struct kefir_ast_global_context *,
-                                                   const struct kefir_ast_type *, const struct kefir_ast_declarator_attributes *, const struct kefir_source_location *,
+                                                   const struct kefir_ast_type *,
+                                                   const struct kefir_ast_declarator_attributes *,
+                                                   const struct kefir_source_location *,
                                                    const struct kefir_ast_scoped_identifier **);
 kefir_result_t kefir_ast_global_context_define_type(struct kefir_mem *, struct kefir_ast_global_context *, const char *,
                                                     const struct kefir_ast_type *, struct kefir_ast_alignment *,
