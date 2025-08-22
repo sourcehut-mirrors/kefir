@@ -142,6 +142,9 @@ kefir_result_t kefir_bucketset_add(struct kefir_mem *mem, struct kefir_bucketset
             return res;
         });
 
+        for (kefir_size_t i = 0; i < old_num_of_buckets; i++) {
+            KEFIR_FREE(mem, old_buckets[i]);
+        }
         KEFIR_FREE(mem, old_buckets);
     }
 
