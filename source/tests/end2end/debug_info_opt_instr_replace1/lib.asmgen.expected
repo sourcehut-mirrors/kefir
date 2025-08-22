@@ -77,13 +77,13 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                4,
                                 38,
-                                39,
                                 40,
-                                41,
                                 42,
-                                43
+                                43,
+                                41,
+                                4,
+                                39
                             ]
                         }
                     }

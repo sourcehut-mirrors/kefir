@@ -173,8 +173,8 @@ static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_con
              res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
             const struct kefir_opt_phi_node *phi_node;
             REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
-            if (!kefir_bucketset_has(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                     (kefir_bucketset_entry_t) phi_node->output_ref)) {
+            if (!kefir_hashset_has(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                                     (kefir_hashset_key_t) phi_node->output_ref)) {
                 continue;
             }
             kefir_opt_instruction_ref_t instr_ref2;
@@ -184,11 +184,11 @@ static kefir_result_t block_collect_control_flow(const struct kefir_opt_code_con
         }
         REQUIRE_OK(res);
 
-        struct kefir_bucketset_iterator alive_instr_iter;
-        kefir_bucketset_entry_t alive_instr_entry;
-        for (res = kefir_bucketset_iter(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
+        struct kefir_hashset_iterator alive_instr_iter;
+        kefir_hashset_key_t alive_instr_entry;
+        for (res = kefir_hashset_iter(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
                                         &alive_instr_iter, &alive_instr_entry);
-             res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+             res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
             const struct kefir_opt_instruction *alive_instr;
             REQUIRE_OK(kefir_opt_code_container_instr(code, alive_instr_ref, &alive_instr));
@@ -317,8 +317,8 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
                      res == KEFIR_OK && phi_ref != KEFIR_ID_NONE; kefir_opt_phi_next_sibling(code, phi_ref, &phi_ref)) {
                     const struct kefir_opt_phi_node *phi_node;
                     REQUIRE_OK(kefir_opt_code_container_phi(code, phi_ref, &phi_node));
-                    if (!kefir_bucketset_has(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
-                                             (kefir_bucketset_entry_t) phi_node->output_ref)) {
+                    if (!kefir_hashset_has(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                                             (kefir_hashset_key_t) phi_node->output_ref)) {
                         continue;
                     }
                     kefir_opt_instruction_ref_t instr_ref2;
@@ -328,11 +328,11 @@ static kefir_result_t schedule_collect_control_flow(struct kefir_opt_code_schedu
                 REQUIRE_OK(res);
 
                 if (successor_block_id != block->id) {
-                    struct kefir_bucketset_iterator alive_instr_iter;
-                    kefir_bucketset_entry_t alive_instr_entry;
-                    for (res = kefir_bucketset_iter(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
+                    struct kefir_hashset_iterator alive_instr_iter;
+                    kefir_hashset_key_t alive_instr_entry;
+                    for (res = kefir_hashset_iter(&code_analysis->liveness.blocks[successor_block_id].alive_instr,
                                                     &alive_instr_iter, &alive_instr_entry);
-                         res == KEFIR_OK; res = kefir_bucketset_next(&alive_instr_iter, &alive_instr_entry)) {
+                         res == KEFIR_OK; res = kefir_hashset_next(&alive_instr_iter, &alive_instr_entry)) {
                         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, alive_instr_ref, alive_instr_entry);
                         const struct kefir_opt_instruction *alive_instr;
                         REQUIRE_OK(kefir_opt_code_container_instr(code, alive_instr_ref, &alive_instr));

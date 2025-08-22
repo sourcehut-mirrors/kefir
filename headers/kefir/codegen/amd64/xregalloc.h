@@ -23,7 +23,6 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/stack_frame.h"
-#include "kefir/core/bucketset.h"
 #include "kefir/core/hashtable.h"
 #include "kefir/core/hashset.h"
 
@@ -112,7 +111,7 @@ kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_
 
 typedef struct kefir_codegen_amd64_xregalloc_virtual_block_iterator {
     struct virtual_block_data *virtual_block;
-    struct kefir_bucketset_iterator iter;
+    struct kefir_hashset_iterator iter;
 } kefir_codegen_amd64_xregalloc_virtual_block_iterator_t;
 
 kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(const struct kefir_codegen_amd64_xregalloc *,

@@ -2,6 +2,7 @@
 #define KEFIR_CODEGEN_VARIABLE_ALLOCATOR_H_
 
 #include "kefir/optimizer/local_variables.h"
+#include "kefir/core/hashset.h"
 
 typedef struct kefir_codegen_local_variable_allocator_hooks {
     kefir_result_t (*type_layout)(kefir_id_t, kefir_size_t, kefir_size_t *, kefir_size_t *, void *);
@@ -9,7 +10,7 @@ typedef struct kefir_codegen_local_variable_allocator_hooks {
 } kefir_codegen_local_variable_allocator_hooks_t;
 
 typedef struct kefir_codegen_local_variable_allocator {
-    struct kefir_bucketset alive_variables;
+    struct kefir_hashset alive_variables;
     struct kefir_hashtree variable_locations;
     kefir_opt_instruction_ref_t return_space_variable_ref;
     kefir_size_t total_size;

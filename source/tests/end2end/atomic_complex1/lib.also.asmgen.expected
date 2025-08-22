@@ -280,8 +280,8 @@ __kefir_text_func_add_f32_begin:
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
     movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
     addss %xmm2, %xmm0
@@ -316,8 +316,8 @@ __kefir_text_func_add_f64_begin:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -40(%rbp), %xmm1
     movdqu -24(%rbp), %xmm0
+    movdqu -40(%rbp), %xmm1
     movq -64(%rbp), %xmm2
     movq -56(%rbp), %xmm3
     addsd %xmm2, %xmm0
@@ -351,8 +351,8 @@ __kefir_text_func_div_f32_begin:
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
     movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
     insertps $16, %xmm1, %xmm0
@@ -407,8 +407,8 @@ __kefir_text_func_div_f64_begin:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
     movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     movq -80(%rbp), %xmm2
     movq -72(%rbp), %xmm3
     movq %xmm0, -80(%rbp)
@@ -475,8 +475,8 @@ __kefir_text_func_mul_f32_begin:
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
     movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
     insertps $16, %xmm1, %xmm0
@@ -522,8 +522,8 @@ __kefir_text_func_mul_f64_begin:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -40(%rbp), %xmm1
     movdqu -24(%rbp), %xmm0
+    movdqu -40(%rbp), %xmm1
     movq -64(%rbp), %xmm2
     movq -56(%rbp), %xmm3
     unpcklpd %xmm1, %xmm0
@@ -612,8 +612,8 @@ __kefir_text_func_sub_f32_begin:
     mov $8, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -48(%rbp), %xmm1
     movdqu -32(%rbp), %xmm0
+    movdqu -48(%rbp), %xmm1
     movd -64(%rbp), %xmm2
     movd -60(%rbp), %xmm3
     subss %xmm2, %xmm0
@@ -648,8 +648,8 @@ __kefir_text_func_sub_f64_begin:
     mov $16, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movdqu -40(%rbp), %xmm1
     movdqu -24(%rbp), %xmm0
+    movdqu -40(%rbp), %xmm1
     movq -64(%rbp), %xmm2
     movq -56(%rbp), %xmm3
     subsd %xmm2, %xmm0

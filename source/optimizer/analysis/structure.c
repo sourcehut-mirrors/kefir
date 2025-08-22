@@ -29,7 +29,7 @@ kefir_result_t kefir_opt_code_structure_init(struct kefir_opt_code_structure *st
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to optimizer code structure"));
 
     REQUIRE_OK(kefir_hashtreeset_init(&structure->indirect_jump_target_blocks, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_bucketset_init(&structure->sequenced_before, &kefir_bucketset_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&structure->sequenced_before, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&structure->sequence_numbering, &kefir_hashtree_uint_ops));
     structure->next_seq_number = 0;
     structure->blocks = NULL;
@@ -44,7 +44,7 @@ kefir_result_t kefir_opt_code_structure_free(struct kefir_mem *mem, struct kefir
     if (structure->code != NULL) {
         REQUIRE_OK(kefir_hashtree_free(mem, &structure->sequence_numbering));
         REQUIRE_OK(kefir_hashtreeset_free(mem, &structure->indirect_jump_target_blocks));
-        REQUIRE_OK(kefir_bucketset_free(mem, &structure->sequenced_before));
+        REQUIRE_OK(kefir_hashset_free(mem, &structure->sequenced_before));
 
         for (kefir_size_t i = 0; i < structure->num_of_blocks; i++) {
             REQUIRE_OK(kefir_list_free(mem, &structure->blocks[i].predecessors));
@@ -104,7 +104,7 @@ kefir_result_t kefir_opt_code_structure_drop_sequencing_cache(struct kefir_mem *
     REQUIRE(structure != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code structure"));
 
     structure->next_seq_number = 0;
-    REQUIRE_OK(kefir_bucketset_clean(mem, &structure->sequenced_before));
+    REQUIRE_OK(kefir_hashset_clear(mem, &structure->sequenced_before));
     REQUIRE_OK(kefir_hashtree_clean(mem, &structure->sequence_numbering));
     return KEFIR_OK;
 }
@@ -265,9 +265,9 @@ kefir_result_t kefir_opt_code_structure_is_sequenced_before(struct kefir_mem *me
         return KEFIR_OK;
     }
 
-    kefir_bucketset_entry_t entry =
+    kefir_hashset_key_t entry =
         (((kefir_uint64_t) instr_ref1) << 32) | (((kefir_uint64_t) instr_ref2) & ((1ull << 32) - 1));
-    if (kefir_bucketset_has(&structure->sequenced_before, entry)) {
+    if (kefir_hashset_has(&structure->sequenced_before, entry)) {
         *result_ptr = true;
         return KEFIR_OK;
     }
@@ -284,7 +284,7 @@ kefir_result_t kefir_opt_code_structure_is_sequenced_before(struct kefir_mem *me
     }
 
     if (*result_ptr) {
-        REQUIRE_OK(kefir_bucketset_add(mem, &structure->sequenced_before, entry));
+        REQUIRE_OK(kefir_hashset_add(mem, &structure->sequenced_before, entry));
     }
     return KEFIR_OK;
 }

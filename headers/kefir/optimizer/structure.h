@@ -23,7 +23,7 @@
 
 #include "kefir/optimizer/code.h"
 #include "kefir/core/list.h"
-#include "kefir/core/bucketset.h"
+#include "kefir/core/hashset.h"
 
 typedef struct kefir_opt_code_structure_block {
     struct kefir_list predecessors;
@@ -36,7 +36,7 @@ typedef struct kefir_opt_code_structure {
     kefir_size_t num_of_blocks;
     struct kefir_opt_code_structure_block *blocks;
     struct kefir_hashtreeset indirect_jump_target_blocks;
-    struct kefir_bucketset sequenced_before;
+    struct kefir_hashset sequenced_before;
     struct kefir_hashtree sequence_numbering;
     kefir_size_t next_seq_number;
 } kefir_opt_code_structure_t;

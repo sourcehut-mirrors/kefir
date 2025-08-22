@@ -26,7 +26,6 @@
 #include "kefir/optimizer/liveness.h"
 #include "kefir/optimizer/local_variables.h"
 #include "kefir/core/hashtree.h"
-#include "kefir/core/bucketset.h"
 
 typedef struct kefir_opt_code_analysis {
     struct kefir_opt_code_structure structure;

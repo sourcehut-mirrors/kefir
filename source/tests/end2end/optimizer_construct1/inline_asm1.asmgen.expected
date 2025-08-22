@@ -83,12 +83,12 @@
                             ],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0,
                                 1,
-                                2,
-                                3,
+                                5,
                                 4,
-                                5
+                                3,
+                                2,
+                                0
                             ]
                         }
                     },
@@ -145,10 +145,10 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                9,
                                 10,
-                                11,
-                                12
+                                12,
+                                9,
+                                11
                             ]
                         }
                     },
@@ -387,13 +387,13 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                13,
-                                14,
+                                18,
+                                17,
+                                19,
                                 15,
                                 16,
-                                17,
-                                18,
-                                19
+                                14,
+                                13
                             ]
                         }
                     },
@@ -447,8 +447,8 @@
                             "immediate_dominator": 0,
                             "alive_instructions": [
                                 6,
-                                7,
-                                8
+                                8,
+                                7
                             ]
                         }
                     }

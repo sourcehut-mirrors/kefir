@@ -9,7 +9,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_init(struct kefir_codegen_
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to codegen variable allocator"));
 
     REQUIRE_OK(kefir_hashtree_init(&allocator->variable_locations, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_bucketset_init(&allocator->alive_variables, &kefir_bucketset_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&allocator->alive_variables, &kefir_hashtable_uint_ops));
     allocator->total_size = 0;
     allocator->total_alignment = 0;
     allocator->all_global = false;
@@ -22,7 +22,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_free(struct kefir_mem *mem
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
 
-    REQUIRE_OK(kefir_bucketset_free(mem, &allocator->alive_variables));
+    REQUIRE_OK(kefir_hashset_free(mem, &allocator->alive_variables));
     REQUIRE_OK(kefir_hashtree_free(mem, &allocator->variable_locations));
     memset(allocator, 0, sizeof(struct kefir_codegen_local_variable_allocator));
     return KEFIR_OK;
@@ -42,7 +42,7 @@ struct allocator_state {
 #define MERGE_OFFSET_SIZE(_offset, _size) (((kefir_uint64_t) (_offset)) << 32) | ((kefir_uint32_t) (_size))
 
 static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_instruction_ref_t instr_ref) {
-    REQUIRE(kefir_bucketset_has(&state->allocator->alive_variables, (kefir_bucketset_entry_t) instr_ref), KEFIR_OK);
+    REQUIRE(kefir_hashset_has(&state->allocator->alive_variables, (kefir_hashset_key_t) instr_ref), KEFIR_OK);
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
     REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,
@@ -80,10 +80,10 @@ static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_i
 
 static kefir_result_t allocator_run_impl(struct allocator_state *state) {
     kefir_result_t res;
-    kefir_bucketset_entry_t entry;
-    struct kefir_bucketset_iterator iter;
-    for (res = kefir_bucketset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
-         res = kefir_bucketset_next(&iter, &entry)) {
+    kefir_hashset_key_t entry;
+    struct kefir_hashset_iterator iter;
+    for (res = kefir_hashset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
         REQUIRE_OK(do_allocate_var(state, instr_ref));
     }
@@ -104,14 +104,14 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
         }
 
         ASSIGN_DECL_CAST(const struct kefir_opt_code_variable_local_conflicts *, conflicts, node->value);
-        if (!kefir_bucketset_has(&state->allocator->alive_variables, (kefir_bucketset_entry_t) instr_ref)) {
+        if (!kefir_hashset_has(&state->allocator->alive_variables, (kefir_hashset_key_t) instr_ref)) {
             continue;
         }
 
         REQUIRE_OK(kefir_hashtree_clean(state->mem, &state->current_allocation));
 
-        for (res = kefir_bucketset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
-             res = kefir_bucketset_next(&iter, &entry)) {
+        for (res = kefir_hashset_iter(&state->conflicts->globally_alive, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, conflict_instr_ref, entry);
             struct kefir_hashtree_node *node;
             res = kefir_hashtree_at(&state->allocator->variable_locations, (kefir_hashtree_key_t) conflict_instr_ref,
@@ -126,8 +126,8 @@ static kefir_result_t allocator_run_impl(struct allocator_state *state) {
             }
         }
 
-        for (res = kefir_bucketset_iter(&conflicts->local_conflicts, &iter, &entry); res == KEFIR_OK;
-             res = kefir_bucketset_next(&iter, &entry)) {
+        for (res = kefir_hashset_iter(&conflicts->local_conflicts, &iter, &entry); res == KEFIR_OK;
+             res = kefir_hashset_next(&iter, &entry)) {
             ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, conflict_instr_ref, entry);
             struct kefir_hashtree_node *node;
             res = kefir_hashtree_at(&state->allocator->variable_locations, (kefir_hashtree_key_t) conflict_instr_ref,
@@ -157,7 +157,7 @@ kefir_result_t kefir_codegen_local_variable_allocator_mark_alive(
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(allocator != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen variable allocator"));
 
-    REQUIRE_OK(kefir_bucketset_add(mem, &allocator->alive_variables, (kefir_bucketset_entry_t) instr_ref));
+    REQUIRE_OK(kefir_hashset_add(mem, &allocator->alive_variables, (kefir_hashset_key_t) instr_ref));
     ASSIGN_PTR(id_ptr, (kefir_id_t) instr_ref);
     return KEFIR_OK;
 }

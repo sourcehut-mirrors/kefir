@@ -11,22 +11,22 @@ __kefir_text_func_test_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl %edi, -12(%rbp)
+    movl %edi, -4(%rbp)
     movl %esi, -8(%rbp)
-    movl %edx, -4(%rbp)
+    movl %edx, -12(%rbp)
 _kefir_func_test_label1:
 _kefir_local_public_label_test_label3:
-    movsxl -12(%rbp), %rax
+    movsxl -4(%rbp), %rax
     lea __kefir_function_test_static_arr_4(%rip), %rcx
     imul $8, %rax, %rax
     add %rax, %rcx
     movq (%rcx), %rax
-    movl $0, -12(%rbp)
+    movl $0, -4(%rbp)
     jmp *%rax
 _kefir_func_test_label2:
 _kefir_local_public_label_test_label2:
     movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl -12(%rbp), %ecx
     imul %ecx, %eax
 _kefir_func_test_label3:
     lea (%rbp), %rsp
@@ -35,7 +35,7 @@ _kefir_func_test_label3:
 _kefir_func_test_label4:
 _kefir_local_public_label_test_label1:
     movl -8(%rbp), %eax
-    movl -4(%rbp), %ecx
+    movl -12(%rbp), %ecx
     add %ecx, %eax
     jmp _kefir_func_test_label3
 __kefir_text_func_test_end:

@@ -117,17 +117,17 @@ _kefir_func_get2_label17:
     movq $0, -64(%rbp)
 _kefir_func_get2_label18:
     xor %r8d, %r8d
-.loc 0 43 9
+.loc 0 43 5
 _kefir_func_get2_label19:
 _kefir_func_get2_label1:
     xor %eax, %eax
-    cmp $0, %esi
-    setg %al
-.loc 0 43 5
+    cmp $1, %esi
+    setne %al
+.loc 0 43 9
 _kefir_func_get2_label20:
     xor %ecx, %ecx
-    cmp $1, %esi
-    setne %cl
+    cmp $0, %esi
+    setg %cl
 .loc 0 43 5
 _kefir_func_get2_label22:
 _kefir_func_get2_label21:
@@ -135,10 +135,10 @@ _kefir_func_get2_label21:
     jl _kefir_func_get2_label9
 .loc 0 43 5
 _kefir_func_get2_label23:
-    and %cl, %al
+    and %al, %cl
 .loc 0 43 5
 _kefir_func_get2_label24:
-    test %al, %al
+    test %cl, %cl
     jnz _kefir_func_get2_label8
 .loc 0 45 12
 _kefir_func_get2_label25:

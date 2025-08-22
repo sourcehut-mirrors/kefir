@@ -54,8 +54,8 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(param->structure->code, instr_ref, &instr));
 
-    REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[instr->block_id].alive_instr,
-                                   (kefir_hashtreeset_entry_t) instr_ref));
+    REQUIRE_OK(kefir_hashset_add(param->mem, &param->liveness->blocks[instr->block_id].alive_instr,
+                                   (kefir_hashset_key_t) instr_ref));
 
     param->instr_ref = instr_ref;
     REQUIRE_OK(kefir_opt_instruction_extract_inputs(param->structure->code, instr, true, verify_use_def_impl, payload));
@@ -77,13 +77,13 @@ static kefir_result_t verify_use_def(kefir_opt_instruction_ref_t instr_ref, void
                 ASSIGN_DECL_CAST(kefir_opt_block_id_t, src_block_id, node->key);
                 ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, src_instr_ref, node->value);
                 if (src_instr_ref == instr_ref) {
-                    REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[src_block_id].alive_instr,
-                                                   (kefir_bucketset_entry_t) instr_ref));
+                    REQUIRE_OK(kefir_hashset_add(param->mem, &param->liveness->blocks[src_block_id].alive_instr,
+                                                   (kefir_hashset_key_t) instr_ref));
                 }
             }
         } else {
-            REQUIRE_OK(kefir_bucketset_add(param->mem, &param->liveness->blocks[use_instr->block_id].alive_instr,
-                                           (kefir_bucketset_entry_t) instr_ref));
+            REQUIRE_OK(kefir_hashset_add(param->mem, &param->liveness->blocks[use_instr->block_id].alive_instr,
+                                           (kefir_hashset_key_t) instr_ref));
         }
     }
     if (res != KEFIR_ITERATOR_END) {
@@ -98,11 +98,11 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
                                                         struct kefir_bitset *visited_blocks,
                                                         struct kefir_queue *queue) {
     kefir_result_t res;
-    struct kefir_bucketset_iterator iter;
-    kefir_bucketset_entry_t entry;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t entry;
 
-    for (res = kefir_bucketset_iter(&liveness->blocks[block_id].alive_instr, &iter, &entry); res == KEFIR_OK;
-         res = kefir_bucketset_next(&iter, &entry)) {
+    for (res = kefir_hashset_iter(&liveness->blocks[block_id].alive_instr, &iter, &entry); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &entry)) {
         ASSIGN_DECL_CAST(kefir_opt_instruction_ref_t, instr_ref, entry);
 
         const struct kefir_opt_instruction *instr;
@@ -129,16 +129,16 @@ static kefir_result_t propagate_alive_instructions_impl(struct kefir_mem *mem, s
 
             kefir_bool_t visited;
             REQUIRE_OK(kefir_bitset_get(visited_blocks, current_block_id, &visited));
-            if (visited || kefir_bucketset_has(&liveness->blocks[current_block_id].alive_instr,
-                                               (kefir_hashtreeset_entry_t) instr_ref)) {
+            if (visited || kefir_hashset_has(&liveness->blocks[current_block_id].alive_instr,
+                                               (kefir_hashset_key_t) instr_ref)) {
                 continue;
             }
 
             REQUIRE_OK(kefir_bitset_set(visited_blocks, current_block_id, true));
 
             if (current_block_id != instr->block_id) {
-                REQUIRE_OK(kefir_bucketset_add(mem, &liveness->blocks[current_block_id].alive_instr,
-                                               (kefir_bucketset_entry_t) instr_ref));
+                REQUIRE_OK(kefir_hashset_add(mem, &liveness->blocks[current_block_id].alive_instr,
+                                               (kefir_hashset_key_t) instr_ref));
                 ADD_PREDS(current_block_id);
             }
         }
@@ -210,7 +210,7 @@ kefir_result_t kefir_opt_code_liveness_free(struct kefir_mem *mem, struct kefir_
         kefir_size_t num_of_blocks;
         REQUIRE_OK(kefir_opt_code_container_block_count(liveness->code, &num_of_blocks));
         for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-            REQUIRE_OK(kefir_bucketset_free(mem, &liveness->blocks[i].alive_instr));
+            REQUIRE_OK(kefir_hashset_free(mem, &liveness->blocks[i].alive_instr));
         }
         KEFIR_FREE(mem, liveness->blocks);
         memset(liveness, 0, sizeof(struct kefir_opt_code_liveness));
@@ -234,7 +234,7 @@ kefir_result_t kefir_opt_code_liveness_build(struct kefir_mem *mem, struct kefir
     REQUIRE(liveness->blocks != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate optimizer code liveness blocks"));
     for (kefir_size_t i = 0; i < num_of_blocks; i++) {
-        res = kefir_bucketset_init(&liveness->blocks[i].alive_instr, &kefir_bucketset_uint_ops);
+        res = kefir_hashset_init(&liveness->blocks[i].alive_instr, &kefir_hashtable_uint_ops);
         REQUIRE_ELSE(res == KEFIR_OK, {
             KEFIR_FREE(mem, liveness->blocks);
             memset(liveness, 0, sizeof(struct kefir_opt_code_liveness));
@@ -261,6 +261,6 @@ kefir_result_t kefir_opt_code_liveness_instruction_is_alive(const struct kefir_o
     REQUIRE_OK(kefir_opt_code_container_instr(liveness->code, instr_ref, &instr));
 
     *alive_ptr =
-        kefir_bucketset_has(&liveness->blocks[instr->block_id].alive_instr, (kefir_bucketset_entry_t) instr_ref);
+        kefir_hashset_has(&liveness->blocks[instr->block_id].alive_instr, (kefir_hashset_key_t) instr_ref);
     return KEFIR_OK;
 }

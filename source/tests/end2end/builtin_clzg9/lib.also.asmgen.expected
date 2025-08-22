@@ -180,19 +180,19 @@ __kefir_text_func___kefir_bigint_unsigned_compare_begin:
     push %r12
     push %r13
     push %r14
-    mov %rdx, %r12
-    mov %rsi, %r13
-    mov %rdi, %r14
-    mov %r12, %rdx
+    mov %rdx, %r13
+    mov %rsi, %r14
+    mov %rdi, %r11
+    mov %r13, %rdx
     sub $-7, %rdx
     mov %rdx, %rax
     xor %edx, %edx
     mov $8, %rcx
     div %rcx
-    mov %rax, %r11
-    mov %r11, %rbx
+    mov %rax, %rbx
+    mov %rbx, %r12
 _kefir_func___kefir_bigint_unsigned_compare_label1:
-    cmp $0, %rbx
+    cmp $0, %r12
     ja _kefir_func___kefir_bigint_unsigned_compare_label3
     xor %eax, %eax
     pop %r14
@@ -201,28 +201,28 @@ _kefir_func___kefir_bigint_unsigned_compare_label1:
     pop %rbx
     ret
 _kefir_func___kefir_bigint_unsigned_compare_label3:
-    mov %rbx, %rax
+    mov %r12, %rax
     sub $1, %rax
-    mov %r14, %rdi
+    mov %r11, %rdi
     add %rax, %rdi
     movzxb (%rdi), %r10
-    mov %rbx, %rax
+    mov %r12, %rax
     sub $1, %rax
-    mov %r13, %rsi
+    mov %r14, %rsi
     add %rax, %rsi
     movzxb (%rsi), %r9
-    cmp %r11, %rbx
+    cmp %rbx, %r12
     je _kefir_func___kefir_bigint_unsigned_compare_label8
     mov %r10, %rcx
     mov %r9, %r8
 _kefir_func___kefir_bigint_unsigned_compare_label4:
     cmp %r8d, %ecx
     ja _kefir_func___kefir_bigint_unsigned_compare_label7
-    mov %rbx, %rax
+    mov %r12, %rax
     add $-1, %rax
     cmp %r8d, %ecx
     jb _kefir_func___kefir_bigint_unsigned_compare_label6
-    mov %rax, %rbx
+    mov %rax, %r12
     jmp _kefir_func___kefir_bigint_unsigned_compare_label1
 _kefir_func___kefir_bigint_unsigned_compare_label6:
     mov $-1, %rax
@@ -239,9 +239,9 @@ _kefir_func___kefir_bigint_unsigned_compare_label7:
     pop %rbx
     ret
 _kefir_func___kefir_bigint_unsigned_compare_label8:
-    mov %r12, %rcx
+    mov %r13, %rcx
     sub $1, %rcx
-    mov %r12, %rdx
+    mov %r13, %rdx
     sub $1, %rdx
     mov %rdx, %rax
     xor %edx, %edx

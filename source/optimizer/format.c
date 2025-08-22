@@ -1177,10 +1177,10 @@ static kefir_result_t code_block_format(struct kefir_json_output *json, const st
 
         REQUIRE_OK(kefir_json_output_object_key(json, "alive_instructions"));
         REQUIRE_OK(kefir_json_output_array_begin(json));
-        struct kefir_bucketset_iterator iter;
-        kefir_bucketset_entry_t entry;
-        for (res = kefir_bucketset_iter(&code_analysis->liveness.blocks[block->id].alive_instr, &iter, &entry);
-             res == KEFIR_OK; res = kefir_bucketset_next(&iter, &entry)) {
+        struct kefir_hashset_iterator iter;
+        kefir_hashset_key_t entry;
+        for (res = kefir_hashset_iter(&code_analysis->liveness.blocks[block->id].alive_instr, &iter, &entry);
+             res == KEFIR_OK; res = kefir_hashset_next(&iter, &entry)) {
             REQUIRE_OK(id_format(json, (kefir_id_t) entry));
         }
         if (res != KEFIR_ITERATOR_END) {

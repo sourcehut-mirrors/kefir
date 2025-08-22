@@ -20,23 +20,23 @@ __kefir_text_func_run_op_begin:
     imul $8, %rdx, %rax
     add %rax, %r9
     movq (%r9), %rax
-    movq %r8, -32(%rbp)
-    movq %rcx, -24(%rbp)
-    movq %rsi, -16(%rbp)
-    movq $0, -8(%rbp)
+    movq %r8, -8(%rbp)
+    movq %rcx, -16(%rbp)
+    movq %rsi, -32(%rbp)
+    movq $0, -24(%rbp)
     jmp *%rax
 _kefir_func_run_op_label1:
 _kefir_local_public_label_run_op_add:
-    movq -32(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -8(%rbp), %rdx
-    add %rcx, %rax
-    add %rax, %rdx
-    movq %rdx, -8(%rbp)
-_kefir_func_run_op_label2:
-_kefir_local_public_label_run_op_ret:
     movq -8(%rbp), %rax
     movq -16(%rbp), %rcx
+    movq -24(%rbp), %rdx
+    add %rcx, %rax
+    add %rax, %rdx
+    movq %rdx, -24(%rbp)
+_kefir_func_run_op_label2:
+_kefir_local_public_label_run_op_ret:
+    movq -24(%rbp), %rax
+    movq -32(%rbp), %rcx
     mov %rax, %rdx
     neg %rdx
     test %rcx, %rcx
@@ -47,31 +47,31 @@ _kefir_local_public_label_run_op_ret:
     ret
 _kefir_func_run_op_label3:
 _kefir_local_public_label_run_op_sub:
-    movq -32(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rdx
     sub %rcx, %rax
     add %rax, %rdx
-    movq %rdx, -8(%rbp)
+    movq %rdx, -24(%rbp)
     jmp _kefir_func_run_op_label2
 _kefir_func_run_op_label4:
 _kefir_local_public_label_run_op_mul:
-    movq -32(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -8(%rbp), %rdx
+    movq -8(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rdx
     imul %rcx, %rax
     add %rax, %rdx
-    movq %rdx, -8(%rbp)
+    movq %rdx, -24(%rbp)
     jmp _kefir_func_run_op_label2
 _kefir_func_run_op_label5:
 _kefir_local_public_label_run_op_div:
-    movq -32(%rbp), %rax
-    movq -24(%rbp), %rcx
-    movq -8(%rbp), %rsi
+    movq -8(%rbp), %rax
+    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rsi
     cqo
     idiv %rcx
     add %rax, %rsi
-    movq %rsi, -8(%rbp)
+    movq %rsi, -24(%rbp)
     jmp _kefir_func_run_op_label2
 __kefir_text_func_run_op_end:
 

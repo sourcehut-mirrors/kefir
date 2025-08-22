@@ -22,7 +22,6 @@
 #include "kefir/optimizer/format.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
-#include "kefir/core/bucketset.h"
 
 struct semi_nca_data {
     kefir_size_t num_of_blocks;

@@ -24,19 +24,19 @@ _kefir_func_factorial2_label1:
     imul $8, %rcx, %rcx
     add %rcx, %rax
     movq (%rax), %rax
-    movq %rdi, -16(%rbp)
-    movq %rsi, -8(%rbp)
+    movq %rdi, -8(%rbp)
+    movq %rsi, -16(%rbp)
     jmp *%rax
 _kefir_func_factorial2_label2:
 _kefir_local_public_label_factorial2_terminate:
-    movq -8(%rbp), %rax
+    movq -16(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
     ret
 _kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_round:
-    movq -16(%rbp), %rdi
-    movq -8(%rbp), %rsi
+    movq -8(%rbp), %rdi
+    movq -16(%rbp), %rsi
     mov %rdi, %rax
     add $-1, %rax
     imul %rdi, %rsi

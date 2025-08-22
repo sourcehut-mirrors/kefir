@@ -22,14 +22,14 @@
 #define KEFIR_OPTIMIZER_LOCAL_VARIABLES_H_
 
 #include "kefir/optimizer/liveness.h"
-#include "kefir/core/bucketset.h"
+#include "kefir/core/hashset.h"
 
 typedef struct kefir_opt_code_variable_local_conflicts {
-    struct kefir_bucketset local_conflicts;
+    struct kefir_hashset local_conflicts;
 } kefir_opt_code_variable_local_conflicts_t;
 
 typedef struct kefir_opt_code_variable_conflicts {
-    struct kefir_bucketset globally_alive;
+    struct kefir_hashset globally_alive;
     struct kefir_hashtree locally_alive;
 } kefir_opt_code_variable_conflicts_t;
 

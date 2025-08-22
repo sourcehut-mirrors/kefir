@@ -22,9 +22,10 @@
 #define KEFIR_OPTIMIZER_LIVENESS_H_
 
 #include "kefir/optimizer/structure.h"
+#include "kefir/core/hashset.h"
 
 typedef struct kefir_opt_code_liveness_block {
-    struct kefir_bucketset alive_instr;
+    struct kefir_hashset alive_instr;
 } kefir_opt_code_liveness_block_t;
 
 typedef struct kefir_opt_code_liveness {

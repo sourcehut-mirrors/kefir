@@ -95,11 +95,11 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0,
                                 1,
-                                2,
+                                4,
                                 3,
-                                4
+                                2,
+                                0
                             ]
                         }
                     },
@@ -177,13 +177,13 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
+                                12,
+                                15,
+                                16,
                                 10,
                                 11,
-                                12,
-                                13,
                                 14,
-                                15,
-                                16
+                                13
                             ]
                         }
                     },
@@ -265,13 +265,13 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                23,
-                                24,
-                                25,
-                                26,
-                                27,
-                                28,
                                 29,
+                                24,
+                                23,
+                                25,
+                                27,
+                                26,
+                                28,
                                 30
                             ]
                         }
@@ -337,12 +337,12 @@
                             ],
                             "immediate_dominator": 1,
                             "alive_instructions": [
-                                17,
                                 18,
+                                17,
                                 19,
-                                20,
                                 21,
-                                22
+                                22,
+                                20
                             ]
                         }
                     },
@@ -390,10 +390,10 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                5,
                                 6,
-                                7,
-                                8
+                                5,
+                                8,
+                                7
                             ]
                         }
                     }
@@ -481,13 +481,13 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
-                                0,
+                                6,
                                 1,
-                                2,
-                                3,
-                                4,
                                 5,
-                                6
+                                4,
+                                3,
+                                2,
+                                0
                             ]
                         }
                     },
@@ -580,12 +580,12 @@
                             ],
                             "immediate_dominator": 0,
                             "alive_instructions": [
-                                7,
-                                8,
+                                12,
                                 9,
+                                8,
+                                7,
                                 10,
                                 11,
-                                12,
                                 13
                             ]
                         }
