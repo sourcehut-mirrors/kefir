@@ -156,23 +156,7 @@
         },
         {
             "identifier": 15,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "double"
-                            }
-                        }
-                    ]
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 16,
@@ -180,30 +164,6 @@
         },
         {
             "identifier": 17,
-            "type": []
-        },
-        {
-            "identifier": 18,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int8"
-                        },
-                        {
-                            "type": "array",
-                            "length": 4,
-                            "element_type": {
-                                "type": "double"
-                            }
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 19,
             "type": [
                 {
                     "type": "struct",
@@ -216,11 +176,11 @@
             ]
         },
         {
-            "identifier": 20,
+            "identifier": 18,
             "type": []
         },
         {
-            "identifier": 21,
+            "identifier": 19,
             "type": []
         }
     ],
@@ -276,17 +236,17 @@
         {
             "identifier": 3,
             "name": "struct_field_indirect",
-            "parameters": 16,
+            "parameters": 15,
             "vararg": false,
-            "returns": 17,
+            "returns": 16,
             "returns_twice": false
         },
         {
             "identifier": 4,
             "name": "indirection",
-            "parameters": 20,
+            "parameters": 18,
             "vararg": false,
-            "returns": 21,
+            "returns": 19,
             "returns_twice": false
         }
     ],

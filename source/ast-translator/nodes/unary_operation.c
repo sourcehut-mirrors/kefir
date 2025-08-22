@@ -311,23 +311,16 @@ static kefir_result_t incdec_impl(struct kefir_mem *mem, struct kefir_ast_transl
         node->type == KEFIR_AST_OPERATION_POSTFIX_INCREMENT || node->type == KEFIR_AST_OPERATION_PREFIX_INCREMENT ? 1
                                                                                                                   : -1;
     if (normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                 node->base.properties.type->referenced_type, 0, &translator_type,
-                                                 &node->base.source_location));
+        const struct kefir_ast_translator_type *translator_type = NULL;
+        REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache,
+                                                                    node->base.properties.type->referenced_type,
+                                                                    &translator_type, &node->base.source_location));
 
-        kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, diff));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                            translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDI64(builder, KEFIR_IR_OPCODE_INT_CONST, diff));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                   translator_type->object.layout->properties.size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     } else {
         REQUIRE(normalized_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
                 KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->base.source_location, "Unexpected null pointer"));

@@ -149,7 +149,7 @@ static kefir_result_t load_bitfield(struct kefir_irbuilder_block *builder, struc
 
 static kefir_result_t resolve_bitfield_layout(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                               const struct kefir_ast_struct_member *node,
-                                              struct kefir_ast_translator_type **translator_type,
+                                              const struct kefir_ast_translator_type **translator_type,
                                               struct kefir_ast_type_layout **member_layout) {
     const struct kefir_ast_type *structure_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->structure->properties.type);
@@ -162,25 +162,20 @@ static kefir_result_t resolve_bitfield_layout(struct kefir_mem *mem, struct kefi
         REQUIRE_OK(kefir_ast_type_completion(mem, context->ast_context, &structure_type, structure_type));
     }
 
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                             structure_type, 0, translator_type, &node->base.source_location));
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, structure_type, translator_type,
+                                                                &node->base.source_location));
 
     struct kefir_ast_designator designator = {
         .type = KEFIR_AST_DESIGNATOR_MEMBER, .member = node->member, .next = NULL};
-    kefir_result_t res =
-        kefir_ast_type_layout_resolve((*translator_type)->object.layout, &designator, member_layout, NULL, NULL);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, *translator_type);
-        *translator_type = NULL;
-        return res;
-    });
+    REQUIRE_OK(
+        kefir_ast_type_layout_resolve((*translator_type)->object.layout, &designator, member_layout, NULL, NULL));
     return KEFIR_OK;
 }
 
 static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_translator_context *context,
                                        struct kefir_irbuilder_block *builder,
                                        const struct kefir_ast_struct_member *node) {
-    struct kefir_ast_translator_type *translator_type = NULL;
+    const struct kefir_ast_translator_type *translator_type = NULL;
     struct kefir_ast_type_layout *member_layout = NULL;
     REQUIRE_OK(resolve_bitfield_layout(mem, context, node, &translator_type, &member_layout));
 
@@ -194,27 +189,21 @@ static kefir_result_t resolve_bitfield(struct kefir_mem *mem, struct kefir_ast_t
     kefir_size_t bit_offset = member_layout->bitfield_props.offset % 8;
     if (KEFIR_AST_TYPE_IS_BIT_PRECISE_INTEGRAL_TYPE(member_layout->type)) {
         if (signedness) {
-            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_SIGNED,
-                                                                  member_layout->type->bitprecise.width, bit_offset,
-                                                                  member_layout->bitfield_props.width, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_SIGNED,
+                                                         member_layout->type->bitprecise.width, bit_offset,
+                                                         member_layout->bitfield_props.width, 0));
         } else {
-            REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_UNSIGNED,
-                                                                  member_layout->type->bitprecise.width, bit_offset,
-                                                                  member_layout->bitfield_props.width, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_BITINT_EXTRACT_UNSIGNED,
+                                                         member_layout->type->bitprecise.width, bit_offset,
+                                                         member_layout->bitfield_props.width, 0));
         }
     } else if (signedness) {
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_SIGNED, bit_offset,
-                                                            member_layout->bitfield_props.width));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_SIGNED, bit_offset,
+                                                   member_layout->bitfield_props.width));
     } else {
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_UNSIGNED, bit_offset,
-                                                            member_layout->bitfield_props.width));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_BITS_EXTRACT_UNSIGNED, bit_offset,
+                                                   member_layout->bitfield_props.width));
     }
-
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, translator_type);
-        return res;
-    });
-    REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
     return KEFIR_OK;
 }
 
@@ -384,7 +373,7 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
 
     if (node->properties.expression_props.bitfield_props.bitfield) {
         struct kefir_ast_struct_member *struct_member = NULL;
-        struct kefir_ast_translator_type *translator_type = NULL;
+        const struct kefir_ast_translator_type *translator_type = NULL;
         struct kefir_ast_type_layout *member_layout = NULL;
 
         kefir_result_t res;
@@ -393,15 +382,8 @@ kefir_result_t kefir_ast_translator_store_lvalue(struct kefir_mem *mem, struct k
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Expected bit-field node to be a direct/indirect structure member"));
 
         REQUIRE_OK(resolve_bitfield_layout(mem, context, struct_member, &translator_type, &member_layout));
-        REQUIRE_CHAIN(&res,
-                      kefir_ast_translator_store_layout_value(mem, context, builder, translator_type->object.ir_type,
-                                                              member_layout, &node->source_location));
-
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+        REQUIRE_OK(kefir_ast_translator_store_layout_value(mem, context, builder, translator_type->object.ir_type,
+                                                           member_layout, &node->source_location));
     } else if (node->properties.expression_props.atomic) {
         REQUIRE_OK(atomic_store_value(mem, node->properties.type, context, builder, &node->source_location));
     } else {
@@ -592,18 +574,13 @@ kefir_result_t kefir_ast_translator_load_atomic_aggregate_value(
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 1));
     REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
 
-    struct kefir_ast_translator_type *translator_type = NULL;
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module, type, 0,
-                                             &translator_type, source_location));
+    const struct kefir_ast_translator_type *translator_type = NULL;
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, type, &translator_type,
+                                                                source_location));
 
-    kefir_result_t res = KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
-        builder, KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM, KEFIR_IR_MEMORY_ORDER_SEQ_CST,
-        translator_type->object.ir_type_id, translator_type->object.layout->value, 0);
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, translator_type);
-        return res;
-    });
-    REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_FROM,
+                                                 KEFIR_IR_MEMORY_ORDER_SEQ_CST, translator_type->object.ir_type_id,
+                                                 translator_type->object.layout->value, 0));
     return KEFIR_OK;
 }
 
@@ -661,18 +638,13 @@ static kefir_result_t atomic_store_value(struct kefir_mem *mem, const struct kef
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
-            struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                     type, 0, &translator_type, source_location));
+            const struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, type, &translator_type,
+                                                                        source_location));
 
-            kefir_result_t res = KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
-                builder, KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_TO, atomic_memory_order, translator_type->object.ir_type_id,
-                translator_type->object.layout->value, 0);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_type_free(mem, translator_type);
-                return res;
-            });
-            REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_ATOMIC_COPY_MEMORY_TO,
+                                                         atomic_memory_order, translator_type->object.ir_type_id,
+                                                         translator_type->object.layout->value, 0));
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {
@@ -750,18 +722,13 @@ kefir_result_t kefir_ast_translator_store_value(struct kefir_mem *mem, const str
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
-            struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                     type, 0, &translator_type, source_location));
+            const struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, type, &translator_type,
+                                                                        source_location));
 
-            kefir_result_t res = KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_COPY_MEMORY,
-                                                                 translator_type->object.ir_type_id,
-                                                                 translator_type->object.layout->value);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_type_free(mem, translator_type);
-                return res;
-            });
-            REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32(builder, KEFIR_IR_OPCODE_COPY_MEMORY,
+                                                       translator_type->object.ir_type_id,
+                                                       translator_type->object.layout->value));
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT:
@@ -838,18 +805,13 @@ kefir_result_t kefir_ast_translator_atomic_compare_exchange_value(struct kefir_m
             break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_AGGREGATE: {
-            struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                     type, 0, &translator_type, source_location));
+            const struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, type, &translator_type,
+                                                                        source_location));
 
-            kefir_result_t res = KEFIR_IRBUILDER_BLOCK_APPENDU32_4(
-                builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_MEMORY, atomic_memory_order, translator_type->object.ir_type_id,
-                translator_type->object.layout->value, 0);
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_type_free(mem, translator_type);
-                return res;
-            });
-            REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_ATOMIC_CMPXCHG_MEMORY,
+                                                         atomic_memory_order, translator_type->object.ir_type_id,
+                                                         translator_type->object.layout->value, 0));
         } break;
 
         case KEFIR_AST_TYPE_DATA_MODEL_BITINT: {

@@ -56,15 +56,7 @@
         },
         {
             "identifier": 4,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 14,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 5,
@@ -72,10 +64,6 @@
         },
         {
             "identifier": 6,
-            "type": []
-        },
-        {
-            "identifier": 7,
             "type": [
                 {
                     "type": "array",
@@ -87,15 +75,15 @@
             ]
         },
         {
+            "identifier": 7,
+            "type": []
+        },
+        {
             "identifier": 8,
             "type": []
         },
         {
             "identifier": 9,
-            "type": []
-        },
-        {
-            "identifier": 10,
             "type": [
                 {
                     "type": "array",
@@ -107,27 +95,15 @@
             ]
         },
         {
+            "identifier": 10,
+            "type": []
+        },
+        {
             "identifier": 11,
             "type": []
         },
         {
             "identifier": 12,
-            "type": []
-        },
-        {
-            "identifier": 13,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 8,
-                    "element_type": {
-                        "type": "int8"
-                    }
-                }
-            ]
-        },
-        {
-            "identifier": 14,
             "type": [
                 {
                     "type": "array",
@@ -168,25 +144,25 @@
         {
             "identifier": 1,
             "name": "compound_literal2",
-            "parameters": 5,
+            "parameters": 4,
             "vararg": false,
-            "returns": 6,
+            "returns": 5,
             "returns_twice": false
         },
         {
             "identifier": 2,
             "name": "compound_literal3",
-            "parameters": 8,
+            "parameters": 7,
             "vararg": false,
-            "returns": 9,
+            "returns": 8,
             "returns_twice": false
         },
         {
             "identifier": 3,
             "name": "compound_literal4",
-            "parameters": 11,
+            "parameters": 10,
             "vararg": false,
-            "returns": 12,
+            "returns": 11,
             "returns_twice": false
         }
     ],
@@ -223,7 +199,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 4,
+                        "type": 3,
                         "index": 0
                     }
                 }
@@ -247,7 +223,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 7,
+                        "type": 6,
                         "index": 0
                     }
                 },
@@ -369,7 +345,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 10,
+                        "type": 9,
                         "index": 0
                     }
                 }
@@ -393,7 +369,7 @@
                 {
                     "opcode": "zero_memory",
                     "arg": {
-                        "type": 13,
+                        "type": 12,
                         "index": 0
                     }
                 },
@@ -408,7 +384,7 @@
                 {
                     "opcode": "copy_memory",
                     "arg": {
-                        "type": 14,
+                        "type": 12,
                         "index": 0
                     }
                 }

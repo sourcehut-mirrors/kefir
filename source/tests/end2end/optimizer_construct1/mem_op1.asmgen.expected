@@ -324,7 +324,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 70,
+                                "type_id": 68,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -339,7 +339,7 @@
                             {
                                 "id": 2,
                                 "opcode": "alloc_local",
-                                "type_id": 70,
+                                "type_id": 68,
                                 "type_index": 1,
                                 "control_next": null,
                                 "ir_instruction": 2
@@ -368,7 +368,7 @@
                                 "target": 2,
                                 "source": null,
                                 "type": {
-                                    "id": 72,
+                                    "id": 70,
                                     "index": 0
                                 },
                                 "control_next": 10,
@@ -481,7 +481,7 @@
                                 "target": 17,
                                 "source": 2,
                                 "type": {
-                                    "id": 72,
+                                    "id": 70,
                                     "index": 0
                                 },
                                 "control_next": 19,

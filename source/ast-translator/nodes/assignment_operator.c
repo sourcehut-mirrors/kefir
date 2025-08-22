@@ -814,24 +814,16 @@ static kefir_result_t generate_add(const struct generate_op_parameters *params) 
         const struct kefir_ast_type *unqualified_referenced_type =
             kefir_ast_unqualified_type(params->target_normalized_type->referenced_type);
         if (unqualified_referenced_type->tag != KEFIR_AST_TYPE_VOID) {
-            struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(kefir_ast_translator_type_new(
-                params->mem, params->context->ast_context, params->context->environment, params->context->module,
-                unqualified_referenced_type, 0, &translator_type, &params->node->base.source_location));
+            const struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(params->mem, &params->context->cache,
+                                                                        unqualified_referenced_type, &translator_type,
+                                                                        &params->node->base.source_location));
 
-            kefir_result_t res = KEFIR_OK;
-            REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
-                                                             params->context->ast_context->type_traits,
-                                                             params->value_normalized_type,
-                                                             params->context->ast_context->type_traits->size_type));
-            if (res == KEFIR_OK) {
-                referenced_object_size = translator_type->object.layout->properties.size;
-            }
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_type_free(params->mem, translator_type);
-                return res;
-            });
-            REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
+                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+
+            referenced_object_size = translator_type->object.layout->properties.size;
         }
 
         REQUIRE_OK(
@@ -915,24 +907,15 @@ static kefir_result_t generate_sub(const struct generate_op_parameters *params) 
         const struct kefir_ast_type *unqualified_referenced_type =
             kefir_ast_unqualified_type(params->target_normalized_type->referenced_type);
         if (unqualified_referenced_type->tag != KEFIR_AST_TYPE_VOID) {
-            struct kefir_ast_translator_type *translator_type = NULL;
-            REQUIRE_OK(kefir_ast_translator_type_new(
-                params->mem, params->context->ast_context, params->context->environment, params->context->module,
-                unqualified_referenced_type, 0, &translator_type, &params->node->base.source_location));
+            const struct kefir_ast_translator_type *translator_type = NULL;
+            REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(params->mem, &params->context->cache,
+                                                                        unqualified_referenced_type, &translator_type,
+                                                                        &params->node->base.source_location));
 
-            kefir_result_t res = KEFIR_OK;
-            REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(params->mem, params->context->module, params->builder,
-                                                             params->context->ast_context->type_traits,
-                                                             params->value_normalized_type,
-                                                             params->context->ast_context->type_traits->size_type));
-            if (res == KEFIR_OK) {
-                referenced_object_size = translator_type->object.layout->properties.size;
-            }
-            REQUIRE_ELSE(res == KEFIR_OK, {
-                kefir_ast_translator_type_free(params->mem, translator_type);
-                return res;
-            });
-            REQUIRE_OK(kefir_ast_translator_type_free(params->mem, translator_type));
+            REQUIRE_OK(kefir_ast_translate_typeconv(
+                params->mem, params->context->module, params->builder, params->context->ast_context->type_traits,
+                params->value_normalized_type, params->context->ast_context->type_traits->size_type));
+            referenced_object_size = translator_type->object.layout->properties.size;
         }
 
         REQUIRE_OK(

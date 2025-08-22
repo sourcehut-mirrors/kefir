@@ -131,14 +131,12 @@ static kefir_result_t translate_init_declarator(struct kefir_mem *mem, const str
             }
 
             if (!trivial_initializer) {
-                struct kefir_ast_translator_type *translator_type = NULL;
-                REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment,
-                                                         context->module, node->properties.type, 0, &translator_type,
-                                                         &node->source_location));
+                const struct kefir_ast_translator_type *translator_type = NULL;
+                REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, node->properties.type,
+                                                                            &translator_type, &node->source_location));
 
                 const kefir_id_t type_id = translator_type->object.ir_type_id;
                 const kefir_size_t type_index = translator_type->object.layout->value;
-                REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
 
                 REQUIRE_OK(kefir_ast_translator_fetch_temporary(
                     mem, context, builder, &node->properties.declaration_props.temporary_identifier));

@@ -120,14 +120,6 @@
                     "type": "float"
                 }
             ]
-        },
-        {
-            "identifier": 22,
-            "type": [
-                {
-                    "type": "double"
-                }
-            ]
         }
     ],
     "data": [],

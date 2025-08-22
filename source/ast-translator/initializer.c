@@ -39,7 +39,7 @@ struct traversal_param {
     struct kefir_mem *mem;
     struct kefir_ast_translator_context *context;
     struct kefir_irbuilder_block *builder;
-    struct kefir_ast_translator_type *translator_type;
+    const struct kefir_ast_translator_type *translator_type;
     const struct kefir_source_location *source_location;
     struct kefir_hashtreeset *repeated_expressions;
     kefir_bool_t use_constant_values;
@@ -265,14 +265,13 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
                                     .repeated_expressions = repeated_expressions,
                                     .use_constant_values = use_constant_values,
                                     .zeroed = nested};
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module, type, 0,
-                                             &param.translator_type, &initializer->source_location));
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, type, &param.translator_type,
+                                                                &initializer->source_location));
 
-    kefir_result_t res = KEFIR_OK;
     if (!nested && KEFIR_AST_TYPE_IS_AGGREGATE_TYPE(unqualified_type) &&
         (initializer->type != KEFIR_AST_INITIALIZER_EXPRESSION ||
          !KEFIR_AST_TYPE_SAME(unqualified_type, initializer->expression->properties.type))) {
-        res = zero_type(builder, param.translator_type->object.ir_type_id, param.translator_type->object.layout);
+        REQUIRE_OK(zero_type(builder, param.translator_type->object.ir_type_id, param.translator_type->object.layout));
         param.zeroed = true;
     }
 
@@ -283,13 +282,7 @@ static kefir_result_t kefir_ast_translate_initializer_impl(
     initializer_traversal.visit_initializer_list = traverse_initializer_list;
     initializer_traversal.payload = &param;
 
-    REQUIRE_CHAIN(&res,
-                  kefir_ast_traverse_initializer(mem, context->ast_context, initializer, type, &initializer_traversal));
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, param.translator_type);
-        return res;
-    });
-    REQUIRE_OK(kefir_ast_translator_type_free(mem, param.translator_type));
+    REQUIRE_OK(kefir_ast_traverse_initializer(mem, context->ast_context, initializer, type, &initializer_traversal));
     return KEFIR_OK;
 }
 

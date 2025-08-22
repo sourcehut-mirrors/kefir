@@ -23,4 +23,7 @@
 
 #include "kefir/core/base.h"
 
+// Forward declarations
+typedef struct kefir_ast_translator_context kefir_ast_translator_context_t;
+
 #endif

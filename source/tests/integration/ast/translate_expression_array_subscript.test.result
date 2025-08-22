@@ -48,22 +48,6 @@
                     "type": "int64"
                 }
             ]
-        },
-        {
-            "identifier": 6,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
-        },
-        {
-            "identifier": 7,
-            "type": [
-                {
-                    "type": "int64"
-                }
-            ]
         }
     ],
     "data": [],

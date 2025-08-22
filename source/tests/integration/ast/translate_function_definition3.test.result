@@ -93,44 +93,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "identifier": 8,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "double"
-                        }
-                    ]
-                }
-            ]
-        },
-        {
-            "identifier": 9,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "double"
-                        },
-                        {
-                            "type": "double"
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "data": [

@@ -44,6 +44,7 @@ kefir_result_t kefir_ast_translator_context_init(struct kefir_mem *mem, struct k
     context->function_debug_info = NULL;
     context->debug_entry_hierarchy = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
 
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_init(&context->cache, context));
     context->debug_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_ast_translator_debug_entries));
     REQUIRE(context->debug_entries != NULL,
             KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate AST translator debug type bundle"));
@@ -85,6 +86,7 @@ kefir_result_t kefir_ast_translator_context_init_local(struct kefir_mem *mem,
     context->function_debug_info = function_debug_info;
     context->debug_entries = base_context->debug_entries;
     context->debug_entry_hierarchy = KEFIR_IR_DEBUG_ENTRY_ID_NONE;
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_init(&context->cache, context));
 
     context->extensions = base_context->extensions;
     context->extensions_payload = NULL;
@@ -108,6 +110,7 @@ kefir_result_t kefir_ast_translator_context_free(struct kefir_mem *mem, struct k
         KEFIR_FREE(mem, context->debug_entries);
     }
 
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_free(mem, &context->cache));
     context->base_context = NULL;
     context->ast_context = NULL;
     context->environment = NULL;

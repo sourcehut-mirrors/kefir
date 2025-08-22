@@ -134,31 +134,11 @@
         },
         {
             "identifier": 25,
-            "type": [
-                {
-                    "type": "int8"
-                }
-            ]
+            "type": []
         },
         {
             "identifier": 26,
             "type": []
-        },
-        {
-            "identifier": 27,
-            "type": []
-        },
-        {
-            "identifier": 28,
-            "type": [
-                {
-                    "type": "array",
-                    "length": 4,
-                    "element_type": {
-                        "type": "int64"
-                    }
-                }
-            ]
         }
     ],
     "data": [],
@@ -255,9 +235,9 @@
         {
             "identifier": 11,
             "name": "decrement_pointer2",
-            "parameters": 26,
+            "parameters": 25,
             "vararg": false,
-            "returns": 27,
+            "returns": 26,
             "returns_twice": false
         }
     ],

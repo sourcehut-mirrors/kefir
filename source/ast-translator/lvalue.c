@@ -161,40 +161,31 @@ kefir_result_t kefir_ast_translate_array_subscript_lvalue(struct kefir_mem *mem,
     REQUIRE(builder != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid IR block builder"));
     REQUIRE(node != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST array subscript node"));
 
-    struct kefir_ast_translator_type *translator_type = NULL;
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                             node->base.properties.type, 0, &translator_type,
-                                             &node->base.source_location));
+    const struct kefir_ast_translator_type *translator_type = NULL;
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, node->base.properties.type,
+                                                                &translator_type, &node->base.source_location));
 
-    kefir_result_t res = KEFIR_OK;
     const struct kefir_ast_type *array_type =
         KEFIR_AST_TYPE_CONV_EXPRESSION_ALL(mem, context->ast_context->type_bundle, node->array->properties.type);
     if (array_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-        REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
-        REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
-        REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
-                                mem, context->module, builder, context->ast_context->type_traits,
-                                node->subscript->properties.type, context->ast_context->type_traits->ptrdiff_type));
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node->array, builder, context));
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node->subscript, builder, context));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                node->subscript->properties.type,
+                                                context->ast_context->type_traits->ptrdiff_type));
     } else {
-        REQUIRE_CHAIN_SET(
-            &res, array_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
-            KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location, "Unexpected null pointer"));
-        REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->subscript, builder, context));
-        REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->array, builder, context));
-        REQUIRE_CHAIN(&res, kefir_ast_translate_typeconv(
-                                mem, context->module, builder, context->ast_context->type_traits,
-                                node->array->properties.type, context->ast_context->type_traits->ptrdiff_type));
+        REQUIRE(array_type->tag != KEFIR_AST_TYPE_SCALAR_NULL_POINTER,
+                KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &node->array->source_location, "Unexpected null pointer"));
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node->subscript, builder, context));
+        REQUIRE_OK(kefir_ast_translate_expression(mem, node->array, builder, context));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                node->array->properties.type,
+                                                context->ast_context->type_traits->ptrdiff_type));
     }
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                        translator_type->object.layout->properties.size));
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
-    REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, translator_type);
-        return res;
-    });
-    REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                               translator_type->object.layout->properties.size));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+    REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     return KEFIR_OK;
 }
 
@@ -218,26 +209,18 @@ kefir_result_t kefir_ast_translate_struct_member_lvalue(struct kefir_mem *mem,
                 structure_type->structure_type.complete,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected expression of complete structure/union type"));
 
-    struct kefir_ast_translator_type *translator_type = NULL;
-    REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                             structure_type, 0, &translator_type, &node->base.source_location));
+    const struct kefir_ast_translator_type *translator_type = NULL;
+    REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, structure_type, &translator_type,
+                                                                &node->base.source_location));
 
     struct kefir_ast_type_layout *member_layout = NULL;
     struct kefir_ast_designator designator = {
         .type = KEFIR_AST_DESIGNATOR_MEMBER, .member = node->member, .next = NULL};
-    kefir_result_t res = KEFIR_OK;
-    REQUIRE_CHAIN(
-        &res, kefir_ast_type_layout_resolve(translator_type->object.layout, &designator, &member_layout, NULL, NULL));
+    REQUIRE_OK(kefir_ast_type_layout_resolve(translator_type->object.layout, &designator, &member_layout, NULL, NULL));
 
-    REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->structure, builder, context));
-    REQUIRE_CHAIN(&res, kefir_ast_translator_resolve_type_layout(builder, translator_type->object.ir_type_id,
-                                                                 member_layout, translator_type->object.layout));
-
-    REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_ast_translator_type_free(mem, translator_type);
-        return res;
-    });
-    REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+    REQUIRE_OK(kefir_ast_translate_expression(mem, node->structure, builder, context));
+    REQUIRE_OK(kefir_ast_translator_resolve_type_layout(builder, translator_type->object.ir_type_id, member_layout,
+                                                        translator_type->object.layout));
     return KEFIR_OK;
 }
 

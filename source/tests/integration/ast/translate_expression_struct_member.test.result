@@ -52,22 +52,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "identifier": 5,
-            "type": [
-                {
-                    "type": "struct",
-                    "fields": [
-                        {
-                            "type": "int32"
-                        },
-                        {
-                            "type": "int64"
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "data": [],

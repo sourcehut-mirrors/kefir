@@ -419,7 +419,7 @@
             ]
         },
         {
-            "identifier": 136,
+            "identifier": 120,
             "type": [
                 {
                     "type": "array",
@@ -445,7 +445,7 @@
             ]
         },
         {
-            "identifier": 137,
+            "identifier": 121,
             "type": [
                 {
                     "type": "array",
@@ -525,7 +525,7 @@
         {
             "identifier": "__kefir_function_vla_test_static___func___23",
             "storage": "global",
-            "type": 137,
+            "type": 121,
             "value": [
                 {
                     "class": "string",
@@ -2223,7 +2223,7 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2236,7 +2236,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2252,7 +2252,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2294,7 +2294,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2339,7 +2339,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2429,7 +2429,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2516,7 +2516,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2547,7 +2547,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2559,7 +2559,7 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 528280977408,
+                    "id": 493921239040,
                     "type": 89,
                     "type_index": 0
                 },
@@ -2575,8 +2575,8 @@
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 584115552258,
-                    "type": 136,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2588,8 +2588,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552258,
-                    "type": 136,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2604,8 +2604,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2613,8 +2613,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 136,
+                    "id": 515396075520,
+                    "type": 120,
                     "type_index": 0
                 },
                 {
@@ -2642,8 +2642,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2659,8 +2659,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552258,
-                    "type": 136,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2677,8 +2677,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2714,8 +2714,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2733,8 +2733,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2778,8 +2778,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2835,8 +2835,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552256,
-                    "type": 136,
+                    "id": 515396075520,
+                    "type": 120,
                     "type_index": 0
                 },
                 {
@@ -2864,8 +2864,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552259,
-                    "type": 136,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2873,8 +2873,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 584115552258,
-                    "type": 136,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {

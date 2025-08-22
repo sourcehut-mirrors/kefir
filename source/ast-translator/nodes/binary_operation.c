@@ -139,34 +139,27 @@ static kefir_result_t translate_addition(struct kefir_mem *mem, struct kefir_ast
             referenced_type = context->ast_context->type_traits->incomplete_type_substitute;
         }
 
-        struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                 referenced_type, 0, &translator_type, &node->base.source_location));
+        const struct kefir_ast_translator_type *translator_type = NULL;
+        REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, referenced_type,
+                                                                    &translator_type, &node->base.source_location));
 
-        kefir_result_t res = KEFIR_OK;
         if (arg1_normalized_type->tag == KEFIR_AST_TYPE_SCALAR_POINTER) {
-            REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
-            REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     node->arg2->properties.type,
                                                     context->ast_context->type_traits->ptrdiff_type));
         } else {
-            REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg2, builder, context));
-            REQUIRE_CHAIN(&res, kefir_ast_translate_expression(mem, node->arg1, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg2, builder, context));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, node->arg1, builder, context));
             REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
                                                     node->arg1->properties.type,
                                                     context->ast_context->type_traits->ptrdiff_type));
         }
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                            translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
-
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                   translator_type->object.layout->properties.size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_ADD, 0));
     }
     return KEFIR_OK;
 }
@@ -262,24 +255,16 @@ static kefir_result_t translate_subtraction(struct kefir_mem *mem, struct kefir_
             referenced_type = context->ast_context->type_traits->incomplete_type_substitute;
         }
 
-        struct kefir_ast_translator_type *translator_type = NULL;
-        REQUIRE_OK(kefir_ast_translator_type_new(mem, context->ast_context, context->environment, context->module,
-                                                 referenced_type, 0, &translator_type, &node->base.source_location));
+        const struct kefir_ast_translator_type *translator_type = NULL;
+        REQUIRE_OK(kefir_ast_translator_context_type_cache_get_type(mem, &context->cache, referenced_type,
+                                                                    &translator_type, &node->base.source_location));
 
-        kefir_result_t res = KEFIR_OK;
-        REQUIRE_CHAIN(
-            &res, kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
-                                               arg2_normalized_type, context->ast_context->type_traits->ptrdiff_type));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
-                                                            translator_type->object.layout->properties.size));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
-        REQUIRE_CHAIN(&res, KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
-
-        REQUIRE_ELSE(res == KEFIR_OK, {
-            kefir_ast_translator_type_free(mem, translator_type);
-            return res;
-        });
-        REQUIRE_OK(kefir_ast_translator_type_free(mem, translator_type));
+        REQUIRE_OK(kefir_ast_translate_typeconv(mem, context->module, builder, context->ast_context->type_traits,
+                                                arg2_normalized_type, context->ast_context->type_traits->ptrdiff_type));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UINT_CONST,
+                                                   translator_type->object.layout->properties.size));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_MUL, 0));
+        REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_INT64_SUB, 0));
     }
     return KEFIR_OK;
 }
