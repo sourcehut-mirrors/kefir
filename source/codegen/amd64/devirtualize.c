@@ -23,6 +23,7 @@
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
 #include "kefir/core/list.h"
+#include "kefir/core/bitset.h"
 #include <string.h>
 
 struct devirtualize_state {
@@ -34,7 +35,7 @@ struct devirtualize_state {
         kefir_uint8_t *physical_regs;
         kefir_uint8_t *required_physical_regs;
         kefir_size_t num_of_regs;
-        struct kefir_hashtable virtual_regs;
+        struct kefir_hashset virtual_regs;
         struct kefir_bitset spill_area;
     } alive;
 
@@ -43,7 +44,7 @@ struct devirtualize_state {
         struct kefir_hashtree virtual_regs;
     } stash;
 
-    struct kefir_hashtreeset current_instr_physical_regs;
+    struct kefir_hashset current_instr_physical_regs;
     struct kefir_hashtree evicted_physical_regs;
     struct kefir_list virtual_blocks;
 };
@@ -70,7 +71,7 @@ static kefir_result_t mark_alive_virtual_reg(struct kefir_mem *mem, struct devir
     REQUIRE_OK(kefir_codegen_amd64_xregalloc_lifetime_of(state->xregalloc, vreg_idx, CURRENT_VIRTUAL_BLOCK(state),
                                                          &lifetime_begin, &lifetime_end));
     if (linear_position >= lifetime_begin && linear_position <= lifetime_end) {
-        REQUIRE_OK(kefir_hashtable_insert_or_update(mem, &state->alive.virtual_regs, (kefir_hashtable_key_t) vreg_idx, (kefir_hashtable_value_t) 0));
+        REQUIRE_OK(kefir_hashset_add(mem, &state->alive.virtual_regs, (kefir_hashset_key_t) vreg_idx));
     }
 
     return KEFIR_OK;
@@ -78,8 +79,8 @@ static kefir_result_t mark_alive_virtual_reg(struct kefir_mem *mem, struct devir
 
 static kefir_result_t collect_live_vregs(struct kefir_mem *mem, struct devirtualize_state *state,
                                          kefir_size_t linear_position) {
-    REQUIRE_OK(kefir_hashtreeset_clean(mem, &state->current_instr_physical_regs));
-    REQUIRE_OK(kefir_hashtable_clear(&state->alive.virtual_regs));
+    REQUIRE_OK(kefir_hashset_clear(mem, &state->current_instr_physical_regs));
+    REQUIRE_OK(kefir_hashset_clear(mem, &state->alive.virtual_regs));
 
     kefir_result_t res;
     struct kefir_codegen_amd64_xregalloc_virtual_block_iterator iter2;
@@ -111,8 +112,8 @@ static kefir_result_t update_live_virtual_reg(struct kefir_mem *mem, struct devi
                 return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unallocated amd64 virtual register allocation");
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-                REQUIRE_OK(kefir_hashtreeset_add(mem, &state->current_instr_physical_regs,
-                                                 (kefir_hashtreeset_entry_t) reg_alloc->direct_reg));
+                REQUIRE_OK(kefir_hashset_add(mem, &state->current_instr_physical_regs,
+                                                 (kefir_hashset_key_t) reg_alloc->direct_reg));
                 break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
@@ -261,11 +262,11 @@ static kefir_result_t rebuild_alive_physical_regs(struct kefir_mem *mem, struct 
     REQUIRE_OK(kefir_bitset_length(&state->alive.spill_area, &spill_area_length));
     REQUIRE_OK(kefir_bitset_set_consecutive(&state->alive.spill_area, 0, spill_area_length, false));
 
-    struct kefir_hashtable_iterator iter;
-    kefir_hashtable_key_t iter_key;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t iter_key;
     kefir_result_t res;
-    for (res = kefir_hashtable_iter(&state->alive.virtual_regs, &iter, &iter_key, NULL); res == KEFIR_OK;
-         res = kefir_hashtable_next(&iter, &iter_key, NULL)) {
+    for (res = kefir_hashset_iter(&state->alive.virtual_regs, &iter, &iter_key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &iter_key)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, iter_key);
         REQUIRE_OK(rebuild_alive_physical_reg(mem, state, vreg_idx));
     }
@@ -347,7 +348,7 @@ static kefir_result_t obtain_temporary_register(struct kefir_mem *mem, struct de
     for (kefir_size_t i = 0; i < length; i++) {
         const kefir_asm_amd64_xasmgen_register_t candidate = register_arr[i];
 
-        if (!kefir_hashtreeset_has(&state->current_instr_physical_regs, (kefir_hashtreeset_entry_t) candidate) &&
+        if (!kefir_hashset_has(&state->current_instr_physical_regs, (kefir_hashset_key_t) candidate) &&
             (candidate >= state->alive.num_of_regs || !state->alive.physical_regs[candidate]) &&
             !kefir_hashtree_has(&state->evicted_physical_regs, (kefir_hashtree_key_t) candidate) &&
             kefir_codegen_amd64_xregalloc_has_used_register(state->xregalloc, candidate)) {
@@ -361,7 +362,7 @@ static kefir_result_t obtain_temporary_register(struct kefir_mem *mem, struct de
     for (kefir_size_t i = 0; i < length; i++) {
         const kefir_asm_amd64_xasmgen_register_t candidate = register_arr[i];
 
-        if (!kefir_hashtreeset_has(&state->current_instr_physical_regs, (kefir_hashtreeset_entry_t) candidate) &&
+        if (!kefir_hashset_has(&state->current_instr_physical_regs, (kefir_hashset_key_t) candidate) &&
             (candidate >= state->alive.num_of_regs || !state->alive.physical_regs[candidate]) &&
             !kefir_hashtree_has(&state->evicted_physical_regs, (kefir_hashtree_key_t) candidate)) {
             REQUIRE_OK(kefir_hashtree_insert(mem, &state->evicted_physical_regs, (kefir_hashtree_key_t) candidate,
@@ -375,7 +376,7 @@ static kefir_result_t obtain_temporary_register(struct kefir_mem *mem, struct de
     for (kefir_size_t i = 0; i < length; i++) {
         const kefir_asm_amd64_xasmgen_register_t candidate = register_arr[i];
 
-        if (!kefir_hashtreeset_has(&state->current_instr_physical_regs, (kefir_hashtreeset_entry_t) candidate) &&
+        if (!kefir_hashset_has(&state->current_instr_physical_regs, (kefir_hashset_key_t) candidate) &&
             !kefir_hashtree_has(&state->evicted_physical_regs, (kefir_hashtree_key_t) candidate) &&
             (candidate >= state->alive.num_of_regs || !state->alive.required_physical_regs[candidate])) {
 
@@ -1095,12 +1096,12 @@ static kefir_result_t activate_stash(struct kefir_mem *mem, struct devirtualize_
     REQUIRE(stash_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected spill area space allocation for stash"));
 
-    struct kefir_hashtable_iterator iter;
-    kefir_hashtable_key_t iter_key;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t iter_key;
     kefir_result_t res;
     kefir_size_t spill_area_slot = 0;
-    for (res = kefir_hashtable_iter(&state->alive.virtual_regs, &iter, &iter_key, NULL); res == KEFIR_OK;
-         res = kefir_hashtable_next(&iter, &iter_key, NULL)) {
+    for (res = kefir_hashset_iter(&state->alive.virtual_regs, &iter, &iter_key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &iter_key)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, iter_key);
         const struct kefir_codegen_amd64_register_allocation *reg_alloc;
         REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg_idx, &reg_alloc));
@@ -1177,11 +1178,11 @@ static kefir_result_t deactivate_stash(struct kefir_mem *mem, struct devirtualiz
     REQUIRE(stash_alloc->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_INDIRECT,
             KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected spill area space allocation for stash"));
 
-    struct kefir_hashtable_iterator iter;
-    kefir_hashtable_key_t iter_key;
+    struct kefir_hashset_iterator iter;
+    kefir_hashset_key_t iter_key;
     kefir_result_t res;
-    for (res = kefir_hashtable_iter(&state->alive.virtual_regs, &iter, &iter_key, NULL); res == KEFIR_OK;
-         res = kefir_hashtable_next(&iter, &iter_key, NULL)) {
+    for (res = kefir_hashset_iter(&state->alive.virtual_regs, &iter, &iter_key); res == KEFIR_OK;
+         res = kefir_hashset_next(&iter, &iter_key)) {
         ASSIGN_DECL_CAST(kefir_asmcmp_virtual_register_index_t, vreg_idx, iter_key);
         const struct kefir_codegen_amd64_register_allocation *reg_alloc;
         REQUIRE_OK(kefir_codegen_amd64_xregalloc_allocation_of(state->xregalloc, vreg_idx, &reg_alloc));
@@ -1722,8 +1723,8 @@ kefir_result_t kefir_codegen_amd64_devirtualize(struct kefir_mem *mem, struct ke
                                         .num_of_regs = 0
                                        },
                                        .stash = {.idx = KEFIR_ASMCMP_INDEX_NONE}};;
-    REQUIRE_OK(kefir_hashtable_init(&state.alive.virtual_regs, &kefir_hashtable_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&state.current_instr_physical_regs, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.alive.virtual_regs, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&state.current_instr_physical_regs, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.stash.virtual_regs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.evicted_physical_regs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_bitset_init(&state.alive.spill_area));
@@ -1734,8 +1735,8 @@ kefir_result_t kefir_codegen_amd64_devirtualize(struct kefir_mem *mem, struct ke
     kefir_bitset_free(mem, &state.alive.spill_area);
     kefir_hashtree_free(mem, &state.evicted_physical_regs);
     kefir_hashtree_free(mem, &state.stash.virtual_regs);
-    kefir_hashtable_free(mem, &state.alive.virtual_regs);
-    kefir_hashtreeset_free(mem, &state.current_instr_physical_regs);
+    kefir_hashset_free(mem, &state.alive.virtual_regs);
+    kefir_hashset_free(mem, &state.current_instr_physical_regs);
     KEFIR_FREE(mem, state.alive.physical_regs);
     KEFIR_FREE(mem, state.alive.required_physical_regs);
     return res;

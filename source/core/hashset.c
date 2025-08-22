@@ -18,142 +18,153 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include "kefir/core/hashtreeset.h"
+#define KEFIR_HASHTABLE_INTERNAL
+#include "kefir/core/hashset.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
+#include <string.h>
 
-kefir_result_t kefir_hashtreeset_init(struct kefir_hashtreeset *set, const struct kefir_hashtree_ops *ops) {
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashtreeset"));
-    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtree operations"));
+kefir_result_t kefir_hashset_init(struct kefir_hashset *hashset, const struct kefir_hashtable_ops *ops) {
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashset"));
+    REQUIRE(ops != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset operations"));
 
-    set->on_removal.callback = NULL;
-    set->on_removal.payload = NULL;
-    REQUIRE_OK(kefir_hashtree_init(&set->tree, ops));
+    hashset->entries = NULL;
+    hashset->capacity = 0;
+    hashset->occupied = 0;
+    hashset->collisions = 0;
+    hashset->ops = ops;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashtreeset_free(struct kefir_mem *mem, struct kefir_hashtreeset *set) {
+kefir_result_t kefir_hashset_free(struct kefir_mem *mem, struct kefir_hashset *hashset) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    REQUIRE_OK(kefir_hashtree_free(mem, &set->tree));
+    KEFIR_FREE(mem, hashset->entries);
+    memset(hashset, 0, sizeof(struct kefir_hashset));
     return KEFIR_OK;
 }
 
-static kefir_result_t on_removal(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                 kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
-    UNUSED(value);
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected memory allocator"));
-    REQUIRE(payload != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected hashtreeset entry removal payload"));
+static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops, struct kefir_hashset_entry *entries, kefir_size_t capacity, kefir_hashset_key_t key, kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
+    KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, capacity, key, position_ptr, collisions_ptr);
+}
 
-    ASSIGN_DECL_CAST(struct kefir_hashtreeset *, set, payload);
-    if (set->on_removal.callback != NULL) {
-        REQUIRE_OK(set->on_removal.callback(mem, set, (kefir_hashtreeset_entry_t) key, set->on_removal.payload));
+static kefir_result_t insert_entry(const struct kefir_hashtable_ops *ops, struct kefir_hashset_entry *entries, kefir_size_t capacity, kefir_size_t *collisions, kefir_size_t *occupied, kefir_hashset_key_t key) {
+    kefir_size_t index = 0;
+    kefir_size_t found_collisions = 0;
+    REQUIRE_OK(find_position_for_insert(ops, entries, capacity, key, &index, &found_collisions));
+
+    if (!entries[index].occupied) {
+        entries[index].occupied = true;
+        entries[index].key = key;
+        (*occupied)++;
+        *collisions += found_collisions;
     }
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashtreeset_on_remove(struct kefir_hashtreeset *set,
-                                           kefir_result_t (*callback)(struct kefir_mem *, struct kefir_hashtreeset *,
-                                                                      kefir_hashtreeset_entry_t, void *),
-                                           void *payload) {
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
+static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashset) {
+    const kefir_size_t new_capacity = KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity);
+    kefir_size_t new_collisions = 0;
+    kefir_size_t new_occupied = 0;
+    struct kefir_hashset_entry *new_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_hashset_entry) * new_capacity);
+    for (kefir_size_t i = 0; i < new_capacity; i++) {
+        new_entries[i].occupied = false;
+    }
 
-    set->on_removal.callback = callback;
-    set->on_removal.payload = payload;
-    REQUIRE_OK(kefir_hashtree_on_removal(&set->tree, on_removal, (void *) set));
-    return KEFIR_OK;
-}
-
-kefir_result_t kefir_hashtreeset_add(struct kefir_mem *mem, struct kefir_hashtreeset *set,
-                                     kefir_hashtreeset_entry_t entry) {
-    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
-
-    kefir_result_t res =
-        kefir_hashtree_insert(mem, &set->tree, (kefir_hashtree_key_t) entry, (kefir_hashtree_value_t) 0);
-    if (res == KEFIR_ALREADY_EXISTS) {
-        if (set->on_removal.callback != NULL) {
-            REQUIRE_OK(set->on_removal.callback(mem, set, entry, set->on_removal.payload));
+    kefir_result_t res = KEFIR_OK;
+    for (kefir_size_t i = 0; res == KEFIR_OK && i < hashset->capacity; i++) {
+        if (hashset->entries[i].occupied) {
+            res = insert_entry(hashset->ops, new_entries, new_capacity, &new_collisions, &new_occupied, hashset->entries[i].key);
         }
-    } else {
-        REQUIRE_OK(res);
     }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        KEFIR_FREE(mem, new_entries);
+        return res;
+    });
+
+    KEFIR_FREE(mem, hashset->entries);
+    hashset->entries = new_entries;
+    hashset->capacity = new_capacity;
+    hashset->collisions = new_collisions;
+    hashset->occupied = new_occupied;
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashtreeset_delete(struct kefir_mem *mem, struct kefir_hashtreeset *set,
-                                        kefir_hashtreeset_entry_t entry) {
+kefir_result_t kefir_hashset_clear(struct kefir_mem *mem, struct kefir_hashset *hashset) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    kefir_result_t res = kefir_hashtree_delete(mem, &set->tree, (kefir_hashtree_key_t) entry);
-    if (res != KEFIR_NOT_FOUND) {
-        REQUIRE_OK(res);
+    for (kefir_size_t i = 0; i < hashset->capacity; i++) {
+        hashset->entries[i].occupied = false;
     }
+    hashset->occupied = 0;
+    hashset->collisions = 0;
     return KEFIR_OK;
 }
 
-kefir_bool_t kefir_hashtreeset_has(const struct kefir_hashtreeset *set, kefir_hashtreeset_entry_t entry) {
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
-
-    return kefir_hashtree_has(&set->tree, (kefir_hashtree_key_t) entry);
-}
-
-kefir_bool_t kefir_hashtreeset_empty(const struct kefir_hashtreeset *set) {
-    REQUIRE(set != NULL, true);
-
-    return kefir_hashtree_empty(&set->tree);
-}
-
-kefir_result_t kefir_hashtreeset_clean(struct kefir_mem *mem, struct kefir_hashtreeset *set) {
+kefir_result_t kefir_hashset_add(struct kefir_mem *mem, struct kefir_hashset *hashset, kefir_hashset_key_t key) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    REQUIRE_OK(kefir_hashtree_clean(mem, &set->tree));
+    if (hashset->capacity == 0 ||
+        hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashset->capacity ||
+        hashset->collisions >= KEFIR_REHASH_COLLISION_THRESHOLD * hashset->capacity) {
+        REQUIRE_OK(rehash(mem, hashset));
+    }
+
+    REQUIRE_OK(insert_entry(hashset->ops, hashset->entries, hashset->capacity, &hashset->collisions, &hashset->occupied, key));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashtreeset_merge(struct kefir_mem *mem, struct kefir_hashtreeset *target_set,
-                                       const struct kefir_hashtreeset *source_set,
-                                       kefir_result_t (*clone_fn)(struct kefir_mem *, kefir_hashtreeset_entry_t,
-                                                                  kefir_hashtreeset_entry_t *, void *),
-                                       void *clone_payload) {
+kefir_result_t kefir_hashset_merge(struct kefir_mem *mem, struct kefir_hashset *dst_hashset, const struct kefir_hashset *src_hashset) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
-    REQUIRE(target_set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid target hashtreeset"));
-    REQUIRE(source_set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source hashtreeset"));
+    REQUIRE(dst_hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination hashset"));
+    REQUIRE(src_hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source hashset"));
 
-    struct kefir_hashtreeset_iterator iter;
-    kefir_result_t res;
-    for (res = kefir_hashtreeset_iter(source_set, &iter); res == KEFIR_OK; res = kefir_hashtreeset_next(&iter)) {
-        kefir_hashtreeset_entry_t new_entry = iter.entry;
-        if (clone_fn != NULL) {
-            REQUIRE_OK(clone_fn(mem, new_entry, &new_entry, clone_payload));
+    if (src_hashset->occupied > 0) {
+        for (kefir_size_t i = 0; i < src_hashset->capacity; i++) {
+            if (src_hashset->entries[i].occupied) {
+                REQUIRE_OK(kefir_hashset_add(mem, dst_hashset, src_hashset->entries[i].key));
+            }
         }
-        REQUIRE_OK(kefir_hashtreeset_add(mem, target_set, new_entry));
-    }
-    if (res != KEFIR_ITERATOR_END) {
-        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }
-
-kefir_result_t kefir_hashtreeset_iter(const struct kefir_hashtreeset *set, struct kefir_hashtreeset_iterator *iter) {
-    REQUIRE(set != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset"));
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashtreeset iterator"));
-
-    const struct kefir_hashtree_node *node = kefir_hashtree_iter(&set->tree, &iter->iter);
-    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
-    iter->entry = (kefir_hashtreeset_entry_t) node->key;
-    return KEFIR_OK;
+ 
+kefir_bool_t kefir_hashset_has(const struct kefir_hashset *hashset, kefir_hashset_key_t key) {
+    REQUIRE(hashset != NULL, false);
+    
+    KEFIR_HASHTABLE_HAS(hashset, key, return true;, return false;);
 }
 
-kefir_result_t kefir_hashtreeset_next(struct kefir_hashtreeset_iterator *iter) {
-    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtreeset iterator"));
+kefir_result_t kefir_hashset_iter(const struct kefir_hashset *hashset, struct kefir_hashset_iterator *iter, kefir_hashset_key_t *key_ptr) {
+    REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashset iterator"));
 
-    const struct kefir_hashtree_node *node = kefir_hashtree_next(&iter->iter);
-    REQUIRE(node != NULL, KEFIR_ITERATOR_END);
-    iter->entry = (kefir_hashtreeset_entry_t) node->key;
-    return KEFIR_OK;
+    iter->hashset = hashset;
+    iter->index = 0;
+    
+    for (; iter->index < hashset->capacity; iter->index++) {
+        if (hashset->entries[iter->index].occupied) {
+            ASSIGN_PTR(key_ptr, hashset->entries[iter->index].key);
+            return KEFIR_OK;
+        }
+    }
+
+    return KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of hashset iterator");
+}
+
+kefir_result_t kefir_hashset_next(struct kefir_hashset_iterator *iter, kefir_hashset_key_t *key_ptr) {
+    REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset iterator"));
+
+    iter->index++;
+    for (; iter->index < iter->hashset->capacity; iter->index++) {
+        if (iter->hashset->entries[iter->index].occupied) {
+            ASSIGN_PTR(key_ptr, iter->hashset->entries[iter->index].key);
+            return KEFIR_OK;
+        }
+    }
+
+    return KEFIR_SET_ERROR(KEFIR_ITERATOR_END, "End of hashset iterator");
 }

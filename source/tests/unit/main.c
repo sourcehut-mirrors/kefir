@@ -28,6 +28,7 @@
     _separator _case(core_hashtree3)                                                         \
     _separator _case(core_bucketset1)                                                        \
     _separator _case(core_hashtable1) \
+    _separator _case(core_hashset1) \
     _separator _case(amd64_sysv_abi_data_test1)                                              \
     _separator _case(amd64_sysv_abi_data_test2)                                              \
     _separator _case(amd64_sysv_abi_data_test3)                                              \

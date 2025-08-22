@@ -65,12 +65,9 @@ kefir_result_t kefir_hashtable_free(struct kefir_mem *, struct kefir_hashtable *
 
 kefir_result_t kefir_hashtable_on_removal(struct kefir_hashtable *, kefir_hashtable_free_callback_t, void *);
 
-kefir_result_t kefir_hashtable_clear(struct kefir_hashtable *);
 kefir_result_t kefir_hashtable_insert(struct kefir_mem *, struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t);
-kefir_result_t kefir_hashtable_insert_or_update(struct kefir_mem *, struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t);
 kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t **);
 kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t *);
-kefir_result_t kefir_hashtable_merge(struct kefir_mem *, struct kefir_hashtable *, const struct kefir_hashtable *);
 kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *, kefir_hashtable_key_t);
 
 typedef struct kefir_hashtable_iterator {
@@ -82,5 +79,70 @@ kefir_result_t kefir_hashtable_iter(const struct kefir_hashtable *, struct kefir
 kefir_result_t kefir_hashtable_next(struct kefir_hashtable_iterator *, kefir_hashtable_key_t *, kefir_hashtable_value_t *);
 
 extern const struct kefir_hashtable_ops kefir_hashtable_uint_ops;
+
+#ifdef KEFIR_HASHTABLE_INTERNAL
+
+#define KEFIR_REHASH_OCCUPATION_THRESHOLD 0.6
+#define KEFIR_REHASH_COLLISION_THRESHOLD 0.1
+
+#define KEFIR_HASHTABLE_CAPACITY_GROW(_capacity) ((_capacity) == 0 \
+    ? 4 \
+    : (_capacity) * 2)
+#define KEFIR_HASHTABLE_WRAPAROUND(_index, _capacity) ((_index) & ((_capacity) - 1))
+
+
+#define KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(_ops, _entries, _capacity, _key, _position_ptr, _collisions_ptr) \
+    do { \
+        kefir_size_t index = KEFIR_HASHTABLE_WRAPAROUND((_ops)->hash((_key), (_ops)->payload), (_capacity)); \
+        if (!(_entries)[index].occupied) { \
+            *(_position_ptr) = index; \
+            return KEFIR_OK; \
+        } \
+ \
+        kefir_bool_t equal = (_ops)->equal((_key), (_entries)[index].key, (_ops)->payload); \
+        if (equal) { \
+            *(_position_ptr) = index; \
+            return KEFIR_OK; \
+        } \
+ \
+        for (kefir_size_t i = KEFIR_HASHTABLE_WRAPAROUND(index + 1, (_capacity)); i != index; i = KEFIR_HASHTABLE_WRAPAROUND(i + 1, (_capacity))) { \
+            (*(_collisions_ptr))++; \
+            if (!(_entries)[i].occupied) { \
+                *(_position_ptr) = i; \
+                return KEFIR_OK; \
+            } \
+ \
+            equal = (_ops)->equal((_key), (_entries)[i].key, (_ops)->payload); \
+            if (equal) { \
+                *(_position_ptr) = i; \
+                return KEFIR_OK; \
+            } \
+        } \
+ \
+        return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to find position for element insertion"); \
+    } while (0)
+
+#define KEFIR_HASHTABLE_HAS(_hashtable, _key, on_found, _on_not_found) \
+    do { \
+        if ((_hashtable)->occupied > 0) { \
+            const kefir_size_t base_index = KEFIR_HASHTABLE_WRAPAROUND((_hashtable)->ops->hash(key, (_hashtable)->ops->payload), (_hashtable)->capacity); \
+            kefir_size_t index = base_index; \
+            do { \
+                if (!(_hashtable)->entries[index].occupied) { \
+                    break; \
+                } \
+ \
+                if ((_hashtable)->ops->equal((_key), (_hashtable)->entries[index].key, (_hashtable)->ops->payload)) { \
+                    on_found \
+                } \
+ \
+                index = KEFIR_HASHTABLE_WRAPAROUND(index + 1, (_hashtable)->capacity); \
+            } while (index != base_index); \
+        } \
+ \
+        _on_not_found \
+    } while (0)
+
+#endif
 
 #endif

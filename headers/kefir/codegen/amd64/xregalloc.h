@@ -23,9 +23,9 @@
 
 #include "kefir/codegen/amd64/asmcmp.h"
 #include "kefir/codegen/amd64/stack_frame.h"
-#include "kefir/core/bitset.h"
 #include "kefir/core/bucketset.h"
 #include "kefir/core/hashtable.h"
+#include "kefir/core/hashset.h"
 
 #define KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED ((kefir_size_t) - 1ll)
 #define KEFIR_CODEGEN_AMD64_XREGALLOC_VIRTUAL_BLOCK_DEFAULT_ID ((kefir_uint64_t) ~0ull)
@@ -60,7 +60,7 @@ typedef struct kefir_codegen_amd64_xregalloc_virtual_register {
         kefir_size_t begin;
         kefir_size_t end;
     } global_lifetime;
-    struct kefir_bucketset interference;
+    struct kefir_hashset interference;
     struct kefir_hashtable virtual_blocks;
 } kefir_codegen_amd64_xregalloc_virtual_register_t;
 
@@ -78,7 +78,7 @@ typedef struct kefir_codegen_amd64_xregalloc {
         kefir_asm_amd64_xasmgen_register_t *floating_point_registers;
         kefir_size_t num_of_floating_point_registers;
     } available_registers;
-    struct kefir_hashtable used_registers;
+    struct kefir_hashset used_registers;
     kefir_size_t used_slots;
     struct kefir_hashtable virtual_blocks;
 } kefir_codegen_amd64_xregalloc_t;
