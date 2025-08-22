@@ -57,9 +57,9 @@ struct virtual_block_data {
     struct kefir_bucketset virtual_registers;
 };
 
-static kefir_result_t virtual_block_free(struct kefir_mem *mem, struct kefir_hashtree *tree, kefir_hashtree_key_t key,
-                                         kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
+static kefir_result_t virtual_block_free(struct kefir_mem *mem, struct kefir_hashtable *table, kefir_hashtable_key_t key,
+                                         kefir_hashtable_value_t value, void *payload) {
+    UNUSED(table);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -80,8 +80,8 @@ kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xre
     xregalloc->virtual_register_length = 0;
     xregalloc->used_slots = 0;
     REQUIRE_OK(kefir_hashtreeset_init(&xregalloc->used_registers, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&xregalloc->virtual_blocks, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&xregalloc->virtual_blocks, virtual_block_free, NULL));
+    REQUIRE_OK(kefir_hashtable_init(&xregalloc->virtual_blocks, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&xregalloc->virtual_blocks, virtual_block_free, NULL));
 
     xregalloc->available_registers.general_purpose_registers = NULL;
     xregalloc->available_registers.num_of_general_purpose_registers = 0;
@@ -97,9 +97,9 @@ kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *mem,
 
     for (kefir_size_t i = 0; i < xregalloc->virtual_register_length; i++) {
         REQUIRE_OK(kefir_bucketset_free(mem, &xregalloc->virtual_registers[i].interference));
-        REQUIRE_OK(kefir_hashtree_free(mem, &xregalloc->virtual_registers[i].virtual_blocks));
+        REQUIRE_OK(kefir_hashtable_free(mem, &xregalloc->virtual_registers[i].virtual_blocks));
     }
-    REQUIRE_OK(kefir_hashtree_free(mem, &xregalloc->virtual_blocks));
+    REQUIRE_OK(kefir_hashtable_free(mem, &xregalloc->virtual_blocks));
     REQUIRE_OK(kefir_hashtreeset_free(mem, &xregalloc->used_registers));
     KEFIR_FREE(mem, xregalloc->linearized_code);
     KEFIR_FREE(mem, xregalloc->virtual_registers);
@@ -146,24 +146,24 @@ static kefir_result_t add_virtual_register_to_block(struct kefir_mem *mem, const
 
     kefir_bool_t leaf_block = true;
     for (; block_data != NULL; block_data = block_data->parent, leaf_block = false) {
-        struct kefir_hashtree_node *node = NULL;
+        kefir_hashtable_value_t *value_ptr;
         kefir_result_t res =
-            kefir_hashtree_at(&vreg->virtual_blocks, (kefir_hashtree_key_t) block_data->virtual_block_id, &node);
+            kefir_hashtable_at_mut(&vreg->virtual_blocks, (kefir_hashtree_key_t) block_data->virtual_block_id, &value_ptr);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
             if (leaf_block) {
-                const kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(node->value);
-                const kefir_size_t end = VREG_LOCAL_LIFETIME_END(node->value);
-                node->value = VREG_LOCAL_LIFETIME(MIN(begin, linear_index), MAX(end, linear_index));
+                const kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(*value_ptr);
+                const kefir_size_t end = VREG_LOCAL_LIFETIME_END(*value_ptr);
+                *value_ptr = VREG_LOCAL_LIFETIME(MIN(begin, linear_index), MAX(end, linear_index));
             }
         } else if (leaf_block) {
-            const kefir_hashtree_value_t local_range = VREG_LOCAL_LIFETIME(linear_index, linear_index);
-            REQUIRE_OK(kefir_hashtree_insert(mem, &vreg->virtual_blocks,
-                                             (kefir_hashtree_key_t) block_data->virtual_block_id, local_range));
+            const kefir_hashtable_value_t local_range = VREG_LOCAL_LIFETIME(linear_index, linear_index);
+            REQUIRE_OK(kefir_hashtable_insert(mem, &vreg->virtual_blocks,
+                                             (kefir_hashtable_key_t) block_data->virtual_block_id, local_range));
         } else {
-            REQUIRE_OK(kefir_hashtree_insert(mem, &vreg->virtual_blocks,
-                                             (kefir_hashtree_key_t) block_data->virtual_block_id,
-                                             (kefir_hashtree_value_t) VREG_UNDEFINED_LOCAL_LIFETIME));
+            REQUIRE_OK(kefir_hashtable_insert(mem, &vreg->virtual_blocks,
+                                             (kefir_hashtable_key_t) block_data->virtual_block_id,
+                                             (kefir_hashtable_value_t) VREG_UNDEFINED_LOCAL_LIFETIME));
         }
     }
     return KEFIR_OK;
@@ -191,17 +191,17 @@ static kefir_result_t mark_vreg_lifetime(struct kefir_mem *mem, struct kefir_asm
         vreg->global_lifetime.end = MAX(vreg->global_lifetime.end, linear_index);
     }
 
-    struct kefir_hashtree_node *node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&vreg->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id, &node);
+    kefir_hashtable_value_t *value_ptr;
+    kefir_result_t res = kefir_hashtable_at_mut(&vreg->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id, &value_ptr);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        const kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(node->value);
-        const kefir_size_t end = VREG_LOCAL_LIFETIME_END(node->value);
-        node->value = VREG_LOCAL_LIFETIME(MIN(begin, linear_index), MAX(end, linear_index));
+        const kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(*value_ptr);
+        const kefir_size_t end = VREG_LOCAL_LIFETIME_END(*value_ptr);
+        *value_ptr = VREG_LOCAL_LIFETIME(MIN(begin, linear_index), MAX(end, linear_index));
     } else {
-        const kefir_hashtree_value_t local_range = VREG_LOCAL_LIFETIME(linear_index, linear_index);
+        const kefir_hashtable_value_t local_range = VREG_LOCAL_LIFETIME(linear_index, linear_index);
         REQUIRE_OK(
-            kefir_hashtree_insert(mem, &vreg->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id, local_range));
+            kefir_hashtable_insert(mem, &vreg->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id, local_range));
     }
     return KEFIR_OK;
 }
@@ -269,7 +269,7 @@ static kefir_result_t scan_virtual_register(struct kefir_mem *mem, struct kefir_
 static kefir_result_t push_virtual_block(struct kefir_mem *mem, struct kefir_codegen_amd64_xregalloc *xregalloc,
                                          struct do_allocation_state *state,
                                          kefir_codegen_amd64_xregalloc_virtual_block_id_t virtual_block_id) {
-    REQUIRE(!kefir_hashtree_has(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id),
+    REQUIRE(!kefir_hashtable_has(&xregalloc->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id),
             KEFIR_SET_ERROR(KEFIR_INVALID_REQUEST, "Duplicate virtual block identifier"));
 
     struct virtual_block_data *data = KEFIR_MALLOC(mem, sizeof(struct virtual_block_data));
@@ -277,8 +277,8 @@ static kefir_result_t push_virtual_block(struct kefir_mem *mem, struct kefir_cod
     data->parent = state->current_virtual_block;
     data->virtual_block_id = virtual_block_id;
     kefir_result_t res = kefir_bucketset_init(&data->virtual_registers, &kefir_bucketset_uint_ops);
-    REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, &xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id,
-                                              (kefir_hashtree_value_t) data));
+    REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, &xregalloc->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id,
+                                              (kefir_hashtable_value_t) data));
     REQUIRE_ELSE(res == KEFIR_OK, {
         KEFIR_FREE(mem, data);
         return res;
@@ -300,23 +300,24 @@ static kefir_result_t pop_virtual_block(struct do_allocation_state *state) {
 
 static kefir_result_t propagate_virtual_register_local_lifetime(
     struct virtual_block_data *virtual_block, struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
-    struct kefir_hashtree_node *node;
-    REQUIRE_OK(kefir_hashtree_at(&vreg->virtual_blocks, (kefir_hashtree_key_t) virtual_block->virtual_block_id, &node));
-    kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(node->value);
-    kefir_size_t end = VREG_LOCAL_LIFETIME_END(node->value);
+    kefir_hashtable_value_t base_value;
+    REQUIRE_OK(kefir_hashtable_at(&vreg->virtual_blocks, (kefir_hashtree_key_t) virtual_block->virtual_block_id, &base_value));
+    kefir_size_t begin = VREG_LOCAL_LIFETIME_BEGIN(base_value);
+    kefir_size_t end = VREG_LOCAL_LIFETIME_END(base_value);
 
     for (struct virtual_block_data *virtual_block_iter = virtual_block; virtual_block_iter != NULL;
          virtual_block_iter = virtual_block_iter->parent) {
-        kefir_result_t res = kefir_hashtree_at(&vreg->virtual_blocks,
-                                               (kefir_hashtree_key_t) virtual_block_iter->virtual_block_id, &node);
+        kefir_hashtable_value_t *value_ptr;
+        kefir_result_t res = kefir_hashtable_at_mut(&vreg->virtual_blocks,
+                                               (kefir_hashtree_key_t) virtual_block_iter->virtual_block_id, &value_ptr);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
         REQUIRE_OK(res);
-        if (node->value != VREG_UNDEFINED_LOCAL_LIFETIME) {
-            begin = MIN(VREG_LOCAL_LIFETIME_BEGIN(node->value), begin);
-            end = MAX(VREG_LOCAL_LIFETIME_END(node->value), end);
-            node->value = VREG_LOCAL_LIFETIME(begin, end);
+        if (*value_ptr != VREG_UNDEFINED_LOCAL_LIFETIME) {
+            begin = MIN(VREG_LOCAL_LIFETIME_BEGIN(*value_ptr), begin);
+            end = MAX(VREG_LOCAL_LIFETIME_END(*value_ptr), end);
+            *value_ptr = VREG_LOCAL_LIFETIME(begin, end);
         }
     }
     return KEFIR_OK;
@@ -326,15 +327,22 @@ static kefir_result_t propagate_virtual_register_local_lifetimes(struct kefir_co
                                                                  kefir_asmcmp_virtual_register_index_t vreg_idx) {
     struct kefir_codegen_amd64_xregalloc_virtual_register *vreg = &xregalloc->virtual_registers[vreg_idx];
 
-    struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&vreg->virtual_blocks, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, node->key)
-        if (node->value != VREG_UNDEFINED_LOCAL_LIFETIME) {
-            REQUIRE_OK(kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id, &node));
-            ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, node->value);
+    kefir_result_t res;
+    struct kefir_hashtable_iterator iter;
+    kefir_hashtable_key_t iter_key;
+    kefir_hashtable_value_t iter_value;
+    for (res = kefir_hashtable_iter(&vreg->virtual_blocks, &iter, &iter_key, &iter_value); res == KEFIR_OK;
+         res = kefir_hashtable_next(&iter, &iter_key, &iter_value)) {
+        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, iter_key)
+        if (iter_value != VREG_UNDEFINED_LOCAL_LIFETIME) {
+            kefir_hashtable_value_t value;
+            REQUIRE_OK(kefir_hashtable_at(&xregalloc->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id, &value));
+            ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, value);
             REQUIRE_OK(propagate_virtual_register_local_lifetime(virtual_block, vreg));
         }
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }
@@ -475,15 +483,17 @@ static kefir_result_t mark_virtual_register_interference(
 
 static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem, struct kefir_asmcmp_amd64 *code,
                                                           struct kefir_codegen_amd64_xregalloc *xregalloc) {
-    struct kefir_hashtree_node_iterator iter;
-    for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&xregalloc->virtual_blocks, &iter); node != NULL;
-         node = kefir_hashtree_next(&iter)) {
-        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, node->key);
+    kefir_result_t res;
+    struct kefir_hashtable_iterator iter;
+    kefir_hashtable_key_t iter_key;
+    for (res = kefir_hashtable_iter(&xregalloc->virtual_blocks, &iter, &iter_key, NULL);
+        res == KEFIR_OK;
+        res = kefir_hashtable_next(&iter, &iter_key, NULL)) {
+        ASSIGN_DECL_CAST(kefir_codegen_amd64_xregalloc_virtual_block_id_t, virtual_block_id, iter_key);
 
         struct kefir_codegen_amd64_xregalloc_virtual_block_iterator vreg_iter1, vreg_iter2;
         const struct kefir_asmcmp_virtual_register *asmcmp_vreg1, *asmcmp_vreg2;
         kefir_asmcmp_virtual_register_index_t vreg1_idx, vreg2_idx;
-        kefir_result_t res;
         for (res = kefir_codegen_amd64_xregalloc_block_iter(xregalloc, virtual_block_id, &vreg_iter1, &vreg1_idx);
              res == KEFIR_OK; res = kefir_codegen_amd64_xregalloc_block_next(&vreg_iter1, &vreg1_idx)) {
             REQUIRE_OK(kefir_asmcmp_virtual_register_get(&code->context, vreg1_idx, &asmcmp_vreg1));
@@ -520,6 +530,10 @@ static kefir_result_t build_virtual_register_interference(struct kefir_mem *mem,
         if (res != KEFIR_ITERATOR_END) {
             REQUIRE_OK(res);
         }
+    }
+
+    if (res != KEFIR_ITERATOR_END) {
+        REQUIRE_OK(res);
     }
     return KEFIR_OK;
 }
@@ -1123,7 +1137,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
         xregalloc->virtual_registers[i].global_lifetime.begin = KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED;
         xregalloc->virtual_registers[i].global_lifetime.end = KEFIR_CODEGEN_AMD64_XREGALLOC_UNDEFINED;
         REQUIRE_OK(kefir_bucketset_init(&xregalloc->virtual_registers[i].interference, &kefir_bucketset_uint_ops));
-        REQUIRE_OK(kefir_hashtree_init(&xregalloc->virtual_registers[i].virtual_blocks, &kefir_hashtree_uint_ops));
+        REQUIRE_OK(kefir_hashtable_init(&xregalloc->virtual_registers[i].virtual_blocks, &kefir_hashtable_uint_ops));
     }
 
     xregalloc->available_registers.num_of_general_purpose_registers = NUM_OF_AMD64_GENERAL_PURPOSE_REGS;
@@ -1210,30 +1224,31 @@ kefir_result_t kefir_codegen_amd64_xregalloc_lifetime_of(
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
 
     struct virtual_block_data *virtual_block = NULL;
-    struct kefir_hashtree_node *node, *topmost_nonempty_node = NULL;
-    kefir_result_t res = kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) virtual_block_id, &node);
+    // struct kefir_hashtree_node *topmost_nonempty_node = NULL;
+    kefir_hashtree_value_t *value_ptr, *topmost_nonempty_value_ptr = NULL;
+    kefir_result_t res = kefir_hashtable_at_mut(&xregalloc->virtual_blocks, (kefir_hashtable_key_t) virtual_block_id, &value_ptr);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        virtual_block = (struct virtual_block_data *) node->value;
+        virtual_block = (struct virtual_block_data *) *value_ptr;
     }
 
     for (struct virtual_block_data *virtual_block_iter = virtual_block; virtual_block_iter != NULL;
          virtual_block_iter = virtual_block_iter->parent) {
-        res = kefir_hashtree_at(&xregalloc->virtual_registers[vreg_idx].virtual_blocks,
-                                (kefir_hashtree_key_t) virtual_block_iter->virtual_block_id, &node);
+        res = kefir_hashtable_at_mut(&xregalloc->virtual_registers[vreg_idx].virtual_blocks,
+                                (kefir_hashtable_key_t) virtual_block_iter->virtual_block_id, &value_ptr);
         if (res == KEFIR_NOT_FOUND) {
             continue;
         }
         REQUIRE_OK(res);
-        if (node->value != (kefir_hashtree_value_t) VREG_UNDEFINED_LOCAL_LIFETIME) {
+        if (*value_ptr != (kefir_hashtree_value_t) VREG_UNDEFINED_LOCAL_LIFETIME) {
             virtual_block = virtual_block_iter;
-            topmost_nonempty_node = node;
+            topmost_nonempty_value_ptr = value_ptr;
         }
     }
 
-    if (topmost_nonempty_node != NULL) {
-        ASSIGN_PTR(begin_ptr, VREG_LOCAL_LIFETIME_BEGIN(topmost_nonempty_node->value));
-        ASSIGN_PTR(end_ptr, VREG_LOCAL_LIFETIME_END(topmost_nonempty_node->value));
+    if (topmost_nonempty_value_ptr != NULL) {
+        ASSIGN_PTR(begin_ptr, VREG_LOCAL_LIFETIME_BEGIN(*topmost_nonempty_value_ptr));
+        ASSIGN_PTR(end_ptr, VREG_LOCAL_LIFETIME_END(*topmost_nonempty_value_ptr));
     } else {
         ASSIGN_PTR(begin_ptr, xregalloc->virtual_registers[vreg_idx].global_lifetime.begin);
         ASSIGN_PTR(end_ptr, xregalloc->virtual_registers[vreg_idx].global_lifetime.end);
@@ -1250,13 +1265,13 @@ kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(const struct kefir_
             KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual register"));
     REQUIRE(exists_flag != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to boolean flag"));
 
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) block_id, &node);
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_at(&xregalloc->virtual_blocks, (kefir_hashtable_key_t) block_id, &value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual block");
     }
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, node->value);
+    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, value);
     kefir_bool_t exists = false;
     for (; !exists && virtual_block != NULL; virtual_block = virtual_block->parent) {
         if (kefir_bucketset_has(&virtual_block->virtual_registers, (kefir_bucketset_entry_t) vreg_idx)) {
@@ -1281,13 +1296,13 @@ kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER,
                                           "Expected valid pointer to amd64 register allocator virtual block iterator"));
 
-    struct kefir_hashtree_node *node;
-    kefir_result_t res = kefir_hashtree_at(&xregalloc->virtual_blocks, (kefir_hashtree_key_t) block_id, &node);
+    kefir_hashtable_value_t value;
+    kefir_result_t res = kefir_hashtable_at(&xregalloc->virtual_blocks, (kefir_hashtable_key_t) block_id, &value);
     if (res == KEFIR_NOT_FOUND) {
         res = KEFIR_SET_ERROR(KEFIR_NOT_FOUND, "Unable to find virtual block");
     }
     REQUIRE_OK(res);
-    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, node->value);
+    ASSIGN_DECL_CAST(struct virtual_block_data *, virtual_block, value);
 
     iter->virtual_block = virtual_block;
     kefir_bucketset_entry_t entry;
