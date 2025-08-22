@@ -79,7 +79,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_init(struct kefir_codegen_amd64_xre
     xregalloc->virtual_registers = NULL;
     xregalloc->virtual_register_length = 0;
     xregalloc->used_slots = 0;
-    REQUIRE_OK(kefir_hashtreeset_init(&xregalloc->used_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&xregalloc->used_registers, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_init(&xregalloc->virtual_blocks, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtable_on_removal(&xregalloc->virtual_blocks, virtual_block_free, NULL));
 
@@ -100,7 +100,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *mem,
         REQUIRE_OK(kefir_hashtable_free(mem, &xregalloc->virtual_registers[i].virtual_blocks));
     }
     REQUIRE_OK(kefir_hashtable_free(mem, &xregalloc->virtual_blocks));
-    REQUIRE_OK(kefir_hashtreeset_free(mem, &xregalloc->used_registers));
+    REQUIRE_OK(kefir_hashtable_free(mem, &xregalloc->used_registers));
     KEFIR_FREE(mem, xregalloc->linearized_code);
     KEFIR_FREE(mem, xregalloc->virtual_registers);
     KEFIR_FREE(mem, xregalloc->available_registers.general_purpose_registers);
@@ -111,7 +111,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_free(struct kefir_mem *mem,
 
 struct do_allocation_state {
     struct kefir_hashtree allocation_order;
-    struct kefir_hashtreeset active_registers;
+    struct kefir_hashtable active_registers;
     struct kefir_hashtreeset active_hints;
     struct kefir_bitset active_spill_area;
     struct kefir_bitset active_spill_area_hints;
@@ -608,7 +608,7 @@ static kefir_result_t add_active_virtual_register(struct kefir_mem *mem, struct 
                         ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
                         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
                         REQUIRE_OK(
-                            kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                            kefir_hashtable_insert_or_update(mem, &state->active_registers, (kefir_hashtable_key_t) reg, 0));
                     } break;
 
                     case KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT: {
@@ -641,8 +641,8 @@ static kefir_result_t add_active_virtual_register(struct kefir_mem *mem, struct 
         } break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
-            REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers,
-                                             (kefir_hashtreeset_entry_t) interfere_vreg->allocation.direct_reg));
+            REQUIRE_OK(kefir_hashtable_insert_or_update(mem, &state->active_registers,
+                                             (kefir_hashtable_key_t) interfere_vreg->allocation.direct_reg, 0));
             break;
 
         case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT:
@@ -676,7 +676,7 @@ static kefir_result_t build_active_virtual_registers(struct kefir_mem *mem, stru
                                                      struct kefir_codegen_amd64_xregalloc *xregalloc,
                                                      struct do_allocation_state *state,
                                                      struct kefir_codegen_amd64_xregalloc_virtual_register *vreg) {
-    REQUIRE_OK(kefir_hashtreeset_clean(mem, &state->active_registers));
+    REQUIRE_OK(kefir_hashtable_clear(&state->active_registers));
     REQUIRE_OK(kefir_hashtreeset_clean(mem, &state->active_hints));
     REQUIRE_OK(kefir_bitset_clear(&state->active_spill_area));
     REQUIRE_OK(kefir_bitset_clear(&state->active_spill_area_hints));
@@ -770,24 +770,24 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
     if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_REQUIREMENT) {
         ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
-        REQUIRE(!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg),
+        REQUIRE(!kefir_hashtable_has(&state->active_registers, (kefir_hashtable_key_t) reg),
                 KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to satisfy register allocation requirements"));
         vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
         vreg->allocation.direct_reg = reg;
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+        REQUIRE_OK(kefir_hashtable_insert_or_update(mem, &state->active_registers, (kefir_hashtable_key_t) reg, 0));
         return KEFIR_OK;
     }
 
     if (preallocation != NULL && preallocation->type == KEFIR_ASMCMP_AMD64_REGISTER_PREALLOCATION_HINT) {
         ASSIGN_DECL_CAST(kefir_asm_amd64_xasmgen_register_t, reg, preallocation->reg);
         REQUIRE_OK(kefir_asm_amd64_xasmgen_register_widest(reg, &reg));
-        if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
+        if (!kefir_hashtable_has(&state->active_registers, (kefir_hashtable_key_t) reg)) {
             for (kefir_size_t i = 0; i < available_registers_length; i++) {
                 const kefir_asm_amd64_xasmgen_register_t available_reg = available_registers[i];
                 if (available_reg == reg) {
                     vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
                     vreg->allocation.direct_reg = reg;
-                    REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                    REQUIRE_OK(kefir_hashtable_insert_or_update(mem, &state->active_registers, (kefir_hashtable_key_t) reg, 0));
                     return KEFIR_OK;
                 }
             }
@@ -805,14 +805,14 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
         if (asmcmp_vreg->type == asmcmp_other_vreg->type) {
             if (other_vreg->allocation.type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER) {
                 const kefir_asm_amd64_xasmgen_register_t reg = other_vreg->allocation.direct_reg;
-                if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
+                if (!kefir_hashtable_has(&state->active_registers, (kefir_hashtable_key_t) reg)) {
                     for (kefir_size_t i = 0; i < available_registers_length; i++) {
                         const kefir_asm_amd64_xasmgen_register_t available_reg = available_registers[i];
                         if (available_reg == reg) {
                             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;
                             vreg->allocation.direct_reg = reg;
                             REQUIRE_OK(
-                                kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) reg));
+                                kefir_hashtable_insert_or_update(mem, &state->active_registers, (kefir_hashtable_key_t) reg, 0));
                             return KEFIR_OK;
                         }
                     }
@@ -843,12 +843,12 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
     do {                                                                                                      \
         vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER;                     \
         vreg->allocation.direct_reg = (_reg);                                                                 \
-        REQUIRE_OK(kefir_hashtreeset_add(mem, &state->active_registers, (kefir_hashtreeset_entry_t) (_reg))); \
+        REQUIRE_OK(kefir_hashtable_insert_or_update(mem, &state->active_registers, (kefir_hashtable_key_t) (_reg), 0)); \
         return KEFIR_OK;                                                                                      \
     } while (0)
     for (kefir_size_t i = 0; i < available_registers_length; i++) {
         const kefir_asm_amd64_xasmgen_register_t reg = available_registers[i];
-        if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg) &&
+        if (!kefir_hashtable_has(&state->active_registers, (kefir_hashtable_key_t) reg) &&
             !kefir_hashtreeset_has(&state->active_hints, (kefir_hashtreeset_entry_t) reg)) {
             ALLOC_REG(reg);
         }
@@ -856,7 +856,7 @@ static kefir_result_t do_allocate_register(struct kefir_mem *mem, struct kefir_a
 
     for (kefir_size_t i = 0; i < available_registers_length; i++) {
         const kefir_asm_amd64_xasmgen_register_t reg = available_registers[i];
-        if (!kefir_hashtreeset_has(&state->active_registers, (kefir_hashtreeset_entry_t) reg)) {
+        if (!kefir_hashtable_has(&state->active_registers, (kefir_hashtable_key_t) reg)) {
             ALLOC_REG(reg);
         }
     }
@@ -925,7 +925,7 @@ static kefir_result_t do_vreg_allocation(struct kefir_mem *mem, struct kefir_asm
             vreg->allocation.type = KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR;
             break;
     }
-    REQUIRE_OK(kefir_hashtreeset_merge(mem, &xregalloc->used_registers, &state->active_registers, NULL, NULL));
+    REQUIRE_OK(kefir_hashtable_merge(mem, &xregalloc->used_registers, &state->active_registers));
 
     return KEFIR_OK;
 }
@@ -1041,11 +1041,12 @@ static kefir_result_t do_allocation_impl(struct kefir_mem *mem, struct kefir_asm
     xregalloc->used_slots = MAX(xregalloc->used_slots, num_of_slots);
 
     kefir_result_t res;
-    struct kefir_hashtreeset_iterator used_reg_iter;
-    for (res = kefir_hashtreeset_iter(&xregalloc->used_registers, &used_reg_iter); res == KEFIR_OK;
-         res = kefir_hashtreeset_next(&used_reg_iter)) {
+    struct kefir_hashtable_iterator used_reg_iter;
+    kefir_hashtable_key_t used_reg_iter_key;
+    for (res = kefir_hashtable_iter(&xregalloc->used_registers, &used_reg_iter, &used_reg_iter_key, NULL); res == KEFIR_OK;
+         res = kefir_hashtable_next(&used_reg_iter, &used_reg_iter_key, NULL)) {
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(
-            mem, stack_frame, (kefir_asm_amd64_xasmgen_register_t) used_reg_iter.entry));
+            mem, stack_frame, (kefir_asm_amd64_xasmgen_register_t) used_reg_iter_key));
     }
     if (res != KEFIR_ITERATOR_END) {
         REQUIRE_OK(res);
@@ -1170,7 +1171,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
     REQUIRE_OK(kefir_hashtree_on_removal(&state.allocation_order, virtual_register_allocation_order_entry_free, NULL));
     REQUIRE_OK(kefir_hashtree_init(&state.stashes, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.preserve_vreg_locations, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&state.active_registers, &kefir_hashtree_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&state.active_registers, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtreeset_init(&state.active_hints, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_bitset_init(&state.active_spill_area));
     REQUIRE_OK(kefir_bitset_init(&state.active_spill_area_hints));
@@ -1183,7 +1184,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_run(struct kefir_mem *mem, struct k
     kefir_hashtree_free(mem, &state.allocation_order);
     kefir_hashtree_free(mem, &state.stashes);
     kefir_hashtree_free(mem, &state.preserve_vreg_locations);
-    kefir_hashtreeset_free(mem, &state.active_registers);
+    kefir_hashtable_free(mem, &state.active_registers);
     kefir_hashtreeset_free(mem, &state.active_hints);
     kefir_bitset_free(mem, &state.active_spill_area);
     kefir_bitset_free(mem, &state.active_spill_area_hints);
@@ -1285,7 +1286,7 @@ kefir_result_t kefir_codegen_amd64_xregalloc_exists_in_block(const struct kefir_
 kefir_bool_t kefir_codegen_amd64_xregalloc_has_used_register(const struct kefir_codegen_amd64_xregalloc *xregalloc,
                                                              kefir_asm_amd64_xasmgen_register_t reg) {
     REQUIRE(xregalloc != NULL, false);
-    return kefir_hashtreeset_has(&xregalloc->used_registers, reg);
+    return kefir_hashtable_has(&xregalloc->used_registers, reg);
 }
 
 kefir_result_t kefir_codegen_amd64_xregalloc_block_iter(

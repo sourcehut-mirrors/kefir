@@ -65,7 +65,7 @@ kefir_result_t kefir_hashtable_on_removal(struct kefir_hashtable *hashtable, kef
     return KEFIR_OK;
 }
 
-static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops, struct kefir_hashtable_entry *entries, kefir_size_t capacity, kefir_hashtable_key_t key, kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
+static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops, struct kefir_hashtable_entry *entries, kefir_size_t capacity, kefir_hashtable_key_t key, kefir_size_t *position_ptr, kefir_size_t *collisions_ptr, kefir_bool_t update) {
     const kefir_hashtable_hash_t hash = ops->hash(key, ops->payload);
 
     kefir_size_t index = hash & (capacity - 1);
@@ -74,7 +74,12 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
         return KEFIR_OK;
     }
 
-    REQUIRE(!ops->equal(key, entries[index].key, ops->payload), KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Key already exists in the hashtable"));
+    kefir_bool_t equal = ops->equal(key, entries[index].key, ops->payload);
+    if (update && equal) {
+        *position_ptr = index;
+        return KEFIR_OK;
+    }
+    REQUIRE(!equal, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Key already exists in the hashtable"));
 
     for (kefir_size_t i = (index + 1) & (capacity - 1); i != index; i = (i + 1) & (capacity - 1)) {
         (*collisions_ptr)++;
@@ -83,22 +88,31 @@ static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops 
             return KEFIR_OK;
         }
 
-        REQUIRE(!ops->equal(key, entries[i].key, ops->payload), KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Key already exists in the hashtable"));
+        equal = ops->equal(key, entries[i].key, ops->payload);
+        if (update && equal) {
+            *position_ptr = i;
+            return KEFIR_OK;
+        }
+        REQUIRE(!equal, KEFIR_SET_ERROR(KEFIR_ALREADY_EXISTS, "Key already exists in the hashtable"));
     }
 
     return KEFIR_SET_ERROR(KEFIR_INTERNAL_ERROR, "Unable to find position for element insertion");
 }
 
-static kefir_result_t insert_entry(const struct kefir_hashtable_ops *ops, struct kefir_hashtable_entry *entries, kefir_size_t capacity, kefir_size_t *collisions, kefir_size_t *occupied, kefir_hashtable_key_t key, kefir_hashtable_value_t value) {
+static kefir_result_t insert_entry(const struct kefir_hashtable_ops *ops, struct kefir_hashtable_entry *entries, kefir_size_t capacity, kefir_size_t *collisions, kefir_size_t *occupied, kefir_hashtable_key_t key, kefir_hashtable_value_t value, kefir_bool_t update) {
     kefir_size_t index = 0;
     kefir_size_t found_collisions = 0;
-    REQUIRE_OK(find_position_for_insert(ops, entries, capacity, key, &index, &found_collisions));
+    REQUIRE_OK(find_position_for_insert(ops, entries, capacity, key, &index, &found_collisions, update));
 
-    entries[index].occupied = true;
-    entries[index].key = key;
-    entries[index].value = value;
-    (*occupied)++;
-    *collisions += found_collisions;
+    if (entries[index].occupied) {
+        entries[index].value = value;
+    } else {
+        entries[index].occupied = true;
+        entries[index].key = key;
+        entries[index].value = value;
+        (*occupied)++;
+        *collisions += found_collisions;
+    }
     return KEFIR_OK;
 }
 
@@ -116,7 +130,7 @@ static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashtable *hash
     kefir_result_t res = KEFIR_OK;
     for (kefir_size_t i = 0; res == KEFIR_OK && i < hashtable->capacity; i++) {
         if (hashtable->entries[i].occupied) {
-            res = insert_entry(hashtable->ops, new_entries, new_capacity, &new_collisions, &new_occupied, hashtable->entries[i].key, hashtable->entries[i].value);
+            res = insert_entry(hashtable->ops, new_entries, new_capacity, &new_collisions, &new_occupied, hashtable->entries[i].key, hashtable->entries[i].value, false);
         }
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -132,6 +146,17 @@ static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashtable *hash
     return KEFIR_OK;
 }
 
+kefir_result_t kefir_hashtable_clear(struct kefir_hashtable *hashtable) {
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+    for (kefir_size_t i = 0; i < hashtable->capacity; i++) {
+        hashtable->entries[i].occupied = false;
+    }
+    hashtable->occupied = 0;
+    hashtable->collisions = 0;
+    return KEFIR_OK;
+}
+
 kefir_result_t kefir_hashtable_insert(struct kefir_mem *mem, struct kefir_hashtable *hashtable, kefir_hashtable_key_t key, kefir_hashtable_value_t value) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
@@ -142,7 +167,21 @@ kefir_result_t kefir_hashtable_insert(struct kefir_mem *mem, struct kefir_hashta
         REQUIRE_OK(rehash(mem, hashtable));
     }
 
-    REQUIRE_OK(insert_entry(hashtable->ops, hashtable->entries, hashtable->capacity, &hashtable->collisions, &hashtable->occupied, key, value));
+    REQUIRE_OK(insert_entry(hashtable->ops, hashtable->entries, hashtable->capacity, &hashtable->collisions, &hashtable->occupied, key, value, false));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtable_insert_or_update(struct kefir_mem *mem, struct kefir_hashtable *hashtable, kefir_hashtable_key_t key, kefir_hashtable_value_t value) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashtable"));
+
+    if (hashtable->capacity == 0 ||
+        hashtable->occupied >= REHASH_OCCUPATION_THRESHOLD * hashtable->capacity ||
+        hashtable->collisions >= REHASH_COLLISION_THRESHOLD * hashtable->capacity) {
+        REQUIRE_OK(rehash(mem, hashtable));
+    }
+
+    REQUIRE_OK(insert_entry(hashtable->ops, hashtable->entries, hashtable->capacity, &hashtable->collisions, &hashtable->occupied, key, value, true));
     return KEFIR_OK;
 }
 
@@ -175,6 +214,21 @@ kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *hashtable, kefir
     kefir_hashtable_value_t *ptr;
     REQUIRE_OK(kefir_hashtable_at_mut(hashtable, key, &ptr));
     ASSIGN_PTR(value_ptr, *ptr);
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_hashtable_merge(struct kefir_mem *mem, struct kefir_hashtable *dst_hashtable, const struct kefir_hashtable *src_hashtable) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(dst_hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination hashtable"));
+    REQUIRE(src_hashtable != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source hashtable"));
+
+    if (src_hashtable->occupied > 0) {
+        for (kefir_size_t i = 0; i < src_hashtable->capacity; i++) {
+            if (src_hashtable->entries[i].occupied) {
+                REQUIRE_OK(kefir_hashtable_insert_or_update(mem, dst_hashtable, src_hashtable->entries[i].key, src_hashtable->entries[i].value));
+            }
+        }
+    }
     return KEFIR_OK;
 }
 

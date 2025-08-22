@@ -78,7 +78,7 @@ typedef struct kefir_codegen_amd64_xregalloc {
         kefir_asm_amd64_xasmgen_register_t *floating_point_registers;
         kefir_size_t num_of_floating_point_registers;
     } available_registers;
-    struct kefir_hashtreeset used_registers;
+    struct kefir_hashtable used_registers;
     kefir_size_t used_slots;
     struct kefir_hashtable virtual_blocks;
 } kefir_codegen_amd64_xregalloc_t;

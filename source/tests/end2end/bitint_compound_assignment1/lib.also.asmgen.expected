@@ -67,16 +67,16 @@ _kefir_func_or_label0:
     movq %rax, -40(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -72(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_or
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -128,16 +128,16 @@ _kefir_func_add_label0:
     movq %rax, -40(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -72(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_add
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -189,16 +189,16 @@ _kefir_func_and_label0:
     movq %rax, -40(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -72(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_and
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -250,16 +250,16 @@ _kefir_func_sub_label0:
     movq %rax, -40(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -72(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_subtract
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -311,16 +311,16 @@ _kefir_func_xor_label0:
     movq %rax, -40(%rbp)
     movq -80(%rbp), %rax
     movq %rax, -32(%rbp)
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     leaq -72(%rbp), %rax
     mov %rax, %rsi
     mov $150, %rdx
     call __kefir_bigint_xor
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -372,23 +372,23 @@ _kefir_func_idiv_label0:
     movq %rax, -72(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -64(%rbp)
-    movq %r10, -144(%rbp)
-    movq %r9, -136(%rbp)
+    movq %r9, -144(%rbp)
+    movq %r10, -136(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_signed
-    movq -144(%rbp), %r10
-    movq -136(%rbp), %r9
+    movq -144(%rbp), %r9
+    movq -136(%rbp), %r10
     movq -120(%rbp), %rax
     movq %rax, -144(%rbp)
     movq -112(%rbp), %rax
     movq %rax, -136(%rbp)
     movq -104(%rbp), %rax
     movq %rax, -128(%rbp)
-    movq %r10, -40(%rbp)
-    movq %r9, -32(%rbp)
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
     leaq -80(%rbp), %rax
     mov %rax, %rdi
     leaq -120(%rbp), %rax
@@ -398,8 +398,8 @@ _kefir_func_idiv_label0:
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_signed_divide
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movq -80(%rbp), %rax
     movq %rax, (%r9)
     movq -72(%rbp), %rax
@@ -451,17 +451,17 @@ _kefir_func_imod_label0:
     movq %rax, -128(%rbp)
     movq -144(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -136(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_signed
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -136(%rbp), %rax
     mov %rax, %rdi
     leaq -96(%rbp), %rax
@@ -471,8 +471,8 @@ _kefir_func_imod_label0:
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_signed_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
     movq -96(%rbp), %rax
     movq %rax, (%r9)
     movq -88(%rbp), %rax
@@ -524,8 +524,8 @@ _kefir_func_imul_label0:
     movq %rax, -112(%rbp)
     movq -128(%rbp), %rax
     movq %rax, -104(%rbp)
-    movq %r11, -48(%rbp)
-    movq %r10, -40(%rbp)
+    movq %r10, -48(%rbp)
+    movq %r11, -40(%rbp)
     leaq -72(%rbp), %rax
     mov %rax, %rdi
     leaq -144(%rbp), %rax
@@ -537,8 +537,8 @@ _kefir_func_imul_label0:
     mov $150, %r8
     mov $150, %r9
     call __kefir_bigint_signed_multiply
-    movq -48(%rbp), %r11
-    movq -40(%rbp), %r10
+    movq -48(%rbp), %r10
+    movq -40(%rbp), %r11
     movq -72(%rbp), %rax
     movq %rax, (%r10)
     movq -64(%rbp), %rax
@@ -590,17 +590,17 @@ _kefir_func_udiv_label0:
     movq %rax, -64(%rbp)
     movq -144(%rbp), %rax
     movq %rax, -56(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -72(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -72(%rbp), %rax
     mov %rax, %rdi
     leaq -136(%rbp), %rax
@@ -610,8 +610,8 @@ _kefir_func_udiv_label0:
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
     movq -72(%rbp), %rax
     movq %rax, (%r9)
     movq -64(%rbp), %rax
@@ -663,17 +663,17 @@ _kefir_func_umod_label0:
     movq %rax, -128(%rbp)
     movq -144(%rbp), %rax
     movq %rax, -120(%rbp)
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -136(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     mov $300, %rdx
     call __kefir_bigint_cast_unsigned
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
-    movq %r10, -160(%rbp)
-    movq %r9, -152(%rbp)
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
+    movq %r9, -160(%rbp)
+    movq %r10, -152(%rbp)
     leaq -136(%rbp), %rax
     mov %rax, %rdi
     leaq -96(%rbp), %rax
@@ -683,8 +683,8 @@ _kefir_func_umod_label0:
     mov $300, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_divide
-    movq -160(%rbp), %r10
-    movq -152(%rbp), %r9
+    movq -160(%rbp), %r9
+    movq -152(%rbp), %r10
     movq -96(%rbp), %rax
     movq %rax, (%r9)
     movq -88(%rbp), %rax
@@ -730,8 +730,8 @@ _kefir_func_umul_label0:
     movq %rax, -80(%rbp)
     movq 16(%r9), %rax
     movq %rax, -72(%rbp)
-    movq %r10, -40(%rbp)
-    movq %r9, -32(%rbp)
+    movq %r9, -40(%rbp)
+    movq %r10, -32(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     leaq -88(%rbp), %rax
@@ -741,8 +741,8 @@ _kefir_func_umul_label0:
     mov $150, %rcx
     mov $150, %r8
     call __kefir_bigint_unsigned_multiply
-    movq -40(%rbp), %r10
-    movq -32(%rbp), %r9
+    movq -40(%rbp), %r9
+    movq -32(%rbp), %r10
     movq -64(%rbp), %rax
     movq %rax, (%r9)
     movq -56(%rbp), %rax
@@ -795,14 +795,14 @@ _kefir_func_lshift_label0:
     movq -56(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_left_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -855,14 +855,14 @@ _kefir_func_rshift_label0:
     movq -56(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_right_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax
@@ -915,14 +915,14 @@ _kefir_func_arshift_label0:
     movq -56(%rbp), %rax
     movq %rax, -32(%rbp)
     movq -96(%rbp), %rsi
-    movq %r8, -96(%rbp)
-    movq %rcx, -88(%rbp)
+    movq %rcx, -96(%rbp)
+    movq %r8, -88(%rbp)
     leaq -48(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rdx
     call __kefir_bigint_arithmetic_right_shift
-    movq -96(%rbp), %r8
-    movq -88(%rbp), %rcx
+    movq -96(%rbp), %rcx
+    movq -88(%rbp), %r8
     movq -48(%rbp), %rax
     movq %rax, (%rcx)
     movq -40(%rbp), %rax

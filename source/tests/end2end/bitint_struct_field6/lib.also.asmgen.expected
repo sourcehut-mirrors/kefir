@@ -56,14 +56,14 @@ _kefir_func_get1_label0:
     add $24, %rcx
     add $3, %eax
     movsx %eax, %rdx
-    movq %r8, -104(%rbp)
-    movq %rcx, -96(%rbp)
+    movq %rcx, -104(%rbp)
+    movq %r8, -96(%rbp)
     leaq -128(%rbp), %rax
     mov %rax, %rdi
     mov $150, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -104(%rbp), %r8
-    movq -96(%rbp), %rcx
+    movq -104(%rbp), %rcx
+    movq -96(%rbp), %r8
     movq -128(%rbp), %rax
     movq %rax, (%rcx)
     movq -120(%rbp), %rax
@@ -83,14 +83,14 @@ _kefir_func_get1_label0:
     add $56, %rcx
     add $5, %eax
     movsx %eax, %rdx
-    movq %r8, -112(%rbp)
-    movq %rcx, -104(%rbp)
+    movq %rcx, -112(%rbp)
+    movq %r8, -104(%rbp)
     leaq -128(%rbp), %rax
     mov %rax, %rdi
     mov $120, %rsi
     call __kefir_bigint_set_signed_integer
-    movq -112(%rbp), %r8
-    movq -104(%rbp), %rcx
+    movq -112(%rbp), %rcx
+    movq -104(%rbp), %r8
     movdqu -128(%rbp), %xmm0
     movdqu %xmm0, (%rcx)
     mov %r8, %rax

@@ -65,9 +65,12 @@ kefir_result_t kefir_hashtable_free(struct kefir_mem *, struct kefir_hashtable *
 
 kefir_result_t kefir_hashtable_on_removal(struct kefir_hashtable *, kefir_hashtable_free_callback_t, void *);
 
+kefir_result_t kefir_hashtable_clear(struct kefir_hashtable *);
 kefir_result_t kefir_hashtable_insert(struct kefir_mem *, struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t);
+kefir_result_t kefir_hashtable_insert_or_update(struct kefir_mem *, struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t);
 kefir_result_t kefir_hashtable_at_mut(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t **);
 kefir_result_t kefir_hashtable_at(const struct kefir_hashtable *, kefir_hashtable_key_t, kefir_hashtable_value_t *);
+kefir_result_t kefir_hashtable_merge(struct kefir_mem *, struct kefir_hashtable *, const struct kefir_hashtable *);
 kefir_bool_t kefir_hashtable_has(const struct kefir_hashtable *, kefir_hashtable_key_t);
 
 typedef struct kefir_hashtable_iterator {

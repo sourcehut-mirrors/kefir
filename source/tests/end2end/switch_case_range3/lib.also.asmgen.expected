@@ -230,16 +230,16 @@ __kefir_text_func_test5_begin:
     xor %ecx, %ecx
     cmp $-1, %al
     sete %cl
-    movq %r8, -24(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -24(%rbp)
+    movq %r8, -16(%rbp)
     leaq -64(%rbp), %rax
     mov %rax, %rdi
     leaq -48(%rbp), %rax
     mov %rax, %rsi
     mov $120, %rdx
     call __kefir_bigint_unsigned_compare
-    movq -24(%rbp), %r8
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %r8
     xor %edx, %edx
     cmp $0, %al
     sete %dl

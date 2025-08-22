@@ -299,34 +299,34 @@ _kefir_func_add6_label0:
     movq -216(%rbp), %rax
     movq %rax, -72(%rbp)
 _kefir_func_add6_label1:
-    movq %r11, -256(%rbp)
-    movq %r10, -248(%rbp)
+    movq %r10, -256(%rbp)
+    movq %r11, -248(%rbp)
     leaq -208(%rbp), %rax
     mov %rax, %rdx
     mov %r10, %rsi
     mov $48, %rdi
     mov $5, %rcx
     call __atomic_load@PLT
-    movq -256(%rbp), %r11
-    movq -248(%rbp), %r10
+    movq -256(%rbp), %r10
+    movq -248(%rbp), %r11
     movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -160(%rbp)
     movdqu -192(%rbp), %xmm0
     movdqu %xmm0, -144(%rbp)
     movdqu -176(%rbp), %xmm0
     movdqu %xmm0, -128(%rbp)
-    movq %r11, -256(%rbp)
-    movq %r10, -248(%rbp)
+    movq %r10, -256(%rbp)
+    movq %r11, -248(%rbp)
     leaq -160(%rbp), %rax
     mov %rax, %rdi
     leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $366, %rdx
     call __kefir_bigint_add
-    movq -256(%rbp), %r11
-    movq -248(%rbp), %r10
-    movq %r11, -64(%rbp)
-    movq %r10, -56(%rbp)
+    movq -256(%rbp), %r10
+    movq -248(%rbp), %r11
+    movq %r10, -64(%rbp)
+    movq %r11, -56(%rbp)
     movdqu -208(%rbp), %xmm0
     movdqu %xmm0, -256(%rbp)
     movdqu -192(%rbp), %xmm0
@@ -341,8 +341,8 @@ _kefir_func_add6_label1:
     leaq -160(%rbp), %rax
     mov %rax, %rcx
     call __atomic_compare_exchange@PLT
-    movq -64(%rbp), %r11
-    movq -56(%rbp), %r10
+    movq -64(%rbp), %r10
+    movq -56(%rbp), %r11
     test %al, %al
     jz _kefir_func_add6_label4
     jmp _kefir_func_add6_label2

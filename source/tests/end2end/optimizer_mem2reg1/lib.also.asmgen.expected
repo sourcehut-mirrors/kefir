@@ -113,14 +113,14 @@ _kefir_func_quad_equation_label0:
 _kefir_func_quad_equation_label1:
 _kefir_func_quad_equation_label2:
     movq %rdi, -80(%rbp)
-    movdqu %xmm5, -72(%rbp)
-    movdqu %xmm1, -56(%rbp)
-    movq %rcx, -40(%rbp)
+    movq %rcx, -72(%rbp)
+    movdqu %xmm1, -64(%rbp)
+    movdqu %xmm5, -48(%rbp)
     call sqrt@PLT
     movq -80(%rbp), %rdi
-    movdqu -72(%rbp), %xmm5
-    movdqu -56(%rbp), %xmm1
-    movq -40(%rbp), %rcx
+    movq -72(%rbp), %rcx
+    movdqu -64(%rbp), %xmm1
+    movdqu -48(%rbp), %xmm5
     mov $1, %rax
     test %edi, %edi
     cmovz %rcx, %rax

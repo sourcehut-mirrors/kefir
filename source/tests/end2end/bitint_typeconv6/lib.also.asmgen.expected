@@ -820,11 +820,11 @@ _kefir_func___kefir_bigint_signed_to_double_label14:
     movq -48(%rbp), %r8
     movq -72(%rbp), %rdi
     movq -48(%rbp), %rsi
-    movq %rcx, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %r8, -96(%rbp)
+    movq %rcx, -88(%rbp)
     call __kefir_bigint_is_zero
-    movq -96(%rbp), %rcx
-    movq -88(%rbp), %r8
+    movq -96(%rbp), %r8
+    movq -88(%rbp), %rcx
     mov $0, %rdx
     test %eax, %eax
     sete %dl
@@ -1701,11 +1701,11 @@ _kefir_func___kefir_bigint_unsigned_to_double_label14:
     movq -48(%rbp), %r8
     movq -72(%rbp), %rdi
     movq -48(%rbp), %rsi
-    movq %rcx, -96(%rbp)
-    movq %r8, -88(%rbp)
+    movq %r8, -96(%rbp)
+    movq %rcx, -88(%rbp)
     call __kefir_bigint_is_zero
-    movq -96(%rbp), %rcx
-    movq -88(%rbp), %r8
+    movq -96(%rbp), %r8
+    movq -88(%rbp), %rcx
     mov $0, %rdx
     test %eax, %eax
     sete %dl

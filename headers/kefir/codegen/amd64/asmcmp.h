@@ -25,7 +25,7 @@
 #include "kefir/target/asm/amd64/xasmgen.h"
 #include "kefir/target/asm/amd64/db.h"
 #include "kefir/target/abi/amd64/base.h"
-#include "kefir/core/util.h"
+#include "kefir/core/hashtable.h"
 
 typedef struct kefir_codegen_amd64_register_allocator kefir_codegen_amd64_register_allocator_t;  // Forward declaration
 typedef struct kefir_codegen_amd64_stack_frame kefir_codegen_amd64_stack_frame_t;                // Forward declaration
@@ -92,7 +92,7 @@ typedef enum kefir_asmcmp_amd64_register_preallocation_type {
 typedef struct kefir_asmcmp_amd64 {
     struct kefir_asmcmp_context context;
     const char *function_name;
-    struct kefir_hashtree register_preallocation;
+    struct kefir_hashtable register_preallocation;
     kefir_abi_amd64_variant_t abi_variant;
     kefir_bool_t position_independent_code;
     struct kefir_hashtreeset externals;
