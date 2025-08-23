@@ -906,17 +906,18 @@ static kefir_result_t process_elif(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t process_error(struct kefir_preprocessor_directive *directive) {
-    return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s", directive->error_message.length, directive->error_message.content);
+    return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s",
+                                   directive->error_message.length, directive->error_message.content);
 }
 
-static kefir_result_t process_warning(struct kefir_preprocessor_directive *directive,
-                                      FILE *warning_output) {
+static kefir_result_t process_warning(struct kefir_preprocessor_directive *directive, FILE *warning_output) {
     if (directive->source_location.source != NULL) {
         fprintf(warning_output, "%s@%" KEFIR_UINT_FMT ":%" KEFIR_UINT_FMT " warning: %*s\n",
                 directive->source_location.source, directive->source_location.line, directive->source_location.column,
                 (int) directive->error_message.length, directive->error_message.content);
     } else {
-        fprintf(warning_output, "warning: %*s\n", (int) directive->error_message.length, directive->error_message.content);
+        fprintf(warning_output, "warning: %*s\n", (int) directive->error_message.length,
+                directive->error_message.content);
     }
     return KEFIR_OK;
 }
@@ -953,10 +954,13 @@ static kefir_result_t process_line(struct kefir_mem *mem, struct kefir_preproces
         }
     }
 
-    preprocessor->lexer.cursor->location.line = line;
-    if (source_file != NULL) {
-        preprocessor->lexer.cursor->location.source = source_file;
+    if (source_file == NULL) {
+        source_file = preprocessor->lexer.cursor->location.source;
     }
+    REQUIRE_OK(kefir_lexer_cursor_set_source_location(
+        preprocessor->lexer.cursor,
+        &(struct kefir_source_location) {
+            .source = source_file, .line = line, .column = preprocessor->lexer.cursor->location.column}));
     return KEFIR_OK;
 }
 
