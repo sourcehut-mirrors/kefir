@@ -287,6 +287,10 @@ typedef struct kefir_opt_instruction {
     struct kefir_opt_operation operation;
     struct kefir_opt_instruction_link siblings;
     struct kefir_opt_instruction_link control_flow;
+
+    struct {
+        struct kefir_hashtreeset instruction;
+    } uses;
 } kefir_opt_instruction_t;
 
 typedef struct kefir_opt_code_instruction_list {
@@ -380,8 +384,9 @@ typedef struct kefir_opt_code_container {
     kefir_size_t length;
     kefir_size_t capacity;
 
-    struct kefir_hashtree blocks;
-    kefir_opt_block_id_t next_block_id;
+    struct kefir_opt_code_block *blocks;
+    kefir_size_t blocks_length;
+    kefir_size_t blocks_capacity;
 
     struct kefir_opt_phi_node *phi_nodes;
     kefir_size_t phi_nodes_length;
@@ -394,8 +399,6 @@ typedef struct kefir_opt_code_container {
     kefir_opt_call_id_t next_inline_assembly_id;
 
     kefir_opt_block_id_t entry_point;
-
-    struct kefir_hashtree uses;
 
     const struct kefir_opt_code_event_listener *event_listener;
 } kefir_opt_code_container_t;
@@ -557,7 +560,8 @@ kefir_result_t kefir_opt_code_container_drop_dead_code(struct kefir_mem *, struc
                                                        const struct kefir_opt_code_container_dead_code_index *);
 
 typedef struct kefir_opt_code_container_iterator {
-    struct kefir_hashtree_node_iterator iter;
+    const struct kefir_opt_code_container *code;
+    kefir_opt_block_id_t block_id;
 } kefir_opt_code_container_iterator_t;
 
 struct kefir_opt_code_block *kefir_opt_code_container_iter(const struct kefir_opt_code_container *,
