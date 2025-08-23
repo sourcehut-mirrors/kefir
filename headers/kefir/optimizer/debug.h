@@ -32,6 +32,7 @@ typedef struct kefir_opt_code_debug_info_local_variable_refset {
 } kefir_opt_code_debug_info_local_variable_refset_t;
 
 typedef struct kefir_opt_code_debug_info {
+    kefir_bool_t record_debug_info;
     struct kefir_opt_code_event_listener listener;
 
     kefir_size_t instruction_location_cursor;

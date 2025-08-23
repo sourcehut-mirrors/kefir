@@ -513,6 +513,15 @@ kefir_result_t kefir_compiler_optimize(struct kefir_mem *mem, struct kefir_compi
     REQUIRE(opt_module != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer module"));
 
     REQUIRE_OK(kefir_opt_module_construct(mem, context->translator_env.target_platform, opt_module));
+    struct kefir_hashtree_node_iterator iter;
+    for (const struct kefir_ir_function *ir_func =
+             kefir_ir_module_function_iter(ir_module, &iter);
+         ir_func != NULL; ir_func = kefir_ir_module_function_next(&iter)) {
+            
+        struct kefir_opt_function *func = NULL;
+        REQUIRE_OK(kefir_opt_module_get_function(opt_module, ir_func->declaration->id, &func));
+        func->debug_info.record_debug_info = context->optimizer_configuration.debug_info;
+    }
     REQUIRE_OK(kefir_optimizer_pipeline_apply(mem, opt_module, &context->optimizer_configuration));
 
     return KEFIR_OK;

@@ -61,6 +61,7 @@ kefir_result_t kefir_opt_code_debug_info_init(struct kefir_opt_code_debug_info *
     debug_info->instruction_location_cursor = KEFIR_OPT_CODE_DEBUG_INSTRUCTION_LOCATION_NONE;
     debug_info->listener.on_new_instruction = on_new_instruction;
     debug_info->listener.payload = debug_info;
+    debug_info->record_debug_info = true;
     REQUIRE_OK(kefir_hashtree_init(&debug_info->instruction_locations, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&debug_info->local_variable_allocs, &kefir_hashtree_uint_ops));
     REQUIRE_OK(kefir_hashtree_on_removal(&debug_info->local_variable_allocs, free_local_variable_refs, NULL));
@@ -90,6 +91,7 @@ kefir_result_t kefir_opt_code_debug_info_set_instruction_location_cursor(struct 
 kefir_result_t kefir_opt_code_debug_info_set_instruction_location_cursor_of(
     struct kefir_opt_code_debug_info *debug_info, kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+    REQUIRE(debug_info->record_debug_info, KEFIR_OK);
 
     struct kefir_hashtree_node *node;
     kefir_result_t res = kefir_hashtree_at(&debug_info->instruction_locations, (kefir_hashtree_key_t) instr_ref, &node);
@@ -127,6 +129,7 @@ kefir_result_t kefir_opt_code_debug_info_register_local_variable_allocation(
     kefir_uint64_t local_variable_id) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+    REQUIRE(debug_info->record_debug_info, KEFIR_OK);
 
     ASSIGN_DECL_CAST(const kefir_hashtree_key_t, key, local_variable_id);
 
@@ -165,6 +168,7 @@ kefir_result_t kefir_opt_code_debug_info_replace_local_variable(struct kefir_mem
                                                                 kefir_opt_instruction_ref_t replacement_instr_ref) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(debug_info != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer debug information"));
+    REQUIRE(debug_info->record_debug_info, KEFIR_OK);
 
     struct kefir_hashtree_node_iterator iter;
     for (struct kefir_hashtree_node *node = kefir_hashtree_iter(&debug_info->local_variable_allocs, &iter);
@@ -234,6 +238,7 @@ kefir_result_t kefir_opt_code_debug_info_add_local_variable_ref(struct kefir_mem
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction reference"));
     REQUIRE(instr_ref != KEFIR_ID_NONE,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction reference"));
+    REQUIRE(debug_info->record_debug_info, KEFIR_OK);
 
     struct kefir_opt_code_debug_info_local_variable_refset *refs = NULL;
     struct kefir_hashtree_node *node;

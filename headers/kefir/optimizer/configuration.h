@@ -6,6 +6,7 @@
 typedef struct kefir_optimizer_configuration {
     struct kefir_optimizer_pipeline pipeline;
 
+    kefir_bool_t debug_info;
     kefir_size_t max_inline_depth;
     kefir_size_t max_inlines_per_function;
     const struct kefir_optimizer_target_lowering *target_lowering;
