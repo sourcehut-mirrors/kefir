@@ -31,7 +31,8 @@ DEFINE_CASE(core_hashtable1, "Core - Hashtable #1") {
     for (kefir_uint64_t i = 0; i < Count; i++) {
         const kefir_uint64_t key = (i * 31) ^ Mask;
         ASSERT_OK(kefir_hashtable_insert(&kft_mem, &table, (kefir_hashtable_key_t) key, (kefir_hashtable_value_t) i));
-        ASSERT(kefir_hashtable_insert(&kft_mem, &table, (kefir_hashtable_key_t) key, (kefir_hashtable_value_t) i) == KEFIR_ALREADY_EXISTS);
+        ASSERT(kefir_hashtable_insert(&kft_mem, &table, (kefir_hashtable_key_t) key, (kefir_hashtable_value_t) i) ==
+               KEFIR_ALREADY_EXISTS);
     }
 
     for (kefir_uint64_t i = 0; i < Count; i++) {
@@ -52,9 +53,8 @@ DEFINE_CASE(core_hashtable1, "Core - Hashtable #1") {
     kefir_hashtable_key_t key;
     kefir_hashtable_value_t value;
     kefir_size_t total = 0;
-    for (res = kefir_hashtable_iter(&table, &iter, &key, &value);
-        res == KEFIR_OK;
-        res = kefir_hashtable_next(&iter, &key, &value)) {
+    for (res = kefir_hashtable_iter(&table, &iter, &key, &value); res == KEFIR_OK;
+         res = kefir_hashtable_next(&iter, &key, &value)) {
         total++;
         ASSERT(key == ((value * 31) ^ Mask));
     }
@@ -62,6 +62,38 @@ DEFINE_CASE(core_hashtable1, "Core - Hashtable #1") {
         ASSERT_OK(res);
     }
     ASSERT(total == Count);
+
+    for (kefir_uint64_t i = 1; i < Count; i += 2) {
+        const kefir_uint64_t key = (i * 31) ^ Mask;
+
+        ASSERT_OK(kefir_hashtable_delete(&kft_mem, &table, (kefir_hashtable_key_t) key));
+        ASSERT(kefir_hashtable_delete(&kft_mem, &table, (kefir_hashtable_key_t) key) == KEFIR_NOT_FOUND);
+    }
+
+    for (kefir_uint64_t i = 0; i < Count; i += 2) {
+        const kefir_uint64_t key = (i * 31) ^ Mask;
+        const kefir_uint64_t key2 = ((i + 1) * 31) ^ Mask;
+
+        ASSERT(kefir_hashtable_has(&table, (kefir_hashtable_key_t) key));
+        ASSERT(!kefir_hashtable_has(&table, (kefir_hashtable_key_t) key2));
+
+        kefir_hashtable_value_t value;
+        ASSERT_OK(kefir_hashtable_at(&table, (kefir_hashtable_key_t) key, &value));
+        ASSERT(value == i);
+
+        ASSERT(kefir_hashtable_at(&table, (kefir_hashtable_key_t) key2, &value) == KEFIR_NOT_FOUND);
+    }
+
+    total = 0;
+    for (res = kefir_hashtable_iter(&table, &iter, &key, &value); res == KEFIR_OK;
+         res = kefir_hashtable_next(&iter, &key, &value)) {
+        total++;
+        ASSERT(key == ((value * 31) ^ Mask));
+    }
+    if (res != KEFIR_ITERATOR_END) {
+        ASSERT_OK(res);
+    }
+    ASSERT(total == Count / 2 + 1);
 
     ASSERT_OK(kefir_hashtable_free(&kft_mem, &table));
 }

@@ -169,25 +169,25 @@ _kefir_func_postinc6_label0:
     movq %rax, -80(%rbp)
     movq -32(%rbp), %rax
     movq %rax, -72(%rbp)
-    movq %r8, -24(%rbp)
-    movq %rcx, -16(%rbp)
+    movq %rcx, -24(%rbp)
+    movq %r8, -16(%rbp)
     leaq -144(%rbp), %rax
     mov %rax, %rdi
     mov $310, %rsi
     mov $1, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -24(%rbp), %r8
-    movq -16(%rbp), %rcx
-    movq %r8, -24(%rbp)
-    movq %rcx, -16(%rbp)
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %r8
+    movq %rcx, -24(%rbp)
+    movq %r8, -16(%rbp)
     leaq -104(%rbp), %rax
     mov %rax, %rdi
     leaq -144(%rbp), %rax
     mov %rax, %rsi
     mov $310, %rdx
     call __kefir_bigint_add
-    movq -24(%rbp), %r8
-    movq -16(%rbp), %rcx
+    movq -24(%rbp), %rcx
+    movq -16(%rbp), %r8
     movq -104(%rbp), %rax
     movq %rax, (%rcx)
     movq -96(%rbp), %rax

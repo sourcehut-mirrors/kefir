@@ -28,9 +28,10 @@ struct pending_instructions {
     struct kefir_queue instr;
 };
 
-static kefir_result_t free_pending_instructions(struct kefir_mem *mem, struct kefir_hashtree *tree,
-                                                kefir_hashtree_key_t key, kefir_hashtree_value_t value, void *payload) {
-    UNUSED(tree);
+static kefir_result_t free_pending_instructions(struct kefir_mem *mem, struct kefir_hashtable *table,
+                                                kefir_hashtable_key_t key, kefir_hashtable_value_t value,
+                                                void *payload) {
+    UNUSED(table);
     UNUSED(key);
     UNUSED(payload);
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
@@ -43,27 +44,27 @@ static kefir_result_t free_pending_instructions(struct kefir_mem *mem, struct ke
 }
 
 static kefir_result_t enqueue_instr(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
-                                    struct kefir_queue *instr_queue, struct kefir_hashtreeset *traced_blocks,
-                                    struct kefir_hashtree *pending_instr, kefir_opt_instruction_ref_t instr_ref) {
+                                    struct kefir_queue *instr_queue, struct kefir_hashset *traced_blocks,
+                                    struct kefir_hashtable *pending_instr, kefir_opt_instruction_ref_t instr_ref) {
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
 
-    if (kefir_hashtreeset_has(traced_blocks, (kefir_hashtreeset_entry_t) instr->block_id)) {
+    if (kefir_hashset_has(traced_blocks, (kefir_hashset_key_t) instr->block_id)) {
         REQUIRE_OK(kefir_queue_push(mem, instr_queue, (kefir_queue_entry_t) instr_ref));
     } else {
         struct pending_instructions *pending;
-        struct kefir_hashtree_node *node;
-        kefir_result_t res = kefir_hashtree_at(pending_instr, (kefir_hashtree_key_t) instr->block_id, &node);
+        kefir_hashtable_value_t value;
+        kefir_result_t res = kefir_hashtable_at(pending_instr, (kefir_hashtable_key_t) instr->block_id, &value);
         if (res != KEFIR_NOT_FOUND) {
             REQUIRE_OK(res);
-            pending = (struct pending_instructions *) node->value;
+            pending = (struct pending_instructions *) value;
         } else {
             pending = KEFIR_MALLOC(mem, sizeof(struct pending_instructions));
             REQUIRE(pending != NULL,
                     KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate pending instructions"));
             res = kefir_queue_init(&pending->instr);
-            REQUIRE_CHAIN(&res, kefir_hashtree_insert(mem, pending_instr, (kefir_hashtree_key_t) instr->block_id,
-                                                      (kefir_hashtree_value_t) pending));
+            REQUIRE_CHAIN(&res, kefir_hashtable_insert(mem, pending_instr, (kefir_hashtable_key_t) instr->block_id,
+                                                       (kefir_hashtable_value_t) pending));
             REQUIRE_ELSE(res == KEFIR_OK, {
                 KEFIR_FREE(mem, pending);
                 return res;
@@ -77,9 +78,9 @@ static kefir_result_t enqueue_instr(struct kefir_mem *mem, const struct kefir_op
 
 static kefir_result_t trace_block(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                   kefir_opt_block_id_t block_id, struct kefir_queue *instr_queue,
-                                  struct kefir_hashtreeset *traced_blocks, struct kefir_hashtree *pending_instr) {
-    REQUIRE(!kefir_hashtreeset_has(traced_blocks, (kefir_hashtreeset_entry_t) block_id), KEFIR_OK);
-    REQUIRE_OK(kefir_hashtreeset_add(mem, traced_blocks, (kefir_hashtreeset_entry_t) block_id));
+                                  struct kefir_hashset *traced_blocks, struct kefir_hashtable *pending_instr) {
+    REQUIRE(!kefir_hashset_has(traced_blocks, (kefir_hashset_key_t) block_id), KEFIR_OK);
+    REQUIRE_OK(kefir_hashset_add(mem, traced_blocks, (kefir_hashset_key_t) block_id));
 
     const struct kefir_opt_code_block *block;
     REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
@@ -97,17 +98,17 @@ static kefir_result_t trace_block(struct kefir_mem *mem, const struct kefir_opt_
     }
     REQUIRE_OK(res);
 
-    struct kefir_hashtree_node *node;
-    res = kefir_hashtree_at(pending_instr, (kefir_hashtree_key_t) block_id, &node);
+    kefir_hashtree_value_t value;
+    res = kefir_hashtable_at(pending_instr, (kefir_hashtable_key_t) block_id, &value);
     if (res != KEFIR_NOT_FOUND) {
         REQUIRE_OK(res);
-        ASSIGN_DECL_CAST(struct pending_instructions *, pending, node->value);
+        ASSIGN_DECL_CAST(struct pending_instructions *, pending, value);
         while (!kefir_queue_is_empty(&pending->instr)) {
             kefir_queue_entry_t entry;
             REQUIRE_OK(kefir_queue_pop_first(mem, &pending->instr, &entry));
             REQUIRE_OK(kefir_queue_push(mem, instr_queue, entry));
         }
-        REQUIRE_OK(kefir_hashtree_delete(mem, pending_instr, (kefir_hashtree_key_t) block_id));
+        REQUIRE_OK(kefir_hashtable_delete(mem, pending_instr, (kefir_hashtable_key_t) block_id));
     }
     return KEFIR_OK;
 }
@@ -116,8 +117,8 @@ struct add_instr_input_param {
     struct kefir_mem *mem;
     const struct kefir_opt_code_container *code;
     struct kefir_queue *instr_queue;
-    struct kefir_hashtreeset *traced_blocks;
-    struct kefir_hashtree *pending_instr;
+    struct kefir_hashset *traced_blocks;
+    struct kefir_hashtable *pending_instr;
 };
 
 static kefir_result_t add_instr_input(kefir_opt_instruction_ref_t instr_ref, void *payload) {
@@ -133,11 +134,11 @@ static kefir_result_t add_instr_input(kefir_opt_instruction_ref_t instr_ref, voi
 static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                   const struct kefir_opt_code_container_tracer *tracer,
                                   kefir_opt_instruction_ref_t instr_ref, struct kefir_queue *instr_queue,
-                                  struct kefir_hashtreeset *traced_blocks, struct kefir_hashtreeset *traced_instr,
-                                  struct kefir_hashtreeset *pending_block_labels, kefir_bool_t *has_indirect_jumps,
-                                  struct kefir_hashtree *pending_instr) {
-    REQUIRE(!kefir_hashtreeset_has(traced_instr, (kefir_hashtreeset_entry_t) instr_ref), KEFIR_OK);
-    REQUIRE_OK(kefir_hashtreeset_add(mem, traced_instr, (kefir_hashtreeset_entry_t) instr_ref));
+                                  struct kefir_hashset *traced_blocks, struct kefir_hashset *traced_instr,
+                                  struct kefir_hashset *pending_block_labels, kefir_bool_t *has_indirect_jumps,
+                                  struct kefir_hashtable *pending_instr) {
+    REQUIRE(!kefir_hashset_has(traced_instr, (kefir_hashset_key_t) instr_ref), KEFIR_OK);
+    REQUIRE_OK(kefir_hashset_add(mem, traced_instr, (kefir_hashset_key_t) instr_ref));
 
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(code, instr_ref, &instr));
@@ -148,8 +149,8 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
                 REQUIRE_OK(trace_block(mem, code, instr->operation.parameters.imm.block_ref, instr_queue, traced_blocks,
                                        pending_instr));
             } else {
-                REQUIRE_OK(kefir_hashtreeset_add(
-                    mem, pending_block_labels, (kefir_hashtreeset_entry_t) instr->operation.parameters.imm.block_ref));
+                REQUIRE_OK(kefir_hashset_add(mem, pending_block_labels,
+                                             (kefir_hashset_key_t) instr->operation.parameters.imm.block_ref));
             }
             break;
 
@@ -175,11 +176,11 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
                 const struct kefir_opt_code_block *block;
                 REQUIRE_OK(kefir_opt_code_container_block(code, block_id, &block));
                 if (!kefir_hashtreeset_empty(&block->public_labels) ||
-                    kefir_hashtreeset_has(pending_block_labels, (kefir_hashtreeset_entry_t) block_id)) {
+                    kefir_hashset_has(pending_block_labels, (kefir_hashset_key_t) block_id)) {
                     REQUIRE_OK(trace_block(mem, code, block_id, instr_queue, traced_blocks, pending_instr));
                 }
             }
-            REQUIRE_OK(kefir_hashtreeset_clean(mem, pending_block_labels));
+            REQUIRE_OK(kefir_hashset_clear(mem, pending_block_labels));
         } break;
 
         case KEFIR_OPT_OPCODE_INLINE_ASSEMBLY: {
@@ -217,8 +218,8 @@ static kefir_result_t trace_instr(struct kefir_mem *mem, const struct kefir_opt_
 
 static kefir_result_t trace_impl(struct kefir_mem *mem, const struct kefir_opt_code_container *code,
                                  const struct kefir_opt_code_container_tracer *tracer, struct kefir_queue *instr_queue,
-                                 struct kefir_hashtreeset *traced_blocks, struct kefir_hashtreeset *traced_instr,
-                                 struct kefir_hashtree *pending_instr, struct kefir_hashtreeset *pending_block_labels) {
+                                 struct kefir_hashset *traced_blocks, struct kefir_hashset *traced_instr,
+                                 struct kefir_hashtable *pending_instr, struct kefir_hashset *pending_block_labels) {
     kefir_size_t total_block_count;
     REQUIRE_OK(kefir_opt_code_container_block_count(code, &total_block_count));
     REQUIRE_OK(trace_block(mem, code, code->entry_point, instr_queue, traced_blocks, pending_instr));
@@ -242,53 +243,53 @@ kefir_result_t kefir_opt_code_container_trace(struct kefir_mem *mem, const struc
     REQUIRE(tracer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code tracer"));
 
     struct kefir_queue instr_queue;
-    struct kefir_hashtreeset traced_blocks;
-    struct kefir_hashtreeset traced_instr;
-    struct kefir_hashtree pending_instr;
-    struct kefir_hashtreeset pending_block_labels;
+    struct kefir_hashset traced_blocks;
+    struct kefir_hashset traced_instr;
+    struct kefir_hashtable pending_instr;
+    struct kefir_hashset pending_block_labels;
     REQUIRE_OK(kefir_queue_init(&instr_queue));
-    REQUIRE_OK(kefir_hashtreeset_init(&traced_blocks, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&traced_instr, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtreeset_init(&pending_block_labels, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_init(&pending_instr, &kefir_hashtree_uint_ops));
-    REQUIRE_OK(kefir_hashtree_on_removal(&pending_instr, free_pending_instructions, NULL));
+    REQUIRE_OK(kefir_hashset_init(&traced_blocks, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&traced_instr, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashset_init(&pending_block_labels, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_init(&pending_instr, &kefir_hashtable_uint_ops));
+    REQUIRE_OK(kefir_hashtable_on_removal(&pending_instr, free_pending_instructions, NULL));
 
     kefir_result_t res = trace_impl(mem, code, tracer, &instr_queue, &traced_blocks, &traced_instr, &pending_instr,
                                     &pending_block_labels);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &pending_block_labels);
+        kefir_hashset_free(mem, &pending_block_labels);
         kefir_queue_free(mem, &instr_queue);
-        kefir_hashtreeset_free(mem, &traced_blocks);
-        kefir_hashtreeset_free(mem, &traced_instr);
-        kefir_hashtree_free(mem, &pending_instr);
+        kefir_hashset_free(mem, &traced_blocks);
+        kefir_hashset_free(mem, &traced_instr);
+        kefir_hashtable_free(mem, &pending_instr);
         return res;
     });
-    res = kefir_hashtreeset_free(mem, &pending_block_labels);
+    res = kefir_hashset_free(mem, &pending_block_labels);
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_queue_free(mem, &instr_queue);
-        kefir_hashtreeset_free(mem, &traced_blocks);
-        kefir_hashtreeset_free(mem, &traced_instr);
-        kefir_hashtree_free(mem, &pending_instr);
+        kefir_hashset_free(mem, &traced_blocks);
+        kefir_hashset_free(mem, &traced_instr);
+        kefir_hashtable_free(mem, &pending_instr);
         return res;
     });
     res = kefir_queue_free(mem, &instr_queue);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &traced_blocks);
-        kefir_hashtreeset_free(mem, &traced_instr);
-        kefir_hashtree_free(mem, &pending_instr);
+        kefir_hashset_free(mem, &traced_blocks);
+        kefir_hashset_free(mem, &traced_instr);
+        kefir_hashtable_free(mem, &pending_instr);
         return res;
     });
-    res = kefir_hashtreeset_free(mem, &traced_blocks);
+    res = kefir_hashset_free(mem, &traced_blocks);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtreeset_free(mem, &traced_instr);
-        kefir_hashtree_free(mem, &pending_instr);
+        kefir_hashset_free(mem, &traced_instr);
+        kefir_hashtable_free(mem, &pending_instr);
         return res;
     });
-    res = kefir_hashtreeset_free(mem, &traced_instr);
+    res = kefir_hashset_free(mem, &traced_instr);
     REQUIRE_ELSE(res == KEFIR_OK, {
-        kefir_hashtree_free(mem, &pending_instr);
+        kefir_hashtable_free(mem, &pending_instr);
         return res;
     });
-    REQUIRE_OK(kefir_hashtree_free(mem, &pending_instr));
+    REQUIRE_OK(kefir_hashtable_free(mem, &pending_instr));
     return KEFIR_OK;
 }

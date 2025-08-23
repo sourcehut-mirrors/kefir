@@ -700,16 +700,16 @@ _kefir_func___kefir_bigint_left_shift_label5:
     jmp _kefir_func___kefir_bigint_left_shift_label3
 _kefir_func___kefir_bigint_left_shift_label6:
     movq %r10, -32(%rbp)
-    movq %r11, -24(%rbp)
-    movq %r8, -16(%rbp)
+    movq %r8, -24(%rbp)
+    movq %r11, -16(%rbp)
     movq %r9, -8(%rbp)
     mov %r11, %rdi
     mov %r10, %rsi
     mov %rcx, %rdx
     call __kefir_bigint_left_shift_whole_digits
     movq -32(%rbp), %r10
-    movq -24(%rbp), %r11
-    movq -16(%rbp), %r8
+    movq -24(%rbp), %r8
+    movq -16(%rbp), %r11
     movq -8(%rbp), %r9
     imul $8, %r10, %rcx
     mov %r8, %rsi

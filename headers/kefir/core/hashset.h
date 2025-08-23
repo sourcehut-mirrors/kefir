@@ -29,7 +29,7 @@ typedef kefir_hashtable_key_t kefir_hashset_key_t;
 typedef kefir_hashtable_hash_t kefir_hashset_hash_t;
 typedef struct kefir_hashset kefir_hashset_t;
 typedef struct kefir_hashset_entry {
-    kefir_bool_t occupied;
+    kefir_hashtable_entry_state_t state;
     kefir_hashset_key_t key;
 } kefir_hashset_entry_t;
 
@@ -37,7 +37,6 @@ typedef struct kefir_hashset {
     struct kefir_hashset_entry *entries;
     kefir_size_t capacity;
     kefir_size_t occupied;
-    kefir_size_t collisions;
 
     const struct kefir_hashtable_ops *ops;
 } kefir_hashset_t;

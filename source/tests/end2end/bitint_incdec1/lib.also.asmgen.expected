@@ -172,18 +172,18 @@ _kefir_func_preinc6_label0:
     mov $310, %rsi
     mov $1, %rdx
     call __kefir_bigint_set_signed_integer
-    movq -24(%rbp), %r8
     movq -32(%rbp), %rcx
-    movq %r8, -32(%rbp)
-    movq %rcx, -24(%rbp)
+    movq -24(%rbp), %r8
+    movq %rcx, -32(%rbp)
+    movq %r8, -24(%rbp)
     leaq -72(%rbp), %rax
     mov %rax, %rdi
     leaq -112(%rbp), %rax
     mov %rax, %rsi
     mov $310, %rdx
     call __kefir_bigint_add
-    movq -32(%rbp), %r8
-    movq -24(%rbp), %rcx
+    movq -32(%rbp), %rcx
+    movq -24(%rbp), %r8
     movq -72(%rbp), %rax
     movq %rax, (%rcx)
     movq -64(%rbp), %rax

@@ -132,21 +132,21 @@
                             "predecessors": [],
                             "immediate_dominator": null,
                             "alive_instructions": [
+                                9,
                                 56,
                                 43,
+                                60,
                                 46,
                                 4,
+                                3,
                                 2,
+                                61,
                                 58,
                                 44,
                                 42,
-                                55,
-                                9,
-                                60,
-                                3,
-                                61,
-                                54,
                                 53,
+                                54,
+                                55,
                                 59
                             ]
                         }

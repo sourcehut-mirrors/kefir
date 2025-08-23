@@ -31,7 +31,6 @@ kefir_result_t kefir_hashset_init(struct kefir_hashset *hashset, const struct ke
     hashset->entries = NULL;
     hashset->capacity = 0;
     hashset->occupied = 0;
-    hashset->collisions = 0;
     hashset->ops = ops;
     return KEFIR_OK;
 }
@@ -45,37 +44,47 @@ kefir_result_t kefir_hashset_free(struct kefir_mem *mem, struct kefir_hashset *h
     return KEFIR_OK;
 }
 
-static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops, struct kefir_hashset_entry *entries, kefir_size_t capacity, kefir_hashset_key_t key, kefir_size_t *position_ptr, kefir_size_t *collisions_ptr) {
+static kefir_result_t find_position_for_insert(const struct kefir_hashtable_ops *ops,
+                                               struct kefir_hashset_entry *entries, kefir_size_t capacity,
+                                               kefir_hashset_key_t key, kefir_size_t *position_ptr,
+                                               kefir_size_t *collisions_ptr) {
     KEFIR_HASHTABLE_FIND_POSITION_FOR_INSERT(ops, entries, capacity, key, position_ptr, collisions_ptr);
 }
 
-static kefir_result_t insert_entry(const struct kefir_hashtable_ops *ops, struct kefir_hashset_entry *entries, kefir_size_t capacity, kefir_size_t *collisions, kefir_size_t *occupied, kefir_hashset_key_t key) {
+static kefir_result_t rehash(struct kefir_mem *, struct kefir_hashset *);
+
+static kefir_result_t insert_entry(struct kefir_mem *mem, struct kefir_hashset *hashset,
+                                   struct kefir_hashset_entry *entries, kefir_size_t capacity, kefir_size_t *occupied,
+                                   kefir_hashset_key_t key, kefir_bool_t do_rehash) {
     kefir_size_t index = 0;
     kefir_size_t found_collisions = 0;
-    REQUIRE_OK(find_position_for_insert(ops, entries, capacity, key, &index, &found_collisions));
+    REQUIRE_OK(find_position_for_insert(hashset->ops, entries, capacity, key, &index, &found_collisions));
+    if (do_rehash && entries[index].state != KEFIR_HASHTABLE_ENTRY_OCCUPIED &&
+        found_collisions >= KEFIR_REHASH_COLLISION_THRESHOLD) {
+        REQUIRE_OK(rehash(mem, hashset));
+        return insert_entry(mem, hashset, hashset->entries, hashset->capacity, &hashset->occupied, key, false);
+    }
 
-    if (!entries[index].occupied) {
-        entries[index].occupied = true;
+    if (entries[index].state != KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
+        entries[index].state = KEFIR_HASHTABLE_ENTRY_OCCUPIED;
         entries[index].key = key;
         (*occupied)++;
-        *collisions += found_collisions;
     }
     return KEFIR_OK;
 }
 
 static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashset) {
     const kefir_size_t new_capacity = KEFIR_HASHTABLE_CAPACITY_GROW(hashset->capacity);
-    kefir_size_t new_collisions = 0;
     kefir_size_t new_occupied = 0;
     struct kefir_hashset_entry *new_entries = KEFIR_MALLOC(mem, sizeof(struct kefir_hashset_entry) * new_capacity);
     for (kefir_size_t i = 0; i < new_capacity; i++) {
-        new_entries[i].occupied = false;
+        new_entries[i].state = KEFIR_HASHTABLE_ENTRY_EMPTY;
     }
 
     kefir_result_t res = KEFIR_OK;
     for (kefir_size_t i = 0; res == KEFIR_OK && i < hashset->capacity; i++) {
-        if (hashset->entries[i].occupied) {
-            res = insert_entry(hashset->ops, new_entries, new_capacity, &new_collisions, &new_occupied, hashset->entries[i].key);
+        if (hashset->entries[i].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
+            res = insert_entry(mem, hashset, new_entries, new_capacity, &new_occupied, hashset->entries[i].key, false);
         }
     }
     REQUIRE_ELSE(res == KEFIR_OK, {
@@ -86,7 +95,6 @@ static kefir_result_t rehash(struct kefir_mem *mem, struct kefir_hashset *hashse
     KEFIR_FREE(mem, hashset->entries);
     hashset->entries = new_entries;
     hashset->capacity = new_capacity;
-    hashset->collisions = new_collisions;
     hashset->occupied = new_occupied;
     return KEFIR_OK;
 }
@@ -96,10 +104,9 @@ kefir_result_t kefir_hashset_clear(struct kefir_mem *mem, struct kefir_hashset *
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
     for (kefir_size_t i = 0; i < hashset->capacity; i++) {
-        hashset->entries[i].occupied = false;
+        hashset->entries[i].state = KEFIR_HASHTABLE_ENTRY_EMPTY;
     }
     hashset->occupied = 0;
-    hashset->collisions = 0;
     return KEFIR_OK;
 }
 
@@ -107,46 +114,48 @@ kefir_result_t kefir_hashset_add(struct kefir_mem *mem, struct kefir_hashset *ha
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
 
-    if (hashset->capacity == 0 ||
-        hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashset->capacity ||
-        hashset->collisions >= KEFIR_REHASH_COLLISION_THRESHOLD * hashset->capacity) {
+    kefir_bool_t did_rehash = false;
+    if (hashset->capacity == 0 || hashset->occupied >= KEFIR_REHASH_OCCUPATION_THRESHOLD * hashset->capacity) {
         REQUIRE_OK(rehash(mem, hashset));
+        did_rehash = true;
     }
 
-    REQUIRE_OK(insert_entry(hashset->ops, hashset->entries, hashset->capacity, &hashset->collisions, &hashset->occupied, key));
+    REQUIRE_OK(insert_entry(mem, hashset, hashset->entries, hashset->capacity, &hashset->occupied, key, !did_rehash));
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_hashset_merge(struct kefir_mem *mem, struct kefir_hashset *dst_hashset, const struct kefir_hashset *src_hashset) {
+kefir_result_t kefir_hashset_merge(struct kefir_mem *mem, struct kefir_hashset *dst_hashset,
+                                   const struct kefir_hashset *src_hashset) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(dst_hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid destination hashset"));
     REQUIRE(src_hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source hashset"));
 
     if (src_hashset->occupied > 0) {
         for (kefir_size_t i = 0; i < src_hashset->capacity; i++) {
-            if (src_hashset->entries[i].occupied) {
+            if (src_hashset->entries[i].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
                 REQUIRE_OK(kefir_hashset_add(mem, dst_hashset, src_hashset->entries[i].key));
             }
         }
     }
     return KEFIR_OK;
 }
- 
+
 kefir_bool_t kefir_hashset_has(const struct kefir_hashset *hashset, kefir_hashset_key_t key) {
     REQUIRE(hashset != NULL, false);
-    
+
     KEFIR_HASHTABLE_HAS(hashset, key, return true;, return false;);
 }
 
-kefir_result_t kefir_hashset_iter(const struct kefir_hashset *hashset, struct kefir_hashset_iterator *iter, kefir_hashset_key_t *key_ptr) {
+kefir_result_t kefir_hashset_iter(const struct kefir_hashset *hashset, struct kefir_hashset_iterator *iter,
+                                  kefir_hashset_key_t *key_ptr) {
     REQUIRE(hashset != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid hashset"));
     REQUIRE(iter != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid pointer to hashset iterator"));
 
     iter->hashset = hashset;
     iter->index = 0;
-    
+
     for (; iter->index < hashset->capacity; iter->index++) {
-        if (hashset->entries[iter->index].occupied) {
+        if (hashset->entries[iter->index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
             ASSIGN_PTR(key_ptr, hashset->entries[iter->index].key);
             return KEFIR_OK;
         }
@@ -160,7 +169,7 @@ kefir_result_t kefir_hashset_next(struct kefir_hashset_iterator *iter, kefir_has
 
     iter->index++;
     for (; iter->index < iter->hashset->capacity; iter->index++) {
-        if (iter->hashset->entries[iter->index].occupied) {
+        if (iter->hashset->entries[iter->index].state == KEFIR_HASHTABLE_ENTRY_OCCUPIED) {
             ASSIGN_PTR(key_ptr, iter->hashset->entries[iter->index].key);
             return KEFIR_OK;
         }
