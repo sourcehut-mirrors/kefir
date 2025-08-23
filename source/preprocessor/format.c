@@ -426,8 +426,41 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
 
     const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
+    kefir_bool_t empty_line = true;
+    kefir_bool_t prev_token_non_newline_ws = false;
     for (kefir_size_t i = 0; i < buffer_length; i++) {
-        REQUIRE_OK(format_token(out, kefir_token_buffer_at(buffer, i), ws_format));
+        const struct kefir_token *token = kefir_token_buffer_at(buffer, i);
+        kefir_bool_t token_non_newline_ws = false;
+        if (token->klass == KEFIR_TOKEN_PP_WHITESPACE) {
+            token_non_newline_ws = !token->pp_whitespace.newline;
+            if (empty_line) {
+                kefir_size_t j = i;
+                kefir_bool_t skip_line = false;
+                // Skip non-newline whitespaces to see if coming line is also empty -- skip the whole line then
+                for (; j + 1 < buffer_length; j++) {
+                    const struct kefir_token *token2 = kefir_token_buffer_at(buffer, j + 1);
+                    if (token2->klass != KEFIR_TOKEN_PP_WHITESPACE) {
+                        break;
+                    } else if (token2->pp_whitespace.newline) {
+                        i = j;
+                        skip_line = true;
+                        break;
+                    }
+                }
+                if (skip_line) {
+                    continue;
+                }
+            }
+            if (token->pp_whitespace.newline) {
+                empty_line = true;
+            }
+        } else {
+            empty_line = false;
+        }
+        if (ws_format != KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL || !prev_token_non_newline_ws || !token_non_newline_ws || empty_line /* Print all whitespaces at the beginning of the line for indentation; collapse adjacent non-newline whitespaces within the line */) {
+            REQUIRE_OK(format_token(out, token, ws_format));
+        }
+        prev_token_non_newline_ws = token_non_newline_ws;
     }
     return KEFIR_OK;
 }

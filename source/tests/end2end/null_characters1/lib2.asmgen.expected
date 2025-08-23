@@ -1,4 +1,3 @@
 
-
 char line[] = "aÿbc";
 char chr = '\0';

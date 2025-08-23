@@ -11,5 +11,6 @@ alias = 1;
 __alias__ = 1;
 visibility = 1;
 __visibility__ = 1;
+
 TEST1 = 0;
 ONETWOTHREE = 0;

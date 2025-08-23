@@ -23,6 +23,7 @@ gnu::destructor = 1;
 gnu::__destructor__ = 1;
 gnu::packed = 1;
 gnu::__packed__ = 1;
+
 __gnu__::aligned = 1;
 __gnu__::__aligned__ = 1;
 __gnu__::gnu_inline = 1;
@@ -47,6 +48,7 @@ __gnu__::destructor = 1;
 __gnu__::__destructor__ = 1;
 __gnu__::packed = 1;
 __gnu__::__packed__ = 1;
+
 gnu::TEST123 = 0;
 __gnu__::TEST123 = 0;
 something::weak = 0;

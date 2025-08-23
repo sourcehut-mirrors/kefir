@@ -65,6 +65,31 @@
         "newline": true
     },
     {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
+    },
+    {
         "class": "identifier",
         "preprocessor": false,
         "identifier": "for"
@@ -148,6 +173,21 @@
         "class": "whitespace",
         "preprocessor": true,
         "newline": true
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": true
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": true
+    },
+    {
+        "class": "whitespace",
+        "preprocessor": true,
+        "newline": false
     },
     {
         "class": "identifier",

@@ -1,5 +1,6 @@
 
 do { a;
-b;
-c; } while (0)
+  b;
+  c; } while (0)
+
 X(1)

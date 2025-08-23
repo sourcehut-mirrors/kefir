@@ -88,7 +88,8 @@ static kefir_result_t skip_oneline_comment(const struct kefir_lexer_context *con
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_lexer_skip_oneline_comment(const struct kefir_lexer_context *context, struct kefir_lexer_source_cursor *cursor, kefir_bool_t *matched) {
+kefir_result_t kefir_lexer_skip_oneline_comment(const struct kefir_lexer_context *context,
+                                                struct kefir_lexer_source_cursor *cursor, kefir_bool_t *matched) {
     REQUIRE(context != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer context"));
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source cursor"));
 
@@ -109,9 +110,13 @@ kefir_result_t kefir_lexer_cursor_match_whitespace(struct kefir_mem *mem, struct
     while (continue_scan) {
         enum whitespace_match matched = WHITESPACE_NO_MATCH;
         REQUIRE_OK(skip_whitespaces(lexer->context, lexer->cursor, &matched));
-        REQUIRE_OK(skip_multiline_comment(lexer->cursor, &matched));
-        REQUIRE_OK(skip_oneline_comment(lexer->context, lexer->cursor, &matched));
-        continue_scan = matched != WHITESPACE_NO_MATCH;
+        if (matched == WHITESPACE_NO_MATCH) {
+            REQUIRE_OK(skip_multiline_comment(lexer->cursor, &matched));
+        }
+        if (matched == WHITESPACE_NO_MATCH) {
+            REQUIRE_OK(skip_oneline_comment(lexer->context, lexer->cursor, &matched));
+        }
+        continue_scan = matched != WHITESPACE_NO_MATCH && token == NULL;
         match = MAX(match, matched);
     }
 

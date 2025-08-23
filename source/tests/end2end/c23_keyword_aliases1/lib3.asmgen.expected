@@ -1,5 +1,4 @@
 
-
 alignas(long) bool y = 0;
 static_assert(1);
 thread_local int x = alignof(y);

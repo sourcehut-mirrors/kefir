@@ -1,22 +1,27 @@
 
-
 unsigned char a = u8'a';
 unsigned char b = u8'«';
 unsigned char c = u8'~';
 unsigned char d = u8'o';
+
 unsigned char e = u8'x';
+
 unsigned char get1(void) {
-return u8'a';
+    return u8'a';
 }
+
 unsigned char get2(void) {
-return u8'«';
+    return u8'«';
 }
+
 unsigned char get3(void) {
-return u8'~';
+    return u8'~';
 }
+
 unsigned char get4(void) {
-return u8'o';
+    return u8'o';
 }
+
 unsigned char get5(void) {
-return u8'x';
+    return u8'x';
 }

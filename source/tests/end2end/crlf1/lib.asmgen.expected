@@ -1,9 +1,9 @@
 
-
-
 extern int sum1;
 extern int sum2(int, int, int);
-int sum1 = ( 1 + 2 + 3 ) ;
-int sum2(int a, int b, int c) {
-return ( a + b + c );
-}
+
+int sum1 = ( 1 + 2 + 3 ) ; 
+
+int sum2(int a, int b, int c) { 
+    return ( a + b + c ); 
+} 
