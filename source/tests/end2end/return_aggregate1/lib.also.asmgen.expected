@@ -1,0 +1,31 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern get
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $72, %rsp
+    mov %rdi, %rcx
+    not %rsi
+    leaq (%rcx), %rbx
+    movq %rcx, -80(%rbp)
+    mov %rbx, %rdi
+    call get@PLT
+    movq -80(%rbp), %rcx
+    mov %rcx, %rax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

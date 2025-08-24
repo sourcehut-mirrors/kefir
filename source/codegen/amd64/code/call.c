@@ -1124,7 +1124,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(tail_invoke)(struct kefir_me
     kefir_bool_t tail_call_done;
     REQUIRE_OK(do_invoke(mem, function, instruction, true, &result_vreg, &tail_call_done));
     if (!tail_call_done) {
-        REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, KEFIR_ID_NONE, result_vreg));
+        REQUIRE_OK(kefir_codegen_amd64_return_from_function(mem, function, instruction->id, result_vreg));
     }
 
     return KEFIR_OK;

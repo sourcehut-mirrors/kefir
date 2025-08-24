@@ -243,10 +243,27 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *mem,
                 if (return_vreg != KEFIR_ID_NONE) {
                     kefir_bool_t copy_return = true;
                     if (result_instr_ref != KEFIR_ID_NONE) {
-                        const struct kefir_opt_instruction *alloc_instr;
+                        const struct kefir_opt_instruction *returned_instr, *return_space_instr, *alloc_instr = NULL;
                         REQUIRE_OK(
-                            kefir_opt_code_container_instr(&function->function->code, result_instr_ref, &alloc_instr));
-                        if (alloc_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+                            kefir_opt_code_container_instr(&function->function->code, result_instr_ref, &returned_instr));
+                        if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+                            alloc_instr = returned_instr;
+                        } else if (returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
+                            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL ||
+                            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
+                            returned_instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
+                            const struct kefir_opt_call_node *call;
+                            REQUIRE_OK(kefir_opt_code_container_call(&function->function->code, returned_instr->operation.parameters.function_call.call_ref, &call));
+                            if (call->return_space != KEFIR_ID_NONE) {
+                                REQUIRE_OK(
+                                    kefir_opt_code_container_instr(&function->function->code, call->return_space, &return_space_instr));
+                                if (return_space_instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL) {
+                                    alloc_instr = return_space_instr;
+                                }
+                            }
+                        }
+                        
+                        if (alloc_instr != NULL) {
                             const struct kefir_ir_type *alloc_ir_type = kefir_ir_module_get_named_type(
                                 function->module->ir_module, alloc_instr->operation.parameters.type.type_id);
                             REQUIRE(alloc_ir_type != NULL,
