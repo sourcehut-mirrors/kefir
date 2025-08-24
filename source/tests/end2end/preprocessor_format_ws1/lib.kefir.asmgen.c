@@ -18,6 +18,19 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#define TEST1(x, y) {x + y}
+// clang-format off
 
-TEST1(1, 2) TEST1(x, y)
+
+
+              
+
+
+
+
+#define TEST1(x, y) { \
+    x      + \
+    y    \
+}
+
+            TEST1(1, 2)    TEST1(x, y)
+
