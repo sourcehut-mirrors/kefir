@@ -9,7 +9,9 @@
 __kefir_text_section_begin:
 test:
 __kefir_text_func_test_begin:
+    mov %rdi, %rax
     not %rsi
+    mov %rax, %rdi
     jmp get@PLT
 __kefir_text_func_test_end:
 

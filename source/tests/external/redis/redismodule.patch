@@ -5,7 +5,7 @@
  #        define REDISMODULE_ATTR_COMMON __attribute__((__common__))
  #    else
 -#        define REDISMODULE_ATTR_COMMON
-+#        define REDISMODULE_ATTR_COMMON __attribute__((weak))
++#        define REDISMODULE_ATTR_COMMON __attribute__((__common__))
  #    endif
  #endif
  

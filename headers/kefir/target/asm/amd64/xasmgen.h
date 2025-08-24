@@ -259,6 +259,7 @@ typedef struct kefir_amd64_xasmgen {
     kefir_result_t (*alias)(struct kefir_amd64_xasmgen *, const char *, const char *);
     kefir_result_t (*weak)(struct kefir_amd64_xasmgen *, kefir_amd64_xasmgen_type_attribute_t,
                            kefir_amd64_xasmgen_visibility_attribute_t, const char *, ...);
+    kefir_result_t (*common)(struct kefir_amd64_xasmgen *, kefir_bool_t, kefir_size_t, kefir_size_t, const char *, ...);
     kefir_result_t (*section)(struct kefir_amd64_xasmgen *, const char *, kefir_uint64_t);
     kefir_result_t (*align)(struct kefir_amd64_xasmgen *, kefir_size_t);
     kefir_result_t (*data)(struct kefir_amd64_xasmgen *, kefir_asm_amd64_xasmgen_data_type_t, kefir_size_t, ...);
@@ -285,13 +286,14 @@ typedef struct kefir_amd64_xasmgen {
 #define DEFINE_OPCODE0(_opcode, _mnemonic, _variant, _flags) DEFINE_OPCODE0_##_variant(_opcode)
 #define DEFINE_OPCODE1(_opcode, _mnemonic, _variant, _flags, _op1) \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *)
-#define DEFINE_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
+#define DEFINE_OPCODE2_(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                   \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
                               const struct kefir_asm_amd64_xasmgen_operand *)
-#define DEFINE_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                                    \
+#define DEFINE_OPCODE2_REPEATABLE(_opcode, _mnemonic, _variant, _flags, _op1, _op2)                         \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
                               const struct kefir_asm_amd64_xasmgen_operand *, kefir_bool_t)
-#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) DEFINE_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
+#define DEFINE_OPCODE2(_opcode, _mnemonic, _variant, _flags, _op1, _op2) \
+    DEFINE_OPCODE2_##_variant(_opcode, _mnemonic, _variant, _flags, _op1, _op2)
 #define DEFINE_OPCODE3(_opcode, _mnemonic, _variant, _flags, _op1, _op2, _op3)                              \
     kefir_result_t (*_opcode)(struct kefir_amd64_xasmgen *, const struct kefir_asm_amd64_xasmgen_operand *, \
                               const struct kefir_asm_amd64_xasmgen_operand *,                               \
@@ -363,6 +365,8 @@ const struct kefir_asm_amd64_xasmgen_operand *kefir_asm_amd64_xasmgen_operand_su
 #define KEFIR_AMD64_XASMGEN_ALIAS(_xasmgen, _alias, _original) ((_xasmgen)->alias((_xasmgen), (_alias), (_original)))
 #define KEFIR_AMD64_XASMGEN_WEAK(_xasmgen, _type, _visibility, _fmt, ...) \
     ((_xasmgen)->weak((_xasmgen), (_type), (_visibility), (_fmt), __VA_ARGS__))
+#define KEFIR_AMD64_XASMGEN_COMMON(_xasmgen, _global, _size, _alignment, _fmt, ...) \
+    ((_xasmgen)->common((_xasmgen), (_global), (_size), (_alignment), (_fmt), __VA_ARGS__))
 #define KEFIR_AMD64_XASMGEN_SECTION(_xasmgen, _name, _attr) ((_xasmgen)->section((_xasmgen), (_name), (_attr)))
 #define KEFIR_AMD64_XASMGEN_ALIGN(_xasmgen, _arg) ((_xasmgen)->align((_xasmgen), (_arg)))
 #define KEFIR_AMD64_XASMGEN_DATA(_xasmgen, _type, _length, ...) \

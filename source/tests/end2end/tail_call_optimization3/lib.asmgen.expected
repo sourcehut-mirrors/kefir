@@ -212,7 +212,9 @@ __kefir_text_func_test10_end:
 
 test11:
 __kefir_text_func_test11_begin:
+    mov %rdi, %rax
     add $1, %esi
+    mov %rax, %rdi
     jmp test11
 __kefir_text_func_test11_end:
 

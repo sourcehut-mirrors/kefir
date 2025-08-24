@@ -84,6 +84,7 @@ struct kefir_ast_scoped_identifier *kefir_ast_context_allocate_scoped_object_ide
     scoped_id->object.vl_array = KEFIR_ID_NONE;
     scoped_id->object.alias = NULL;
     scoped_id->object.flags.weak = false;
+    scoped_id->object.flags.common = false;
     scoped_id->object.flags.deprecated = false;
     scoped_id->object.flags.deprecated_message = NULL;
     scoped_id->object.defining_function = NULL;

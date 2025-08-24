@@ -34,11 +34,12 @@
 #include "kefir/core/source_error.h"
 
 const char *KEFIR_DECLARATOR_ANALYZER_SUPPORTED_GNU_ATTRIBUTES[] = {
-    "aligned",     "__aligned__",     "gnu_inline", "__gnu_inline__", "always_inline", "__always_inline__",
-    "noinline",    "__noinline__",    "noipa",      "__noipa__",      "returns_twice", "__returns_twice__",
-    "weak",        "__weak__",        "alias",      "__alias__",      "visibility",    "__visibility__",
-    "constructor", "__constructor__", "destructor", "__destructor__", "packed",        "__packed__",
-    "mode",        "__mode__",        NULL};
+    "aligned",    "__aligned__",    "gnu_inline", "__gnu_inline__", "always_inline", "__always_inline__",
+    "noinline",   "__noinline__",   "noipa",      "__noipa__",      "returns_twice", "__returns_twice__",
+    "weak",       "__weak__",       "common",     "__common__",     "nocommon",      "__nocommon__",
+    "alias",      "__alias__",      "visibility", "__visibility__", "constructor",   "__constructor__",
+    "destructor", "__destructor__", "packed",     "__packed__",     "mode",          "__mode__",
+    NULL};
 
 const struct kefir_declarator_analyzer_std_attribute_descriptor KEFIR_DECLARATOR_ANALYZER_SUPPORTED_STD_ATTRIBUTES[] = {
     {"deprecated", KEFIR_C23_STANDARD_VERSION},       {"__deprecated__", KEFIR_C23_STANDARD_VERSION},
@@ -1698,6 +1699,10 @@ static kefir_result_t analyze_declaration_declarator_attributes(
                     // Intentionally left blank
                 } else if (strcmp(attribute->name, "weak") == 0 || strcmp(attribute->name, "__weak__") == 0) {
                     attributes->weak = true;
+                } else if (strcmp(attribute->name, "common") == 0 || strcmp(attribute->name, "__common__") == 0) {
+                    attributes->common = true;
+                } else if (strcmp(attribute->name, "nocommon") == 0 || strcmp(attribute->name, "__nocommon__") == 0) {
+                    attributes->common = false;
                 } else if (strcmp(attribute->name, "mode") == 0 || strcmp(attribute->name, "__mode__") == 0) {
                     const struct kefir_list_entry *parameter = kefir_list_head(&attribute->parameters);
                     REQUIRE(parameter != NULL && parameter->value,

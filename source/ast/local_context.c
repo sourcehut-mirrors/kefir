@@ -752,6 +752,7 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
         ASSIGN_PTR(scoped_id, ordinary_id);
         if (attributes != NULL) {
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
@@ -775,6 +776,7 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
         ASSIGN_PTR(scoped_id, global_ordinary_id);
         if (attributes != NULL) {
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.common, attributes->common);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&global_ordinary_id->object.flags.deprecated,
@@ -810,6 +812,7 @@ kefir_result_t kefir_ast_local_context_declare_external(struct kefir_mem *mem, s
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, identifier, ordinary_id));
         ordinary_id->object.alias = KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL);
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
         ASSIGN_PTR(scoped_id, ordinary_id);
     }
 
@@ -852,6 +855,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         ASSIGN_PTR(scoped_id, ordinary_id);
         if (attributes != NULL) {
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
                                                &ordinary_id->object.flags.deprecated_message, attributes);
@@ -875,6 +879,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         ASSIGN_PTR(scoped_id, global_ordinary_id);
         if (attributes != NULL) {
             KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&global_ordinary_id->object.flags.common, attributes->common);
             KEFIR_AST_CONTEXT_MERGE_OBJECT_ALIAS_ATTR(global_ordinary_id, attributes);
             KEFIR_AST_CONTEXT_MERGE_VISIBILITY(&global_ordinary_id->object.visibility, attributes);
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&global_ordinary_id->object.flags.deprecated,
@@ -910,6 +915,7 @@ kefir_result_t kefir_ast_local_context_declare_external_thread_local(
         REQUIRE_OK(kefir_ast_identifier_block_scope_insert(mem, &context->ordinary_scope, identifier, ordinary_id));
         ordinary_id->object.alias = KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL);
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
         ASSIGN_PTR(scoped_id, ordinary_id);
     }
     return KEFIR_OK;

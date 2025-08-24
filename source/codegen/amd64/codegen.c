@@ -118,6 +118,12 @@ static kefir_result_t translate_module_identifiers(const struct kefir_ir_module 
                 // Intentionally left blank
                 break;
         }
+
+        if (identifier->common) {
+            REQUIRE_OK(KEFIR_AMD64_XASMGEN_COMMON(
+                &codegen->xasmgen, identifier->type != KEFIR_IR_IDENTIFIER_THREAD_LOCAL_DATA,
+                identifier->common_props.size, identifier->common_props.alignment, "%s", identifier->symbol));
+        }
     }
     return KEFIR_OK;
 }

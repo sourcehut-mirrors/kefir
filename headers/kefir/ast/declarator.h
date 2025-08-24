@@ -77,6 +77,7 @@ typedef struct kefir_ast_declarator_attributes {
     kefir_bool_t no_inline;
     kefir_bool_t no_ipa;
     kefir_bool_t weak;
+    kefir_bool_t common;
     kefir_ast_declarator_visibility_attr_t visibility;
     const char *alias;
     const char *asm_label;

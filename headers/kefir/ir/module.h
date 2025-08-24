@@ -57,6 +57,11 @@ typedef struct kefir_ir_identifier {
     kefir_ir_identifier_scope_t scope;
     kefir_ir_identifier_visibility_t visibility;
     const char *alias;
+    kefir_bool_t common;
+    struct {
+        kefir_size_t size;
+        kefir_size_t alignment;
+    } common_props;
     struct {
         kefir_ir_debug_entry_id_t entry;
     } debug_info;

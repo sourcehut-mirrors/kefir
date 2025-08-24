@@ -1006,6 +1006,16 @@ static kefir_result_t format_identifiers(struct kefir_json_output *json, const s
                 break;
         }
 
+        if (identifier->common) {
+            REQUIRE_OK(kefir_json_output_object_key(json, "common"));
+            REQUIRE_OK(kefir_json_output_object_begin(json));
+            REQUIRE_OK(kefir_json_output_object_key(json, "size"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, identifier->common_props.size));
+            REQUIRE_OK(kefir_json_output_object_key(json, "alignment"));
+            REQUIRE_OK(kefir_json_output_uinteger(json, identifier->common_props.alignment));
+            REQUIRE_OK(kefir_json_output_object_end(json));
+        }
+
         REQUIRE_OK(kefir_json_output_object_key(json, "visibility"));
         switch (identifier->visibility) {
             case KEFIR_IR_IDENTIFIER_VISIBILITY_DEFAULT:

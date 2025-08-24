@@ -655,6 +655,7 @@ kefir_result_t kefir_ast_global_context_declare_external(struct kefir_mem *mem,
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
                                                &ordinary_id->object.flags.deprecated_message, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -683,6 +684,7 @@ kefir_result_t kefir_ast_global_context_declare_external(struct kefir_mem *mem,
         });
         ordinary_id->object.alias = KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL);
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
@@ -729,6 +731,7 @@ kefir_result_t kefir_ast_global_context_declare_external_thread_local(
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
                                                &ordinary_id->object.flags.deprecated_message, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -757,6 +760,7 @@ kefir_result_t kefir_ast_global_context_declare_external_thread_local(
         });
         ordinary_id->object.alias = KEFIR_AST_CONTEXT_GET_ATTR(attributes, alias, NULL);
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
@@ -810,6 +814,7 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
                                                &ordinary_id->object.flags.deprecated_message, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -840,6 +845,7 @@ kefir_result_t kefir_ast_global_context_define_external(struct kefir_mem *mem, s
             return res;
         });
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));
@@ -909,6 +915,7 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
             KEFIR_AST_CONTEXT_MERGE_DEPRECATED(&ordinary_id->object.flags.deprecated,
                                                &ordinary_id->object.flags.deprecated_message, attributes);
             KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.weak, attributes->weak);
+            KEFIR_AST_CONTEXT_MERGE_BOOL(&ordinary_id->object.flags.common, attributes->common);
             if (ordinary_id->object.asm_label == NULL) {
                 ordinary_id->object.asm_label = attributes->asm_label;
             } else {
@@ -939,6 +946,7 @@ kefir_result_t kefir_ast_global_context_define_external_thread_local(
             return res;
         });
         ordinary_id->object.flags.weak = KEFIR_AST_CONTEXT_GET_ATTR(attributes, weak, false);
+        ordinary_id->object.flags.common = KEFIR_AST_CONTEXT_GET_ATTR(attributes, common, false);
     }
 
     REQUIRE_OK(insert_ordinary_identifier(mem, context, identifier, ordinary_id));

@@ -66,6 +66,7 @@ typedef struct kefir_ast_scoped_identifier {
             } constant_expression;
             struct {
                 kefir_bool_t weak;
+                kefir_bool_t common;
                 kefir_bool_t deprecated;
                 const char *deprecated_message;
             } flags;
