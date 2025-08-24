@@ -20,6 +20,7 @@
 
 #define KEFIR_CODEGEN_AMD64_FUNCTION_INTERNAL
 #include "kefir/codegen/amd64/function.h"
+#include "kefir/target/abi/amd64/return.h"
 #include "kefir/target/abi/util.h"
 #include "kefir/core/error.h"
 #include "kefir/core/util.h"
@@ -550,19 +551,25 @@ static kefir_result_t prepare_parameters(struct kefir_mem *mem, struct kefir_cod
     kefir_asm_amd64_xasmgen_register_t implicit_parameter_reg;
     REQUIRE_OK(kefir_abi_amd64_function_decl_returns_implicit_parameter(abi_func_decl, &implicit_parameter_present,
                                                                         &implicit_parameter_reg));
-    if (!tail_call && implicit_parameter_present) {
+    if (implicit_parameter_present) {
         kefir_asmcmp_virtual_register_index_t implicit_vreg;
-        REQUIRE(return_space_vreg != KEFIR_ID_NONE,
-                KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
-                                "Expected valid return space to be defined for call with implicit parameter"));
 
         REQUIRE_OK(kefir_asmcmp_virtual_register_new(mem, &function->code.context,
                                                      KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &implicit_vreg));
         REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, implicit_vreg,
                                                                       implicit_parameter_reg));
-        REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
-                                                             kefir_asmcmp_context_instr_tail(&function->code.context),
-                                                             implicit_vreg, return_space_vreg, NULL));
+        if (tail_call) {
+            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                implicit_vreg, function->stack_frame.return_space_vreg, NULL));
+        } else {
+            REQUIRE(return_space_vreg != KEFIR_ID_NONE,
+                    KEFIR_SET_ERROR(KEFIR_INVALID_STATE,
+                                    "Expected valid return space to be defined for call with implicit parameter"));
+            REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(mem, &function->code,
+                                                                kefir_asmcmp_context_instr_tail(&function->code.context),
+                                                                implicit_vreg, return_space_vreg, NULL));
+        }
         REQUIRE_OK(kefir_hashtree_insert(mem, argument_placement, (kefir_hashtree_key_t) subarg_count++,
                                          (kefir_hashtree_value_t) implicit_vreg));
     }
@@ -873,11 +880,17 @@ static kefir_result_t save_returns(struct kefir_mem *mem, struct kefir_codegen_a
                 }
             }
             if (!is_bigint) {
+                kefir_asm_amd64_xasmgen_register_t result_phreg;
+                REQUIRE_OK(kefir_abi_amd64_general_purpose_return_register(function->codegen->abi_variant, 0, &result_phreg));
                 REQUIRE_OK(kefir_asmcmp_virtual_register_new(
                     mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_vreg));
+                REQUIRE_OK(kefir_asmcmp_virtual_register_new(
+                    mem, &function->code.context, KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE, &return_placement_vreg));
+                REQUIRE_OK(kefir_asmcmp_amd64_register_allocation_requirement(mem, &function->code, return_placement_vreg,
+                                                                            KEFIR_AMD64_XASMGEN_REGISTER_RAX));
                 REQUIRE_OK(kefir_asmcmp_amd64_link_virtual_registers(
                     mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), return_vreg,
-                    return_space_vreg, NULL));
+                    return_placement_vreg, NULL));
                 *result_vreg = return_vreg;
             }
         } break;
@@ -930,6 +943,11 @@ static kefir_result_t tail_invoke_impl(struct kefir_mem *mem, struct kefir_codeg
                                        const struct kefir_opt_call_node *call_node,
                                        struct kefir_abi_amd64_function_decl *abi_func_decl,
                                        struct kefir_hashtree *argument_placement) {
+    kefir_bool_t passthrough_aggregate_return = false;
+    REQUIRE_OK(kfir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_node->node_id, &passthrough_aggregate_return));
+    if (passthrough_aggregate_return) {
+        REQUIRE_OK(kefir_codegen_local_variable_allocator_mark_return_space(&function->variable_allocator, call_node->return_space));
+    }
 
     const struct kefir_ir_function_decl *ir_func_decl =
         kefir_ir_module_get_declaration(function->module->ir_module, call_node->function_declaration_id);

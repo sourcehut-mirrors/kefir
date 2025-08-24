@@ -12,7 +12,7 @@ getb:
 __kefir_text_func_getb_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $208, %rsp
+    sub $16, %rsp
     mov %rdi, %rdx
 _kefir_func_getb_label0:
     leaq (%rdx), %rdi

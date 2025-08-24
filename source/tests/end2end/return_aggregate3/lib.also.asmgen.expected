@@ -1,0 +1,42 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern get
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $64, %rsp
+    mov %rdi, %rdx
+    test %rsi, %rsi
+    jnz _kefir_func_test_label2
+    leaq -64(%rbp), %rdi
+    xor %eax, %eax
+    mov $64, %rcx
+    rep stosb
+    mov %rdx, %rax
+    movdqu -64(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    movdqu -48(%rbp), %xmm0
+    movdqu %xmm0, 16(%rax)
+    movdqu -32(%rbp), %xmm0
+    movdqu %xmm0, 32(%rax)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, 48(%rax)
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+_kefir_func_test_label2:
+    not %rsi
+    lea (%rbp), %rsp
+    pop %rbp
+    jmp get@PLT
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

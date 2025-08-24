@@ -19,17 +19,17 @@ __kefir_text_func_testlarge_begin:
     mov %rsp, %rbp
     push %rbx
     sub $520, %rsp
-    mov %rdi, %rax
+    mov %rdi, %rcx
     leaq -520(%rbp), %rbx
-    movq %rax, -528(%rbp)
-    mov %rax, %rsi
+    movq %rcx, -528(%rbp)
+    mov %rcx, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    movq -528(%rbp), %rax
-    movsx %eax, %rax
-    imul $4, %rax, %rax
-    add %rax, %rbx
-    movl (%rbx), %eax
+    movq -528(%rbp), %rcx
+    movsx %ecx, %rcx
+    imul $4, %rcx, %rcx
+    add %rcx, %rax
+    movl (%rax), %eax
     lea -8(%rbp), %rsp
     pop %rbx
     pop %rbp
@@ -77,15 +77,15 @@ __kefir_text_func_testlarge2_begin:
     mov %rsp, %rbp
     push %rbx
     sub $1032, %rsp
-    mov %rsi, %rax
+    mov %rsi, %rcx
     leaq -1032(%rbp), %rbx
-    movq %rax, -1040(%rbp)
+    movq %rcx, -1040(%rbp)
     mov %rdi, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
-    movq -1040(%rbp), %rax
+    movq -1040(%rbp), %rcx
     leaq -520(%rbp), %rbx
-    mov %rax, %rsi
+    mov %rcx, %rsi
     mov %rbx, %rdi
     call getlarge@PLT
     leaq -1032(%rbp), %rdi

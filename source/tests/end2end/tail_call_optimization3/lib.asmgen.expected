@@ -212,22 +212,8 @@ __kefir_text_func_test10_end:
 
 test11:
 __kefir_text_func_test11_begin:
-    push %rbp
-    mov %rsp, %rbp
-    push %rbx
-    sub $136, %rsp
-    mov %rdi, %rcx
     add $1, %esi
-    leaq (%rcx), %rbx
-    movq %rcx, -144(%rbp)
-    mov %rbx, %rdi
-    call test11
-    movq -144(%rbp), %rcx
-    mov %rcx, %rax
-    lea -8(%rbp), %rsp
-    pop %rbx
-    pop %rbp
-    ret
+    jmp test11
 __kefir_text_func_test11_end:
 
 test12:

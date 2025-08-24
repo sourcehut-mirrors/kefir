@@ -13,20 +13,20 @@ __kefir_text_func_get2_begin:
     mov %rsp, %rbp
     push %rbx
     sub $520, %rsp
-    mov %rsi, %rax
+    mov %rsi, %r8
     leaq -264(%rbp), %rbx
-    movq %rax, -528(%rbp)
+    movq %r8, -528(%rbp)
     leaq -520(%rbp), %rsi
     mov %rdi, %rdx
     mov %rbx, %rdi
     call get@PLT
-    movq -528(%rbp), %rax
+    movq -528(%rbp), %r8
     leaq -520(%rbp), %rdi
-    mov %rbx, %rsi
+    mov %rax, %rsi
     cld
     mov $32, %rcx
     rep movsq
-    movsx %eax, %rax
+    movsx %r8d, %rax
     imul $4, %rax, %rax
     leaq -520(%rbp), %rsi
     add %rax, %rsi

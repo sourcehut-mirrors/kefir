@@ -798,9 +798,6 @@ __kefir_text_func_generate_buf_15_end:
 
 generate_buf_16:
 __kefir_text_func_generate_buf_16_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -813,8 +810,6 @@ _kefir_func_generate_buf_16_label1:
     cmp $17, %eax
     jl _kefir_func_generate_buf_16_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_16_label3:
     movzx %r8b, %rax
@@ -831,9 +826,6 @@ __kefir_text_func_generate_buf_16_end:
 
 generate_buf_17:
 __kefir_text_func_generate_buf_17_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -846,8 +838,6 @@ _kefir_func_generate_buf_17_label1:
     cmp $18, %eax
     jl _kefir_func_generate_buf_17_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_17_label3:
     movzx %r8b, %rax
@@ -864,9 +854,6 @@ __kefir_text_func_generate_buf_17_end:
 
 generate_buf_18:
 __kefir_text_func_generate_buf_18_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -879,8 +866,6 @@ _kefir_func_generate_buf_18_label1:
     cmp $19, %eax
     jl _kefir_func_generate_buf_18_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_18_label3:
     movzx %r8b, %rax
@@ -897,9 +882,6 @@ __kefir_text_func_generate_buf_18_end:
 
 generate_buf_19:
 __kefir_text_func_generate_buf_19_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -912,8 +894,6 @@ _kefir_func_generate_buf_19_label1:
     cmp $20, %eax
     jl _kefir_func_generate_buf_19_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_19_label3:
     movzx %r8b, %rax
@@ -930,9 +910,6 @@ __kefir_text_func_generate_buf_19_end:
 
 generate_buf_20:
 __kefir_text_func_generate_buf_20_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -945,8 +922,6 @@ _kefir_func_generate_buf_20_label1:
     cmp $21, %eax
     jl _kefir_func_generate_buf_20_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_20_label3:
     movzx %r8b, %rax
@@ -963,9 +938,6 @@ __kefir_text_func_generate_buf_20_end:
 
 generate_buf_21:
 __kefir_text_func_generate_buf_21_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -978,8 +950,6 @@ _kefir_func_generate_buf_21_label1:
     cmp $22, %eax
     jl _kefir_func_generate_buf_21_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_21_label3:
     movzx %r8b, %rax
@@ -996,9 +966,6 @@ __kefir_text_func_generate_buf_21_end:
 
 generate_buf_22:
 __kefir_text_func_generate_buf_22_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1011,8 +978,6 @@ _kefir_func_generate_buf_22_label1:
     cmp $23, %eax
     jl _kefir_func_generate_buf_22_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_22_label3:
     movzx %r8b, %rax
@@ -1029,9 +994,6 @@ __kefir_text_func_generate_buf_22_end:
 
 generate_buf_23:
 __kefir_text_func_generate_buf_23_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1044,8 +1006,6 @@ _kefir_func_generate_buf_23_label1:
     cmp $24, %eax
     jl _kefir_func_generate_buf_23_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_23_label3:
     movzx %r8b, %rax
@@ -1062,9 +1022,6 @@ __kefir_text_func_generate_buf_23_end:
 
 generate_buf_24:
 __kefir_text_func_generate_buf_24_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1077,8 +1034,6 @@ _kefir_func_generate_buf_24_label1:
     cmp $25, %eax
     jl _kefir_func_generate_buf_24_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_24_label3:
     movzx %r8b, %rax
@@ -1095,9 +1050,6 @@ __kefir_text_func_generate_buf_24_end:
 
 generate_buf_25:
 __kefir_text_func_generate_buf_25_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1110,8 +1062,6 @@ _kefir_func_generate_buf_25_label1:
     cmp $26, %eax
     jl _kefir_func_generate_buf_25_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_25_label3:
     movzx %r8b, %rax
@@ -1128,9 +1078,6 @@ __kefir_text_func_generate_buf_25_end:
 
 generate_buf_26:
 __kefir_text_func_generate_buf_26_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1143,8 +1090,6 @@ _kefir_func_generate_buf_26_label1:
     cmp $27, %eax
     jl _kefir_func_generate_buf_26_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_26_label3:
     movzx %r8b, %rax
@@ -1161,9 +1106,6 @@ __kefir_text_func_generate_buf_26_end:
 
 generate_buf_27:
 __kefir_text_func_generate_buf_27_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1176,8 +1118,6 @@ _kefir_func_generate_buf_27_label1:
     cmp $28, %eax
     jl _kefir_func_generate_buf_27_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_27_label3:
     movzx %r8b, %rax
@@ -1194,9 +1134,6 @@ __kefir_text_func_generate_buf_27_end:
 
 generate_buf_28:
 __kefir_text_func_generate_buf_28_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1209,8 +1146,6 @@ _kefir_func_generate_buf_28_label1:
     cmp $29, %eax
     jl _kefir_func_generate_buf_28_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_28_label3:
     movzx %r8b, %rax
@@ -1227,9 +1162,6 @@ __kefir_text_func_generate_buf_28_end:
 
 generate_buf_29:
 __kefir_text_func_generate_buf_29_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1242,8 +1174,6 @@ _kefir_func_generate_buf_29_label1:
     cmp $30, %eax
     jl _kefir_func_generate_buf_29_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_29_label3:
     movzx %r8b, %rax
@@ -1260,9 +1190,6 @@ __kefir_text_func_generate_buf_29_end:
 
 generate_buf_30:
 __kefir_text_func_generate_buf_30_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1275,8 +1202,6 @@ _kefir_func_generate_buf_30_label1:
     cmp $31, %eax
     jl _kefir_func_generate_buf_30_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_30_label3:
     movzx %r8b, %rax
@@ -1293,9 +1218,6 @@ __kefir_text_func_generate_buf_30_end:
 
 generate_buf_31:
 __kefir_text_func_generate_buf_31_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1308,8 +1230,6 @@ _kefir_func_generate_buf_31_label1:
     cmp $32, %eax
     jl _kefir_func_generate_buf_31_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_31_label3:
     movzx %r8b, %rax
@@ -1326,9 +1246,6 @@ __kefir_text_func_generate_buf_31_end:
 
 generate_buf_32:
 __kefir_text_func_generate_buf_32_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1341,8 +1258,6 @@ _kefir_func_generate_buf_32_label1:
     cmp $33, %eax
     jl _kefir_func_generate_buf_32_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_32_label3:
     movzx %r8b, %rax
@@ -1359,9 +1274,6 @@ __kefir_text_func_generate_buf_32_end:
 
 generate_buf_33:
 __kefir_text_func_generate_buf_33_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1374,8 +1286,6 @@ _kefir_func_generate_buf_33_label1:
     cmp $34, %eax
     jl _kefir_func_generate_buf_33_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_33_label3:
     movzx %r8b, %rax
@@ -1392,9 +1302,6 @@ __kefir_text_func_generate_buf_33_end:
 
 generate_buf_34:
 __kefir_text_func_generate_buf_34_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1407,8 +1314,6 @@ _kefir_func_generate_buf_34_label1:
     cmp $35, %eax
     jl _kefir_func_generate_buf_34_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_34_label3:
     movzx %r8b, %rax
@@ -1425,9 +1330,6 @@ __kefir_text_func_generate_buf_34_end:
 
 generate_buf_35:
 __kefir_text_func_generate_buf_35_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1440,8 +1342,6 @@ _kefir_func_generate_buf_35_label1:
     cmp $36, %eax
     jl _kefir_func_generate_buf_35_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_35_label3:
     movzx %r8b, %rax
@@ -1458,9 +1358,6 @@ __kefir_text_func_generate_buf_35_end:
 
 generate_buf_36:
 __kefir_text_func_generate_buf_36_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1473,8 +1370,6 @@ _kefir_func_generate_buf_36_label1:
     cmp $37, %eax
     jl _kefir_func_generate_buf_36_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_36_label3:
     movzx %r8b, %rax
@@ -1491,9 +1386,6 @@ __kefir_text_func_generate_buf_36_end:
 
 generate_buf_37:
 __kefir_text_func_generate_buf_37_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1506,8 +1398,6 @@ _kefir_func_generate_buf_37_label1:
     cmp $38, %eax
     jl _kefir_func_generate_buf_37_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_37_label3:
     movzx %r8b, %rax
@@ -1524,9 +1414,6 @@ __kefir_text_func_generate_buf_37_end:
 
 generate_buf_38:
 __kefir_text_func_generate_buf_38_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1539,8 +1426,6 @@ _kefir_func_generate_buf_38_label1:
     cmp $39, %eax
     jl _kefir_func_generate_buf_38_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_38_label3:
     movzx %r8b, %rax
@@ -1557,9 +1442,6 @@ __kefir_text_func_generate_buf_38_end:
 
 generate_buf_39:
 __kefir_text_func_generate_buf_39_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1572,8 +1454,6 @@ _kefir_func_generate_buf_39_label1:
     cmp $40, %eax
     jl _kefir_func_generate_buf_39_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_39_label3:
     movzx %r8b, %rax
@@ -1590,9 +1470,6 @@ __kefir_text_func_generate_buf_39_end:
 
 generate_buf_40:
 __kefir_text_func_generate_buf_40_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1605,8 +1482,6 @@ _kefir_func_generate_buf_40_label1:
     cmp $41, %eax
     jl _kefir_func_generate_buf_40_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_40_label3:
     movzx %r8b, %rax
@@ -1623,9 +1498,6 @@ __kefir_text_func_generate_buf_40_end:
 
 generate_buf_41:
 __kefir_text_func_generate_buf_41_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1638,8 +1510,6 @@ _kefir_func_generate_buf_41_label1:
     cmp $42, %eax
     jl _kefir_func_generate_buf_41_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_41_label3:
     movzx %r8b, %rax
@@ -1656,9 +1526,6 @@ __kefir_text_func_generate_buf_41_end:
 
 generate_buf_42:
 __kefir_text_func_generate_buf_42_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1671,8 +1538,6 @@ _kefir_func_generate_buf_42_label1:
     cmp $43, %eax
     jl _kefir_func_generate_buf_42_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_42_label3:
     movzx %r8b, %rax
@@ -1689,9 +1554,6 @@ __kefir_text_func_generate_buf_42_end:
 
 generate_buf_43:
 __kefir_text_func_generate_buf_43_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1704,8 +1566,6 @@ _kefir_func_generate_buf_43_label1:
     cmp $44, %eax
     jl _kefir_func_generate_buf_43_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_43_label3:
     movzx %r8b, %rax
@@ -1722,9 +1582,6 @@ __kefir_text_func_generate_buf_43_end:
 
 generate_buf_44:
 __kefir_text_func_generate_buf_44_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1737,8 +1594,6 @@ _kefir_func_generate_buf_44_label1:
     cmp $45, %eax
     jl _kefir_func_generate_buf_44_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_44_label3:
     movzx %r8b, %rax
@@ -1755,9 +1610,6 @@ __kefir_text_func_generate_buf_44_end:
 
 generate_buf_45:
 __kefir_text_func_generate_buf_45_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1770,8 +1622,6 @@ _kefir_func_generate_buf_45_label1:
     cmp $46, %eax
     jl _kefir_func_generate_buf_45_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_45_label3:
     movzx %r8b, %rax
@@ -1788,9 +1638,6 @@ __kefir_text_func_generate_buf_45_end:
 
 generate_buf_46:
 __kefir_text_func_generate_buf_46_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1803,8 +1650,6 @@ _kefir_func_generate_buf_46_label1:
     cmp $47, %eax
     jl _kefir_func_generate_buf_46_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_46_label3:
     movzx %r8b, %rax
@@ -1821,9 +1666,6 @@ __kefir_text_func_generate_buf_46_end:
 
 generate_buf_47:
 __kefir_text_func_generate_buf_47_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $48, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1836,8 +1678,6 @@ _kefir_func_generate_buf_47_label1:
     cmp $48, %eax
     jl _kefir_func_generate_buf_47_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_47_label3:
     movzx %r8b, %rax
@@ -1854,9 +1694,6 @@ __kefir_text_func_generate_buf_47_end:
 
 generate_buf_48:
 __kefir_text_func_generate_buf_48_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1869,8 +1706,6 @@ _kefir_func_generate_buf_48_label1:
     cmp $49, %eax
     jl _kefir_func_generate_buf_48_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_48_label3:
     movzx %r8b, %rax
@@ -1887,9 +1722,6 @@ __kefir_text_func_generate_buf_48_end:
 
 generate_buf_49:
 __kefir_text_func_generate_buf_49_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1902,8 +1734,6 @@ _kefir_func_generate_buf_49_label1:
     cmp $50, %eax
     jl _kefir_func_generate_buf_49_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_49_label3:
     movzx %r8b, %rax
@@ -1920,9 +1750,6 @@ __kefir_text_func_generate_buf_49_end:
 
 generate_buf_50:
 __kefir_text_func_generate_buf_50_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1935,8 +1762,6 @@ _kefir_func_generate_buf_50_label1:
     cmp $51, %eax
     jl _kefir_func_generate_buf_50_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_50_label3:
     movzx %r8b, %rax
@@ -1953,9 +1778,6 @@ __kefir_text_func_generate_buf_50_end:
 
 generate_buf_51:
 __kefir_text_func_generate_buf_51_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -1968,8 +1790,6 @@ _kefir_func_generate_buf_51_label1:
     cmp $52, %eax
     jl _kefir_func_generate_buf_51_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_51_label3:
     movzx %r8b, %rax
@@ -1986,9 +1806,6 @@ __kefir_text_func_generate_buf_51_end:
 
 generate_buf_52:
 __kefir_text_func_generate_buf_52_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2001,8 +1818,6 @@ _kefir_func_generate_buf_52_label1:
     cmp $53, %eax
     jl _kefir_func_generate_buf_52_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_52_label3:
     movzx %r8b, %rax
@@ -2019,9 +1834,6 @@ __kefir_text_func_generate_buf_52_end:
 
 generate_buf_53:
 __kefir_text_func_generate_buf_53_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2034,8 +1846,6 @@ _kefir_func_generate_buf_53_label1:
     cmp $54, %eax
     jl _kefir_func_generate_buf_53_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_53_label3:
     movzx %r8b, %rax
@@ -2052,9 +1862,6 @@ __kefir_text_func_generate_buf_53_end:
 
 generate_buf_54:
 __kefir_text_func_generate_buf_54_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2067,8 +1874,6 @@ _kefir_func_generate_buf_54_label1:
     cmp $55, %eax
     jl _kefir_func_generate_buf_54_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_54_label3:
     movzx %r8b, %rax
@@ -2085,9 +1890,6 @@ __kefir_text_func_generate_buf_54_end:
 
 generate_buf_55:
 __kefir_text_func_generate_buf_55_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2100,8 +1902,6 @@ _kefir_func_generate_buf_55_label1:
     cmp $56, %eax
     jl _kefir_func_generate_buf_55_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_55_label3:
     movzx %r8b, %rax
@@ -2118,9 +1918,6 @@ __kefir_text_func_generate_buf_55_end:
 
 generate_buf_56:
 __kefir_text_func_generate_buf_56_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2133,8 +1930,6 @@ _kefir_func_generate_buf_56_label1:
     cmp $57, %eax
     jl _kefir_func_generate_buf_56_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_56_label3:
     movzx %r8b, %rax
@@ -2151,9 +1946,6 @@ __kefir_text_func_generate_buf_56_end:
 
 generate_buf_57:
 __kefir_text_func_generate_buf_57_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2166,8 +1958,6 @@ _kefir_func_generate_buf_57_label1:
     cmp $58, %eax
     jl _kefir_func_generate_buf_57_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_57_label3:
     movzx %r8b, %rax
@@ -2184,9 +1974,6 @@ __kefir_text_func_generate_buf_57_end:
 
 generate_buf_58:
 __kefir_text_func_generate_buf_58_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2199,8 +1986,6 @@ _kefir_func_generate_buf_58_label1:
     cmp $59, %eax
     jl _kefir_func_generate_buf_58_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_58_label3:
     movzx %r8b, %rax
@@ -2217,9 +2002,6 @@ __kefir_text_func_generate_buf_58_end:
 
 generate_buf_59:
 __kefir_text_func_generate_buf_59_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2232,8 +2014,6 @@ _kefir_func_generate_buf_59_label1:
     cmp $60, %eax
     jl _kefir_func_generate_buf_59_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_59_label3:
     movzx %r8b, %rax
@@ -2250,9 +2030,6 @@ __kefir_text_func_generate_buf_59_end:
 
 generate_buf_60:
 __kefir_text_func_generate_buf_60_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2265,8 +2042,6 @@ _kefir_func_generate_buf_60_label1:
     cmp $61, %eax
     jl _kefir_func_generate_buf_60_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_60_label3:
     movzx %r8b, %rax
@@ -2283,9 +2058,6 @@ __kefir_text_func_generate_buf_60_end:
 
 generate_buf_61:
 __kefir_text_func_generate_buf_61_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2298,8 +2070,6 @@ _kefir_func_generate_buf_61_label1:
     cmp $62, %eax
     jl _kefir_func_generate_buf_61_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_61_label3:
     movzx %r8b, %rax
@@ -2316,9 +2086,6 @@ __kefir_text_func_generate_buf_61_end:
 
 generate_buf_62:
 __kefir_text_func_generate_buf_62_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2331,8 +2098,6 @@ _kefir_func_generate_buf_62_label1:
     cmp $63, %eax
     jl _kefir_func_generate_buf_62_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_62_label3:
     movzx %r8b, %rax
@@ -2349,9 +2114,6 @@ __kefir_text_func_generate_buf_62_end:
 
 generate_buf_63:
 __kefir_text_func_generate_buf_63_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2364,8 +2126,6 @@ _kefir_func_generate_buf_63_label1:
     cmp $64, %eax
     jl _kefir_func_generate_buf_63_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_63_label3:
     movzx %r8b, %rax
@@ -2382,9 +2142,6 @@ __kefir_text_func_generate_buf_63_end:
 
 generate_buf_64:
 __kefir_text_func_generate_buf_64_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2397,8 +2154,6 @@ _kefir_func_generate_buf_64_label1:
     cmp $65, %eax
     jl _kefir_func_generate_buf_64_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_64_label3:
     movzx %r8b, %rax
@@ -2415,9 +2170,6 @@ __kefir_text_func_generate_buf_64_end:
 
 generate_buf_65:
 __kefir_text_func_generate_buf_65_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2430,8 +2182,6 @@ _kefir_func_generate_buf_65_label1:
     cmp $66, %eax
     jl _kefir_func_generate_buf_65_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_65_label3:
     movzx %r8b, %rax
@@ -2448,9 +2198,6 @@ __kefir_text_func_generate_buf_65_end:
 
 generate_buf_66:
 __kefir_text_func_generate_buf_66_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2463,8 +2210,6 @@ _kefir_func_generate_buf_66_label1:
     cmp $67, %eax
     jl _kefir_func_generate_buf_66_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_66_label3:
     movzx %r8b, %rax
@@ -2481,9 +2226,6 @@ __kefir_text_func_generate_buf_66_end:
 
 generate_buf_67:
 __kefir_text_func_generate_buf_67_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2496,8 +2238,6 @@ _kefir_func_generate_buf_67_label1:
     cmp $68, %eax
     jl _kefir_func_generate_buf_67_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_67_label3:
     movzx %r8b, %rax
@@ -2514,9 +2254,6 @@ __kefir_text_func_generate_buf_67_end:
 
 generate_buf_68:
 __kefir_text_func_generate_buf_68_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2529,8 +2266,6 @@ _kefir_func_generate_buf_68_label1:
     cmp $69, %eax
     jl _kefir_func_generate_buf_68_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_68_label3:
     movzx %r8b, %rax
@@ -2547,9 +2282,6 @@ __kefir_text_func_generate_buf_68_end:
 
 generate_buf_69:
 __kefir_text_func_generate_buf_69_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2562,8 +2294,6 @@ _kefir_func_generate_buf_69_label1:
     cmp $70, %eax
     jl _kefir_func_generate_buf_69_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_69_label3:
     movzx %r8b, %rax
@@ -2580,9 +2310,6 @@ __kefir_text_func_generate_buf_69_end:
 
 generate_buf_70:
 __kefir_text_func_generate_buf_70_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2595,8 +2322,6 @@ _kefir_func_generate_buf_70_label1:
     cmp $71, %eax
     jl _kefir_func_generate_buf_70_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_70_label3:
     movzx %r8b, %rax
@@ -2613,9 +2338,6 @@ __kefir_text_func_generate_buf_70_end:
 
 generate_buf_71:
 __kefir_text_func_generate_buf_71_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2628,8 +2350,6 @@ _kefir_func_generate_buf_71_label1:
     cmp $72, %eax
     jl _kefir_func_generate_buf_71_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_71_label3:
     movzx %r8b, %rax
@@ -2646,9 +2366,6 @@ __kefir_text_func_generate_buf_71_end:
 
 generate_buf_72:
 __kefir_text_func_generate_buf_72_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2661,8 +2378,6 @@ _kefir_func_generate_buf_72_label1:
     cmp $73, %eax
     jl _kefir_func_generate_buf_72_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_72_label3:
     movzx %r8b, %rax
@@ -2679,9 +2394,6 @@ __kefir_text_func_generate_buf_72_end:
 
 generate_buf_73:
 __kefir_text_func_generate_buf_73_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2694,8 +2406,6 @@ _kefir_func_generate_buf_73_label1:
     cmp $74, %eax
     jl _kefir_func_generate_buf_73_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_73_label3:
     movzx %r8b, %rax
@@ -2712,9 +2422,6 @@ __kefir_text_func_generate_buf_73_end:
 
 generate_buf_74:
 __kefir_text_func_generate_buf_74_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2727,8 +2434,6 @@ _kefir_func_generate_buf_74_label1:
     cmp $75, %eax
     jl _kefir_func_generate_buf_74_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_74_label3:
     movzx %r8b, %rax
@@ -2745,9 +2450,6 @@ __kefir_text_func_generate_buf_74_end:
 
 generate_buf_75:
 __kefir_text_func_generate_buf_75_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2760,8 +2462,6 @@ _kefir_func_generate_buf_75_label1:
     cmp $76, %eax
     jl _kefir_func_generate_buf_75_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_75_label3:
     movzx %r8b, %rax
@@ -2778,9 +2478,6 @@ __kefir_text_func_generate_buf_75_end:
 
 generate_buf_76:
 __kefir_text_func_generate_buf_76_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2793,8 +2490,6 @@ _kefir_func_generate_buf_76_label1:
     cmp $77, %eax
     jl _kefir_func_generate_buf_76_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_76_label3:
     movzx %r8b, %rax
@@ -2811,9 +2506,6 @@ __kefir_text_func_generate_buf_76_end:
 
 generate_buf_77:
 __kefir_text_func_generate_buf_77_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2826,8 +2518,6 @@ _kefir_func_generate_buf_77_label1:
     cmp $78, %eax
     jl _kefir_func_generate_buf_77_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_77_label3:
     movzx %r8b, %rax
@@ -2844,9 +2534,6 @@ __kefir_text_func_generate_buf_77_end:
 
 generate_buf_78:
 __kefir_text_func_generate_buf_78_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2859,8 +2546,6 @@ _kefir_func_generate_buf_78_label1:
     cmp $79, %eax
     jl _kefir_func_generate_buf_78_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_78_label3:
     movzx %r8b, %rax
@@ -2877,9 +2562,6 @@ __kefir_text_func_generate_buf_78_end:
 
 generate_buf_79:
 __kefir_text_func_generate_buf_79_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $80, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2892,8 +2574,6 @@ _kefir_func_generate_buf_79_label1:
     cmp $80, %eax
     jl _kefir_func_generate_buf_79_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_79_label3:
     movzx %r8b, %rax
@@ -2910,9 +2590,6 @@ __kefir_text_func_generate_buf_79_end:
 
 generate_buf_80:
 __kefir_text_func_generate_buf_80_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2925,8 +2602,6 @@ _kefir_func_generate_buf_80_label1:
     cmp $81, %eax
     jl _kefir_func_generate_buf_80_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_80_label3:
     movzx %r8b, %rax
@@ -2943,9 +2618,6 @@ __kefir_text_func_generate_buf_80_end:
 
 generate_buf_81:
 __kefir_text_func_generate_buf_81_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2958,8 +2630,6 @@ _kefir_func_generate_buf_81_label1:
     cmp $82, %eax
     jl _kefir_func_generate_buf_81_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_81_label3:
     movzx %r8b, %rax
@@ -2976,9 +2646,6 @@ __kefir_text_func_generate_buf_81_end:
 
 generate_buf_82:
 __kefir_text_func_generate_buf_82_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -2991,8 +2658,6 @@ _kefir_func_generate_buf_82_label1:
     cmp $83, %eax
     jl _kefir_func_generate_buf_82_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_82_label3:
     movzx %r8b, %rax
@@ -3009,9 +2674,6 @@ __kefir_text_func_generate_buf_82_end:
 
 generate_buf_83:
 __kefir_text_func_generate_buf_83_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3024,8 +2686,6 @@ _kefir_func_generate_buf_83_label1:
     cmp $84, %eax
     jl _kefir_func_generate_buf_83_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_83_label3:
     movzx %r8b, %rax
@@ -3042,9 +2702,6 @@ __kefir_text_func_generate_buf_83_end:
 
 generate_buf_84:
 __kefir_text_func_generate_buf_84_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3057,8 +2714,6 @@ _kefir_func_generate_buf_84_label1:
     cmp $85, %eax
     jl _kefir_func_generate_buf_84_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_84_label3:
     movzx %r8b, %rax
@@ -3075,9 +2730,6 @@ __kefir_text_func_generate_buf_84_end:
 
 generate_buf_85:
 __kefir_text_func_generate_buf_85_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3090,8 +2742,6 @@ _kefir_func_generate_buf_85_label1:
     cmp $86, %eax
     jl _kefir_func_generate_buf_85_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_85_label3:
     movzx %r8b, %rax
@@ -3108,9 +2758,6 @@ __kefir_text_func_generate_buf_85_end:
 
 generate_buf_86:
 __kefir_text_func_generate_buf_86_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3123,8 +2770,6 @@ _kefir_func_generate_buf_86_label1:
     cmp $87, %eax
     jl _kefir_func_generate_buf_86_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_86_label3:
     movzx %r8b, %rax
@@ -3141,9 +2786,6 @@ __kefir_text_func_generate_buf_86_end:
 
 generate_buf_87:
 __kefir_text_func_generate_buf_87_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3156,8 +2798,6 @@ _kefir_func_generate_buf_87_label1:
     cmp $88, %eax
     jl _kefir_func_generate_buf_87_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_87_label3:
     movzx %r8b, %rax
@@ -3174,9 +2814,6 @@ __kefir_text_func_generate_buf_87_end:
 
 generate_buf_88:
 __kefir_text_func_generate_buf_88_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3189,8 +2826,6 @@ _kefir_func_generate_buf_88_label1:
     cmp $89, %eax
     jl _kefir_func_generate_buf_88_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_88_label3:
     movzx %r8b, %rax
@@ -3207,9 +2842,6 @@ __kefir_text_func_generate_buf_88_end:
 
 generate_buf_89:
 __kefir_text_func_generate_buf_89_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3222,8 +2854,6 @@ _kefir_func_generate_buf_89_label1:
     cmp $90, %eax
     jl _kefir_func_generate_buf_89_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_89_label3:
     movzx %r8b, %rax
@@ -3240,9 +2870,6 @@ __kefir_text_func_generate_buf_89_end:
 
 generate_buf_90:
 __kefir_text_func_generate_buf_90_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3255,8 +2882,6 @@ _kefir_func_generate_buf_90_label1:
     cmp $91, %eax
     jl _kefir_func_generate_buf_90_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_90_label3:
     movzx %r8b, %rax
@@ -3273,9 +2898,6 @@ __kefir_text_func_generate_buf_90_end:
 
 generate_buf_91:
 __kefir_text_func_generate_buf_91_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3288,8 +2910,6 @@ _kefir_func_generate_buf_91_label1:
     cmp $92, %eax
     jl _kefir_func_generate_buf_91_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_91_label3:
     movzx %r8b, %rax
@@ -3306,9 +2926,6 @@ __kefir_text_func_generate_buf_91_end:
 
 generate_buf_92:
 __kefir_text_func_generate_buf_92_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3321,8 +2938,6 @@ _kefir_func_generate_buf_92_label1:
     cmp $93, %eax
     jl _kefir_func_generate_buf_92_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_92_label3:
     movzx %r8b, %rax
@@ -3339,9 +2954,6 @@ __kefir_text_func_generate_buf_92_end:
 
 generate_buf_93:
 __kefir_text_func_generate_buf_93_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3354,8 +2966,6 @@ _kefir_func_generate_buf_93_label1:
     cmp $94, %eax
     jl _kefir_func_generate_buf_93_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_93_label3:
     movzx %r8b, %rax
@@ -3372,9 +2982,6 @@ __kefir_text_func_generate_buf_93_end:
 
 generate_buf_94:
 __kefir_text_func_generate_buf_94_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3387,8 +2994,6 @@ _kefir_func_generate_buf_94_label1:
     cmp $95, %eax
     jl _kefir_func_generate_buf_94_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_94_label3:
     movzx %r8b, %rax
@@ -3405,9 +3010,6 @@ __kefir_text_func_generate_buf_94_end:
 
 generate_buf_95:
 __kefir_text_func_generate_buf_95_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $96, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3420,8 +3022,6 @@ _kefir_func_generate_buf_95_label1:
     cmp $96, %eax
     jl _kefir_func_generate_buf_95_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_95_label3:
     movzx %r8b, %rax
@@ -3438,9 +3038,6 @@ __kefir_text_func_generate_buf_95_end:
 
 generate_buf_96:
 __kefir_text_func_generate_buf_96_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3453,8 +3050,6 @@ _kefir_func_generate_buf_96_label1:
     cmp $97, %eax
     jl _kefir_func_generate_buf_96_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_96_label3:
     movzx %r8b, %rax
@@ -3471,9 +3066,6 @@ __kefir_text_func_generate_buf_96_end:
 
 generate_buf_97:
 __kefir_text_func_generate_buf_97_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3486,8 +3078,6 @@ _kefir_func_generate_buf_97_label1:
     cmp $98, %eax
     jl _kefir_func_generate_buf_97_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_97_label3:
     movzx %r8b, %rax
@@ -3504,9 +3094,6 @@ __kefir_text_func_generate_buf_97_end:
 
 generate_buf_98:
 __kefir_text_func_generate_buf_98_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3519,8 +3106,6 @@ _kefir_func_generate_buf_98_label1:
     cmp $99, %eax
     jl _kefir_func_generate_buf_98_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_98_label3:
     movzx %r8b, %rax
@@ -3537,9 +3122,6 @@ __kefir_text_func_generate_buf_98_end:
 
 generate_buf_99:
 __kefir_text_func_generate_buf_99_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3552,8 +3134,6 @@ _kefir_func_generate_buf_99_label1:
     cmp $100, %eax
     jl _kefir_func_generate_buf_99_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_99_label3:
     movzx %r8b, %rax
@@ -3570,9 +3150,6 @@ __kefir_text_func_generate_buf_99_end:
 
 generate_buf_100:
 __kefir_text_func_generate_buf_100_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3585,8 +3162,6 @@ _kefir_func_generate_buf_100_label1:
     cmp $101, %eax
     jl _kefir_func_generate_buf_100_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_100_label3:
     movzx %r8b, %rax
@@ -3603,9 +3178,6 @@ __kefir_text_func_generate_buf_100_end:
 
 generate_buf_101:
 __kefir_text_func_generate_buf_101_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3618,8 +3190,6 @@ _kefir_func_generate_buf_101_label1:
     cmp $102, %eax
     jl _kefir_func_generate_buf_101_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_101_label3:
     movzx %r8b, %rax
@@ -3636,9 +3206,6 @@ __kefir_text_func_generate_buf_101_end:
 
 generate_buf_102:
 __kefir_text_func_generate_buf_102_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3651,8 +3218,6 @@ _kefir_func_generate_buf_102_label1:
     cmp $103, %eax
     jl _kefir_func_generate_buf_102_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_102_label3:
     movzx %r8b, %rax
@@ -3669,9 +3234,6 @@ __kefir_text_func_generate_buf_102_end:
 
 generate_buf_103:
 __kefir_text_func_generate_buf_103_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3684,8 +3246,6 @@ _kefir_func_generate_buf_103_label1:
     cmp $104, %eax
     jl _kefir_func_generate_buf_103_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_103_label3:
     movzx %r8b, %rax
@@ -3702,9 +3262,6 @@ __kefir_text_func_generate_buf_103_end:
 
 generate_buf_104:
 __kefir_text_func_generate_buf_104_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3717,8 +3274,6 @@ _kefir_func_generate_buf_104_label1:
     cmp $105, %eax
     jl _kefir_func_generate_buf_104_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_104_label3:
     movzx %r8b, %rax
@@ -3735,9 +3290,6 @@ __kefir_text_func_generate_buf_104_end:
 
 generate_buf_105:
 __kefir_text_func_generate_buf_105_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3750,8 +3302,6 @@ _kefir_func_generate_buf_105_label1:
     cmp $106, %eax
     jl _kefir_func_generate_buf_105_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_105_label3:
     movzx %r8b, %rax
@@ -3768,9 +3318,6 @@ __kefir_text_func_generate_buf_105_end:
 
 generate_buf_106:
 __kefir_text_func_generate_buf_106_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3783,8 +3330,6 @@ _kefir_func_generate_buf_106_label1:
     cmp $107, %eax
     jl _kefir_func_generate_buf_106_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_106_label3:
     movzx %r8b, %rax
@@ -3801,9 +3346,6 @@ __kefir_text_func_generate_buf_106_end:
 
 generate_buf_107:
 __kefir_text_func_generate_buf_107_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3816,8 +3358,6 @@ _kefir_func_generate_buf_107_label1:
     cmp $108, %eax
     jl _kefir_func_generate_buf_107_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_107_label3:
     movzx %r8b, %rax
@@ -3834,9 +3374,6 @@ __kefir_text_func_generate_buf_107_end:
 
 generate_buf_108:
 __kefir_text_func_generate_buf_108_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3849,8 +3386,6 @@ _kefir_func_generate_buf_108_label1:
     cmp $109, %eax
     jl _kefir_func_generate_buf_108_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_108_label3:
     movzx %r8b, %rax
@@ -3867,9 +3402,6 @@ __kefir_text_func_generate_buf_108_end:
 
 generate_buf_109:
 __kefir_text_func_generate_buf_109_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3882,8 +3414,6 @@ _kefir_func_generate_buf_109_label1:
     cmp $110, %eax
     jl _kefir_func_generate_buf_109_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_109_label3:
     movzx %r8b, %rax
@@ -3900,9 +3430,6 @@ __kefir_text_func_generate_buf_109_end:
 
 generate_buf_110:
 __kefir_text_func_generate_buf_110_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3915,8 +3442,6 @@ _kefir_func_generate_buf_110_label1:
     cmp $111, %eax
     jl _kefir_func_generate_buf_110_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_110_label3:
     movzx %r8b, %rax
@@ -3933,9 +3458,6 @@ __kefir_text_func_generate_buf_110_end:
 
 generate_buf_111:
 __kefir_text_func_generate_buf_111_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $112, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3948,8 +3470,6 @@ _kefir_func_generate_buf_111_label1:
     cmp $112, %eax
     jl _kefir_func_generate_buf_111_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_111_label3:
     movzx %r8b, %rax
@@ -3966,9 +3486,6 @@ __kefir_text_func_generate_buf_111_end:
 
 generate_buf_112:
 __kefir_text_func_generate_buf_112_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -3981,8 +3498,6 @@ _kefir_func_generate_buf_112_label1:
     cmp $113, %eax
     jl _kefir_func_generate_buf_112_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_112_label3:
     movzx %r8b, %rax
@@ -3999,9 +3514,6 @@ __kefir_text_func_generate_buf_112_end:
 
 generate_buf_113:
 __kefir_text_func_generate_buf_113_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4014,8 +3526,6 @@ _kefir_func_generate_buf_113_label1:
     cmp $114, %eax
     jl _kefir_func_generate_buf_113_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_113_label3:
     movzx %r8b, %rax
@@ -4032,9 +3542,6 @@ __kefir_text_func_generate_buf_113_end:
 
 generate_buf_114:
 __kefir_text_func_generate_buf_114_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4047,8 +3554,6 @@ _kefir_func_generate_buf_114_label1:
     cmp $115, %eax
     jl _kefir_func_generate_buf_114_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_114_label3:
     movzx %r8b, %rax
@@ -4065,9 +3570,6 @@ __kefir_text_func_generate_buf_114_end:
 
 generate_buf_115:
 __kefir_text_func_generate_buf_115_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4080,8 +3582,6 @@ _kefir_func_generate_buf_115_label1:
     cmp $116, %eax
     jl _kefir_func_generate_buf_115_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_115_label3:
     movzx %r8b, %rax
@@ -4098,9 +3598,6 @@ __kefir_text_func_generate_buf_115_end:
 
 generate_buf_116:
 __kefir_text_func_generate_buf_116_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4113,8 +3610,6 @@ _kefir_func_generate_buf_116_label1:
     cmp $117, %eax
     jl _kefir_func_generate_buf_116_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_116_label3:
     movzx %r8b, %rax
@@ -4131,9 +3626,6 @@ __kefir_text_func_generate_buf_116_end:
 
 generate_buf_117:
 __kefir_text_func_generate_buf_117_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4146,8 +3638,6 @@ _kefir_func_generate_buf_117_label1:
     cmp $118, %eax
     jl _kefir_func_generate_buf_117_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_117_label3:
     movzx %r8b, %rax
@@ -4164,9 +3654,6 @@ __kefir_text_func_generate_buf_117_end:
 
 generate_buf_118:
 __kefir_text_func_generate_buf_118_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4179,8 +3666,6 @@ _kefir_func_generate_buf_118_label1:
     cmp $119, %eax
     jl _kefir_func_generate_buf_118_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_118_label3:
     movzx %r8b, %rax
@@ -4197,9 +3682,6 @@ __kefir_text_func_generate_buf_118_end:
 
 generate_buf_119:
 __kefir_text_func_generate_buf_119_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4212,8 +3694,6 @@ _kefir_func_generate_buf_119_label1:
     cmp $120, %eax
     jl _kefir_func_generate_buf_119_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_119_label3:
     movzx %r8b, %rax
@@ -4230,9 +3710,6 @@ __kefir_text_func_generate_buf_119_end:
 
 generate_buf_120:
 __kefir_text_func_generate_buf_120_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4245,8 +3722,6 @@ _kefir_func_generate_buf_120_label1:
     cmp $121, %eax
     jl _kefir_func_generate_buf_120_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_120_label3:
     movzx %r8b, %rax
@@ -4263,9 +3738,6 @@ __kefir_text_func_generate_buf_120_end:
 
 generate_buf_121:
 __kefir_text_func_generate_buf_121_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4278,8 +3750,6 @@ _kefir_func_generate_buf_121_label1:
     cmp $122, %eax
     jl _kefir_func_generate_buf_121_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_121_label3:
     movzx %r8b, %rax
@@ -4296,9 +3766,6 @@ __kefir_text_func_generate_buf_121_end:
 
 generate_buf_122:
 __kefir_text_func_generate_buf_122_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4311,8 +3778,6 @@ _kefir_func_generate_buf_122_label1:
     cmp $123, %eax
     jl _kefir_func_generate_buf_122_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_122_label3:
     movzx %r8b, %rax
@@ -4329,9 +3794,6 @@ __kefir_text_func_generate_buf_122_end:
 
 generate_buf_123:
 __kefir_text_func_generate_buf_123_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4344,8 +3806,6 @@ _kefir_func_generate_buf_123_label1:
     cmp $124, %eax
     jl _kefir_func_generate_buf_123_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_123_label3:
     movzx %r8b, %rax
@@ -4362,9 +3822,6 @@ __kefir_text_func_generate_buf_123_end:
 
 generate_buf_124:
 __kefir_text_func_generate_buf_124_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4377,8 +3834,6 @@ _kefir_func_generate_buf_124_label1:
     cmp $125, %eax
     jl _kefir_func_generate_buf_124_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_124_label3:
     movzx %r8b, %rax
@@ -4395,9 +3850,6 @@ __kefir_text_func_generate_buf_124_end:
 
 generate_buf_125:
 __kefir_text_func_generate_buf_125_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4410,8 +3862,6 @@ _kefir_func_generate_buf_125_label1:
     cmp $126, %eax
     jl _kefir_func_generate_buf_125_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_125_label3:
     movzx %r8b, %rax
@@ -4428,9 +3878,6 @@ __kefir_text_func_generate_buf_125_end:
 
 generate_buf_126:
 __kefir_text_func_generate_buf_126_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4443,8 +3890,6 @@ _kefir_func_generate_buf_126_label1:
     cmp $127, %eax
     jl _kefir_func_generate_buf_126_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_126_label3:
     movzx %r8b, %rax
@@ -4461,9 +3906,6 @@ __kefir_text_func_generate_buf_126_end:
 
 generate_buf_127:
 __kefir_text_func_generate_buf_127_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $128, %rsp
     mov %rdi, %rdx
     leaq (%rdx), %rdi
     xor %eax, %eax
@@ -4476,8 +3918,6 @@ _kefir_func_generate_buf_127_label1:
     cmp $128, %eax
     jl _kefir_func_generate_buf_127_label3
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 _kefir_func_generate_buf_127_label3:
     movzx %r8b, %rax

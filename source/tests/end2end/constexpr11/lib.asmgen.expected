@@ -55,9 +55,6 @@ __kefir_text_func_get2_end:
 
 get3:
 __kefir_text_func_get3_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     lea __kefir_function_get3_static___kefir_local_temporary_0_11(%rip), %rax
     movq (%rax), %rcx
     movq %rcx, (%rdi)
@@ -66,32 +63,22 @@ __kefir_text_func_get3_begin:
     movq 16(%rax), %rcx
     movq %rcx, 16(%rdi)
     mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_get3_end:
 
 get4:
 __kefir_text_func_get4_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $32, %rsp
     lea __kefir_function_get4_static___kefir_local_temporary_0_14(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, (%rdi)
     movdqu 16(%rax), %xmm0
     movdqu %xmm0, 16(%rdi)
     mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_get4_end:
 
 get5:
 __kefir_text_func_get5_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     lea __kefir_function_get5_static___kefir_local_temporary_0_17(%rip), %rax
     movdqu (%rax), %xmm0
     movdqu %xmm0, (%rdi)
@@ -102,8 +89,6 @@ __kefir_text_func_get5_begin:
     movdqu 48(%rax), %xmm0
     movdqu %xmm0, 48(%rdi)
     mov %rdi, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_get5_end:
 

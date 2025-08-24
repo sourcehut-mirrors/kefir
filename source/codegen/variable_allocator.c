@@ -43,6 +43,7 @@ struct allocator_state {
 
 static kefir_result_t do_allocate_var(struct allocator_state *state, kefir_opt_instruction_ref_t instr_ref) {
     REQUIRE(kefir_hashset_has(&state->allocator->alive_variables, (kefir_hashset_key_t) instr_ref), KEFIR_OK);
+    REQUIRE(state->allocator->return_space_variable_ref != instr_ref, KEFIR_OK);
     const struct kefir_opt_instruction *instr;
     REQUIRE_OK(kefir_opt_code_container_instr(state->code, instr_ref, &instr));
     REQUIRE(instr->operation.opcode == KEFIR_OPT_OPCODE_ALLOC_LOCAL,

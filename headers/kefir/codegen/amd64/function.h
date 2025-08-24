@@ -447,6 +447,7 @@ kefir_result_t kefir_codegen_amd64_store_floating_point_register(struct kefir_me
 
 kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                       kefir_opt_call_id_t, kefir_bool_t *);
+kefir_result_t kfir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *, kefir_opt_call_id_t, kefir_bool_t *);
 
 kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                        kefir_size_t);

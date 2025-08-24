@@ -10,7 +10,7 @@ init_s:
 __kefir_text_func_init_s_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $144, %rsp
+    sub $32, %rsp
     fstcw -8(%rbp)
     mov %rdi, %rdx
     fldt 16(%rbp)
@@ -20,49 +20,49 @@ __kefir_text_func_init_s_begin:
     rep stosb
     movq $0, 8(%rdx)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fstpt (%rdx)
     fldt _kefir_func_init_s_label1(%rip)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     faddp
     movq $0, 72(%rdx)
     fstpt 64(%rdx)
     fldt _kefir_func_init_s_label2(%rip)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fsubp
     movq $0, 88(%rdx)
     fstpt 80(%rdx)
     leaq 16(%rdx), %rax
     add $16, %rax
     fldt _kefir_func_init_s_label3(%rip)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fdivp
     movq $0, 8(%rax)
     fstpt (%rax)
     leaq 16(%rdx), %rax
     add $32, %rax
     fldt _kefir_func_init_s_label4(%rip)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fmulp
     movq $0, 8(%rax)
     fstpt (%rax)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fchs
     movq $0, 24(%rdx)
     fstpt 16(%rdx)
-    fldt -144(%rbp)
+    fldt -32(%rbp)
     fld %st(0)
-    fstpt -144(%rbp)
+    fstpt -32(%rbp)
     fld %st(0)
     fmulp
     movq $0, 104(%rdx)

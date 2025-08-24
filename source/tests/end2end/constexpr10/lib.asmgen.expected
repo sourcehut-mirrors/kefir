@@ -10,7 +10,7 @@ get1:
 __kefir_text_func_get1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $96, %rsp
+    sub $16, %rsp
     stmxcsr -8(%rbp)
     mov %rdi, %rdx
     leaq (%rdx), %rdi

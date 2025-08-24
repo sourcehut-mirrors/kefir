@@ -1,0 +1,39 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern get
+.extern leak
+.global test
+.type test, @function
+
+.section .text
+__kefir_text_section_begin:
+test:
+__kefir_text_func_test_begin:
+    push %rbp
+    mov %rsp, %rbp
+    push %rbx
+    sub $24, %rsp
+    mov %rdi, %rcx
+    movb $0, -9(%rbp)
+    movq %rsi, -32(%rbp)
+    movq %rcx, -24(%rbp)
+    leaq -9(%rbp), %rdi
+    call leak@PLT
+    movq -32(%rbp), %rsi
+    movq -24(%rbp), %rcx
+    not %rsi
+    leaq (%rcx), %rbx
+    movq %rcx, -32(%rbp)
+    mov %rbx, %rdi
+    call get@PLT
+    movq -32(%rbp), %rcx
+    mov %rcx, %rax
+    lea -8(%rbp), %rsp
+    pop %rbx
+    pop %rbp
+    ret
+__kefir_text_func_test_end:
+
+__kefir_text_section_end:
+

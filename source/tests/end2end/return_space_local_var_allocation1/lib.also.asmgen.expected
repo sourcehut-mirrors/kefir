@@ -12,9 +12,6 @@ get1:
 .file 0 "source/tests/end2end/return_space_local_var_allocation1/lib.kefir.c"
 .loc 0 23 1
 __kefir_text_func_get1_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $64, %rsp
     mov %rdi, %rdx
 _kefir_func_get1_label2:
 _kefir_func_get1_label1:
@@ -73,8 +70,6 @@ _kefir_func_get1_label16:
 .loc 0 32 5
 _kefir_func_get1_label17:
     mov %rdx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
     ret
 __kefir_text_func_get1_end:
 
@@ -83,7 +78,7 @@ get2:
 __kefir_text_func_get2_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $192, %rsp
+    sub $128, %rsp
     mov %rdi, %r9
 _kefir_func_get2_label10:
     mov %rdx, %r10
