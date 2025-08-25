@@ -128,6 +128,18 @@ applied to all variables).
 .It Fl \-codegen-tentative-no-common
 Do not place tentative definitions into common section [default].
 .\"
+.It Fl \-codegen-visibility-default
+Keep default visibility for all symbols [default].
+.\"
+.It Fl \-codegen-visibility-hidden
+Make all symbols hidden unless an attribute specifies otherwise.
+.\"
+.It Fl \-codegen-visibility-protected
+Make all symbols protected unless an attribute specifies otherwise.
+.\"
+.It Fl \-codegen-visibility-internal
+Make all symbols internal unless an attribute specifies otherwise.
+.\"
 .It Fl \-feature-[name]
 Enable compiler feature (see
 .Sx FEATURES

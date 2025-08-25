@@ -119,6 +119,10 @@ Let the type char be signed. By default, it is target-specific.
 Place tentative definitions into common section (equivalent to common attribute
 applied to all variables).
 .\"
+.It Fl fvisibility=default|internal|hidden|protected
+Set visibility for symbols in the program, unless overriden by
+particular symbol attribute.
+.\"
 .It Fl fno-common
 Do not place tentative definitions into common section [default].
 .\"
@@ -462,6 +466,18 @@ applied to all variables).
 .\"
 .It Fl \-codegen-tentative-no-common
 Do not place tentative definitions into common section [default].
+.\"
+.It Fl \-codegen-visibility-default
+Keep default visibility for all symbols [default].
+.\"
+.It Fl \-codegen-visibility-hidden
+Make all symbols hidden unless an attribute specifies otherwise.
+.\"
+.It Fl \-codegen-visibility-protected
+Make all symbols protected unless an attribute specifies otherwise.
+.\"
+.It Fl \-codegen-visibility-internal
+Make all symbols internal unless an attribute specifies otherwise.
 .El
 .\"
 .Ss FEATURES

@@ -1,0 +1,92 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global a
+.type a, @object
+.global w
+.type w, @object
+.internal w
+.global x
+.type x, @object
+.hidden x
+.global y
+.type y, @object
+.hidden y
+.global z
+.type z, @object
+.protected z
+.global geta
+.type geta, @function
+.global getw
+.type getw, @function
+.internal getw
+.global getx
+.type getx, @function
+.hidden getx
+.global gety
+.type gety, @function
+.hidden gety
+.global getz
+.type getz, @function
+.protected getz
+
+.section .text
+__kefir_text_section_begin:
+geta:
+__kefir_text_func_geta_begin:
+    movq z@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_geta_end:
+
+getw:
+__kefir_text_func_getw_begin:
+    movq z@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_getw_end:
+
+getx:
+__kefir_text_func_getx_begin:
+    movq x@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_getx_end:
+
+gety:
+__kefir_text_func_gety_begin:
+    movq y@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_gety_end:
+
+getz:
+__kefir_text_func_getz_begin:
+    movq z@GOTPCREL(%rip), %rax
+    movl (%rax), %eax
+    ret
+__kefir_text_func_getz_end:
+
+__kefir_text_section_end:
+
+.section .bss
+    .align 4
+a:
+    .skip 4
+
+    .align 4
+w:
+    .skip 4
+
+    .align 4
+x:
+    .skip 4
+
+    .align 4
+y:
+    .skip 4
+
+    .align 4
+z:
+    .skip 4
+

@@ -245,6 +245,7 @@ static kefir_result_t dump_action_impl(struct kefir_mem *mem, const struct kefir
     compiler.ast_global_context.configuration.standard_version = options->standard_version;
     compiler.ast_global_context.configuration.analysis.enable_thread_local_common = !options->codegen.emulated_tls;
     compiler.ast_global_context.configuration.analysis.tentative_definition_placement = options->codegen.tentative_definition_placement;
+    compiler.ast_global_context.configuration.analysis.symbol_visibility = options->codegen.symbol_visibility;
 
     compiler.translator_configuration.empty_structs = options->features.empty_structs;
     compiler.translator_configuration.precise_bitfield_load_store = options->features.precise_bitfield_load_store;

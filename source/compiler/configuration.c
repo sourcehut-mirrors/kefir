@@ -57,6 +57,7 @@ kefir_result_t kefir_compiler_runner_configuration_init(struct kefir_compiler_ru
                     .omit_frame_pointer = false,
                     .valgrind_compatible_x87 = true,
             .tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT,
+            .symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_UNSET,
                     .syntax = NULL,
                     .print_details = NULL,
                     .pipeline_spec = NULL},

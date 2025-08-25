@@ -116,6 +116,7 @@ typedef struct kefir_compiler_runner_configuration {
         kefir_bool_t omit_frame_pointer;
         kefir_bool_t valgrind_compatible_x87;
         kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
+        kefir_ast_declarator_visibility_attr_t symbol_visibility;
         const char *syntax;
         const char *print_details;
         const char *pipeline_spec;

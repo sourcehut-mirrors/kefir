@@ -266,6 +266,28 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
             break;
     }
 
+    switch (config->compiler.symbol_visibility) {
+        case KEFIR_DRIVER_SYMBOL_VISIBILITY_UNSET:
+            compiler_config->codegen.symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_UNSET;
+            break;
+
+        case KEFIR_DRIVER_SYMBOL_VISIBILITY_DEFAULT:
+            compiler_config->codegen.symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT;
+            break;
+
+        case KEFIR_DRIVER_SYMBOL_VISIBILITY_HIDDEN:
+            compiler_config->codegen.symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN;
+            break;
+
+        case KEFIR_DRIVER_SYMBOL_VISIBILITY_INTERNAL:
+            compiler_config->codegen.symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL;
+            break;
+
+        case KEFIR_DRIVER_SYMBOL_VISIBILITY_PROTECTED:
+            compiler_config->codegen.symbol_visibility = KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED;
+            break;
+    }
+
     compiler_config->debug_info = config->flags.debug_info;
     compiler_config->codegen.position_independent_code = config->flags.position_independent_code;
     if (compiler_config->codegen.position_independent_code) {

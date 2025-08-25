@@ -33,6 +33,7 @@
 #include "kefir/ast/constants.h"
 #include "kefir/ast/declarator.h"
 #include "kefir/ast/cache.h"
+#include "kefir/ast/constants.h"
 #include "kefir/util/bigint.h"
 #include <stdio.h>
 
@@ -56,6 +57,7 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t int_to_pointer;
         kefir_bool_t enable_thread_local_common;
         kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
+        kefir_ast_declarator_visibility_attr_t symbol_visibility;
     } analysis;
 
     FILE *warning_output;

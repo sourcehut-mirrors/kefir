@@ -208,8 +208,45 @@ static kefir_result_t output_compiler_config(FILE *output,
     CODEGEN(emulated_tls, "emulated-tls")
     CODEGEN(position_independent_code, "pic")
     CODEGEN(omit_frame_pointer, "omit-frame-pointer")
+    CODEGEN(valgrind_compatible_x87, "valgrind-compatible-x87")
 
 #undef CODEGEN
+
+    switch (configuration->codegen.tentative_definition_placement) {
+        case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
+            // Intentionally left blank
+            break;
+
+        case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON:
+            fprintf(output, " --codegen-tentative-common");
+            break;
+
+        case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON:
+            fprintf(output, " --codegen-tentative-no-common");
+            break;
+    }
+
+    switch (configuration->codegen.symbol_visibility) {
+        case KEFIR_AST_DECLARATOR_VISIBILITY_UNSET:
+            // Intentionally left blank
+            break;
+
+    case KEFIR_AST_DECLARATOR_VISIBILITY_DEFAULT:
+            fprintf(output, " --codegen-visibility-default");
+            break;
+
+    case KEFIR_AST_DECLARATOR_VISIBILITY_HIDDEN:
+            fprintf(output, " --codegen-visibility-hidden");
+            break;
+
+    case KEFIR_AST_DECLARATOR_VISIBILITY_PROTECTED:
+            fprintf(output, " --codegen-visibility-protected");
+            break;
+
+    case KEFIR_AST_DECLARATOR_VISIBILITY_INTERNAL:
+            fprintf(output, " --codegen-visibility-internal");
+            break;
+    }
 
     if (configuration->codegen.syntax != NULL) {
         fprintf(output, " --codegen-syntax %s", configuration->codegen.syntax);

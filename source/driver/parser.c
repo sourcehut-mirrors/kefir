@@ -280,6 +280,19 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
         } else if (STRNCMP("-fno-common", arg) == 0) {
             config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
+        } else if (STRNCMP("-fvisibility=", arg) == 0) {
+            const char *visibility = &arg[13];
+            if (strcmp(visibility, "default") == 0) {
+                config->compiler.symbol_visibility = KEFIR_DRIVER_SYMBOL_VISIBILITY_DEFAULT;
+            } else if (strcmp(visibility, "hidden") == 0) {
+                config->compiler.symbol_visibility = KEFIR_DRIVER_SYMBOL_VISIBILITY_HIDDEN;
+            } else if (strcmp(visibility, "internal") == 0) {
+                config->compiler.symbol_visibility = KEFIR_DRIVER_SYMBOL_VISIBILITY_INTERNAL;
+            } else if (strcmp(visibility, "protected") == 0) {
+                config->compiler.symbol_visibility = KEFIR_DRIVER_SYMBOL_VISIBILITY_PROTECTED;
+            } else if (warning_output != NULL) {
+                fprintf(warning_output, "Warning: Unknown visibility setting '%s'\n", visibility);
+            }
         } else if (STRNCMP("-x", arg) == 0) {
             const char *language = NULL;
             if (strlen(arg) == 2) {

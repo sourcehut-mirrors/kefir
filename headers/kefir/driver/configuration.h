@@ -124,6 +124,14 @@ typedef enum kefir_driver_tentative_definition_placement {
     KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON
 } kefir_driver_tentative_definition_placement_t;
 
+typedef enum kefir_driver_symbol_visibility {
+    KEFIR_DRIVER_SYMBOL_VISIBILITY_UNSET,
+    KEFIR_DRIVER_SYMBOL_VISIBILITY_DEFAULT,
+    KEFIR_DRIVER_SYMBOL_VISIBILITY_INTERNAL,
+    KEFIR_DRIVER_SYMBOL_VISIBILITY_HIDDEN,
+    KEFIR_DRIVER_SYMBOL_VISIBILITY_PROTECTED
+} kefir_driver_symbol_visibility_t;
+
 typedef struct kefir_driver_configuration {
     kefir_driver_stage_t stage;
     const char *output_file;
@@ -145,6 +153,7 @@ typedef struct kefir_driver_configuration {
         kefir_int_t optimization_level;
         kefir_driver_char_signedness_t char_signedness;
         kefir_driver_tentative_definition_placement_t tentative_definition_placement;
+        kefir_driver_symbol_visibility_t symbol_visibility;
     } compiler;
 
     struct {
