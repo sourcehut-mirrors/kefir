@@ -333,7 +333,8 @@ static kefir_result_t translate_external_thread_locals(
                         .alias = NULL,
                         .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
                     if (scoped_identifier->value->object.flags.common && !scoped_identifier->value->object.flags.weak &&
-                        scoped_identifier->value->object.initializer == NULL) {
+                        scoped_identifier->value->object.initializer == NULL &&
+                        context->configuration->analysis.enable_thread_local_common) {
                         REQUIRE_OK(assign_common(mem, context, scoped_identifier->value->object.type, &ir_identifier));
                     }
                     REQUIRE_OK(
@@ -385,7 +386,8 @@ static kefir_result_t translate_static_thread_locals(
                     .debug_info = {.entry = SCOPED_IDENTIFIER_DEBUG_INFO_ENTRY(identifier_data)}};
 
                 if (scoped_identifier->value->object.flags.common && !scoped_identifier->value->object.flags.weak &&
-                    scoped_identifier->value->object.initializer == NULL) {
+                    scoped_identifier->value->object.initializer == NULL &&
+                        context->configuration->analysis.enable_thread_local_common) {
                     REQUIRE_OK(assign_common(mem, context, scoped_identifier->value->object.type, &ir_identifier));
                 }
 
