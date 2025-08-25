@@ -1,0 +1,67 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test2
+.type test2, @function
+.global test8
+.type test8, @function
+
+.section .text
+__kefir_text_section_begin:
+test2:
+__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq %rdi, -16(%rbp)
+    movq %rsi, -8(%rbp)
+    movq -16(%rbp), %rax
+    leaq -16(%rbp), %rsi
+    mov %rsi, %rcx
+    add $8, %rcx
+    movq (%rcx), %rcx
+    add %rcx, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_test2_end:
+
+test8:
+__kefir_text_func_test8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    lea 16(%rbp), %rcx
+    movq (%rcx), %rax
+    mov %rcx, %rdx
+    add $8, %rdx
+    movq (%rdx), %rdx
+    mov %rcx, %rsi
+    add $16, %rsi
+    movq (%rsi), %rsi
+    mov %rcx, %rdi
+    add $24, %rdi
+    movq (%rdi), %rdi
+    mov %rcx, %r8
+    add $32, %r8
+    movq (%r8), %r8
+    mov %rcx, %r9
+    add $40, %r9
+    movq (%r9), %r9
+    mov %rcx, %r10
+    add $48, %r10
+    movq (%r10), %r10
+    add $56, %rcx
+    movq (%rcx), %rcx
+    add %rdx, %rax
+    add %rsi, %rax
+    add %rdi, %rax
+    add %r8, %rax
+    add %r9, %rax
+    add %r10, %rax
+    add %rcx, %rax
+    pop %rbp
+    ret
+__kefir_text_func_test8_end:
+
+__kefir_text_section_end:
+
