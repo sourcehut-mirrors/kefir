@@ -1,0 +1,544 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global or_fetch8
+.type or_fetch8, @function
+.global add_fetch8
+.type add_fetch8, @function
+.global and_fetch8
+.type and_fetch8, @function
+.global or_fetch16
+.type or_fetch16, @function
+.global or_fetch32
+.type or_fetch32, @function
+.global or_fetch64
+.type or_fetch64, @function
+.global sub_fetch8
+.type sub_fetch8, @function
+.global xor_fetch8
+.type xor_fetch8, @function
+.global add_fetch16
+.type add_fetch16, @function
+.global add_fetch32
+.type add_fetch32, @function
+.global add_fetch64
+.type add_fetch64, @function
+.global and_fetch16
+.type and_fetch16, @function
+.global and_fetch32
+.type and_fetch32, @function
+.global and_fetch64
+.type and_fetch64, @function
+.global nand_fetch8
+.type nand_fetch8, @function
+.global sub_fetch16
+.type sub_fetch16, @function
+.global sub_fetch32
+.type sub_fetch32, @function
+.global sub_fetch64
+.type sub_fetch64, @function
+.global xor_fetch16
+.type xor_fetch16, @function
+.global xor_fetch32
+.type xor_fetch32, @function
+.global xor_fetch64
+.type xor_fetch64, @function
+.global nand_fetch16
+.type nand_fetch16, @function
+.global nand_fetch32
+.type nand_fetch32, @function
+.global nand_fetch64
+.type nand_fetch64, @function
+
+.section .text
+__kefir_text_section_begin:
+or_fetch8:
+__kefir_text_func_or_fetch8_begin:
+    movsx %sil, %rsi
+_kefir_func_or_fetch8_label1:
+    movb (%rdi), %al
+    movsx %al, %rax
+    mov %rax, %r8
+    or %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_or_fetch8_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_or_fetch8_end:
+
+add_fetch8:
+__kefir_text_func_add_fetch8_begin:
+    movsx %sil, %rsi
+_kefir_func_add_fetch8_label1:
+    movb (%rdi), %al
+    movsx %al, %rax
+    mov %rax, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_add_fetch8_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_add_fetch8_end:
+
+and_fetch8:
+__kefir_text_func_and_fetch8_begin:
+    movsx %sil, %rsi
+_kefir_func_and_fetch8_label1:
+    movb (%rdi), %al
+    movsx %al, %rax
+    mov %rax, %r8
+    and %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_and_fetch8_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_and_fetch8_end:
+
+or_fetch16:
+__kefir_text_func_or_fetch16_begin:
+    movsx %si, %rsi
+_kefir_func_or_fetch16_label1:
+    movw (%rdi), %ax
+    movsx %ax, %rax
+    mov %rax, %r8
+    or %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_or_fetch16_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_or_fetch16_end:
+
+or_fetch32:
+__kefir_text_func_or_fetch32_begin:
+_kefir_func_or_fetch32_label1:
+    movl (%rdi), %eax
+    movsx %eax, %r8
+    mov %rax, %r9
+    or %esi, %r9d
+    mov %rdi, %rdx
+    mov %r9, %rcx
+    mov %r8, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_or_fetch32_label1
+    mov %r9, %rax
+    ret
+__kefir_text_func_or_fetch32_end:
+
+or_fetch64:
+__kefir_text_func_or_fetch64_begin:
+_kefir_func_or_fetch64_label1:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    or %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_or_fetch64_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_or_fetch64_end:
+
+sub_fetch8:
+__kefir_text_func_sub_fetch8_begin:
+    movsx %sil, %rsi
+_kefir_func_sub_fetch8_label1:
+    movb (%rdi), %al
+    movsx %al, %rax
+    mov %rax, %r8
+    sub %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_sub_fetch8_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_sub_fetch8_end:
+
+xor_fetch8:
+__kefir_text_func_xor_fetch8_begin:
+    movsx %sil, %rsi
+_kefir_func_xor_fetch8_label1:
+    movb (%rdi), %al
+    movsx %al, %rax
+    mov %rax, %r8
+    xor %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgb %cl, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_xor_fetch8_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_xor_fetch8_end:
+
+add_fetch16:
+__kefir_text_func_add_fetch16_begin:
+    movsx %si, %rsi
+_kefir_func_add_fetch16_label1:
+    movw (%rdi), %ax
+    movsx %ax, %rax
+    mov %rax, %r8
+    add %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_add_fetch16_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_add_fetch16_end:
+
+add_fetch32:
+__kefir_text_func_add_fetch32_begin:
+_kefir_func_add_fetch32_label1:
+    movl (%rdi), %eax
+    movsx %eax, %r8
+    mov %rax, %r9
+    add %esi, %r9d
+    mov %rdi, %rdx
+    mov %r9, %rcx
+    mov %r8, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_add_fetch32_label1
+    mov %r9, %rax
+    ret
+__kefir_text_func_add_fetch32_end:
+
+add_fetch64:
+__kefir_text_func_add_fetch64_begin:
+_kefir_func_add_fetch64_label1:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    add %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_add_fetch64_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_add_fetch64_end:
+
+and_fetch16:
+__kefir_text_func_and_fetch16_begin:
+    movsx %si, %rsi
+_kefir_func_and_fetch16_label1:
+    movw (%rdi), %ax
+    movsx %ax, %rax
+    mov %rax, %r8
+    and %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_and_fetch16_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_and_fetch16_end:
+
+and_fetch32:
+__kefir_text_func_and_fetch32_begin:
+_kefir_func_and_fetch32_label1:
+    movl (%rdi), %eax
+    movsx %eax, %r8
+    mov %rax, %r9
+    and %esi, %r9d
+    mov %rdi, %rdx
+    mov %r9, %rcx
+    mov %r8, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_and_fetch32_label1
+    mov %r9, %rax
+    ret
+__kefir_text_func_and_fetch32_end:
+
+and_fetch64:
+__kefir_text_func_and_fetch64_begin:
+_kefir_func_and_fetch64_label1:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    and %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_and_fetch64_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_and_fetch64_end:
+
+nand_fetch8:
+__kefir_text_func_nand_fetch8_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movb (%rdi), %al
+    movb %al, -1(%rbp)
+_kefir_func_nand_fetch8_label1:
+    movsxb -1(%rbp), %rcx
+    movsx %sil, %rax
+    and %eax, %ecx
+    mov %rcx, %r8
+    not %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    movb -1(%rbp), %al
+    lock     cmpxchgb %cl, (%rdx)
+    je _kefir_func_nand_fetch8_label3
+    movb %al, -1(%rbp)
+_kefir_func_nand_fetch8_label3:
+    sete %al
+    test %al, %al
+    jz _kefir_func_nand_fetch8_label1
+_kefir_func_nand_fetch8_label2:
+    mov %r8, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_nand_fetch8_end:
+
+sub_fetch16:
+__kefir_text_func_sub_fetch16_begin:
+    movsx %si, %rsi
+_kefir_func_sub_fetch16_label1:
+    movw (%rdi), %ax
+    movsx %ax, %rax
+    mov %rax, %r8
+    sub %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_sub_fetch16_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_sub_fetch16_end:
+
+sub_fetch32:
+__kefir_text_func_sub_fetch32_begin:
+_kefir_func_sub_fetch32_label1:
+    movl (%rdi), %eax
+    movsx %eax, %r8
+    mov %rax, %r9
+    sub %esi, %r9d
+    mov %rdi, %rdx
+    mov %r9, %rcx
+    mov %r8, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_sub_fetch32_label1
+    mov %r9, %rax
+    ret
+__kefir_text_func_sub_fetch32_end:
+
+sub_fetch64:
+__kefir_text_func_sub_fetch64_begin:
+_kefir_func_sub_fetch64_label1:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    sub %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_sub_fetch64_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_sub_fetch64_end:
+
+xor_fetch16:
+__kefir_text_func_xor_fetch16_begin:
+    movsx %si, %rsi
+_kefir_func_xor_fetch16_label1:
+    movw (%rdi), %ax
+    movsx %ax, %rax
+    mov %rax, %r8
+    xor %esi, %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgw %cx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_xor_fetch16_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_xor_fetch16_end:
+
+xor_fetch32:
+__kefir_text_func_xor_fetch32_begin:
+_kefir_func_xor_fetch32_label1:
+    movl (%rdi), %eax
+    movsx %eax, %r8
+    mov %rax, %r9
+    xor %esi, %r9d
+    mov %rdi, %rdx
+    mov %r9, %rcx
+    mov %r8, %rax
+    lock     cmpxchgl %ecx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_xor_fetch32_label1
+    mov %r9, %rax
+    ret
+__kefir_text_func_xor_fetch32_end:
+
+xor_fetch64:
+__kefir_text_func_xor_fetch64_begin:
+_kefir_func_xor_fetch64_label1:
+    movq (%rdi), %rax
+    mov %rax, %r8
+    xor %rsi, %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    lock     cmpxchgq %rcx, (%rdx)
+    sete %al
+    movzx %al, %rax
+    test %al, %al
+    jz _kefir_func_xor_fetch64_label1
+    mov %r8, %rax
+    ret
+__kefir_text_func_xor_fetch64_end:
+
+nand_fetch16:
+__kefir_text_func_nand_fetch16_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movw (%rdi), %ax
+    movw %ax, -2(%rbp)
+_kefir_func_nand_fetch16_label1:
+    movsxw -2(%rbp), %rcx
+    movsx %si, %rax
+    and %eax, %ecx
+    mov %rcx, %r8
+    not %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    movw -2(%rbp), %ax
+    lock     cmpxchgw %cx, (%rdx)
+    je _kefir_func_nand_fetch16_label3
+    movw %ax, -2(%rbp)
+_kefir_func_nand_fetch16_label3:
+    sete %al
+    test %al, %al
+    jz _kefir_func_nand_fetch16_label1
+_kefir_func_nand_fetch16_label2:
+    mov %r8, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_nand_fetch16_end:
+
+nand_fetch32:
+__kefir_text_func_nand_fetch32_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movl (%rdi), %eax
+    movl %eax, -4(%rbp)
+_kefir_func_nand_fetch32_label1:
+    movl -4(%rbp), %ecx
+    and %esi, %ecx
+    mov %rcx, %r8
+    not %r8d
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    movl -4(%rbp), %eax
+    lock     cmpxchgl %ecx, (%rdx)
+    je _kefir_func_nand_fetch32_label3
+    movl %eax, -4(%rbp)
+_kefir_func_nand_fetch32_label3:
+    sete %al
+    test %al, %al
+    jz _kefir_func_nand_fetch32_label1
+_kefir_func_nand_fetch32_label2:
+    mov %r8, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_nand_fetch32_end:
+
+nand_fetch64:
+__kefir_text_func_nand_fetch64_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq (%rdi), %rax
+    movq %rax, -8(%rbp)
+_kefir_func_nand_fetch64_label1:
+    movq -8(%rbp), %rcx
+    and %rsi, %rcx
+    mov %rcx, %r8
+    not %r8
+    mov %rdi, %rdx
+    mov %r8, %rcx
+    movq -8(%rbp), %rax
+    lock     cmpxchgq %rcx, (%rdx)
+    je _kefir_func_nand_fetch64_label3
+    movq %rax, -8(%rbp)
+_kefir_func_nand_fetch64_label3:
+    sete %al
+    test %al, %al
+    jz _kefir_func_nand_fetch64_label1
+_kefir_func_nand_fetch64_label2:
+    mov %r8, %rax
+    lea (%rbp), %rsp
+    pop %rbp
+    ret
+__kefir_text_func_nand_fetch64_end:
+
+__kefir_text_section_end:
+

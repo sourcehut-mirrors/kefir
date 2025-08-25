@@ -18,6 +18,7 @@ __builtin_stdc_bit_floor
 __builtin_stdc_bit_width
 __atomic_exchange
 __atomic_fetch_or
+__atomic_or_fetch
 __builtin_uaddll_overflow
 __builtin_sub_overflow_p
 __builtin_uadd_overflow
@@ -78,10 +79,14 @@ __builtin_inf
 __builtin_nan
 __builtin_add_overflow
 __builtin_c23_va_start
+__atomic_add_fetch
+__atomic_and_fetch
 __atomic_fetch_add
 __atomic_fetch_and
 __atomic_fetch_sub
 __atomic_fetch_xor
+__atomic_sub_fetch
+__atomic_xor_fetch
 __builtin_mul_overflow
 __builtin_frob_return_addr
 __builtin_sub_overflow
@@ -93,6 +98,7 @@ __sync_or_and_fetch
 __builtin_frame_address
 __atomic_exchange_n
 __atomic_fetch_nand
+__atomic_nand_fetch
 __builtin_add_overflow_p
 __builtin_ssubll_overflow
 __builtin_FUNCTION

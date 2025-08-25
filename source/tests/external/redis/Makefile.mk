@@ -34,7 +34,7 @@ $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR)/src/redis-server: $(KEFIR_EXTERNAL_TEST_
 		LD_LIBRARY_PATH="$(realpath $(LIB_DIR)):$$LD_LIBRARY_PATH" \
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		LC_ALL=C.UTF-8 \
-		$(MAKE) V=1 MALLOC=libc CC="$(realpath $(KEFIR_EXE))" CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/redis/include/kefir_atomic_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/redis/include"
+		$(MAKE) V=1 MALLOC=libc CC="$(realpath $(KEFIR_EXE))" CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/redis/include"
 
 $(KEFIR_EXTERNAL_TEST_REDIS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_DIR)/src/redis-server
 	@echo "Testing redis $(KEFIR_EXTERNAL_TEST_REDIS_VERSION)..."
@@ -43,7 +43,7 @@ $(KEFIR_EXTERNAL_TEST_REDIS_DIR)/tests.log: $(KEFIR_EXTERNAL_TEST_REDIS_SOURCE_D
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		LC_ALL=C.UTF-8 \
-		bash -c 'set -o pipefail; $(MAKE) V=1 MALLOC=libc CC="$(realpath $(KEFIR_EXE))" CFLAGS="-include $(realpath $(SOURCE_DIR))/tests/external/redis/include/kefir_atomic_builtins.h -isystem $(realpath $(SOURCE_DIR))/tests/external/redis/include" test 2>&1 | tee "$(shell realpath "$@.tmp")"'
+		bash -c 'set -o pipefail; $(MAKE) V=1 MALLOC=libc CC="$(realpath $(KEFIR_EXE))" CFLAGS="-isystem $(realpath $(SOURCE_DIR))/tests/external/redis/include" test 2>&1 | tee "$(shell realpath "$@.tmp")"'
 	@mv "$@.tmp" "$@"
 
 $(KEFIR_EXTERNAL_TESTS_DIR)/redis.test.done: $(KEFIR_EXTERNAL_TEST_REDIS_DIR)/tests.log

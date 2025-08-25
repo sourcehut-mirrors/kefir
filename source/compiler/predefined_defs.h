@@ -118,7 +118,7 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __DBL_HAS_DENORM__ 1
 #define __LDBL_HAS_DENORM__ 1
 #define __FLT_DENORM_MIN__ 1.40129846432481707092372958328991613e-45F
-#define __DBL_DENORM_MIN__ ((double)4.94065645841246544176568792868221372e-324L)
+#define __DBL_DENORM_MIN__ ((double) 4.94065645841246544176568792868221372e-324L)
 #define __LDBL_DENORM_MIN__ 3.64519953188247460252840593361941982e-4951L
 
 // Type width
@@ -357,6 +357,33 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
     __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_and)
 #define __atomic_fetch_nand(_ptr, _val, _memorder) \
     __kefir_atomic_fetch_op_impl((_ptr), (_val), (_memorder), __kefir_atomic_fetch_op_nand)
+
+#define __kefir_atomic_op_fetch(_op, _ptr, _val, _memorder)          \
+    ({                                                               \
+        typedef _Atomic(__typeof_unqual__(*(_ptr))) *__atomic_ptr_t; \
+        typedef __typeof_unqual__((_val)) __value_t;                 \
+        __atomic_ptr_t __ptr = (_ptr);                               \
+        __value_t __val = (_val);                                    \
+        (void) (_memorder);                                          \
+        *(__ptr) _op## = (__val);                                    \
+    })
+#define __atomic_add_fetch(_ptr, _val, _memorder) __kefir_atomic_op_fetch(+, (_ptr), (_val), (_memorder))
+#define __atomic_sub_fetch(_ptr, _val, _memorder) __kefir_atomic_op_fetch(-, (_ptr), (_val), (_memorder))
+#define __atomic_and_fetch(_ptr, _val, _memorder) __kefir_atomic_op_fetch(&, (_ptr), (_val), (_memorder))
+#define __atomic_xor_fetch(_ptr, _val, _memorder) __kefir_atomic_op_fetch(^, (_ptr), (_val), (_memorder))
+#define __atomic_or_fetch(_ptr, _val, _memorder) __kefir_atomic_op_fetch(|, (_ptr), (_val), (_memorder))
+#define __atomic_nand_fetch(_ptr, _val, _memorder)                                                               \
+    ({                                                                                                           \
+        typedef __typeof_unqual__((void) 0, *(_ptr)) __result_t;                                                 \
+        __result_t *const __ptr = (__result_t *) (_ptr);                                                         \
+        __result_t const __val = (__result_t) (_val);                                                            \
+        const int __memorder = (_memorder);                                                                      \
+        __result_t __new_value, __current_value = __atomic_load_n(__ptr, __memorder);                            \
+        do {                                                                                                     \
+            __new_value = ~(__current_value & __val);                                                            \
+        } while (!__atomic_compare_exchange_n(__ptr, &__current_value, __new_value, 0, __memorder, __memorder)); \
+        __new_value;                                                                                             \
+    })
 
 #define __atomic_thread_fence(_memorder)                        \
     ({                                                          \
