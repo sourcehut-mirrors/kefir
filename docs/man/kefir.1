@@ -115,6 +115,13 @@ Let the type char be unsigned. By default, it is target-specific.
 .It Fl fsigned-char
 Let the type char be signed. By default, it is target-specific.
 .\"
+.It Fl fcommon
+Place tentative definitions into common section (equivalent to common attribute
+applied to all variables).
+.\"
+.It Fl fno-common
+Do not place tentative definitions into common section [default].
+.\"
 .It Fl D Ar name[=value]
 Define preprocessor macro
 .\"
@@ -448,6 +455,13 @@ Let the type char be unsigned. By default, it is target-specific.
 .\"
 .It Fl \-signed-char
 Let the type char be signed. By default, it is target-specific.
+.\"
+.It Fl \-codegen-tentative-common
+Place tentative definitions into common section (equivalent to common attribute
+applied to all variables).
+.\"
+.It Fl \-codegen-tentative-no-common
+Do not place tentative definitions into common section [default].
 .El
 .\"
 .Ss FEATURES

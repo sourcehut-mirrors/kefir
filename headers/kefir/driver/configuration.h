@@ -118,6 +118,12 @@ typedef enum kefir_driver_char_signedness {
     KEFIR_DRIVER_CHAR_UNSIGNED
 } kefir_driver_char_signedness_t;
 
+typedef enum kefir_driver_tentative_definition_placement {
+    KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT,
+    KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON,
+    KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON
+} kefir_driver_tentative_definition_placement_t;
+
 typedef struct kefir_driver_configuration {
     kefir_driver_stage_t stage;
     const char *output_file;
@@ -138,6 +144,7 @@ typedef struct kefir_driver_configuration {
     struct {
         kefir_int_t optimization_level;
         kefir_driver_char_signedness_t char_signedness;
+        kefir_driver_tentative_definition_placement_t tentative_definition_placement;
     } compiler;
 
     struct {

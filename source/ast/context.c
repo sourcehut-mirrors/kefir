@@ -10,7 +10,8 @@ kefir_result_t kefir_ast_context_configuration_defaults(struct kefir_ast_context
                                                                      .fixed_enum_type = false,
                                                                      .implicit_function_declaration = false,
                                                                      .int_to_pointer = false,
-                                                                    .enable_thread_local_common = false},
+                                                                    .enable_thread_local_common = false,
+                                                                .tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON},
                                                         .standard_version = KEFIR_DEFAULT_STANDARD_VERSION,
                                                         .warning_output = stderr};
     return KEFIR_OK;

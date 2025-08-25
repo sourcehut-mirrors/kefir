@@ -252,6 +252,20 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
         compiler_config->features.designator_subscript_ranges = true;
     }
 
+    switch (config->compiler.tentative_definition_placement) {
+        case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
+            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT;
+            break;
+
+        case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON:
+            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
+            break;
+
+        case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON:
+            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
+            break;
+    }
+
     compiler_config->debug_info = config->flags.debug_info;
     compiler_config->codegen.position_independent_code = config->flags.position_independent_code;
     if (compiler_config->codegen.position_independent_code) {

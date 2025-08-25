@@ -136,6 +136,7 @@ kefir_result_t kefir_driver_configuration_init(struct kefir_driver_configuration
 
     config->compiler.optimization_level = -1;
     config->compiler.char_signedness = KEFIR_DRIVER_CHAR_SIGNEDNESS_DEFAULT;
+    config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT;
 
     config->assembler.target = KEFIR_DRIVER_ASSEMBLER_GAS_ATT;
 

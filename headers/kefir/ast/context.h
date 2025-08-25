@@ -38,6 +38,12 @@
 
 typedef struct kefir_ast_identifier_flat_scope kefir_ast_identifier_flat_scope_t;
 
+typedef enum kefir_ast_context_tentative_definition_placement {
+    KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT,
+    KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON,
+    KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON
+} kefir_ast_context_tentative_definition_placement_t;
+
 typedef struct kefir_ast_context_configuration {
     kefir_c_language_standard_version_t standard_version;
     struct {
@@ -49,6 +55,7 @@ typedef struct kefir_ast_context_configuration {
         kefir_bool_t missing_braces_subobj;
         kefir_bool_t int_to_pointer;
         kefir_bool_t enable_thread_local_common;
+        kefir_ast_context_tentative_definition_placement_t tentative_definition_placement;
     } analysis;
 
     FILE *warning_output;

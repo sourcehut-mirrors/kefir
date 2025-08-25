@@ -1925,6 +1925,16 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
 
     if (attributes != NULL) {
         *attributes = (struct kefir_ast_declarator_attributes) {0};
+        switch (context->configuration->analysis.tentative_definition_placement) {
+            case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
+            case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON:
+                attributes->common = false;
+                break;
+
+            case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON:
+                attributes->common = true;
+                break;
+        }
     }
 
     REQUIRE_OK(analyze_declaration_declarator_impl(mem, context, specifiers, declarator, identifier, base_type,

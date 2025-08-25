@@ -276,6 +276,10 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
             config->compiler.char_signedness = KEFIR_DRIVER_CHAR_UNSIGNED;
         } else if (STRNCMP("-fsigned-char", arg) == 0) {
             config->compiler.char_signedness = KEFIR_DRIVER_CHAR_SIGNED;
+        } else if (STRNCMP("-fcommon", arg) == 0) {
+            config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
+        } else if (STRNCMP("-fno-common", arg) == 0) {
+            config->compiler.tentative_definition_placement = KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
         } else if (STRNCMP("-x", arg) == 0) {
             const char *language = NULL;
             if (strlen(arg) == 2) {
