@@ -305,15 +305,20 @@ kefir_result_t kefir_lexer_cursor_set_source_location(struct kefir_lexer_source_
     REQUIRE(cursor != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer source cursor"));
     REQUIRE(source_location != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid source location"));
 
+    const kefir_source_location_line_t original_line = cursor->location.line;
     kefir_source_location_line_t line_diff = source_location->line - cursor->location.line;
     kefir_source_location_line_t column_diff = source_location->column - cursor->location.column;
     cursor->location = *source_location;
     for (kefir_size_t i = 0; i < KEFIR_LEXER_SOURCE_CURSOR_LOOKAHEAD; i++) {
+        if (cursor->lookahead[i].location.line == original_line) {
+            cursor->lookahead[i].location.column += column_diff;
+        }
         cursor->lookahead[i].location.line += line_diff;
-        cursor->lookahead[i].location.column += column_diff;
     }
     cursor->current_location.source = source_location->source;
+    if (cursor->current_location.line == original_line) {
+        cursor->current_location.column += column_diff;
+    }
     cursor->current_location.line += line_diff;
-    cursor->current_location.column += column_diff;
     return KEFIR_OK;
 }

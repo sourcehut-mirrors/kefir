@@ -8,8 +8,12 @@ struct params {
     struct kefir_token *token;
 };
 
-static kefir_result_t scan_string(struct kefir_mem *mem, struct kefir_lexer *lexer,
+kefir_result_t kefir_lexer_scan_string(struct kefir_mem *mem, struct kefir_lexer *lexer,
                                   struct kefir_string_buffer *strbuf) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(lexer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid lexer"));
+    REQUIRE(strbuf != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid string buffer"));
+
     kefir_char32_t chr = kefir_lexer_source_cursor_at(lexer->cursor, 0);
     for (; chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != U'\"';) {
 
@@ -94,7 +98,7 @@ static kefir_result_t match_impl(struct kefir_mem *mem, struct kefir_lexer *lexe
     struct kefir_string_buffer strbuf;
     REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_UNICODE32));
 
-    res = scan_string(mem, lexer, &strbuf);
+    res = kefir_lexer_scan_string(mem, lexer, &strbuf);
     if (res == KEFIR_OK) {
         kefir_size_t length = 0;
         const kefir_char32_t *content = kefir_string_buffer_value(&strbuf, &length);

@@ -51,6 +51,7 @@ typedef enum kefir_preprocessor_directive_type {
     KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY,
     KEFIR_PREPROCESSOR_DIRECTIVE_NON,
     KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN,
+    KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER,
     KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL
 } kefir_preprocessor_directive_type_t;
 
@@ -85,6 +86,10 @@ typedef struct kefir_preprocessor_directive {
         struct kefir_token_buffer pp_tokens;
         struct kefir_token pp_token;
         struct {
+            const char *filename;
+            kefir_size_t line_number;
+        } linemarker;
+        struct {
             const char *content;
             kefir_size_t length;
         } error_message;
@@ -116,7 +121,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_skip_line(struct kefir_mem *
                                                               struct kefir_preprocessor_directive_scanner *);
 kefir_result_t kefir_preprocessor_directive_scanner_match(struct kefir_mem *,
                                                           struct kefir_preprocessor_directive_scanner *,
-                                                          kefir_preprocessor_directive_type_t *);
+                                                          kefir_preprocessor_directive_type_t *, kefir_size_t *);
 kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *,
                                                          struct kefir_preprocessor_directive_scanner *,
                                                          struct kefir_token_allocator *,

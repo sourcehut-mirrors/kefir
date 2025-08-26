@@ -1,0 +1,221 @@
+[
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1000,
+            "column": 1
+        }
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "x",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1000,
+            "column": 5
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "=",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1000,
+            "column": 7
+        }
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 1000,
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1000,
+            "column": 9
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1000,
+            "column": 13
+        }
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1002,
+            "column": 1
+        }
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "y",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1002,
+            "column": 5
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "=",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1002,
+            "column": 7
+        }
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 1,
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1002,
+            "column": 9
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";",
+        "source_location": {
+            "source": "HELLO WORLD",
+            "line": 1002,
+            "column": 10
+        }
+    },
+    {
+        "class": "string_literal",
+        "preprocessor": false,
+        "raw": false,
+        "type": "multibyte",
+        "content": "Let's go\u0000",
+        "length": 9,
+        "source_location": {
+            "source": "Hey\/\\\\\/ho",
+            "line": 1342,
+            "column": 1
+        }
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "int",
+        "spelling": "int",
+        "source_location": {
+            "source": "Hey\/\\\\\/ho",
+            "line": 1344,
+            "column": 1
+        }
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "z",
+        "source_location": {
+            "source": "Hey\/\\\\\/ho",
+            "line": 1344,
+            "column": 5
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "=",
+        "source_location": {
+            "source": "Hey\/\\\\\/ho",
+            "line": 1344,
+            "column": 7
+        }
+    },
+    {
+        "class": "constant",
+        "preprocessor": false,
+        "type": "integer",
+        "value": 1000,
+        "source_location": {
+            "source": "Hey\/\\\\\/ho",
+            "line": 1344,
+            "column": 9
+        }
+    },
+    {
+        "class": "keyword",
+        "preprocessor": false,
+        "keyword": "void",
+        "spelling": "void",
+        "source_location": {
+            "source": "Hello",
+            "line": 4,
+            "column": 1
+        }
+    },
+    {
+        "class": "identifier",
+        "preprocessor": false,
+        "identifier": "fn",
+        "source_location": {
+            "source": "Hello",
+            "line": 4,
+            "column": 6
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": "(",
+        "source_location": {
+            "source": "Hello",
+            "line": 4,
+            "column": 8
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ")",
+        "source_location": {
+            "source": "Hello",
+            "line": 4,
+            "column": 9
+        }
+    },
+    {
+        "class": "punctuator",
+        "preprocessor": false,
+        "punctuator": ";",
+        "source_location": {
+            "source": "Hello",
+            "line": 4,
+            "column": 10
+        }
+    },
+    {
+        "class": "sentinel",
+        "preprocessor": false,
+        "source_location": {
+            "source": "Hello",
+            "line": 5,
+            "column": 1
+        }
+    }
+]

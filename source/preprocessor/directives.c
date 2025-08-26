@@ -150,7 +150,7 @@ static kefir_result_t skip_whitespaces_until(struct kefir_lexer_source_cursor *c
 
 kefir_result_t kefir_preprocessor_directive_scanner_match(
     struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
-    kefir_preprocessor_directive_type_t *directive_type) {
+    kefir_preprocessor_directive_type_t *directive_type, kefir_uint64_t *linenum_ptr) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(directive_scanner != NULL,
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid preprocessor directive lexer"));
@@ -175,6 +175,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
     }
     REQUIRE_OK(kefir_lexer_source_cursor_save(directive_scanner->lexer->cursor, &hash_state));
     REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+    const kefir_bool_t potential_linemarker = kefir_isspace32(kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0));
     REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
     chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
     if (chr == directive_scanner->lexer->context->newline) {
@@ -185,6 +186,19 @@ kefir_result_t kefir_preprocessor_directive_scanner_match(
 
 #define MAX_DIRECTIVE_NAME 64
     kefir_char32_t directive_name[MAX_DIRECTIVE_NAME] = {0};
+    if (potential_linemarker && kefir_isdigit32(chr)) {
+        kefir_uint64_t linenum = 0;
+        while (kefir_isdigit32(chr)) {
+            linenum = (linenum * 10) + (chr - U'0');
+            REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+            chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+        }
+
+        *directive_type = KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER;
+        ASSIGN_PTR(linenum_ptr, linenum);
+        return KEFIR_OK;
+    }
+
     kefir_size_t directive_name_idx = 0;
     while (kefir_isnondigit32(chr) && directive_name_idx + 1 < MAX_DIRECTIVE_NAME) {
         directive_name[directive_name_idx++] = chr;
@@ -651,6 +665,49 @@ static kefir_result_t next_non_directive(struct kefir_preprocessor_directive_sca
     return KEFIR_OK;
 }
 
+static kefir_result_t next_linemarker(struct kefir_mem *mem, struct kefir_preprocessor_directive_scanner *directive_scanner,
+                                struct kefir_preprocessor_directive *directive, kefir_size_t linenum) {
+    directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER;
+    directive->linemarker.line_number = linenum;
+
+    REQUIRE_OK(skip_whitespaces_until(directive_scanner->lexer->cursor, directive_scanner->lexer->context->newline));
+    if (kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0) != U'\"') {
+        REQUIRE_OK(next_non_directive(directive_scanner, directive));
+        return KEFIR_OK;
+    } else {
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+    }
+
+    struct kefir_string_buffer strbuf;
+    REQUIRE_OK(kefir_string_buffer_init(mem, &strbuf, KEFIR_STRING_BUFFER_MULTIBYTE));
+    kefir_result_t res = kefir_lexer_scan_string(mem, directive_scanner->lexer, &strbuf);
+    if (res == KEFIR_LEXER_ERROR || res == KEFIR_NO_MATCH) {
+        REQUIRE_OK(kefir_string_buffer_free(mem, &strbuf));
+        REQUIRE_OK(next_non_directive(directive_scanner, directive));
+        return KEFIR_OK;
+    }
+    REQUIRE_ELSE(res == KEFIR_OK, {
+        kefir_string_buffer_free(mem, &strbuf);
+        return res;
+    });
+    
+    const char *filename = kefir_string_pool_insert(mem, directive_scanner->lexer->symbols, kefir_string_buffer_value(&strbuf, NULL), NULL);
+    REQUIRE_ELSE(filename != NULL, {
+        kefir_string_buffer_free(mem, &strbuf);
+        return KEFIR_SET_ERROR(KEFIR_OBJALLOC_FAILURE, "Failed to insert filename into string pool");
+    });
+    REQUIRE_OK(kefir_string_buffer_free(mem, &strbuf));
+    directive->linemarker.filename = filename;
+
+    // Skip the rest
+    for (kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+         chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != directive_scanner->lexer->context->newline;) {
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
+        chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+    }
+    return KEFIR_OK;
+}
+
 static kefir_result_t next_pp_token(struct kefir_mem *mem,
                                     struct kefir_preprocessor_directive_scanner *directive_scanner,
                                     struct kefir_preprocessor_directive *directive) {
@@ -687,7 +744,8 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
     }
 
     kefir_preprocessor_directive_type_t directive_type;
-    REQUIRE_OK(kefir_preprocessor_directive_scanner_match(mem, directive_scanner, &directive_type));
+    kefir_size_t linenum;
+    REQUIRE_OK(kefir_preprocessor_directive_scanner_match(mem, directive_scanner, &directive_type, &linenum));
     switch (directive_type) {
         case KEFIR_PREPROCESSOR_DIRECTIVE_IF:
             REQUIRE_OK(next_if(mem, directive_scanner, token_allocator, directive));
@@ -764,6 +822,10 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
             REQUIRE_OK(next_line(mem, directive_scanner, token_allocator, directive));
             break;
 
+        case KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER:
+            REQUIRE_OK(next_linemarker(mem, directive_scanner, directive, linenum));
+            break;
+
         case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
             directive->type = KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY;
             break;
@@ -829,6 +891,7 @@ kefir_result_t kefir_preprocessor_directive_free(struct kefir_mem *mem,
         case KEFIR_PREPROCESSOR_DIRECTIVE_ELSE:
         case KEFIR_PREPROCESSOR_DIRECTIVE_ENDIF:
         case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
+        case KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER:
         case KEFIR_PREPROCESSOR_DIRECTIVE_SENTINEL:
             // Intentionally left blank
             break;

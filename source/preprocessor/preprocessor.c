@@ -220,7 +220,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
     while (skip) {
         struct kefir_preprocessor_directive_scanner_state scanner_state;
         REQUIRE_OK(kefir_preprocessor_directive_scanner_save(&preprocessor->directive_scanner, &scanner_state));
-        REQUIRE_OK(kefir_preprocessor_directive_scanner_match(mem, &preprocessor->directive_scanner, &directive));
+        REQUIRE_OK(kefir_preprocessor_directive_scanner_match(mem, &preprocessor->directive_scanner, &directive, NULL));
         switch (directive) {
             case KEFIR_PREPROCESSOR_DIRECTIVE_IF:
             case KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF:
@@ -267,6 +267,7 @@ kefir_result_t kefir_preprocessor_skip_group(struct kefir_mem *mem, struct kefir
             case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:
             case KEFIR_PREPROCESSOR_DIRECTIVE_NON:
             case KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN:
+            case KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER:
                 REQUIRE_OK(kefir_preprocessor_directive_scanner_skip_line(mem, &preprocessor->directive_scanner));
                 break;
         }
@@ -991,7 +992,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
     *token_destination = KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL;
     REQUIRE(preprocessor->mode != KEFIR_PREPROCESSOR_MODE_MINIMAL ||
         directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN ||
-        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINE, KEFIR_OK);
+        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER, KEFIR_OK);
 
     switch (directive->type) {
         case KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF: {
@@ -1128,6 +1129,13 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_LINE:
             REQUIRE_OK(process_line(mem, preprocessor, token_allocator, directive));
+            break;
+
+        case KEFIR_PREPROCESSOR_DIRECTIVE_LINEMARKER:
+            REQUIRE_OK(kefir_lexer_cursor_set_source_location(
+                preprocessor->lexer.cursor,
+                &(struct kefir_source_location) {
+                    .source = directive->linemarker.filename, .line = directive->linemarker.line_number - 1, .column = 1}));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:

@@ -29,6 +29,7 @@
 #include "kefir/core/string_pool.h"
 #include "kefir/core/trie.h"
 #include "kefir/core/list.h"
+#include "kefir/core/string_buffer.h"
 #include "kefir/lexer/context.h"
 #include "kefir/util/json.h"
 
@@ -108,5 +109,7 @@ kefir_result_t kefir_lexer_skip_oneline_comment(const struct kefir_lexer_context
 
 kefir_result_t kefir_lexer_populate_buffer(struct kefir_mem *, struct kefir_token_allocator *,
                                            struct kefir_token_buffer *, struct kefir_lexer *);
+kefir_result_t kefir_lexer_scan_string(struct kefir_mem *mem, struct kefir_lexer *lexer,
+                                  struct kefir_string_buffer *);
 
 #endif
