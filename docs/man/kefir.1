@@ -107,7 +107,8 @@ section below)
 Code optimization level (default is 0). All non-zero levels are equivalent to 1. All non-numerical levels (such as \-Os) are also equivalent to 1.
 .\"
 .It Fl fpreprocessed
-Skip preprocessing stage
+Skip preprocessor directive processing and macro expansion. Preprocessor skips over any directive except for
+line directive, and acts solely as tokenizer.
 .\"
 .It Fl funsigned-char
 Let the type char be unsigned. By default, it is target-specific.

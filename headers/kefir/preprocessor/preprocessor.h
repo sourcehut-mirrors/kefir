@@ -114,6 +114,11 @@ kefir_result_t kefir_preprocessor_context_init(struct kefir_mem *, struct kefir_
                                                const struct kefir_preprocessor_context_extensions *);
 kefir_result_t kefir_preprocessor_context_free(struct kefir_mem *, struct kefir_preprocessor_context *);
 
+typedef enum kefir_preprocessor_mode {
+    KEFIR_PREPROCESSOR_MODE_NORMAL,
+    KEFIR_PREPROCESSOR_MODE_MINIMAL
+} kefir_preprocessor_mode_t;
+
 typedef struct kefir_preprocessor {
     const struct kefir_preprocessor_source_file_info *current_file;
     struct kefir_lexer lexer;
@@ -124,6 +129,7 @@ typedef struct kefir_preprocessor {
     struct kefir_preprocessor_macro_scope *macros;
     const struct kefir_preprocessor *parent;
     const struct kefir_preprocessor_extensions *extensions;
+    kefir_preprocessor_mode_t mode;
     void *extension_payload;
 } kefir_preprocessor_t;
 

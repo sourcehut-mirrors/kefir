@@ -38,20 +38,6 @@ static kefir_result_t preprocess_hook(struct kefir_mem *mem, struct kefir_string
     return KEFIR_OK;
 }
 
-static kefir_result_t skip_preprocessor_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
-                                             const struct kefir_cli_option *option, void *raw_options,
-                                             const char *arg) {
-    UNUSED(mem);
-    UNUSED(symbols);
-    UNUSED(option);
-    UNUSED(arg);
-    ASSIGN_DECL_CAST(struct kefir_compiler_runner_configuration *, options, raw_options);
-
-    REQUIRE(options->action != KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
-            KEFIR_SET_ERRORF(KEFIR_UI_ERROR, "Cannot combine %s with preprocessing action", option->long_option));
-    return KEFIR_OK;
-}
-
 static kefir_result_t pp_timestamp_hook(struct kefir_mem *mem, struct kefir_string_pool *symbols,
                                         const struct kefir_cli_option *option, void *raw_options, const char *arg) {
     UNUSED(mem);
@@ -233,8 +219,7 @@ struct kefir_cli_option KefirCompilerConfigurationOptions[] = {
            standard_version),
     PREHOOK('p', "preprocess", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_PREPROCESS,
             action, preprocess_hook),
-    PREHOOK('P', "skip-preprocessor", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, skip_preprocessor,
-            skip_preprocessor_hook),
+    SIMPLE('P', "skip-preprocessor", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, true, skip_preprocessor),
     SIMPLE(0, "dump-tokens", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_DUMP_TOKENS,
            action),
     SIMPLE(0, "dump-ast", false, KEFIR_CLI_OPTION_ACTION_ASSIGN_CONSTANT, KEFIR_COMPILER_RUNNER_ACTION_DUMP_AST,

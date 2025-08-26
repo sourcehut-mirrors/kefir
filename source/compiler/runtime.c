@@ -73,7 +73,7 @@ static kefir_result_t generate_runtime_functions_impl(struct kefir_mem *mem, FIL
     REQUIRE_OK(kefir_token_buffer_init(&buffer));
 
     kefir_result_t res =
-        kefir_compiler_preprocess_lex(mem, context, &context->builtin_token_allocator, &buffer,
+        kefir_compiler_preprocess_lex(mem, context, KEFIR_PREPROCESSOR_MODE_NORMAL, &context->builtin_token_allocator, &buffer,
                                       KefirCodegenBigintRuntime, KefirCodegenBigintRuntimeLength, filename, filename);
     REQUIRE_CHAIN(&res, kefir_compiler_parse(mem, context, &buffer, &defs_unit));
     REQUIRE_ELSE(res == KEFIR_OK, {

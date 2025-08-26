@@ -178,6 +178,7 @@ kefir_result_t kefir_preprocessor_init(struct kefir_mem *mem, struct kefir_prepr
     preprocessor->macros = &preprocessor->macro_overlay.scope;
     preprocessor->current_file = current_file;
     preprocessor->parent = NULL;
+    preprocessor->mode = KEFIR_PREPROCESSOR_MODE_NORMAL;
 
     preprocessor->extensions = extensions;
     preprocessor->extension_payload = NULL;
@@ -988,6 +989,10 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
                                     struct kefir_preprocessor_directive *directive, struct kefir_list *condition_stack,
                                     kefir_preprocessor_token_destination_t *token_destination) {
     *token_destination = KEFIR_PREPROCESSOR_TOKEN_DESTINATION_NORMAL;
+    REQUIRE(preprocessor->mode != KEFIR_PREPROCESSOR_MODE_MINIMAL ||
+        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_PP_TOKEN ||
+        directive->type == KEFIR_PREPROCESSOR_DIRECTIVE_LINE, KEFIR_OK);
+
     switch (directive->type) {
         case KEFIR_PREPROCESSOR_DIRECTIVE_IFDEF: {
             const struct kefir_preprocessor_macro *macro = NULL;
