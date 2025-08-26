@@ -20,6 +20,9 @@ $(KEFIR_EXTERNAL_TEST_LIBEXPAT_ARCHIVE):
 $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/.extracted: $(KEFIR_EXTERNAL_TEST_LIBEXPAT_ARCHIVE)
 	@echo "Extracting $(KEFIR_EXTERNAL_TEST_LIBEXPAT_ARCHIVE_FILENAME)..."
 	@cd "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_DIR)" && tar xvfz "$(KEFIR_EXTERNAL_TEST_LIBEXPAT_ARCHIVE_FILENAME)"
+	@echo "Pathcing libexpat $(KEFIR_EXTERNAL_TEST_LIBEXPAT_VERSION)..."
+	@find $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR) -type f -name "*.h" -exec sed -i 's/__attribute__/__attribute/g' {} \;
+	@find $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR) -type f -name "*.c" -exec sed -i 's/__attribute__/__attribute/g' {} \;
 	@touch "$@"
 
 $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/expat/configure: $(KEFIR_EXTERNAL_TEST_LIBEXPAT_SOURCE_DIR)/.extracted $(KEFIR_EXE)
