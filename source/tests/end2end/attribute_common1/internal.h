@@ -19,7 +19,9 @@
 */
 
 int x __attribute__((common));
+#if !defined(__OpenBSD__) || defined(LIB1)
 _Thread_local int y __attribute__((common));
+#endif
 static int z __attribute__((common));
 static _Thread_local int w __attribute__((common));
 
