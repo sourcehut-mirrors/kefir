@@ -1924,9 +1924,7 @@ kefir_result_t kefir_ast_analyze_declaration_declarator(struct kefir_mem *mem, c
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid AST declarator specifier list"));
 
     if (attributes != NULL) {
-        *attributes = (struct kefir_ast_declarator_attributes) {
-            .visibility = context->configuration->analysis.symbol_visibility
-        };
+        *attributes = (struct kefir_ast_declarator_attributes) {0};
         switch (context->configuration->analysis.tentative_definition_placement) {
             case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
             case KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON:

@@ -1,0 +1,38 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global x
+.type x, @object
+.protected x
+.global y
+.type y, @object
+.internal y
+.global fn1
+.type fn1, @function
+.protected fn1
+.global fn2
+.type fn2, @function
+
+.section .text
+__kefir_text_section_begin:
+fn1:
+__kefir_text_func_fn1_begin:
+    ret
+__kefir_text_func_fn1_end:
+
+fn2:
+__kefir_text_func_fn2_begin:
+    ret
+__kefir_text_func_fn2_end:
+
+__kefir_text_section_end:
+
+.section .data
+    .align 4
+x:
+    .long 0
+
+    .align 4
+y:
+    .long 0
+
