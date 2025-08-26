@@ -1135,7 +1135,7 @@ static kefir_result_t run_directive(struct kefir_mem *mem, struct kefir_preproce
             REQUIRE_OK(kefir_lexer_cursor_set_source_location(
                 preprocessor->lexer.cursor,
                 &(struct kefir_source_location) {
-                    .source = directive->linemarker.filename, .line = directive->linemarker.line_number - 1, .column = 1}));
+                    .source = directive->linemarker.filename, .line = directive->linemarker.line_number, .column = 1}));
             break;
 
         case KEFIR_PREPROCESSOR_DIRECTIVE_EMPTY:

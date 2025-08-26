@@ -700,10 +700,14 @@ static kefir_result_t next_linemarker(struct kefir_mem *mem, struct kefir_prepro
     directive->linemarker.filename = filename;
 
     // Skip the rest
-    for (kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+    kefir_char32_t chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+    for (;
          chr != KEFIR_LEXER_SOURCE_CURSOR_EOF && chr != directive_scanner->lexer->context->newline;) {
         REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
         chr = kefir_lexer_source_cursor_at(directive_scanner->lexer->cursor, 0);
+    }
+    if (chr == directive_scanner->lexer->context->newline) {
+        REQUIRE_OK(kefir_lexer_source_cursor_next(directive_scanner->lexer->cursor, 1));
     }
     return KEFIR_OK;
 }
