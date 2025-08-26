@@ -1,6 +1,21 @@
---- ./test/test-udp-multicast-join6.c	2024-10-18 22:02:38.000000000 +0300
-+++ ./test/test-udp-multicast-join6.c	2025-01-10 19:24:10.118209496 +0200
-@@ -169,6 +169,8 @@
+diff -ru include/uv.h include/uv.h
+--- include/uv.h	2025-04-25 12:50:27.000000000 +0300
++++ include/uv.h	2025-08-26 21:38:19.074659834 +0300
+@@ -44,8 +44,8 @@
+     /* Building static library. */
+ #   define UV_EXTERN /* nothing */
+ # endif
+-#elif __GNUC__ >= 4
+-# define UV_EXTERN __attribute__((visibility("default")))
++#elif __GNUC__ >= 4 || defined(__KEFIRCC__)
++# define UV_EXTERN __attribute((visibility("default")))
+ #elif defined(__SUNPRO_C) && (__SUNPRO_C >= 0x550) /* Sun Studio >= 8 */
+ # define UV_EXTERN __global
+ #else
+diff -ru test/test-udp-multicast-join6.c test/test-udp-multicast-join6.c
+--- test/test-udp-multicast-join6.c	2025-04-25 12:50:27.000000000 +0300
++++ test/test-udp-multicast-join6.c	2025-08-26 21:36:10.054260935 +0300
+@@ -170,6 +170,8 @@
    int r;
    struct sockaddr_in6 addr;
  
@@ -9,9 +24,10 @@
    if (!can_ipv6_external())
      RETURN_SKIP("No external IPv6 interface available");
  
---- ./test/test-udp-multicast-join.c	2024-10-18 22:02:38.000000000 +0300
-+++ ./test/test-udp-multicast-join.c	2025-01-10 19:24:31.498300797 +0200
-@@ -138,6 +138,7 @@
+diff -ru test/test-udp-multicast-join.c test/test-udp-multicast-join.c
+--- test/test-udp-multicast-join.c	2025-04-25 12:50:27.000000000 +0300
++++ test/test-udp-multicast-join.c	2025-08-26 21:36:10.054260935 +0300
+@@ -144,6 +144,7 @@
  
  
  TEST_IMPL(udp_multicast_join) {
