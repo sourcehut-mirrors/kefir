@@ -748,7 +748,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *mem,
     }
 
     kefir_preprocessor_directive_type_t directive_type;
-    kefir_size_t linenum;
+    kefir_uint64_t linenum;
     REQUIRE_OK(kefir_preprocessor_directive_scanner_match(mem, directive_scanner, &directive_type, &linenum));
     switch (directive_type) {
         case KEFIR_PREPROCESSOR_DIRECTIVE_IF:

@@ -121,7 +121,7 @@ kefir_result_t kefir_preprocessor_directive_scanner_skip_line(struct kefir_mem *
                                                               struct kefir_preprocessor_directive_scanner *);
 kefir_result_t kefir_preprocessor_directive_scanner_match(struct kefir_mem *,
                                                           struct kefir_preprocessor_directive_scanner *,
-                                                          kefir_preprocessor_directive_type_t *, kefir_size_t *);
+                                                          kefir_preprocessor_directive_type_t *, kefir_uint64_t *);
 kefir_result_t kefir_preprocessor_directive_scanner_next(struct kefir_mem *,
                                                          struct kefir_preprocessor_directive_scanner *,
                                                          struct kefir_token_allocator *,
