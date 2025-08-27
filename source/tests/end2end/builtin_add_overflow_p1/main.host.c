@@ -25,7 +25,7 @@
 #include "./definitions.h"
 
 static int flag = 0;
-int callback() {
+int callback(void) {
     return flag++;
 }
 

@@ -908,8 +908,9 @@ static kefir_result_t process_elif(struct kefir_mem *mem, struct kefir_preproces
 }
 
 static kefir_result_t process_error(struct kefir_preprocessor_directive *directive) {
-    return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s",
-                                   directive->error_message.length, directive->error_message.content);
+// clang-format off
+    return KEFIR_SET_SOURCE_ERRORF(KEFIR_PREPROCESSOR_ERROR_DIRECTIVE, &directive->source_location, "%*s", directive->error_message.length, directive->error_message.content);
+// clang-format on
 }
 
 static kefir_result_t process_warning(struct kefir_preprocessor_directive *directive, FILE *warning_output) {

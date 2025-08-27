@@ -24,11 +24,11 @@
 #include "./definitions.h"
 
 static int value = 0;
-void test1() {
+void test1(void) {
     value = 1;
 }
 
-int test2() {
+int test2(void) {
     value = 2;
     return 0;
 }

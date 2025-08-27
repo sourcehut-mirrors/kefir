@@ -36,7 +36,7 @@ void set_value(long x) {
     value = x;
 }
 
-int test1() {
+int test1(void) {
     return 10;
 }
 
