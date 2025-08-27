@@ -23,7 +23,9 @@
 #include <assert.h>
 
 extern int x;
+#ifndef __OpenBSD__
 extern _Thread_local int y;
+#endif
 
 int getx(void);
 int gety(void);

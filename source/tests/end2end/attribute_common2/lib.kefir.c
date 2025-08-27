@@ -19,7 +19,9 @@
 */
 
 int x;
+#ifndef __OpenBSD__
 _Thread_local int y;
+#endif
 
 int getx() {
     extern int x __attribute__((common));
@@ -27,6 +29,8 @@ int getx() {
 }
 
 int gety() {
+#ifndef __OpenBSD__
     extern _Thread_local int y __attribute__((common));
+#endif
     return y;
 }
