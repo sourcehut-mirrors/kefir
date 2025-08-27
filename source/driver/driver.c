@@ -201,6 +201,11 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     compiler_config->dependency_output.target_name = config->dependency_output.target_name;
     compiler_config->dependency_output.output_filename = config->dependency_output.output_filename;
 
+    if (externals->source_date_epoch.present) {
+        compiler_config->pp_timestamp = externals->source_date_epoch.value;
+        compiler_config->default_pp_timestamp = false;
+    }
+
     switch (config->stage) {
         case KEFIR_DRIVER_STAGE_PREPROCESS:
         case KEFIR_DRIVER_STAGE_PREPROCESS_SAVE:
@@ -255,15 +260,18 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
 
     switch (config->compiler.tentative_definition_placement) {
         case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT:
-            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT;
+            compiler_config->codegen.tentative_definition_placement =
+                KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_DEFAULT;
             break;
 
         case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_COMMON:
-            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
+            compiler_config->codegen.tentative_definition_placement =
+                KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_COMMON;
             break;
 
         case KEFIR_DRIVER_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON:
-            compiler_config->codegen.tentative_definition_placement = KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
+            compiler_config->codegen.tentative_definition_placement =
+                KEFIR_AST_CONTEXT_TENTATIVE_DEFINITION_PLACEMENT_NO_COMMON;
             break;
     }
 
