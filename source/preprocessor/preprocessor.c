@@ -456,6 +456,17 @@ static kefir_result_t process_include(struct kefir_mem *mem, struct kefir_prepro
         return res;
     });
     REQUIRE_OK(source_file.close(mem, &source_file));
+
+    const struct kefir_token *buffer_tail = buffer_length > 0
+        ? kefir_token_buffer_at(buffer, buffer_length - 1)
+        : NULL;
+    if (buffer_tail == NULL || buffer_tail->klass != KEFIR_TOKEN_PP_WHITESPACE || !buffer_tail->pp_whitespace.newline) {
+        struct kefir_token *newline_token;
+        REQUIRE_OK(kefir_token_allocator_allocate_empty(mem, token_allocator, &newline_token));
+        REQUIRE_OK(kefir_token_new_pp_whitespace(true, newline_token));
+        newline_token->source_location = buffer_tail != NULL ? buffer_tail->source_location : directive->source_location;
+        REQUIRE_OK(kefir_token_buffer_emplace(mem, buffer, newline_token));
+    }
     return KEFIR_OK;
 }
 
