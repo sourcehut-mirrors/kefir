@@ -19,8 +19,10 @@
 */
 
 int x;
-#ifndef __OpenBSD__
+#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 _Thread_local int y;
+#else
+int y;
 #endif
 
 int getx() {
@@ -29,8 +31,10 @@ int getx() {
 }
 
 int gety() {
-#ifndef __OpenBSD__
+#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
     extern _Thread_local int y __attribute__((common));
+#else
+    extern int y __attribute__((common));
 #endif
     return y;
 }

@@ -23,8 +23,10 @@
 #include <assert.h>
 
 extern int x;
-#ifndef __OpenBSD__
+#if !defined(__OpenBSD__) && !defined(__FreeBSD__)
 extern _Thread_local int y;
+#else
+extern int y;
 #endif
 
 int getx(void);
