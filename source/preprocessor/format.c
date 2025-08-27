@@ -420,7 +420,12 @@ static kefir_result_t format_token(FILE *out, const struct kefir_token *token,
     return KEFIR_OK;
 }
 
-kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer,
+static kefir_result_t print_linemarker(FILE *out, const struct kefir_source_location *source_location) {
+    fprintf(out, "# %" KEFIR_UINT_FMT " \"%s\"\n", source_location->line, source_location->source);
+    return KEFIR_OK;   
+}
+
+kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buffer *buffer, kefir_bool_t include_linemarkers,
                                          kefir_preprocessor_whitespace_format_t ws_format) {
     REQUIRE(out != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid FILE"));
     REQUIRE(buffer != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid token buffer"));
@@ -428,8 +433,14 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
     const kefir_size_t buffer_length = kefir_token_buffer_length(buffer);
     kefir_bool_t empty_line = true;
     kefir_bool_t prev_token_non_newline_ws = false;
+    kefir_bool_t printed_newline = false;
+    struct kefir_source_location prev_location = {0};
     for (kefir_size_t i = 0; i < buffer_length; i++) {
         const struct kefir_token *token = kefir_token_buffer_at(buffer, i);
+        if (include_linemarkers && token->source_location.source != NULL && i == 0) {
+            REQUIRE_OK(print_linemarker(out, &token->source_location));
+        }
+
         kefir_bool_t token_non_newline_ws = false;
         if (token->klass == KEFIR_TOKEN_PP_WHITESPACE) {
             token_non_newline_ws = !token->pp_whitespace.newline;
@@ -457,8 +468,14 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
         } else {
             empty_line = false;
         }
+
         if (ws_format != KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL || !prev_token_non_newline_ws || !token_non_newline_ws || empty_line /* Print all whitespaces at the beginning of the line for indentation; collapse adjacent non-newline whitespaces within the line */) {
+            if (include_linemarkers && token->source_location.source != NULL && i != 0 && printed_newline && ((prev_location.source != NULL && strcmp(prev_location.source, token->source_location.source) != 0) || prev_location.line + 1 != token->source_location.line)) {
+                REQUIRE_OK(print_linemarker(out, &token->source_location));
+            }
             REQUIRE_OK(format_token(out, token, ws_format));
+            prev_location = token->source_location;
+            printed_newline = token->klass == KEFIR_TOKEN_PP_WHITESPACE && token->pp_whitespace.newline;
         }
         prev_token_non_newline_ws = token_non_newline_ws;
     }
@@ -468,7 +485,7 @@ kefir_result_t kefir_preprocessor_format(FILE *out, const struct kefir_token_buf
 static kefir_result_t format_string_impl(struct kefir_mem *mem, char **string_ptr,
                                          const struct kefir_token_buffer *buffer,
                                          kefir_preprocessor_whitespace_format_t ws_format, FILE *fp, size_t *sz) {
-    REQUIRE_OK(kefir_preprocessor_format(fp, buffer, ws_format));
+    REQUIRE_OK(kefir_preprocessor_format(fp, buffer, false, ws_format));
     int rc = fclose(fp);
     REQUIRE(rc == 0, KEFIR_SET_OS_ERROR("Failed to close in-memory file"));
     *string_ptr = KEFIR_MALLOC(mem, *sz + 1);

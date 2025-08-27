@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -Wpreprocessor-assembly-mode"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -Wpreprocessor-assembly-mode"

@@ -483,7 +483,7 @@ static kefir_result_t dump_preprocessed_impl(struct kefir_mem *mem,
     REQUIRE_OK(kefir_compiler_preprocess(mem, compiler, options->skip_preprocessor ? KEFIR_PREPROCESSOR_MODE_MINIMAL : KEFIR_PREPROCESSOR_MODE_NORMAL, &token_allocator, &tokens, source, length, source_id,
                                          options->input_filepath));
     if (output != NULL) {
-        REQUIRE_OK(kefir_preprocessor_format(output, &tokens, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
+        REQUIRE_OK(kefir_preprocessor_format(output, &tokens, options->features.preprocessor_linemarkers, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
     }
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));

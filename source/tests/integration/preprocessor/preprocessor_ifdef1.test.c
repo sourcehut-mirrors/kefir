@@ -97,7 +97,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
 #undef RUN_PREPROCESSOR
 
-    REQUIRE_OK(kefir_preprocessor_format(stdout, &tokens, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
+    REQUIRE_OK(kefir_preprocessor_format(stdout, &tokens, false, KEFIR_PREPROCESSOR_WHITESPACE_FORMAT_ORIGINAL));
     REQUIRE_OK(kefir_token_buffer_free(mem, &tokens));
     REQUIRE_OK(kefir_token_allocator_free(mem, &token_allocator));
     REQUIRE_OK(kefir_string_pool_free(mem, &symbols));

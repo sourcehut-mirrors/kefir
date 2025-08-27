@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -I $(dirname $SRC_FILE)/dir1 -iquote $(dirname $SRC_FILE)/dir2"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -I $(dirname $SRC_FILE)/dir1 -iquote $(dirname $SRC_FILE)/dir2"

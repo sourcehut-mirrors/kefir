@@ -232,6 +232,7 @@ kefir_result_t kefir_driver_generate_compiler_config(struct kefir_mem *mem, stru
     }
 
     compiler_config->skip_preprocessor = config->flags.skip_preprocessor;
+    compiler_config->features.preprocessor_linemarkers = config->flags.preprocessor_linemarkers;
     if (!config->flags.restrictive_mode) {
         compiler_config->features.missing_function_return_type = true;
         compiler_config->features.designated_initializer_colons = true;

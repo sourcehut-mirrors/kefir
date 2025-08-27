@@ -136,6 +136,7 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("-P", arg) == 0) {
             // Preprocess
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS;
+            config->flags.preprocessor_linemarkers = false;
         } else if (strcmp("--preprocess-save", arg) == 0) {
             // Preprocess and save
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS_SAVE;

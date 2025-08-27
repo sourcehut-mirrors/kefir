@@ -178,6 +178,7 @@ typedef struct kefir_driver_configuration {
         kefir_bool_t enable_atomics;
         kefir_bool_t pthread;
         kefir_bool_t verbose;
+        kefir_bool_t preprocessor_linemarkers;
     } flags;
 
     struct {
