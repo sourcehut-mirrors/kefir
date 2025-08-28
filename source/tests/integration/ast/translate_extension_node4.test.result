@@ -31,7 +31,8 @@
             "parameters": 0,
             "vararg": false,
             "returns": 1,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

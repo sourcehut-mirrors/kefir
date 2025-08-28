@@ -47,6 +47,7 @@ typedef struct kefir_ast_function_type {
     kefir_bool_t ellipsis;
     struct {
         kefir_bool_t returns_twice;
+        kefir_bool_t no_return;
         kefir_bool_t no_discard;
         const char *no_discard_message;
     } attributes;

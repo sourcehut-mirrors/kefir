@@ -40,6 +40,7 @@ kefir_result_t kefir_ir_function_decl_alloc(struct kefir_mem *mem, kefir_id_t id
     decl->result = returns;
     decl->result_type_id = returns_type_id;
     decl->vararg = vararg;
+    decl->no_return = false;
     decl->returns_twice = false;
     return KEFIR_OK;
 }

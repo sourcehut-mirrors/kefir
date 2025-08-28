@@ -40,6 +40,7 @@ typedef struct kefir_ir_function_decl {
         struct kefir_ir_type *result;
         kefir_id_t result_type_id;
         kefir_bool_t returns_twice;
+        kefir_bool_t no_return;
     };
 } kefir_ir_function_decl_t;
 

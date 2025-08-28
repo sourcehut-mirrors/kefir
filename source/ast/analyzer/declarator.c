@@ -1470,7 +1470,7 @@ static kefir_result_t scan_function_attributes(struct kefir_mem *mem, struct kef
             } else if (attribute->prefix == NULL &&
                        (strcmp(attribute->name, "noreturn") == 0 || strcmp(attribute->name, "__noreturn__") == 0 ||
                         strcmp(attribute->name, "_Noreturn") == 0)) {
-                // Intentionally left blank
+                func_type->attributes.no_return = true;
             } else if (attribute->prefix == NULL &&
                        (strcmp(attribute->name, "nodiscard") == 0 || strcmp(attribute->name, "__nodiscard__") == 0)) {
                 func_type->attributes.no_discard = true;
@@ -1579,6 +1579,17 @@ static kefir_result_t resolve_function_declarator(struct kefir_mem *mem, const s
                                                                (struct kefir_ast_declarator **) &declarator));
     }
     REQUIRE_CHAIN(&res, scan_function_attributes(mem, context->symbols, &specifiers->attributes, func_type));
+
+    if (res == KEFIR_OK) {
+        struct kefir_ast_declarator_specifier *declatator_specifier;
+        for (struct kefir_list_entry *iter = kefir_ast_declarator_specifier_list_iter(specifiers, &declatator_specifier);
+            iter != NULL; kefir_ast_declarator_specifier_list_next(&iter, &declatator_specifier)) {
+            if (declatator_specifier->klass == KEFIR_AST_FUNCTION_SPECIFIER && declatator_specifier->function_specifier == KEFIR_AST_FUNCTION_SPECIFIER_TYPE_NORETURN) {
+                func_type->attributes.no_return = true;
+                break;
+            }
+        }
+    }
 
     REQUIRE_ELSE(res == KEFIR_OK, {
         kefir_ast_function_declaration_context_free(mem, decl_context);

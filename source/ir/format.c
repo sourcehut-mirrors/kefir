@@ -871,6 +871,8 @@ static kefir_result_t kefir_ir_format_function_declaration(struct kefir_json_out
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "returns_twice"));
     REQUIRE_OK(kefir_json_output_boolean(json, decl->returns_twice));
+    REQUIRE_OK(kefir_json_output_object_key(json, "no_return"));
+    REQUIRE_OK(kefir_json_output_boolean(json, decl->no_return));
     REQUIRE_OK(kefir_json_output_object_end(json));
     return KEFIR_OK;
 }

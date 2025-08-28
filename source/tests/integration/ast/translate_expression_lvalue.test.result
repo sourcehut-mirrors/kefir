@@ -215,7 +215,8 @@
             "parameters": 6,
             "vararg": false,
             "returns": 7,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -223,7 +224,8 @@
             "parameters": 8,
             "vararg": false,
             "returns": 9,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -231,7 +233,8 @@
             "parameters": 12,
             "vararg": false,
             "returns": 13,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 3,
@@ -239,7 +242,8 @@
             "parameters": 15,
             "vararg": false,
             "returns": 16,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 4,
@@ -247,7 +251,8 @@
             "parameters": 18,
             "vararg": false,
             "returns": 19,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

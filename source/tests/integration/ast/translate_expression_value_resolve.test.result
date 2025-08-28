@@ -592,7 +592,8 @@
             "parameters": 22,
             "vararg": false,
             "returns": 23,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -600,7 +601,8 @@
             "parameters": 24,
             "vararg": false,
             "returns": 25,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

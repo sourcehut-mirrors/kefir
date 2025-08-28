@@ -129,6 +129,7 @@ static kefir_bool_t same_function_type(const struct kefir_ast_type *type1, const
     }
     REQUIRE(type1->function_type.ellipsis == type2->function_type.ellipsis, false);
     REQUIRE(type1->function_type.attributes.returns_twice == type2->function_type.attributes.returns_twice, false);
+    REQUIRE(type1->function_type.attributes.no_return == type2->function_type.attributes.no_return, false);
     REQUIRE(type1->function_type.attributes.no_discard == type2->function_type.attributes.no_discard, false);
     return true;
 }
@@ -219,6 +220,7 @@ const struct kefir_ast_type *composite_function_types(struct kefir_mem *mem, str
         }
         composite_function->ellipsis = type1->function_type.ellipsis;
         composite_function->attributes.returns_twice = type1->function_type.attributes.returns_twice;
+        composite_function->attributes.no_return = type1->function_type.attributes.no_return || type2->function_type.attributes.no_return;
         composite_function->attributes.no_discard =
             type1->function_type.attributes.no_discard || type2->function_type.attributes.no_discard;
         composite_function->attributes.no_discard_message = type1->function_type.attributes.no_discard_message != NULL
@@ -280,6 +282,7 @@ const struct kefir_ast_type *kefir_ast_type_function(struct kefir_mem *mem, stru
     type->function_type.mode = KEFIR_AST_FUNCTION_TYPE_PARAM_EMPTY;
     type->function_type.ellipsis = false;
     type->function_type.attributes.returns_twice = false;
+    type->function_type.attributes.no_return = false;
     type->function_type.attributes.no_discard = false;
     type->function_type.attributes.no_discard_message = NULL;
     kefir_result_t res = kefir_list_init(&type->function_type.parameters);

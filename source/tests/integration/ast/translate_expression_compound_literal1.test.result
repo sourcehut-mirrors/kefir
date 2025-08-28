@@ -145,7 +145,8 @@
             "parameters": 1,
             "vararg": false,
             "returns": 2,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -153,7 +154,8 @@
             "parameters": 4,
             "vararg": false,
             "returns": 5,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -161,7 +163,8 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

@@ -77,7 +77,8 @@
             "parameters": 4,
             "vararg": false,
             "returns": 5,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

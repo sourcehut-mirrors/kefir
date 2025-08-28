@@ -233,7 +233,8 @@
             "parameters": 3,
             "vararg": false,
             "returns": 4,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -241,7 +242,8 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

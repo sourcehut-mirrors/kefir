@@ -394,7 +394,8 @@
             "parameters": 0,
             "vararg": false,
             "returns": 1,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -402,7 +403,8 @@
             "parameters": 2,
             "vararg": false,
             "returns": 3,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -410,7 +412,8 @@
             "parameters": 4,
             "vararg": false,
             "returns": 5,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 3,
@@ -418,7 +421,8 @@
             "parameters": 6,
             "vararg": false,
             "returns": 7,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 4,
@@ -426,7 +430,8 @@
             "parameters": 8,
             "vararg": false,
             "returns": 9,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 5,
@@ -434,7 +439,8 @@
             "parameters": 10,
             "vararg": false,
             "returns": 11,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 6,
@@ -442,7 +448,8 @@
             "parameters": 12,
             "vararg": false,
             "returns": 13,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 7,
@@ -450,7 +457,8 @@
             "parameters": 14,
             "vararg": false,
             "returns": 15,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 8,
@@ -458,7 +466,8 @@
             "parameters": 16,
             "vararg": false,
             "returns": 17,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 9,
@@ -466,7 +475,8 @@
             "parameters": 18,
             "vararg": false,
             "returns": 19,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 10,
@@ -474,7 +484,8 @@
             "parameters": 20,
             "vararg": false,
             "returns": 21,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 11,
@@ -482,7 +493,8 @@
             "parameters": 22,
             "vararg": false,
             "returns": 23,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 12,
@@ -490,7 +502,8 @@
             "parameters": 24,
             "vararg": false,
             "returns": 25,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 13,
@@ -498,7 +511,8 @@
             "parameters": 26,
             "vararg": false,
             "returns": 27,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 14,
@@ -506,7 +520,8 @@
             "parameters": 28,
             "vararg": false,
             "returns": 29,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 15,
@@ -514,7 +529,8 @@
             "parameters": 30,
             "vararg": false,
             "returns": 31,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 16,
@@ -522,7 +538,8 @@
             "parameters": 32,
             "vararg": false,
             "returns": 33,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 17,
@@ -530,7 +547,8 @@
             "parameters": 34,
             "vararg": false,
             "returns": 35,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 18,
@@ -538,7 +556,8 @@
             "parameters": 36,
             "vararg": false,
             "returns": 37,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 19,
@@ -546,7 +565,8 @@
             "parameters": 38,
             "vararg": false,
             "returns": 39,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 20,
@@ -554,7 +574,8 @@
             "parameters": 40,
             "vararg": false,
             "returns": 41,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 21,
@@ -562,7 +583,8 @@
             "parameters": 42,
             "vararg": false,
             "returns": 43,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 22,
@@ -570,7 +592,8 @@
             "parameters": 44,
             "vararg": false,
             "returns": 45,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 23,
@@ -578,7 +601,8 @@
             "parameters": 46,
             "vararg": false,
             "returns": 47,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 24,
@@ -586,7 +610,8 @@
             "parameters": 48,
             "vararg": false,
             "returns": 49,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 25,
@@ -594,7 +619,8 @@
             "parameters": 50,
             "vararg": false,
             "returns": 51,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 26,
@@ -602,7 +628,8 @@
             "parameters": 52,
             "vararg": false,
             "returns": 53,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 27,
@@ -610,7 +637,8 @@
             "parameters": 54,
             "vararg": false,
             "returns": 55,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 28,
@@ -618,7 +646,8 @@
             "parameters": 56,
             "vararg": false,
             "returns": 57,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 29,
@@ -626,7 +655,8 @@
             "parameters": 58,
             "vararg": false,
             "returns": 59,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 30,
@@ -634,7 +664,8 @@
             "parameters": 60,
             "vararg": false,
             "returns": 61,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 31,
@@ -642,7 +673,8 @@
             "parameters": 62,
             "vararg": false,
             "returns": 63,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": true
         },
         {
             "identifier": 32,
@@ -650,7 +682,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 76,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 33,
@@ -658,7 +691,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 76,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 34,
@@ -666,7 +700,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 76,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 35,
@@ -674,7 +709,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 76,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 36,
@@ -682,7 +718,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 81,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 37,
@@ -690,7 +727,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 81,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         },
         {
             "identifier": 38,
@@ -698,7 +736,8 @@
             "parameters": 76,
             "vararg": false,
             "returns": 81,
-            "returns_twice": true
+            "returns_twice": true,
+            "no_return": false
         }
     ],
     "functions": [

@@ -47,7 +47,8 @@
             "parameters": 1,
             "vararg": false,
             "returns": 2,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -55,7 +56,8 @@
             "parameters": 3,
             "vararg": false,
             "returns": 4,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -63,7 +65,8 @@
             "parameters": 5,
             "vararg": false,
             "returns": 6,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 3,
@@ -71,7 +74,8 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

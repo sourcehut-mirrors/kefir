@@ -50,7 +50,8 @@
             "parameters": 0,
             "vararg": false,
             "returns": 1,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -58,7 +59,8 @@
             "parameters": 2,
             "vararg": true,
             "returns": 3,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

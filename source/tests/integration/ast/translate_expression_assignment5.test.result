@@ -182,7 +182,8 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -190,7 +191,8 @@
             "parameters": 9,
             "vararg": false,
             "returns": 10,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -198,7 +200,8 @@
             "parameters": 11,
             "vararg": false,
             "returns": 12,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 3,
@@ -206,7 +209,8 @@
             "parameters": 13,
             "vararg": false,
             "returns": 14,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 4,
@@ -214,7 +218,8 @@
             "parameters": 15,
             "vararg": false,
             "returns": 16,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 5,
@@ -222,7 +227,8 @@
             "parameters": 17,
             "vararg": false,
             "returns": 18,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 6,
@@ -230,7 +236,8 @@
             "parameters": 20,
             "vararg": false,
             "returns": 21,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

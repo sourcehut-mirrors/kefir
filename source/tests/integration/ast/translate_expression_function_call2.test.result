@@ -207,7 +207,8 @@
             "parameters": 1,
             "vararg": true,
             "returns": 2,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -215,7 +216,8 @@
             "parameters": 3,
             "vararg": false,
             "returns": 4,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -223,7 +225,8 @@
             "parameters": 5,
             "vararg": true,
             "returns": 6,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 3,
@@ -231,7 +234,8 @@
             "parameters": 7,
             "vararg": false,
             "returns": 8,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 4,
@@ -239,7 +243,8 @@
             "parameters": 9,
             "vararg": true,
             "returns": 10,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 5,
@@ -247,7 +252,8 @@
             "parameters": 11,
             "vararg": false,
             "returns": 12,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 6,
@@ -255,7 +261,8 @@
             "parameters": 13,
             "vararg": true,
             "returns": 14,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 7,
@@ -263,7 +270,8 @@
             "parameters": 15,
             "vararg": false,
             "returns": 16,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 8,
@@ -271,7 +279,8 @@
             "parameters": 17,
             "vararg": true,
             "returns": 18,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [

@@ -687,6 +687,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators9, "AST node analysis - declaratio
     ASSERT_OK(kefir_ast_type_function_parameter(
         &kft_mem, context->type_bundle, func_type1, kefir_ast_type_float(),
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN}));
+    func_type1->attributes.no_return = true;
 
     ASSERT(KEFIR_AST_TYPE_SAME(scoped_id->function.type, type1));
 
@@ -887,6 +888,7 @@ DEFINE_CASE(ast_node_analysis_init_declarators11, "AST node analysis - declarati
                                kefir_ast_type_incomplete_union(&kft_mem, context->type_bundle, "UniOn")),
         &(kefir_ast_scoped_identifier_storage_t) {KEFIR_AST_SCOPE_IDENTIFIER_STORAGE_UNKNOWN}));
     ASSERT_OK(kefir_ast_type_function_ellipsis(func_type2, true));
+    func_type2->attributes.no_return = true;
     ASSERT_OK(kefir_ast_analyze_type(&kft_mem, context, KEFIR_AST_TYPE_ANALYSIS_DEFAULT, type2, NULL));
 
     ASSERT(scoped_id1->function.external);

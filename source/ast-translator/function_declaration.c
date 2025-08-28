@@ -229,6 +229,9 @@ static kefir_result_t kefir_ast_translator_function_declaration_alloc(
     if (func_type->function_type.attributes.returns_twice) {
         func_decl->ir_function_decl->returns_twice = true;
     }
+    if (func_type->function_type.attributes.no_return) {
+        func_decl->ir_function_decl->no_return = true;
+    }
     REQUIRE_ELSE(func_decl->ir_function_decl != NULL, {
         kefir_list_free(mem, &func_decl->argument_layouts);
         return KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate IR function declaration");

@@ -93,7 +93,8 @@
             "parameters": 2,
             "vararg": false,
             "returns": 3,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 1,
@@ -101,7 +102,8 @@
             "parameters": 5,
             "vararg": false,
             "returns": 6,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         },
         {
             "identifier": 2,
@@ -109,7 +111,8 @@
             "parameters": 10,
             "vararg": false,
             "returns": 11,
-            "returns_twice": false
+            "returns_twice": false,
+            "no_return": false
         }
     ],
     "functions": [
