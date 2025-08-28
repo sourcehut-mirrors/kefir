@@ -1,7 +1,5 @@
-# 1 "source/tests/end2end/source_date_epoch1/lib.kefir.asmgen.c"
 
 const char *get_build_timestamp(void);
-# 23 "source/tests/end2end/source_date_epoch1/lib.kefir.asmgen.c"
 
 const char *get_build_timestamp() {
     return "Aug 27 2025" " " "17:56:59";

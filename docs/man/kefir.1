@@ -110,6 +110,10 @@ Code optimization level (default is 0). All non-zero levels are equivalent to 1.
 Skip preprocessor directive processing and macro expansion. Preprocessor skips over any directive except for
 line directive, and acts solely as tokenizer.
 .\"
+.It Fl \-preprocessor-linemarkers
+Include linemarkers into preprocessor output [default: off]. Likemarker content slightly differs from gcc, which might
+break some builds. Enable with care.
+.\"
 .It Fl funsigned-char
 Let the type char be unsigned. By default, it is target-specific.
 .\"

@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -isystem $(dirname $SRC_FILE)/sys1 -idirafter $(dirname $SRC_FILE)/sys2"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -isystem $(dirname $SRC_FILE)/sys1 -idirafter $(dirname $SRC_FILE)/sys2"

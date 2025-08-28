@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -I$(dirname $SRC_FILE)/dir1 -I$(dirname $SRC_FILE)/dir2 -I$(dirname $SRC_FILE)/dir3 -Wsystem-include-dir=$(dirname $SRC_FILE)/sys1 -Wsystem-include-dir=$(dirname $SRC_FILE)/sys2"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -I$(dirname $SRC_FILE)/dir1 -I$(dirname $SRC_FILE)/dir2 -I$(dirname $SRC_FILE)/dir3 -Wsystem-include-dir=$(dirname $SRC_FILE)/sys1 -Wsystem-include-dir=$(dirname $SRC_FILE)/sys2"

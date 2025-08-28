@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -include $(dirname $SCRIPT)/include.h"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -include $(dirname $SCRIPT)/include.h"

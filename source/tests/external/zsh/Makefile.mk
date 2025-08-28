@@ -30,7 +30,6 @@ $(KEFIR_EXTERNAL_TEST_ZSH_SOURCE_DIR)/configure: $(KEFIR_EXTERNAL_TEST_ZSH_SOURC
 		KEFIR_RTINC="$(realpath $(HEADERS_DIR))/kefir/runtime" \
 		CC="$(realpath $(KEFIR_EXE))" \
 		autoreconf -fi
-	@sed -i 's/sigfile_list="`$$CPP $$CPPFLAGS nametmp.c/sigfile_list="`$$CPP $$CPPFLAGS -P nametmp.c/g' "$(KEFIR_EXTERNAL_TEST_ZSH_SOURCE_DIR)/configure"
 	@sed -i 's|.*ERROR MACROS NOT FOUND.*|ERRNO_H=/usr/include/errno.h|g' "$(KEFIR_EXTERNAL_TEST_ZSH_SOURCE_DIR)/configure"
 
 $(KEFIR_EXTERNAL_TEST_ZSH_SOURCE_DIR)/Makefile: $(KEFIR_EXTERNAL_TEST_ZSH_SOURCE_DIR)/configure

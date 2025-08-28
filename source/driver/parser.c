@@ -136,7 +136,6 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         } else if (strcmp("-P", arg) == 0) {
             // Preprocess
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS;
-            config->flags.preprocessor_linemarkers = false;
         } else if (strcmp("--preprocess-save", arg) == 0) {
             // Preprocess and save
             config->stage = KEFIR_DRIVER_STAGE_PREPROCESS_SAVE;
@@ -325,6 +324,9 @@ kefir_result_t kefir_driver_parse_args(struct kefir_mem *mem, struct kefir_strin
         // Preprocessor flags
         else if (strcmp("-fpreprocessed", arg) == 0) {
             config->flags.skip_preprocessor = true;
+        } else if (strcmp("--preprocessor-linemarkerks", arg) == 0) {
+            // Enable preprocessor linemarkers
+            config->flags.preprocessor_linemarkers = true;
         } else if (STRNCMP("-D", arg) == 0) {
             // Define macro
             const char *definition = NULL;

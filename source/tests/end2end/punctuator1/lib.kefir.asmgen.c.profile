@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -DDEF1=\"/test/../test2/./test3/../test\""
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -DDEF1=\"/test/../test2/./test3/../test\""

@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -E -P -Wsystem-include-dir=$(dirname $SRC_FILE)/sysinc"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -E -Wsystem-include-dir=$(dirname $SRC_FILE)/sysinc"

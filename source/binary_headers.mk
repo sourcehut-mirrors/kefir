@@ -8,7 +8,7 @@ $(BIN_HEADERS_DESTDIR)/driver/help.binary.h: BINARY_HEADER_CONTENT=$(GENERATED_H
 $(BIN_HEADERS_DESTDIR)/compiler/kefir_bigint.h: $(wildcard $(BIN_HEADERS_INCDIR)/kefir_bigint/*.h)
 	@echo "Generating $@"
 	@mkdir -p "$(shell dirname $@)"
-	@$(BIN_HEADERS_CC) -E -P -I "$(BIN_HEADERS_INCDIR)" \
+	@$(BIN_HEADERS_CC) -E -I "$(BIN_HEADERS_INCDIR)" \
 		-D__KEFIR_BIGINT_USE_BIGINT_IMPL__  \
 		-D__KEFIR_BIGINT_CHAR_BIT=8 \
 		-D__KEFIR_BIGINT_FLT_MANT_DIG=__FLT_MANT_DIG__ \

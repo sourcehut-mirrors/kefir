@@ -1,1 +1,1 @@
-KEFIR_CFLAGS="$KEFIR_CFLAGS -fpreprocessed -E -P"
+KEFIR_CFLAGS="$KEFIR_CFLAGS -fpreprocessed -E"

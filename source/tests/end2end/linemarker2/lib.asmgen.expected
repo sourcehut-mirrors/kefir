@@ -1,26 +1,17 @@
-# 0 "TEST...TEST...TEST..."
 
 int fn1(void);
 
-# 1000 "HELLO WORLD"
 int x = 1000;
 
 int y = 1;
 
-# 1342 "Hey/\\/ho"
 "Let's go" 
 
-# 0 "SOME/FILE"
 1000
-# 0 "SOMEOTHER/FILE"
 2000
-# 1000 "FILE\\\\\\\\\\a3"
 -2000
-# 2 "SOME/FILE"
 3000
-# 1345 "Hey/\\/ho"
 
 int z = 1000
 
-# 4 "Hello"
 void fn();
