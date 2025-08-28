@@ -63,6 +63,7 @@ __builtin_popcountg
 __builtin_popcountl
 __builtin_saddl_overflow
 __kefir_builtin_is_unsigned
+__kefir_builtin_unreachable
 __builtin_assoc_barrier
 __builtin_alloca_with_align_and_max
 __kefir_builtin_bitfield_width

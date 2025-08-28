@@ -334,7 +334,8 @@ typedef enum kefir_ast_builtin_operator {
     KEFIR_AST_BUILTIN_KEFIR_INT_PRECISION,
     KEFIR_AST_BUILTIN_KEFIR_CONSTANT,
     KEFIR_AST_BUILTIN_KEFIR_IS_UNSIGNED,
-    KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH
+    KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH,
+    KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE
 } kefir_ast_builtin_operator_t;
 
 typedef enum kefir_ast_declarator_visibility_attr {

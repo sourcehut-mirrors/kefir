@@ -46,6 +46,19 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(phi)(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(unreachable)(struct kefir_mem *mem,
+                                                                 struct kefir_codegen_amd64_function *function,
+                                                                 const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    REQUIRE_OK(
+        kefir_asmcmp_amd64_ud2(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t new_virtual_register_of_type(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                                    kefir_asmcmp_virtual_register_index_t vreg_idx,
                                                    kefir_asmcmp_virtual_register_index_t *new_vreg_idx) {
@@ -199,7 +212,7 @@ static kefir_result_t map_phi_outputs_impl(struct kefir_mem *mem, struct kefir_c
         if (deferred_target_vreg_idx != KEFIR_ASMCMP_INDEX_NONE ||
             (source_block_ref != target_block_ref && source_vreg_idx != target_vreg_idx &&
              !kefir_hashset_has(&function->function_analysis.liveness.blocks[source_block_ref].alive_instr,
-                                  (kefir_hashset_key_t) target_ref) &&
+                                (kefir_hashset_key_t) target_ref) &&
              !kefir_hashtreeset_has(used_source_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx))) {
             REQUIRE_OK(kefir_hashtreeset_add(mem, used_target_vregs, (kefir_hashtreeset_entry_t) target_vreg_idx));
         }

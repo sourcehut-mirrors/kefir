@@ -151,7 +151,8 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
             REQUIRE(alignment->properties.category == KEFIR_AST_NODE_CATEGORY_EXPRESSION,
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &alignment->source_location,
                                            "Expected an integral expression"));
-            const struct kefir_ast_type *unqualified_alignment_type = kefir_ast_unqualified_type(alignment->properties.type);
+            const struct kefir_ast_type *unqualified_alignment_type =
+                kefir_ast_unqualified_type(alignment->properties.type);
             REQUIRE(KEFIR_AST_TYPE_IS_INTEGRAL_TYPE(unqualified_alignment_type),
                     KEFIR_SET_SOURCE_ERROR(KEFIR_ANALYSIS_ERROR, &alignment->source_location,
                                            "Expected an integral expression"));
@@ -511,6 +512,10 @@ kefir_result_t kefir_ast_analyze_builtin_node(struct kefir_mem *mem, const struc
 
             base->properties.type = kefir_ast_type_signed_int();
         } break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
+            base->properties.type = kefir_ast_type_void();
+            break;
     }
     return KEFIR_OK;
 }

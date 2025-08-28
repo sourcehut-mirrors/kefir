@@ -83,6 +83,7 @@ static kefir_result_t link_block(struct kefir_mem *mem, struct kefir_opt_code_st
         } break;
 
         case KEFIR_OPT_OPCODE_RETURN:
+        case KEFIR_OPT_OPCODE_UNREACHABLE:
         case KEFIR_OPT_OPCODE_TAIL_INVOKE:
         case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
             // Intentionally left blank

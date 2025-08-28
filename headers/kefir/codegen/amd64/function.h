@@ -104,6 +104,7 @@ kefir_result_t kefir_codegen_amd64_return_from_function(struct kefir_mem *, stru
 #define KEFIR_CODEGEN_AMD64_INSTRUCTIONS(_def, _separator)                                               \
     _def(get_argument, KEFIR_OPT_OPCODE_GET_ARGUMENT) _separator \
     _def(return, KEFIR_OPT_OPCODE_RETURN) _separator \
+    _def(unreachable, KEFIR_OPT_OPCODE_UNREACHABLE) _separator \
     _def(select, KEFIR_OPT_OPCODE_SELECT) _separator \
     _def(select_compare, KEFIR_OPT_OPCODE_SELECT_COMPARE) _separator \
     _def(int_const, KEFIR_OPT_OPCODE_INT_CONST) _separator \
@@ -447,7 +448,8 @@ kefir_result_t kefir_codegen_amd64_store_floating_point_register(struct kefir_me
 
 kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                       kefir_opt_call_id_t, kefir_bool_t *);
-kefir_result_t kfir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *, kefir_opt_call_id_t, kefir_bool_t *);
+kefir_result_t kfir_codegen_amd64_tail_call_return_aggregate_passthrough(struct kefir_codegen_amd64_function *,
+                                                                         kefir_opt_call_id_t, kefir_bool_t *);
 
 kefir_result_t kefir_codegen_amd64_function_x87_ensure(struct kefir_mem *, struct kefir_codegen_amd64_function *,
                                                        kefir_size_t);

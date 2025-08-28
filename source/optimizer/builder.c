@@ -79,6 +79,7 @@ kefir_result_t kefir_opt_code_builder_is_finalized(const struct kefir_opt_code_c
             case KEFIR_OPT_OPCODE_IJUMP:
             case KEFIR_OPT_OPCODE_BRANCH:
             case KEFIR_OPT_OPCODE_RETURN:
+            case KEFIR_OPT_OPCODE_UNREACHABLE:
             case KEFIR_OPT_OPCODE_TAIL_INVOKE:
             case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
                 *finalized_ptr = true;
@@ -205,6 +206,18 @@ kefir_result_t kefir_opt_code_builder_finalize_return(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_opt_code_builder_add_instruction(
         mem, code, block_id,
         &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_RETURN, .parameters.refs[0] = arg_instr_id}, true,
+        instr_id_ptr));
+    return KEFIR_OK;
+}
+
+kefir_result_t kefir_opt_code_builder_finalize_unreachable(struct kefir_mem *mem, struct kefir_opt_code_container *code,
+                                                           kefir_opt_block_id_t block_id,
+                                                           kefir_opt_instruction_ref_t *instr_id_ptr) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code container"));
+
+    REQUIRE_OK(kefir_opt_code_builder_add_instruction(
+        mem, code, block_id, &(struct kefir_opt_operation) {.opcode = KEFIR_OPT_OPCODE_UNREACHABLE}, true,
         instr_id_ptr));
     return KEFIR_OK;
 }

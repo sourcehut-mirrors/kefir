@@ -1,0 +1,23 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global test1
+.type test1, @function
+.extern value
+.extern do_exit
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_test1_label0:
+    movq value@GOTPCREL(%rip), %rax
+    movl $2, (%rax)
+    call do_exit@PLT
+    ud2
+__kefir_text_func_test1_end:
+
+__kefir_text_section_end:
+

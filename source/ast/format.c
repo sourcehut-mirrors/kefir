@@ -481,6 +481,10 @@ static kefir_result_t visit_builtin(const struct kefir_ast_visitor *visitor, con
         case KEFIR_AST_BUILTIN_KEFIR_BITFIELD_WIDTH:
             REQUIRE_OK(kefir_json_output_string(json, "kefir_bitfield_width"));
             break;
+
+        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
+            REQUIRE_OK(kefir_json_output_string(json, "unreachable"));
+            break;
     }
     REQUIRE_OK(kefir_json_output_object_key(json, "arguments"));
     REQUIRE_OK(kefir_json_output_array_begin(json));

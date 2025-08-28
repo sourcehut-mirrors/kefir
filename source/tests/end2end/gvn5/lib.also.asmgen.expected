@@ -147,8 +147,6 @@ __kefir_text_func_test_sint_begin:
     cmp $5, %edi
     je _kefir_func_test_sint_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_sint_label7:
     xor %eax, %eax
     cmp %edx, %esi
@@ -196,8 +194,6 @@ __kefir_text_func_test_uint_begin:
     cmp $5, %edi
     je _kefir_func_test_uint_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_uint_label7:
     xor %eax, %eax
     cmp %edx, %esi
@@ -297,8 +293,6 @@ __kefir_text_func_test_schar_begin:
     cmp $5, %edi
     je _kefir_func_test_schar_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_schar_label7:
     movsx %sil, %rcx
     movsx %dl, %rdx
@@ -358,8 +352,6 @@ __kefir_text_func_test_slong_begin:
     cmp $5, %edi
     je _kefir_func_test_slong_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_slong_label7:
     xor %eax, %eax
     cmp %rdx, %rsi
@@ -407,8 +399,6 @@ __kefir_text_func_test_uchar_begin:
     cmp $5, %edi
     je _kefir_func_test_uchar_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_uchar_label7:
     movzx %sil, %rcx
     movzx %dl, %rdx
@@ -468,8 +458,6 @@ __kefir_text_func_test_ulong_begin:
     cmp $5, %edi
     je _kefir_func_test_ulong_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_ulong_label7:
     xor %eax, %eax
     cmp %rdx, %rsi
@@ -573,8 +561,6 @@ __kefir_text_func_test_sshort_begin:
     cmp $5, %edi
     je _kefir_func_test_sshort_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_sshort_label7:
     movsx %si, %rcx
     movsx %dx, %rdx
@@ -634,8 +620,6 @@ __kefir_text_func_test_ushort_begin:
     cmp $5, %edi
     je _kefir_func_test_ushort_label7
     ud2
-    xor %rax, %rax
-    ret
 _kefir_func_test_ushort_label7:
     movzx %si, %rcx
     movzx %dx, %rdx

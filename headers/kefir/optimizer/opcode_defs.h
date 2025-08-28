@@ -40,6 +40,7 @@
     OPCODE(BRANCH, "branch", branch) SEPARATOR \
     OPCODE(BRANCH_COMPARE, "branch_compare", branch_compare) SEPARATOR \
     OPCODE(RETURN, "return", ref1) SEPARATOR \
+    OPCODE(UNREACHABLE, "unreachable", none) SEPARATOR \
     OPCODE(INVOKE, "invoke", call_ref) SEPARATOR \
     OPCODE(INVOKE_VIRTUAL, "invoke_virtual", call_ref) SEPARATOR \
     OPCODE(TAIL_INVOKE, "tail_invoke", call_ref) SEPARATOR \

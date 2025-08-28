@@ -259,6 +259,10 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 nan(arg1_node->properties.expression_props.string_literal.content)));
         } break;
 
+        case KEFIR_AST_BUILTIN_KEFIR_UNREACHABLE:
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_UNREACHABLE, 0));
+            break;
+
         case KEFIR_AST_BUILTIN_ADD_OVERFLOW:
         case KEFIR_AST_BUILTIN_SUB_OVERFLOW:
         case KEFIR_AST_BUILTIN_MUL_OVERFLOW: {

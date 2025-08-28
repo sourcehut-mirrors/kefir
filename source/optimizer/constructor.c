@@ -52,6 +52,7 @@ static kefir_result_t identify_code_blocks(struct kefir_mem *mem, const struct k
 
             case KEFIR_IR_OPCODE_IJUMP:
             case KEFIR_IR_OPCODE_RETURN:
+            case KEFIR_IR_OPCODE_UNREACHABLE:
                 start_new_block = true;
                 break;
 
@@ -429,6 +430,10 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
                 REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref));
             }
             REQUIRE_OK(kefir_opt_code_builder_finalize_return(mem, code, current_block_id, instr_ref, NULL));
+            break;
+
+        case KEFIR_IR_OPCODE_UNREACHABLE:
+            REQUIRE_OK(kefir_opt_code_builder_finalize_unreachable(mem, code, current_block_id, NULL));
             break;
 
         case KEFIR_IR_OPCODE_INT_CONST:
@@ -1592,6 +1597,7 @@ static kefir_result_t link_blocks_traverse(struct kefir_mem *mem, struct kefir_o
 
         case KEFIR_OPT_OPCODE_IJUMP:
         case KEFIR_OPT_OPCODE_RETURN:
+        case KEFIR_OPT_OPCODE_UNREACHABLE:
         case KEFIR_OPT_OPCODE_TAIL_INVOKE:
         case KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL:
             // Intentionally left blank

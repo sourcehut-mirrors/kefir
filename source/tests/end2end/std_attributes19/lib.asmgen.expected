@@ -204,13 +204,6 @@
             "alias": null
         },
         {
-            "symbol": "__kefir_builtin_trap",
-            "type": "function",
-            "scope": "import",
-            "visibility": "default",
-            "alias": null
-        },
-        {
             "symbol": "__kefir_function_get3_static___func___2",
             "type": "global_data",
             "scope": "local",
@@ -220,11 +213,11 @@
     ],
     "types": [
         {
-            "identifier": 56,
+            "identifier": 54,
             "type": []
         },
         {
-            "identifier": 57,
+            "identifier": 55,
             "type": [
                 {
                     "type": "int32"
@@ -232,7 +225,7 @@
             ]
         },
         {
-            "identifier": 59,
+            "identifier": 57,
             "type": [
                 {
                     "type": "array",
@@ -244,7 +237,7 @@
             ]
         },
         {
-            "identifier": 65,
+            "identifier": 63,
             "type": [
                 {
                     "type": "array",
@@ -260,7 +253,7 @@
         {
             "identifier": "__kefir_function_get2_static___func___1",
             "storage": "global",
-            "type": 65,
+            "type": 63,
             "value": [
                 {
                     "class": "string",
@@ -276,7 +269,7 @@
         {
             "identifier": "__kefir_function_get_static___func___0",
             "storage": "global",
-            "type": 59,
+            "type": 57,
             "value": [
                 {
                     "class": "string",
@@ -292,7 +285,7 @@
         {
             "identifier": "__kefir_function_get3_static___func___2",
             "storage": "global",
-            "type": 65,
+            "type": 63,
             "value": [
                 {
                     "class": "string",
@@ -575,7 +568,7 @@
         },
         {
             "identifier": 27,
-            "name": "__kefir_builtin_trap",
+            "name": "get",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
@@ -585,69 +578,63 @@
         {
             "identifier": 28,
             "name": "get",
-            "parameters": 56,
+            "parameters": 54,
             "vararg": false,
-            "returns": 57,
+            "returns": 55,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 29,
-            "name": "get",
-            "parameters": 56,
+            "name": "get2",
+            "parameters": 54,
             "vararg": false,
-            "returns": 57,
+            "returns": 55,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 30,
             "name": "get2",
-            "parameters": 56,
+            "parameters": 54,
             "vararg": false,
-            "returns": 57,
+            "returns": 55,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 31,
-            "name": "get2",
-            "parameters": 56,
+            "name": "get3",
+            "parameters": 54,
             "vararg": false,
-            "returns": 57,
+            "returns": 55,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 32,
             "name": "get3",
-            "parameters": 56,
+            "parameters": 54,
             "vararg": false,
-            "returns": 57,
-            "returns_twice": false,
-            "no_return": true
-        },
-        {
-            "identifier": 33,
-            "name": "get3",
-            "parameters": 56,
-            "vararg": false,
-            "returns": 57,
+            "returns": 55,
             "returns_twice": false,
             "no_return": true
         }
     ],
     "functions": [
         {
-            "identifier": 28,
+            "identifier": 27,
             "name": "get",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 29,
+                        "identifier": 28,
                         "name": "get"
                     }
+                },
+                {
+                    "opcode": "unreachable"
                 },
                 {
                     "opcode": "return"
@@ -656,15 +643,18 @@
             "public_labels": []
         },
         {
-            "identifier": 30,
+            "identifier": 29,
             "name": "get2",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 31,
+                        "identifier": 30,
                         "name": "get2"
                     }
+                },
+                {
+                    "opcode": "unreachable"
                 },
                 {
                     "opcode": "return"
@@ -673,15 +663,18 @@
             "public_labels": []
         },
         {
-            "identifier": 32,
+            "identifier": 31,
             "name": "get3",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 33,
+                        "identifier": 32,
                         "name": "get3"
                     }
+                },
+                {
+                    "opcode": "unreachable"
                 },
                 {
                     "opcode": "return"

@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 28,
+            "id": 27,
             "name": "get2",
             "code": {
                 "entry_point": 0,
@@ -25,7 +25,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 59,
+                                "type_id": 57,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -44,7 +44,7 @@
                             {
                                 "id": 13,
                                 "opcode": "invoke",
-                                "function_declaration_id": 29,
+                                "function_declaration_id": 28,
                                 "arguments": [
                                     10
                                 ],
@@ -138,7 +138,7 @@
             }
         },
         {
-            "id": 30,
+            "id": 29,
             "name": "get3",
             "code": {
                 "entry_point": 0,
@@ -162,7 +162,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 59,
+                                "type_id": 57,
                                 "type_index": 0,
                                 "control_next": null
                             },
@@ -175,7 +175,7 @@
                             {
                                 "id": 6,
                                 "opcode": "alloc_local",
-                                "type_id": 59,
+                                "type_id": 57,
                                 "type_index": 5,
                                 "control_next": null
                             },
@@ -205,7 +205,7 @@
                             {
                                 "id": 15,
                                 "opcode": "invoke",
-                                "function_declaration_id": 31,
+                                "function_declaration_id": 30,
                                 "arguments": [
                                     10
                                 ],
@@ -219,7 +219,7 @@
                                 "target": 0,
                                 "source": 15,
                                 "type": {
-                                    "id": 62,
+                                    "id": 60,
                                     "index": 0
                                 },
                                 "control_next": 22

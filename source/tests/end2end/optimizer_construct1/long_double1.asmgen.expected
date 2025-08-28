@@ -1,7 +1,7 @@
 {
     "functions": [
         {
-            "id": 29,
+            "id": 28,
             "name": "test",
             "code": {
                 "entry_point": 0,
@@ -35,7 +35,7 @@
             }
         },
         {
-            "id": 30,
+            "id": 29,
             "name": "test2",
             "code": {
                 "entry_point": 0,
@@ -47,7 +47,7 @@
                             {
                                 "id": 0,
                                 "opcode": "alloc_local",
-                                "type_id": 64,
+                                "type_id": 62,
                                 "type_index": 0,
                                 "control_next": null,
                                 "ir_instruction": 0
@@ -114,7 +114,7 @@
             }
         },
         {
-            "id": 31,
+            "id": 30,
             "name": "test3",
             "code": {
                 "entry_point": 0,
@@ -222,7 +222,7 @@
             }
         },
         {
-            "id": 32,
+            "id": 31,
             "name": "test4",
             "code": {
                 "entry_point": 0,
