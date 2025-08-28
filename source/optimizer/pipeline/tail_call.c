@@ -228,9 +228,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         struct kefir_opt_instruction_use_iterator use_iter;
         kefir_result_t res =
             kefir_opt_code_container_instruction_use_instr_iter(&func->code, call_instr_ref, &use_iter);
-        if (res != KEFIR_ITERATOR_END) {
-            REQUIRE_OK(res);
-        }
+        REQUIRE(res == KEFIR_ITERATOR_END, res);
     }
 
     struct escape_analysis_param param = {.mem = mem, .module = module, .func = func, .tail_call_possible = true};
