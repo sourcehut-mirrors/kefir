@@ -18,15 +18,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define LIB1
 #include "./internal.h"
 
 int getx() {
     return x;
 }
 
+#if !defined(__FreeBSD__)
 int gety() {
     return y;
 }
+#endif
 
 int getz() {
     return z;

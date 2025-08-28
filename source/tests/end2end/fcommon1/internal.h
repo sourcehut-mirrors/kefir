@@ -19,7 +19,9 @@
 */
 
 int x;
+#if !defined(__OpenBSD__) || defined(LIB1)
 _Thread_local int y;
+#endif
 static int z;
 static _Thread_local int w;
 

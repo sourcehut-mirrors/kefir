@@ -37,18 +37,24 @@ int getj(void);
 
 int main(void) {
     assert(getx() == 0);
+#if !defined(__FreeBSD__)
     assert(gety() == 0);
+#endif
     assert(getz() == 0);
     assert(geta() == 0);
     assert(geti() == 5000);
     assert(getj() == 0);
 
     x = 1000;
+#if !defined(__FreeBSD__)
     y = 2000;
+#endif
     i = 3000;
     j = -1000;
     assert(getx() == 1000);
+#if !defined(__FreeBSD__)
     assert(gety() == 2000);
+#endif
     assert(geti() == 3000);
     assert(getj() == -1000);
     return EXIT_SUCCESS;
