@@ -336,6 +336,10 @@ static kefir_result_t scheduler_schedule(kefir_opt_instruction_ref_t instr_ref,
         *schedule_instruction = true;
         return KEFIR_OK;
     }
+    if (instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN && param->func->function->ir_func->declaration->no_return) {
+        *schedule_instruction = true;
+        return KEFIR_OK;
+    }
 
     REQUIRE_OK(kefir_opt_instruction_extract_inputs(&param->func->function->code, instr, true, dependency_callback,
                                                     dependency_callback_payload));
