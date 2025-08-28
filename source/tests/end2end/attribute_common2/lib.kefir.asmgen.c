@@ -18,44 +18,15 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
+int x;
+_Thread_local int y;
 
-extern int x;
-extern _Thread_local int y;
-extern int j;
+int getx() {
+    extern int x __attribute__((common));
+    return x;
+}
 
-int i = 5000;
-
-int getx(void);
-int gety(void);
-int getz(void);
-int geta(void);
-int geti(void);
-int getj(void);
-
-int main(void) {
-    assert(getx() == 0);
-#if !defined(__FreeBSD__)
-    assert(gety() == 0);
-#endif
-    assert(getz() == 0);
-    assert(geta() == 0);
-    assert(geti() == 5000);
-    assert(getj() == 0);
-
-    x = 1000;
-#if !defined(__FreeBSD__)
-    y = 2000;
-#endif
-    i = 3000;
-    j = -1000;
-    assert(getx() == 1000);
-#if !defined(__FreeBSD__)
-    assert(gety() == 2000);
-#endif
-    assert(geti() == 3000);
-    assert(getj() == -1000);
-    return EXIT_SUCCESS;
+int gety() {
+    extern _Thread_local int y __attribute__((common));
+    return y;
 }

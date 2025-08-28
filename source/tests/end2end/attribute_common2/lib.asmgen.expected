@@ -16,18 +16,26 @@
 __kefir_text_section_begin:
 getx:
 __kefir_text_func_getx_begin:
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_getx_label0:
     movq x@GOTPCREL(%rip), %rax
     movl (%rax), %eax
+    pop %rbp
     ret
 __kefir_text_func_getx_end:
 
 gety:
 __kefir_text_func_gety_begin:
 .extern __tls_get_addr
+    push %rbp
+    mov %rsp, %rbp
+_kefir_func_gety_label0:
     data16     lea y@tlsgd(%rip), %rdi
     .word 26214
     rex.W     call __tls_get_addr@PLT
     movl (%rax), %eax
+    pop %rbp
     ret
 __kefir_text_func_gety_end:
 
