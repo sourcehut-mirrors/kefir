@@ -199,7 +199,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
 
     const struct kefir_opt_instruction *tail_instr, *call_instr, *prev_tail_instr;
     REQUIRE_OK(kefir_opt_code_container_instr(&func->code, tail_instr_ref, &tail_instr));
-    REQUIRE(tail_instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN, KEFIR_OK);
+    REQUIRE(tail_instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN || tail_instr->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE, KEFIR_OK);
 
     call_instr_ref = KEFIR_ID_NONE;
     REQUIRE_OK(kefir_opt_instruction_prev_control(&func->code, tail_instr_ref, &prev_tail_instr_ref));
@@ -208,7 +208,8 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         REQUIRE_OK(kefir_opt_code_container_instr(&func->code, prev_tail_instr_ref, &prev_tail_instr));
         if (prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE ||
             prev_tail_instr->operation.opcode == KEFIR_OPT_OPCODE_INVOKE_VIRTUAL) {
-            REQUIRE(prev_tail_instr_ref == tail_instr->operation.parameters.refs[0] ||
+            REQUIRE(tail_instr->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE ||
+                        prev_tail_instr_ref == tail_instr->operation.parameters.refs[0] ||
                         (tail_instr->operation.parameters.refs[0] == KEFIR_ID_NONE &&
                          kefir_ir_type_length(func->ir_func->declaration->result) == 0),
                     KEFIR_OK);
@@ -220,7 +221,7 @@ static kefir_result_t block_tail_call_apply(struct kefir_mem *mem, const struct 
         }
     }
 
-    if (tail_instr->operation.parameters.refs[0] != KEFIR_ID_NONE) {
+    if (tail_instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN && tail_instr->operation.parameters.refs[0] != KEFIR_ID_NONE) {
         kefir_opt_instruction_ref_t sole_use_ref;
         REQUIRE_OK(kefir_opt_instruction_get_sole_use(&func->code, call_instr_ref, &sole_use_ref));
         REQUIRE(sole_use_ref == tail_instr_ref, KEFIR_OK);

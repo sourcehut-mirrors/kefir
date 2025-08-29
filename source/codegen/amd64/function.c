@@ -214,7 +214,7 @@ kefir_result_t kefir_codegen_amd64_tail_call_possible(struct kefir_mem *mem,
     REQUIRE_OK(kfir_codegen_amd64_tail_call_return_aggregate_passthrough(function, call_ref, &passthrough_aggregate_return));
 
     *tail_call_possible_ptr =
-        reqs.stack == 0 && (return_reqs.stack == 0 || passthrough_aggregate_return) && !ir_func_decl->returns_twice && !ir_func_decl->vararg;
+        reqs.stack == 0 && (return_reqs.stack == 0 || passthrough_aggregate_return || ir_func_decl->no_return) && !ir_func_decl->returns_twice && !ir_func_decl->vararg;
     return KEFIR_OK;
 }
 
