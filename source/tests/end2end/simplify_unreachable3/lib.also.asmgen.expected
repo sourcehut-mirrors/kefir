@@ -1,0 +1,31 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.extern flag
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.extern do_exit
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    movq flag@GOTPCREL(%rip), %rax
+    movl $1, (%rax)
+    jmp do_exit@PLT
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    push %rbp
+    mov %rsp, %rbp
+    movq flag@GOTPCREL(%rip), %rax
+    movl $2, (%rax)
+
+    ud2
+__kefir_text_func_test2_end:
+
+__kefir_text_section_end:
+

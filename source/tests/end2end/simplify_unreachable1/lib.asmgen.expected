@@ -1,0 +1,282 @@
+.att_syntax
+.section .note.GNU-stack,"",%progbits
+
+.global ld
+.type ld, @object
+.global u8
+.type u8, @object
+.global c32
+.type c32, @object
+.global c64
+.type c64, @object
+.global c80
+.type c80, @object
+.global u16
+.type u16, @object
+.global u32
+.type u32, @object
+.global u64
+.type u64, @object
+.global u128
+.type u128, @object
+.global test1
+.type test1, @function
+.global test2
+.type test2, @function
+.global test3
+.type test3, @function
+.global test4
+.type test4, @function
+.global test5
+.type test5, @function
+.global test6
+.type test6, @function
+.global test7
+.type test7, @function
+.global test8
+.type test8, @function
+.global test9
+.type test9, @function
+.global test10
+.type test10, @function
+.global test11
+.type test11, @function
+.global test12
+.type test12, @function
+.global test13
+.type test13, @function
+.global test14
+.type test14, @function
+.global test15
+.type test15, @function
+.global test16
+.type test16, @function
+.global test17
+.type test17, @function
+.global test18
+.type test18, @function
+.global test19
+.type test19, @function
+
+.section .text
+__kefir_text_section_begin:
+test1:
+__kefir_text_func_test1_begin:
+    ud2
+__kefir_text_func_test1_end:
+
+test2:
+__kefir_text_func_test2_begin:
+    ud2
+__kefir_text_func_test2_end:
+
+test3:
+__kefir_text_func_test3_begin:
+    ud2
+__kefir_text_func_test3_end:
+
+test4:
+__kefir_text_func_test4_begin:
+    ud2
+__kefir_text_func_test4_end:
+
+test5:
+__kefir_text_func_test5_begin:
+    ud2
+__kefir_text_func_test5_end:
+
+test6:
+__kefir_text_func_test6_begin:
+    ud2
+__kefir_text_func_test6_end:
+
+test7:
+__kefir_text_func_test7_begin:
+    ud2
+__kefir_text_func_test7_end:
+
+test8:
+__kefir_text_func_test8_begin:
+    ud2
+__kefir_text_func_test8_end:
+
+test9:
+__kefir_text_func_test9_begin:
+    movq u8@GOTPCREL(%rip), %rax
+    movb $1, (%rax)
+    ud2
+__kefir_text_func_test9_end:
+
+test10:
+__kefir_text_func_test10_begin:
+    movq u16@GOTPCREL(%rip), %rax
+    movw $1, (%rax)
+    ud2
+__kefir_text_func_test10_end:
+
+test11:
+__kefir_text_func_test11_begin:
+    movq u32@GOTPCREL(%rip), %rax
+    movl $1, (%rax)
+    ud2
+__kefir_text_func_test11_end:
+
+test12:
+__kefir_text_func_test12_begin:
+    movq u64@GOTPCREL(%rip), %rax
+    movq $1, (%rax)
+    ud2
+__kefir_text_func_test12_end:
+
+test13:
+__kefir_text_func_test13_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    fstcw -8(%rbp)
+    movq ld@GOTPCREL(%rip), %rax
+    mov $1, %rcx
+    push %rcx
+    fildq (%rsp)
+    add $8, %rsp
+    movq $0, 8(%rax)
+    fstpt (%rax)
+    ud2
+__kefir_text_func_test13_end:
+
+test14:
+__kefir_text_func_test14_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq c32@GOTPCREL(%rip), %rax
+    mov $1, %rcx
+    cvtsi2ss %rcx, %xmm0
+    movd _kefir_func_test14_label1(%rip), %xmm1
+    movd %xmm0, (%rax)
+    movd %xmm1, 4(%rax)
+    ud2
+__kefir_text_func_test14_end:
+.section .rodata
+    .align 4
+_kefir_func_test14_label1:
+    .long 0
+.section .text
+
+test15:
+__kefir_text_func_test15_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    stmxcsr -8(%rbp)
+    movq c64@GOTPCREL(%rip), %rax
+    mov $1, %rcx
+    cvtsi2sd %rcx, %xmm0
+    movq _kefir_func_test15_label1(%rip), %xmm1
+    movq %xmm0, (%rax)
+    movq %xmm1, 8(%rax)
+    ud2
+__kefir_text_func_test15_end:
+.section .rodata
+    .align 8
+_kefir_func_test15_label1:
+    .quad 0
+.section .text
+
+test16:
+__kefir_text_func_test16_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $48, %rsp
+    fstcw -8(%rbp)
+    movq c80@GOTPCREL(%rip), %rax
+    mov $1, %rcx
+    push %rcx
+    fildq (%rsp)
+    add $8, %rsp
+    fldt _kefir_func_test16_label1(%rip)
+    fstpt -48(%rbp)
+    fstpt -32(%rbp)
+    fldt -32(%rbp)
+    fldt -48(%rbp)
+    fstpt -32(%rbp)
+    fstpt -48(%rbp)
+    movq $0, 8(%rax)
+    movq $0, 24(%rax)
+    fldt -48(%rbp)
+    fstpt (%rax)
+    fldt -32(%rbp)
+    fstpt 16(%rax)
+    ud2
+__kefir_text_func_test16_end:
+.section .rodata
+    .align 8
+_kefir_func_test16_label1:
+    .quad 0
+    .quad 0
+.section .text
+
+test17:
+__kefir_text_func_test17_begin:
+    ud2
+__kefir_text_func_test17_end:
+
+test18:
+__kefir_text_func_test18_begin:
+    push %rbp
+    mov %rsp, %rbp
+    sub $16, %rsp
+    movq u128@GOTPCREL(%rip), %rax
+    movl $1, -16(%rbp)
+    movl $0, -12(%rbp)
+    movl $0, -8(%rbp)
+    movl $0, -4(%rbp)
+    movdqu -16(%rbp), %xmm0
+    movdqu %xmm0, (%rax)
+    ud2
+__kefir_text_func_test18_end:
+
+test19:
+__kefir_text_func_test19_begin:
+    ud2
+__kefir_text_func_test19_end:
+
+__kefir_text_section_end:
+
+.section .bss
+    .align 16
+ld:
+    .skip 16
+
+u8:
+    .skip 1
+
+    .align 4
+c32:
+    .skip 8
+
+    .align 8
+c64:
+    .skip 16
+
+    .align 16
+c80:
+    .skip 32
+
+    .align 2
+u16:
+    .skip 2
+
+    .align 4
+u32:
+    .skip 4
+
+    .align 8
+u64:
+    .skip 8
+
+    .align 8
+u128:
+    .skip 16
+
