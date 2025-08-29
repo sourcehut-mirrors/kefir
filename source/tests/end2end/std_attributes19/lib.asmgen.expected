@@ -204,6 +204,13 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_function_get3_static___func___2",
             "type": "global_data",
             "scope": "local",
@@ -213,11 +220,11 @@
     ],
     "types": [
         {
-            "identifier": 54,
+            "identifier": 56,
             "type": []
         },
         {
-            "identifier": 55,
+            "identifier": 57,
             "type": [
                 {
                     "type": "int32"
@@ -225,7 +232,7 @@
             ]
         },
         {
-            "identifier": 57,
+            "identifier": 59,
             "type": [
                 {
                     "type": "array",
@@ -237,7 +244,7 @@
             ]
         },
         {
-            "identifier": 63,
+            "identifier": 65,
             "type": [
                 {
                     "type": "array",
@@ -253,7 +260,7 @@
         {
             "identifier": "__kefir_function_get2_static___func___1",
             "storage": "global",
-            "type": 63,
+            "type": 65,
             "value": [
                 {
                     "class": "string",
@@ -269,7 +276,7 @@
         {
             "identifier": "__kefir_function_get_static___func___0",
             "storage": "global",
-            "type": 57,
+            "type": 59,
             "value": [
                 {
                     "class": "string",
@@ -285,7 +292,7 @@
         {
             "identifier": "__kefir_function_get3_static___func___2",
             "storage": "global",
-            "type": 63,
+            "type": 65,
             "value": [
                 {
                     "class": "string",
@@ -568,68 +575,77 @@
         },
         {
             "identifier": 27,
-            "name": "get",
+            "name": "__kefir_builtin_trap",
             "parameters": 54,
             "vararg": false,
             "returns": 55,
             "returns_twice": false,
-            "no_return": true
+            "no_return": false
         },
         {
             "identifier": 28,
             "name": "get",
-            "parameters": 54,
+            "parameters": 56,
             "vararg": false,
-            "returns": 55,
+            "returns": 57,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 29,
-            "name": "get2",
-            "parameters": 54,
+            "name": "get",
+            "parameters": 56,
             "vararg": false,
-            "returns": 55,
+            "returns": 57,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 30,
             "name": "get2",
-            "parameters": 54,
+            "parameters": 56,
             "vararg": false,
-            "returns": 55,
+            "returns": 57,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 31,
-            "name": "get3",
-            "parameters": 54,
+            "name": "get2",
+            "parameters": 56,
             "vararg": false,
-            "returns": 55,
+            "returns": 57,
             "returns_twice": false,
             "no_return": true
         },
         {
             "identifier": 32,
             "name": "get3",
-            "parameters": 54,
+            "parameters": 56,
             "vararg": false,
-            "returns": 55,
+            "returns": 57,
+            "returns_twice": false,
+            "no_return": true
+        },
+        {
+            "identifier": 33,
+            "name": "get3",
+            "parameters": 56,
+            "vararg": false,
+            "returns": 57,
             "returns_twice": false,
             "no_return": true
         }
     ],
     "functions": [
         {
-            "identifier": 27,
+            "identifier": 28,
             "name": "get",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 28,
+                        "identifier": 29,
                         "name": "get"
                     }
                 },
@@ -643,13 +659,13 @@
             "public_labels": []
         },
         {
-            "identifier": 29,
+            "identifier": 30,
             "name": "get2",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 30,
+                        "identifier": 31,
                         "name": "get2"
                     }
                 },
@@ -663,13 +679,13 @@
             "public_labels": []
         },
         {
-            "identifier": 31,
+            "identifier": 32,
             "name": "get3",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 32,
+                        "identifier": 33,
                         "name": "get3"
                     }
                 },

@@ -457,6 +457,14 @@ static kefir_result_t translate_atomic_fetch_add(struct kefir_mem *mem, struct k
     return KEFIR_OK;
 }
 
+static kefir_result_t translate_trap(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
+                                     const struct kefir_opt_instruction *instruction) {
+    UNUSED(instruction);
+    REQUIRE_OK(
+        kefir_asmcmp_amd64_ud2(mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context), NULL));
+    return KEFIR_OK;
+}
+
 static kefir_result_t translate_return_address(struct kefir_mem *mem, struct kefir_codegen_amd64_function *function,
                                                const struct kefir_opt_instruction *instruction,
                                                const struct kefir_opt_call_node *call_node,
@@ -1241,6 +1249,9 @@ kefir_result_t kefir_codegen_amd64_translate_builtin(struct kefir_mem *mem,
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_atomic_fetch_add64") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_atomic_fetch_add(mem, function, instruction, call_node, 64, result_vreg_ptr));
+    } else if (strcmp(ir_func_decl->name, "__kefir_builtin_trap") == 0) {
+        ASSIGN_PTR(found_builtin, true);
+        REQUIRE_OK(translate_trap(mem, function, instruction));
     } else if (strcmp(ir_func_decl->name, "__kefir_builtin_return_address") == 0) {
         ASSIGN_PTR(found_builtin, true);
         REQUIRE_OK(translate_return_address(mem, function, instruction, call_node, result_vreg_ptr));

@@ -244,11 +244,18 @@
             "scope": "import",
             "visibility": "default",
             "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
     "types": [
         {
-            "identifier": 69,
+            "identifier": 71,
             "type": [
                 {
                     "type": "array",
@@ -260,11 +267,11 @@
             ]
         },
         {
-            "identifier": 74,
+            "identifier": 76,
             "type": []
         },
         {
-            "identifier": 77,
+            "identifier": 79,
             "type": [
                 {
                     "type": "array",
@@ -276,7 +283,7 @@
             ]
         },
         {
-            "identifier": 79,
+            "identifier": 81,
             "type": [
                 {
                     "type": "int32"
@@ -288,7 +295,7 @@
         {
             "identifier": "__kefir_function_test5_static___func___1",
             "storage": "global",
-            "type": 69,
+            "type": 71,
             "value": [
                 {
                     "class": "string",
@@ -304,7 +311,7 @@
         {
             "identifier": "__kefir_function_test4_static___func___0",
             "storage": "global",
-            "type": 69,
+            "type": 71,
             "value": [
                 {
                     "class": "string",
@@ -320,7 +327,7 @@
         {
             "identifier": "__kefir_function_main_static___func___3",
             "storage": "global",
-            "type": 77,
+            "type": 79,
             "value": [
                 {
                     "class": "string",
@@ -336,7 +343,7 @@
         {
             "identifier": "__kefir_function_test6_static___func___2",
             "storage": "global",
-            "type": 69,
+            "type": 71,
             "value": [
                 {
                     "class": "string",
@@ -662,77 +669,86 @@
         },
         {
             "identifier": 31,
-            "name": "test4",
-            "parameters": 74,
+            "name": "__kefir_builtin_trap",
+            "parameters": 62,
             "vararg": false,
-            "returns": 74,
-            "returns_twice": true,
+            "returns": 63,
+            "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 32,
-            "name": "test5",
-            "parameters": 74,
+            "name": "test4",
+            "parameters": 76,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 33,
-            "name": "test6",
-            "parameters": 74,
+            "name": "test5",
+            "parameters": 76,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 34,
-            "name": "main",
-            "parameters": 74,
+            "name": "test6",
+            "parameters": 76,
             "vararg": false,
-            "returns": 74,
-            "returns_twice": false,
-            "no_return": false
-        },
-        {
-            "identifier": 35,
-            "name": "test1",
-            "parameters": 74,
-            "vararg": false,
-            "returns": 79,
+            "returns": 76,
             "returns_twice": true,
             "no_return": false
         },
         {
-            "identifier": 36,
-            "name": "test2",
-            "parameters": 74,
+            "identifier": 35,
+            "name": "main",
+            "parameters": 76,
             "vararg": false,
-            "returns": 79,
+            "returns": 76,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 36,
+            "name": "test1",
+            "parameters": 76,
+            "vararg": false,
+            "returns": 81,
             "returns_twice": true,
             "no_return": false
         },
         {
             "identifier": 37,
-            "name": "test3",
-            "parameters": 74,
+            "name": "test2",
+            "parameters": 76,
             "vararg": false,
-            "returns": 79,
+            "returns": 81,
+            "returns_twice": true,
+            "no_return": false
+        },
+        {
+            "identifier": 38,
+            "name": "test3",
+            "parameters": 76,
+            "vararg": false,
+            "returns": 81,
             "returns_twice": true,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 34,
+            "identifier": 35,
             "name": "main",
             "body": [
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 35,
+                        "identifier": 36,
                         "name": "test1"
                     }
                 },
@@ -742,7 +758,7 @@
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 36,
+                        "identifier": 37,
                         "name": "test2"
                     }
                 },
@@ -752,7 +768,7 @@
                 {
                     "opcode": "invoke",
                     "arg": {
-                        "identifier": 37,
+                        "identifier": 38,
                         "name": "test3"
                     }
                 },
@@ -763,19 +779,19 @@
             "public_labels": []
         },
         {
-            "identifier": 31,
+            "identifier": 32,
             "name": "test4",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 32,
+            "identifier": 33,
             "name": "test5",
             "body": [],
             "public_labels": []
         },
         {
-            "identifier": 33,
+            "identifier": 34,
             "name": "test6",
             "body": [],
             "public_labels": []

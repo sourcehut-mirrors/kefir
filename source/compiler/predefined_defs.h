@@ -555,6 +555,7 @@ __kefir_define_builtin_prefix(__builtin_) __kefir_define_builtin_prefix(__atomic
 #define __sync_lock_release(_ptr, ...) __atomic_store_n((_ptr), 0, __ATOMIC_RELEASE)
 
 // Builtin functions
+extern void __kefir_builtin_trap(void);
 extern void *__kefir_builtin_return_address(int);
 extern void *__kefir_builtin_frame_address(int);
 
@@ -595,7 +596,7 @@ extern int __kefir_builtin_flt_rounds(void);
     } while (0)
 #define __builtin_assume_aligned(_exp, ...) (__VA_ARGS__, (_exp))
 
-#define __builtin_trap() __kefir_builtin_unreachable()
+#define __builtin_trap() __kefir_builtin_trap()
 #define __builtin_unreachable() __kefir_builtin_unreachable()
 #define __builtin_return_address(_level) __kefir_builtin_return_address((_level))
 #define __builtin_frame_address(_level) __kefir_builtin_frame_address((_level))

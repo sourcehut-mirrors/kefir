@@ -501,13 +501,23 @@
             }
         },
         {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null,
+            "debug_info": {
+                "entry": 139
+            }
+        },
+        {
             "symbol": "__kefir_function_d2_static___func___29",
             "type": "global_data",
             "scope": "local",
             "visibility": "default",
             "alias": null,
             "debug_info": {
-                "entry": 153
+                "entry": 154
             }
         }
     ],
@@ -686,7 +696,7 @@
             ]
         },
         {
-            "identifier": 76,
+            "identifier": 78,
             "type": [
                 {
                     "type": "int64"
@@ -755,7 +765,7 @@
             ]
         },
         {
-            "identifier": 77,
+            "identifier": 79,
             "type": [
                 {
                     "type": "float"
@@ -763,7 +773,7 @@
             ]
         },
         {
-            "identifier": 78,
+            "identifier": 80,
             "type": [
                 {
                     "type": "array",
@@ -850,7 +860,7 @@
             ]
         },
         {
-            "identifier": 79,
+            "identifier": 81,
             "type": [
                 {
                     "type": "array",
@@ -1039,7 +1049,7 @@
         {
             "identifier": "a13",
             "storage": "global",
-            "type": 77,
+            "type": 79,
             "value": [
                 {
                     "class": "undefined"
@@ -1099,7 +1109,7 @@
         {
             "identifier": "__kefir_function_d2_static___func___29",
             "storage": "global",
-            "type": 79,
+            "type": 81,
             "value": [
                 {
                     "class": "string",
@@ -1359,23 +1369,32 @@
         },
         {
             "identifier": 26,
-            "name": "d2",
+            "name": "__kefir_builtin_trap",
             "parameters": 76,
             "vararg": false,
             "returns": 77,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 27,
+            "name": "d2",
+            "parameters": 78,
+            "vararg": false,
+            "returns": 79,
             "returns_twice": false,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 26,
+            "identifier": 27,
             "name": "d2",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 335007449090,
-                    "type": 78,
+                    "id": 343597383682,
+                    "type": 80,
                     "type_index": 2
                 },
                 {
@@ -1383,8 +1402,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449091,
-                    "type": 78,
+                    "id": 343597383683,
+                    "type": 80,
                     "type_index": 3
                 },
                 {
@@ -1392,8 +1411,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449106,
-                    "type": 78,
+                    "id": 343597383698,
+                    "type": 80,
                     "type_index": 18
                 },
                 {
@@ -1401,8 +1420,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449107,
-                    "type": 78,
+                    "id": 343597383699,
+                    "type": 80,
                     "type_index": 19
                 },
                 {
@@ -1414,8 +1433,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449106,
-                    "type": 78,
+                    "id": 343597383698,
+                    "type": 80,
                     "type_index": 18
                 },
                 {
@@ -1434,8 +1453,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449091,
-                    "type": 78,
+                    "id": 343597383683,
+                    "type": 80,
                     "type_index": 3
                 },
                 {
@@ -1455,8 +1474,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449090,
-                    "type": 78,
+                    "id": 343597383682,
+                    "type": 80,
                     "type_index": 2
                 },
                 {
@@ -1471,8 +1490,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449088,
-                    "type": 78,
+                    "id": 343597383680,
+                    "type": 80,
                     "type_index": 0
                 },
                 {
@@ -1500,8 +1519,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449107,
-                    "type": 78,
+                    "id": 343597383699,
+                    "type": 80,
                     "type_index": 19
                 },
                 {
@@ -1517,8 +1536,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449090,
-                    "type": 78,
+                    "id": 343597383682,
+                    "type": 80,
                     "type_index": 2
                 },
                 {
@@ -1532,8 +1551,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449107,
-                    "type": 78,
+                    "id": 343597383699,
+                    "type": 80,
                     "type_index": 19
                 },
                 {
@@ -1573,8 +1592,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449090,
-                    "type": 78,
+                    "id": 343597383682,
+                    "type": 80,
                     "type_index": 2
                 },
                 {
@@ -1582,8 +1601,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449091,
-                    "type": 78,
+                    "id": 343597383683,
+                    "type": 80,
                     "type_index": 3
                 },
                 {
@@ -1591,8 +1610,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449106,
-                    "type": 78,
+                    "id": 343597383698,
+                    "type": 80,
                     "type_index": 18
                 },
                 {
@@ -1600,8 +1619,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449107,
-                    "type": 78,
+                    "id": 343597383699,
+                    "type": 80,
                     "type_index": 19
                 },
                 {
@@ -1612,8 +1631,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449090,
-                    "type": 78,
+                    "id": 343597383682,
+                    "type": 80,
                     "type_index": 2
                 },
                 {
@@ -1621,8 +1640,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449091,
-                    "type": 78,
+                    "id": 343597383683,
+                    "type": 80,
                     "type_index": 3
                 },
                 {
@@ -1630,8 +1649,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449106,
-                    "type": 78,
+                    "id": 343597383698,
+                    "type": 80,
                     "type_index": 18
                 },
                 {
@@ -1639,8 +1658,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 335007449107,
-                    "type": 78,
+                    "id": 343597383699,
+                    "type": 80,
                     "type_index": 19
                 },
                 {
@@ -1648,7 +1667,7 @@
                 }
             ],
             "public_labels": [],
-            "subroutine_id": 139,
+            "subroutine_id": 140,
             "source_map": [
                 {
                     "source_id": "source\/tests\/end2end\/debug_info_ir1\/lib.kefir.asmgen.c",
@@ -3928,7 +3947,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 564
+                        "value": 565
                     },
                     {
                         "tag": "source_location_column",
@@ -3979,7 +3998,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 580
+                        "value": 581
                     },
                     {
                         "tag": "source_location_column",
@@ -4030,7 +4049,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 581
+                        "value": 582
                     },
                     {
                         "tag": "source_location_column",
@@ -4081,7 +4100,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 579
+                        "value": 580
                     },
                     {
                         "tag": "source_location_column",
@@ -4132,7 +4151,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 586
+                        "value": 587
                     },
                     {
                         "tag": "source_location_column",
@@ -4171,7 +4190,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 583
+                        "value": 584
                     },
                     {
                         "tag": "source_location_column",
@@ -4222,7 +4241,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 576
+                        "value": 577
                     },
                     {
                         "tag": "source_location_column",
@@ -4273,7 +4292,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 558
+                        "value": 559
                     },
                     {
                         "tag": "source_location_column",
@@ -4343,7 +4362,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 562
+                        "value": 563
                     },
                     {
                         "tag": "source_location_column",
@@ -4394,7 +4413,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 563
+                        "value": 564
                     },
                     {
                         "tag": "source_location_column",
@@ -4445,7 +4464,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 561
+                        "value": 562
                     },
                     {
                         "tag": "source_location_column",
@@ -4496,7 +4515,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 584
+                        "value": 585
                     },
                     {
                         "tag": "source_location_column",
@@ -4547,7 +4566,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 565
+                        "value": 566
                     },
                     {
                         "tag": "source_location_column",
@@ -4598,7 +4617,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 568
+                        "value": 569
                     },
                     {
                         "tag": "source_location_column",
@@ -4649,7 +4668,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 569
+                        "value": 570
                     },
                     {
                         "tag": "source_location_column",
@@ -4700,7 +4719,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 570
+                        "value": 571
                     },
                     {
                         "tag": "source_location_column",
@@ -4751,7 +4770,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 582
+                        "value": 583
                     },
                     {
                         "tag": "source_location_column",
@@ -4802,7 +4821,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 577
+                        "value": 578
                     },
                     {
                         "tag": "source_location_column",
@@ -4853,7 +4872,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 575
+                        "value": 576
                     },
                     {
                         "tag": "source_location_column",
@@ -4904,7 +4923,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 566
+                        "value": 567
                     },
                     {
                         "tag": "source_location_column",
@@ -4955,7 +4974,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 559
+                        "value": 560
                     },
                     {
                         "tag": "source_location_column",
@@ -5025,7 +5044,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 573
+                        "value": 574
                     },
                     {
                         "tag": "source_location_column",
@@ -5076,7 +5095,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 574
+                        "value": 575
                     },
                     {
                         "tag": "source_location_column",
@@ -5127,7 +5146,7 @@
                     },
                     {
                         "tag": "source_location_line",
-                        "value": 572
+                        "value": 573
                     },
                     {
                         "tag": "source_location_column",
@@ -5150,6 +5169,45 @@
             },
             {
                 "identifier": 139,
+                "tag": "subprogram",
+                "attributes": [
+                    {
+                        "tag": "name",
+                        "value": "__kefir_builtin_trap"
+                    },
+                    {
+                        "tag": "type",
+                        "value": 19
+                    },
+                    {
+                        "tag": "function_prototyped",
+                        "value": true
+                    },
+                    {
+                        "tag": "external",
+                        "value": true
+                    },
+                    {
+                        "tag": "declaration",
+                        "value": true
+                    },
+                    {
+                        "tag": "source_location",
+                        "value": "<predefined-defs>"
+                    },
+                    {
+                        "tag": "source_location_line",
+                        "value": 558
+                    },
+                    {
+                        "tag": "source_location_column",
+                        "value": 13
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 140,
                 "tag": "subprogram",
                 "attributes": [
                     {
@@ -5191,7 +5249,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 140,
+                        "identifier": 141,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -5210,7 +5268,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 141,
+                        "identifier": 142,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -5229,7 +5287,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 142,
+                        "identifier": 143,
                         "tag": "function_parameter",
                         "attributes": [
                             {
@@ -5238,7 +5296,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 143
+                                "value": 144
                             },
                             {
                                 "tag": "parameter",
@@ -5248,7 +5306,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 145,
+                        "identifier": 146,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -5270,8 +5328,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 335007449090,
-                                    "type_id": 78,
+                                    "variable_id": 343597383682,
+                                    "type_id": 80,
                                     "type_index": 2
                                 }
                             },
@@ -5299,7 +5357,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 146,
+                        "identifier": 147,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -5321,8 +5379,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 335007449091,
-                                    "type_id": 78,
+                                    "variable_id": 343597383683,
+                                    "type_id": 80,
                                     "type_index": 3
                                 }
                             },
@@ -5350,7 +5408,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 147,
+                        "identifier": 148,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -5359,7 +5417,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 148
+                                "value": 149
                             },
                             {
                                 "tag": "code_begin",
@@ -5372,8 +5430,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 335007449106,
-                                    "type_id": 78,
+                                    "variable_id": 343597383698,
+                                    "type_id": 80,
                                     "type_index": 18
                                 }
                             },
@@ -5401,7 +5459,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 150,
+                        "identifier": 151,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -5410,7 +5468,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 151
+                                "value": 152
                             },
                             {
                                 "tag": "code_begin",
@@ -5423,8 +5481,8 @@
                             {
                                 "tag": "local_variable",
                                 "value": {
-                                    "variable_id": 335007449107,
-                                    "type_id": 78,
+                                    "variable_id": 343597383699,
+                                    "type_id": 80,
                                     "type_index": 19
                                 }
                             },
@@ -5452,7 +5510,7 @@
                         "children": []
                     },
                     {
-                        "identifier": 153,
+                        "identifier": 154,
                         "tag": "variable",
                         "attributes": [
                             {
@@ -5461,7 +5519,7 @@
                             },
                             {
                                 "tag": "type",
-                                "value": 154
+                                "value": 155
                             },
                             {
                                 "tag": "code_begin",
@@ -5473,7 +5531,7 @@
                             },
                             {
                                 "tag": "global_variable",
-                                "value": 89
+                                "value": 90
                             },
                             {
                                 "tag": "external",
@@ -5489,25 +5547,6 @@
                 ]
             },
             {
-                "identifier": 143,
-                "tag": "type_pointer",
-                "attributes": [
-                    {
-                        "tag": "size",
-                        "value": 8
-                    },
-                    {
-                        "tag": "alignment",
-                        "value": 8
-                    },
-                    {
-                        "tag": "type",
-                        "value": 144
-                    }
-                ],
-                "children": []
-            },
-            {
                 "identifier": 144,
                 "tag": "type_pointer",
                 "attributes": [
@@ -5521,13 +5560,13 @@
                     },
                     {
                         "tag": "type",
-                        "value": 19
+                        "value": 145
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 148,
+                "identifier": 145,
                 "tag": "type_pointer",
                 "attributes": [
                     {
@@ -5540,7 +5579,7 @@
                     },
                     {
                         "tag": "type",
-                        "value": 149
+                        "value": 19
                     }
                 ],
                 "children": []
@@ -5559,13 +5598,32 @@
                     },
                     {
                         "tag": "type",
+                        "value": 150
+                    }
+                ],
+                "children": []
+            },
+            {
+                "identifier": 150,
+                "tag": "type_pointer",
+                "attributes": [
+                    {
+                        "tag": "size",
+                        "value": 8
+                    },
+                    {
+                        "tag": "alignment",
+                        "value": 8
+                    },
+                    {
+                        "tag": "type",
                         "value": 19
                     }
                 ],
                 "children": []
             },
             {
-                "identifier": 151,
+                "identifier": 152,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -5575,7 +5633,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 152,
+                        "identifier": 153,
                         "tag": "array_subrange",
                         "attributes": [
                             {
@@ -5588,7 +5646,7 @@
                 ]
             },
             {
-                "identifier": 154,
+                "identifier": 155,
                 "tag": "type_array",
                 "attributes": [
                     {
@@ -5606,7 +5664,7 @@
                 ],
                 "children": [
                     {
-                        "identifier": 155,
+                        "identifier": 156,
                         "tag": "array_subrange",
                         "attributes": [
                             {

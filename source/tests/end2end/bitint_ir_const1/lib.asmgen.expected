@@ -181,15 +181,22 @@
             "scope": "import",
             "visibility": "default",
             "alias": null
+        },
+        {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
         }
     ],
     "types": [
         {
-            "identifier": 50,
+            "identifier": 52,
             "type": []
         },
         {
-            "identifier": 51,
+            "identifier": 53,
             "type": [
                 {
                     "type": "int32"
@@ -197,7 +204,7 @@
             ]
         },
         {
-            "identifier": 53,
+            "identifier": 55,
             "type": [
                 {
                     "type": "array",
@@ -213,7 +220,7 @@
         {
             "identifier": "__kefir_function_get_static___func___0",
             "storage": "global",
-            "type": 53,
+            "type": 55,
             "value": [
                 {
                     "class": "string",
@@ -464,17 +471,26 @@
         },
         {
             "identifier": 25,
-            "name": "get",
+            "name": "__kefir_builtin_trap",
             "parameters": 50,
             "vararg": false,
             "returns": 51,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 26,
+            "name": "get",
+            "parameters": 52,
+            "vararg": false,
+            "returns": 53,
             "returns_twice": false,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 25,
+            "identifier": 26,
             "name": "get",
             "body": [
                 {

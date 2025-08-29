@@ -330,6 +330,13 @@
             "alias": null
         },
         {
+            "symbol": "__kefir_builtin_trap",
+            "type": "function",
+            "scope": "import",
+            "visibility": "default",
+            "alias": null
+        },
+        {
             "symbol": "__kefir_function_sumS_static___func___20",
             "type": "global_data",
             "scope": "local",
@@ -353,11 +360,11 @@
     ],
     "types": [
         {
-            "identifier": 74,
+            "identifier": 76,
             "type": []
         },
         {
-            "identifier": 75,
+            "identifier": 77,
             "type": [
                 {
                     "type": "int8"
@@ -365,7 +372,7 @@
             ]
         },
         {
-            "identifier": 79,
+            "identifier": 81,
             "type": [
                 {
                     "type": "int16"
@@ -373,7 +380,7 @@
             ]
         },
         {
-            "identifier": 83,
+            "identifier": 85,
             "type": [
                 {
                     "type": "int32"
@@ -381,7 +388,7 @@
             ]
         },
         {
-            "identifier": 87,
+            "identifier": 89,
             "type": [
                 {
                     "type": "int64"
@@ -389,7 +396,7 @@
             ]
         },
         {
-            "identifier": 101,
+            "identifier": 103,
             "type": [
                 {
                     "type": "array",
@@ -401,7 +408,7 @@
             ]
         },
         {
-            "identifier": 106,
+            "identifier": 108,
             "type": [
                 {
                     "type": "int64"
@@ -412,7 +419,7 @@
             ]
         },
         {
-            "identifier": 118,
+            "identifier": 120,
             "type": [
                 {
                     "type": "array",
@@ -438,7 +445,7 @@
             ]
         },
         {
-            "identifier": 119,
+            "identifier": 121,
             "type": [
                 {
                     "type": "array",
@@ -454,7 +461,7 @@
         {
             "identifier": "__kefir_function_setC_static___func___13",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -470,7 +477,7 @@
         {
             "identifier": "__kefir_function_getB_static___func___5",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -486,7 +493,7 @@
         {
             "identifier": "__kefir_function_setB_static___func___11",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -502,7 +509,7 @@
         {
             "identifier": "__kefir_function_getA_static___func___4",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -518,7 +525,7 @@
         {
             "identifier": "__kefir_function_vla_test_static___func___23",
             "storage": "global",
-            "type": 119,
+            "type": 121,
             "value": [
                 {
                     "class": "string",
@@ -534,7 +541,7 @@
         {
             "identifier": "__kefir_function_getD_static___func___7",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -550,7 +557,7 @@
         {
             "identifier": "__kefir_function_setS_static___func___18",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -566,7 +573,7 @@
         {
             "identifier": "__kefir_function_getC_static___func___6",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -582,7 +589,7 @@
         {
             "identifier": "__kefir_function_sumS_static___func___20",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -598,7 +605,7 @@
         {
             "identifier": "__kefir_function_setA_static___func___9",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -614,7 +621,7 @@
         {
             "identifier": "__kefir_function_setD_static___func___15",
             "storage": "global",
-            "type": 101,
+            "type": 103,
             "value": [
                 {
                     "class": "string",
@@ -1025,7 +1032,7 @@
         },
         {
             "identifier": 35,
-            "name": "getA",
+            "name": "__kefir_builtin_trap",
             "parameters": 74,
             "vararg": false,
             "returns": 75,
@@ -1034,98 +1041,107 @@
         },
         {
             "identifier": 36,
-            "name": "getB",
-            "parameters": 74,
+            "name": "getA",
+            "parameters": 76,
             "vararg": false,
-            "returns": 79,
+            "returns": 77,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 37,
-            "name": "getC",
-            "parameters": 74,
+            "name": "getB",
+            "parameters": 76,
             "vararg": false,
-            "returns": 83,
+            "returns": 81,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 38,
-            "name": "getD",
-            "parameters": 74,
+            "name": "getC",
+            "parameters": 76,
             "vararg": false,
-            "returns": 87,
+            "returns": 85,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 39,
-            "name": "setA",
-            "parameters": 75,
+            "name": "getD",
+            "parameters": 76,
             "vararg": false,
-            "returns": 74,
+            "returns": 89,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 40,
-            "name": "setB",
-            "parameters": 79,
+            "name": "setA",
+            "parameters": 77,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 41,
-            "name": "setC",
-            "parameters": 83,
+            "name": "setB",
+            "parameters": 81,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 42,
-            "name": "setD",
-            "parameters": 87,
+            "name": "setC",
+            "parameters": 85,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 43,
-            "name": "setS",
-            "parameters": 106,
+            "name": "setD",
+            "parameters": 89,
             "vararg": false,
-            "returns": 74,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 44,
-            "name": "sumS",
-            "parameters": 87,
+            "name": "setS",
+            "parameters": 108,
             "vararg": false,
-            "returns": 87,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         },
         {
             "identifier": 45,
-            "name": "vla_test",
-            "parameters": 83,
+            "name": "sumS",
+            "parameters": 89,
             "vararg": false,
-            "returns": 74,
+            "returns": 89,
+            "returns_twice": false,
+            "no_return": false
+        },
+        {
+            "identifier": 46,
+            "name": "vla_test",
+            "parameters": 85,
+            "vararg": false,
+            "returns": 76,
             "returns_twice": false,
             "no_return": false
         }
     ],
     "functions": [
         {
-            "identifier": 35,
+            "identifier": 36,
             "name": "getA",
             "body": [
                 {
@@ -1147,7 +1163,7 @@
             "public_labels": []
         },
         {
-            "identifier": 36,
+            "identifier": 37,
             "name": "getB",
             "body": [
                 {
@@ -1169,7 +1185,7 @@
             "public_labels": []
         },
         {
-            "identifier": 37,
+            "identifier": 38,
             "name": "getC",
             "body": [
                 {
@@ -1191,7 +1207,7 @@
             "public_labels": []
         },
         {
-            "identifier": 38,
+            "identifier": 39,
             "name": "getD",
             "body": [
                 {
@@ -1213,13 +1229,13 @@
             "public_labels": []
         },
         {
-            "identifier": 39,
+            "identifier": 40,
             "name": "setA",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 395136991232,
-                    "type": 75,
+                    "id": 403726925824,
+                    "type": 77,
                     "type_index": 0
                 },
                 {
@@ -1231,8 +1247,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 395136991232,
-                    "type": 75,
+                    "id": 403726925824,
+                    "type": 77,
                     "type_index": 0
                 },
                 {
@@ -1247,8 +1263,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 395136991232,
-                    "type": 75,
+                    "id": 403726925824,
+                    "type": 77,
                     "type_index": 0
                 },
                 {
@@ -1286,8 +1302,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 395136991232,
-                    "type": 75,
+                    "id": 403726925824,
+                    "type": 77,
                     "type_index": 0
                 },
                 {
@@ -1297,13 +1313,13 @@
             "public_labels": []
         },
         {
-            "identifier": 40,
+            "identifier": 41,
             "name": "setB",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 412316860416,
-                    "type": 79,
+                    "id": 420906795008,
+                    "type": 81,
                     "type_index": 0
                 },
                 {
@@ -1315,8 +1331,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 412316860416,
-                    "type": 79,
+                    "id": 420906795008,
+                    "type": 81,
                     "type_index": 0
                 },
                 {
@@ -1331,8 +1347,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 412316860416,
-                    "type": 79,
+                    "id": 420906795008,
+                    "type": 81,
                     "type_index": 0
                 },
                 {
@@ -1370,8 +1386,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 412316860416,
-                    "type": 79,
+                    "id": 420906795008,
+                    "type": 81,
                     "type_index": 0
                 },
                 {
@@ -1381,13 +1397,13 @@
             "public_labels": []
         },
         {
-            "identifier": 41,
+            "identifier": 42,
             "name": "setC",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 429496729600,
-                    "type": 83,
+                    "id": 438086664192,
+                    "type": 85,
                     "type_index": 0
                 },
                 {
@@ -1399,8 +1415,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 429496729600,
-                    "type": 83,
+                    "id": 438086664192,
+                    "type": 85,
                     "type_index": 0
                 },
                 {
@@ -1415,8 +1431,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 429496729600,
-                    "type": 83,
+                    "id": 438086664192,
+                    "type": 85,
                     "type_index": 0
                 },
                 {
@@ -1454,8 +1470,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 429496729600,
-                    "type": 83,
+                    "id": 438086664192,
+                    "type": 85,
                     "type_index": 0
                 },
                 {
@@ -1465,13 +1481,13 @@
             "public_labels": []
         },
         {
-            "identifier": 42,
+            "identifier": 43,
             "name": "setD",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 446676598784,
-                    "type": 87,
+                    "id": 455266533376,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -1483,8 +1499,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 446676598784,
-                    "type": 87,
+                    "id": 455266533376,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -1499,8 +1515,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 446676598784,
-                    "type": 87,
+                    "id": 455266533376,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -1538,8 +1554,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 446676598784,
-                    "type": 87,
+                    "id": 455266533376,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -1549,13 +1565,13 @@
             "public_labels": []
         },
         {
-            "identifier": 43,
+            "identifier": 44,
             "name": "setS",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -1563,8 +1579,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -1576,8 +1592,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -1596,8 +1612,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -1612,8 +1628,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -1624,8 +1640,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -1714,8 +1730,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -1726,8 +1742,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -1816,8 +1832,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -1828,8 +1844,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -1995,8 +2011,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -2010,8 +2026,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -2177,8 +2193,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -2189,8 +2205,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -2229,8 +2245,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467968,
-                    "type": 106,
+                    "id": 472446402560,
+                    "type": 108,
                     "type_index": 0
                 },
                 {
@@ -2238,8 +2254,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 463856467969,
-                    "type": 106,
+                    "id": 472446402561,
+                    "type": 108,
                     "type_index": 1
                 },
                 {
@@ -2249,13 +2265,13 @@
             "public_labels": []
         },
         {
-            "identifier": 44,
+            "identifier": 45,
             "name": "sumS",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2267,8 +2283,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2283,8 +2299,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2325,8 +2341,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2370,8 +2386,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2460,8 +2476,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2547,8 +2563,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2578,8 +2594,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2590,8 +2606,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 485331304448,
-                    "type": 87,
+                    "id": 493921239040,
+                    "type": 89,
                     "type_index": 0
                 },
                 {
@@ -2601,13 +2617,13 @@
             "public_labels": []
         },
         {
-            "identifier": 45,
+            "identifier": 46,
             "name": "vla_test",
             "body": [
                 {
                     "opcode": "get_local",
-                    "id": 506806140930,
-                    "type": 118,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2619,8 +2635,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140930,
-                    "type": 118,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2635,8 +2651,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2644,8 +2660,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140928,
-                    "type": 118,
+                    "id": 515396075520,
+                    "type": 120,
                     "type_index": 0
                 },
                 {
@@ -2673,8 +2689,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2690,8 +2706,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140930,
-                    "type": 118,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
@@ -2708,8 +2724,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2745,8 +2761,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2764,8 +2780,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2809,8 +2825,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2866,8 +2882,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140928,
-                    "type": 118,
+                    "id": 515396075520,
+                    "type": 120,
                     "type_index": 0
                 },
                 {
@@ -2895,8 +2911,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140931,
-                    "type": 118,
+                    "id": 515396075523,
+                    "type": 120,
                     "type_index": 3
                 },
                 {
@@ -2904,8 +2920,8 @@
                 },
                 {
                     "opcode": "get_local",
-                    "id": 506806140930,
-                    "type": 118,
+                    "id": 515396075522,
+                    "type": 120,
                     "type_index": 2
                 },
                 {
