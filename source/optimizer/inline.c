@@ -828,6 +828,35 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_unreachable(struct do_inline_param *param, const struct kefir_opt_instruction *instr,
+                                    kefir_opt_instruction_ref_t *mapped_instr_ref) {
+    kefir_opt_block_id_t mapped_block_id;
+    REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+
+    if (kefir_ir_type_length(param->src_function->ir_func->declaration->result) > 0) {
+        const struct kefir_ir_typeentry *ir_typeentry =
+            kefir_ir_type_at(param->src_function->ir_func->declaration->result, 0);
+        REQUIRE(ir_typeentry != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to retrieve IR type entry"));
+
+        if (param->result_phi_ref == KEFIR_ID_NONE) {
+            REQUIRE_OK(kefir_opt_code_container_new_phi(param->mem, param->dst_code, param->inline_successor_block_id,
+                                                        &param->result_phi_ref, &param->result_phi_instr));
+        }
+
+        const struct kefir_opt_code_block *mapped_block;
+        REQUIRE_OK(kefir_opt_code_container_block(param->dst_code, mapped_block_id, &mapped_block));
+        REQUIRE_OK(generate_placeholder(param, mapped_block_id,
+                                        param->src_function->ir_func->declaration->result_type_id, 0,
+                                        mapped_block->control_flow.tail, mapped_instr_ref));
+        REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_ref,
+                                                       mapped_block_id, *mapped_instr_ref));
+    }
+    REQUIRE_OK(kefir_opt_code_builder_finalize_unreachable(param->mem, param->dst_code, mapped_block_id,
+                                                    mapped_instr_ref));
+
+    return KEFIR_OK;
+}
+
 static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, void *payload) {
     ASSIGN_DECL_CAST(struct do_inline_param *, param, payload);
     REQUIRE(param != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid inline trace payload"));
@@ -849,6 +878,8 @@ static kefir_result_t do_inline_instr(kefir_opt_instruction_ref_t instr_ref, voi
     kefir_opt_instruction_ref_t mapped_instr_ref;
     if (instr->operation.opcode == KEFIR_OPT_OPCODE_RETURN) {
         REQUIRE_OK(inline_return(param, instr, &mapped_instr_ref));
+    } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_UNREACHABLE) {
+        REQUIRE_OK(inline_unreachable(param, instr, &mapped_instr_ref));
     } else if (instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE ||
                instr->operation.opcode == KEFIR_OPT_OPCODE_TAIL_INVOKE_VIRTUAL) {
         return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to inline function with tail calls");
