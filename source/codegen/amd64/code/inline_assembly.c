@@ -208,16 +208,16 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
         REQUIRE_OK(kefir_asmcmp_register_stash_add(mem, &function->code.context, context->stash_idx, reg));
         REQUIRE_OK(kefir_codegen_amd64_stack_frame_use_register(mem, &function->stack_frame, reg));
 
+        const inline_assembly_parameter_allocation_type_t allocation_type =
+            kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
+                ? INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER
+                : INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
         struct kefir_hashtree_node *node;
         kefir_result_t res = kefir_hashtree_at(&context->explicitly_allocated, (kefir_hashtree_key_t) reg, &node);
         if (res == KEFIR_NOT_FOUND) {
             kefir_asmcmp_virtual_register_type_t vreg_type = kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
                                                                  ? KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT
                                                                  : KEFIR_ASMCMP_VIRTUAL_REGISTER_GENERAL_PURPOSE;
-            inline_assembly_parameter_allocation_type_t allocation_type =
-                kefir_asm_amd64_xasmgen_register_is_floating_point(reg)
-                    ? INLINE_ASSEMBLY_PARAMETER_ALLOCATION_SSE_REGISTER
-                    : INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
             REQUIRE_OK(
                 kefir_asmcmp_virtual_register_new(mem, &function->code.context, vreg_type, &entry->allocation_vreg));
             REQUIRE_OK(
@@ -228,7 +228,7 @@ static kefir_result_t allocate_register_parameter(struct kefir_mem *mem, struct 
         } else {
             REQUIRE_OK(res);
             entry->allocation_vreg = (kefir_asmcmp_virtual_register_index_t) node->value;
-            entry->allocation_type = INLINE_ASSEMBLY_PARAMETER_ALLOCATION_GP_REGISTER;
+            entry->allocation_type = allocation_type;
         }
     } else if (general_purpose) {
         REQUIRE_OK(obtain_available_gp_register(mem, function, context, &reg));
