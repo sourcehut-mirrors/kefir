@@ -68,6 +68,39 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(pair)(struct kefir_mem *mem,
     return KEFIR_OK;
 }
 
+kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_part)(struct kefir_mem *mem,
+                                                              struct kefir_codegen_amd64_function *function,
+                                                              const struct kefir_opt_instruction *instruction) {
+    REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
+    REQUIRE(function != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid codegen amd64 function"));
+    REQUIRE(instruction != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer instruction"));
+
+    kefir_asmcmp_virtual_register_index_t arg_vreg;
+    REQUIRE_OK(kefir_codegen_amd64_function_vreg_of(function, instruction->operation.parameters.refs[0], &arg_vreg));
+
+    const kefir_size_t target = instruction->operation.parameters.index_pair[0];
+    const kefir_size_t length = instruction->operation.parameters.index_pair[1];
+    for (kefir_size_t i = 0; i < target + 1 && i < length; i++) {
+        const struct kefir_asmcmp_virtual_register *pair;
+        REQUIRE_OK(kefir_asmcmp_virtual_register_get(&function->code.context, arg_vreg, &pair));
+        REQUIRE(pair->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR &&
+                    pair->parameters.pair.type == KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC,
+                KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Expected generic pair virtual register"));
+
+        if (i == target) {
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id,
+                                                                pair->parameters.pair.virtual_registers[0]));
+        } else if (i + 1 == target && i + 2 == length) {
+            REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id,
+                                                                pair->parameters.pair.virtual_registers[1]));
+            break;
+        } else {
+            arg_vreg = pair->parameters.pair.virtual_registers[1];
+        }
+    }
+    return KEFIR_OK;
+}
+
 kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(alloc_local)(struct kefir_mem *mem,
                                                                  struct kefir_codegen_amd64_function *function,
                                                                  const struct kefir_opt_instruction *instruction) {

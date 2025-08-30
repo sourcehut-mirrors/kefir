@@ -189,6 +189,7 @@ typedef struct kefir_opt_operation_parameters {
         kefir_opt_phi_id_t phi_ref;
         kefir_opt_inline_assembly_id_t inline_asm_ref;
         kefir_size_t index;
+        kefir_size_t index_pair[2];
         struct {
             kefir_size_t bitwidth;
             union {

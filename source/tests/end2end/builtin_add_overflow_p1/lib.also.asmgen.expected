@@ -18,14 +18,13 @@ __kefir_text_func_test1_begin:
     push %rbp
     mov %rsp, %rbp
     sub $16, %rsp
-    movl $0, -4(%rbp)
     movsx %edi, %rax
     movsx %esi, %rcx
-    add %rcx, %rax
+    mov %rax, %rdx
+    add %rcx, %rdx
     seto %cl
-    movsx %eax, %rdx
-    movl %eax, -4(%rbp)
-    cmp %rdx, %rax
+    movsx %edx, %rax
+    cmp %rax, %rdx
     setne %al
     or %al, %cl
     and $1, %ecx
@@ -40,23 +39,16 @@ __kefir_text_func_test1_end:
 
 test2:
 __kefir_text_func_test2_begin:
-    push %rbp
-    mov %rsp, %rbp
-    sub $16, %rsp
-    movl $0, -4(%rbp)
     movsx %edi, %rax
     movsx %esi, %rcx
-    add %rcx, %rax
-    seto %cl
-    mov %eax, %edx
-    movl %eax, -4(%rbp)
-    cmp %rdx, %rax
-    setne %al
-    or %al, %cl
-    and $1, %ecx
-    mov %rcx, %rax
-    lea (%rbp), %rsp
-    pop %rbp
+    mov %rax, %rdx
+    add %rcx, %rdx
+    seto %al
+    mov %edx, %ecx
+    cmp %rcx, %rdx
+    setne %cl
+    or %cl, %al
+    and $1, %eax
     ret
 __kefir_text_func_test2_end:
 

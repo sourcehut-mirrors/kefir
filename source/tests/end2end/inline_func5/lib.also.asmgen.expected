@@ -10,8 +10,8 @@ overflow_add:
 __kefir_text_func_overflow_add_begin:
     add %rsi, %rdi
     seto %al
-    movq %rdi, (%rdx)
     and $1, %eax
+    movq %rdi, (%rdx)
     ret
 __kefir_text_func_overflow_add_end:
 

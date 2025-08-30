@@ -747,6 +747,13 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
             REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
             break;
 
+        case KEFIR_IR_OPCODE_GET_PART:
+            REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));
+            REQUIRE_OK(kefir_opt_code_builder_get_part(mem, code, current_block_id, instr_ref2, instr->arg.u64_2[0],
+                                                       instr->arg.u64_2[1], &instr_ref));
+            REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));
+            break;
+
 #define UNARY_OP(_id, _opcode)                                                                         \
     case _opcode:                                                                                      \
         REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                          \
@@ -1385,17 +1392,16 @@ static kefir_result_t translate_instruction(struct kefir_mem *mem, const struct 
 
 #undef STORE_OP
 
-#define OVERFLOW_ARITH(_opcode, _id)                                                                            \
-    case (_opcode): {                                                                                           \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref4));                                   \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                   \
-        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                   \
-                                                                                                                \
-        REQUIRE_OK(kefir_opt_code_builder_##_id##_overflow(mem, code, current_block_id, instr_ref2, instr_ref3, \
-                                                           instr_ref4, instr->arg.u32[0], instr->arg.u32[1],    \
-                                                           instr->arg.u32[2], &instr_ref));                     \
-        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                    \
-        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                      \
+#define OVERFLOW_ARITH(_opcode, _id)                                                                                \
+    case (_opcode): {                                                                                               \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref3));                                       \
+        REQUIRE_OK(kefir_opt_constructor_stack_pop(mem, state, &instr_ref2));                                       \
+                                                                                                                    \
+        REQUIRE_OK(kefir_opt_code_builder_##_id##_overflow(mem, code, current_block_id, instr_ref2, instr_ref3,     \
+                                                           instr->arg.u32[0], instr->arg.u32[1], instr->arg.u32[2], \
+                                                           &instr_ref));                                            \
+        REQUIRE_OK(kefir_opt_constructor_stack_push(mem, state, instr_ref));                                        \
+        REQUIRE_OK(kefir_opt_code_builder_add_control(code, current_block_id, instr_ref));                          \
     } break
 
             OVERFLOW_ARITH(KEFIR_IR_OPCODE_ADD_OVERFLOW, add);

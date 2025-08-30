@@ -1174,6 +1174,9 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(select)(struct kefir_mem *me
         kefir_asmcmp_virtual_register_index_t arg2_placement_real_vreg, arg2_placement_imag_vreg, result_real_vreg,
             result_imag_vreg;
         switch (arg1_asmcmp_vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to select generic pair of virtual registers");
+
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
                 complex_float_select = true;

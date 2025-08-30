@@ -34,6 +34,7 @@
     OPCODE(LOCAL_LIFETIME_MARK, "local_lifetime_mark", ref1) SEPARATOR \
     OPCODE(TEMPORARY_OBJECT, "temporary_object", tmpobj) SEPARATOR \
     OPCODE(PAIR, "pair", ref2) SEPARATOR \
+    OPCODE(GET_PART, "get_part", ref_index2) SEPARATOR \
     /* Flow control */ \
     OPCODE(JUMP, "jump", branch) SEPARATOR \
     OPCODE(IJUMP, "indirect_jump", ref1) SEPARATOR \

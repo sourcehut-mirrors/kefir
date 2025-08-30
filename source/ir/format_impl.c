@@ -44,6 +44,7 @@ kefir_result_t kefir_ir_format_instr(struct kefir_json_output *json, const struc
 #define TYPE_FMT_ref4_compare compare
 #define TYPE_FMT_compare_ref2 compare
 #define TYPE_FMT_ref_offset i64
+#define TYPE_FMT_ref_index2 u64_2
 #define TYPE_FMT_typeref typeref
 #define TYPE_FMT_typed_ref2 typeref
 #define TYPE_FMT_branch branch

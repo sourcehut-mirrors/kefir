@@ -363,6 +363,25 @@ static kefir_result_t inline_operation_ref_offset(struct do_inline_param *param,
     return KEFIR_OK;
 }
 
+static kefir_result_t inline_operation_ref_index2(struct do_inline_param *param,
+                                                  const struct kefir_opt_instruction *instr,
+                                                  kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
+    kefir_opt_block_id_t mapped_block_id;
+    REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
+
+    kefir_opt_instruction_ref_t mapped_ref1;
+    REQUIRE_OK(get_instr_ref_mapping(param, instr->operation.parameters.refs[0], &mapped_ref1));
+
+    REQUIRE_OK(kefir_opt_code_container_new_instruction(
+        param->mem, param->dst_code, mapped_block_id,
+        &(struct kefir_opt_operation) {.opcode = instr->operation.opcode,
+                                       .parameters = {.refs = {mapped_ref1, KEFIR_ID_NONE, KEFIR_ID_NONE},
+                                                      .index_pair[0] = instr->operation.parameters.index_pair[0],
+                                                      .index_pair[1] = instr->operation.parameters.index_pair[1]}},
+        mapped_instr_ref_ptr));
+    return KEFIR_OK;
+}
+
 static kefir_result_t inline_operation_load_mem(struct do_inline_param *param,
                                                 const struct kefir_opt_instruction *instr,
                                                 kefir_opt_instruction_ref_t *mapped_instr_ref_ptr) {
@@ -829,7 +848,7 @@ static kefir_result_t inline_return(struct do_inline_param *param, const struct 
 }
 
 static kefir_result_t inline_unreachable(struct do_inline_param *param, const struct kefir_opt_instruction *instr,
-                                    kefir_opt_instruction_ref_t *mapped_instr_ref) {
+                                         kefir_opt_instruction_ref_t *mapped_instr_ref) {
     kefir_opt_block_id_t mapped_block_id;
     REQUIRE_OK(map_block(param, instr->block_id, &mapped_block_id));
 
@@ -851,8 +870,8 @@ static kefir_result_t inline_unreachable(struct do_inline_param *param, const st
         REQUIRE_OK(kefir_opt_code_container_phi_attach(param->mem, param->dst_code, param->result_phi_ref,
                                                        mapped_block_id, *mapped_instr_ref));
     }
-    REQUIRE_OK(kefir_opt_code_builder_finalize_unreachable(param->mem, param->dst_code, mapped_block_id,
-                                                    mapped_instr_ref));
+    REQUIRE_OK(
+        kefir_opt_code_builder_finalize_unreachable(param->mem, param->dst_code, mapped_block_id, mapped_instr_ref));
 
     return KEFIR_OK;
 }

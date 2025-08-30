@@ -113,7 +113,7 @@ static kefir_result_t update_live_virtual_reg(struct kefir_mem *mem, struct devi
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_REGISTER:
                 REQUIRE_OK(kefir_hashset_add(mem, &state->current_instr_physical_regs,
-                                                 (kefir_hashset_key_t) reg_alloc->direct_reg));
+                                             (kefir_hashset_key_t) reg_alloc->direct_reg));
                 break;
 
             case KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR: {
@@ -212,13 +212,18 @@ static kefir_result_t rebuild_alive_physical_reg(struct kefir_mem *mem, struct d
             if (reg_alloc->direct_reg >= state->alive.num_of_regs) {
                 kefir_size_t new_size = reg_alloc->direct_reg + 1;
                 kefir_uint8_t *regs = KEFIR_REALLOC(mem, state->alive.physical_regs, new_size * sizeof(kefir_uint8_t));
-                REQUIRE(regs != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate physical register set"));
+                REQUIRE(regs != NULL,
+                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate physical register set"));
                 state->alive.physical_regs = regs;
-                kefir_uint8_t *required_regs = KEFIR_REALLOC(mem, state->alive.required_physical_regs, new_size * sizeof(kefir_uint8_t));
-                REQUIRE(required_regs != NULL, KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate required physical register set"));
+                kefir_uint8_t *required_regs =
+                    KEFIR_REALLOC(mem, state->alive.required_physical_regs, new_size * sizeof(kefir_uint8_t));
+                REQUIRE(required_regs != NULL,
+                        KEFIR_SET_ERROR(KEFIR_MEMALLOC_FAILURE, "Failed to allocate required physical register set"));
                 state->alive.required_physical_regs = required_regs;
-                memset(&regs[state->alive.num_of_regs], 0, (new_size - state->alive.num_of_regs) * sizeof(kefir_uint8_t));
-                memset(&required_regs[state->alive.num_of_regs], 0, (new_size - state->alive.num_of_regs) * sizeof(kefir_uint8_t));
+                memset(&regs[state->alive.num_of_regs], 0,
+                       (new_size - state->alive.num_of_regs) * sizeof(kefir_uint8_t));
+                memset(&required_regs[state->alive.num_of_regs], 0,
+                       (new_size - state->alive.num_of_regs) * sizeof(kefir_uint8_t));
                 state->alive.num_of_regs = new_size;
             }
             state->alive.physical_regs[reg_alloc->direct_reg] = 1;
@@ -1452,6 +1457,9 @@ static kefir_result_t do_link_virtual_registers(struct kefir_mem *mem, struct de
         reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_SPILL_AREA_DIRECT) {
         struct kefir_asmcmp_instruction link_part_instr[2];
         switch (vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link generic pair of virtual registers");
+
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
                 link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
                 link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_VREG(vreg->parameters.pair.virtual_registers[0]);
@@ -1502,6 +1510,9 @@ static kefir_result_t do_link_virtual_registers(struct kefir_mem *mem, struct de
                reg_alloc2->type == KEFIR_CODEGEN_AMD64_VIRTUAL_REGISTER_ALLOCATION_PAIR) {
         struct kefir_asmcmp_instruction link_part_instr[2];
         switch (vreg->parameters.pair.type) {
+            case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+                return KEFIR_SET_ERROR(KEFIR_INVALID_STATE, "Unable to link generic pair of virtual registers");
+
             case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
                 link_part_instr[0].opcode = KEFIR_ASMCMP_AMD64_OPCODE(movd);
                 link_part_instr[0].args[0] = KEFIR_ASMCMP_MAKE_INDIRECT_SPILL(reg_alloc1->spill_area.index, 0,
@@ -1714,15 +1725,13 @@ kefir_result_t kefir_codegen_amd64_devirtualize(struct kefir_mem *mem, struct ke
             KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 register allocator"));
     REQUIRE(stack_frame != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid amd64 stack frame"));
 
-    struct devirtualize_state state = {.target = target,
-                                       .xregalloc = register_allocator,
-                                       .stack_frame = stack_frame,
-                                       .alive = {
-                                        .physical_regs = NULL,
-                                        .required_physical_regs = NULL,
-                                        .num_of_regs = 0
-                                       },
-                                       .stash = {.idx = KEFIR_ASMCMP_INDEX_NONE}};;
+    struct devirtualize_state state = {
+        .target = target,
+        .xregalloc = register_allocator,
+        .stack_frame = stack_frame,
+        .alive = {.physical_regs = NULL, .required_physical_regs = NULL, .num_of_regs = 0},
+        .stash = {.idx = KEFIR_ASMCMP_INDEX_NONE}};
+    ;
     REQUIRE_OK(kefir_hashset_init(&state.alive.virtual_regs, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashset_init(&state.current_instr_physical_regs, &kefir_hashtable_uint_ops));
     REQUIRE_OK(kefir_hashtree_init(&state.stash.virtual_regs, &kefir_hashtree_uint_ops));

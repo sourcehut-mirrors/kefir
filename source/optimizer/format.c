@@ -732,6 +732,21 @@ static kefir_result_t format_operation_ref_offset(struct kefir_json_output *json
     return KEFIR_OK;
 }
 
+static kefir_result_t format_operation_ref_index2(struct kefir_json_output *json, const struct kefir_opt_module *module,
+                                                  const struct kefir_opt_code_container *code,
+                                                  const struct kefir_opt_operation *oper) {
+    UNUSED(module);
+    UNUSED(code);
+    REQUIRE_OK(kefir_json_output_object_key(json, "ref"));
+    REQUIRE_OK(id_format(json, oper->parameters.refs[0]));
+    REQUIRE_OK(kefir_json_output_object_key(json, "indices"));
+    REQUIRE_OK(kefir_json_output_array_begin(json));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.index_pair[0]));
+    REQUIRE_OK(kefir_json_output_uinteger(json, oper->parameters.index_pair[1]));
+    REQUIRE_OK(kefir_json_output_array_end(json));
+    return KEFIR_OK;
+}
+
 static kefir_result_t format_operation_overflow_arith(struct kefir_json_output *json,
                                                       const struct kefir_opt_module *module,
                                                       const struct kefir_opt_code_container *code,

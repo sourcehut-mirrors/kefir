@@ -446,7 +446,6 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
 
             REQUIRE_OK(kefir_ast_translate_expression(mem, arg1_node, builder, context));
             REQUIRE_OK(kefir_ast_translate_expression(mem, arg2_node, builder, context));
-            REQUIRE_OK(kefir_ast_translate_expression(mem, ptr_node, builder, context));
 
             kefir_uint32_t signedness_flag = 0;
             if (arg1_signed) {
@@ -468,6 +467,14 @@ kefir_result_t kefir_ast_translate_builtin_node(struct kefir_mem *mem, struct ke
                 REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU32_4(builder, KEFIR_IR_OPCODE_MUL_OVERFLOW,
                                                              overflow_type_arg_id, 0, signedness_flag, 0));
             }
+
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_PICK, 0));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_GET_PART, 1, 2));
+            REQUIRE_OK(kefir_ast_translate_expression(mem, ptr_node, builder, context));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64(builder, KEFIR_IR_OPCODE_VSTACK_EXCHANGE, 1));
+            REQUIRE_OK(
+                kefir_ast_translator_store_value(mem, result_type, context, builder, &node->base.source_location));
+            REQUIRE_OK(KEFIR_IRBUILDER_BLOCK_APPENDU64_2(builder, KEFIR_IR_OPCODE_GET_PART, 0, 2));
         } break;
 
         case KEFIR_AST_BUILTIN_FFSG: {

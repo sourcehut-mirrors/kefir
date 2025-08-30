@@ -861,6 +861,10 @@ kefir_result_t kefir_asmcmp_virtual_register_new_pair(struct kefir_mem *mem, str
     REQUIRE_OK(kefir_asmcmp_virtual_register_get(context, second, &vreg2));
 
     switch (type) {
+        case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_GENERIC:
+            // Intentionally left blank
+            break;
+
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_SINGLE:
         case KEFIR_ASMCMP_VIRTUAL_REGISTER_PAIR_FLOAT_DOUBLE:
             REQUIRE(vreg1->type == KEFIR_ASMCMP_VIRTUAL_REGISTER_FLOATING_POINT,
