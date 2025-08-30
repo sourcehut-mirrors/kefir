@@ -127,8 +127,7 @@ _kefir_func___kefir_bigint_least_significant_nonzero_label4:
     mov %r13, %rdi
     add %r12, %rdi
     movb (%rdi), %r10b
-    mov %r12, %rcx
-    add $1, %rcx
+    lea 1(%r12), %rcx
     mov $8, %rdx
     mov %rax, %rsi
     cmp %rbx, %rcx
@@ -141,13 +140,11 @@ _kefir_func___kefir_bigint_least_significant_nonzero_label5:
     cmp %rdx, %r11
     jb _kefir_func___kefir_bigint_least_significant_nonzero_label7
 _kefir_func___kefir_bigint_least_significant_nonzero_label6:
-    mov %r12, %rcx
-    add $1, %rcx
+    lea 1(%r12), %rcx
     mov %rcx, %r12
     jmp _kefir_func___kefir_bigint_least_significant_nonzero_label2
 _kefir_func___kefir_bigint_least_significant_nonzero_label7:
-    mov %r11, %r8
-    add $1, %r8
+    lea 1(%r11), %r8
     movzx %r10b, %r9
     mov %r11, %rcx
     sar %cl, %r9d

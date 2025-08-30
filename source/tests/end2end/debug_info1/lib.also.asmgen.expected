@@ -27,8 +27,7 @@ _kefir_func_factorial64_label11:
 _kefir_func_factorial64_label10:
 _kefir_func_factorial64_label9:
 _kefir_func_factorial64_label2:
-    mov %rdi, %rcx
-    add $-1, %rcx
+    lea -1(%rdi), %rcx
 .loc 0 31 13
 _kefir_func_factorial64_label12:
     mov %rax, %rdx

@@ -57,6 +57,22 @@ static kefir_result_t amd64_peephole_apply(struct kefir_mem *mem, struct kefir_a
                         instr->args[0].phreg = phreg;
                     }
                     instr->args[1] = KEFIR_ASMCMP_MAKE_PHREG(phreg);
+                } else if (instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                    instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                    next_instr_index != KEFIR_ASMCMP_INDEX_NONE &&
+                    kefir_asmcmp_context_instr_label_head(context, next_instr_index) == KEFIR_ASMCMP_INDEX_NONE) {
+                    struct kefir_asmcmp_instruction *next_instr = NULL;
+                    REQUIRE_OK(kefir_asmcmp_context_instr_at(context, next_instr_index, &next_instr));
+                    if (next_instr->opcode == KEFIR_ASMCMP_AMD64_OPCODE(add) &&
+                        next_instr->args[0].type == KEFIR_ASMCMP_VALUE_TYPE_PHYSICAL_REGISTER &&
+                        next_instr->args[0].phreg == instr->args[0].phreg &&
+                        ((next_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_INTEGER && next_instr->args[1].int_immediate >= KEFIR_INT32_MIN && next_instr->args[1].int_immediate <= KEFIR_INT32_MAX) ||
+                        (next_instr->args[1].type == KEFIR_ASMCMP_VALUE_TYPE_UINTEGER && next_instr->args[1].uint_immediate <= KEFIR_INT32_MAX))) {
+                        instr->opcode = KEFIR_ASMCMP_AMD64_OPCODE(lea);
+                        instr->args[1] = KEFIR_ASMCMP_MAKE_INDIRECT_PHYSICAL(instr->args[1].phreg, next_instr->args[1].int_immediate, KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT);
+                        REQUIRE_OK(kefir_asmcmp_context_instr_drop(context, next_instr_index));
+                        next_instr_index = next2_instr_index;
+                    }
                 }
                 break;
 

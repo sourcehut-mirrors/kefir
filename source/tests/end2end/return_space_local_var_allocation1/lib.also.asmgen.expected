@@ -28,36 +28,31 @@ _kefir_func_get1_label4:
     movq %rsi, 8(%rdx)
 .loc 0 26 16
 _kefir_func_get1_label5:
-    mov %rsi, %rax
-    add $1, %rax
+    lea 1(%rsi), %rax
 .loc 0 26 5
 _kefir_func_get1_label6:
     movq %rax, 16(%rdx)
 .loc 0 27 16
 _kefir_func_get1_label7:
-    mov %rsi, %rax
-    add $2, %rax
+    lea 2(%rsi), %rax
 .loc 0 27 5
 _kefir_func_get1_label8:
     movq %rax, 24(%rdx)
 .loc 0 28 16
 _kefir_func_get1_label9:
-    mov %rsi, %rax
-    add $3, %rax
+    lea 3(%rsi), %rax
 .loc 0 28 5
 _kefir_func_get1_label10:
     movq %rax, 32(%rdx)
 .loc 0 29 16
 _kefir_func_get1_label11:
-    mov %rsi, %rax
-    add $4, %rax
+    lea 4(%rsi), %rax
 .loc 0 29 5
 _kefir_func_get1_label12:
     movq %rax, 40(%rdx)
 .loc 0 30 16
 _kefir_func_get1_label13:
-    mov %rsi, %rax
-    add $5, %rax
+    lea 5(%rsi), %rax
 .loc 0 30 5
 _kefir_func_get1_label14:
     movq %rax, 48(%rdx)

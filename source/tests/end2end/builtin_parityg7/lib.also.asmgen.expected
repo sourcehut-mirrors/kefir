@@ -157,14 +157,12 @@ _kefir_func___kefir_bigint_nonzero_count_label4:
 _kefir_func___kefir_bigint_nonzero_count_label5:
     movq -56(%rbp), %r8
     add $1, %r8
-    mov %r12, %r9
-    add $1, %r9
+    lea 1(%r12), %r9
     mov %rbx, %r10
     mov %r12, %rcx
     sar %cl, %r10d
     and $1, %r10d
-    mov %r13, %rax
-    add $1, %rax
+    lea 1(%r13), %rax
     mov %r13, %r11
     cmp $1, %r10d
     cmove %rax, %r11

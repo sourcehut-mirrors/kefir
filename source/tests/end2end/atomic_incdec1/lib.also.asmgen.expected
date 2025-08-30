@@ -357,8 +357,7 @@ __kefir_text_func_predec_i64_begin:
     movq i64@GOTPCREL(%rip), %rsi
 _kefir_func_predec_i64_label1:
     movq (%rsi), %rax
-    mov %rax, %rdi
-    add $-1, %rdi
+    lea -1(%rax), %rdi
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
@@ -375,8 +374,7 @@ __kefir_text_func_predec_ptr_begin:
     movq ptr@GOTPCREL(%rip), %rsi
 _kefir_func_predec_ptr_label1:
     movq (%rsi), %rax
-    mov %rax, %rdi
-    add $-8, %rdi
+    lea -8(%rax), %rdi
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
@@ -527,8 +525,7 @@ __kefir_text_func_preinc_i64_begin:
     movq i64@GOTPCREL(%rip), %rsi
 _kefir_func_preinc_i64_label1:
     movq (%rsi), %rax
-    mov %rax, %rdi
-    add $1, %rdi
+    lea 1(%rax), %rdi
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)
@@ -545,8 +542,7 @@ __kefir_text_func_preinc_ptr_begin:
     movq ptr@GOTPCREL(%rip), %rsi
 _kefir_func_preinc_ptr_label1:
     movq (%rsi), %rax
-    mov %rax, %rdi
-    add $8, %rdi
+    lea 8(%rax), %rdi
     mov %rsi, %rdx
     mov %rdi, %rcx
     lock     cmpxchgq %rcx, (%rdx)

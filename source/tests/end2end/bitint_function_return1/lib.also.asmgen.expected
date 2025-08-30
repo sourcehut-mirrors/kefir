@@ -1229,8 +1229,7 @@ _kefir_func___kefir_bigint_invert_label3:
     movzxb (%rdi), %rcx
     not %ecx
     movb %cl, (%rdi)
-    mov %rdx, %rcx
-    add $1, %rcx
+    lea 1(%rdx), %rcx
     mov %rcx, %rdx
     jmp _kefir_func___kefir_bigint_invert_label1
 __kefir_text_func___kefir_bigint_invert_end:

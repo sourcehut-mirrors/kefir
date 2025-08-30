@@ -252,8 +252,7 @@ _kefir_func___kefir_bigint_unsigned_compare_label3:
 _kefir_func___kefir_bigint_unsigned_compare_label4:
     cmp %r8d, %ecx
     ja _kefir_func___kefir_bigint_unsigned_compare_label7
-    mov %r12, %rax
-    add $-1, %rax
+    lea -1(%r12), %rax
     cmp %r8d, %ecx
     jb _kefir_func___kefir_bigint_unsigned_compare_label6
     mov %rax, %r12

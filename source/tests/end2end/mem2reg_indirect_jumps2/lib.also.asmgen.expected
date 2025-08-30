@@ -37,8 +37,7 @@ _kefir_func_factorial2_label3:
 _kefir_local_public_label_factorial2_round:
     movq -8(%rbp), %rdi
     movq -16(%rbp), %rsi
-    mov %rdi, %rax
-    add $-1, %rax
+    lea -1(%rdi), %rax
     imul %rdi, %rsi
     mov %rax, %rdi
     jmp _kefir_func_factorial2_label1

@@ -218,8 +218,7 @@ _kefir_func___kefir_bigint_unsigned_compare_label3:
 _kefir_func___kefir_bigint_unsigned_compare_label4:
     cmp %r8d, %ecx
     ja _kefir_func___kefir_bigint_unsigned_compare_label7
-    mov %r12, %rax
-    add $-1, %rax
+    lea -1(%r12), %rax
     cmp %r8d, %ecx
     jb _kefir_func___kefir_bigint_unsigned_compare_label6
     mov %rax, %r12
@@ -325,10 +324,8 @@ _kefir_func___kefir_bigint_leading_zeros_label5:
     mov %r14, %r11
     jmp _kefir_func___kefir_bigint_leading_zeros_label2
 _kefir_func___kefir_bigint_leading_zeros_label6:
-    mov %r13, %r9
-    add $1, %r9
-    mov %r14, %rax
-    add $1, %rax
+    lea 1(%r13), %r9
+    lea 1(%r14), %rax
     mov %r12, %rcx
     sub %r13, %rcx
     sub $1, %rcx

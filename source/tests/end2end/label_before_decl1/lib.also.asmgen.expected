@@ -10,8 +10,7 @@ factorial:
 __kefir_text_func_factorial_begin:
     mov $1, %rax
 _kefir_func_factorial_label1:
-    mov %rdi, %rcx
-    add $-1, %rcx
+    lea -1(%rdi), %rcx
     mov %rax, %rdx
     imul %rdi, %rdx
     cmp $1, %rdi

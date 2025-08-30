@@ -358,8 +358,7 @@ __kefir_text_func_postdec_i64_begin:
 _kefir_func_postdec_i64_label1:
     movq (%rsi), %rax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $-1, %rax
+    lea -1(%rdi), %rax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
@@ -378,8 +377,7 @@ __kefir_text_func_postdec_ptr_begin:
 _kefir_func_postdec_ptr_label1:
     movq (%rsi), %rax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $-8, %rax
+    lea -8(%rdi), %rax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
@@ -534,8 +532,7 @@ __kefir_text_func_postinc_i64_begin:
 _kefir_func_postinc_i64_label1:
     movq (%rsi), %rax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $1, %rax
+    lea 1(%rdi), %rax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
@@ -554,8 +551,7 @@ __kefir_text_func_postinc_ptr_begin:
 _kefir_func_postinc_ptr_label1:
     movq (%rsi), %rax
     mov %rax, %rdi
-    mov %rdi, %rax
-    add $8, %rax
+    lea 8(%rdi), %rax
     mov %rsi, %rdx
     mov %rax, %rcx
     mov %rdi, %rax
