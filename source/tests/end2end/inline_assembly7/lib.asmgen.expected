@@ -20,11 +20,8 @@ __kefir_text_func_make_s1_begin:
 _kefir_func_make_s1_label0:
     movl %edi, -8(%rbp)
     movl -8(%rbp), %eax
-    lea -4(%rbp), %rcx
-    mov %rcx, -16(%rbp)
 
-    mov -16(%rbp), %rcx
-    mov %eax, (%rcx)
+    mov %eax, -4(%rbp)
     movq -4(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -35,16 +32,13 @@ cast_int:
 __kefir_text_func_cast_int_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_cast_int_label0:
     movq %rdi, -16(%rbp)
     movl $0, -8(%rbp)
     movq -16(%rbp), %rax
-    lea -8(%rbp), %rcx
-    mov %rcx, -32(%rbp)
 
-    mov -32(%rbp), %rcx
-    mov %eax, (%rcx)
+    mov %eax, -8(%rbp)
     movl -8(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp
@@ -55,7 +49,7 @@ sum3_one:
 __kefir_text_func_sum3_one_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $48, %rsp
+    sub $32, %rsp
 _kefir_func_sum3_one_label0:
     movq %rdx, -16(%rbp)
     movq %rsi, -24(%rbp)
@@ -64,18 +58,12 @@ _kefir_func_sum3_one_label0:
     movq -32(%rbp), %rsi
     movq -24(%rbp), %rdi
     movq -16(%rbp), %rdx
-    lea -8(%rbp), %rax
-    mov %rax, -48(%rbp)
-    lea -16(%rbp), %rax
-    mov %rax, -40(%rbp)
     mov $1, %rcx
 add %rsi, %rcx
 add %rdi, %rdx
 add %rdx, %rcx
-    mov -48(%rbp), %rax
-    mov %rcx, (%rax)
-    mov -40(%rbp), %rax
-    mov %rdx, (%rax)
+    mov %rcx, -8(%rbp)
+    mov %rdx, -16(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp
@@ -86,18 +74,15 @@ unwrap_s1:
 __kefir_text_func_unwrap_s1_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_unwrap_s1_label0:
-    movq %rdi, -32(%rbp)
-    movl -32(%rbp), %eax
+    movq %rdi, -16(%rbp)
+    movl -16(%rbp), %eax
     movl %eax, -8(%rbp)
     movl $0, -4(%rbp)
-    lea -4(%rbp), %rax
-    mov %rax, -24(%rbp)
     mov -8(%rbp), %eax
 
-    mov -24(%rbp), %rcx
-    mov %eax, (%rcx)
+    mov %eax, -4(%rbp)
     movl -4(%rbp), %eax
     lea (%rbp), %rsp
     pop %rbp

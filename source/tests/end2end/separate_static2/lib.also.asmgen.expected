@@ -15,12 +15,9 @@ __kefir_text_func_gety_begin:
     sub $16, %rsp
 _kefir_func_gety_label0:
     movq $0, -8(%rbp)
-    lea -8(%rbp), %rax
-    mov %rax, -16(%rbp)
 mov value(%rip), %rax
 add __kefir_function_gety_static_y_3(%rip), %rax
-    mov -16(%rbp), %rcx
-    mov %rax, (%rcx)
+    mov %rax, -8(%rbp)
     lea __kefir_function_gety_static_y_3(%rip), %rax
     movq (%rax), %rcx
     add $1, %rcx

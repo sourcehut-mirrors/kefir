@@ -24,12 +24,9 @@ _kefir_func_test1_label0:
     movb -1(%rbp), %cl
     shl $58, %rcx
     sar $58, %rcx
-    lea -2(%rbp), %rax
-    mov %rax, -16(%rbp)
 mov %cl, %al
 add $1, %al
-    mov -16(%rbp), %rcx
-    mov %al, (%rcx)
+    mov %al, -2(%rbp)
     movb -2(%rbp), %al
     shl $58, %rax
     sar $58, %rax
@@ -48,12 +45,9 @@ _kefir_func_test2_label0:
     movw -2(%rbp), %cx
     shl $50, %rcx
     sar $50, %rcx
-    lea -4(%rbp), %rax
-    mov %rax, -16(%rbp)
 mov %cx, %ax
 add $1, %ax
-    mov -16(%rbp), %rcx
-    mov %ax, (%rcx)
+    mov %ax, -4(%rbp)
     movw -4(%rbp), %ax
     shl $50, %rax
     sar $50, %rax
@@ -72,12 +66,9 @@ _kefir_func_test3_label0:
     movl -4(%rbp), %ecx
     shl $35, %rcx
     sar $35, %rcx
-    lea -8(%rbp), %rax
-    mov %rax, -16(%rbp)
 mov %ecx, %eax
 add $1, %eax
-    mov -16(%rbp), %rcx
-    mov %eax, (%rcx)
+    mov %eax, -8(%rbp)
     movl -8(%rbp), %eax
     shl $35, %rax
     sar $35, %rax
@@ -90,18 +81,15 @@ test4:
 __kefir_text_func_test4_begin:
     push %rbp
     mov %rsp, %rbp
-    sub $32, %rsp
+    sub $16, %rsp
 _kefir_func_test4_label0:
     movq %rdi, -8(%rbp)
     movq -8(%rbp), %rcx
     shl $4, %rcx
     sar $4, %rcx
-    lea -16(%rbp), %rax
-    mov %rax, -32(%rbp)
 mov %rcx, %rax
 add $1, %rax
-    mov -32(%rbp), %rcx
-    mov %rax, (%rcx)
+    mov %rax, -16(%rbp)
     movq -16(%rbp), %rax
     shl $4, %rax
     sar $4, %rax

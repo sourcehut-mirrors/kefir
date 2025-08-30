@@ -68,8 +68,6 @@ _kefir_func_sumall_label0:
     movsx %r13d, %rbx
     imul $8, %rbx, %rbx
     add %rbx, %rcx
-    lea -32(%rbp), %rbx
-    mov %rbx, -48(%rbp)
     movq (%rdx), %xmm1
     movq (%rsi), %xmm2
     movq (%rdi), %xmm6
@@ -89,8 +87,7 @@ addsd %xmm13, %xmm0
 addsd (%rax), %xmm0
 addsd (%rcx), %xmm0
 
-    mov -48(%rbp), %rax
-    movq %xmm0, (%rax)
+    movq %xmm0, -32(%rbp)
     movq -32(%rbp), %rax
     movq %rax, %xmm0
     lea -24(%rbp), %rsp

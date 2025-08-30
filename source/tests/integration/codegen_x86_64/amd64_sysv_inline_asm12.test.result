@@ -10,20 +10,16 @@ fn1:
 __kefir_text_func_fn1_begin:
     push %rbp
     mov %rbp, %rsp
-    sub %rsp, 16
 _kefir_func_fn1_label0:
-    mov [%rbp - 16], 0
-    mov [%rbp - 8], 0
     mov %rax, 0
     mov %rcx, [%rax]
 mov %rax, 1234
 add %rcx, -39219
-    mov %rdx, [%rbp - 16]
+    mov %rdx, 0
     mov [%rdx], %rax
-    mov %rax, [%rbp - 8]
+    mov %rax, 0
     mov [%rax], %rcx
     xor %rax, %rax
-    lea %rsp, [%rbp]
     pop %rbp
     ret
 __kefir_text_func_fn1_end:

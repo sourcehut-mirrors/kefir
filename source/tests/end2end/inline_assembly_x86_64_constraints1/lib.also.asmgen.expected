@@ -13,8 +13,6 @@ __kefir_text_func_test_syscall_begin:
     sub $16, %rsp
     mov 16(%rbp), %r11
     movq $0, -8(%rbp)
-    lea -8(%rbp), %rax
-    mov %rax, -16(%rbp)
     mov %rdi, %rax
     mov %rsi, %rdi
     mov %rdx, %rsi
@@ -23,8 +21,7 @@ __kefir_text_func_test_syscall_begin:
     mov %r9, %r8
     mov %r11, %r9
 call syscall_emu
-    mov -16(%rbp), %rcx
-    mov %rax, (%rcx)
+    mov %rax, -8(%rbp)
     movq -8(%rbp), %rax
     lea (%rbp), %rsp
     pop %rbp

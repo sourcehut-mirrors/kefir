@@ -10,53 +10,47 @@ fn1:
 __kefir_text_func_fn1_begin:
     push %rbp
     mov %rbp, %rsp
-    sub %rsp, 16
 _kefir_func_fn1_label0:
     mov %r8, %rdi
-    mov [%rbp - 16], 0
-    mov [%rbp - 8], 0
     mov %rdx, 0
     mov %rsi, 0
     mov %rdi, 0
 jmp _kefir_func_fn1_label4
 jmp _kefir_func_fn1_label5
 jmp _kefir_func_fn1_label6
-    mov %rdx, [%rbp - 16]
+    mov %rdx, 0
     mov [%rdx], %rax
-    mov %rdx, [%rbp - 8]
+    mov %rdx, 0
     mov [%rdx], %rcx
     jmp _kefir_func_fn1_label1
 _kefir_func_fn1_label4:
-    mov %rdx, [%rbp - 16]
+    mov %rdx, 0
     mov [%rdx], %rax
-    mov %rdx, [%rbp - 8]
+    mov %rdx, 0
     mov [%rdx], %rcx
     jmp _kefir_func_fn1_label1
 _kefir_func_fn1_label5:
-    mov %rdx, [%rbp - 16]
+    mov %rdx, 0
     mov [%rdx], %rax
-    mov %rdx, [%rbp - 8]
+    mov %rdx, 0
     mov [%rdx], %rcx
     jmp _kefir_func_fn1_label2
 _kefir_func_fn1_label6:
-    mov %rdx, [%rbp - 16]
+    mov %rdx, 0
     mov [%rdx], %rax
-    mov %rax, [%rbp - 8]
+    mov %rax, 0
     mov [%rax], %rcx
     jmp _kefir_func_fn1_label3
 _kefir_func_fn1_label1:
     mov %rax, %r8
-    lea %rsp, [%rbp]
     pop %rbp
     ret
 _kefir_func_fn1_label2:
     mov %rax, %r8
-    lea %rsp, [%rbp]
     pop %rbp
     ret
 _kefir_func_fn1_label3:
     mov %rax, %r8
-    lea %rsp, [%rbp]
     pop %rbp
     ret
 __kefir_text_func_fn1_end:
