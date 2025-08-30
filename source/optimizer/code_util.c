@@ -483,7 +483,8 @@ static kefir_result_t copy_instruction_resolve_phi(struct kefir_mem *mem, struct
 kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kefir_opt_code_container *code,
                                                struct kefir_opt_code_debug_info *debug_info,
                                                kefir_opt_block_id_t target_block_id,
-                                               kefir_opt_block_id_t source_block_id, kefir_bool_t merge_control_tail) {
+                                               kefir_opt_block_id_t source_block_id, kefir_bool_t merge_control_tail,
+                                               kefir_bool_t drop_source_block) {
     REQUIRE(mem != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid memory allocator"));
     REQUIRE(code != NULL, KEFIR_SET_ERROR(KEFIR_INVALID_PARAMETER, "Expected valid optimizer code"));
 
@@ -525,7 +526,9 @@ kefir_result_t kefir_opt_code_block_merge_into(struct kefir_mem *mem, struct kef
     }
     REQUIRE_OK(res);
 
-    REQUIRE_OK(kefir_opt_code_container_drop_block(mem, code, source_block_id));
+    if (drop_source_block) {
+        REQUIRE_OK(kefir_opt_code_container_drop_block(mem, code, source_block_id));
+    }
 
     return KEFIR_OK;
 }

@@ -115,7 +115,7 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
                         REQUIRE_OK(kefir_opt_code_container_drop_instr(mem, &func->code, tail_instr_ref));
 
                         REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
-                                                                   target_block_id, true));
+                                                                   target_block_id, true, true));
 
                         REQUIRE_OK(kefir_opt_code_structure_drop_edge(mem, structure, block_id, target_block_id));
                         REQUIRE_OK(kefir_opt_code_structure_redirect_edges(mem, structure, target_block_id, block_id));
@@ -157,13 +157,13 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
                             REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
-                                                                       target_block_id, false));
+                                                                       target_block_id, false, true));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
                                                                                block_id, target_passthrough_block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
                             REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
-                                                                       alternative_block_id, false));
+                                                                       alternative_block_id, false, true));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(
                                 mem, &func->code, alternative_block_id, block_id, alternative_passthrough_block_id));
                         }
@@ -226,13 +226,13 @@ static kefir_result_t block_merge_impl(struct kefir_mem *mem, struct kefir_opt_f
 
                         if (target_passthrough_block_id != KEFIR_ID_NONE) {
                             REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
-                                                                       target_block_id, false));
+                                                                       target_block_id, false, true));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(mem, &func->code, target_block_id,
                                                                                block_id, target_passthrough_block_id));
                         }
                         if (alternative_passthrough_block_id != KEFIR_ID_NONE) {
                             REQUIRE_OK(kefir_opt_code_block_merge_into(mem, &func->code, &func->debug_info, block_id,
-                                                                       alternative_block_id, false));
+                                                                       alternative_block_id, false, true));
                             REQUIRE_OK(kefir_opt_code_block_redirect_phi_links(
                                 mem, &func->code, alternative_block_id, block_id, alternative_passthrough_block_id));
                         }
