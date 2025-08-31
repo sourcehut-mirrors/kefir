@@ -84,7 +84,7 @@ static kefir_result_t scalar_typeentry(const struct kefir_ast_context *context, 
             break;
 
         case KEFIR_AST_TYPE_SCALAR_LONG_DOUBLE:
-            typeentry->typecode = KEFIR_IR_TYPE_INT64_DOUBLE;
+            typeentry->typecode = KEFIR_IR_TYPE_LONG_DOUBLE;
             break;
 
         case KEFIR_AST_TYPE_SCALAR_SIGNED_BIT_PRECISE:

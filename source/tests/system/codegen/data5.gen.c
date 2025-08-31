@@ -123,7 +123,7 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
 
     kefir_id_t long_double_type_id;
     struct kefir_ir_type *long_double_type = kefir_ir_module_new_type(mem, &module, 1, &long_double_type_id);
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, long_double_type, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, long_double_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     struct kefir_ir_data *long_double_data1 = kefir_ir_module_new_named_data(
         mem, &module, "long_double_1", KEFIR_IR_DATA_THREAD_LOCAL_STORAGE, long_double_type_id);
     REQUIRE_OK(kefir_ir_data_set_long_double(mem, long_double_data1, 0, 6.02214076e23l));

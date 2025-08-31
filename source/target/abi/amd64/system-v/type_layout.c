@@ -173,7 +173,7 @@ static kefir_result_t calculate_sse_layout(const struct kefir_ir_type *type, kef
             data->alignment = 8;
             break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
             data->size = 16;
             data->alignment = 16;
             break;
@@ -278,7 +278,7 @@ static kefir_result_t calculate_layout(const struct kefir_ir_type *type, kefir_a
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, calculate_integer_layout);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, calculate_sse_layout);
     KEFIR_IR_TYPE_VISITOR_INIT_COMPLEX(&visitor, calculate_complex_layout);
-    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = calculate_sse_layout;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = calculate_sse_layout;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_UNION] = calculate_struct_union_layout;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = calculate_array_layout;

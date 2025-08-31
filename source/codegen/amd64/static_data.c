@@ -340,7 +340,7 @@ static kefir_result_t long_double_static_data(const struct kefir_ir_type *type, 
     REQUIRE_OK(kefir_abi_amd64_type_layout_at(&param->layout, index, &layout));
     REQUIRE_OK(align_offset(layout, param));
     switch (typeentry->typecode) {
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
             REQUIRE_OK(KEFIR_AMD64_XASMGEN_DATA(
                 &param->codegen->xasmgen, KEFIR_AMD64_XASMGEN_DATA_QUAD, 2,
                 kefir_asm_amd64_xasmgen_operand_immu(&param->codegen->xasmgen_helpers.operands[0], value.uint64[0]),
@@ -629,7 +629,7 @@ kefir_result_t kefir_codegen_amd64_static_data(struct kefir_mem *mem, struct kef
     KEFIR_IR_TYPE_VISITOR_INIT_INTEGERS(&visitor, integral_static_data);
     visitor.visit[KEFIR_IR_TYPE_FLOAT32] = float32_static_data;
     visitor.visit[KEFIR_IR_TYPE_FLOAT64] = float64_static_data;
-    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = long_double_static_data;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT32] = complex_float32_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_FLOAT64] = complex_float64_static_data;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_static_data;

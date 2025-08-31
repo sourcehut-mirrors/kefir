@@ -236,7 +236,7 @@ kefir_result_t KEFIR_CODEGEN_AMD64_INSTRUCTION_IMPL(get_argument)(struct kefir_m
                     REQUIRE_OK(kefir_codegen_amd64_function_assign_vreg(mem, function, instruction->id, vreg2));
                     break;
 
-                case KEFIR_IR_TYPE_INT64_DOUBLE:
+                case KEFIR_IR_TYPE_LONG_DOUBLE:
                     REQUIRE_OK(kefir_asmcmp_virtual_register_new_spill_space(
                         mem, &function->code.context,
                         kefir_abi_amd64_long_double_qword_size(function->codegen->abi_variant),

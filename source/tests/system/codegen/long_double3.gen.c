@@ -44,9 +44,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_sum", func_params, false, func_returns);
     REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sum_decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));
-    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sum_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
 
     struct kefir_ir_type *decl_params = kefir_ir_module_new_type(mem, &module, 2, &func_params),
                          *decl_result = kefir_ir_module_new_type(mem, &module, 1, &func_returns),
@@ -58,9 +58,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_sum_proxy", func_params, false, func_returns);
     REQUIRE(decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *func = kefir_ir_module_new_function_with_args(mem, &module, decl, 1024);
     REQUIRE(func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, decl->name, KEFIR_IR_IDENTIFIER_FUNCTION));

@@ -372,7 +372,7 @@ static kefir_result_t nested_visitor_init(struct kefir_ir_type_visitor *visitor)
     kefir_ir_type_visitor_init(visitor, visitor_not_supported);
     KEFIR_IR_TYPE_VISITOR_INIT_SCALARS(visitor, assign_nested_scalar);
     KEFIR_IR_TYPE_VISITOR_INIT_COMPLEX(visitor, assign_nested_complex);
-    visitor->visit[KEFIR_IR_TYPE_INT64_DOUBLE] = assign_nested_long_double;
+    visitor->visit[KEFIR_IR_TYPE_LONG_DOUBLE] = assign_nested_long_double;
     visitor->visit[KEFIR_IR_TYPE_STRUCT] = assign_nested_struct;
     visitor->visit[KEFIR_IR_TYPE_ARRAY] = assign_nested_array;
     visitor->visit[KEFIR_IR_TYPE_UNION] = assign_nested_union;
@@ -669,7 +669,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_classify(struct kefir_mem *mem, co
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, assign_immediate_sse);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(&visitor, assign_immediate_complex_fixed);
     visitor.visit[KEFIR_IR_TYPE_BITINT] = assign_immediate_bitint;
-    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = assign_immediate_long_double;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = assign_immediate_long_double;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = assign_immediate_complex_long_double;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = assign_immediate_struct;
     visitor.visit[KEFIR_IR_TYPE_UNION] = assign_immediate_union;
@@ -1045,7 +1045,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate(struct kefir_mem *mem, co
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, sse_allocate);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(&visitor, aggregate_allocate);
     visitor.visit[KEFIR_IR_TYPE_BITINT] = bitint_allocate;
-    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = long_double_allocate;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_allocate;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_allocate;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate;
@@ -1070,7 +1070,7 @@ kefir_result_t kefir_abi_sysv_amd64_parameter_allocate_return(
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_FP(&visitor, sse_allocate_return);
     KEFIR_IR_TYPE_VISITOR_INIT_FIXED_COMPLEX(&visitor, aggregate_allocate_return);
     visitor.visit[KEFIR_IR_TYPE_BITINT] = bitint_allocate_return;
-    visitor.visit[KEFIR_IR_TYPE_INT64_DOUBLE] = long_double_allocate_return;
+    visitor.visit[KEFIR_IR_TYPE_LONG_DOUBLE] = long_double_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE] = complex_long_double_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_STRUCT] = aggregate_allocate_return;
     visitor.visit[KEFIR_IR_TYPE_ARRAY] = aggregate_allocate_return;

@@ -46,10 +46,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_sum", func_params, false, func_returns);
     REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sum_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sum_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sum_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *sum_func = kefir_ir_module_new_function_with_args(mem, &module, sum_decl, 1024);
     REQUIRE(sum_func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sum_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
@@ -67,10 +67,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_sub", func_params, false, func_returns);
     REQUIRE(sub_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, sub_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sub_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sub_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, sub_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sub_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sub_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sub_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, sub_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *sub_func = kefir_ir_module_new_function_with_args(mem, &module, sub_decl, 1024);
     REQUIRE(sub_func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sub_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
@@ -88,10 +88,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_mul", func_params, false, func_returns);
     REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, mul_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, mul_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, mul_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, mul_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, mul_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, mul_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, mul_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, mul_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *mul_func = kefir_ir_module_new_function_with_args(mem, &module, mul_decl, 1024);
     REQUIRE(mul_func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, mul_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
@@ -109,10 +109,10 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_div", func_params, false, func_returns);
     REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, div_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, div_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, div_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, div_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, div_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, div_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, div_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, div_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *div_func = kefir_ir_module_new_function_with_args(mem, &module, div_decl, 1024);
     REQUIRE(div_func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, div_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
@@ -130,9 +130,9 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "ldouble_neg", func_params, false, func_returns);
     REQUIRE(sum_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    kefir_irbuilder_type_append(mem, neg_decl->params, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, neg_decl->result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
-    kefir_irbuilder_type_append(mem, neg_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, neg_decl->params, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, neg_decl->result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
+    kefir_irbuilder_type_append(mem, neg_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0);
     struct kefir_ir_function *neg_func = kefir_ir_module_new_function_with_args(mem, &module, neg_decl, 1024);
     REQUIRE(neg_func != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, neg_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));

@@ -754,7 +754,7 @@ static kefir_result_t generate_placeholder(struct do_inline_param *param, kefir_
                 kefir_opt_code_builder_float64_constant(param->mem, param->dst_code, block_id, 0.0f, instr_ref_ptr));
             break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
             REQUIRE_OK(kefir_opt_code_builder_long_double_constant(param->mem, param->dst_code, block_id, 0.0L,
                                                                    instr_ref_ptr));
             break;

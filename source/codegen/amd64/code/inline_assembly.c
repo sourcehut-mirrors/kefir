@@ -307,7 +307,7 @@ static kefir_result_t evaluate_parameter_type(struct kefir_mem *mem, const struc
             *param_type = INLINE_ASSEMBLY_PARAMETER_SCALAR;
             break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_COMPLEX_FLOAT64:
         case KEFIR_IR_TYPE_COMPLEX_LONG_DOUBLE:
         case KEFIR_IR_TYPE_STRUCT:
@@ -821,7 +821,7 @@ static kefir_result_t read_input(struct kefir_mem *mem, struct kefir_codegen_amd
             }
         } break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
         case KEFIR_IR_TYPE_STRUCT:
         case KEFIR_IR_TYPE_ARRAY:
         case KEFIR_IR_TYPE_UNION:
@@ -935,7 +935,7 @@ static kefir_result_t read_x87_input(struct kefir_mem *mem, struct kefir_codegen
             }
             break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
             REQUIRE_OK(kefir_asmcmp_amd64_fld(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(location_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
@@ -1155,7 +1155,7 @@ static kefir_result_t pointer_operand(const struct kefir_ir_inline_assembly_para
     kefir_size_t param_size = override_size == 0 ? entry->parameter_props.size : override_size;
 
     if (override_size == 0 && entry->parameter_props.type == INLINE_ASSEMBLY_PARAMETER_AGGREGATE &&
-        typeentry->typecode != KEFIR_IR_TYPE_INT64_DOUBLE) {
+        typeentry->typecode != KEFIR_IR_TYPE_LONG_DOUBLE) {
         *variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
         return KEFIR_OK;
     }
@@ -1168,7 +1168,7 @@ static kefir_result_t pointer_operand(const struct kefir_ir_inline_assembly_para
         *variant = KEFIR_ASMCMP_OPERAND_VARIANT_32BIT;
     } else if (param_size <= 8) {
         *variant = KEFIR_ASMCMP_OPERAND_VARIANT_64BIT;
-    } else if (override_size == 10 || typeentry->typecode == KEFIR_IR_TYPE_INT64_DOUBLE) {
+    } else if (override_size == 10 || typeentry->typecode == KEFIR_IR_TYPE_LONG_DOUBLE) {
         *variant = KEFIR_ASMCMP_OPERAND_VARIANT_80BIT;
     } else {
         *variant = KEFIR_ASMCMP_OPERAND_VARIANT_DEFAULT;
@@ -1571,7 +1571,7 @@ static kefir_result_t store_x87_output(struct kefir_mem *mem, struct kefir_codeg
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_FP_DOUBLE), NULL));
             break;
 
-        case KEFIR_IR_TYPE_INT64_DOUBLE:
+        case KEFIR_IR_TYPE_LONG_DOUBLE:
             REQUIRE_OK(kefir_asmcmp_amd64_fstp(
                 mem, &function->code, kefir_asmcmp_context_instr_tail(&function->code.context),
                 &KEFIR_ASMCMP_MAKE_INDIRECT_VIRTUAL(load_store_vreg, 0, KEFIR_ASMCMP_OPERAND_VARIANT_80BIT), NULL));
@@ -1695,7 +1695,7 @@ static kefir_result_t store_outputs(struct kefir_mem *mem, struct kefir_codegen_
                 }
                 break;
 
-            case KEFIR_IR_TYPE_INT64_DOUBLE:
+            case KEFIR_IR_TYPE_LONG_DOUBLE:
             case KEFIR_IR_TYPE_STRUCT:
             case KEFIR_IR_TYPE_ARRAY:
             case KEFIR_IR_TYPE_UNION:

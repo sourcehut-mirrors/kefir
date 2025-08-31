@@ -49,11 +49,11 @@ kefir_result_t kefir_int_test(struct kefir_mem *mem) {
         kefir_ir_module_new_function_declaration(mem, &module, "sumldouble", func_params, true, func_returns);
     REQUIRE(sumldouble_decl != NULL, KEFIR_INTERNAL_ERROR);
 
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, ldouble_type, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, ldouble_type, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_decl_params, KEFIR_IR_TYPE_INT32, 0, 0));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_decl_result, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_decl_result, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     REQUIRE_OK(generate_va_list_type(mem, sumldouble_locals));
-    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_locals, KEFIR_IR_TYPE_INT64_DOUBLE, 0, 0));
+    REQUIRE_OK(kefir_irbuilder_type_append(mem, sumldouble_locals, KEFIR_IR_TYPE_LONG_DOUBLE, 0, 0));
     struct kefir_ir_function *sumldouble = kefir_ir_module_new_function_with_args(mem, &module, sumldouble_decl, 1024);
     REQUIRE(sumldouble != NULL, KEFIR_INTERNAL_ERROR);
     REQUIRE_OK(kefir_ir_module_declare_global(mem, &module, sumldouble_decl->name, KEFIR_IR_IDENTIFIER_GLOBAL_DATA));
